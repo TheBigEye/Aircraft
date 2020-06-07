@@ -3,7 +3,17 @@ package minicraft.item;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+
+
 import minicraft.entity.Inventory;
+import minicraft.item.discs.DiscEight;
+import minicraft.item.discs.DiscFive;
+import minicraft.item.discs.DiscFour;
+import minicraft.item.discs.DiscOne;
+import minicraft.item.discs.DiscSeven;
+import minicraft.item.discs.DiscSix;
+import minicraft.item.discs.DiscThree;
+import minicraft.item.discs.DiscTwo;
 // import java.io.File;
 // import java.net.URL;
 // import java.net.URI;
@@ -75,6 +85,7 @@ public class Items {
 			ex.printStackTrace();
 		}*/
 		addAll(PowerGloveItem.getAllInstances());
+		addAll(AmuletItem.getAllInstances());
 		addAll(FurnitureItem.getAllInstances());
 		addAll(TorchItem.getAllInstances());
 		addAll(BucketItem.getAllInstances());
@@ -85,6 +96,16 @@ public class Items {
 		addAll(StackableItem.getAllInstances());
 		addAll(ClothingItem.getAllInstances());
 		addAll(ArmorItem.getAllInstances());
+		
+		addAll(DiscOne.getAllInstances());
+		addAll(DiscTwo.getAllInstances());
+		addAll(DiscThree.getAllInstances());		
+		addAll(DiscFour.getAllInstances());
+		addAll(DiscFive.getAllInstances());
+		addAll(DiscSix.getAllInstances());
+		addAll(DiscSeven.getAllInstances());
+		addAll(DiscEight.getAllInstances());
+
 		addAll(PotionItem.getAllInstances());
 	}
 	

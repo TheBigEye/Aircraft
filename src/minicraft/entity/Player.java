@@ -791,4 +791,11 @@ public class Player extends Mob {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public int getLevel() {
+		level.game.getLocation();
+		level.getTile(homeSetX, homeSetY);
+		return acs;
+		
+	}
 }

@@ -9,6 +9,7 @@ import minicraft.gfx.Color;
 import minicraft.gfx.Font;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
+import minicraft.item.Items;
 import minicraft.screen.OptionsMenu;
 import minicraft.Sound;
 
@@ -179,6 +180,13 @@ public class AirWizard extends EnemyMob {
 		if (players.length > 0) { // if the player is still here
 			for(Entity p: players)
 				((Player)p).score += (secondform ? 500000 : 100000); // give the player 100K or 500K points.
+			
+			int min = 0, max = 0;
+			if (OptionsMenu.diff == OptionsMenu.easy) {min = 0; max = 0;}
+			if (OptionsMenu.diff == OptionsMenu.norm) {min = 1; max = 1;}
+			if (OptionsMenu.diff == OptionsMenu.hard) {min = 1; max = 1;}
+			
+			dropItem(min, max, Items.get("Eye"));
 		}
 		
 		Sound.bossdeath.play(); // play boss-death sound.

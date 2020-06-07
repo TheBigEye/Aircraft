@@ -41,6 +41,7 @@ public class TileItem extends StackableItem {
 		items.add(new TileItem("Black Wool", (new Sprite(2, 4, Color.get(-1, 000, 111, 111))), "Wool_BLACK", "hole", "water"));
 		
 		items.add(new TileItem("Sand", (new Sprite(2, 4, Color.get(-1, 110, 440, 550))), "sand", "dirt"));
+		items.add(new TileItem("Snow", new Sprite(2, 4, Color.get(-1, 111, 444, 555)), "snow", new String[] { "dirt" }));
 		items.add(new TileItem("Cactus", (new Sprite(4, 4, Color.get(-1, 10, 40, 50))), "cactus Sapling", "sand"));
 		items.add(new TileItem("Seeds", (new Sprite(5, 4, Color.get(-1, 10, 40, 50))), "wheat", "farmland"));
 		items.add(new TileItem("Grass Seeds", (new Sprite(5, 4, Color.get(-1, 10, 30, 50))), "grass", "dirt"));

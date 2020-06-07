@@ -18,6 +18,7 @@ import minicraft.item.TileItem;
 public class FriendlyMob extends MobAi {
 	
 	protected int color;
+	public int lvl;
 	
 	public FriendlyMob(MobSprite[][] sprites, int color) {this(sprites, color, 3);}
 	public FriendlyMob(MobSprite[][] sprites, int color, int healthFactor) {
@@ -25,6 +26,8 @@ public class FriendlyMob extends MobAi {
 		this.color = color;
 		col = color;
 	}
+	
+
 	
 	public void tick() {
 		super.tick();
@@ -51,6 +54,20 @@ public class FriendlyMob extends MobAi {
 	public void render(Screen screen) {
 		col = color;
 		super.render(screen);
+	}
+	
+	protected void touchedBy(Entity entity) { // if the entity touches the mob
+		super.touchedBy(entity);
+		// hurts the player, damage is based on lvl.
+		if(entity instanceof EnemyMob) {
+			if (OptionsMenu.diff != OptionsMenu.easy)
+				entity.hurt(this, lvl, dir);
+			else entity.hurt(this, lvl * 2, dir);
+		}
+	}
+
+	public boolean canAttack() {
+		return true;
 	}
 	
 	protected void die() {

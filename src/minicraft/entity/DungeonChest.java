@@ -94,6 +94,15 @@ public class DungeonChest extends Chest {
 		inv.tryAdd(7, Items.get("lava potion"));
 		inv.tryAdd(5, Items.get("haste potion"), 3);
 		
+		inv.tryAdd(4, Items.get("Disc 1"), 1);
+		inv.tryAdd(4, Items.get("Disc 2"), 1);
+		inv.tryAdd(3, Items.get("Disc 3"), 1);
+		inv.tryAdd(3, Items.get("Disc 4"), 1);
+		inv.tryAdd(2, Items.get("Disc 5"), 1);
+		inv.tryAdd(2, Items.get("Disc 6"), 1);
+		inv.tryAdd(1, Items.get("Disc 7"), 1);
+		inv.tryAdd(1, Items.get("Disc 8"), 1);
+		
 		inv.tryAdd(6, Items.get("Gold Bow"));
 		inv.tryAdd(7, Items.get("Gem Bow"));
 		inv.tryAdd(4, Items.get("Gold Sword"));

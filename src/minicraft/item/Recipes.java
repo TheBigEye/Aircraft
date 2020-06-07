@@ -32,7 +32,8 @@ public class Recipes {
 		workbenchRecipes.add(new Recipe("Tnt_1", "Gunpowder_10", "sand_8"));
 		workbenchRecipes.add(new Recipe("Loom_1", "Wood_10", "Wool_5"));
 		workbenchRecipes.add(new Recipe("Fishing Rod_1", "Wood_5", "string_3"));
-		workbenchRecipes.add(new Recipe("Book_1", "Leather_10", "Wood_10", "cloth_10"));
+		workbenchRecipes.add(new Recipe("Paper_1", "Wood_6", "Leaf_6"));
+		workbenchRecipes.add(new Recipe("Book_1", "Leather_10", "Paper_10", "cloth_1"));
 		
 		loomRecipes.add(new Recipe("string_2", "Wool_1"));
 		loomRecipes.add(new Recipe("red wool_1", "Wool_1", "rose_1"));
@@ -122,8 +123,16 @@ public class Recipes {
 		enchantRecipes.add(new Recipe("energy potion_1", "potion_1", "gem_25"));
 		enchantRecipes.add(new Recipe("regen potion_1", "potion_1", "Gold Apple_1"));
 		enchantRecipes.add(new Recipe("Health Potion_1", "potion_1", "GunPowder_2", "Leather Armor_1"));
+		enchantRecipes.add(new Recipe("Eye_1", "Gold Apple_10", "gem_100", "Book_100"));
 		
-		breweryRecipes.add(new Recipe("Beer_5", "wheat_50", "potion_10", "coal_50"));
+		breweryRecipes.add(new Recipe("Beer_5", "wheat_50", "potion_10", "coal_25"));
+		breweryRecipes.add(new Recipe("Blind potion_1", "Eye Orb_2", "Light potion_2", "coal_2"));
+		breweryRecipes.add(new Recipe("HealthII potion_1", "Eye Orb_2", "Health potion_2", "coal_2"));
+		breweryRecipes.add(new Recipe("speedII potion_1", "Eye Orb_2", "speed potion_2", "coal_2"));
+		breweryRecipes.add(new Recipe("regenII potion_1", "Eye Orb_2", "regen potion_2", "coal_2"));
+		breweryRecipes.add(new Recipe("lavaII potion_1", "Eye Orb_2", "lava potion_2", "coal_2"));
+		breweryRecipes.add(new Recipe("shieldII potion_1", "Eye Orb_2", "shield potion_2", "coal_2"));
+		
 	}
 
 }

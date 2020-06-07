@@ -1,6 +1,8 @@
 package minicraft.item;
 
 import java.util.ArrayList;
+
+import minicraft.entity.EnemyMob;
 import minicraft.entity.Player;
 import minicraft.gfx.Color;
 import minicraft.gfx.Sprite;
@@ -14,6 +16,7 @@ public class BookItem extends Item {
 		ArrayList<Item> items = new ArrayList<Item>();
 		items.add(new BookItem("Book", Color.get(-1, 200, 531, 430), BookMenu.defaultBook));
 		items.add(new BookItem("Antidious", Color.get(-1, 100, 300, 500), BookMenu.antVenomBook));
+		
 		return items;
 	}
 	
@@ -32,4 +35,5 @@ public class BookItem extends Item {
 	public BookItem clone() {
 		return new BookItem(name, sprite.color, book);
 	}
+	
 }

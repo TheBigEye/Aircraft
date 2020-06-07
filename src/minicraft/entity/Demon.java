@@ -25,6 +25,7 @@ public class Demon extends EnemyMob{
 			*/
 		}
 		
+
 		public void tick() {
 			super.tick();
 		}

@@ -23,6 +23,7 @@ public class FurnitureItem extends Item {
 		items.add(new FurnitureItem(new Spawner(new Slime(1))));
 		items.add(new FurnitureItem(new Spawner(new Zombie(1))));
 		items.add(new FurnitureItem(new Spawner(new Demon(2))));
+		items.add(new FurnitureItem(new Spawner(new Eye(1))));
 		items.add(new FurnitureItem(new Spawner(new Creeper(1))));
 		items.add(new FurnitureItem(new Spawner(new Skeleton(1))));
 		items.add(new FurnitureItem(new Spawner(new Snake(1))));

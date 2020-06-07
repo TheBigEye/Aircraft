@@ -1,6 +1,9 @@
 package minicraft.item;
 
 import java.util.ArrayList;
+
+import minicraft.Sound;
+import minicraft.entity.ItemEntity;
 import minicraft.entity.Player;
 import minicraft.gfx.Color;
 import minicraft.gfx.Font;
@@ -18,6 +21,7 @@ public class StackableItem extends Item {
 		ArrayList<Item> items = new ArrayList<Item>();
 	
 		items.add(new StackableItem("Wood", new Sprite(1, 4, Color.get(-1, 200, 531, 430))));
+		items.add(new StackableItem("leaf", new Sprite(29, 4, Color.get(-1, 30, 30, 50))));
 		items.add(new StackableItem("Stone", new Sprite(2, 4, Color.get(-1, 111, 333, 555))));
 		items.add(new StackableItem("Leather", new Sprite(19, 4, Color.get(-1, 100, 211, 322))));
 		items.add(new StackableItem("Wheat", new Sprite(6, 4, Color.get(-1, 110, 330, 550))));
@@ -33,14 +37,34 @@ public class StackableItem extends Item {
 		items.add(new StackableItem("Rose", new Sprite(0, 4, Color.get(-1, 100, 300, 500))));
 		items.add(new StackableItem("GunPowder", new Sprite(2, 4, Color.get(-1, 111, 222, 333))));
 		items.add(new StackableItem("Slime", new Sprite(10, 4, Color.get(-1, 10, 30, 50))));
+		items.add(new StackableItem("Eye Orb", new Sprite(18, 5, Color.get(-1, 000, 444, 555))));
+		items.add(new StackableItem("Paper", new Sprite(19, 5, Color.get(-1, 000, 444, 555))));
 		items.add(new StackableItem("glass", new Sprite(12, 4, Color.get(-1, 555))));
 		items.add(new StackableItem("cloth", new Sprite(1, 4, Color.get(-1, 25, 252, 141))));
 		items.add(new StackableItem("gem", new Sprite(13, 4, Color.get(-1, 101, 404, 545))));
 		items.add(new StackableItem("Scale", new Sprite(22, 4, Color.get(-1, 10, 30, 20))));
 		items.add(new StackableItem("Shard", new Sprite(23, 4, Color.get(-1, 222, 333, 444))));
 		
+		
+		//discs
+		/*
+		items.add(new StackableItem("Disc 1", new Sprite(30, 4, Color.get(-1, 100, 696, 444))));			
+		items.add(new StackableItem("Disc 2", new Sprite(30, 4, Color.get(-1, 200, 696, 444))));			
+		items.add(new StackableItem("Disc 3", new Sprite(30, 4, Color.get(-1, 300, 900, 444))));			
+		items.add(new StackableItem("Disc 4", new Sprite(30, 4, Color.get(-1, 400, 800, 444))));			
+		items.add(new StackableItem("Disc 5", new Sprite(30, 4, Color.get(-1, 500, 700, 444))));			
+		items.add(new StackableItem("Disc 6", new Sprite(30, 4, Color.get(-1, 600, 600, 444))));		
+		items.add(new StackableItem("Disc 7", new Sprite(30, 4, Color.get(-1, 700, 500, 444))));				
+		items.add(new StackableItem("Disc 8", new Sprite(30, 4, Color.get(-1, 800, 400, 444))));			
+		items.add(new StackableItem("Disc 9", new Sprite(30, 4, Color.get(-1, 900, 300, 444))));				
+		items.add(new StackableItem("Disc 10", new Sprite(30, 4, Color.get(-1, 696, 200, 444))));				
+		items.add(new StackableItem("Disc 11", new Sprite(30, 4, Color.get(-1, 696, 100, 444))));
+		*/
+			
 		return items;
 	}
+	
+
 	
 	public int count;
 	///public int maxCount; // TODO I want to implement this later.
@@ -87,4 +111,5 @@ public class StackableItem extends Item {
 	public String getData() {
 		return name+"_"+count;
 	}
+
 }
