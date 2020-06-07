@@ -34,12 +34,45 @@ public class BookMenu extends Menu {
 +"\n"+
 "The lustrous sunlight came down as I set off to continue my journey. I came across a apple tree Nothing special about it, but there was something behind it. I couldn't believe my eyes, A large garden of fruits! I can see Apples, Bananas, Grapes, Pears, Cherries, Blueberries, and many others. This garden of eden seems to be endless and somehow like a maze. I can feed my kin for generations with all of this food. I hear footsteps behind me I found some bushes to take some cover. What is that thing? I've never seen it before. Is it the creature I'm searching for? It's eyes have this cold dark brown color, his hide is only partly visible on his head, the rest seems to be bare. He also has this strange amulet on his chest. It looks fancy, it's made from iron, gold, and Amethyst. I can't seem to stop looking at it What is happening to me? It feels as though I want to move closer to it. I can't, I cannot blow my cover like this. It would be the end of me for sure. But as soon my leg lifted, the creature left with some grapefruit. I caught my breath and sat down for a minute. I don't know why I did not leave right there and then, I might have lived. But this sudden urge for that amulet made me continue. I caught up to the creature, following closely but silently. It looks like his home is ahead. As he enters I go to the side and peak in from a window. He is in the kitchen with the fruit, It's not too big of a room. Some light coming from the ceiling from a mysterious stone. From a large metal box he grabs some fish and pork. Places some of the fruit on his plate and puts the rest in the box. I noticed that the amulet from his chest is gone. Creeping to the front door, I saw a horrifying sight. On a fireplace I see a head as a trophy piece. I went back out to hurl. I don't know what Monster would do such a sin The beast enters from the room, I cannot enter from the front. Slowly I make my way to the back door. The door makes a quiet sqeak, but the beast doesn't hear it. I look around for the amulet while not to make a sound. after a bit of searching I come across his room. He has a wood platform with knobs and tiny square lines and a Picture is on it. It seems to be a female, probably from the same race. And a small paper at the back of it. It's his name, 'An-' before I could say it he comes into the room with a puzzled look on his face. Drawing a blade made of Iron from his side and charges. I run for my life, as fast as can down the hallway, and out the door.\n"
 +"\n"+
-"This is the final minute for me By the tenth step of grass I collapsed, Bleeding to death as my cow brothers did before me. With my last ounce of strength I drew his name out with my blood in the hopes that somebody can know this terror.\n"
+"This is the last minute for me. On the tenth grass step I collapsed, bleeding to death like my cow brothers before me. With my last pinch of force I took his name with my blood in the hope that someone might know this terror, in the end, before passing out, I saw what seemed to be an EYE! an ,, an eye! and then ... then ....\n"
 +"\n"+
 "\'You can only make out a little.\'\n"
 +"\n"
 +"\n"+
 "\'Ant----- Venom-\'\n"
++"\n"
++"\n"
++"\n"+
+"The end";
+	
+	
+	public static String eyeBook = "Eye Amulet\n"+
+	"\n"+
+	"\n"+
+	"Hello, what did you defeat this evil wizard with? \n"+
+	"\n"+
+	"\n"+
+	"\n"+
+	"6 Pages\n"+
+	"\n"+
+	"\n"+
+	"emy??\n"+
+	"\0"+
+	
+	
+
+"He tortured me day and night to get my words out of my mouth -!!weird I don't have a mouth!!- He wanted absolute power, that power that would destroy this world forever, that power that would make his victim turn to ashes -!!I mean you!!- , that power that started your adventure, let me tell you a short story, a great story.\n"
++"\n"+
+"Well ... in part, you are the best in this story -!!For now haha!!- , and I'm afraid it has come to an end, yes, the end. You were born in broad daylight, with nothing else with force of your imagination, intelligence and power, you knocked down trees, stones, even evil, hostile and horrible creatures -!!As your species!!-, you built, you destroyed a world, a great world to see yourself now, you have only defeated the evil Assistant of Air to get here and this ends, the end of all your adventure, but this is not the end of this story, each end has a beginning, as a beginning also has an end, it is a cycle, like the one faced by your species , the human species,\n"
++"\n"+
+"It didn't have a happy ending, they were just like you, but different.\n"
++"\n"+
+"They destroyed for pleasure, they built a whole world behind this screen, a world that ended in a tragic ending ... instead, you destroyed to survive, survive that strange word, but ... but ... but ... ... but ... ... but ... but ... not again! Not again, not again! What's up! ....This is your end!.\n"
++"\n"+
+"\'!.\'\n"
++"\n"
++"\n"+
+"\'-TheBigEye-\'\n"
 +"\n"
 +"\n"
 +"\n"+

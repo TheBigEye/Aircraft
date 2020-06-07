@@ -7,6 +7,7 @@ import minicraft.gfx.Color;
 import minicraft.gfx.Font;
 import minicraft.gfx.Screen;
 import minicraft.Game;
+import minicraft.Sound;
 
 public class LoadingMenu extends Menu implements ActionListener {
 	//this is the last menu before the game/world starts/opens.
@@ -44,5 +45,9 @@ public class LoadingMenu extends Menu implements ActionListener {
 		//Font.draw("This should take 4 seconds or less", screen, 10, screen.h - 185, coll);
 		//Font.draw("If not then restart because it froze", screen, 0, screen.h - 175, coll);
 		Font.drawCentered(percent + "%", screen, screen.h - 95, col);
+	}
+	
+	{
+		Sound.Disc11.stop();
 	}
 }

@@ -52,6 +52,7 @@ public final class Tiles {
 		tiles.set(33, new WallTile(Tile.Material.Stone));
 		tiles.set(34, new WallTile(Tile.Material.Obsidian));
 		tiles.set(35, new WoolTile());
+		tiles.set(36, new SnowTile("Snow"));
 		
 		for(int i = 0; i < tiles.size(); i++) {
 			if(tiles.get(i) == null) continue;
@@ -114,6 +115,8 @@ public final class Tiles {
 		oldids.set(21, "gem Ore");
 		oldids.set(22, "cloud Cactus");
 		oldids.set(16, "infinite Fall");
+		oldids.set(136, "snow");
+		
 		
 		// light/torch versions, for compatibility with before 1.9.4-dev3. (were removed in making dev3)
 		oldids.set(100, "grass");
@@ -158,78 +161,61 @@ public final class Tiles {
 		oldids.set(55, "torch black wool");
 	}
 	
-	static int overflowCheck = 0;
-	public static Tile get(String name) {
-		//System.out.println("getting from tile list: " + name);
-		
-		name = name.toUpperCase();
-		
-		overflowCheck++;
-		
-		if(overflowCheck > 50) {
-			System.out.println("STACKOVERFLOW prevented in Tiles.get(), on: " + name);
-			System.exit(1);
-		}
-		
-		//System.out.println("fetching tile " + name);
-		
-		Tile getting = null;
-		
-		boolean isTorch = false;
-		if(name.startsWith("TORCH ")) {
-			isTorch = true;
-			name = name.substring(6); // cuts off torch prefix.
-		}
-		
-		String data = "";
-		if(name.contains("_")) {
-			data = name.substring(name.indexOf("_")+1);
-			name = name.substring(0, name.indexOf("_"));
-		}
-		
-		for(Tile t: tiles) {
-			if(t == null) continue;
-			if(t.name.equals(name)) {
-				getting = t;
-				break;
-			}
-		}
-		
-		if(getting == null) {
-			System.out.println("TILES.GET: invalid tile requested: " + name);
-			getting = tiles.get(0);
-		}
-		
-		if(isTorch) {
-			getting = TorchTile.getTorchTile(getting);
-		}
-		
-		overflowCheck = 0;
-		return getting;
+	  private static int overflowCheck = 0;
+	  
+	  public static Tile get(String name) {
+	    name = name.toUpperCase();
+	    overflowCheck++;
+	    if (overflowCheck > 50) {
+	      System.out.println("STACKOVERFLOW prevented in Tiles.get(), on: " + name);
+	      System.exit(1);
+	    } 
+	    Tile getting = null;
+	    boolean isTorch = false;
+	    if (name.startsWith("TORCH ")) {
+	      isTorch = true;
+	      name = name.substring(6);
+	    } 
+	    if (name.contains("_"))
+	      name = name.substring(0, name.indexOf("_")); 
+	    for (Tile t : tiles) {
+	      if (t != null && 
+	        t.name.equals(name)) {
+	        getting = t;
+	        break;
+	      } 
+	    } 
+	    if (getting == null) {
+	      System.out.println("TILES.GET: invalid tile requested: " + name);
+	      getting = tiles.get(0);
+	    } 
+	    if (isTorch)
+	      getting = TorchTile.getTorchTile(getting); 
+	    overflowCheck = 0;
+	    return getting;
+	  }
+	  
+	  public static Tile get(int id) {
+	    if (id < 0)
+	      id += 256; 
+	    if (tiles.get(id) != null)
+	      return tiles.get(id); 
+	    if (id >= 128)
+	      return TorchTile.getTorchTile(get(id - 128)); 
+	    System.out.println("TILES.GET: unknown tile id requested: " + id);
+	    return tiles.get(0);
+	  }
+	  
+	  public static boolean containsTile(int id) {
+	    return (tiles.get(id) != null);
+	  }
+	  
+	  public static String getName(String descriptName) {
+	    if (!descriptName.contains("_"))
+	      return descriptName; 
+	    String[] parts = descriptName.split("_");
+	    descriptName = parts[0];
+	    int data = Integer.parseInt(parts[1]);
+	    return get(descriptName).getName(data);
+	  }
 	}
-	
-	public static Tile get(int id) {
-		//System.out.println("requesting tile by id: " + id);
-		
-		if(tiles.get(id) != null) {
-			return tiles.get(id);
-		}
-		else {
-			System.out.println("TILES.GET: unknown tile id requested: " + id);
-			return tiles.get(0);
-		}
-	}
-	
-	public static boolean containsTile(int id) {
-		return tiles.get(id) != null;
-	}
-	
-	public static String getName(String descriptName) {
-		if(!descriptName.contains("_")) return descriptName;
-		int data = 0;
-		String[] parts = descriptName.split("_");
-		descriptName = parts[0];
-		data = Integer.parseInt(parts[1]);
-		return get(descriptName).getName(data);
-	}
-}

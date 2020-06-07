@@ -28,11 +28,13 @@ public abstract class Tile {
 	public boolean connectsToSand = false;
 	public boolean connectsToLava = false;
 	public boolean connectsToWater = false;
+	protected boolean connectsToSnow = false;
 	public int light;
 	public boolean maySpawn;
 	
 	protected Sprite sprite;
 	protected ConnectorSprite csprite;
+	
 	
 	{
 		light = 1;

@@ -700,6 +700,7 @@ public class Load {
 			case "BadWolf": return (Entity)(new BadWolf(moblvl));
 			case "Zombie": return (Entity)(new Zombie(moblvl));
 			case "Slime": return (Entity)(new Slime(moblvl));
+			case "Eye": return (Entity)(new Eye(moblvl));
 			case "Creeper": return (Entity)(new Creeper(moblvl));
 			case "Skeleton": return (Entity)(new Skeleton(moblvl));
 			case "Knight": return (Entity)(new Knight(moblvl));

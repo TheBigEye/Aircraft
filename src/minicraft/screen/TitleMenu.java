@@ -364,7 +364,7 @@ private static final String[] options = {"New game", "Join Online World", "Instr
 			Font.drawCentered(greeting, screen, 10, Color.get(-1, 330));
 		}
 		
-		Font.draw("Alpha 1.2 Rel 2", screen, 1, 1, Color.get(-1, 111)); 
+		Font.draw("Alpha 1.2 Rel 3", screen, 1, 1, Color.get(-1, 111)); 
 		
 
 		Font.drawCentered("Created and Modded by TheBigEye", screen, screen.h - 15, Color.get(-1, 333));	

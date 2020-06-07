@@ -26,7 +26,7 @@ public class CreditsMenu extends Menu {
 		Font.drawCentered("Credits", screen, 1 * 8, Color.get(-1, 555));
 		FontStyle style = new FontStyle(Color.get(-1, 333));
 		Font.drawParagraph("Textures of.. RiverOaken ", screen, 4, true, 5 * 8, false, style, 12);
-		Font.drawParagraph("Help.. from Christopher and Chris J", screen, 4, true, 7 * 8, false, style, 12);
+		Font.drawParagraph("Help.. from Christoffer and Chris J", screen, 4, true, 7 * 8, false, style, 12);
 		Font.drawParagraph("Ideas.. from the community", screen, 4, true, 9 * 8, false, style, 12);
 		Font.drawParagraph("Modified.. by TheBigEye", screen, 4, true, 11 * 8, false, style, 12);
 		Font.drawParagraph("(This Mod is in continuous update phase)", screen, 4, true, 19 * 8, false, style, 12);

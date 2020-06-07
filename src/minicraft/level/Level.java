@@ -6,7 +6,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import minicraft.Game;
+import minicraft.Sound;
 import minicraft.entity.*;
 import minicraft.gfx.Screen;
 import minicraft.item.Item;
@@ -37,7 +41,7 @@ public class Level {
 	public int redwoolColor = 500;
 	public int yellowwoolColor = 550;
 	public int depth; // depth level of the level
-	public int monsterDensity = 7; // affects the number of monsters that are on the level, bigger the number the less monsters spawn.
+	public int monsterDensity = 8; // affects the number of monsters that are on the level, bigger the number the less monsters spawn.
 	public int maxMobCount;
 	public int chestcount;
 	public int mobCount = 0;
@@ -660,6 +664,7 @@ public class Level {
 				} else { // special dungeon mobs
 					if (rnd <= 40) add((new Snake(lvl)), nx, ny);
 					else if (rnd <= 75) add((new Knight(lvl)), nx, ny);
+					else if (rnd <= 75) add((new Eye(lvl)), nx, ny);
 					else if (rnd >= 85) add((new Snake(lvl)), nx, ny);
 					else add((new Knight(lvl)), nx, ny);
 				}
@@ -777,4 +782,5 @@ public class Level {
 	public boolean noStairs(int x, int y) {
 		return getTile(x, y) != Tiles.get("Stairs Down");
 	}
+	
 }

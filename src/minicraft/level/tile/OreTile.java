@@ -1,5 +1,7 @@
 package minicraft.level.tile;
 
+import javax.annotation.Resource;
+
 import minicraft.entity.Entity;
 import minicraft.entity.Mob;
 import minicraft.entity.Player;
@@ -44,6 +46,8 @@ public class OreTile extends Tile {
         this.type = o;
 		this.sprite = super.sprite;
 	}
+
+
 
 	public void render(Screen screen, Level level, int x, int y) {
 		sprite.color = (type.color & 0xffffff00) + Color.get(DirtTile.dCol(level.depth));

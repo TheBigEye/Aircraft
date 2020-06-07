@@ -22,7 +22,17 @@ public class Sound {
 	public static final Sound craft = loadSound("/craft.wav");
 	public static final Sound fuse = loadSound("/fuse.wav");
 	public static final Sound explode = loadSound("/explode.wav");
-	public static final Sound Disc11 = loadSound("/death.wav");
+	public static final Sound Disc11 = loadSound("/Discs/Disc 8.wav");
+	
+	//Discs
+	public static final Sound Disc1 = loadSound("/Discs/Disc 1.wav");
+	public static final Sound Disc2 = loadSound("/Discs/Disc 2.wav");
+	public static final Sound Disc3 = loadSound("/Discs/Disc 3.wav");
+	public static final Sound Disc4 = loadSound("/Discs/Disc 4.wav");
+	public static final Sound Disc5 = loadSound("/Discs/Disc 5.wav");
+	public static final Sound Disc6 = loadSound("/Discs/Disc 6.wav");
+	public static final Sound Disc7 = loadSound("/Discs/Disc 7.wav");
+	public static final Sound Disc8 = loadSound("/Discs/Disc 8.wav");
 
 	public static Sound loadSound(String fileName) {
 		Sound 	sound = new Sound();

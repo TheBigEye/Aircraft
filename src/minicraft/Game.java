@@ -798,7 +798,7 @@ public class Game extends Canvas implements Runnable {
 		int textcol = Color.get(-1, 555);
 		if (player.showinfo) { // renders show debug info on the screen.
 			ArrayList<String> info = new ArrayList<String>();
-			info.add("VERSION " + "Alpha 1.2.2");
+			info.add("VERSION " + "Alpha 1.2.3");
 			info.add(fra + " fps");
 			info.add("day tiks " + tickCount);
 			info.add((normSpeed * gamespeed) + " tik/sec");

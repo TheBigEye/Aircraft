@@ -405,6 +405,8 @@ public class LegacyLoad {
 			case "Dog": return (Entity)(new Dog());
 			case "Wolf": return (Entity)(new Wolf());
 			case "BadWolf": return (Entity)(new BadWolf(moblvl));
+			case "Demon": return (Entity)(new Demon(moblvl));
+			case "Eye": return (Entity)(new Eye(moblvl));
 			case "Zombie": return (Entity)(new Zombie(moblvl));
 			case "Slime": return (Entity)(new Slime(moblvl));
 			case "Creeper": return (Entity)(new Creeper(moblvl));
