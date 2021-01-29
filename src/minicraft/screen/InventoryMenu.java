@@ -1,37 +1,66 @@
 package minicraft.screen;
 
-import java.util.List;
-import minicraft.entity.Inventory;
-import minicraft.gfx.Color;
-import minicraft.gfx.Screen;
+import minicraft.core.Game;
+import minicraft.core.io.InputHandler;
+import minicraft.entity.Entity;
+import minicraft.entity.mob.Player;
+import minicraft.item.Inventory;
 import minicraft.item.Item;
 import minicraft.item.StackableItem;
+import minicraft.screen.entry.ItemEntry;
 
-public class InventoryMenu extends ScrollingMenu {
-	protected Inventory inv;
-	protected String title;
+class InventoryMenu extends ItemListMenu {
 	
-	public InventoryMenu(Inventory inv, String title) {
-		super(inv.getItemNames(), 9, 2*8, 2*8, 0, Color.get(-1, 555), Color.get(-1, 555));
+	private Inventory inv;
+	private Entity holder;
+	
+	InventoryMenu(Entity holder, Inventory inv, String title) {
+		super(ItemEntry.useItems(inv.getItems()), title);
 		this.inv = inv;
-		this.title = title;
+		this.holder = holder;
+	}
+	
+	InventoryMenu(InventoryMenu model) {
+		super(ItemEntry.useItems(model.inv.getItems()), model.getTitle());
+		this.inv = model.inv;
+		this.holder = model.holder;
+		setSelection(model.getSelection());
+	}
+	
+	@Override
+	public void tick(InputHandler input) {
+		super.tick(input);
 		
-		// to make space for the item icon.
-		for(int i = 0; i < options.size(); i++) {
-			String extra = "";
-			if(inv.get(i) instanceof StackableItem) {
-				StackableItem stack = (StackableItem) inv.get(i);
-				extra = (stack.count > 999 ? 999 : stack.count) + " ";
+		boolean dropOne = input.getKey("drop-one").clicked && !(Game.getMenu() instanceof ContainerDisplay);
+		
+		if(getNumOptions() > 0 && (dropOne || input.getKey("drop-stack").clicked)) {
+			ItemEntry entry = ((ItemEntry)getCurEntry());
+			if(entry == null) return;
+			Item invItem = entry.getItem();
+			Item drop = invItem.clone();
+			
+			if(dropOne && drop instanceof StackableItem && ((StackableItem)drop).count > 1) {
+				// just drop one from the stack
+				((StackableItem)drop).count = 1;
+				((StackableItem)invItem).count--;
+			} else {
+				// drop the whole item.
+				if(!Game.isMode("creative") || !(holder instanceof Player))
+					removeSelectedEntry();
 			}
-			options.set(i, " "+extra+options.get(i));
+			
+			if(holder.getLevel() != null) {
+				if(Game.isValidClient())
+					Game.client.dropItem(drop);
+				else
+					holder.getLevel().dropItem(holder.x, holder.y, drop);
+			}
 		}
 	}
 	
-	public void render(Screen screen) {
-		renderFrame(screen, title, 1, 1, 22, 11); // renders the blue box for the inventory
-		super.render(screen);
-		List<Item> items = inv.getItems();
-		for(int i = 0; i < dispSize; i++)
-			items.get(offset+i).sprite.render(screen, 2*8, 8*(2+i));
+	@Override
+	public void removeSelectedEntry() {
+		inv.remove(getSelection());
+		super.removeSelectedEntry();
 	}
 }

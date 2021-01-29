@@ -1,9 +1,10 @@
 package minicraft.level.tile;
 
+import minicraft.core.io.Sound;
+import minicraft.entity.Direction;
 import minicraft.entity.Entity;
-import minicraft.entity.Mob;
-import minicraft.entity.Player;
-import minicraft.gfx.Color;
+import minicraft.entity.mob.Mob;
+import minicraft.entity.mob.Player;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
@@ -11,11 +12,10 @@ import minicraft.item.Items;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
-import minicraft.Sound;
 
 public class DoorTile extends Tile {
-	private Sprite closedSprite = new Sprite(2, 24, 2, 2);
-	private Sprite openSprite = new Sprite(0, 24, 2, 2);
+	private Sprite closedSprite;
+	private Sprite openSprite;
 	
 	protected Material type;
 	
@@ -24,16 +24,24 @@ public class DoorTile extends Tile {
 		this.type = type;
 		switch(type) {
 			case Wood:
-				closedSprite.color = Color.get(320, 430, 210, 430);
-				openSprite.color = Color.get(320, 430, 430, 210);
+				closedSprite = new Sprite(5, 16, 2, 2, 1);
+				openSprite = new Sprite(3, 16, 2, 2, 1);
 				break;
 			case Stone:
-				closedSprite.color = Color.get(444, 333, 222, 333);
-				openSprite.color = Color.get(444, 333, 333, 222);
+				closedSprite = new Sprite(15, 16, 2, 2, 1);
+				openSprite = new Sprite(13, 16, 2, 2, 1);
 				break;
 			case Obsidian:
-				closedSprite.color = Color.get(203, 102, 203, 102);
-				openSprite.color = Color.get(203, 102);
+				closedSprite = new Sprite(25, 16, 2, 2, 1);
+				openSprite = new Sprite(23, 16, 2, 2, 1);
+				break;
+			case Spruce:
+				closedSprite = new Sprite(35, 16, 2, 2, 1);
+				openSprite = new Sprite(33, 16, 2, 2, 1);
+				break;
+			case Birch:
+				closedSprite = new Sprite(45, 16, 2, 2, 1);
+				openSprite = new Sprite(43, 16, 2, 2, 1);
 				break;
 		}
 		sprite = closedSprite;
@@ -45,14 +53,14 @@ public class DoorTile extends Tile {
 		curSprite.render(screen, x*16, y*16);
 	}
 	
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
+	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Pickaxe) {
-				if (player.payStamina(4 - tool.level)) {
-					level.setTile(xt, yt, Tiles.get("Stone Bricks"));
-					level.dropItem(xt*16, yt*16, Items.get(type.name() + " Door"));
+				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+					level.setTile(xt, yt, Tiles.get(id+5)); // will get the corresponding floor tile.
 					Sound.monsterHurt.play();
+					level.dropItem(xt*16+8, yt*16+8, Items.get(type.name() + " Door"));
 					return true;
 				}
 			}
@@ -60,11 +68,12 @@ public class DoorTile extends Tile {
 		return false;
 	}
 
-	public void hurt(Level level, int x, int y, Mob source, int dmg, int attackDir) {
+	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		if(source instanceof Player) {
 			boolean closed = level.getData(x, y) == 0;
 			level.setData(x, y, closed?1:0);
 		}
+		return false;
 	}
 
 	public boolean mayPass(Level level, int x, int y, Entity e) {

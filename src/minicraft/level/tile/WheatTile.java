@@ -1,9 +1,10 @@
 package minicraft.level.tile;
 
+import minicraft.core.io.Sound;
+import minicraft.entity.Direction;
 import minicraft.entity.Entity;
-import minicraft.entity.Mob;
-import minicraft.entity.Player;
-import minicraft.gfx.Color;
+import minicraft.entity.mob.Mob;
+import minicraft.entity.mob.Player;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
@@ -21,23 +22,13 @@ public class WheatTile extends Tile {
 	public void render(Screen screen, Level level, int x, int y) {
 		int age = level.getData(x, y);
 		int icon = age / 10;
-		
-		int col = Color.get(301, 411, 321, 50);
-		int col1 = Color.get(301, 411, 50 + (icon) * 100, 40 + (icon - 3) * 2 * 100);
-		int col2 = Color.get(0, 0, 50 + (icon) * 100, 40 + (icon - 3) * 2 * 100);
-		
-		if (icon >= 3) {
-			col = col1;
-			if (age == 50) {
-				col = col2;
-			}
-			icon = 3;
-		}
 
-		screen.render(x * 16 + 0, y * 16 + 0, 4 + 3 * 32 + icon, col, 0);
-		screen.render(x * 16 + 8, y * 16 + 0, 4 + 3 * 32 + icon, col, 0);
-		screen.render(x * 16 + 0, y * 16 + 8, 4 + 3 * 32 + icon, col, 1);
-		screen.render(x * 16 + 8, y * 16 + 8, 4 + 3 * 32 + icon, col, 1);
+		Tiles.get("farmland").render(screen, level, x, y);
+
+		screen.render(x * 16 + 0, y * 16 + 0, 13 + 0 * 32 + icon, 0, 1);
+		screen.render(x * 16 + 8, y * 16 + 0, 13 + 0 * 32 + icon, 0, 1);
+		screen.render(x * 16 + 0, y * 16 + 8, 13 + 0 * 32 + icon, 1, 1);
+		screen.render(x * 16 + 8, y * 16 + 8, 13 + 0 * 32 + icon, 1, 1);
 	}
 	
 	public boolean IfWater(Level level, int xs, int ys) {
@@ -54,18 +45,19 @@ public class WheatTile extends Tile {
 
 		int age = level.getData(xt, yt);
 		if (!IfWater(level, xt, yt)) {
-			if (age < 50) level.setData(xt, yt, age + 1);
+			if (age < 50) level.setData(xt, yt, age + 0);
 		} else if (IfWater(level, xt, yt)) {
-			if (age < 50) level.setData(xt, yt, age + 2);
+			if (age < 50) level.setData(xt, yt, age + 1);
 		}
 	}
 	
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
+	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Shovel) {
-				if (player.payStamina(4 - tool.level)) {
+				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("dirt"));
+					Sound.monsterHurt.play();
 					return true;
 				}
 			}
@@ -79,8 +71,10 @@ public class WheatTile extends Tile {
 		harvest(level, xt, yt, entity);
 	}
 	
-	public void hurt(Level level, int x, int y, Mob source, int dmg, int attackDir) {
+	@Override
+	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		harvest(level, x, y, source);
+		return true;
 	}
 	
 	private void harvest(Level level, int x, int y, Entity entity) {
@@ -98,7 +92,7 @@ public class WheatTile extends Tile {
 		level.dropItem(x*16+8, y*16+8, count, Items.get("Wheat"));
 		
 		if (age >= 50 && entity instanceof Player) {
-			((Player)entity).score += random.nextInt(5) + 1;
+			((Player)entity).addScore(random.nextInt(5) + 1);
 		}
 		level.setTile(x, y, Tiles.get("dirt"));
 	}

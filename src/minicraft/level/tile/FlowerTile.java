@@ -1,11 +1,12 @@
 package minicraft.level.tile;
 
-import minicraft.entity.Mob;
-import minicraft.entity.Player;
-import minicraft.gfx.Color;
+import minicraft.core.io.Sound;
+import minicraft.entity.Direction;
+import minicraft.entity.mob.Mob;
+import minicraft.entity.mob.Player;
+import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
-import minicraft.gfx.ConnectorSprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -13,12 +14,27 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class FlowerTile extends Tile {
-	private static Sprite flowersprite = new Sprite(1, 1, Color.get(10, 141, 555, 440));
+	private static Sprite flowerSprite = new Sprite(3, 8, 1);
 	
 	protected FlowerTile(String name) {
 		super(name, (ConnectorSprite)null);
 		connectsToGrass = true;
 		maySpawn = true;
+	}
+
+	public void tick(Level level, int xt, int yt) {
+		// TODO revise this method.
+		if (random.nextInt(30) != 0) return;
+
+		int xn = xt;
+		int yn = yt;
+
+		if (random.nextBoolean()) xn += random.nextInt(2) * 2 - 1;
+		else yn += random.nextInt(2) * 2 - 1;
+
+		if (level.getTile(xn, yn) == Tiles.get("dirt")) {
+			level.setTile(xn, yn, Tiles.get("grass"));
+		}
 	}
 	
 	public void render(Screen screen, Level level, int x, int y) {
@@ -30,18 +46,19 @@ public class FlowerTile extends Tile {
 		x = x << 4;
 		y = y << 4;
 		
-		flowersprite.render(screen, x + 8*shape, y);
-		flowersprite.render(screen, x + 8*(shape==0?1:0), y + 8);
+		flowerSprite.render(screen, x + 8*shape, y);
+		flowerSprite.render(screen, x + 8*(shape==0?1:0), y + 8);
 	}
 
-	public boolean interact(Level level, int x, int y, Player player, Item item, int attackDir) {
+	public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Shovel) {
-				if (player.payStamina(2 - tool.level)) {
+				if (player.payStamina(2 - tool.level) && tool.payDurability()) {
+					level.setTile(x, y, Tiles.get("grass"));
+					Sound.monsterHurt.play();
 					level.dropItem(x*16+8, y*16+8, Items.get("Flower"));
 					level.dropItem(x*16+8, y*16+8, Items.get("Rose"));
-					level.setTile(x, y, Tiles.get("grass"));
 					return true;
 				}
 			}
@@ -49,9 +66,10 @@ public class FlowerTile extends Tile {
 		return false;
 	}
 
-	public void hurt(Level level, int x, int y, Mob source, int dmg, int attackDir) {
+	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		level.dropItem(x*16+8, y*16+8, 1, 2, Items.get("Flower"));
 		level.dropItem(x*16+8, y*16+8, 0, 1, Items.get("Rose"));
 		level.setTile(x, y, Tiles.get("grass"));
+		return true;
 	}
 }

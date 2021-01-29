@@ -1,9 +1,11 @@
 package minicraft.level.tile;
 
-import minicraft.Game;
+import minicraft.core.Game;
+import minicraft.core.io.Sound;
+import minicraft.entity.Direction;
 import minicraft.entity.Entity;
-import minicraft.entity.Mob;
-import minicraft.entity.Player;
+import minicraft.entity.mob.Mob;
+import minicraft.entity.mob.Player;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
@@ -14,23 +16,16 @@ import minicraft.item.Items;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
-import minicraft.screen.ModeMenu;
 
 public class TreeTile extends Tile {
-	//private ConnectorSprite sprite = new ConnectorSprite();
 	
 	protected TreeTile(String name) {
 		super(name, (ConnectorSprite)null);
 		connectsToGrass = true;
 	}
 	
-	public static int col = Color.get(10, 30, 151, 141);
-	public static int col1 = Color.get(10, 30, 430, 141);
-	public static int col2 = Color.get(10, 30, 320, 141);
-	
 	public void render(Screen screen, Level level, int x, int y) {
-		int barkCol1 = col1;
-		int barkCol2 = col2;
+		Tiles.get("grass").render(screen, level, x, y);
 		
 		boolean u = level.getTile(x, y - 1) == this;
 		boolean l = level.getTile(x - 1, y) == this;
@@ -42,24 +37,24 @@ public class TreeTile extends Tile {
 		boolean dr = level.getTile(x + 1, y + 1) == this;
 
 		if (u && ul && l) {
-			screen.render(x * 16 + 0, y * 16 + 0, 10 + 1 * 32, col, 0);
+			screen.render(x * 16 + 0, y * 16 + 0, 1 + 1 * 32, 0, 1);
 		} else {
-			screen.render(x * 16 + 0, y * 16 + 0, 9 + 0 * 32, col, 0);
+			screen.render(x * 16 + 0, y * 16 + 0, 0 + 0 * 32, 0, 1);
 		}
 		if (u && ur && r) {
-			screen.render(x * 16 + 8, y * 16 + 0, 10 + 2 * 32, barkCol2, 0);
+			screen.render(x * 16 + 8, y * 16 + 0, 1 + 2 * 32, 0, 1);
 		} else {
-			screen.render(x * 16 + 8, y * 16 + 0, 10 + 0 * 32, col, 0);
+			screen.render(x * 16 + 8, y * 16 + 0, 1 + 0 * 32, 0, 1);
 		}
 		if (d && dl && l) {
-			screen.render(x * 16 + 0, y * 16 + 8, 10 + 2 * 32, barkCol2, 0);
+			screen.render(x * 16 + 0, y * 16 + 8, 1 + 2 * 32, 0, 1);
 		} else {
-			screen.render(x * 16 + 0, y * 16 + 8, 9 + 1 * 32, barkCol1, 0);
+			screen.render(x * 16 + 0, y * 16 + 8, 0 + 1 * 32, 0, 1);
 		}
 		if (d && dr && r) {
-			screen.render(x * 16 + 8, y * 16 + 8, 10 + 1 * 32, col, 0);
+			screen.render(x * 16 + 8, y * 16 + 8, 1 + 1 * 32, 0, 1);
 		} else {
-			screen.render(x * 16 + 8, y * 16 + 8, 10 + 3 * 32, barkCol2, 0);
+			screen.render(x * 16 + 8, y * 16 + 8, 1 + 3 * 32, 0, 1);
 		}
 	}
 
@@ -69,23 +64,23 @@ public class TreeTile extends Tile {
 	}
 
 	public boolean mayPass(Level level, int x, int y, Entity e) {
-		/// make arrow fly through trees!
-		if(Game.debug && e instanceof minicraft.entity.Arrow && ((minicraft.entity.Arrow)e).owner instanceof Player) {
-			hurt(level, x, y, 25);
-			return true;
-		}
 		return false;
 	}
-
-	public void hurt(Level level, int x, int y, Mob source, int dmg, int attackDir) {
+	
+	@Override
+	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		hurt(level, x, y, dmg);
+		return true;
 	}
-
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
+	
+	@Override
+	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
+		if(Game.isMode("creative"))
+			return false; // go directly to hurt method
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Axe) {
-				if (player.payStamina(4 - tool.level)) {
+				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					hurt(level, xt, yt, random.nextInt(10) + (tool.level) * 5 + 10);
 					return true;
 				}
@@ -100,14 +95,15 @@ public class TreeTile extends Tile {
 		
 		int damage = level.getData(x, y) + dmg;
 		int treeHealth = 20;
-		if (ModeMenu.creative) dmg = damage = treeHealth;
+		if (Game.isMode("creative")) dmg = damage = treeHealth;
 		
 		level.add(new SmashParticle(x*16, y*16));
-		level.add(new TextParticle("" + dmg, x*16+8, y*16+8, Color.get(-1, 500)));
+		Sound.monsterHurt.play();
+
+		level.add(new TextParticle("" + dmg, x*16+8, y*16+8, Color.RED));
 		if (damage >= treeHealth) {
 			level.dropItem(x*16+8, y*16+8, 1, 2, Items.get("Wood"));
-			level.dropItem(x*16+8, y*16+8, 1, 4, Items.get("Acorn"));
-			level.dropItem(x*16+8, y*16+8, 1, 4, Items.get("leaf"));
+			level.dropItem(x*16+8, y*16+8, 1, 2, Items.get("Acorn"));
 			level.setTile(x, y, Tiles.get("grass"));
 		} else {
 			level.setData(x, y, damage);

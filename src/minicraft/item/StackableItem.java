@@ -2,69 +2,93 @@ package minicraft.item;
 
 import java.util.ArrayList;
 
-import minicraft.Sound;
-import minicraft.entity.ItemEntity;
-import minicraft.entity.Player;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
+import minicraft.core.Game;
+import minicraft.core.io.Localization;
 import minicraft.gfx.Sprite;
-import minicraft.level.Level;
-import minicraft.level.tile.Tile;
-import minicraft.screen.ModeMenu;
 
 // some items are direct instances of this class; those instances are the true "items", like stone, wood, wheat, or coal; you can't do anything with them besides use them to make something else.
 
 public class StackableItem extends Item {
 	
 	protected static ArrayList<Item> getAllInstances() {
-		ArrayList<Item> items = new ArrayList<Item>();
+		ArrayList<Item> items = new ArrayList<>();
 	
-		items.add(new StackableItem("Wood", new Sprite(1, 4, Color.get(-1, 200, 531, 430))));
-		items.add(new StackableItem("leaf", new Sprite(29, 4, Color.get(-1, 30, 30, 50))));
-		items.add(new StackableItem("Stone", new Sprite(2, 4, Color.get(-1, 111, 333, 555))));
-		items.add(new StackableItem("Leather", new Sprite(19, 4, Color.get(-1, 100, 211, 322))));
-		items.add(new StackableItem("Wheat", new Sprite(6, 4, Color.get(-1, 110, 330, 550))));
-		items.add(new StackableItem("Key", new Sprite(26, 4, Color.get(-1, -1, 444, 550))));
-		items.add(new StackableItem("arrow", new Sprite(13, 5, Color.get(-1, 111, 222, 430))));
-		items.add(new StackableItem("string", new Sprite(25, 4, Color.get(-1, 555))));
-		items.add(new StackableItem("Coal", new Sprite(10, 4, Color.get(-1, 000, 111, 111))));
-		items.add(new StackableItem("Iron Ore", new Sprite(10, 4, Color.get(-1, 100, 322, 544))));
-		items.add(new StackableItem("Lapis", new Sprite(10, 4, Color.get(-1, 005, 115, 115))));
-		items.add(new StackableItem("Gold Ore", new Sprite(10, 4, Color.get(-1, 110, 440, 553))));
-		items.add(new StackableItem("Iron", new Sprite(11, 4, Color.get(-1, 100, 322, 544))));
-		items.add(new StackableItem("Gold", new Sprite(11, 4, Color.get(-1, 110, 330, 553))));
-		items.add(new StackableItem("Rose", new Sprite(0, 4, Color.get(-1, 100, 300, 500))));
-		items.add(new StackableItem("GunPowder", new Sprite(2, 4, Color.get(-1, 111, 222, 333))));
-		items.add(new StackableItem("Slime", new Sprite(10, 4, Color.get(-1, 10, 30, 50))));
-		items.add(new StackableItem("Eye Orb", new Sprite(18, 5, Color.get(-1, 000, 444, 555))));
-		items.add(new StackableItem("Paper", new Sprite(19, 5, Color.get(-1, 000, 444, 555))));
-		items.add(new StackableItem("glass", new Sprite(12, 4, Color.get(-1, 555))));
-		items.add(new StackableItem("cloth", new Sprite(1, 4, Color.get(-1, 25, 252, 141))));
-		items.add(new StackableItem("gem", new Sprite(13, 4, Color.get(-1, 101, 404, 545))));
-		items.add(new StackableItem("Scale", new Sprite(22, 4, Color.get(-1, 10, 30, 20))));
-		items.add(new StackableItem("Shard", new Sprite(23, 4, Color.get(-1, 222, 333, 444))));
+		items.add(new StackableItem("Wood", new Sprite(2, 1, 0)));
+		items.add(new StackableItem("Spruce Wood", new Sprite(1, 1, 0)));
+		items.add(new StackableItem("Birch Wood", new Sprite(0, 1, 0)));
+		
+		items.add(new StackableItem("Leaf", new Sprite(23, 0, 0)));
+		items.add(new StackableItem("Paper", new Sprite(3, 8, 0)));
+		items.add(new StackableItem("Leather", new Sprite(8, 0, 0)));
+		items.add(new StackableItem("Wheat", new Sprite(6, 0, 0)));
+		items.add(new StackableItem("Key", new Sprite(0, 4, 0)));
+		items.add(new StackableItem("arrow", new Sprite(0, 2, 0)));
+		items.add(new StackableItem("Icicle", new Sprite(11, 3, 0)));
+		items.add(new StackableItem("Stick", new Sprite(9, 3, 0)));
+		items.add(new StackableItem("Bowl", new Sprite(13, 3, 0)));
+		items.add(new StackableItem("string", new Sprite(1, 4, 0)));
+		items.add(new StackableItem("feather", new Sprite(15, 3, 0)));
+		items.add(new StackableItem("egg", new Sprite(14, 3, 0)));
+		
+		// Elements
+		items.add(new StackableItem("Obsidian", new Sprite(17, 3, 0)));
+		items.add(new StackableItem("Stone", new Sprite(2, 0, 0)));
+		
+		items.add(new StackableItem("Andesite", new Sprite(0, 38, 0)));
+		items.add(new StackableItem("Diorite", new Sprite(1, 38, 0)));
+		items.add(new StackableItem("Granite", new Sprite(2, 38, 0)));
+		items.add(new StackableItem("Silicon", new Sprite(3, 38, 0)));
+		items.add(new StackableItem("Basalt", new Sprite(4, 38, 0)));
+		items.add(new StackableItem("Quartzite", new Sprite(5, 38, 0)));
 		
 		
-		//discs
-		/*
-		items.add(new StackableItem("Disc 1", new Sprite(30, 4, Color.get(-1, 100, 696, 444))));			
-		items.add(new StackableItem("Disc 2", new Sprite(30, 4, Color.get(-1, 200, 696, 444))));			
-		items.add(new StackableItem("Disc 3", new Sprite(30, 4, Color.get(-1, 300, 900, 444))));			
-		items.add(new StackableItem("Disc 4", new Sprite(30, 4, Color.get(-1, 400, 800, 444))));			
-		items.add(new StackableItem("Disc 5", new Sprite(30, 4, Color.get(-1, 500, 700, 444))));			
-		items.add(new StackableItem("Disc 6", new Sprite(30, 4, Color.get(-1, 600, 600, 444))));		
-		items.add(new StackableItem("Disc 7", new Sprite(30, 4, Color.get(-1, 700, 500, 444))));				
-		items.add(new StackableItem("Disc 8", new Sprite(30, 4, Color.get(-1, 800, 400, 444))));			
-		items.add(new StackableItem("Disc 9", new Sprite(30, 4, Color.get(-1, 900, 300, 444))));				
-		items.add(new StackableItem("Disc 10", new Sprite(30, 4, Color.get(-1, 696, 200, 444))));				
-		items.add(new StackableItem("Disc 11", new Sprite(30, 4, Color.get(-1, 696, 100, 444))));
-		*/
-			
+		// Dyes
+		items.add(new StackableItem("Ink sac", new Sprite(0, 22, 0)));
+		items.add(new StackableItem("Yellow dye", new Sprite(1, 22, 0)));
+		items.add(new StackableItem("Green dye", new Sprite(2, 22, 0)));
+		items.add(new StackableItem("Red dye", new Sprite(4, 22, 0)));
+		items.add(new StackableItem("Bone powder", new Sprite(5, 22, 0)));
+		items.add(new StackableItem("Purple dye", new Sprite(6, 22, 0)));
+		items.add(new StackableItem("Pink dye", new Sprite(7, 22, 0)));
+		items.add(new StackableItem("Dark green dye", new Sprite(8, 22, 0)));
+		items.add(new StackableItem("Orange dye", new Sprite(14, 22, 0)));
+		
+		// Ores
+		items.add(new StackableItem("Coal", new Sprite(2, 4, 0)));
+		items.add(new StackableItem("Iron Ore", new Sprite(3, 4, 0)));
+		items.add(new StackableItem("Lapis", new Sprite(4, 4, 0)));
+		items.add(new StackableItem("Gold Ore", new Sprite(5, 4, 0)));
+		items.add(new StackableItem("Iron", new Sprite(6, 4, 0)));
+		items.add(new StackableItem("Gold", new Sprite(7, 4, 0)));
+		items.add(new StackableItem("Rose", new Sprite(5, 0, 0)));
+		items.add(new StackableItem("GunPowder", new Sprite(8, 4, 0)));
+	
+		items.add(new StackableItem("Slime", new Sprite(9, 4, 0)));
+		items.add(new StackableItem("glass", new Sprite(10, 4, 0)));
+		items.add(new StackableItem("cloth", new Sprite(11, 4, 0)));
+		items.add(new StackableItem("gem", new Sprite(12, 4, 0)));
+		items.add(new StackableItem("emerald", new Sprite(16, 4, 0)));
+		items.add(new StackableItem("Scale", new Sprite(13, 4, 0)));
+		items.add(new StackableItem("Shard", new Sprite(14, 4, 0)));
+		items.add(new StackableItem("Gear", new Sprite(15, 4, 0)));
+		items.add(new StackableItem("Spring", new Sprite(16, 3, 0)));
+		items.add(new StackableItem("Flint", new Sprite(8, 3, 0)));
+		items.add(new StackableItem("Flint and Steel", new Sprite(7, 3, 0)));
+		items.add(new StackableItem("Protection I", new Sprite(2, 8, 0)));
+		items.add(new StackableItem("Protection II", new Sprite(2, 8, 0)));
+		items.add(new StackableItem("Protection III", new Sprite(2, 8, 0)));
+		items.add(new StackableItem("Sharp I", new Sprite(2, 8, 0)));
+		items.add(new StackableItem("Sharp II", new Sprite(2, 8, 0)));
+		items.add(new StackableItem("Sharp III", new Sprite(2, 8, 0)));
+		
+		// Essences
+		items.add(new StackableItem("Cordyceps essence", new Sprite(1, 7, 0)));
+		items.add(new StackableItem("Sticky essence", new Sprite(2, 7, 0)));
+		items.add(new StackableItem("Gaseous essence", new Sprite(3, 7, 0)));
+		items.add(new StackableItem("Master essence", new Sprite(4, 7, 0)));
+		
 		return items;
 	}
-	
-
 	
 	public int count;
 	///public int maxCount; // TODO I want to implement this later.
@@ -78,38 +102,38 @@ public class StackableItem extends Item {
 		this.count = count;
 	}
 	
-	public boolean matches(Item other) {
-		return super.matches(other) && other instanceof StackableItem;
-	}
-	
-	/** Renders the icon, name, and count of the item. */
-	public void renderInventory(Screen screen, int x, int y, boolean ininv) {
-		// If the item count is above 999, then just render 999 (for spacing reasons)
-		super.renderInventory(screen, x, y, ininv, (count>999?999:count)+" "+name);
-	}
+	public boolean stacksWith(Item other) { return other instanceof StackableItem && other.getName().equals(getName()); }
 	
 	/// this is used by (most) subclasses, to standardize the count decrement behavior. This is not the normal interactOn method.
 	protected boolean interactOn(boolean subClassSuccess) {
-		if(subClassSuccess && !ModeMenu.creative)
+		if(subClassSuccess && !Game.isMode("creative"))
 			count--;
 		return subClassSuccess;
 	}
 	
 	/** Called to determine if this item should be removed from an inventory. */
+	@Override
 	public boolean isDepleted() {
 		return count <= 0;
 	}
 	
+	@Override
 	public StackableItem clone() {
-		return new StackableItem(name, sprite, count);
+		return new StackableItem(getName(), sprite, count);
 	}
 	
+	@Override
 	public String toString() {
 		return super.toString() + "-Stack_Size:"+count;
 	}
 	
 	public String getData() {
-		return name+"_"+count;
+		return getName() +"_"+count;
 	}
-
+	
+	@Override
+	public String getDisplayName() {
+		String amt = (count > 999 ? 999 : count) + " ";
+		return " " + amt + Localization.getLocalized(getName());
+	}
 }

@@ -1,10 +1,11 @@
 package minicraft.level.tile;
 
-import javax.annotation.Resource;
-
+import minicraft.core.Game;
+import minicraft.core.io.Sound;
+import minicraft.entity.Direction;
 import minicraft.entity.Entity;
-import minicraft.entity.Mob;
-import minicraft.entity.Player;
+import minicraft.entity.mob.Mob;
+import minicraft.entity.mob.Player;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
@@ -15,23 +16,22 @@ import minicraft.item.Items;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
-import minicraft.screen.ModeMenu;
 
 /// this is all the spikey stuff (except "cloud cactus")
 public class OreTile extends Tile {
 	private Sprite sprite;
 	private OreType type;
 	
-	public static enum OreType {
-        Iron (Items.get("Iron Ore"), Color.get(-1, 100, 322, 544)),
-		Lapis (Items.get("Lapis"), Color.get(-1, 005, 115, 115)),
-		Gold (Items.get("Gold Ore"), Color.get(-1, 110, 440, 553)),
-		Gem (Items.get("Gem"), Color.get(-1, 101, 404, 545));
+	public enum OreType {
+        Iron (Items.get("Iron Ore"), 0),
+		Lapis (Items.get("Lapis"), 2),
+		Gold (Items.get("Gold Ore"), 4),
+		Gem (Items.get("Gem"), 6);
 		
 		private Item drop;
 		public final int color;
 		
-		private OreType(Item drop, int color) {
+		OreType(Item drop, int color) {
 			this.drop = drop;
 			this.color = color;
 		}
@@ -42,15 +42,13 @@ public class OreTile extends Tile {
     }
 	
 	protected OreTile(OreType o) {
-		super((o == OreTile.OreType.Lapis ? "Lapis" : o.name() + " Ore"), new Sprite(17, 1, 2, 2, o.color));
+		super((o == OreTile.OreType.Lapis ? "Lapis" : o.name() + " Ore"), new Sprite(24 + o.color, 0, 2, 2, 1));
         this.type = o;
 		this.sprite = super.sprite;
 	}
 
-
-
 	public void render(Screen screen, Level level, int x, int y) {
-		sprite.color = (type.color & 0xffffff00) + Color.get(DirtTile.dCol(level.depth));
+		sprite.color = DirtTile.dCol(level.depth);
 		sprite.render(screen, x*16, y*16);
 	}
 
@@ -58,20 +56,18 @@ public class OreTile extends Tile {
 		return false;
 	}
 
-	public void hurt(Level level, int x, int y, Mob source, int dmg, int attackDir) {
-		int playHurt;
-		if (ModeMenu.creative) playHurt = random.nextInt(4);
-		else {
-			playHurt = 0;
-		}
-		hurt(level, x, y, playHurt);
+	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+		hurt(level, x, y, 0);
+		return true;
 	}
 
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
+	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
+		if(Game.isMode("creative"))
+			return false; // go directly to hurt method
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Pickaxe) {
-				if (player.payStamina(6 - tool.level)) {
+				if (player.payStamina(6 - tool.level) && tool.payDurability()) {
 					hurt(level, xt, yt, 1);
 					return true;
 				}
@@ -87,10 +83,12 @@ public class OreTile extends Tile {
 	public void hurt(Level level, int x, int y, int dmg) {
 		int damage = level.getData(x, y) + 1;
 		int oreH = random.nextInt(10) + 3;
-		if (ModeMenu.creative) dmg = damage = oreH;
+		if (Game.isMode("creative")) dmg = damage = oreH;
 		
 		level.add(new SmashParticle(x * 16, y * 16));
-		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.get(-1, 500)));
+		Sound.monsterHurt.play();
+
+		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
 		if (dmg > 0) {
 			int count = random.nextInt(2) + 0;
 			if (damage >= oreH) {

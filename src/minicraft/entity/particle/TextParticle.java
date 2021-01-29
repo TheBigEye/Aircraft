@@ -6,16 +6,23 @@ import minicraft.gfx.Screen;
 
 public class TextParticle extends Particle {
 	private String msg; // Message of the text particle
-	public double xa, ya, za; // x,y,z acceleration
-	public double xx, yy, zz; // x,y,z coordinates
+	private double xa, ya, za; // x,y,z acceleration
+	private double xx, yy, zz; // x,y,z coordinates
 	
 	private FontStyle style;
 	
+	/**
+	 * Creates a text particle which shows a message on the screen.
+	 * 
+	 * @param msg Message to display
+	 * @param x X map position
+	 * @param y Y map position
+	 * @param col Text color
+	 */
 	public TextParticle(String msg, int x, int y, int col) {
-		super(x, y, 60, null);
-		this.xr = msg.length();
+		super(x, y, msg.length(), 60, null);
 		
-		style = new FontStyle(col).setShadowType(Color.get(-1, 000), false);
+		style = new FontStyle(col).setShadowType(Color.BLACK, false);
 		this.msg = msg;
 		xx = x; //assigns x pos
 		yy = y; //assigns y pos
@@ -27,6 +34,7 @@ public class TextParticle extends Particle {
 		za = random.nextFloat() * 0.7 + 2;
 	}
 
+	@Override
 	public void tick() {
 		super.tick();
 		
@@ -47,14 +55,16 @@ public class TextParticle extends Particle {
 		y = (int) yy;
 	}
 	
+	@Override
 	public void render(Screen screen) {
-		//if(!msg.contains("Thanks")) {
 		style.setXPos(x - msg.length() * 4).setYPos(y - (int)zz).draw(msg, screen);
-		/*} else { // special, for "Thanks for Playing!" message? Second message is right below...
-			String msg1 = msg.substring(0, 19);
-			String msg2 = msg.substring(19, msg.length());
-			Font.draw(msg1, screen, x - msg.length() * 4, y - (int)zz - 8, color, Color.get(-1, 0));
-			Font.draw(msg2, screen, x - msg.length() * 4, y - (int)zz, color, Color.get(-1, 0));
-		}*/
+	}
+	
+	/**
+	 * Returns the message and color divied by the character :.
+	 * @return string representation of the particle
+	 */
+	public String getData() {
+		return msg+":"+style.getColor();
 	}
 }

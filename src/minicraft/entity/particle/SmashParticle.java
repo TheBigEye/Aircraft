@@ -1,15 +1,18 @@
 package minicraft.entity.particle;
 
-import minicraft.gfx.Color;
-import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
-import minicraft.Sound;
 
 public class SmashParticle extends Particle {
 	static int[][] mirrors = {{2, 3}, {0, 1}};
 	
+	/**
+	 * Creates a smash particle at the given position. Has a lifetime of 10 ticks.
+	 * Will also play a monsterhurt sound when created.
+	 * 
+	 * @param x X map position
+	 * @param y Y map position
+	 */
 	public SmashParticle(int x, int y) {
-		super(x, y, 10, new Sprite(5, 12, 2, 2, Color.get(-1, 555), true, mirrors));
-		Sound.monsterHurt.play(); // plays the sound of a monster getting hit.
+		super(x, y, 10, new Sprite(3, 3, 2, 2, 3, true, mirrors));
 	}
 }

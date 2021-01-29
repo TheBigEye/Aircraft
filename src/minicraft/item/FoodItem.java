@@ -1,8 +1,9 @@
 package minicraft.item;
 
 import java.util.ArrayList;
-import minicraft.entity.Player;
-import minicraft.gfx.Color;
+
+import minicraft.entity.Direction;
+import minicraft.entity.mob.Player;
 import minicraft.gfx.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
@@ -10,19 +11,24 @@ import minicraft.level.tile.Tile;
 public class FoodItem extends StackableItem {
 	
 	protected static ArrayList<Item> getAllInstances() {
-		ArrayList<Item> items = new ArrayList<Item>();
+		ArrayList<Item> items = new ArrayList<>();
 		
-		items.add(new FoodItem("Bread", new Sprite(8, 4, Color.get(-1, 110, 330, 550)), 2));
-		items.add(new FoodItem("Apple", new Sprite(9, 4, Color.get(-1, 100, 300, 500)), 1));
-		items.add(new FoodItem("Raw Pork", new Sprite(20, 4, Color.get(-1, 211, 311, 411)), 1));
-		items.add(new FoodItem("Raw Fish", new Sprite(24, 4, Color.get(-1, 660, 670, 680)), 1));
-		items.add(new FoodItem("Raw Beef", new Sprite(20, 4, Color.get(-1, 200, 300, 400)), 1));
-		items.add(new FoodItem("Pork Chop", new Sprite(20, 4, Color.get(-1, 220, 440, 330)), 3));
-		items.add(new FoodItem("Cooked Fish", new Sprite(24, 4, Color.get(-1, 220, 330, 440)), 3));
-		items.add(new FoodItem("Cooked Pork", new Sprite(20, 4, Color.get(-1, 220, 440, 330)), 3));
-		items.add(new FoodItem("Steak", new Sprite(20, 4, Color.get(-1, 100, 333, 211)), 3));
-		items.add(new FoodItem("Gold Apple", new Sprite(9, 4, Color.get(-1, 110, 440, 550)), 10, Player.maxStamina));
-		items.add(new FoodItem("Beer", new Sprite(27, 4, Color.get(-1, 110, 440, 550)), 10, Player.maxArmor));
+		items.add(new FoodItem("Bread", new Sprite(7, 0, 0), 2));
+		items.add(new FoodItem("Apple", new Sprite(16, 0, 0), 1));
+		items.add(new FoodItem("Frozen palette", new Sprite(31, 0, 0), 5));
+		items.add(new FoodItem("Mushroom Soup", new Sprite(27, 0, 0), 2));
+		items.add(new FoodItem("Carrot Soup", new Sprite(28, 0, 0), 3));
+		items.add(new FoodItem("Raw Chicken", new Sprite(29, 0, 0), 1));
+		items.add(new FoodItem("Raw Pork", new Sprite(10, 0, 0), 1));
+		items.add(new FoodItem("Raw Fish", new Sprite(14, 0, 0), 1));
+		items.add(new FoodItem("Raw Beef", new Sprite(12, 0, 0), 1));
+		items.add(new FoodItem("Cooked Chicken", new Sprite(30, 0, 0), 4));
+		items.add(new FoodItem("Cooked Fish", new Sprite(15, 0, 0), 3));
+		items.add(new FoodItem("Cooked Pork", new Sprite(11, 0, 0), 3));
+		items.add(new FoodItem("Steak", new Sprite(13, 0, 0), 3));
+		items.add(new FoodItem("Gold Apple", new Sprite(17, 0, 0), 10));
+		items.add(new FoodItem("Carrot", new Sprite(18, 0, 0), 2));
+		items.add(new FoodItem("Gold Carrot", new Sprite(19, 0, 0), 9));
 		
 		return items;
 	}
@@ -38,20 +44,20 @@ public class FoodItem extends StackableItem {
 	}
 	
 	/** What happens when the player uses the item on a tile */
-	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, int attackDir) {
+	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 		boolean success = false;
-		if (count > 0 && player.hunger < 10 && player.payStamina(staminaCost)) { // if the player has hunger to fill, and stamina to pay...
-			player.hunger += heal; // restore the hunger
-			if (player.hunger > 10) { // make sure the hunger doesn't go above ten.
-				player.hunger = 10;
-			}
+		if (count > 0 && player.hunger < Player.maxHunger && player.payStamina(staminaCost)) { // if the player has hunger to fill, and stamina to pay...
+			player.hunger = Math.min(player.hunger + heal, Player.maxHunger); // restore the hunger
 			success = true;
 		}
 		
 		return super.interactOn(success);
 	}
 	
+	@Override
+	public boolean interactsWithWorld() { return false; }
+	
 	public FoodItem clone() {
-		return new FoodItem(name, sprite, count, heal);
+		return new FoodItem(getName(), sprite, count, heal);
 	}
 }

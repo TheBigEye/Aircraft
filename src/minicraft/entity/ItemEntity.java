@@ -1,15 +1,16 @@
 package minicraft.entity;
 
-import minicraft.gfx.Color;
+import java.util.List;
+
+import minicraft.core.Game;
+import minicraft.entity.mob.Player;
 import minicraft.gfx.Screen;
 import minicraft.item.Item;
-import minicraft.Game;
-import minicraft.Sound;
 
-public class ItemEntity extends Entity {
+public class ItemEntity extends Entity implements ClientTickable {
 	private int lifeTime; // the life time of this entity in the level
-	public double xa, ya, za; // the x, y, and z accelerations.
-	public double xx, yy, zz; // the x, y, and z coordinates; in double precision.
+	private double xa, ya, za; // the x, y, and z accelerations.
+	private double xx, yy, zz; // the x, y, and z coordinates; in double precision.
 	public Item item; // the item that this entity is based off of.
 	private int time = 0; // time it has lasted in the level
 	
@@ -17,8 +18,14 @@ public class ItemEntity extends Entity {
 	private boolean pickedUp = false;
 	private long pickupTimestamp;
 	
+	/**
+	 * Creates an item entity of the item item at position (x,y) with size 2*2.
+	 * @param item Item to add as item entity
+	 * @param x position on map
+	 * @param y position on map
+	 */
 	public ItemEntity(Item item, int x, int y) {
-		super(3, 3);
+		super(2, 2);
 		
 		this.item = item;
 		this.x = x;
@@ -35,15 +42,38 @@ public class ItemEntity extends Entity {
 		lifeTime = 60 * 10 + random.nextInt(70); // sets the lifetime of the item. min = 600 ticks, max = 669 ticks.
 		// the idea was to have it last 10-11 seconds, I think.
 	}
-	public ItemEntity(Item item, int x, int y, int time) {
+	
+	/**
+	 * Creates an item entity of the item item at position (x,y) with size 2*2.
+	 * @param item Item to add as item entity.
+	 * @param x position on map
+	 * @param y position on map
+	 * @param zz z position?
+	 * @param lifetime lifetime (in ticks) of the entity.
+	 * @param time starting time (in ticks) of the entity.
+	 * @param xa x velocity
+	 * @param ya y velocity 
+	 * @param za z velocity?
+	 */
+	public ItemEntity(Item item, int x, int y, double zz, int lifetime, int time, double xa, double ya, double za) {
 		this(item, x, y);
+		this.lifeTime = lifetime;
 		this.time = time;
+		this.zz = zz;
+		this.xa = xa;
+		this.ya = ya;
+		this.za = za;
 	}
 	
+	/**
+	 * Returns a string representation of the itementity
+	 * @return string representation of this entity
+	 */
 	public String getData() {
-		return item.name+":"+time;
+		return String.join(":", (new String[] {item.getData(), zz+"", lifeTime+"", time+"", xa+"", ya+"", za+""}));
 	}
 	
+	@Override
 	public void tick() {
 		time++;
 		if (time >= lifeTime) { // if the time is larger or equal to lifeTime then...
@@ -84,41 +114,49 @@ public class ItemEntity extends Entity {
 		yy += goty - expectedy;
 	}
 
-	public boolean isBlockableBy(Mob mob) {
+	public boolean isSolid() {
 		return false; // mobs cannot block this
 	}
 
+	@Override
 	public void render(Screen screen) {
 		/* this first part is for the blinking effect */
 		if (time >= lifeTime - 6 * 20) {
 			if (time / 6 % 2 == 0) return;
 		}
-		item.sprite.render(screen, x-4, y-4, Color.get(-1, 0));
-		item.sprite.render(screen, x-4, y-4 - (int)(zz) );
+		item.sprite.render(screen, x-4, y-4 - (int)(zz));
 	}
 
+	@Override
 	protected void touchedBy(Entity entity) {
+		if(!(entity instanceof Player)) return; // for the time being, we only care when a player touches an item.
+		
 		if (time > 30) { // conditional prevents this from being collected immediately.
-			if(Game.isValidClient() && entity instanceof Player && entity == ((Player)entity).game.player) {// only register if the main player picks it up, on a client.
+			if(Game.isConnectedClient() && entity == Game.player) {// only register if the main player picks it up, on a client.
+				if (pickedUp && (System.nanoTime() - pickupTimestamp) / 1E8 > 15L) { // should be converted to tenths of a second.
+					// the item has already been picked up,
+					// but since more than 1.5 seconds has past, the item will be remarked as not picked up.
+					pickedUp = false;
+				}
+				
 				if(!pickedUp) {
 					Game.client.pickupItem(this);
 					pickedUp = true;
 					pickupTimestamp = System.nanoTime();
-				} else if ((System.nanoTime() - pickupTimestamp) / 1E8 > 15L) { // should be converted to tenths of a second.
-					/// the item has already been picked up; but since more than 1.5 seconds has past, the item will be remarked as not picked up.
-					//if (Game.debug) System.out.println(Game.onlinePrefix()+"reenabling pickup for item entity " + this);
-					pickedUp = false;
 				}
-			} else if(!(Game.isValidServer() && entity instanceof Player)) // don't register if a player touches it on a server; the player will register that.
-				entity.touchItem(this);
+			}
+			else if(!pickedUp && !Game.ISONLINE) {// don't register if we are online and a player touches it; the client will register that.
+				pickedUp = true;
+				((Player)entity).pickupItem(this);
+				pickedUp = isRemoved();
+			}
 		}
 	}
 	
-	/** What happens when the player takes the item */
-	public void take(Player player) {
-		Sound.pickup.play();
-		player.score++; // increase the player's score by 1
-		//item.onTake(this); // calls the onTake() method in Item.java
-		remove(); // removes this from the world
+	@Override
+	protected List<String> getDataPrints() {
+		List<String> prints = super.getDataPrints();
+		prints.add(0, item.toString());
+		return prints;
 	}
 }

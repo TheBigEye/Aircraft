@@ -2,16 +2,19 @@ package minicraft.level.tile;
 
 import java.util.ArrayList;
 
+import minicraft.core.Game;
+import minicraft.level.tile.wool.*;
 
 public final class Tiles {
 	/// idea: to save tile names while saving space, I could encode the names in base 64 in the save file...^M
     /// then, maybe, I would just replace the id numbers with id names, make them all private, and then make a get(String) method, parameter is tile name.
 	
-	public static ArrayList<String> oldids = new ArrayList<String>();
+	public static ArrayList<String> oldids = new ArrayList<>();
 	
-	private static ArrayList<Tile> tiles = new ArrayList<Tile>();
+	private static ArrayList<Tile> tiles = new ArrayList<>();
 	
 	public static void initTileList() {
+		if(Game.debug) System.out.println("Initializing tile list...");
 		
 		for(int i = 0; i < 256; i++)
 			tiles.add(null);
@@ -23,18 +26,20 @@ public final class Tiles {
 		tiles.set(4, new StairsTile("Stairs Up", true));
 		tiles.set(5, new StairsTile("Stairs Down", false));
 		tiles.set(6, new WaterTile("Water"));
+		// this is out of order because of lava buckets
+		tiles.set(17, new LavaTile("Lava"));
+
 		tiles.set(7, new RockTile("Rock"));
 		tiles.set(8, new TreeTile("Tree"));
 		tiles.set(9, new SaplingTile("Tree Sapling", Tiles.get("Grass"), Tiles.get("Tree")));
 		tiles.set(10, new SandTile("Sand"));
 		tiles.set(11, new CactusTile("Cactus"));
 		tiles.set(12, new SaplingTile("Cactus Sapling", Tiles.get("Sand"), Tiles.get("Cactus")));
-		tiles.set(17, new LavaTile("Lava"));
-		tiles.set(18, new LavaBrickTile("Lava Brick"));
 		tiles.set(13, new OreTile(OreTile.OreType.Iron));
 		tiles.set(14, new OreTile(OreTile.OreType.Gold));
-		tiles.set(15, new OreTile(OreTile.OreType.Lapis));
-		tiles.set(16, new OreTile(OreTile.OreType.Gem));
+		tiles.set(15, new OreTile(OreTile.OreType.Gem));
+		tiles.set(16, new OreTile(OreTile.OreType.Lapis));	
+		tiles.set(18, new LavaBrickTile("Lava Brick"));
 		tiles.set(19, new ExplodedTile("Explode"));
 		tiles.set(20, new FarmTile("Farmland"));
 		tiles.set(21, new WheatTile("Wheat"));
@@ -43,16 +48,47 @@ public final class Tiles {
 		tiles.set(24, new CloudTile("Cloud"));
 		tiles.set(25, new CloudCactusTile("Cloud Cactus"));
 		tiles.set(26, new DoorTile(Tile.Material.Wood));
-		tiles.set(27, new DoorTile(Tile.Material.Stone));
-		tiles.set(28, new DoorTile(Tile.Material.Obsidian));
-		tiles.set(29, new FloorTile(Tile.Material.Wood));
-		tiles.set(30, new FloorTile(Tile.Material.Stone));
-		tiles.set(31, new FloorTile(Tile.Material.Obsidian));
-		tiles.set(32, new WallTile(Tile.Material.Wood));
-		tiles.set(33, new WallTile(Tile.Material.Stone));
-		tiles.set(34, new WallTile(Tile.Material.Obsidian));
-		tiles.set(35, new WoolTile());
-		tiles.set(36, new SnowTile("Snow"));
+		tiles.set(27, new DoorTile(Tile.Material.Spruce));
+		tiles.set(28, new DoorTile(Tile.Material.Birch));
+		tiles.set(29, new DoorTile(Tile.Material.Stone));
+		tiles.set(30, new DoorTile(Tile.Material.Obsidian));
+		tiles.set(31, new FloorTile(Tile.Material.Wood));
+		tiles.set(32, new FloorTile(Tile.Material.Spruce));
+		tiles.set(33, new FloorTile(Tile.Material.Birch));
+		tiles.set(34, new FloorTile(Tile.Material.Stone));
+		tiles.set(35, new FloorTile(Tile.Material.Obsidian));
+		tiles.set(36, new WallTile(Tile.Material.Wood));
+		tiles.set(37, new WallTile(Tile.Material.Spruce));
+		tiles.set(38, new WallTile(Tile.Material.Birch));
+		tiles.set(39, new WallTile(Tile.Material.Stone));
+		tiles.set(40, new WallTile(Tile.Material.Obsidian));
+		tiles.set(41, new NormalWoolTile("Wool"));
+		tiles.set(42, new PathTile("Path"));
+		tiles.set(43, new RedWoolTile("Red Wool"));
+		tiles.set(44, new BlueWoolTile("Blue Wool"));
+		tiles.set(45, new GreenWoolTile("Green Wool"));
+		tiles.set(46, new YellowWoolTile("Yellow Wool"));
+		tiles.set(47, new PurpleWoolTile("Purple Wool"));
+		tiles.set(48, new BlackWoolTile("Black Wool"));
+		tiles.set(49, new PinkWoolTile("Pink Wool"));
+		tiles.set(50, new DarkGreenWoolTile("Dark Green Wool"));
+		tiles.set(51, new GrayWoolTile("Gray Wool"));
+		tiles.set(52, new BrownWoolTile("Brown Wool"));
+		tiles.set(53, new MagentaWoolTile("Magenta Wool"));
+		tiles.set(54, new LightBlueWoolTile("Light Blue Wool"));
+		tiles.set(55, new CianWoolTile("Cyan Wool"));
+		tiles.set(56, new OrangeWoolTile("Orange Wool"));
+		tiles.set(57, new BirchTreeTile("Birch Tree"));
+		tiles.set(58, new CarrotTile("Carrot"));
+		tiles.set(59, new LawnTile("Lawn"));
+		tiles.set(60, new OrangeTulipTile("Orange Tulip"));
+		tiles.set(61, new SnowTile("Snow"));
+		tiles.set(62, new FirTreeTile("Fir Tree"));
+		tiles.set(63, new PineTreeTile("Pine Tree"));
+		
+		tiles.set(64, new CloudTreeTile("Cloud Tree"));
+		tiles.set(65, new IceSpikeTile("Ice Spike"));
+		tiles.set(66, new ObsidianTile("Hard Obsidian"));
 		
 		for(int i = 0; i < tiles.size(); i++) {
 			if(tiles.get(i) == null) continue;
@@ -63,7 +99,7 @@ public final class Tiles {
 	
 	protected static void add(int id, Tile tile) {
 		tiles.set(id, tile);
-		System.out.println("adding " + tile.name + " to tile list with id " + id);
+		System.out.println("Adding " + tile.name + " to tile list with id " + id);
 		tile.id = (byte) id;
 	}
 	
@@ -115,8 +151,27 @@ public final class Tiles {
 		oldids.set(21, "gem Ore");
 		oldids.set(22, "cloud Cactus");
 		oldids.set(16, "infinite Fall");
-		oldids.set(136, "snow");
-		
+		oldids.set(130, "purple wool");
+		oldids.set(131, "pink wool");
+		oldids.set(132, "dark green wool");
+		oldids.set(133, "gray wool");
+		oldids.set(134, "brown wool");
+		oldids.set(135, "magenta wool");
+		oldids.set(136, "light blue wool");
+		oldids.set(137, "cyan wool");
+		oldids.set(138, "orange wool");
+		oldids.set(139, "snow");
+		oldids.set(140, "cloud tree");
+		oldids.set(141, "ice spike");
+		oldids.set(142, "spruce Planks");
+		oldids.set(143, "spruce wall");
+		oldids.set(144, "spruce door");
+		oldids.set(155, "spruce door");
+		oldids.set(156, "birch Planks");
+		oldids.set(157, "birch wall");
+		oldids.set(158, "birch door");
+		oldids.set(159, "birch door");
+		oldids.set(160, "hard obsidian");
 		
 		// light/torch versions, for compatibility with before 1.9.4-dev3. (were removed in making dev3)
 		oldids.set(100, "grass");
@@ -146,6 +201,28 @@ public final class Tiles {
 		oldids.set(63, "Obsidian");
 		oldids.set(64, "tree Sapling");
 		oldids.set(65, "cactus Sapling");
+		oldids.set(160, "purple wool");
+		oldids.set(161, "pink wool");
+		oldids.set(162, "dark green wool");
+		oldids.set(163, "gray wool");
+		oldids.set(164, "brown wool");
+		oldids.set(165, "magenta wool");
+		oldids.set(166, "light blue wool");
+		oldids.set(167, "cyan wool");
+		oldids.set(168, "orange wool");
+		oldids.set(169, "snow");
+		oldids.set(171, "fir tree");
+		oldids.set(172, "pine tree");
+		oldids.set(173, "cloud tree");
+		oldids.set(174, "ice spike");
+		oldids.set(175, "spruce Planks");
+		oldids.set(176, "spruce door");
+		oldids.set(177, "spruce door");
+		oldids.set(178, "birch Planks");
+		oldids.set(179, "birch wall");
+		oldids.set(180, "birch door");
+		oldids.set(181, "birch door");
+		oldids.set(182, "hard obsidian");
 		
 		oldids.set(44, "torch grass");
 		oldids.set(40, "torch sand");
@@ -159,63 +236,94 @@ public final class Tiles {
 		oldids.set(53, "torch green wool");
 		oldids.set(54, "torch yellow wool");
 		oldids.set(55, "torch black wool");
+		oldids.set(190, "torch purple wool");
+		oldids.set(191, "torch pink wool");
+		oldids.set(192, "torch dark green wool");
+		oldids.set(193, "torch gray wool");
+		oldids.set(194, "torch brown wool");
+		oldids.set(195, "torch magenta wool");
+		oldids.set(196, "torch light blue wool");
+		oldids.set(197, "torch cyan wool");
+		oldids.set(198, "torch orange wool");
+		oldids.set(199, "torch snow");
+		oldids.set(200, "torch spruce planks");
+		oldids.set(201, "torch birch planks");
 	}
 	
-	  private static int overflowCheck = 0;
-	  
-	  public static Tile get(String name) {
-	    name = name.toUpperCase();
-	    overflowCheck++;
-	    if (overflowCheck > 50) {
-	      System.out.println("STACKOVERFLOW prevented in Tiles.get(), on: " + name);
-	      System.exit(1);
-	    } 
-	    Tile getting = null;
-	    boolean isTorch = false;
-	    if (name.startsWith("TORCH ")) {
-	      isTorch = true;
-	      name = name.substring(6);
-	    } 
-	    if (name.contains("_"))
-	      name = name.substring(0, name.indexOf("_")); 
-	    for (Tile t : tiles) {
-	      if (t != null && 
-	        t.name.equals(name)) {
-	        getting = t;
-	        break;
-	      } 
-	    } 
-	    if (getting == null) {
-	      System.out.println("TILES.GET: invalid tile requested: " + name);
-	      getting = tiles.get(0);
-	    } 
-	    if (isTorch)
-	      getting = TorchTile.getTorchTile(getting); 
-	    overflowCheck = 0;
-	    return getting;
-	  }
-	  
-	  public static Tile get(int id) {
-	    if (id < 0)
-	      id += 256; 
-	    if (tiles.get(id) != null)
-	      return tiles.get(id); 
-	    if (id >= 128)
-	      return TorchTile.getTorchTile(get(id - 128)); 
-	    System.out.println("TILES.GET: unknown tile id requested: " + id);
-	    return tiles.get(0);
-	  }
-	  
-	  public static boolean containsTile(int id) {
-	    return (tiles.get(id) != null);
-	  }
-	  
-	  public static String getName(String descriptName) {
-	    if (!descriptName.contains("_"))
-	      return descriptName; 
-	    String[] parts = descriptName.split("_");
-	    descriptName = parts[0];
-	    int data = Integer.parseInt(parts[1]);
-	    return get(descriptName).getName(data);
-	  }
+	private static int overflowCheck = 0;
+	public static Tile get(String name) {
+		//System.out.println("Getting from tile list: " + name);
+		
+		name = name.toUpperCase();
+		
+		overflowCheck++;
+		
+		if(overflowCheck > 50) {
+			System.out.println("STACKOVERFLOW prevented in Tiles.get(), on: " + name);
+			System.exit(1);
+		}
+		
+		//System.out.println("Fetching tile " + name);
+		
+		Tile getting = null;
+		
+		boolean isTorch = false;
+		if(name.startsWith("TORCH ")) {
+			isTorch = true;
+			name = name.substring(6); // cuts off torch prefix.
+		}
+
+		if(name.contains("_")) {
+			name = name.substring(0, name.indexOf("_"));
+		}
+		
+		for(Tile t: tiles) {
+			if(t == null) continue;
+			if(t.name.equals(name)) {
+				getting = t;
+				break;
+			}
+		}
+		
+		if(getting == null) {
+			System.out.println("TILES.GET: Invalid tile requested: " + name);
+			getting = tiles.get(0);
+		}
+		
+		if(isTorch) {
+			getting = TorchTile.getTorchTile(getting);
+		}
+		
+		overflowCheck = 0;
+		return getting;
 	}
+	
+	public static Tile get(int id) {
+		//System.out.println("Requesting tile by id: " + id);
+		if(id < 0) id += 256;
+		
+		if(tiles.get(id) != null) {
+			return tiles.get(id);
+		}
+		else if(id >= 128) {
+			return TorchTile.getTorchTile(get(id-128));
+		}
+		else {
+			System.out.println("TILES.GET: Unknown tile id requested: " + id);
+			return tiles.get(0);
+		}
+	}
+	
+	public static boolean containsTile(int id) {
+		return tiles.get(id) != null;
+	}
+	
+	public static String getName(String descriptName) {
+		if(!descriptName.contains("_")) return descriptName;
+		int data;
+		String[] parts = descriptName.split("_");
+		descriptName = parts[0];
+		data = Integer.parseInt(parts[1]);
+		return get(descriptName).getName(data);
+	}
+}

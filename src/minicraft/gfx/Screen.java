@@ -1,37 +1,59 @@
 package minicraft.gfx;
 
-import minicraft.Game;
+import minicraft.core.Renderer;
+import minicraft.core.Updater;
+import minicraft.core.io.Settings;
 
 public class Screen {
 	
-	private static java.util.Random random = new java.util.Random();
+	public static final int w = Renderer.WIDTH; // width of the screen
+	public static final int h = Renderer.HEIGHT; // height of the screen
+	public static final Point center = new Point(w/2, h/2);
 	
 	private static final int MAXDARK = 128;
-	//private static final int MAXLIGHT = 20;
 	
 	/// x and y offset of screen:
-	public int xOffset;
-	public int yOffset;
+	private int xOffset;
+	private int yOffset;
 	
 	// used for mirroring an image:
-	public static final int BIT_MIRROR_X = 0x01; // written in hexadecimal; binary: 01
-	public static final int BIT_MIRROR_Y = 0x02; // binary: 10
-
-	public final int w, h; // width and height of the screen
+	private static final int BIT_MIRROR_X = 0x01; // written in hexadecimal; binary: 01
+	private static final int BIT_MIRROR_Y = 0x02; // binary: 10
+	
 	public int[] pixels; // pixels on the screen
+
+	// DEPRECATED!!!! for backwards compatibility during porting
+	private SpriteSheet sheet; // the sprite sheet used in the Game.
+
+	// since each sheet is 256x256 pixels, each one has 1024 8x8 "tiles"
+	// so 0 is the start of the item sheet 1024 the start of the tile sheet, 2048 the start of the entity sheet,
+	// and 3072 the start of the gui sheet
+
+	private SpriteSheet[] sheets;
+	private SpriteSheet[] sheetsCustom;
 	
-	protected SpriteSheet sheet; // the sprite sheet used in the game.
-	
-	public Screen(int w, int h, SpriteSheet sheet) {
+	public Screen(SpriteSheet sheet) {
+		this(sheet, sheet, sheet, sheet);
 		this.sheet = sheet;
-		this.w = w;
-		this.h = h;
+	}
+
+	public Screen(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet) {
+
+		sheets = new SpriteSheet[]{itemSheet, tileSheet, entitySheet, guiSheet};
+
 		/// screen width and height are determined by the actual game window size, meaning the screen is only as big as the window.
-		pixels = new int[w * h]; // makes new integer array for all the pixels on the screen.
+		pixels = new int[Screen.w * Screen.h]; // makes new integer array for all the pixels on the screen.
+	}
+
+	public Screen(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet,
+					SpriteSheet itemSheetCustom, SpriteSheet tileSheetCustom, SpriteSheet entitySheetCustom, SpriteSheet guiSheetCustom) {
+		this(itemSheet, tileSheet, entitySheet, guiSheet);
+
+		sheetsCustom = new SpriteSheet[]{itemSheetCustom, tileSheetCustom, entitySheetCustom, guiSheetCustom};
 	}
 	
 	public Screen(Screen model) {
-		this(model.w, model.h, model.sheet);
+		this(model.sheets[0], model.sheets[1], model.sheets[2], model.sheets[3]);
 	}
 	
 	/** Clears all the colors on the screen */
@@ -41,51 +63,102 @@ public class Screen {
 	}
 	
 	public void render(int[] pixelColors) {
-		for(int i = 0; i < Math.min(pixelColors.length, pixels.length); i++)
-			pixels[i] = pixelColors[i];
+		System.arraycopy(pixelColors, 0, pixels, 0, Math.min(pixelColors.length, pixels.length));
 	}
-	
-	/** Renders an object from the sprite sheet based on screen coordinates, tile (SpriteSheet location), colors, and bits (for mirroring). I believe that xp and yp refer to the desired position of the upper-left-most pixel. */
-	public void render(int xp, int yp, int tile, int colors, int bits) {
-		// xp and yp are originally in level coordinates, but offset turns them to screen coordinates.
-		xp -= xOffset; //account for screen offset
-		yp -= yOffset;
-		// determines if the image should be mirrored...
-		boolean mirrorX = (bits & BIT_MIRROR_X) > 0; // horizontally.
-		boolean mirrorY = (bits & BIT_MIRROR_Y) > 0; // vertically.
-		
-		int xTile = tile % 32; // gets x position of the spritesheet "tile"
-		int yTile = tile / 32; // gets y position
-		int toffs = xTile * 8 + yTile * 8 * sheet.width; // Gets the offset, the 8's represent the size of the tile. (8 by 8 pixels)
-		
-		/// THIS LOOPS FOR EVERY LITTLE PIXEL
-		for (int y = 0; y < 8; y++) { // Loops 8 times (because of the height of the tile)
-			int ys = y; // current y pixel
-			if (mirrorY) ys = 7 - y; // Reverses the pixel for a mirroring effect
-			if (y + yp < 0 || y + yp >= h) continue; // If the pixel is out of bounds, then skip the rest of the loop.
-			for (int x = 0; x < 8; x++) { // Loops 8 times (because of the width of the tile)
-				if (x + xp < 0 || x + xp >= w) continue; // skip rest if out of bounds.
-				
-				int xs = x; // current x pixel
-				if (mirrorX) xs = 7 - x; // Reverses the pixel for a mirroring effect
-				int col = (colors >> (sheet.pixels[xs + ys * sheet.width + toffs] * 8)) & 255; // gets the color of this single pixel of the sprite based on the passed in colors value; also insures that the color is less than or equal to 255.
-				if (col < 255) pixels[(x + xp) + (y + yp) * w] = Color.upgrade(col); // Inserts the colors into the image.
-				// the above only doesn't execute when the color value is 255, or white. Well, I think it should... but it doesn't work...
-			}
+
+	public void render(int xp, int yp, int tile, int bits) { render(xp, yp, tile, bits, 0); }
+
+	public void render(int xp, int yp, int tile, int bits, int sheet) { render(xp, yp, tile, bits, sheet, -1); }
+
+    public void render(int xp, int yp, int tile, int bits, int sheet, int whiteTint) { render(xp, yp, tile, bits, sheet, whiteTint, false); }
+
+	public void render(int xp, int yp, int tile, int bits, int sheet, int whiteTint, boolean fullbright) {
+		render(xp, yp, tile % 32, tile / 32, bits, sheet, whiteTint, fullbright);
+	}
+
+	public void render(int xp, int yp, Pixel pixel) {
+		render(xp, yp, pixel, -1);
+	}
+
+	public void render(int xp, int yp, Pixel pixel, int whiteTint) {
+		render(xp, yp, pixel, whiteTint, false);
+	}
+
+	public void render(int xp, int yp, Pixel pixel, int whiteTint, boolean fullbright) {
+		render(xp, yp, pixel.getX(), pixel.getY(), pixel.getMirror(), pixel.getIndex(), whiteTint, fullbright);
+	}
+
+	public void render(int xp, int yp, Pixel pixel, int bits, int whiteTint, boolean fullbright) {
+		render(xp, yp, pixel.getX(), pixel.getY(), bits, pixel.getIndex(), whiteTint, fullbright);
+	}
+
+    /** Renders an object from the sprite sheet based on screen coordinates, tile (SpriteSheet location), colors, and bits (for mirroring). I believe that xp and yp refer to the desired position of the upper-left-most pixel. */
+    private void render(int xp, int yp, int xTile, int yTile, int bits, int sheet, int whiteTint, boolean fullbright) {
+        // xp and yp are originally in level coordinates, but offset turns them to screen coordinates.
+        xp -= xOffset; //account for screen offset
+        yp -= yOffset;
+        // determines if the image should be mirrored...
+        boolean mirrorX = (bits & BIT_MIRROR_X) > 0; // horizontally.
+        boolean mirrorY = (bits & BIT_MIRROR_Y) > 0; // vertically.
+
+
+		SpriteSheet currentSheet;
+		if (Settings.get("textures").equals("Custom")) {
+			// make it custom unless the custom sheet isn't working
+			currentSheet = sheetsCustom[sheet] != null ? sheetsCustom[sheet] : sheets[sheet];
+		} else {
+			currentSheet = sheets[sheet];
 		}
-	}
+
+		xTile %= currentSheet.width; // to avoid out of bounds
+		yTile %= currentSheet.height; // ^
+        int toffs = xTile * 8 + yTile * 8 * currentSheet.width; // Gets the offset of the sprite into the spritesheet pixel array, the 8's represent the size of the box. (8 by 8 pixel sprite boxes)
+
+        /// THIS LOOPS FOR EVERY LITTLE PIXEL
+        for (int y = 0; y < 8; y++) { // Loops 8 times (because of the height of the tile)
+            int ys = y; // current y pixel
+            if (mirrorY) ys = 7 - y; // Reverses the pixel for a mirroring effect
+            if (y + yp < 0 || y + yp >= h) continue; // If the pixel is out of bounds, then skip the rest of the loop.
+            for (int x = 0; x < 8; x++) { // Loops 8 times (because of the width of the tile)
+                if (x + xp < 0 || x + xp >= w) continue; // skip rest if out of bounds.
+
+                int xs = x; // current x pixel
+                if (mirrorX) xs = 7 - x; // Reverses the pixel for a mirroring effect
+
+                int col = currentSheet.pixels[toffs + xs + ys * currentSheet.width]; // Gets the color of the current pixel from the value stored in the sheet.
+
+                boolean isTransparent = (col >> 24 == 0);
+
+                if (!isTransparent) {
+                	int position = (x + xp) + (y + yp) * w;
+
+                    if (whiteTint != -1 && col == 0x1FFFFFF) {
+                        // if this is white, write the whiteTint over it
+                        pixels[position] = Color.upgrade(whiteTint);
+                    } else {
+                        // Inserts the colors into the image
+                        if (fullbright) {
+                            pixels[position] = Color.WHITE;
+                        } else {
+							pixels[position] = Color.upgrade(col);
+						}
+                    }
+                }
+            }
+        }
+    }
 	
 	/** Sets the offset of the screen */
 	public void setOffset(int xOffset, int yOffset) {
-		// this is called in few places, one of which is level.renderBackground, rigth before all the tiles are rendered. The offset is determined by the Game class (this only place renderBackground is called), by using the screen's width and the player's position in the level.
+		// this is called in few places, one of which is level.renderBackground, right before all the tiles are rendered. The offset is determined by the Game class (this only place renderBackground is called), by using the screen's width and the player's position in the level.
 		// in other words, the offset is a conversion factor from level coordinates to screen coordinates. It makes a certain coord in the level the upper left corner of the screen, when subtracted from the tile coord.
 		
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 	}
 	
-	/* Used for the scattered dots at the edge of the light radius underground. */
-	/*
+	/* Used for the scattered dots at the edge of the light radius underground.
+
 		These values represent the minimum light level, on a scale from 0 to 25 (255/10), 0 being no light, 25 being full light (which will be portrayed as transparent on the overlay lightScreen pixels) that a pixel must have in order to remain lit (not black).
 		each row and column is repeated every 4 pixels in the proper direction, so the pixel lightness minimum varies. It's highly worth note that, as the rows progress and loop, there's two sets or rows (1,4 and 2,3) whose values in the same column add to 15. The exact same is true for columns (sets are also 1,4 and 2,3), execpt the sums of values in the same row and set differ for each row: 10, 18, 12, 20. Which... themselves... are another set... adding to 30... which makes sense, sort of, since each column totals 15+15=30.
 		In the end, "every other every row", will need, for example in column 1, 15 light to be lit, then 0 light to be lit, then 12 light to be lit, then 3 light to be lit. So, the pixels of lower light levels will generally be lit every other pixel, while the brighter ones appear more often. The reason for the variance in values is to provide EVERY number between 0 and 15, so that all possible light levels (below 16) are represented fittingly with their own pattern of lit and not lit.
@@ -101,20 +174,21 @@ public class Screen {
 	/** Overlays the screen with pixels */
     public void overlay(Screen screen2, int currentLevel, int xa, int ya) {
 		double tintFactor = 0;
-		if(currentLevel >= 3) {
-			int transTime = Game.dayLength / 4;
-			double relTime = (Game.tickCount % transTime)*1.0 / transTime;
+		if(currentLevel >= 3 && currentLevel < 5) {
+			int transTime = Updater.dayLength / 4;
+			double relTime = (Updater.tickCount % transTime)*1.0 / transTime;
 			
-			switch(Game.getTime()) {
-				case Morning: tintFactor = Game.pastDay1 ? (1-relTime) * MAXDARK : 0; break;
+			switch(Updater.getTime()) {
+				case Morning: tintFactor = Updater.pastDay1 ? (1-relTime) * MAXDARK : 0; break;
 				case Day: tintFactor = 0; break;
 				case Evening: tintFactor = relTime * MAXDARK; break;
 				case Night: tintFactor = MAXDARK; break;
 			}
-			if(currentLevel == 4) tintFactor -= (tintFactor < 10 ? tintFactor : 10);
-			tintFactor *= -1; // all previous operations were assumping this was a darkening factor.
-			//tintFactor += 20;
+			if(currentLevel > 3) tintFactor -= (tintFactor < 10 ? tintFactor : 10);
+			tintFactor *= -1; // all previous operations were assuming this was a darkening factor.
 		}
+		else if(currentLevel >= 5)
+			tintFactor = -MAXDARK;
         
 		int[] oPixels = screen2.pixels;  // The Integer array of pixels to overlay the screen with.
 		int i = 0; // current pixel on the screen
@@ -137,6 +211,49 @@ public class Screen {
             }
         }
     }
+    
+    public void overlayBlind(Screen screen2, int currentLevel, int xa, int ya) {
+		  int[] oPixels = screen2.pixels;
+		    int i = 0;
+		    for (int y = 0; y < this.h; y++) {
+		      for (int x = 0; x < this.w; x++) {
+		        if (oPixels[i] > 0 || yOffset!= 0) {
+		          int intens2 = (120 - oPixels[i]) / 51;
+		          if (intens2 != 0) {
+		            switch (intens2) {
+		              case 1:
+		                this.pixels[i] = Color.createShadowCol(this.pixels[i], 0, Math.min(intens2, 1), Math.min(intens2, 1));
+		                break;
+		              case 2:
+		                this.pixels[i] = Color.createShadowCol(this.pixels[i], 0, Math.min(intens2, 2), Math.min(intens2, 2));
+		                break;
+		              case 3:
+		                this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 1), Math.min(intens2, 3), Math.min(intens2, 3));
+		                break;
+		              case -4:
+		                this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 3), Math.min(intens2, 3), Math.min(intens2, 3));
+		                break;
+		              case -3:
+		                this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 3), Math.min(intens2, 3), Math.min(intens2, 1));
+		                break;
+		              case -2:
+		                this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 2), Math.min(intens2, 2), 0);
+		                break;
+		              case -1:
+		                this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 1), Math.min(intens2, 1), 0);
+		                break;
+		            } 
+		          } else {
+		            this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.max(intens2 - 1, 0), Math.max(intens2, 0), Math.max(intens2, 0));
+		          } 
+		        } else {
+		          this.pixels[i] = 0;
+		        } 
+		        i++;
+		      } 
+		    } 
+		  }
+
 
 	public void renderLight(int x, int y, int r) {
 		//applies offsets:
@@ -170,4 +287,25 @@ public class Screen {
 			}
 		}
 	}
+	public void setPixel(int xp, int yp, int color) {
+        // Loops 8 times (because of the height of the tile)
+        for (int y = 0; y < 8; y++) {
+            if (y + yp < 0 || y + yp >= h) {
+                // If the pixel is out of bounds, then skip the rest of the loop.
+                continue;
+            }
+
+            // Loops 8 times (because of the width of the tile)
+            for (int x = 0; x < 8; x++) {
+                if (x + xp < 0 || x + xp >= w) {
+                    // skip rest if out of bounds.
+                    continue;
+                }
+
+                if (color >> 24 != 0) {
+                    pixels[(x + xp) + (y + yp) * w] = color;
+                }
+            }
+        }
+    }
 }

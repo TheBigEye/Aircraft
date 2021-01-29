@@ -1,10 +1,12 @@
 package minicraft.level.tile;
 
-import minicraft.Game;
-import minicraft.entity.AirWizard;
+import minicraft.core.Game;
+import minicraft.core.io.Sound;
+import minicraft.entity.Direction;
 import minicraft.entity.Entity;
-import minicraft.entity.Mob;
-import minicraft.entity.Player;
+import minicraft.entity.mob.Mob;
+import minicraft.entity.mob.Player;
+import minicraft.entity.mob.boss.AirWizard;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
@@ -15,9 +17,11 @@ import minicraft.item.Items;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
-import minicraft.screen.ModeMenu;
 
 public class WallTile extends Tile {
+	
+	private static final String obrickMsg = "The airwizard must be defeated first.";
+	
 	private ConnectorSprite sprite;
 	
 	protected Material type;
@@ -26,12 +30,21 @@ public class WallTile extends Tile {
 		super(type.name()+" Wall", (ConnectorSprite)null);
 		this.type = type;
 		switch(type) {
-			case Wood: sprite = new ConnectorSprite(WallTile.class, new Sprite(4, 22, 3, 3, Color.get(100, 430, 320, 540), 3), new Sprite(7, 22, 2, 2, Color.get(100, 430, 320, 540), 3), new Sprite(5, 23, 2, 2, Color.get(430, 430, 320, 320), 0, true));
-			break;
-			case Stone: sprite = new ConnectorSprite(WallTile.class, new Sprite(4, 25, 3, 3, Color.get(111, 333, 444, 444), 3), new Sprite(7, 24, 2, 2, Color.get(111, 444), 3), Sprite.blank(2, 2, 444));
-			break;
-			case Obsidian: sprite = new ConnectorSprite(WallTile.class, new Sprite(4, 25, 3, 3, Color.get(000, 203, 103, 103), 3), new Sprite(7, 24, 2, 2, Color.get(000, 103), 3), Sprite.blank(2, 2, 103));
-			break;
+			case Wood:
+				sprite = new ConnectorSprite(WallTile.class, new Sprite(0, 14, 3, 3, 1, 3), new Sprite(3, 14, 2, 2, 1, 3), new Sprite(1, 15, 2, 2, 1, 0, true));
+				break;
+			case Stone:
+				sprite = new ConnectorSprite(WallTile.class, new Sprite(10, 14, 3, 3, 1, 3), new Sprite(13, 14, 2, 2, 1, 3), new Sprite(11, 15, 2, 2, 1, 0, true));
+				break;
+			case Obsidian:
+				sprite = new ConnectorSprite(WallTile.class, new Sprite(20, 14, 3, 3, 1, 3), new Sprite(23, 14, 2, 2, 1, 3), new Sprite(21, 15, 2, 2, 1, 0, true));
+				break;
+			case Spruce:
+				sprite = new ConnectorSprite(WallTile.class, new Sprite(30, 14, 3, 3, 1, 3), new Sprite(33, 14, 2, 2, 1, 3), new Sprite(31, 15, 2, 2, 1, 0, true));
+				break;
+			case Birch:
+				sprite = new ConnectorSprite(WallTile.class, new Sprite(40, 14, 3, 3, 1, 3), new Sprite(43, 14, 2, 2, 1, 3), new Sprite(41, 15, 2, 2, 1, 0, true));
+				break;
 		}
 		csprite = sprite;
 	}
@@ -40,26 +53,31 @@ public class WallTile extends Tile {
 		return false;
 	}
 	
-	public void hurt(Level level, int x, int y, Mob source, int dmg, int attackDir) {
-		/*int playDmg;
-		if (ModeMenu.creative) playDmg = random.nextInt(5);
-		else {
-			playDmg = 0;
-		}*/
-		hurt(level, x, y, 0);
+	@Override
+	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+		if(Game.isMode("creative") || level.depth != -3 || type != Material.Obsidian || AirWizard.beaten) {
+			hurt(level, x, y, random.nextInt(6) / 6 * dmg / 2);
+			return true;
+		} else {
+			Game.notifications.add(obrickMsg);
+			return false;
+		}
 	}
 	
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
+	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
+		if(Game.isMode("creative"))
+			return false; // go directly to hurt method
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Pickaxe) {
-				if(type != Material.Obsidian || AirWizard.beaten) {
-					if (player.payStamina(4 - tool.level)) {
-						hurt(level, xt, yt, random.nextInt(10) + (tool.level) * 5 + 10);
-						return true;
-					}
-				} else if(level.depth == -3)
-					player.game.notifications.add("Only True heroes may enter."); // display a cryptic
+				if(level.depth != -3 || type != Material.Obsidian || AirWizard.beaten) {
+						if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+							hurt(level, xt, yt, random.nextInt(10) + (tool.level) * 5 + 10);
+							return true;
+						}
+				} else {
+					Game.notifications.add(obrickMsg);
+				}
 			}
 		}
 		return false;
@@ -68,20 +86,24 @@ public class WallTile extends Tile {
 	public void hurt(Level level, int x, int y, int dmg) {
 		int damage = level.getData(x, y) + dmg;
 		int sbwHealth = 100;
-		if (ModeMenu.creative) dmg = damage = sbwHealth;
+		if (Game.isMode("creative")) dmg = damage = sbwHealth;
 		
 		level.add(new SmashParticle(x * 16, y * 16));
-		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.get(-1, 500)));
+		Sound.monsterHurt.play();
+
+		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
 		if (damage >= sbwHealth) {
 			String itemName = "", tilename = "";
 			switch(type) {
 				case Wood: itemName = "Plank"; tilename = "Wood Planks"; break;
 				case Stone: itemName = "Stone Brick"; tilename = "Stone Bricks"; break;
 				case Obsidian: itemName = "Obsidian Brick"; tilename = "Obsidian"; break;
+				case Spruce: itemName = "Spruce Plank"; tilename = "Spruce Planks"; break;
+				case Birch: itemName = "Birch Plank"; tilename = "Birch Planks"; break;
 			}
 			
-			level.dropItem(x*16+8, y*16+8, 1, 3-type.ordinal(), Items.get(itemName));
-			level.setTile(x, y, Tiles.get(tilename)); // TODO this will be a problem...
+			level.dropItem(x*16+8, y*16+8, 1, 5-type.ordinal(), Items.get(itemName));
+			level.setTile(x, y, Tiles.get(tilename));
 		}
 		else {
 			level.setData(x, y, damage);

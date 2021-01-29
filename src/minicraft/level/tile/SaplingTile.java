@@ -1,13 +1,14 @@
 package minicraft.level.tile;
 
-import minicraft.entity.Mob;
-import minicraft.gfx.Color;
+import minicraft.core.io.Sound;
+import minicraft.entity.Direction;
+import minicraft.entity.mob.Mob;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.level.Level;
 
 public class SaplingTile extends Tile {
-	private static Sprite sprite = new Sprite(11, 3, Color.get(20, 40, 50, -1));
+	private static Sprite sprite = new Sprite(12, 1, 1);
 	
 	private Tile onType;
 	private Tile growsTo;
@@ -18,8 +19,7 @@ public class SaplingTile extends Tile {
 		this.growsTo = growsTo;
 		connectsToSand = onType.connectsToSand;
 		connectsToGrass = onType.connectsToGrass;
-		connectsToWater = onType.connectsToWater;
-		connectsToLava = onType.connectsToLava;
+		connectsToFluid = onType.connectsToFluid;
 		maySpawn = true;
 	}
 
@@ -38,7 +38,9 @@ public class SaplingTile extends Tile {
 		}
 	}
 
-	public void hurt(Level level, int x, int y, Mob source, int dmg, int attackDir) {
+	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		level.setTile(x, y, onType);
+		Sound.monsterHurt.play();
+		return true;
 	}
 }

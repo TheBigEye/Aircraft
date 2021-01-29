@@ -1,28 +1,26 @@
 package minicraft.item;
 
-import java.util.ArrayList;
+import minicraft.entity.Boat;
+import minicraft.entity.Direction;
 import minicraft.entity.Entity;
-import minicraft.entity.Furniture;
-import minicraft.entity.Player;
-import minicraft.gfx.Color;
+import minicraft.entity.furniture.Furniture;
+import minicraft.entity.mob.Player;
 import minicraft.gfx.Sprite;
 
 public class PowerGloveItem extends Item {
 	
-	protected static ArrayList<Item> getAllInstances() {
-		ArrayList<Item> items = new ArrayList<Item>();
-		items.add(new PowerGloveItem());
-		return items;
+	public PowerGloveItem() {
+		super("Power Glove", new Sprite(0, 12, 0));
 	}
 	
-	private PowerGloveItem() {
-		super("Power Glove", new Sprite(7, 4, Color.get(-1, 100, 320, 430)));
-	}
-	
-	public boolean interact(Player player, Entity entity, int attackDir) {
+	public boolean interact(Player player, Entity entity, Direction attackDir) {
 		if (entity instanceof Furniture) { // If the power glove is used on a piece of furniture...
 			Furniture f = (Furniture) entity;
 			f.take(player); // Takes (picks up) the furniture
+			return true;
+		} else if (entity instanceof Boat) {
+			Boat b = (Boat)entity;
+			b.take(player);
 			return true;
 		}
 		return false; // method returns false if we were not given a furniture entity.

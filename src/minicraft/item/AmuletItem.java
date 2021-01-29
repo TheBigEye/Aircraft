@@ -1,51 +1,62 @@
 package minicraft.item;
 
+import java.util.Random;
 
-import java.util.ArrayList;
-
-import minicraft.entity.Player;
-import minicraft.gfx.Color;
+import minicraft.core.Game;
+import minicraft.core.io.Sound;
+import minicraft.entity.Direction;
+import minicraft.entity.Entity;
+import minicraft.entity.mob.EyeQueen;
+import minicraft.entity.mob.EyeQueenPhase2;
+import minicraft.entity.mob.Player;
 import minicraft.gfx.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
-import minicraft.screen.BookMenu;
-
-
+import minicraft.screen.MapDisplay;
 
 public class AmuletItem extends Item {
-		
-	protected static ArrayList<Item> getAllInstances() {
-		ArrayList<Item> items = new ArrayList<Item>();
-		items.add(new AmuletItem("Eye", Color.get(-1, 100, 321, 550), BookMenu.eyeBook));
-		
-		return items;
-	}
 	
-	protected String book; // TODO this is not saved yet; it could be, for editable books.
-	
-	private AmuletItem(String title, int color, String book) {
-		super(title, new Sprite(28, 4, color));
-		this.book = book;
-	}
-	
+	private static Random random = new Random();
 
+    public AmuletItem() {
+        super("Eye Amulet", new Sprite(4, 33, 0));
+    }
 
-	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, int attackDir) {
-		player.game.setMenu(new BookMenu(book));
-		return true;
-	}
-	
-	
-	public AmuletItem clone() {
-		return new AmuletItem(name, sprite.color, book);
-	}
-	
-	public boolean canAttack() {
-		return true; 
+    @Override
+    public Item clone() {
+        return new AmuletItem();
+    }
+
+    @Override
+    public boolean interact(Player player, Entity entity, Direction attackDir) {
+        if (!Game.isValidServer()) {
+        }
+        return false;
+    }
+
+    @Override
+    public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {    	
+
+		if (random.nextInt(3) == 1) {
+			Sound.Call.play();
+		}
+		if (random.nextInt(3) == 2) {
+			level.add(new EyeQueen(1), player.x, player.y);
+		}
+		if (random.nextInt(3) == 3) {
+			level.add(new EyeQueen(1), player.x, player.y);
+		}
 		
-	}
-	
-	public boolean canLight() {
-		return true;
-	}
+        return this.interact(player, (Entity)null, attackDir);
+    }
+
+    @Override
+    public boolean interactsWithWorld() {
+        return false;
+    }
+
+    @Override
+    public boolean canAttack() {
+        return false;
+    }
 }

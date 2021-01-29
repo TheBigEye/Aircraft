@@ -1,88 +1,100 @@
 package minicraft.item;
 
-import minicraft.Game;
-import minicraft.entity.Player;
+import minicraft.core.Game;
+import minicraft.core.World;
+import minicraft.entity.mob.Player;
+import minicraft.gfx.Color;
 import minicraft.level.Level;
 
 public enum PotionType {
-	None (5, 0),
+	None (Color.get(1, 22, 22, 137), 0),
 	
-	Speed (10, 4200) {
+	Speed (Color.get(1, 23, 46, 23), 4200) {
 		public boolean toggleEffect(Player player, boolean addEffect) {
 			player.moveSpeed += (double)( addEffect ? 1 : (player.moveSpeed > 1 ? -1 : 0) );
 			return true;
 		}
 	},
 	
-	SpeedII (10, 4200) {
+	xSpeed (Color.get(1, 48, 68, 34), 6200) {
 		public boolean toggleEffect(Player player, boolean addEffect) {
-			player.moveSpeed += (double)( addEffect ? 2 : (player.moveSpeed > 2 ? -2 : 0) );
+			player.moveSpeed += (double)( addEffect ? 2 : (player.moveSpeed > 1 ? -2 : 0) );
 			return true;
 		}
 	},
 	
-	Light (440, 6000),
-	Swim (3, 4800),
-	Energy (510, 8400),
-	Regen (504, 1800),
-	RegenII (504, 12000),
-	Health (501, 0) {
+	Light (Color.get(1, 183, 183, 91), 6000),
+	xLight (Color.get(1, 211, 211, 105), 12000),
+	Swim (Color.get(1, 17, 17, 85), 4800),
+	xSwim (Color.get(1, 26, 26, 130), 9600),
+	Energy (Color.get(1, 172, 80, 57), 8400),
+	xEnergy (Color.get(1, 198, 91, 67), 16400),
+	Regen (Color.get(1, 168, 54, 146), 1800),
+	xRegen (Color.get(1, 191, 63, 112), 2800),
+	Health (Color.get(1, 161, 46, 69), 0) {
 		public boolean toggleEffect(Player player, boolean addEffect) {
 			if(addEffect) player.heal(5);
 			return true;
 		}
 	},
-	
-	HealthII (501, 0) {
+	xHealth (Color.get(1, 255, 63, 110), 0) {
 		public boolean toggleEffect(Player player, boolean addEffect) {
 			if(addEffect) player.heal(10);
 			return true;
 		}
 	},
 	
-	Time (222, 1800) {
-		public boolean toggleEffect(Player player, boolean addEffect) {
-			Game.gamespeed *= (addEffect ? 0.5f : 2);
-			return true;
-		}
-	},
+	Time (Color.get(1, 102), 1800),
+	Lava (Color.get(1, 129, 37, 37), 7200),
+	xLava (Color.get(1, 204, 59, 59), 14200),
+	Shield (Color.get(1, 65, 65, 157), 5400),
+	xShield (Color.get(1, 65, 65, 157), 10400),
+	Haste (Color.get(1, 106, 37, 106), 4800),
 	
-	
-	Lava (400, 7200),
-	LavaII (400, 12800),
-	Shield (115, 5400),
-	ShieldII (115, 12800),
-	Haste (303, 4800),
-
-	Blind (534, 3000) {
+	Escape (Color.get(1, 85, 62, 62), 0) {
 		public boolean toggleEffect(Player player, boolean addEffect) {
-			Game.setTime(32000);			
-			if(Blind != null && addEffect){
-			Game.setTime(600000);
+			if(addEffect) {
+				int playerDepth = player.getLevel().depth;
+				
+				if(playerDepth == 0) {
+					if(!Game.isValidServer()) {
+						// player is in overworld
+						String note = "You can't escape from here!";
+						Game.notifications.add(note);
+					}
+					return false;
+				}
+				
+				int depthDiff = playerDepth > 0 ? -1 : 1;
+				
+				World.scheduleLevelChange(depthDiff, () -> {
+					Level plevel = World.levels[World.lvlIdx(playerDepth + depthDiff)];
+					if(plevel != null && !plevel.getTile(player.x >> 4, player.y >> 4).mayPass(plevel, player.x >> 4, player.y >> 4, player))
+						player.findStartPos(plevel, false);
+				});
 			}
-			
-			//This function reverses the polarity of the effect.
-			
 			return true;
 		}
-		
 	};
-
 	
 	public int dispColor, duration;
 	public String name;
 	
-	private PotionType(int col, int dur) {
+	PotionType(int col, int dur) {
 		dispColor = col;
 		duration = dur;
 		if(this.toString().equals("None")) name = "Potion";
 		else name = this + " Potion";
 	}
 	
-
-	
-
 	public boolean toggleEffect(Player player, boolean addEffect) {
-		return true;
+		return duration > 0; // if you have no duration and do nothing, then you can't be used.
 	}
+	
+	public boolean transmitEffect() {
+		return true; // any effect which could be duplicated and result poorly should not be sent to the server.
+		// for the case of the Health potion, the player health is not transmitted separately until after the potion effect finishes, so having it send just gets the change there earlier.
+	}
+	
+	public static final PotionType[] values = PotionType.values();
 }

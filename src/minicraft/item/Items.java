@@ -1,29 +1,15 @@
 package minicraft.item;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
-
-import minicraft.entity.Inventory;
-import minicraft.item.discs.DiscEight;
-import minicraft.item.discs.DiscFive;
-import minicraft.item.discs.DiscFour;
-import minicraft.item.discs.DiscOne;
-import minicraft.item.discs.DiscSeven;
-import minicraft.item.discs.DiscSix;
-import minicraft.item.discs.DiscThree;
-import minicraft.item.discs.DiscTwo;
-// import java.io.File;
-// import java.net.URL;
-// import java.net.URI;
-// import java.net.URISyntaxException;
+import minicraft.core.Network;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Items {
 	
 	/// I've checked -- this is only used for making the creative inventory, and in Load.java.
-	/// ...well, that used to be true...  && !name.contains(";)
-	
+	/// ...well, that used to be true...
 	
 	/**
 		Ok, so here's the actual big idea:
@@ -32,11 +18,9 @@ public class Items {
 		
 		If you want to access one of those items, you do it through this class, by calling get("item name"); casing does not matter.
 	*/
-	private static ArrayList<Item> items = new ArrayList<Item>();
+	private static ArrayList<Item> items = new ArrayList<>();
 	
 	private static void add(Item i) {
-		String name = i.name.toUpperCase();
-		//System.out.println("adding " + name);
 		items.add(i);
 	}
 	private static void addAll(ArrayList<Item> items) {
@@ -44,129 +28,102 @@ public class Items {
 	}
 	
 	static {
-		//String path = "/home/chris/Documents/minicraft/minicraft-plus-revived/src/minicraft/item";
-		/*try {
-			//Items.class.getClassLoader().getResource("minicraft/item/");
-			System.out.println("url: " + url);
-			path = url.toURI();
-		} catch(URISyntaxException ex) {
-			ex.printStackTrace();
-		}*/
-		/*System.out.println("path of classes: " + path);
-		File dir = new File(path);
-		System.out.println("path exists: " + dir.exists());
-		List<String> classes = Arrays.asList((new File(path)).list(new java.io.FilenameFilter() {
-			public boolean accept(File file, String name) {
-				return true;//!file.isDirectory() && name.endsWith(".java") && !file.getName().equals("Items.java") && !file.getName().equals("Item.java");
-			}
-		}));
-		System.out.println("classes: " + classes);
-		classes = new ArrayList<String>(classes);
-		for(int i = 0; i < classes.size(); i++) {
-			String clazz = classes.get(i);
-			System.out.println("found class: " + clazz);
-			if(!clazz.contains(".java") || clazz.equals("Item.java") || clazz.equals("Items.java")) {
-				classes.remove(i);
-				i--;
-			}
-			else {
-				classes.set(i, "minicraft.item."+clazz.replace(".java", ""));
-				System.out.println("kept class " + clazz);
-			}
-		}
-		
-		//now i have the class package paths, to pass to Class.forName().
-		try {
-			for(String clazz: classes) {
-				System.out.println(clazz);
-				addAll((ArrayList<Item>)Class.forName(clazz).getMethod("getAllInstances").invoke(null));
-			}
-		} catch(Exception ex) {
-			ex.printStackTrace();
-		}*/
-		addAll(PowerGloveItem.getAllInstances());
-		addAll(AmuletItem.getAllInstances());
+		add(new PowerGloveItem());
 		addAll(FurnitureItem.getAllInstances());
+		add(new BoatItem("Boat"));
 		addAll(TorchItem.getAllInstances());
 		addAll(BucketItem.getAllInstances());
 		addAll(BookItem.getAllInstances());
+		add(new MapItem());
+		add(new AmuletItem());
 		addAll(TileItem.getAllInstances());
+		addAll(FishingRodItem.getAllInstances());
 		addAll(ToolItem.getAllInstances());
+		//addAll(Enchanted.getAllInstances());
+		//addAll(SharpSwordI.getAllInstances());
+		//addAll(SharpSwordII.getAllInstances());
 		addAll(FoodItem.getAllInstances());
 		addAll(StackableItem.getAllInstances());
 		addAll(ClothingItem.getAllInstances());
 		addAll(ArmorItem.getAllInstances());
-		
-		addAll(DiscOne.getAllInstances());
-		addAll(DiscTwo.getAllInstances());
-		addAll(DiscThree.getAllInstances());		
-		addAll(DiscFour.getAllInstances());
-		addAll(DiscFive.getAllInstances());
-		addAll(DiscSix.getAllInstances());
-		addAll(DiscSeven.getAllInstances());
-		addAll(DiscEight.getAllInstances());
-
 		addAll(PotionItem.getAllInstances());
 	}
 	
-	/** fetches an item from the list given it's name. I mean, I would have just used a HashMap... Hey, look! I'm using one! ^v^ */
+	/** fetches an item from the list given its name. */
+	@NotNull
 	public static Item get(String name) {
+		Item i = get(name, false);
+		if(i == null) return new UnknownItem("NULL"); // technically shouldn't ever happen
+		return i;
+	}
+	@Nullable
+	public static Item get(String name, boolean allowNull) {
 		name = name.toUpperCase();
-		//System.out.println("fetching name: " + name);
-		int amount = 1;
+		//System.out.println("fetching name: \"" + name + "\"");
+		int data = 1;
+		boolean hadUnderscore = false;
 		if(name.contains("_")) {
+			hadUnderscore = true;
 			try {
-				amount = Integer.parseInt(name.substring(name.indexOf("_")+1));
+				data = Integer.parseInt(name.substring(name.indexOf("_")+1));
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}
 			name = name.substring(0, name.indexOf("_"));
 		}
+		else if(name.contains(";")) {
+			hadUnderscore = true;
+			try {
+				data = Integer.parseInt(name.substring(name.indexOf(";")+1));
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+			name = name.substring(0, name.indexOf(";"));
+		}
 		
-		if(name.equals("NULL")) return null;
+		if(name.equalsIgnoreCase("NULL")) {
+			if(allowNull) return null;
+			else {
+				System.out.println("WARNING: Items.get passed argument \"null\" when null is not allowed; returning UnknownItem. StackTrace:");
+				Thread.dumpStack();
+				return new UnknownItem("NULL");
+			}
+		}
+		
+		if(name.equals("UNKNOWN"))
+			return new UnknownItem("BLANK");
 		
 		Item i = null;
 		for(Item cur: items) {
-			if(cur.name.compareToIgnoreCase(name) == 0) {
+			if(cur.getName().compareToIgnoreCase(name) == 0) {
 				i = cur;
 				break;
 			}
 		}
-		if(i != null) {
-			if(i instanceof StackableItem)
-				((StackableItem)i).count = amount;
-			return i.clone();
-		} else {
-			System.out.println("ITEMS GET: invalid name requested: " + name);
-			return get("POWER GLOVE");
-		}
-		/*if(!name.equals("")) { // name is not nothing
-			if(name.contains(";")) { // if has ";" in name for whatever reason...
-				name = name.substring(0, name.indexOf(";")); // cut it off, plus anything after it.
-			}
-			
-			for(int i = 0; i < items.size(); i++) { // loop through the items
-				if(items.get(i).getName().equals(name)) { // if names match
-					return items.get(i);//.clone(); // set the item
-				}
-			}
-		}
 		
-		return null;
-		*/
+		if(i != null) {
+			i = i.clone();
+			if(i instanceof StackableItem)
+				((StackableItem)i).count = data;
+			if(i instanceof ToolItem && hadUnderscore)
+				((ToolItem)i).dur = data;
+			return i;
+		} else {
+			System.out.println(Network.onlinePrefix()+"ITEMS GET: invalid name requested: \"" + name + "\"");
+			Thread.dumpStack();
+			return new UnknownItem(name);
+		}
 	}
 	
-	public static void fillCreativeInv(Inventory inv) {
+	public static Item arrowItem = get("arrow");
+	
+	public static void fillCreativeInv(Inventory inv) { fillCreativeInv(inv, true); }
+	public static void fillCreativeInv(Inventory inv, boolean addAll) {
 		for(Item item: items) {
-			inv.add(item.clone());
+			if(item instanceof PowerGloveItem) continue;
+			if(addAll || inv.count(item) == 0)
+				inv.add(item.clone());
 		}
 	}
-	/*
-	/// I am not horribly proud of this method... but it had to be done... for the sake of the Recipes...
-	public static Item[] get(String name, int amount) {
-		Item[] items = new Item[amount];
-		Arrays.fill(items, get(name));
-		return items;
-	}*/
 }
 	
