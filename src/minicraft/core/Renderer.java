@@ -24,8 +24,10 @@ import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
 import minicraft.saveload.Load;
+import minicraft.screen.InfoDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.RelPos;
+import minicraft.screen.entry.StringEntry;
 
 
 public class Renderer extends Game {
@@ -358,9 +360,9 @@ public class Renderer extends Game {
 			ArrayList<String> info = new ArrayList<>();
 			//info.add("VERSION " + Initializer.VERSION);
 			
-			info.add("VERSION " + Game.BUILD + "                                "+ "Test:" + time.getHour()+time.getMinute()+time.getSecond());
-			info.add(""+time.toLocalDate());
-			info.add(Initializer.fra + " fps");
+			info.add("VERSION " + Game.BUILD + "                             "+ "Test:" + time.getHour()+time.getMinute()+time.getSecond());
+			info.add(""+time.toLocalDate()+ "                              "+ "Time:" + InfoDisplay.getTimeString());
+			info.add(Initializer.fra + " fps"+ "                                  "+ "Java:" + System.getProperty("java.version"));
 			info.add("day tiks:" + Updater.tickCount+" ("+Updater.getTime()+")");
 			info.add((Updater.normSpeed * Updater.gamespeed) + " tps");
 			if(!isValidServer()) {
