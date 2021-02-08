@@ -28,13 +28,25 @@ public class DungeonChest extends Chest {
 	 * @param populateInv
 	 */
 	public DungeonChest(boolean populateInv) {
+		this(populateInv, false);
+	}
+
+	public DungeonChest(boolean populateInv, boolean unlocked) {
 		super("Dungeon Chest");
-		this.sprite = lockSprite;
+		if (!unlocked)
+			this.sprite = lockSprite;
+		else
+			this.sprite = openSprite;
 
 		if(populateInv)
 			populateInv();
 		
-		isLocked = true;
+		isLocked = !unlocked;
+	}
+	
+	@Override
+	public Furniture clone() {
+		return new DungeonChest(false, !this.isLocked);
 	}
 	
 	public boolean use(Player player) {
@@ -77,12 +89,12 @@ public class DungeonChest extends Chest {
 	}
 	
 	/**
-	 * Populate the inventory of the DungeonChest, psudo-randomly.
+	 * Populate the inventory of the DungeonChest using the loot table system
 	 */
 	private void populateInv() {
 		Inventory inv = getInventory(); // Yes, I'm that lazy. ;P
 		inv.clearInv(); // clear the inventory.
-		inv.tryAdd(5, Items.get("steak"), 6);
+	  /*inv.tryAdd(5, Items.get("steak"), 6);
 		inv.tryAdd(5, Items.get("cooked pork"), 6);
 		inv.tryAdd(4, Items.get("Wood"), 20);
 		inv.tryAdd(4, Items.get("Wool"), 12);
@@ -115,7 +127,9 @@ public class DungeonChest extends Chest {
 			inv.add(Items.get("steak"), 6);
 			inv.add(Items.get("Time Potion"));
 			inv.add(Items.get("Gem Axe"));
-		}
+		}*/
+		
+		populateInvRandom("dungeonchest", 0);
 	}
 	
 	/** what happens if the player tries to push a Dungeon Chest. */
