@@ -49,7 +49,7 @@ public class FileHandler extends Game {
 		testFile.mkdirs();
 		
 		File oldFolder = new File(saveDir + "/.playminicraft/mods/Cthulhucraft");
-		if(oldFolder.exists()) {
+		if(oldFolder.exists() && !oldFolder.equals(testFile)) {
 			try {
 				copyFolderContents(oldFolder.toPath(), testFile.toPath(), RENAME_COPY, true);
 			} catch (IOException e) {
