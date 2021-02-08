@@ -150,6 +150,7 @@ public class LevelGen {
 			if (count[Tiles.get("tree").id & 0xff] < 100) continue;
 			if (count[Tiles.get("birch tree").id & 0xff] < 100) continue;
 			if (count[Tiles.get("lawn").id & 0xff] < 100) continue;
+			if (count[Tiles.get("flower").id & 0xff] < 100) continue;
 			if (count[Tiles.get("orange tulip").id & 0xff] < 100) continue;
 			if (count[Tiles.get("snow").id & 0xff] < 100) continue;
 			if (count[Tiles.get("fir tree").id & 0xff] < 100) continue;
@@ -620,7 +621,7 @@ public class LevelGen {
 				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
 					if (map[xx + yy * w] == Tiles.get("grass").id) {
 						map[xx + yy * w] = Tiles.get("flower").id;
-						map[xx + yy * w] = Tiles.get("lawn").id;
+						//map[xx + yy * w] = Tiles.get("lawn").id;
 						data[xx + yy * w] = (byte) (col + random.nextInt(4) * 16); // data determines which way the flower faces
 					}
 				}
@@ -1001,8 +1002,23 @@ public class LevelGen {
 				
 				map[x + y * w] = Tiles.get("Cloud tree").id;			
 			}
+		
+		int r = 2;
+		for (int i = 0; i < w * h / 400; i++) {
+			int x = random.nextInt(w);
+			int y = random.nextInt(h);
+			for (int j = 0; j < 30; j++) {
+				int xx = x + random.nextInt(5) - random.nextInt(5);
+				int yy = y + random.nextInt(5) - random.nextInt(5);
+				if (xx >= r && yy >= r && xx < w - r && yy < h - r) {
+					if (map[xx + yy * w] == Tiles.get("cloud").id) {
+						map[xx + yy * w] = Tiles.get("Cloud tree").id;
+					}
+				}
+			}
+		}
 			
-			System.out.println("Seed: " + worldSeed + "Gen-Version" + Game.BUILD);
+			System.out.println("Seed: " + worldSeed + "Gen-Version " + Game.BUILD);
 		
 		int count = 0;
 		stairsLoop:
@@ -1062,12 +1078,12 @@ public class LevelGen {
 		
 		//noinspection InfiniteLoopStatement
 		while (true) {
-			int w = 512;
-			int h = 512;
+			int w = 256;
+			int h = 256;
 			
 			int lvl = maplvls[idx++ % maplvls.length];
 			if (lvl > 1 || lvl < -4) continue;
-			byte[][] fullmap = LevelGen.createAndValidateMap(w, h, lvl);
+			byte[][] fullmap = LevelGen.createAndValidateSkyMap(w, h);
 			if (fullmap == null) continue;
 			byte[] map = fullmap[0];
 			
@@ -1099,13 +1115,14 @@ public class LevelGen {
 					if (map[i] == Tiles.get("Stairs Down").id) pixels[i] = 0xffffff;
 					if (map[i] == Tiles.get("Stairs Up").id) pixels[i] = 0xffffff;
 					if (map[i] == Tiles.get("Cloud Cactus").id) pixels[i] = 0xff00ff;
+					if (map[i] == Tiles.get("Cloud tree").id) pixels[i] = 0xff33ff;
 				}
 			}
 			
-			System.out.println("Seed: " + worldSeed + "  Gen-Version " + Game.BUILD);
+			System.out.println("Seed: " + worldSeed + " Gen-Version " + Game.BUILD);
 			
 			img.setRGB(0, 0, w, h, pixels, 0, w);
-			JOptionPane.showMessageDialog(null, null, "Another Map", JOptionPane.PLAIN_MESSAGE, new ImageIcon(img.getScaledInstance(w * 1, h * 1, Image.SCALE_AREA_AVERAGING)));
+			JOptionPane.showMessageDialog(null, null, "Another Map", JOptionPane.PLAIN_MESSAGE, new ImageIcon(img.getScaledInstance(w * 2, h * 2, Image.SCALE_AREA_AVERAGING)));
 			if (LevelGen.worldSeed == 0x100)
 				LevelGen.worldSeed = 0xAAFF20;
 			else
