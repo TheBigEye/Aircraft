@@ -9,30 +9,46 @@ import minicraft.core.Game;
 
 public class Sound {
 	//creates sounds from their respective files
-	public static final Sound playerHurt = new Sound("/resources/sound/playerhurt.wav");
-	public static final Sound playerDeath = new Sound("/resources/sound/death.wav");
-	public static final Sound Heart = new Sound("/resources/sound/hearth.wav");
+	
+	// Player
+	public static final Sound playerHurt = new Sound("/resources/sound/entity/Player/playerhurt.wav");
+	public static final Sound playerDeath = new Sound("/resources/sound/entity/Player/death.wav");
+	public static final Sound Heart = new Sound("/resources/sound/entity/Player/hearth.wav");
+	
 	public static final Sound monsterHurt = new Sound("/resources/sound/monsterhurt.wav");
 	
 	public static final Sound DestroySpawner = new Sound("/resources/sound/DestroySpawner.wav");
 	public static final Sound DestroySpawner2 = new Sound("/resources/sound/DestroySpawner 2.wav");
 	public static final Sound DestroySpawner3 = new Sound("/resources/sound/DestroySpawner 3.wav");	
 	
-	public static final Sound bossDeath = new Sound("/resources/sound/bossdeath.wav");
-	public static final Sound changePhase = new Sound("/resources/sound/changephase.wav");
-	public static final Sound wizardAttack = new Sound("/resources/sound/wizardattack.wav");
+	// Air Wizard
+	public static final Sound bossDeath = new Sound("/resources/sound/entity/AirWizard/bossdeath.wav");
+	public static final Sound changePhase = new Sound("/resources/sound/entity/AirWizard/changephase.wav");
+	public static final Sound wizardAttack = new Sound("/resources/sound/entity/AirWizard/wizardattack.wav");
+	
+	// Eye Queen
+	public static final Sound eyeBossDeath = new Sound("/resources/sound/entity/EyeQueen/eyedeath.wav");
+	public static final Sound eyeChangePhase = new Sound("/resources/sound/entity/EyeQueen/changephase.wav");
+	
+	
 	public static final Sound fuse = new Sound("/resources/sound/fuse.wav");
 	
+	// Explode
 	public static final Sound explode = new Sound("/resources/sound/explode.wav");
 	public static final Sound explode2 = new Sound("/resources/sound/explode 2.wav");
 	public static final Sound explode3 = new Sound("/resources/sound/explode 3.wav");
 	public static final Sound explode4 = new Sound("/resources/sound/explode 4.wav");
 	
+	
+	// Pickup
 	public static final Sound pickup = new Sound("/resources/sound/pickup.wav");
 	public static final Sound pickup2 = new Sound("/resources/sound/pickup 2.wav");
 	public static final Sound pickup3 = new Sound("/resources/sound/pickup 3.wav");
 	public static final Sound pickup4 = new Sound("/resources/sound/pickup 4.wav");
 	
+	
+	
+	// Menu
 	public static final Sound craft = new Sound("/resources/sound/craft.wav");
 	public static final Sound back = new Sound("/resources/sound/craft.wav");
 	public static final Sound select = new Sound("/resources/sound/select.wav");
@@ -40,8 +56,8 @@ public class Sound {
 	public static final Sound PageUp = new Sound("/resources/sound/Page Up.wav");
 	
 	public static final Sound Intro = new Sound("/resources/sound/Music/Intro.wav");
-	public static final Sound Intro2 = new Sound("/resources/sound/Music/Intro 2.wav");
-	public static final Sound Intro3 = new Sound("/resources/sound/Music/Intro 3.wav");
+	//public static final Sound Intro2 = new Sound("/resources/sound/Music/Intro 2.wav");
+	//public static final Sound Intro3 = new Sound("/resources/sound/Music/Intro 3.wav");
 	
 	public static final Sound Call = new Sound("/resources/sound/Music/Call.wav");
 	
