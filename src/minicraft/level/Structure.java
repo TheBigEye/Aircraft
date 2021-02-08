@@ -185,25 +185,25 @@ public class Structure {
 		airWizardHouse.setData("F:Stone Bricks,W:Stone Wall,D:Stone Door",
 				    "***********************\n" +
 				    "******WWWWWWWWWWW******\n" +
-				    "******WFFFFFFFFFW******\n" +
+				    "*****WWFFFFFFFFFWW*****\n" +
 				    "******WWWWFFFWWWW******\n" +
 				    "*********WWDWW*********\n" +
-			        "**********WFW**********\n" +
+			        "**W*******WFW*******W**\n" +
 				    "*WWW******WFW******WWW*\n" +
 				    "*WFW******WFW******WFW*\n" +
-					"*WFW****WWWDWWW****WFW*\n" +
+					"*WFW****WWWFWWW****WFW*\n" +
 					"*WFWW***WFFFFFW***WWFW*\n" +
 					"*WFFWWWWWFFFFFWWWWWFFW*\n" +
-					"*WFFDFFFDFFFFFDFFFDFFW*\n" +
+					"*WFFDFFFFFFFFFFFFFDFFW*\n" +
 					"*WFFWWWWWFFFFFWWWWWFFW*\n" +
 					"*WFWW***WFFFFFW***WWFW*\n" +
-					"*WFW****WWWDWWW****WFW*\n" +
+					"*WFW****WWWFWWW****WFW*\n" +
 				    "*WFW******WFW******WFW*\n" +
 				    "*WWW******WFW******WWW*\n" +
-				    "**********WFW**********\n" +
+				    "**W*******WFW*******W**\n" +
 				    "*********WWDWW*********\n" +
 				    "******WWWWFFFWWWW******\n" +
-				    "******WFFFFFFFFFW******\n" +
+				    "*****WWFFFFFFFFFWW*****\n" +
 				    "******WWWWWWWWWWW******\n" +
 					"***********************"
 		);
