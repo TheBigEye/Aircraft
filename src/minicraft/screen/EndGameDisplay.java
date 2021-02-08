@@ -10,19 +10,29 @@ import minicraft.core.io.InputHandler;
 import minicraft.core.io.Settings;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Color;
+import minicraft.gfx.Point;
 import minicraft.gfx.Screen;
+import minicraft.gfx.SpriteSheet;
 import minicraft.item.Items;
 import minicraft.saveload.Save;
+import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
 
 public class EndGameDisplay extends Display {
+	private static String TITLE = "";
 	private static final Random random = new Random();
 	
 	private static final String[] scoredItems = {
-		"Cloth", "Slime", "Bone", "Arrow", "Gunpowder", "Antidious"
+		"Wood", "Cloth", "Slime", "Bone", "Arrow", "Gunpowder", "Antidious"
 	};
+	
+	String[] array = {
+			"Game Over?", "Win?", "Win??", "Win???", "The End?" 
+
+	};
+	
 	private static final int maxLen;
 	static {
 		int maxLength = 0;
@@ -43,6 +53,7 @@ public class EndGameDisplay extends Display {
 		
 		
 		ArrayList<ListEntry> entries = new ArrayList<>();
+		EndGameDisplay.TITLE = array[random.nextInt(4)];
 		
 		// calculate the score
 		entries.add(new StringEntry("Player Score: " + Game.player.getScore(), Color.WHITE));
@@ -56,11 +67,15 @@ public class EndGameDisplay extends Display {
 		
 		// add any unlocks
 		entries.addAll(Arrays.asList(getAndWriteUnlocks()));
-		
+		entries.add(new BlankEntry());
+		entries.add(new SelectEntry("Close", () -> Game.setMenu(null)));
 		entries.add(new SelectEntry("Exit to Menu", () -> Game.setMenu(new TitleDisplay())));
 		
 		menus = new Menu[] {
-			new Menu.Builder(true, 0, RelPos.LEFT, entries).createMenu()
+			new Menu.Builder(true, 0, RelPos.LEFT, entries)
+			.setPositioning(new Point(SpriteSheet.boxWidth, SpriteSheet.boxWidth * 3), RelPos.BOTTOM_RIGHT)
+			.setTitle(TITLE)
+			.createMenu()
 		};
 	}
 	
