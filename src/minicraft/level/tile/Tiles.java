@@ -90,6 +90,9 @@ public final class Tiles {
 		tiles.set(65, new IceSpikeTile("Ice Spike"));
 		tiles.set(66, new ObsidianTile("Hard Obsidian"));
 		
+		// WARNING: don't use this tile for anything!
+		tiles.set(255, new ConnectTile());
+		
 		for(int i = 0; i < tiles.size(); i++) {
 			if(tiles.get(i) == null) continue;
 			tiles.get(i).id = (byte)i;
