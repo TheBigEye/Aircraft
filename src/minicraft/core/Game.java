@@ -22,6 +22,7 @@ import minicraft.saveload.Load;
 import minicraft.saveload.Version;
 import minicraft.screen.Display;
 import minicraft.screen.MultiplayerDisplay;
+import minicraft.screen.PlayerDeathDisplay;
 import minicraft.screen.TitleDisplay;
 
 import org.jetbrains.annotations.Nullable;
@@ -36,6 +37,11 @@ public class Game {
 	public static final String NAME = "Aircraft"; // This is the name on the application window
 	public static final String BUILD = "0.1"; // Aircraft version
 	public static final Version VERSION = new Version("2.0.6");// Minicraft mod base version
+	
+	private static String ERROR_TITLE = "";
+	
+	static String[] array = {"Who has put TNT?", "An error has occurred", "Unexpected error", "Oh. That hurts :(", "Sorry :(", "You should try our sister game, Minitale!"};
+
 	
 	public static InputHandler input; // input used in Game, Player, and just about all the *Menu classes.
 	public static Player player;
@@ -82,7 +88,7 @@ public class Game {
 	
 	// LEVEL
 	
-	public static Level[] levels = new Level[7]; // This array stores the different levels.
+	public static Level[] levels = new Level[6]; // This array stores the different levels.
 	public static int currentLevel = 3; // This is the level the player is on. It defaults to 3, the surface.
 	
 	static boolean gameOver = false; // If the player wins this is set to true.
@@ -97,7 +103,27 @@ public class Game {
 	}
 	
 	
+	
 	public static void main(String[] args) {
+		
+		if (debug) {
+		System.out.println("______________________________________________________________");
+		System.out.println("|           │ Class │ Package │ Subclass │ Subclass │ World  |");
+		System.out.println("|           │       │         │(same pkg)│(diff pkg)│        |");
+		System.out.println("|───────────┼───────┼─────────┼──────────┼──────────┼────────|");
+		System.out.println("|public     │   +   │    +    │    +     │     +    │   +    |");
+		System.out.println("|───────────┼───────┼─────────┼──────────┼──────────┼────────|");
+		System.out.println("|protected  │   +   │    +    │    +     │     +    │        |");
+		System.out.println("|───────────┼───────┼─────────┼──────────┼──────────┼────────|");
+		System.out.println("|no modifier│   +   │    +    │    +     │          │        |");
+		System.out.println("|───────────┼───────┼─────────┼──────────┼──────────┼────────|");
+		System.out.println("|private    │   +   │         │          │          │        |");
+		System.out.println("|___________|_______|_________|__________|__________|________|");
+		System.out.println(" + : accessible         blank : not accessible");
+		}
+		
+		Game.ERROR_TITLE = array[random.nextInt(5)];
+		
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
 			throwable.printStackTrace();
 			
@@ -109,15 +135,8 @@ public class Game {
 			errorDisplay.setEditable(false);
 			JScrollPane errorPane = new JScrollPane(errorDisplay);
 			
-			if (random.nextInt(2) == 0) {
-				JOptionPane.showMessageDialog(null, errorPane, "Something went wrong!", JOptionPane.ERROR_MESSAGE);
-			}
-			if (random.nextInt(2) == 1) {
-				JOptionPane.showMessageDialog(null, errorPane, "Unexpected error", JOptionPane.ERROR_MESSAGE);
-			}
-			if (random.nextInt(2) == 2) {
-				JOptionPane.showMessageDialog(null, errorPane, "An error has occurred", JOptionPane.ERROR_MESSAGE);
-			}
+				JOptionPane.showMessageDialog(null, errorPane, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+
 		});
 		
 		Initializer.parseArgs(args);
@@ -149,6 +168,7 @@ public class Game {
 		
 		
 		if (debug) System.out.println("Main game loop ended; Terminating application...");
+		
 		System.exit(0);
 	}
 }
