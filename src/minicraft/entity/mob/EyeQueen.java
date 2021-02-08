@@ -3,6 +3,7 @@ package minicraft.entity.mob;
 import java.util.Random;
 
 import minicraft.core.io.Settings;
+import minicraft.core.io.Sound;
 import minicraft.entity.Arrow;
 import minicraft.entity.mob.boss.AirWizardPhase3;
 import minicraft.entity.particle.FireParticle;
@@ -41,10 +42,25 @@ public class EyeQueen extends EnemyMob {
 				/// if player is less than 6.25 tiles away, then set move dir towards player
 				int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
 				xa = ya = 0;
+				
 				if (xd < sig0) xa = -1;
 				if (xd > sig0) xa = +1;
 				if (yd < sig0) ya = -1;
 				if (yd > sig0) ya = +1;
+				
+				
+				//  texture phases
+				//up
+				if (yd > sig0) {
+					sprites[0][0][0] = new MobSprite(58, 0, 6, 6, 0);
+				}
+				
+				//down
+				if (yd < sig0) {
+					sprites[0][0][0] = new MobSprite(58, 6, 6, 6, 0);
+				}
+				
+				
 			} else {
 				// if the enemy was following the player, but has now lost it, it stops moving.
 					//*that would be nice, but I'll just make it move randomly instead.
@@ -80,6 +96,7 @@ public class EyeQueen extends EnemyMob {
 		if (Settings.get("diff").equals("Hard")) {min = 0; max = 2;}
 		
 		super.die();
+		Sound.eyeChangePhase.play();
 		level.add(new EyeQueenPhase2(1), x, y);
 		
 		int randX = rnd.nextInt(10);

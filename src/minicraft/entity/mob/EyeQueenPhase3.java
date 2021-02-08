@@ -1,9 +1,13 @@
 package minicraft.entity.mob;
 
+import minicraft.core.Game;
 import minicraft.core.io.Settings;
+import minicraft.core.io.Sound;
 import minicraft.entity.Arrow;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
+import minicraft.screen.EndGameDisplay;
+import minicraft.screen.TitleDisplay;
 
 public class EyeQueenPhase3 extends EnemyMob {
     private static final MobSprite[][][] sprites = new MobSprite[2][2][2];
@@ -43,6 +47,18 @@ public class EyeQueenPhase3 extends EnemyMob {
 				if (xd > sig0) xa = +1;
 				if (yd < sig0) ya = -1;
 				if (yd > sig0) ya = +1;
+				
+				//  texture phases
+				//up
+				if (yd > sig0) {
+					sprites[0][0][0] = new MobSprite(70, 0, 6, 6, 0);
+				}
+				
+				//down
+				if (yd < sig0) {
+					sprites[0][0][0] = new MobSprite(70, 6, 6, 6, 0);
+				}
+				
 			} else {
 				// if the enemy was following the player, but has now lost it, it stops moving.
 					//*that would be nice, but I'll just make it move randomly instead.
@@ -89,12 +105,16 @@ public class EyeQueenPhase3 extends EnemyMob {
 
     
 	public void die() {
+		Player player = getClosestPlayer();
+		
 		int min = 0, max = 0;
 		if (Settings.get("diff").equals("Easy")) {min = 1; max = 3;}
 		if (Settings.get("diff").equals("Normal")) {min = 1; max = 2;}
 		if (Settings.get("diff").equals("Hard")) {min = 0; max = 2;}
 		
 		super.die();
+		Sound.eyeBossDeath.play();
+		Game.setMenu(new EndGameDisplay(player));
 	}
 
 }

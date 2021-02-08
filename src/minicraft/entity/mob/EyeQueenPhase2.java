@@ -1,6 +1,7 @@
 package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
+import minicraft.core.io.Sound;
 import minicraft.entity.Arrow;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
@@ -33,19 +34,29 @@ public class EyeQueenPhase2 extends EnemyMob {
 		}**/
 		
 		Player player = getClosestPlayer();
-		if (player != null) { // checks if player is on zombies level and if there is no time left on randonimity timer
+		if (player != null) {
 			int xd = player.x - x;
 			int yd = player.y - y;
-				/// if player is less than 6.25 tiles away, then set move dir towards player
-				int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
+				int sig0 = 1; 
 				xa = ya = 0;
 				if (xd < sig0) xa = -1;
 				if (xd > sig0) xa = +1;
 				if (yd < sig0) ya = -1;
 				if (yd > sig0) ya = +1;
+				
+				//  texture phases
+				//up
+				if (yd > sig0) {
+					sprites[0][0][0] = new MobSprite(64, 0, 6, 6, 0);
+				}
+				
+				//down
+				if (yd < sig0) {
+					sprites[0][0][0] = new MobSprite(64, 6, 6, 6, 0);
+				}
+				
 			} else {
 				// if the enemy was following the player, but has now lost it, it stops moving.
-					//*that would be nice, but I'll just make it move randomly instead.
 				randomizeWalkDir(false);
 			}
 		
@@ -94,6 +105,7 @@ public class EyeQueenPhase2 extends EnemyMob {
 		if (Settings.get("diff").equals("Hard")) {min = 0; max = 2;}
 		
 		super.die();
+		Sound.eyeChangePhase.play();
 		level.add(new EyeQueenPhase3(1), x, y);
 	}
 

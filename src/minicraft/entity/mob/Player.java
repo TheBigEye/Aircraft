@@ -804,10 +804,45 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		
 		// skin events
 		LocalDateTime time = LocalDateTime.now();
+		
+		// Halloween skin
 		if (time.getMonth() == Month.OCTOBER) {
 			if (time.getDayOfMonth() == 30) {
+			sprites =  MobSprite.compileMobSpriteAnimations(68, 40);
+			carrySprites = MobSprite.compileMobSpriteAnimations(68, 42);
+			}
+		}
+		
+		// me??
+		if (time.getMonth() == Month.JULY) {
+			if (time.getDayOfMonth() == 30) {
 			sprites =  MobSprite.compileMobSpriteAnimations(68, 44);
-			carrySprites = MobSprite.compileMobSpriteAnimations(68, 46); // the sprites while carrying something.
+			carrySprites = MobSprite.compileMobSpriteAnimations(68, 46);
+			}
+			if (time.getDayOfMonth() == 29) {
+			sprites =  MobSprite.compileMobSpriteAnimations(68, 44);
+			carrySprites = MobSprite.compileMobSpriteAnimations(68, 46);
+			}
+			if (time.getDayOfMonth() == 28) {
+			sprites =  MobSprite.compileMobSpriteAnimations(68, 44);
+			carrySprites = MobSprite.compileMobSpriteAnimations(68, 46);
+			}
+		}
+		
+		
+		// Markus skin
+		if (time.getMonth() == Month.JUNE) {
+			if (time.getDayOfMonth() == 1) {
+			sprites =  MobSprite.compileMobSpriteAnimations(68, 36);
+			carrySprites = MobSprite.compileMobSpriteAnimations(68, 38);
+			}
+			if (time.getDayOfMonth() == 2) {
+			sprites =  MobSprite.compileMobSpriteAnimations(68, 36);
+			carrySprites = MobSprite.compileMobSpriteAnimations(68, 38);
+			}
+			if (time.getDayOfMonth() == 3) {
+			sprites =  MobSprite.compileMobSpriteAnimations(68, 36);
+			carrySprites = MobSprite.compileMobSpriteAnimations(68, 38);
 			}
 		}
 		
@@ -825,6 +860,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		
 		if (isSwimming()) {
 			yo += 4; // y offset is moved up by 4
+			
 			if (level.getTile(x / 16, y / 16) == Tiles.get("water")) {
 				screen.render(xo + 0, yo + 3, 5 + 2 * 32, 0, 3); // render the water graphic
 				screen.render(xo + 8, yo + 3, 5 + 2 * 32, 1, 3); // render the mirrored water graphic to the right.
@@ -836,7 +872,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	            
 			} else if (level.getTile(x / 16, y / 16) == Tiles.get("lava")) {
 				screen.render(xo + 0, yo + 3, 6 + 2 * 32, 1, 3); // render the water graphic
-				screen.render(xo + 8, yo + 3, 6 + 2 * 32, 0, 3); // render the mirrored water graphic to the right.
+				screen.render(xo + 8, yo + 3, 6 + 2 * 32, 0, 3); // render the mirrored lava graphic to the right.
 				
 				int randX = rnd.nextInt(10);
 				int randY = rnd.nextInt(9);
