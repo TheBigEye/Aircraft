@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Boat extends Entity {
-    private static final Sprite boatSprite = new Sprite(1, 30, 2, 2, 0);
+    private static Sprite boatSprite = new Sprite(1, 30, 2, 2, 0);
 
     private Player playerInBoat = null;
     
@@ -52,9 +52,21 @@ public class Boat extends Entity {
             double xa = 0;
 
             if (Game.input.getKey("move-up").down) ya -= 1;
+            if (Game.input.getKey("move-up").down) {
+            	boatSprite = new Sprite(3, 30, 2, 2, 0);
+            }
             if (Game.input.getKey("move-down").down) ya += 1;
+            if (Game.input.getKey("move-down").down) {
+            	boatSprite = new Sprite(5, 30, 2, 2, 0);
+            }
             if (Game.input.getKey("move-left").down) xa -= 1;
+            if (Game.input.getKey("move-left").down) {
+            	boatSprite = new Sprite(1, 30, 2, 2, 0);
+            }
             if (Game.input.getKey("move-right").down) xa += 1;
+            if (Game.input.getKey("move-right").down) {
+            	boatSprite = new Sprite(7, 30, 2, 2, 0);
+            }
             
 			int randX = rnd.nextInt(10);
 			int randY = rnd.nextInt(9);
