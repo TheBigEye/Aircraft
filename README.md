@@ -1,8 +1,8 @@
-Aircraft
+## Aircraft
 
 A modified version of Minicraft+ that adds much more
 
-**characteristics**
+## characteristics
 The most important features that this mod adds
 
 New diversity of bosses
@@ -21,7 +21,7 @@ Higher resolution
 
 
 
-**To clarify ...**
+## To clarify ...
 Aircraft is totally based on Minicraft Plus [www.playminicraft.com](https://www.playminicraft.com). :)
 The mod has compatibility with Minicraft plus 2.0.6 and 2.0.7. (Older versions before 1.3 are compatible with 2.0.3 to 2.0.4)
 The mod is in Beta phase, it is continuously updated to clean most of the bugs, make maintenance and add features.
