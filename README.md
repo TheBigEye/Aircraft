@@ -1,28 +1,27 @@
 Aircraft
 
-A modified version of Minicraft that adds much more
+A modified version of Minicraft+ that adds much more
 
-characteristics
+**characteristics**
 The most important features that this mod adds
 
-World creation and management options, such as world terrain name, size, and type, and world rename, delete, and copy
-Save / load system for worlds and configurations, and reappear after death
-Multiplayer mode, complete with dedicated server support
-Many more mobs
-More tools, like the brewery.
-Many more items like potions
-Personal preparation menu.
-Beds
-More peat generators
-Pets ("Dogs, cats, wolves"),
-Improved mobs A.I
+New diversity of bosses
+New vegetation
+An in-game game mode editor
+more expanded debug screen
+Notable graphics improvement (based on Rcraft)
+A.i mob and entity upgrade
+More mobs, enemies and animals.
+Enchanted Tool and Enchantment Book Implementation
+More types of wood, walls, and new items
+More weapons
+Villages with villagers and iron golems were added, in addition to rusty golems as mini-bosses, the celestial dungeon was also added
+
+Higher resolution
 
 
-Larger / resizable screen size
-Key binding customization, so you can change the key controls
 
-And best of all, continuous active development
-And don't forget the implementation of new textures!
-
-Goals
-Extend the gameplay, visualization, and simplicity of your development.
+**To clarify ...**
+Aircraft is totally based on Minicraft Plus [www.playminicraft.com](https://www.playminicraft.com). :)
+The mod has compatibility with Minicraft plus 2.0.6 and 2.0.7. (Older versions before 1.3 are compatible with 2.0.3 to 2.0.4)
+The mod is in Beta phase, it is continuously updated to clean most of the bugs, make maintenance and add features.
