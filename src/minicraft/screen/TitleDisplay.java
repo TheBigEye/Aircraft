@@ -77,7 +77,7 @@ public class TitleDisplay extends Display {
 
 
 		// check version
-		checkVersion();
+		//checkVersion();
 
 		/// this is useful to just ensure that everything is really reset as it should be. 
 		if (Game.server != null) {
@@ -140,6 +140,7 @@ public class TitleDisplay extends Display {
 			World.resetGame(false);
 	}
 	
+	/*
 	private void checkVersion() {
 		VersionInfo latestVersion = Network.getLatestVersion();
 		if(latestVersion == null) {
@@ -156,7 +157,7 @@ public class TitleDisplay extends Display {
 			else
 				menus[0].updateEntry(0, new StringEntry("Connection failed, could not check for updates.", Color.RED));
 		}
-	}
+	}*/
 	
 	@NotNull
 	private static SelectEntry displayFactory(String entryText, ListEntry... entries) {
