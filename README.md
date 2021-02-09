@@ -1,9 +1,8 @@
 ## Aircraft
+A modified version of Minicraft+ that adds much more.
 
-A modified version of Minicraft+ that adds much more
-
-## characteristics
-- The most important features that this mod adds
+## Characteristics
+The most important features that this mod adds.
 
 - New diversity of bosses.
 - New vegetation.
@@ -16,7 +15,6 @@ A modified version of Minicraft+ that adds much more
 - More types of wood, walls, and new items.
 - More weapons.
 - Villages with villagers and iron golems were added, in addition to rusty golems as mini-bosses, the celestial dungeon was also added.
-
 - Higher resolution.
 
 ## To clarify ...
