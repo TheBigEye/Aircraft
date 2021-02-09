@@ -14,6 +14,7 @@ public class Sound {
 	public static final Sound playerHurt = new Sound("/resources/sound/entity/Player/playerhurt.wav");
 	public static final Sound playerDeath = new Sound("/resources/sound/entity/Player/death.wav");
 	public static final Sound Heart = new Sound("/resources/sound/entity/Player/hearth.wav");
+	public static final Sound craft = new Sound("/resources/sound/entity/Player/craft.wav");
 	
 	public static final Sound monsterHurt = new Sound("/resources/sound/monsterhurt.wav");
 	
@@ -49,8 +50,7 @@ public class Sound {
 	
 	
 	// Menu
-	public static final Sound craft = new Sound("/resources/sound/craft.wav");
-	public static final Sound back = new Sound("/resources/sound/craft.wav");
+	public static final Sound back = new Sound("/resources/sound/entity/Player/craft.wav");
 	public static final Sound select = new Sound("/resources/sound/select.wav");
 	public static final Sound confirm = new Sound("/resources/sound/confirm.wav");
 	public static final Sound PageUp = new Sound("/resources/sound/Page Up.wav");

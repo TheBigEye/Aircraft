@@ -36,6 +36,9 @@ public class Level {
 	public static String getLevelName(int depth) { return levelNames[-1*depth+1]; }
 	public static String getDepthString(int depth) { return "Level "+(depth<0?"B"+(-depth):depth); }
 	
+	private static String levelName = "";
+	
+	
 	private static final int MOB_SPAWN_FACTOR = 100; // the chance of a mob actually trying to spawn when trySpawn is called equals: mobCount / maxMobCount * MOB_SPAWN_FACTOR. so, it basically equals the chance, 1/number, of a mob spawning when the mob cap is reached. I hope that makes sense...
 	
 	public int w, h; // width and height of the level
@@ -1001,6 +1004,18 @@ public class Level {
 	}
 	
 	public String toString() {
+		return "Level(depth="+depth+")";
+	}
+	public String getLevelName() {
+		if(depth == 1) {
+			levelName = "heaven";
+		}
+		if(depth == 0) {
+			levelName = "surface";
+		}
+		if(depth == -1) {
+			levelName = "cave";
+		}
 		return "Level(depth="+depth+")";
 	}
 }
