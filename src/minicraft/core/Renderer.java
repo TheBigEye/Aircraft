@@ -37,6 +37,7 @@ public class Renderer extends Game {
 	public static final int HEIGHT = 288;
 	public static final int WIDTH = 432;
 	static float SCALE = 3;
+	private static String levelName = "";
 	
 	public static Screen screen; // Creates the main screen
 	
@@ -380,6 +381,31 @@ public class Renderer extends Game {
 				if (isMode("score")) info.add("Score " + player.getScore());
 			}
 			if(levels[currentLevel] != null) {
+				info.add("Level: " + levelName);
+				
+				// level names system
+				if(levels[currentLevel].depth == 1) {
+					levelName = "Heaven";
+				}
+				if(levels[currentLevel].depth == 0) {
+					levelName = "Surface";
+				}
+				if(levels[currentLevel].depth == -1) {
+					levelName = "Cave";
+				}
+				if(levels[currentLevel].depth == -2) {
+					levelName = "Cavern";
+				}
+				if(levels[currentLevel].depth == -3) {
+					levelName = "Core";
+				}
+				if(levels[currentLevel].depth == -4) {
+					levelName = "Dungeon";
+				}
+				if(levels[currentLevel].depth == -5) {
+					levelName = "Hell";
+				}
+				
 				if(!isValidClient())
 					info.add("Mob Cnt " + levels[currentLevel].mobCount + "/" + levels[currentLevel].maxMobCount);
 				else
