@@ -5,19 +5,19 @@ A modified version of Minicraft+ that adds much more
 ## characteristics
 The most important features that this mod adds
 
-New diversity of bosses
-New vegetation
-An in-game game mode editor
-more expanded debug screen
-Notable graphics improvement (based on Rcraft)
-A.i mob and entity upgrade
-More mobs, enemies and animals.
-Enchanted Tool and Enchantment Book Implementation
-More types of wood, walls, and new items
-More weapons
-Villages with villagers and iron golems were added, in addition to rusty golems as mini-bosses, the celestial dungeon was also added
+- New diversity of bosses.
+- New vegetation.
+- An in-game game mode editor.
+- More expanded debug screen.
+- Notable graphics improvement (based on Rcraft).
+- A.i mob and entity upgrade.
+- More mobs, enemies and animals.
+- Enchanted Tool and Enchantment Book Implementation.
+- More types of wood, walls, and new items.
+- More weapons.
+- Villages with villagers and iron golems were added, in addition to rusty golems as mini-bosses, the celestial dungeon was also added.
 
-Higher resolution
+- Higher resolution
 
 
 
