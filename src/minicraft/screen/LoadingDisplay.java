@@ -22,6 +22,16 @@ public class LoadingDisplay extends Display {
 	private static float percentage = 0;
 	private static String progressType = "";
 	
+	private static String Build = "";
+	private static String Finish = "";
+	
+	String[] BuildString = {
+			"Generating", "Calculating", "Pre Calculating", 
+			"Building", "Melting", "Eroding", 
+			"Planting", "Populating", 
+			"Molding", "Raising", 
+	};
+	
 	private static Random random = new Random();
 	
 	private Timer t;
@@ -44,20 +54,10 @@ public class LoadingDisplay extends Display {
 		progressType = "World";
 		if(WorldSelectDisplay.loadedWorld())
 			msg = "Loading";
-		
 		else 
-			if (random.nextInt(2) == 0) {
-				msg = "Melting";
-			}
-			if (random.nextInt(2) == 1) {
-				msg = "Generating";
-			}
-			if (random.nextInt(2) == 2) {
-				msg = "Calculating";
-			}
+			LoadingDisplay.Build = BuildString[random.nextInt(9)];
+		    msg = Build;
 		t.start();
-		
-
 	}
 	
 	@Override
@@ -97,8 +97,10 @@ public class LoadingDisplay extends Display {
 			Localization.getLocalized(msg)+ ellipsis.updateAndGet(),
 			percent+"%"
 		);
+		Font.drawCentered("May take a while, be patient", screen, Screen.h - 12, Color.get(1, 51));
 		{
 			Sound.Intro.stop();
+			Sound.Intro2.stop();
 		}
 	}
 }
