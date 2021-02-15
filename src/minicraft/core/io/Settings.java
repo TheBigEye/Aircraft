@@ -1,5 +1,6 @@
 package minicraft.core.io;
 
+import java.awt.DisplayMode;
 import java.awt.GraphicsEnvironment;
 import java.util.HashMap;
 
@@ -12,7 +13,7 @@ public class Settings {
 	private static HashMap<String, ArrayEntry> options = new HashMap<>();
 	
 	static {
-		options.put("fps", new RangeEntry("Max FPS", 10, 300, GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate()));
+		options.put("fps", new RangeEntry("Max FPS", 10, 300, getRefreshRate()));
 		options.put("diff", new ArrayEntry<>("Difficulty", "Easy", "Normal", "Hard"));
 		options.get("diff").setSelection(1);
 		options.put("mode", new ArrayEntry<>("Game Mode", "Survival", "Creative", "Hardcore", "Score"));
@@ -51,6 +52,16 @@ public class Settings {
 	
 	public static void init() {}
 	
+	private static int getRefreshRate() {
+		if (GraphicsEnvironment.isHeadless()) return 60;
+
+		int hz = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate();
+		if (hz == DisplayMode.REFRESH_RATE_UNKNOWN) return 60;
+		if (hz > 300) return 60;
+		if (10 > hz) return 60;
+		return hz;
+	}
+
 	// returns the value of the specified option
 	public static Object get(String option) { return options.get(option.toLowerCase()).getValue(); }
 	
