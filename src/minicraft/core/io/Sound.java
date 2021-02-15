@@ -56,7 +56,7 @@ public class Sound {
 	public static final Sound PageUp = new Sound("/resources/sound/Page Up.wav");
 	
 	public static final Sound Intro = new Sound("/resources/sound/Music/Intro.wav");
-	//public static final Sound Intro2 = new Sound("/resources/sound/Music/Intro 2.wav");
+	public static final Sound Intro2 = new Sound("/resources/sound/Music/Intro 2.wav");
 	//public static final Sound Intro3 = new Sound("/resources/sound/Music/Intro 3.wav");
 	
 	public static final Sound Call = new Sound("/resources/sound/Music/Call.wav");

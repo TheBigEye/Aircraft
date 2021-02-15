@@ -72,7 +72,13 @@ public class TitleDisplay extends Display {
 		
 		Sound.Heart.stop();
 		
-		Sound.Intro.loop(true);			
+		if (random.nextInt(3) == 0) {
+			Sound.Intro.loop(true);
+		}
+		if (random.nextInt(3) == 3) {
+			Sound.Intro2.loop(true);
+		}
+
 
 
 
