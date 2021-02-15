@@ -39,6 +39,7 @@ public class Items {
 		addAll(TileItem.getAllInstances());
 		addAll(FishingRodItem.getAllInstances());
 		addAll(ToolItem.getAllInstances());
+		addAll(ShearItem.getAllInstances());
 		//addAll(Enchanted.getAllInstances());
 		//addAll(SharpSwordI.getAllInstances());
 		//addAll(SharpSwordII.getAllInstances());
@@ -53,7 +54,7 @@ public class Items {
 	@NotNull
 	public static Item get(String name) {
 		Item i = get(name, false);
-		if(i == null) return new UnknownItem("NULL"); // technically shouldn't ever happen
+		if (i == null) return new UnknownItem("NULL"); // technically shouldn't ever happen
 		return i;
 	}
 	@Nullable
@@ -62,11 +63,11 @@ public class Items {
 		//System.out.println("fetching name: \"" + name + "\"");
 		int data = 1;
 		boolean hadUnderscore = false;
-		if(name.contains("_")) {
+		if (name.contains("_")) {
 			hadUnderscore = true;
 			try {
 				data = Integer.parseInt(name.substring(name.indexOf("_")+1));
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 			name = name.substring(0, name.indexOf("_"));
