@@ -1018,7 +1018,7 @@ public class LevelGen {
 			}
 		}
 			
-			System.out.println("Seed: " + worldSeed + "Gen-Version " + Game.BUILD);
+			System.out.println("Seed: " + worldSeed + " Gen-Version " + Game.BUILD+"/"+Game.VERSION);
 		
 		int count = 0;
 		stairsLoop:
