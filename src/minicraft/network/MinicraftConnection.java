@@ -17,7 +17,7 @@ public abstract class MinicraftConnection extends Thread implements MinicraftPro
 	
 	private PrintWriter out;
 	private BufferedReader in;
-	private Socket socket = null;
+	private Socket socket;
 	
 	protected MinicraftConnection(String threadName, @Nullable Socket socket) {
 		super(threadName);
