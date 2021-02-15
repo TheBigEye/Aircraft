@@ -10,7 +10,6 @@ import java.util.List;
 
 import minicraft.core.Game;
 import minicraft.core.Renderer;
-import minicraft.core.UnlockableRecipes;
 import minicraft.core.Updater;
 import minicraft.core.World;
 import minicraft.core.io.Localization;
@@ -25,36 +24,30 @@ import minicraft.entity.furniture.DeathChest;
 import minicraft.entity.furniture.DungeonChest;
 import minicraft.entity.furniture.Lantern;
 import minicraft.entity.furniture.Spawner;
-import minicraft.entity.mob.EnemyMob;
-import minicraft.entity.mob.Mob;
-import minicraft.entity.mob.Player;
-import minicraft.entity.mob.RemotePlayer;
+import minicraft.entity.mob.*;
 import minicraft.entity.mob.boss.AirWizard;
 import minicraft.entity.particle.Particle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.item.*;
-import minicraft.level.LevelGen;
 import minicraft.network.MinicraftServer;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
-import minicraft.screen.WorldGenDisplay;
 import minicraft.screen.WorldSelectDisplay;
 
 public class Save {
-	
+
 	public String location = Game.gameDir;
 	File folder;
-	
+
 	public static String extension = ".miniplussave";
-	
+
 	List<String> data;
-	Game game;
-	
+
 	private Save(File worldFolder) {
 		data = new ArrayList<>();
-		
-		
-		if(worldFolder.getParent().equals("saves")) {
+
+
+		if (worldFolder.getParent().equals("saves")) {
 			String worldName = worldFolder.getName();
 			if (!worldName.toLowerCase().equals(worldName)) {
 				if (Game.debug) System.out.println("Renaming world in " + worldFolder + " to lowercase");
@@ -67,31 +60,30 @@ public class Save {
 					System.err.println("Failed to rename world folder " + worldFolder + " to " + newFolder);
 			}
 		}
-		
+
 		folder = worldFolder;
 		location = worldFolder.getPath() + "/";
-		
+
 		folder.mkdirs();
 	}
-	
-	/// this saves world options
+
+	// This saves world options
 	public Save(String worldname) {
 		this(new File(Game.gameDir+"/saves/" + worldname + "/"));
-		
-		if(Game.isValidClient()) {
+
+		if (Game.isValidClient()) {
 			// clients are not allowed to save.
 			Updater.saving = false;
 			return;
 		}
-		
+
 		writeGame("Game");
 		writeWorld("Level");
-		if(!Game.isValidServer()) { // this must be waited for on a server.
+		if (!Game.isValidServer()) { // this must be waited for on a server.
 			writePlayer("Player", Game.player);
 			writeInventory("Inventory", Game.player);
 		}
 		writeEntities("Entities");
-		writeSeed("Seed");
 		
 		WorldSelectDisplay.refreshWorldNames();
 		
@@ -99,14 +91,8 @@ public class Save {
 		Updater.asTick = 0;
 		Updater.saving = false;
 	}
-
-	private void writeSeed(String filename) {
-		data.add(String.valueOf(WorldGenDisplay.worldSeed.getUserInput()));
-		writeToFile(location + filename + extension, data);
-		
-	}
-
-	/// this saves server config options
+	
+	// this saves server config options
 	public Save(String worldname, MinicraftServer server) {
 		this(new File(Game.gameDir+"/saves/" + worldname + "/"));
 		
@@ -117,7 +103,7 @@ public class Save {
 	// this saves global options
 	public Save() {
 		this(new File(Game.gameDir+"/"));
-		if(Game.debug) System.out.println("Writing preferences and unlocks...");
+		if (Game.debug) System.out.println("Writing preferences and unlocks...");
 		writePrefs();
 	}
 	
@@ -176,7 +162,6 @@ public class Save {
 		data.add(String.valueOf(Settings.getIdx("diff")));
 		data.add(String.valueOf(AirWizard.beaten));
 		writeToFile(location + filename + extension, data);
-
 	}
 	
 	private void writePrefs() {
@@ -330,6 +315,8 @@ public class Save {
 			extradata.append(":").append(m.health);
 			if(e instanceof EnemyMob)
 				extradata.append(":").append(((EnemyMob) m).lvl);
+			else if (e instanceof Sheep)
+				extradata.append(":").append(((Sheep) m).cut); // Saves if the sheep is cut. If not, we could reload the save and the wool would regenerate.
 		}
 		
 		if(e instanceof Chest) {
@@ -341,7 +328,7 @@ public class Save {
 			}
 			
 			if(chest instanceof DeathChest) extradata.append(":").append(((DeathChest) chest).time);
-			if(chest instanceof DungeonChest) extradata.append(":").append(((DungeonChest) chest).isLocked);
+			if(chest instanceof DungeonChest) extradata.append(":").append(((DungeonChest) chest).isLocked());
 		}
 		
 		if(e instanceof Spawner) {
