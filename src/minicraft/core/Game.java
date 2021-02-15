@@ -36,7 +36,7 @@ public class Game {
 	
 	public static final String NAME = "Aircraft"; // This is the name on the application window
 	public static final String BUILD = "0.1"; // Aircraft version
-	public static final Version VERSION = new Version("2.0.6");// Minicraft mod base version
+	public static final Version VERSION = new Version("2.0.7-dev1");// Minicraft mod base version
 	
 	private static String ERROR_TITLE = "";
 	
