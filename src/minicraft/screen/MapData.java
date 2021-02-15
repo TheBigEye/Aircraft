@@ -10,10 +10,10 @@ public enum MapData {
 	
 	GRASS(Tiles.get("Grass").id, Color.get(1, 84, 168, 84)),	
     LAWN(Tiles.get("Lawn").id, Color.get(1, 96, 165, 96)),
-    PATH(Tiles.get("Path").id, Color.get(1, 217, 160, 102)),  
+    //PATH(Tiles.get("Path").id, Color.get(1, 217, 160, 102)),  
    
     DIRT(Tiles.get("Dirt").id, Color.get(1, 131, 108, 108)),  
-    FLOWER(Tiles.get("Flower").id, Color.YELLOW),   
+    //FLOWER(Tiles.get("Flower").id, Color.YELLOW),   
     HOLE(Tiles.get("Hole").id, Color.get(1, 61, 47, 8)),
     
     WATER(Tiles.get("Water").id, Color.get(1, 26, 44, 137)),    
