@@ -1,8 +1,13 @@
 package minicraft.level.tile;
 
+import java.util.Random;
+
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
+import minicraft.entity.Entity;
+import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
+import minicraft.entity.particle.FireParticle;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
@@ -11,9 +16,11 @@ import minicraft.item.PowerGloveItem;
 import minicraft.level.Level;
 
 public class TorchTile extends Tile {
-	private static Sprite sprite = new Sprite(5, 3, 0);
+	private static Sprite sprite = new Sprite(4, 2, 0);
 	
 	private Tile onType;
+	
+	private Random rnd = new Random();
 	
 	public static TorchTile getTorchTile(Tile onTile) {
 		int id = onTile.id & 0xFF;
@@ -43,7 +50,6 @@ public class TorchTile extends Tile {
 		sprite.render(screen, x*16 + 4, y*16 + 4);
 	}
 	
-	
 	public int getLightRadius(Level level, int x, int y) {
 		return 5;
 	}
@@ -52,6 +58,9 @@ public class TorchTile extends Tile {
 		if(item instanceof PowerGloveItem) {
 			level.setTile(xt, yt, this.onType);
 			Sound.monsterHurt.play();
+			int randX = rnd.nextInt(20);
+			int randY = rnd.nextInt(19);
+			level.add(new FireParticle(xt - 1 + randX, yt - 1 + randY));
 			level.dropItem(xt*16+8, yt*16+8, Items.get("Torch"));
 			return true;
 		} else {
