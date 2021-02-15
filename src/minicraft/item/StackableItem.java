@@ -82,7 +82,7 @@ public class StackableItem extends Item {
 		items.add(new StackableItem("Sharp III", new Sprite(2, 8, 0)));
 		
 		// Essences
-		items.add(new StackableItem("Cordyceps essence", new Sprite(1, 7, 0)));
+		//items.add(new StackableItem("Cordyceps essence", new Sprite(1, 7, 0)));
 		items.add(new StackableItem("Sticky essence", new Sprite(2, 7, 0)));
 		items.add(new StackableItem("Gaseous essence", new Sprite(3, 7, 0)));
 		items.add(new StackableItem("Master essence", new Sprite(4, 7, 0)));
@@ -92,7 +92,7 @@ public class StackableItem extends Item {
 	
 	public int count;
 	///public int maxCount; // TODO I want to implement this later.
-	public int maxCount = 100;
+	public int maxCount = 64;
 	
 	protected StackableItem(String name, Sprite sprite) {
 		super(name, sprite);
