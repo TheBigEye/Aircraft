@@ -271,9 +271,7 @@ public class Level {
 
 	public void tick(boolean fullTick) {
 		int count = 0;
-		
-		
-		
+				
 		while(entitiesToAdd.size() > 0) {
 			Entity entity = entitiesToAdd.get(0);
 			boolean inLevel = entities.contains(entity);
