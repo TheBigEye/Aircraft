@@ -8,11 +8,9 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.boss.EyeQueen;
-import minicraft.entity.mob.boss.EyeQueenPhase2;
 import minicraft.gfx.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
-import minicraft.screen.MapDisplay;
 
 public class AmuletItem extends Item {
 	
