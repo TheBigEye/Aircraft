@@ -24,7 +24,6 @@ public class FileHandler extends Game {
 	
 	static {
 		OS = System.getProperty("os.name").toLowerCase();
-		//System.out.println("os name: \"" +os + "\"");
 		String local = "playminicraft/mods/Aircraft";
 		
 		if(OS.contains("windows")) // windows
@@ -32,13 +31,16 @@ public class FileHandler extends Game {
 		else {
 			systemGameDir = System.getProperty("user.home");
 			if(!OS.contains("mac"))
-				local = "."+local; // linux
+				local = "."+local; // Linux
 		}
 		
 		localGameDir = "/"+local;
 		
-		//System.out.println("system game dir: " + systemGameDir);
+		if (Game.debug) System.out.println("os name: \"" + OS + "\"");		
+		if (Game.debug) System.out.println("system game dir: " + systemGameDir);
+		
 	}
+	
 	
 	
 	static void determineGameDir(String saveDir) {
@@ -83,7 +85,7 @@ public class FileHandler extends Game {
 	
 	public static void copyFolderContents(Path origFolder, Path newFolder, int ifExisting, boolean deleteOriginal) throws IOException {
 		// I can determine the local folder structure with origFolder.relativize(file), then use newFolder.resolve(relative).
-		if (Game.debug) System.out.println("Copying contents of folder " + origFolder + " to new folder " + newFolder);
+		//if (Game.debug) System.out.println("Copying contents of folder " + origFolder + " to new folder " + newFolder);
 		
 		Files.walkFileTree(origFolder, new FileVisitor<Path>() {
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
@@ -101,7 +103,9 @@ public class FileHandler extends Game {
 				}
 				
 				Path newFile = new File(newFilename).toPath();
-				//if (Game.debug) System.out.println("visiting file " + file + "; translating to " + newFile);
+				
+				if (Game.debug) System.out.println("visiting file " + file + "; translating to " + newFile);
+				
 				try {
 					Files.copy(file, newFile, StandardCopyOption.REPLACE_EXISTING);
 				} catch(Exception ex) {
