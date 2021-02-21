@@ -75,9 +75,11 @@ public class ConsoleReader extends Thread {
 		STATUS
 		(null, "display some server stats.", "displays game version, server fps, and number of players connected.") {
 			public void run(String[] args) {
-				System.out.println("Running "+Game.NAME+' '+Game.VERSION+(Game.debug?" (debug mode)":""));
+				System.out.println("Running "+Game.NAME+' '+"Minicraft "+Game.VERSION+(Game.debug?" (debug mode)":""));
 				System.out.println("Fps: " + Initializer.getCurFps());
 				System.out.println("Players connected: " + Game.server.getNumPlayers());
+				System.out.println("");
+				System.out.println("The server only supports "+Game.NAME +Game.BUILD );
 				for(String info: Game.server.getClientInfo())
 					System.out.println("\t"+info);
 			}
