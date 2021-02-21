@@ -14,7 +14,7 @@ public class Particle extends Entity implements ClientTickable {
 	/**
 	 * Creates an particle entity at the given position. The particle has a x and y radius = 1.
 	 * @param x X map coordinate
-	 * @param y Y map coorindate
+	 * @param y Y map coordinate
 	 * @param xr x radius of the particle   
 	 * @param lifetime How many game ticks the particle lives before its removed
 	 * @param sprite The particle's sprite
