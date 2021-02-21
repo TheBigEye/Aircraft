@@ -14,7 +14,7 @@ public class Settings {
 	
 	static {
 		options.put("fps", new RangeEntry("Max FPS", 10, 300, getRefreshRate()));
-		options.put("diff", new ArrayEntry<>("Difficulty", "Easy", "Normal", "Hard"));
+		options.put("diff", new ArrayEntry<>("Difficulty", "Passive", "Easy", "Normal", "Hard"));
 		options.get("diff").setSelection(1);
 		options.put("mode", new ArrayEntry<>("Game Mode", "Survival", "Creative", "Hardcore", "Score"));
 		
