@@ -9,7 +9,6 @@ import minicraft.entity.mob.Player;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
 import minicraft.screen.EndGameDisplay;
-import minicraft.screen.TitleDisplay;
 
 public class EyeQueenPhase3 extends EnemyMob {
     private static final MobSprite[][][] sprites = new MobSprite[2][2][2];
