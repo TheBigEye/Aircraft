@@ -10,7 +10,6 @@ import minicraft.core.io.Settings;
 import minicraft.gfx.Color;
 import minicraft.gfx.Font;
 import minicraft.gfx.Screen;
-import minicraft.saveload.Load;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.WorldSelectDisplay;

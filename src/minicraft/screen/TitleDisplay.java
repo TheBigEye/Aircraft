@@ -5,9 +5,7 @@ import java.time.Month;
 import java.util.Random;
 
 import minicraft.core.Game;
-import minicraft.core.Network;
 import minicraft.core.Renderer;
-import minicraft.core.VersionInfo;
 import minicraft.core.World;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Sound;
@@ -18,7 +16,6 @@ import minicraft.gfx.Point;
 import minicraft.gfx.Screen;
 import minicraft.level.Level;
 import minicraft.screen.entry.BlankEntry;
-import minicraft.screen.entry.LinkEntry;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
@@ -72,10 +69,10 @@ public class TitleDisplay extends Display {
 		
 		Sound.Heart.stop();
 		
-		if (random.nextInt(3) == 0) {
+		if (random.nextInt(2) == 0) {
 			Sound.Intro.loop(true);
 		}
-		if (random.nextInt(3) == 3) {
+		if (random.nextInt(2) == 1) {
 			Sound.Intro2.loop(true);
 		}
 

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import javax.swing.JOptionPane;
-
 import minicraft.core.Game;
 import minicraft.core.World;
 import minicraft.core.io.Settings;
