@@ -71,23 +71,24 @@ public class EnemyMob extends MobAi {
 	public void tick() {
 		super.tick();
 		
+		
+		if (Settings.get("diff").equals("Passive") == false) {
 		Player player = getClosestPlayer();
 		if (player != null && !Bed.sleeping() && randomWalkTime <= 0) { // checks if player is on zombies level and if there is no time left on randonimity timer
 			int xd = player.x - x;
 			int yd = player.y - y;
-			if (xd * xd + yd * yd < detectDist * detectDist) {
-				/// if player is less than 6.25 tiles away, then set move dir towards player
+			if (xd * xd + yd * yd < detectDist * detectDist) {/// if player is less than 6.25 tiles away, then set move dir towards player
 				int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
 				xa = ya = 0;
 				if (xd < sig0) xa = -1;
 				if (xd > sig0) xa = +1;
 				if (yd < sig0) ya = -1;
 				if (yd > sig0) ya = +1;
-			} else {
-				// if the enemy was following the player, but has now lost it, it stops moving.
+			} else {// if the enemy was following the player, but has now lost it, it stops moving.
 					//*that would be nice, but I'll just make it move randomly instead.
 				randomizeWalkDir(false);
 			}
+		}		
 		}
 	}
 	
@@ -99,8 +100,10 @@ public class EnemyMob extends MobAi {
 	
 	@Override
 	protected void touchedBy(Entity entity) { // if an entity (like the player) touches the enemy mob
-		super.touchedBy(entity);
-		// hurts the player, damage is based on lvl.
+		
+		if (Settings.get("diff").equals("Passive")) return;
+		
+		super.touchedBy(entity); // hurts the player, damage is based on lvl.
 		if(entity instanceof Player) {
 			((Player)entity).hurt(this, lvl * (Settings.get("diff").equals("Hard") ? 3 : 1));
 		}
@@ -109,6 +112,8 @@ public class EnemyMob extends MobAi {
 	public void die() {
 		super.die(50 * lvl, 1);
 	}
+	
+	
 	
 	/**
 	 * Determines if the mob can spawn at the giving position in the given map. 
@@ -130,11 +135,10 @@ public class EnemyMob extends MobAi {
 		if(level.depth == -4) {
 			if (t != Tiles.get("Obsidian")) return false;
 		} else if (t != Tiles.get("Stone Door") && t != Tiles.get("Wood Door") && t != Tiles.get("Obsidian Door") && t != Tiles.get("wheat") && t != Tiles.get("farmland")) {
-			// prevents mobs from spawning on lit tiles, farms, or doors (unless in the dungeons)
 			return !level.isLight(x, y);
 		} else return false;
 
-		return true;
+		return true;// prevents mobs from spawning on lit tiles, farms, or doors (unless in the dungeons)
 	}
 	
 	@Override
