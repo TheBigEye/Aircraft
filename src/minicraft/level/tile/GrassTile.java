@@ -1,7 +1,5 @@
 package minicraft.level.tile;
 
-import java.util.Random;
-
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
