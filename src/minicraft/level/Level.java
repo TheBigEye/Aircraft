@@ -7,7 +7,6 @@ import minicraft.core.Game;
 import minicraft.core.Network;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
-import minicraft.core.io.Sound;
 import minicraft.entity.ClientTickable;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
@@ -47,7 +46,7 @@ public class Level {
 	public byte[] data; // an array of the data of the tiles in the world. // ?
 	
 	public final int depth; // depth level of the level
-	public int monsterDensity = 6; // affects the number of monsters that are on the level, bigger the number the less monsters spawn.
+	public int monsterDensity = 7; // affects the number of monsters that are on the level, bigger the number the less monsters spawn.
 	public int maxMobCount;
 	public int chestCount;
 	public int mobCount = 0;
@@ -289,7 +288,8 @@ public class Level {
 				}
 			}
 			entitiesToAdd.remove(entity);
-		}
+		}	
+		
 		
 		// this play random music in game
 	/**	if (Settings.get("ambient").equals("Nice")) {
@@ -638,6 +638,7 @@ public class Level {
 			//System.out.println("trySpawn on level " + depth + " of lvl " + lvl + " mob w/ rand " + rnd + " at tile " + nx + "," + ny);
 			
 			// spawns the enemy mobs; first part prevents enemy mob spawn on surface on first day, more or less.
+			if (Settings.get("diff").equals("Passive") == false) {
 			if ((Updater.getTime() == Updater.Time.Night || depth != 0) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
 				if(depth != -4) { // normal mobs
 					if (rnd <= 40) add((new Slime(lvl)), nx, ny);
@@ -653,6 +654,10 @@ public class Level {
 				}
 				
 				spawned = true;
+				
+			}
+			}else {
+				spawned = false;
 			}
 			
 			if(depth == 0 && PassiveMob.checkStartPos(this, nx, ny)) {
