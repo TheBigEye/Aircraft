@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import minicraft.core.Game;
+import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.EnemyMob;
@@ -84,6 +85,10 @@ public class Spawner extends Furniture {
 			int chance = (int) (minMobSpawnChance * Math.pow(level.mobCount, 2) / Math.pow(level.maxMobCount, 2)); // this forms a quadratic function that determines the mob spawn chance.
 			if(chance <= 0 || random.nextInt(chance) == 0)
 				trySpawn();
+			resetSpawnInterval();
+		}
+		
+		if (Settings.get("diff").equals("Passive")) {
 			resetSpawnInterval();
 		}
 	}
