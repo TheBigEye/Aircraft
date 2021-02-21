@@ -27,7 +27,6 @@ import minicraft.saveload.Load;
 import minicraft.screen.InfoDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.RelPos;
-import minicraft.screen.entry.StringEntry;
 
 
 public class Renderer extends Game {
@@ -306,7 +305,7 @@ public class Renderer extends Game {
 		}
 		
 		
-		// This is the status icons, like health hearts, stamina bolts, and hunger "burgers".
+		// This is the status icons, like health hearts, stamina bolts, and hunger "burger".
 		if (!isMode("creative")) {
 			for (int i = 0; i < Player.maxStat; i++) {
 				
