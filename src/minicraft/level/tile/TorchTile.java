@@ -4,8 +4,6 @@ import java.util.Random;
 
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
-import minicraft.entity.Entity;
-import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.FireParticle;
 import minicraft.gfx.Screen;
@@ -17,6 +15,8 @@ import minicraft.level.Level;
 
 public class TorchTile extends Tile {
 	private static Sprite sprite = new Sprite(4, 2, 0);
+	private static int LIGHT = 5;
+	
 	
 	private Tile onType;
 	
@@ -42,6 +42,7 @@ public class TorchTile extends Tile {
 		this.onType = onType;
 		this.connectsToSand = onType.connectsToSand;
 		this.connectsToGrass = onType.connectsToGrass;
+		this.connectsToSnow = onType.connectsToSnow;
 		this.connectsToFluid = onType.connectsToFluid;
 	}
 	
@@ -50,8 +51,22 @@ public class TorchTile extends Tile {
 		sprite.render(screen, x*16 + 4, y*16 + 4);
 	}
 	
+	public void tick(Level level, int x, int y) {
+		
+		if (random.nextInt(5)==1) {
+			
+		if (random.nextInt(2) == 0) {
+			LIGHT = 6;
+		}
+		if (random.nextInt(2) == 1) {
+			LIGHT = 5;
+		}
+		}
+		
+	}
+	
 	public int getLightRadius(Level level, int x, int y) {
-		return 5;
+		return LIGHT;
 	}
 	
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
