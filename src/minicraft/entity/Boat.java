@@ -37,21 +37,24 @@ public class Boat extends Entity {
 
     @Override
     public void render(Screen screen) {
-        boatSprite.render(screen, x - 8, y - 8);
-        if (playerInBoat != null && Game.input.getKey("move-up").down) {
+    	boatSprite.render(screen, x - 8, y - 8);
+    	
+    	if (playerInBoat != null == true){
+    	
+        if (Game.input.getKey("move-up").down) {
         	boatUp.render(screen, x - 8, y - 8);
         }
-        if (playerInBoat != null && Game.input.getKey("move-down").down) {
+        if (Game.input.getKey("move-down").down) {
         	boatDown.render(screen, x - 8, y - 8);
         }
-        if (playerInBoat != null && Game.input.getKey("move-left").down) {
+        if (Game.input.getKey("move-left").down) {
         	boatLeft.render(screen, x - 8, y - 8);
         }
-        if (playerInBoat != null && Game.input.getKey("move-right").down) {
+        if (Game.input.getKey("move-right").down) {
         	boatRight.render(screen, x - 8, y - 8);
         }
         
-        
+    	}
     }
 
     @Override
@@ -71,19 +74,19 @@ public class Boat extends Entity {
 
             if (Game.input.getKey("move-up").down) ya -= 1;
             if (Game.input.getKey("move-up").down) {
-            	boatUp = new Sprite(3, 30, 2, 2, 0);
+            	//boatUp = new Sprite(3, 30, 2, 2, 0);
             }
             if (Game.input.getKey("move-down").down) ya += 1;
             if (Game.input.getKey("move-down").down) {
-            	boatDown = new Sprite(5, 30, 2, 2, 0);
+            	//boatDown = new Sprite(5, 30, 2, 2, 0);
             }
             if (Game.input.getKey("move-left").down) xa -= 1;
             if (Game.input.getKey("move-left").down) {
-            	boatLeft = new Sprite(1, 30, 2, 2, 0);
+            	//boatLeft = new Sprite(1, 30, 2, 2, 0);
             }
             if (Game.input.getKey("move-right").down) xa += 1;
             if (Game.input.getKey("move-right").down) {
-            	boatRight = new Sprite(7, 30, 2, 2, 0);
+            	//boatRight = new Sprite(7, 30, 2, 2, 0);
             }
             
 			int randX = rnd.nextInt(10);
