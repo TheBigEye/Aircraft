@@ -22,7 +22,6 @@ import minicraft.saveload.Load;
 import minicraft.saveload.Version;
 import minicraft.screen.Display;
 import minicraft.screen.MultiplayerDisplay;
-import minicraft.screen.PlayerDeathDisplay;
 import minicraft.screen.TitleDisplay;
 
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +34,7 @@ public class Game {
 	public static boolean HAS_GUI = true;
 	
 	public static final String NAME = "Aircraft"; // This is the name on the application window
-	public static final String BUILD = "0.1"; // Aircraft version
+	public static final String BUILD = "0.2"; // Aircraft version
 	public static final Version VERSION = new Version("2.0.7-dev1");// Minicraft mod base version
 	
 	private static String ERROR_TITLE = "";
