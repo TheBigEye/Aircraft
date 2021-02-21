@@ -11,10 +11,10 @@ public class Sound {
 	//creates sounds from their respective files
 	
 	// Player
-	public static final Sound playerHurt = new Sound("/resources/sound/entity/Player/playerhurt.wav");
-	public static final Sound playerDeath = new Sound("/resources/sound/entity/Player/death.wav");
-	public static final Sound Heart = new Sound("/resources/sound/entity/Player/hearth.wav");
-	public static final Sound craft = new Sound("/resources/sound/entity/Player/craft.wav");
+	public static final Sound playerHurt = new Sound("/resources/sound/Entity/Player/playerhurt.wav");
+	public static final Sound playerDeath = new Sound("/resources/sound/Entity/Player/death.wav");
+	public static final Sound Heart = new Sound("/resources/sound/Entity/Player/hearth.wav");
+	public static final Sound craft = new Sound("/resources/sound/Entity/Player/craft.wav");
 	
 	public static final Sound monsterHurt = new Sound("/resources/sound/monsterhurt.wav");
 	
@@ -23,13 +23,13 @@ public class Sound {
 	public static final Sound DestroySpawner3 = new Sound("/resources/sound/DestroySpawner 3.wav");	
 	
 	// Air Wizard
-	public static final Sound bossDeath = new Sound("/resources/sound/entity/AirWizard/bossdeath.wav");
-	public static final Sound changePhase = new Sound("/resources/sound/entity/AirWizard/changephase.wav");
-	public static final Sound wizardAttack = new Sound("/resources/sound/entity/AirWizard/wizardattack.wav");
+	public static final Sound bossDeath = new Sound("/resources/sound/Entity/AirWizard/bossdeath.wav");
+	public static final Sound changePhase = new Sound("/resources/sound/Entity/AirWizard/changephase.wav");
+	public static final Sound wizardAttack = new Sound("/resources/sound/Entity/AirWizard/wizardattack.wav");
 	
 	// Eye Queen
-	public static final Sound eyeBossDeath = new Sound("/resources/sound/entity/EyeQueen/eyedeath.wav");
-	public static final Sound eyeChangePhase = new Sound("/resources/sound/entity/EyeQueen/changephase.wav");
+	public static final Sound eyeBossDeath = new Sound("/resources/sound/Entity/EyeQueen/eyedeath.wav");
+	public static final Sound eyeChangePhase = new Sound("/resources/sound/Entity/EyeQueen/changephase.wav");
 	
 	
 	public static final Sound fuse = new Sound("/resources/sound/fuse.wav");
@@ -47,10 +47,11 @@ public class Sound {
 	public static final Sound pickup3 = new Sound("/resources/sound/pickup 3.wav");
 	public static final Sound pickup4 = new Sound("/resources/sound/pickup 4.wav");
 	
-	
+	// ???
+	public static final Sound place = new Sound("/resources/sound/Entity/Player/craft.wav");
 	
 	// Menu
-	public static final Sound back = new Sound("/resources/sound/entity/Player/craft.wav");
+	public static final Sound back = new Sound("/resources/sound/Entity/Player/craft.wav");
 	public static final Sound select = new Sound("/resources/sound/select.wav");
 	public static final Sound confirm = new Sound("/resources/sound/confirm.wav");
 	public static final Sound PageUp = new Sound("/resources/sound/Page Up.wav");
