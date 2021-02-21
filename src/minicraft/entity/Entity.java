@@ -47,7 +47,7 @@ public abstract class Entity implements Tickable {
 	
 	/**
 	 * Default constructor for the Entity class.
-	 * Assings null/none values to the instace variables.
+	 * Assigns null/none values to the instance variables.
 	 * The exception is removed which is set to true, and
 	 * lastUpdate which is set to System.nanoTime().
 	 * @param xr X radius of entity.
