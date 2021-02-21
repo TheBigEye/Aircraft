@@ -4,7 +4,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.Random;
 
 import minicraft.core.Game;
