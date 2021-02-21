@@ -3,7 +3,7 @@ package minicraft.entity.particle;
 import minicraft.gfx.Sprite;
 
 public class FireParticle extends Particle {
-	/// This is used for Spawners, when they spawn an entity.
+	/// This is used for Spawner, when they spawn an entity.
 	
 	/**
 	 * Creates a new particle at the given position. It has a lifetime of 30 ticks
