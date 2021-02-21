@@ -64,15 +64,8 @@ public class LoadingDisplay extends Display {
 	public void onExit() {
 		percentage = 0;
 		if(!WorldSelectDisplay.loadedWorld()) {
-			if (random.nextInt(2) == 0) {
-				msg = "Planting";
-			}
-			if (random.nextInt(2) == 1) {
-				msg = "Saving";
-			}
-			if (random.nextInt(2) == 2) {
-				msg = "Rendering";
-			}
+			LoadingDisplay.Build = BuildString[random.nextInt(9)];
+		    msg = Build;
 			progressType = "World";
 			new Save(WorldSelectDisplay.getWorldName());
 			Game.notifications.clear();
