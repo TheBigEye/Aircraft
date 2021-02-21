@@ -1,5 +1,6 @@
 package minicraft.entity.mob;
 
+import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.gfx.MobSprite;
 import minicraft.item.Items;
@@ -16,12 +17,15 @@ public class Chicken extends PassiveMob {
 	
 	public void tick() {
 		super.tick();
+		
 		int min = 0, max = 0;
+		if (Settings.get("diff").equals("Passive")) {min = 1; max = 2;}
 		if (Settings.get("diff").equals("Easy")) {min = 1; max = 2;}
 		if (Settings.get("diff").equals("Normal")) {min = 1; max = 1;}
 		if (Settings.get("diff").equals("Hard")) {min = 0; max = 1;}
 		
-		if (random.nextInt(1500)==1) { //drop eggs each 15 secs
+		if (random.nextInt(1500)==1 && Game.isMode("Survival")) { //drop eggs each 15 secs
+			
 			dropItem(min, max, Items.get("egg"));
 			
 		}
@@ -46,6 +50,7 @@ public class Chicken extends PassiveMob {
 	
 	public void die() {
 		int min = 0, max = 0;
+		if (Settings.get("diff").equals("Passive")) {min = 1; max = 2;}
 		if (Settings.get("diff").equals("Easy")) {min = 1; max = 2;}
 		if (Settings.get("diff").equals("Normal")) {min = 1; max = 1;}
 		if (Settings.get("diff").equals("Hard")) {min = 0; max = 1;}

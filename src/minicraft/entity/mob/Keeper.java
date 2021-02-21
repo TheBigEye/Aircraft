@@ -1,5 +1,6 @@
 package minicraft.entity.mob;
 
+import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.gfx.Color;
 import minicraft.gfx.Font;
@@ -19,6 +20,8 @@ public class Keeper extends EnemyMob {
 
 	public void tick() {
 		super.tick();
+		
+		if (Game.isMode("Creative")) return; // Should not attack if player is in creative
 		
 		if (random.nextInt(1500)==1) {
 			getLevel().add(new Slime(0), x, y + 5);
@@ -70,6 +73,7 @@ public class Keeper extends EnemyMob {
     
 	public void die() {
 		int min = 0, max = 0;
+		if (Settings.get("diff").equals("Passive")) {min = 1; max = 3;}
 		if (Settings.get("diff").equals("Easy")) {min = 1; max = 3;}
 		if (Settings.get("diff").equals("Normal")) {min = 1; max = 2;}
 		if (Settings.get("diff").equals("Hard")) {min = 0; max = 2;}
