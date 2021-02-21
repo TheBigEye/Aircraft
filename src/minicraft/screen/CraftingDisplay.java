@@ -6,6 +6,7 @@ import java.util.List;
 
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
+import minicraft.core.io.Sound;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Point;
 import minicraft.gfx.SpriteSheet;
@@ -99,6 +100,8 @@ public class CraftingDisplay extends Display {
 			Recipe r = recipes[recipeMenu.getSelection()];
 			if(r.getCanCraft()) {
 				r.craft(player);
+				
+				Sound.craft.play();
 				
 				refreshData();
 				for(Recipe recipe: recipes)
