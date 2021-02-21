@@ -1,5 +1,6 @@
 package minicraft.entity.mob.boss;
 
+import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
@@ -57,6 +58,8 @@ public class AirWizardPhase2 extends EnemyMob {
 	@Override
 	public void tick() {
 		super.tick();
+		
+		if (Game.isMode("Creative")) return; // Should not attack if player is in creative
 		
 		if (attackDelay > 0) {
 			xa = ya = 0;
