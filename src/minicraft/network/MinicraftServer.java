@@ -57,7 +57,7 @@ public class MinicraftServer extends Thread implements MinicraftProtocol {
 	private RemotePlayer hostPlayer = null;
 	private String worldPath;
 	
-	private int playerCap = 5;
+	private int playerCap = 10;
 	
 	public MinicraftServer() {
 		super("MinicraftServer");
