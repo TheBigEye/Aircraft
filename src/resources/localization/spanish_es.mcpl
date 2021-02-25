@@ -144,6 +144,9 @@ Pan
 Apple
 Manzana
 
+Frozen palette
+Paleta congelada
+
 Mushroom Soup
 Sopa de hongos
 
@@ -176,6 +179,10 @@ Bistec
 
 Gold Apple
 Manzana Dorada
+
+Gold Carrot
+Zanahoria Dorada
+
 
 # FurnitureItem.java
 
@@ -233,6 +240,9 @@ Generador de Golem viejo
 AirWizard Spawner
 Generador de MagoAire
 
+EyeQueen Spawner
+Generador de ReinaOjo
+
 Cthulhu Spawner
 Generador de Cthulhu
 
@@ -273,7 +283,7 @@ Iron Lantern
 Linterna de Hierro
 
 Gold Lantern
-Listerna de Oro
+Linterna de Oro
 
 Tnt
 Dinamita
@@ -281,13 +291,30 @@ Dinamita
 Bed
 Cama
 
+SlimeStatue
+Estatua de slime
+
+ZombieStatue
+Estatua de Zombie
+
+SkeletonStatue
+Estatua de Esqueleto
+
 Chest
 Cofre
+
+Dungeon Chest
+Cofre de mazmorra
 
 # MapItem.java
 
 Map book
 Libro de mapas
+
+# AmuletItem.java
+
+Eye Amulet
+Amuleto del ojo
 
 # PotionType.java
 
@@ -387,6 +414,9 @@ Llave
 
 arrow
 flecha
+
+Icicle
+Carambano
 
 Stick
 Palo
@@ -618,6 +648,33 @@ Lana Roja
 Wool
 Lana
 
+Purple Wool
+Lana Purpura
+
+Pink Wool
+Lana Rosa
+
+Dark Green Wool
+Lana Verde oscuro
+
+Gray Wool
+Lana Gris
+
+Brown Wool
+Lana Marron
+
+Magenta Wool
+Lana Magenta
+
+Light Blue Wool
+Lana Celeste
+
+Cyan Wool
+Lana Cian
+
+Orange Wool
+Lana Naranja
+
 Sand
 Arena
 
@@ -702,6 +759,11 @@ Caña De Pescar
 
 Claymore
 Casa antigua
+
+# ShearItem.java
+
+Shear
+Tijeras
 
 # TorchItem.java
 
@@ -972,11 +1034,32 @@ ESC para Regresar al menú
 Loading...
 Cargando...
 
+Generating...
+Generando...
+
+Calculating...
+Calculando...
+
+Pre Calculating...
+Pre Calculando...
+
+Building...
+Construyendo...
+
 Melting...
-Moldeando...
+Derritiendo...
+
+Eroding...
+Erosionando...
 
 Planting...
 Plantando...
+
+Molding...
+Moldeando...
+
+Raising...
+Elevando...
 
 # MultiplayerMenu.java
 
@@ -1073,6 +1156,9 @@ Informacion
 
 Make World Multiplayer
 Hacer Mundo Multijugador
+
+World
+Mundo
 
 Save Game
 Guardar Juego
@@ -1231,6 +1317,9 @@ Max FPS
 
 Difficulty
 Dificultad
+
+Passive
+Pasiva
 
 Easy
 Facil
