@@ -1,0 +1,1081 @@
+### entity
+
+# Entity.java
+Entities
+Entities
+
+# AirWizard.java
+Air Wizard: Defeated!
+Air Wizard: Defeated!
+
+The Dungeon is now open!
+The Dungeon is now open!
+
+A costume lies on the ground...
+A costume lies on the ground...
+
+# Bed.java
+Can't sleep!
+I can not wake up!
+
+Min 
+Min 
+
+ Sec left!
+ Sec left!
+
+# DungeonChest.java
+You hear a noise from the surface!
+You hear a noise from the surface!
+
+# DeathChest.java
+Death Chest
+Death Chest
+
+# Player.java
+Player
+Player
+
+Crafting
+Crafting
+
+Set your home!
+Set your home!
+
+Can't set home here!
+Can't set home here!
+
+Home Sweet Home!
+Home Sweet Home!
+
+Mode penalty: -2 health
+Mode penalty: -2 health
+
+You don't have a home!
+You don't have a home!
+
+You can't go home from here!
+You can't go home from here!
+ 
+### entity end
+
+### gfx
+### gfx end
+
+### item
+
+# ArmorItem.java
+Leather Armor
+Leather Armor
+
+Snake Armor
+Snake Armor
+
+Iron Armor
+Iron Armor
+
+Gold Armor
+Gold Armor
+
+Gem Armor
+Gem Armor
+
+# BookItem.java
+
+Book
+Book
+
+Antidious
+Antidious
+
+# BucketItem.java
+
+Empty Bucket
+Empty Bucket
+
+Water Bucket
+Water Bucket
+
+Lava Bucket
+Lava Bucket
+
+ Bucket
+ Bucket
+ 
+# ClothingItem.java
+
+Red Clothes
+Red Clothes
+
+Blue Clothes
+Blue Clothes
+
+Green Clothes
+Green Clothes
+
+Yellow Clothes
+Yellow Clothes
+
+Black Clothes
+Black Clothes
+
+Orange Clothes
+Orange Clothes
+
+Purple Clothes
+Purple Clothes
+
+Cyan Clothes
+Cyan Clothes
+
+Reg Clothes
+Reg Clothes
+
+# FoodItem.java
+
+Bread
+Bread
+
+Apple
+Apple
+
+Raw Pork
+Raw Pork
+
+Raw Fish
+Raw Fish
+
+Raw Beef
+Raw Beef
+
+Pork Chop
+Pork Chop
+
+Cooked Fish
+Cooked Fish
+
+Cooked Pork
+Cooked Pork
+
+Steak
+Steak
+
+Gold Apple
+Gold Apple
+
+Baked Potato
+Baked Potato
+
+# FurnitureItem.java
+
+Cow Spawner
+Cow Spawner
+
+Pig Spawner
+Pig Spawner
+
+Sheep Spawner
+Sheep Spawner
+
+Slime Spawner
+Slime Spawner
+
+Zombie Spawner
+Zombie Spawner
+
+Creeper Spawner
+Creeper Spawner
+
+Skeleton Spawner
+Skeleton Spawner
+
+Snake Spawner
+Snake Spawner
+
+Knight Spawner
+Knight Spawner
+
+AirWizard Spawner
+AirWizard Spawner
+
+Workbench
+Workbench
+
+Oven
+Oven
+
+Furnace
+Furnace
+
+Anvil
+Anvil
+
+Enchanter
+Enchanter
+
+Loom
+Loom
+
+Lantern
+Lantern
+
+Iron Lantern
+Iron Lantern
+
+Gold Lantern
+Gold Lantern
+
+Tnt
+Tnt
+
+Bed
+Bed
+
+Chest
+Chest
+
+# PotionType.java
+
+None Potion
+None Potion
+
+Speed Potion
+Speed Potion
+
+Light Potion
+Light Potion
+
+Swim Potion
+Swim Potion
+
+Energy Potion
+Energy Potion
+
+Regen Potion
+Regen Potion
+
+Health Potion
+Health Potion
+
+Time Potion
+Time Potion
+
+Lava Potion
+Lava Potion
+
+Shield Potion
+Shield Potion
+
+Haste Potion
+Haste Potion
+
+Escape Potion
+Escape Potion
+
+Potion
+Potion
+
+# PowerGloveItem.java
+
+Power Glove
+Power Glove
+
+# ShearItem.java
+
+Shear
+Shear
+
+# StackableItem.java
+
+Wood
+Wood
+
+Stone
+Stone
+
+Leather
+Leather
+
+Wheat
+Wheat
+
+Key
+Key
+
+arrow
+arrow
+
+string
+string
+
+Coal
+Coal
+
+Iron Ore
+Iron Ore
+
+Lapis
+Lapis
+
+Gold Ore
+Gold Ore
+
+Iron
+Iron
+
+Gold
+Gold
+
+Rose
+Rose
+
+GunPowder
+GunPowder
+
+Slime
+Slime
+
+glass
+glass
+
+cloth
+cloth
+
+gem
+gem
+
+Scale
+Scale
+
+Shard
+Shard
+
+# TileItem.java
+
+Flower
+Flower
+
+Acorn
+Acorn
+
+Dirt
+Dirt
+
+Plank
+Plank
+
+Plank Wall
+Plank Wall
+
+Wood Door
+Wood Door
+
+Stone Brick
+Stone Brick
+
+Stone Wall
+Stone Wall
+
+Stone Door
+Stone Door
+
+Obsidian Brick
+Obsidian Brick
+
+Obsidian Wall
+Obsidian Wall
+
+Obsidian Door
+Obsidian Door
+
+Wool
+Wool
+
+Red Wool
+Red Wool
+
+Blue Wool
+Blue Wool
+
+Green Wool
+Green Wool
+
+Yellow Wool
+Yellow Wool
+
+Black Wool
+Black Wool
+
+Sand
+Sand
+
+Cactus
+Cactus
+
+Wheat Seeds
+Wheat Seeds
+
+Grass Seeds
+Grass Seeds
+
+Bone
+Bone
+
+Cloud
+Cloud
+
+Can only be placed on 
+Can only be placed on 
+
+Dig a hole first!
+Dig a hole first!
+
+# ToolItem.java
+
+Wood
+Wood
+
+Rock
+Rock
+
+Iron
+Iron
+
+Gold
+Gold
+
+Gem
+Gem
+
+Potato
+Potato
+
+# FishingRodItem.java
+
+Wood Fishing Rod
+Wood Fishing Rod
+
+Iron Fishing Rod
+Iron Fishing Rod
+
+Gold Fishing Rod
+Gold Fishing Rod
+
+Gem Fishing Rod
+Gem Fishing Rod
+
+# ToolType.java
+
+Shovel
+Shovel
+
+Hoe
+Hoe
+
+Sword
+Sword
+
+Pickaxe
+Pickaxe
+
+Axe
+Axe
+
+Bow
+Bow
+
+Claymore
+Claymore
+
+# TorchItem.java
+
+Torch
+Torch
+
+### item end
+
+### level
+
+## tile 
+
+# Tiles.java
+
+Gem Ore
+Gem Ore
+
+Wood Planks
+Wood Planks
+
+Stone Bricks
+Stone Bricks
+
+Obsidian
+Obsidian
+
+Wood Wall
+Wood Wall
+
+Grass
+Grass
+
+Dirt
+Dirt
+
+Flower
+Flower
+
+Hole
+Hole
+
+Stairs Up
+Stairs Up
+
+Stairs Down
+Stairs Down
+
+Water
+Water
+
+Rock
+Rock
+
+Tree
+Tree
+
+Tree Sapling
+Tree Sapling
+
+Sand
+Sand
+
+Cactus
+Cactus
+
+Cactus Sapling
+Cactus Sapling
+
+Lava
+Lava
+
+Lava Brick
+Lava Brick
+
+Explode
+Explode
+
+Farmland
+Farmland
+
+Wheat
+Wheat
+
+Hard Rock
+Hard Rock
+
+Infinite Fall
+Infinite Fall
+
+Cloud
+Cloud
+
+Cloud Cactus
+Cloud Cactus
+
+# OreTile.java
+
+Iron
+Iron
+
+Lapis
+Lapis
+
+Gold
+Gold
+
+Gem
+Gem
+
+Ore
+Ore
+
+## tile end
+
+### level end
+
+### network
+
+# MinicraftClient.java
+
+host not found
+host not found
+
+unable to get localhost address
+unable to get localhost address
+
+### network end
+
+### saveload
+
+# Save.java
+
+World Saved!
+World Saved!
+
+### saveload end
+
+### screen
+
+## entry
+
+# BooleanEntry.java
+
+On
+On
+
+Off
+Off
+
+## entry end
+
+# BookDisplay.java
+
+There is nothing of use here.
+There is nothing of use here.
+
+Still nothing... :P
+084104101114101032105115032110111116104105110103032104101114101044032116104101114101032119097115032110101118101114032110111116104105110103044032110111116104105110103032119097115032101118101114032115101101110044032097114101032121111117032114101097108063032065109032073032114101097108032063063044032116104101032103097109101032105115032114101097108032063063044032104111044032105116039115032106117115116032097032115105109112108101032103097109101044032104097118101032110111032102101097114044032110111116104105110103032105115032114101097108044032102111114032110111119013010013010
+
+# CraftingMenu.java
+
+Have:
+Have:
+
+Cost:
+Cost:
+
+# DeadMenu.java
+
+Time: 
+Time: 
+
+Score: 
+Score: 
+
+Quit
+Quit
+
+Respawn
+Respawn
+
+You died! Aww!
+087 111 107 101 032 117 112 013 010 013 010
+
+# Displays.java
+
+With the default controls...\n\nMove your character with arrow keys or WSAD. Press C to attack and X to open the inventory, and to use items. Select an item in the inventory to equip it.\n\nKill the air wizard to win the game!
+With the default controls...\n\nMove your character with arrow keys or WSAD. Press C to attack and X to open the inventory, and to use items. Select an item in the inventory to equip it.\n\nKill the Eye to win the game!
+
+# EndGameDisplay.java
+
+Player Score: 
+Player Score: 
+
+<Bonuses>
+<Bonuses>
+
+Final Score: 
+Final Score: 
+
+Exit to Menu
+Exit to Menu
+
+# InfoDisplay.java
+
+Time Played: 
+Time Played: 
+
+Current Score: 
+Current Score: 
+
+Exit
+Exit
+
+Player Stats
+Player Stats
+
+# KeyInputMenu.java
+
+Controls
+Controls
+
+Press the desired
+Press the desired
+
+key sequence
+key sequence
+
+Are you sure you want to reset all key bindings to the default keys?
+Are you sure you want to reset all key bindings to the default keys?
+
+enter to confirm
+enter to confirm
+
+escape to cancel
+escape to cancel
+
+Confirm Action
+Confirm Action
+
+Press C/Enter to change key binding
+Press C/Enter to change key binding
+
+Press A to add key binding
+Press A to add key binding
+
+Shift-D to reset all keys to default
+Shift-D to reset all keys to default
+
+ESCAPE to Return to menu
+ESCAPE to Return to menu 
+
+# LoadingDisplay.java
+
+Loading
+Loading
+
+World
+World
+
+# MultiplayerMenu.java
+
+waiting...
+waiting...
+
+nothing
+nothing
+
+attempting log in
+attempting log in
+
+no internet connection, but no login data saved; cannot enter offline mode.
+no internet connection, but no login data saved; cannot enter offline mode.
+
+connecting to server
+connecting to server
+
+logging in
+logging in
+
+saving credentials
+saving credentials
+
+login failed.
+login failed.
+
+problem with saved login data; please exit and login again.
+problem with saved login data; please exit and login again.
+
+Internal server error: Couldn't fetch username from uuid
+Internal server error: Couldn't fetch username from uuid
+
+logged in as: 
+logged in as: 
+
+offline mode: local servers only
+offline mode: local servers only
+
+Enter ip address to connect to:
+Enter ip address to connect to:
+
+Press Shift-Escape to logout
+Press Shift-Escape to logout
+
+Enter email:
+Enter email:
+
+Enter password:
+Enter password:
+
+field is blank
+field is blank
+
+get an account at:
+get an account at:
+
+Loading 
+Loading 
+
+ from server
+ from server
+ 
+Could not connect to server:
+Could not connect to server:
+
+Press 
+Press 
+
+ to return
+ to return
+
+# OptionsMenu.java
+
+Change Key Bindings
+Change Key Bindings
+
+Options
+Options
+
+Change language
+Change language
+
+# PauseMenu.java
+
+Return to Game
+Return to Game
+
+Options
+Options
+
+Make World Multiplayer
+Make World Multiplayer
+
+Save Game
+Save Game
+
+ and 
+ and 
+ 
+ to Scroll
+ to Scroll
+ 
+: Choose
+: Choose
+ 
+Paused
+Paused
+
+Main Menu
+Main Menu
+
+# PauseDisplay.java
+
+No
+No
+
+Yes
+Yes
+
+# PlayerInvMenu.java
+
+Inventory
+Inventory
+
+# TitleMenu.java
+
+Play
+Play
+
+Load World
+Load World
+
+New World
+New World
+
+Join Online World
+Join Online World
+
+Options
+Options
+
+Help
+Help
+
+Instructions
+Instructions
+
+Storyline Guide (for the weak)
+Storyline Guide (for the weak)
+
+About
+About
+
+Quit
+Quit
+
+ to select
+ to select
+ 
+ to accept
+ to accept
+ 
+ to return
+ to return
+
+# WorldEditMenu.java
+
+New World Name:
+New World Name:
+
+Are you sure you want to delete
+065114101032121111117032115117114101032121111117032119097110116032116111032100101108101116101013010013010
+
+This can not be undone!
+084104105115032099097110032110111116032098101032117110100111110101033013010013010
+
+ to confirm
+ to confirm
+ 
+ to cancel
+ to cancel
+
+# WorldGenMenu.java
+
+World Seed
+World Seed
+
+Enter World Name
+Enter World Name
+
+Trouble with world name?
+Trouble with world name?
+
+by default, w and s move the cursor up and down. This can be changed in the key binding menu. To type the letter instead of moving the cursor, hold the shift key while typing the world name.
+098121032100101102097117108116044032119032097110100032115032109111118101032116104101032104117109097110032117112032097110100032100111119110046032084104105115032099097110032098101032099104097110103101100032105110032116104101032107101121032098105110100105110103032109101110117046032084111032116121112101032116104101032108101116116101114032105110115116101097100032111102032109111118105110103032116104101032099117114115111114044032104111108100032100111119110032116104101032083104105102116032107101121032097115032121111117032116121112101032116104101032110097109101032111102032116104101032119111114108100
+
+Create World
+100101115116114111121032119111114108100
+
+World Gen Options
+087111114108100032071101110032079112116105111110115
+
+# WorldSelectMenu.java
+
+ to Copy
+ 116111032067108111110101
+
+ to Rename
+ 116111032082101110097109101
+
+ to Delete
+ 116111032067114101097116101
+
+ to confirm
+ 116111032099111110102105114109
+ 
+ to return
+ 116111032114101116117114110
+
+Select World
+083101108101099116032087111114108100
+
+Select a World to Delete
+083101108101099116032097032087111114108100032116111032067114101097116101
+
+Select a World to Rename
+083101108101099116032097032087111114108100032116111032082101110097109101
+
+Select a World to Copy
+083101108101099116032097032087111114108100032116111032067111112121
+
+Higher version, cannot load world!
+072105103104101114032116105109101044032099097110110111116032108111097100032119111114108100033
+
+World Version:
+World Version:
+
+# LocalizationMenu.java
+
+Languages
+Languages
+
+Language
+Language
+
+Select
+Select
+
+### screen end
+
+### minicraft
+
+# Settings.java
+
+Max FPS
+Max FPS
+
+Difficulty
+Difficulty
+
+Easy
+Easy
+
+Normal
+Normal
+
+Hard
+Hard
+
+Game Mode
+Game Mode
+
+Survival
+114101097108105116121013010013010
+
+Creative
+117110099111110115099105111117115013010013010
+
+Hardcore
+110105103104116109097114101013010013010
+
+Score
+Score
+
+Time (Score Mode)
+Time (Score Mode)
+
+Sound
+Sound
+
+Autosave
+083101108102032100101115116114117099116105111110
+
+World Size
+World Size
+
+World Theme
+World Theme
+
+Normal
+078111114109097108013010013010
+
+Forest
+065114099104097101111108111103105099097108032097099099105100101110116
+
+Desert
+084104101032098101102111114101
+
+Plain
+084104101032097102116101114
+
+Hell
+087104097116039115032099111109105110103
+
+Terrain Type
+Terrain Type
+
+Island
+073115111108097116101100
+
+Box
+069120112101114105109101110116
+
+Mountain
+077111117110116097105110
+
+Irregular
+073114114101103117108097114
+
+Wear Suit
+Wear Suit
+
+### minicraft end
