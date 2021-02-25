@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.Arrays;
 
 import minicraft.core.Game;
+import minicraft.core.io.Sound;
 import minicraft.item.PotionType;
 
 import org.jetbrains.annotations.NotNull;
@@ -83,6 +84,10 @@ public abstract class MinicraftConnection extends Thread implements MinicraftPro
 		endConnection();
 	}
 	
+	protected int getConnectedPort() {
+		return socket.getPort();
+	}
+	
 	protected abstract boolean parsePacket(InputType inType, String data);
 	
 	protected void sendData(InputType inType, String data) {
@@ -133,6 +138,10 @@ public abstract class MinicraftConnection extends Thread implements MinicraftPro
 	}
 	
 	public boolean isConnected() {
+		
+		Sound.Intro.stop();
+		Sound.Intro2.stop();
+		
 		return socket != null && !socket.isClosed() && socket.isConnected();
 	}
 }

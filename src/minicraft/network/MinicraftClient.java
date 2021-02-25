@@ -61,6 +61,22 @@ public class MinicraftClient extends MinicraftConnection {
 		
 		if(Game.debug) System.out.println("getting host address from host name \""+hostName+"\"...");
 		
+		// check if there's a custom port to connect on
+		int port = MinicraftProtocol.PORT;
+		String[] splitHostName = hostName.split(":");
+		if (splitHostName.length > 1) {
+			hostName = splitHostName[0];
+			try {
+				port = Integer.parseInt(splitHostName[1]);
+			} catch (NumberFormatException exception) {
+				System.err.println("Invalid port: " + splitHostName[1]);
+				menu.setError("Invalid port");
+				exception.printStackTrace();
+				return null;
+			}
+		}
+		
+		
 		try {
 			hostAddress = InetAddress.getByName(hostName);
 		} catch (UnknownHostException ex) {
@@ -74,7 +90,7 @@ public class MinicraftClient extends MinicraftConnection {
 		
 		try {
 			socket = new Socket();
-			socket.connect(new InetSocketAddress(hostAddress, PORT), connectTimeout);
+			socket.connect(new InetSocketAddress(hostAddress, port), connectTimeout);
 		} catch (IOException ex) {
 			System.err.println("Problem connecting socket to server:");
 			menu.setError(ex.getMessage().replace(" (Connection refused)", ""));
@@ -134,7 +150,7 @@ public class MinicraftClient extends MinicraftConnection {
 		if (Game.debug) System.out.println("CLIENT: logging in to server...");
 		
 		try {
-			Game.player = new RemotePlayer(Game.player, true, InetAddress.getLocalHost(), PORT);
+			Game.player = new RemotePlayer(Game.player, true, InetAddress.getLocalHost(), getConnectedPort());
 			((RemotePlayer)Game.player).setUsername(username);
 		} catch(UnknownHostException ex) {
 			System.err.println("CLIENT could not get localhost address:");

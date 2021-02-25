@@ -17,6 +17,7 @@ import minicraft.entity.mob.Player;
 import minicraft.level.Level;
 import minicraft.level.tile.Tiles;
 import minicraft.network.MinicraftClient;
+import minicraft.network.MinicraftProtocol;
 import minicraft.network.MinicraftServer;
 import minicraft.saveload.Load;
 import minicraft.saveload.Version;
@@ -39,7 +40,7 @@ public class Game {
 	
 	private static String ERROR_TITLE = "";
 	
-	static String[] array = {"Who has put TNT?", "An error has occurred", "Unexpected error", "Oh. That hurts :(", "Sorry :(", "You should try our sister game, Minitale!"};
+	static String[] array = {"Who has put TNT?", "An error has occurred", "Unexpected error", "Oh. That hurts :(", "Sorry :(", "You should try our sister game, Minitale!", "ASCII 073 039 109 032 103 111 105 110 103 032 116 111 032 099 111 109 109 105 116 032 115 117 105 099 105 100 101"};
 
 	
 	public static InputHandler input; // input used in Game, Player, and just about all the *Menu classes.
@@ -50,6 +51,15 @@ public class Game {
 	
 	public static int MAX_FPS = (int) Settings.get("fps");
 	public static Level level;
+	
+	
+	/**
+	 * This specifies a custom port instead of default to server-side using
+	 * --port parameter if something goes wrong in setting the new port
+	 * it'll use the default one {@link MinicraftProtocol#PORT}
+	 */
+	public static int CUSTOM_PORT = MinicraftProtocol.PORT;
+	
 	
 	private static Random random = new Random();
 	
@@ -121,7 +131,7 @@ public class Game {
 		System.out.println(" + : accessible         blank : not accessible");
 		}
 		
-		Game.ERROR_TITLE = array[random.nextInt(5)];
+		Game.ERROR_TITLE = array[random.nextInt(6)];
 		
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
 			throwable.printStackTrace();

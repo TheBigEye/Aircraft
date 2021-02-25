@@ -51,6 +51,8 @@ public class MinicraftServer extends Thread implements MinicraftProtocol {
 	
 	private static final int UPDATE_INTERVAL = 10; // measured in seconds
 	
+	private final int port;
+	
 	private List<MinicraftServerThread> threadList = Collections.synchronizedList(new ArrayList<>());
 	private ServerSocket socket;
 	
@@ -59,8 +61,11 @@ public class MinicraftServer extends Thread implements MinicraftProtocol {
 	
 	private int playerCap = 10;
 	
-	public MinicraftServer() {
+	public MinicraftServer(int port) {
 		super("MinicraftServer");
+		
+		this.port = port;
+		
 		Game.ISONLINE = true;
 		Game.ISHOST = true; // just in case.
 		Game.player.remove(); // the server has no player...
@@ -69,10 +74,10 @@ public class MinicraftServer extends Thread implements MinicraftProtocol {
 		
 		try {
 			System.out.println("Opening server socket...");
-			socket = new ServerSocket(PORT);
+			socket = new ServerSocket(port);
 			start();
 		} catch (IOException ex) {
-			System.err.println("Failed to open server socket on port " + PORT);
+			System.err.println("Failed to open server socket on port " + port);
 			ex.printStackTrace();
 		}
 		
@@ -95,7 +100,7 @@ public class MinicraftServer extends Thread implements MinicraftProtocol {
 			}
 		} catch (SocketException ex) { // this should occur when closing the thread.
 		} catch (IOException ex) {
-			System.err.println("Server socket encountered an error while attempting to listen on port " + PORT + ":");
+			System.err.println("Server socket encountered an error while attempting to listen on port " + port + ":");
 			ex.printStackTrace();
 		}
 		
