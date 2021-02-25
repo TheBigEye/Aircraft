@@ -110,10 +110,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	
 	private int hungerStamCnt, stamHungerTicks; // tiers of hunger penalties before losing a burger.
 	private static final int maxHungerTicks = 400; // the cutoff value for stamHungerTicks
-	private static final int[] maxHungerStams = {10, 7, 5}; // hungerStamCnt required to lose a burger.
-	private static final int[] hungerTickCount = {120, 30, 10}; // ticks before decrementing stamHungerTicks.
-	private static final int[] hungerStepCount = {8, 3, 1}; // steps before decrementing stamHungerTicks.
-	private static final int[] minStarveHealth = {5, 3, 0}; // min hearts required for hunger to hurt you.
+	private static final int[] maxHungerStams = {10, 7, 5, 5}; // hungerStamCnt required to lose a burger.
+	private static final int[] hungerTickCount = {120, 30, 10, 10}; // ticks before decrementing stamHungerTicks.
+	private static final int[] hungerStepCount = {8, 3, 1, 1}; // steps before decrementing stamHungerTicks.
+	private static final int[] minStarveHealth = {5, 3, 0, 0}; // min hearts required for hunger to hurt you.
 	private int stepCount; // used to penalize hunger for movement.
 	private int hungerChargeDelay; // the delay between each time the hunger bar increases your health
 	private int hungerStarveDelay; // the delay between each time the hunger bar decreases your health
