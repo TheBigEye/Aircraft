@@ -71,9 +71,12 @@ public class TitleDisplay extends Display {
 		
 		if (random.nextInt(2) == 0) {
 			Sound.Intro.loop(true);
+			Sound.Intro2.stop();
 		}
 		if (random.nextInt(2) == 1) {
 			Sound.Intro2.loop(true);
+			Sound.Intro.stop();
+
 		}
 
 
@@ -260,6 +263,7 @@ public class TitleDisplay extends Display {
 		"Chris J is great with portals!",
 		"AntVenom loves cows! Honest!",
 		"TheBigEye.... Cake rain!",
+		"ASCII",
 		
 		"You should read Antidious Venomi!",
 		"Oh Hi Mark",
