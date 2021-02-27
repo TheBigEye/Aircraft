@@ -14,6 +14,7 @@ The most important features that this mod adds.
 - Enchanted Tool and Enchantment Book Implementation.
 - More types of wood, walls, and new items.
 - More weapons.
+- More durability in tools
 - Villages with villagers and iron golems were added, in addition to rusty golems as mini-bosses, the celestial dungeon was also added.
 - Higher resolution.
 
