@@ -26,6 +26,8 @@ public class FurnitureItem extends Item {
 		ArrayList<Item> items = new ArrayList<>();
 		
 		/// there should be a spawner for each level of mob, or at least make the level able to be changed.
+		//items.add(new FurnitureItem(new CommandBlock()));
+		
 		items.add(new FurnitureItem(new Spawner(new KingZombie(1))));
 		items.add(new FurnitureItem(new Spawner(new Cow())));
 		items.add(new FurnitureItem(new Spawner(new Pig())));
