@@ -39,7 +39,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 		ya = random.nextGaussian() * 0.2;
 		za = random.nextFloat() * 0.7 + 1;
 		
-		lifeTime = 60 * 10 + random.nextInt(70); // sets the lifetime of the item. min = 600 ticks, max = 669 ticks.
+		lifeTime = 70 * 10 + random.nextInt(70); // sets the lifetime of the item. min = 600 ticks, max = 669 ticks.
 		// the idea was to have it last 10-11 seconds, I think.
 	}
 	
