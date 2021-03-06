@@ -25,6 +25,10 @@ public class WorldInfoDisplay extends Display {
 				new BlankEntry(),
 				new BlankEntry(),
 				new BlankEntry(),
+				new BlankEntry(),
+				new BlankEntry(),
+				new BlankEntry(),
+				new BlankEntry(),
 				Settings.getEntry("mode"),
 				new SelectEntry("Open World Folder", () -> {
 	                try {
@@ -46,13 +50,14 @@ public class WorldInfoDisplay extends Display {
 	}
 	public void render(Screen screen) {
 		super.render(screen);
-		Font.drawCentered("Name: "+WorldSelectDisplay.getWorldName() + "", screen, Screen.h - 211, Color.YELLOW);
+		Font.drawCentered("Name: "+WorldSelectDisplay.getWorldName() + "", screen, Screen.h - 212, Color.YELLOW);
 		
-		//Font.drawCentered("seed "+ WorldGenDisplay.Seed +"", screen, Screen.h - 200, Color.GRAY);
-		Font.drawCentered(Settings.getEntry("mode")+"", screen, Screen.h - 190, Color.GRAY);		
-		Font.drawCentered(Settings.getEntry("size")+"", screen, Screen.h - 180, Color.GRAY);		
-		Font.drawCentered(Settings.getEntry("theme")+"", screen, Screen.h - 170, Color.GRAY);
-		Font.drawCentered(Settings.getEntry("type")+"", screen, Screen.h - 160, Color.GRAY);
+		Font.drawCentered("Seed: " + Game.levels[selection].getSeed(), screen, Screen.h - 150, Color.GRAY);
+		
+		//Font.drawCentered(Settings.getEntry("mode")+"", screen, Screen.h - 190, Color.GRAY);		
+		Font.drawCentered(Settings.getEntry("size")+"", screen, Screen.h - 190, Color.GRAY);		
+		Font.drawCentered(Settings.getEntry("theme")+"", screen, Screen.h - 180, Color.GRAY);
+		Font.drawCentered(Settings.getEntry("type")+"", screen, Screen.h - 170, Color.GRAY);
 		
 	}
 

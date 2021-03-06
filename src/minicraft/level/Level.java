@@ -7,6 +7,7 @@ import minicraft.core.Game;
 import minicraft.core.Network;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
+import minicraft.core.io.Sound;
 import minicraft.entity.ClientTickable;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
@@ -41,6 +42,7 @@ public class Level {
 	private static final int MOB_SPAWN_FACTOR = 100; // the chance of a mob actually trying to spawn when trySpawn is called equals: mobCount / maxMobCount * MOB_SPAWN_FACTOR. so, it basically equals the chance, 1/number, of a mob spawning when the mob cap is reached. I hope that makes sense...
 	
 	public int w, h; // width and height of the level
+	private long seed; // the used seed that was used to generate the world
 	
 	public byte[] tiles; // an array of all the tiles in the world.
 	public byte[] data; // an array of the data of the tiles in the world. // ?
@@ -106,11 +108,11 @@ public class Level {
 	
 	@SuppressWarnings("unchecked") // @SuppressWarnings ignores the warnings (yellow underline) in this method.
 	/** Level which the world is contained in */
-	public Level(int w, int h, int level, Level parentLevel) {this(w, h, level, parentLevel, true); }
-	public Level(int w, int h, int level, Level parentLevel, boolean makeWorld) {
+	public Level(int w, int h, long seed, int level, Level parentLevel, boolean makeWorld) {
 		depth = level;
 		this.w = w;
 		this.h = h;
+		this.seed = seed;
 		byte[][] maps; // multidimensional array (an array within a array), used for the map
 		int saveTile;
 		
@@ -185,6 +187,20 @@ public class Level {
 		
 		if (Game.debug) printTileLocs(Tiles.get("Stairs Down"));
 	}
+	
+	public Level(int w, int h, int level, Level parentLevel, boolean makeWorld) {
+		this(w, h, 0, level, parentLevel, makeWorld);
+	}
+
+	/** Level which the world is contained in */
+	public Level(int w, int h, int level, Level parentLevel) {
+		this(w, h, level, parentLevel, true);
+	}
+
+	public long getSeed() {
+		return seed;
+	}
+
 	
 	public void checkAirWizard() {
 		checkAirWizard(true);
@@ -292,31 +308,31 @@ public class Level {
 		
 		
 		// this play random music in game
-	/**	if (Settings.get("ambient").equals("Nice")) {
+		if (Settings.get("ambient").equals("Nice")) {
 		if (random.nextInt(12800)==1) {
 			
 			if (random.nextInt(3) == 0) {
-				Sound.Intro2.play();					
+					
 			}	
 			if (random.nextInt(3) == 1) {
-				Sound.Intro2.play();					
+				
 			}
 			if (random.nextInt(3) == 2) {
-				Sound.Intro2.play();					
+				
 			}
 			if (random.nextInt(3) == 3) {
-				Sound.Intro2.play();					
+				
 			}
 		}
 	}
 		
 		if (Settings.get("ambient").equals("Normal")) {
-		if (random.nextInt(1500)==1) {
+		if (random.nextInt(12800)==1) {
 		}
 	}
 		
 		if (Settings.get("ambient").equals("Scary")) {
-		if (random.nextInt(3000)==1) {
+		if (random.nextInt(12800)==1) {
 			
 			if (random.nextInt(8) == 0) {
 				Sound.Ambience1.play();					
@@ -334,7 +350,7 @@ public class Level {
 				Sound.Ambience5.play();					
 			}
 		}
-	}**/
+	}
 		
 		if(fullTick && (!Game.isValidServer() || getPlayers().length > 0)) {
 			// this prevents any entity (or tile) tick action from happening on a server level with no players.

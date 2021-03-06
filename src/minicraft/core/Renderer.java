@@ -427,6 +427,10 @@ public class Renderer extends Game {
 				}
 			}
 			
+			if (levels[currentLevel] != null) {
+				info.add("Seed: " + levels[currentLevel].getSeed());
+			}
+			
 			FontStyle style = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(1);
 			if(Game.isValidServer()) {
 				style.setYPos(Screen.h).setRelTextPos(RelPos.TOP_RIGHT, true);
