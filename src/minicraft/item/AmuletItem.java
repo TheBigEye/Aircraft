@@ -3,6 +3,7 @@ package minicraft.item;
 import java.util.Random;
 
 import minicraft.core.Game;
+import minicraft.core.Updater;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
@@ -40,10 +41,9 @@ public class AmuletItem extends Item {
 		}
 		if (random.nextInt(3) == 2) {
 			level.add(new EyeQueen(1), player.x, player.y);
+		    Updater.setTime(600000);
 		}
-		if (random.nextInt(3) == 3) {
-			level.add(new EyeQueen(1), player.x, player.y);
-		}
+
 		
         return this.interact(player, (Entity)null, attackDir);
     }
@@ -55,6 +55,6 @@ public class AmuletItem extends Item {
 
     @Override
     public boolean canAttack() {
-        return false;
+        return true;
     }
 }
