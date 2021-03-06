@@ -186,7 +186,10 @@ public class Recipes {
 		stonecutterRecipes.add(new Recipe("Stone Door_1", "Stone Brick_5"));
 		stonecutterRecipes.add(new Recipe("Obsidian Wall_1", "Obsidian Brick_3"));
 		stonecutterRecipes.add(new Recipe("Obsidian Door_1", "Obsidian Brick_5"));
-		stonecutterRecipes.add(new Recipe("Flint_3", "Stone_3", "coal_1"));
+		stonecutterRecipes.add(new Recipe("SlimeStatue_1", "Andesite_2", "Basalt_3", "Slime_3"));
+		stonecutterRecipes.add(new Recipe("ZombieStatue_1", "Andesite_3", "Basalt_3", "cloth_5"));
+		stonecutterRecipes.add(new Recipe("SkeletonStatue_1", "Diorite_3", "Quartzite_3", "bone_3"));
+		stonecutterRecipes.add(new Recipe("Sand_3", "Silicon_3", "coal_1"));
 		stonecutterRecipes.add(new Recipe("Andesite_3", "Stone_3", "coal_1"));
 		stonecutterRecipes.add(new Recipe("Diorite_3", "Stone_3", "coal_1"));
 		stonecutterRecipes.add(new Recipe("Granite_3", "Stone_3", "coal_1"));
