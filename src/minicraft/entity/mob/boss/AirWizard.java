@@ -212,10 +212,8 @@ public class AirWizard extends EnemyMob {
 			if (!beaten) Updater.notifyAll("", 200);
 			beaten = true;
 		} else {
-			Updater.notifyAll("Air Wizard II: Defeated!");
-			if (!(boolean)Settings.get("unlockedskin")) Updater.notifyAll("A costume lies on the ground...", -200);
-			Settings.set("unlockedskin", true);
-			new Save();
+			level.add(new AirWizardPhase2(true), x, y);
+			Updater.notifyAll("You have revived the Fury!!");
 		}
 		
 		super.die(); // calls the die() method in EnemyMob.java

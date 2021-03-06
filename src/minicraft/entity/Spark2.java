@@ -51,7 +51,7 @@ public class Spark2 extends Entity {
 			Entity e = toHit.get(i);
 			if (e instanceof Mob && !(e instanceof AirWizardPhase2)) {
 				 // if the entity is a mob, but not a Air Wizard, then hurt the mob with 1 damage.
-				((Mob)e).hurt(owner, 1);
+				((Mob)e).hurt(owner, 4);
 			}
 		}
 	}

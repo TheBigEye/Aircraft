@@ -31,7 +31,7 @@ public class Spark extends Entity {
 		this.ya = ya;
 		
 		// Max time = 629 ticks. Min time = 600 ticks.
-		lifeTime = 9 * 10 + random.nextInt(10);
+		lifeTime = 13 * 10 + random.nextInt(10);
 		
 
 	}
@@ -67,7 +67,7 @@ public class Spark extends Entity {
 			Entity e = toHit.get(i);
 			if (e instanceof Mob && !(e instanceof AirWizard)) {
 				 // if the entity is a mob, but not a Air Wizard, then hurt the mob with 2 damage.
-				((Mob)e).hurt(owner, 2);
+				((Mob)e).hurt(owner, 3);
 			}
 		}
 	}

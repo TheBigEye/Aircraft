@@ -2,6 +2,7 @@ package minicraft.entity.mob.boss;
 
 import minicraft.core.Game;
 import minicraft.core.Updater;
+import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
@@ -12,6 +13,8 @@ import minicraft.gfx.Color;
 import minicraft.gfx.Font;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
+import minicraft.item.Items;
+import minicraft.saveload.Save;
 
 public class AirWizardPhase3 extends EnemyMob {
 	private static MobSprite[][][] sprites;
@@ -194,12 +197,16 @@ public class AirWizardPhase3 extends EnemyMob {
 		}
 		
 		Sound.bossDeath.play(); // play boss-death sound.
+		level.dropItem(x, y, Items.get("AlAzif"));
 		
 		if(!secondform) {
 			Updater.notifyAll("Well played!");
 			if (!beaten) Updater.notifyAll("", 200);
 			beaten = true;
 		} else {
+			if (!(boolean)Settings.get("unlockedskin")) Updater.notifyAll("A costume lies on the ground...", -200);
+			Settings.set("unlockedskin", true);
+			new Save();
 		}
 		
 		super.die(); // calls the die() method in EnemyMob.java

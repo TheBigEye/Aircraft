@@ -127,7 +127,7 @@ public class AirWizardPhase2 extends EnemyMob {
 			int xd = player.x - x; // x dist to player
 			int yd = player.y - y; // y dist to player
 			if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) { // if a random number, 0-3, equals 0, and the player is less than 50 blocks away, and attackDelay and attackTime equal 0...
-				attackDelay = 60 * 3; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
+				attackDelay = 60 * 2; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
 			}
 		}
 	}
@@ -190,7 +190,7 @@ public class AirWizardPhase2 extends EnemyMob {
 	protected void touchedBy(Entity entity) {
 		if (entity instanceof Player) {
 			// if the entity is the Player, then deal them 1 or 2 damage points.
-			((Player)entity).hurt(this, (secondform ? 2 : 1));
+			((Player)entity).hurt(this, (secondform ? 4 : 2));
 		}
 	}
 	
@@ -211,6 +211,8 @@ public class AirWizardPhase2 extends EnemyMob {
 			if (!beaten) Updater.notifyAll("", 200);
 			beaten = true;
 		} else {
+			level.add(new AirWizardPhase3(1), x, y);
+			Updater.notifyAll("This does not end!");
 		}
 		
 		super.die(); // calls the die() method in EnemyMob.java
