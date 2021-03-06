@@ -66,7 +66,7 @@ public class VillagerMob extends MobAi {
 		if(!MobAi.checkStartPos(level, x, y, 80, r))
 			return false;
 		
-		Tile tile = level.getTile(x >> 4, y >> 4);
+		Tile tile = level.getTile(x >> 1, y >> 1);
 		return tile == Tiles.get("Wood Planks") || tile == Tiles.get("wood planks") || tile == Tiles.get("Path") || tile == Tiles.get("path");
 		
 		
@@ -74,7 +74,7 @@ public class VillagerMob extends MobAi {
 	
 	@Override
 	public int getMaxLevel() {
-		return 1;
+		return 3;
 	}
 }
 
