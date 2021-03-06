@@ -42,7 +42,7 @@ public class GuiMan extends FrostMob {
 		if (Settings.get("diff").equals("Normal")) {min = 1; max = 2;}
 		if (Settings.get("diff").equals("Hard")) {min = 0; max = 2;}
 		
-		dropItem(min, max, Items.get("raw pork"));
+		dropItem(min, max, Items.get("feather"));
 		
 		super.die();
 	}
