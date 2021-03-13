@@ -2,6 +2,7 @@ package minicraft.screen;
 
 import java.io.File;
 import java.util.ArrayList;
+
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;

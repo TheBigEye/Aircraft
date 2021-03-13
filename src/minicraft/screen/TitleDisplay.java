@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Random;
 
+import org.jetbrains.annotations.NotNull;
+
 import minicraft.core.Game;
 import minicraft.core.Renderer;
 import minicraft.core.World;
@@ -19,8 +21,6 @@ import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
-
-import org.jetbrains.annotations.NotNull;
 
 public class TitleDisplay extends Display {
 	private static final Random random = new Random();
@@ -53,6 +53,7 @@ public class TitleDisplay extends Display {
 				new SelectEntry("Storyline Guide (for the weak)", () -> Game.setMenu(new BookDisplay(BookData.storylineGuide))),
 				new BlankEntry(),
 				new SelectEntry("About", () -> Game.setMenu(new BookDisplay(BookData.about)))
+
 			),
 			new SelectEntry("Exit", Game::quit)
 			)
@@ -61,7 +62,8 @@ public class TitleDisplay extends Display {
 			.createMenu()
 		);
 	}
-	
+
+
 	@Override
 	public void init(Display parent) {
 		super.init(null); // The TitleScreen never has a parent.

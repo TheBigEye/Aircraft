@@ -1,8 +1,8 @@
 package minicraft.entity.mob;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;

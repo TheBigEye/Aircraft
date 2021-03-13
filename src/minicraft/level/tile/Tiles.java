@@ -6,19 +6,22 @@ import minicraft.core.Game;
 import minicraft.level.tile.wool.*;
 
 public final class Tiles {
-	/// idea: to save tile names while saving space, I could encode the names in base 64 in the save file...^M
-    /// then, maybe, I would just replace the id numbers with id names, make them all private, and then make a get(String) method, parameter is tile name.
-	
+	/// idea: to save tile names while saving space, I could encode the names in
+	/// base 64 in the save file...^M
+	/// then, maybe, I would just replace the id numbers with id names, make them
+	/// all private, and then make a get(String) method, parameter is tile name.
+
 	public static ArrayList<String> oldids = new ArrayList<>();
-	
+
 	private static ArrayList<Tile> tiles = new ArrayList<>();
-	
+
 	public static void initTileList() {
-		if(Game.debug) System.out.println("Initializing tile list...");
-		
-		for(int i = 0; i < 256; i++)
+		if (Game.debug)
+			System.out.println("Initializing tile list...");
+
+		for (int i = 0; i < 256; i++)
 			tiles.add(null);
-		
+
 		tiles.set(0, new GrassTile("Grass"));
 		tiles.set(1, new DirtTile("Dirt"));
 		tiles.set(2, new FlowerTile("Flower"));
@@ -38,7 +41,7 @@ public final class Tiles {
 		tiles.set(13, new OreTile(OreTile.OreType.Iron));
 		tiles.set(14, new OreTile(OreTile.OreType.Gold));
 		tiles.set(15, new OreTile(OreTile.OreType.Gem));
-		tiles.set(16, new OreTile(OreTile.OreType.Lapis));	
+		tiles.set(16, new OreTile(OreTile.OreType.Lapis));
 		tiles.set(18, new LavaBrickTile("Lava Brick"));
 		tiles.set(19, new ExplodedTile("Explode"));
 		tiles.set(20, new FarmTile("Farmland"));
@@ -85,31 +88,31 @@ public final class Tiles {
 		tiles.set(61, new SnowTile("Snow"));
 		tiles.set(62, new FirTreeTile("Fir Tree"));
 		tiles.set(63, new PineTreeTile("Pine Tree"));
-		
+
 		tiles.set(64, new CloudTreeTile("Cloud Tree"));
 		tiles.set(65, new IceSpikeTile("Ice Spike"));
 		tiles.set(66, new ObsidianTile("Hard Obsidian"));
-		
+
 		// WARNING: don't use this tile for anything!
 		tiles.set(255, new ConnectTile());
-		
-		for(int i = 0; i < tiles.size(); i++) {
-			if(tiles.get(i) == null) continue;
-			tiles.get(i).id = (byte)i;
+
+		for (int i = 0; i < tiles.size(); i++) {
+			if (tiles.get(i) == null)
+				continue;
+			tiles.get(i).id = (byte) i;
 		}
 	}
-	
-	
+
 	protected static void add(int id, Tile tile) {
 		tiles.set(id, tile);
 		System.out.println("Adding " + tile.name + " to tile list with id " + id);
 		tile.id = (byte) id;
 	}
-	
+
 	static {
-		for(int i = 0; i < 256; i++)
+		for (int i = 0; i < 256; i++)
 			oldids.add(null);
-		
+
 		oldids.set(0, "grass");
 		oldids.set(1, "rock");
 		oldids.set(2, "water");
@@ -175,8 +178,9 @@ public final class Tiles {
 		oldids.set(158, "birch door");
 		oldids.set(159, "birch door");
 		oldids.set(160, "hard obsidian");
-		
-		// light/torch versions, for compatibility with before 1.9.4-dev3. (were removed in making dev3)
+
+		// light/torch versions, for compatibility with before 1.9.4-dev3. (were removed
+		// in making dev3)
 		oldids.set(100, "grass");
 		oldids.set(101, "sand");
 		oldids.set(102, "tree");
@@ -226,7 +230,7 @@ public final class Tiles {
 		oldids.set(180, "birch door");
 		oldids.set(181, "birch door");
 		oldids.set(182, "hard obsidian");
-		
+
 		oldids.set(44, "torch grass");
 		oldids.set(40, "torch sand");
 		oldids.set(46, "torch dirt");
@@ -252,77 +256,79 @@ public final class Tiles {
 		oldids.set(200, "torch spruce planks");
 		oldids.set(201, "torch birch planks");
 	}
-	
+
 	private static int overflowCheck = 0;
+
 	public static Tile get(String name) {
-		//System.out.println("Getting from tile list: " + name);
-		
+		// System.out.println("Getting from tile list: " + name);
+
 		name = name.toUpperCase();
-		
+
 		overflowCheck++;
-		
-		if(overflowCheck > 50) {
+
+		if (overflowCheck > 50) {
 			System.out.println("STACKOVERFLOW prevented in Tiles.get(), on: " + name);
 			System.exit(1);
 		}
-		
-		//System.out.println("Fetching tile " + name);
-		
+
+		// System.out.println("Fetching tile " + name);
+
 		Tile getting = null;
-		
+
 		boolean isTorch = false;
-		if(name.startsWith("TORCH ")) {
+		if (name.startsWith("TORCH ")) {
 			isTorch = true;
 			name = name.substring(6); // cuts off torch prefix.
 		}
 
-		if(name.contains("_")) {
+		if (name.contains("_")) {
 			name = name.substring(0, name.indexOf("_"));
 		}
-		
-		for(Tile t: tiles) {
-			if(t == null) continue;
-			if(t.name.equals(name)) {
+
+		for (Tile t : tiles) {
+			if (t == null)
+				continue;
+			if (t.name.equals(name)) {
 				getting = t;
 				break;
 			}
 		}
-		
-		if(getting == null) {
+
+		if (getting == null) {
 			System.out.println("TILES.GET: Invalid tile requested: " + name);
 			getting = tiles.get(0);
 		}
-		
-		if(isTorch) {
+
+		if (isTorch) {
 			getting = TorchTile.getTorchTile(getting);
 		}
-		
+
 		overflowCheck = 0;
 		return getting;
 	}
-	
+
 	public static Tile get(int id) {
-		//System.out.println("Requesting tile by id: " + id);
-		if(id < 0) id += 256;
-		
-		if(tiles.get(id) != null) {
+		// System.out.println("Requesting tile by id: " + id);
+		if (id < 0)
+			id += 256;
+
+		if (tiles.get(id) != null) {
 			return tiles.get(id);
-		}
-		else if(id >= 128) {
-			return TorchTile.getTorchTile(get(id-128));
-		}
-		else {
+		} else if (id >= 128) {
+			return TorchTile.getTorchTile(get(id - 128));
+		} else {
 			System.out.println("TILES.GET: Unknown tile id requested: " + id);
 			return tiles.get(0);
 		}
 	}
-	
+
 	public static boolean containsTile(int id) {
 		return tiles.get(id) != null;
 	}
-	
+
 	public static String getName(String descriptName) {
-		if(!descriptName.contains("_")) return descriptName;
+		if (!descriptName.contains("_"))
+			return descriptName;
 		int data;
 		String[] parts = descriptName.split("_");
 		descriptName = parts[0];

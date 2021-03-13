@@ -2,7 +2,6 @@ package minicraft.entity.mob.boss;
 
 import minicraft.core.Game;
 import minicraft.core.Updater;
-import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
@@ -13,7 +12,6 @@ import minicraft.gfx.Color;
 import minicraft.gfx.Font;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
-import minicraft.saveload.Save;
 
 public class AirWizard extends EnemyMob {
 	private static MobSprite[][][] sprites;

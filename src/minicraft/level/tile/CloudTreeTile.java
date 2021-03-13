@@ -19,16 +19,15 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class CloudTreeTile extends Tile {
-	
+
 	protected CloudTreeTile(String name) {
-		super(name, (ConnectorSprite)null);
+		super(name, (ConnectorSprite) null);
 		connectsToCloud = true;
 	}
-	
-	
+
 	public void render(Screen screen, Level level, int x, int y) {
 		Tiles.get("cloud").render(screen, level, x, y);
-		
+
 		boolean u = level.getTile(x, y - 1) == this;
 		boolean l = level.getTile(x - 1, y) == this;
 		boolean r = level.getTile(x + 1, y) == this;
@@ -41,7 +40,7 @@ public class CloudTreeTile extends Tile {
 		if (u && ul && l) {
 			screen.render(x * 16 + 0, y * 16 + 0, 9 + 29 * 32, 0, 1);
 		} else {
-			screen.render(x * 16 + 0, y * 16 + 0, 8 + 28 * 32, 0, 1);//v
+			screen.render(x * 16 + 0, y * 16 + 0, 8 + 28 * 32, 0, 1);// v
 		}
 		if (u && ur && r) {
 			screen.render(x * 16 + 8, y * 16 + 0, 9 + 30 * 32, 0, 1);
@@ -56,29 +55,29 @@ public class CloudTreeTile extends Tile {
 		if (d && dr && r) {
 			screen.render(x * 16 + 8, y * 16 + 8, 9 + 29 * 32, 0, 1);
 		} else {
-			screen.render(x * 16 + 8, y * 16 + 8, 9 + 31 * 32, 0, 1);//V
+			screen.render(x * 16 + 8, y * 16 + 8, 9 + 31 * 32, 0, 1);// V
 		}
 	}
-	
 
 	public void tick(Level level, int xt, int yt) {
 		int damage = level.getData(xt, yt);
-		if (damage > 0) level.setData(xt, yt, damage - 1);
+		if (damage > 0)
+			level.setData(xt, yt, damage - 1);
 	}
 
 	public boolean mayPass(Level level, int x, int y, Entity e) {
 		return e instanceof AirWizard;
 	}
-	
+
 	@Override
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		hurt(level, x, y, dmg);
 		return true;
 	}
-	
+
 	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-		if(Game.isMode("creative"))
+		if (Game.isMode("creative"))
 			return false; // go directly to hurt method
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
@@ -93,26 +92,24 @@ public class CloudTreeTile extends Tile {
 	}
 
 	public void hurt(Level level, int x, int y, int dmg) {
-		if(random.nextInt(100) == 0)
-			level.dropItem(x*16+8, y*16+8, Items.get("Apple"));
-		
+		if (random.nextInt(100) == 0)
+			level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Apple"));
+
 		int damage = level.getData(x, y) + dmg;
 		int treeHealth = 20;
-		if (Game.isMode("creative")) dmg = damage = treeHealth;
-		
-		level.add(new SmashParticle(x*16, y*16));
+		if (Game.isMode("creative"))
+			dmg = damage = treeHealth;
+
+		level.add(new SmashParticle(x * 16, y * 16));
 		Sound.monsterHurt.play();
 
-		level.add(new TextParticle("" + dmg, x*16+8, y*16+8, Color.RED));
+		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
 		if (damage >= treeHealth) {
-			level.dropItem(x*16+8, y*16+8, 1, 2, Items.get("Wood"));
-			level.dropItem(x*16+8, y*16+8, 1, 2, Items.get("Leaf"));
+			level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Wood"));
+			level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Leaf"));
 			level.setTile(x, y, Tiles.get("cloud"));
 		} else {
 			level.setData(x, y, damage);
 		}
 	}
 }
-
-
-

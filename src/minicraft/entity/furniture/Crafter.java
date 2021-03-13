@@ -59,5 +59,7 @@ public class Crafter extends Furniture {
 	}
 	
 	@Override
-	public String toString() { return type.name()+getDataPrints(); }
+	public String toString() {
+		return type.name() + getDataPrints();
+	}
 }

@@ -1,5 +1,7 @@
 package minicraft.core;
 
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.io.Settings;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
@@ -11,8 +13,6 @@ import minicraft.screen.LoadingDisplay;
 import minicraft.screen.PlayerDeathDisplay;
 import minicraft.screen.WorldGenDisplay;
 import minicraft.screen.WorldSelectDisplay;
-
-import org.jetbrains.annotations.Nullable;
 
 public class World extends Game {
 	private World() {}

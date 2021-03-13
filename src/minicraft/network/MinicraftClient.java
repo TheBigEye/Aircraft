@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.Game;
 import minicraft.core.Network;
 import minicraft.core.Renderer;
@@ -35,8 +37,6 @@ import minicraft.saveload.Save;
 import minicraft.saveload.Version;
 import minicraft.screen.ContainerDisplay;
 import minicraft.screen.MultiplayerDisplay;
-
-import org.jetbrains.annotations.Nullable;
 
 /// This class is only used by the client runtime; the server runtime doesn't touch it.
 public class MinicraftClient extends MinicraftConnection {

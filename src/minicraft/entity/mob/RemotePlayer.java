@@ -3,6 +3,8 @@ package minicraft.entity.mob;
 import java.net.InetAddress;
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.entity.ClientTickable;
@@ -14,8 +16,6 @@ import minicraft.gfx.Font;
 import minicraft.gfx.FontStyle;
 import minicraft.gfx.Screen;
 import minicraft.level.Level;
-
-import org.jetbrains.annotations.Nullable;
 
 /** This is used for players in multiplayer mode. */
 public class RemotePlayer extends Player implements ClientTickable {

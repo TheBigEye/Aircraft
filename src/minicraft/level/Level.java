@@ -1,6 +1,12 @@
 package minicraft.level;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.function.ToIntFunction;
 
 import minicraft.core.Game;
@@ -14,7 +20,24 @@ import minicraft.entity.ItemEntity;
 import minicraft.entity.furniture.Chest;
 import minicraft.entity.furniture.DungeonChest;
 import minicraft.entity.furniture.Spawner;
-import minicraft.entity.mob.*;
+import minicraft.entity.mob.Chicken;
+import minicraft.entity.mob.Cow;
+import minicraft.entity.mob.Creeper;
+import minicraft.entity.mob.EnemyMob;
+import minicraft.entity.mob.FrostMob;
+import minicraft.entity.mob.GuiMan;
+import minicraft.entity.mob.Knight;
+import minicraft.entity.mob.Mob;
+import minicraft.entity.mob.MobAi;
+import minicraft.entity.mob.PassiveMob;
+import minicraft.entity.mob.Pig;
+import minicraft.entity.mob.Player;
+import minicraft.entity.mob.RemotePlayer;
+import minicraft.entity.mob.Sheep;
+import minicraft.entity.mob.Skeleton;
+import minicraft.entity.mob.Slime;
+import minicraft.entity.mob.Snake;
+import minicraft.entity.mob.Zombie;
 import minicraft.entity.mob.boss.AirWizard;
 import minicraft.entity.mob.villager.Cleric;
 import minicraft.entity.mob.villager.Librarian;
@@ -1012,7 +1035,7 @@ public class Level {
 						if (hasChest) {
 							Chest c = new Chest();
 							c.populateInvRandom("villagehouse", 1);
-							add(c, (x + random.nextInt(2) + xo) << 4, (y + random.nextInt(2) + yo) << 4);
+							add(c, (x + random.nextInt(2) + xo) << 2, (y + random.nextInt(2) + yo) << 2);
 						}
 					}
 

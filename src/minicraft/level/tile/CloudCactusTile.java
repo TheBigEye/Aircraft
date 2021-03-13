@@ -20,11 +20,11 @@ import minicraft.level.Level;
 
 public class CloudCactusTile extends Tile {
 	private static Sprite sprite = new Sprite(6, 2, 2, 2, 1);
-	
+
 	protected CloudCactusTile(String name) {
 		super(name, sprite);
 	}
-	
+
 	public boolean mayPass(Level level, int x, int y, Entity e) {
 		return e instanceof AirWizard;
 	}
@@ -35,7 +35,7 @@ public class CloudCactusTile extends Tile {
 	}
 
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-		if(Game.isMode("creative"))
+		if (Game.isMode("creative"))
 			return false; // go directly to hurt method
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
@@ -48,11 +48,12 @@ public class CloudCactusTile extends Tile {
 		}
 		return false;
 	}
-	
+
 	public void hurt(Level level, int x, int y, int dmg) {
 		int damage = level.getData(x, y) + dmg;
 		int health = 10;
-		if(Game.isMode("creative")) dmg = damage = health;
+		if (Game.isMode("creative"))
+			dmg = damage = health;
 		level.add(new SmashParticle(x * 16, y * 16));
 		Sound.monsterHurt.play();
 
@@ -62,18 +63,19 @@ public class CloudCactusTile extends Tile {
 		} else
 			level.setData(x, y, damage);
 	}
-	
+
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		Tiles.get("Cloud").render(screen, level, x, y);
 
-		sprite.render(screen, x<<4, y<<4);
+		sprite.render(screen, x << 4, y << 4);
 	}
 
 	public void bumpedInto(Level level, int x, int y, Entity entity) {
-		if (entity instanceof AirWizard) return;
-		
-		if(entity instanceof Mob)
-			((Mob)entity).hurt(this, x, y, 1+Settings.getIdx("diff"));
+		if (entity instanceof AirWizard)
+			return;
+
+		if (entity instanceof Mob)
+			((Mob) entity).hurt(this, x, y, 1 + Settings.getIdx("diff"));
 	}
 }

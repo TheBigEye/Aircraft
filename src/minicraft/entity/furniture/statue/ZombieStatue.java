@@ -10,6 +10,10 @@ public class ZombieStatue extends Furniture {
 	}
 	
 	@Override
+	public int getLightRadius() {
+		return 6;
+	}
+	@Override
 	public Furniture clone() {
 		return new ZombieStatue();
 	}

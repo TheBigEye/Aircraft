@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.Game;
 import minicraft.core.MyUtils;
 import minicraft.core.Network;
@@ -38,9 +41,6 @@ import minicraft.saveload.Load;
 import minicraft.saveload.Save;
 import minicraft.saveload.Version;
 import minicraft.screen.WorldSelectDisplay;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class MinicraftServer extends Thread implements MinicraftProtocol {
 	

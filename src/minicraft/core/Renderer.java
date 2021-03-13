@@ -1,7 +1,5 @@
 package minicraft.core;
 
-import javax.imageio.ImageIO;
-
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -13,11 +11,18 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.*;
+import minicraft.gfx.Color;
+import minicraft.gfx.Ellipsis;
 import minicraft.gfx.Ellipsis.DotUpdater.TickUpdater;
 import minicraft.gfx.Ellipsis.SmoothEllipsis;
+import minicraft.gfx.Font;
+import minicraft.gfx.FontStyle;
+import minicraft.gfx.Screen;
+import minicraft.gfx.SpriteSheet;
 import minicraft.item.Items;
 import minicraft.item.PotionType;
 import minicraft.item.ToolItem;

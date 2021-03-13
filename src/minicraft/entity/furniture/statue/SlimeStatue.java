@@ -10,6 +10,11 @@ public class SlimeStatue extends Furniture {
 	}
 	
 	@Override
+	public int getLightRadius() {
+		return 5;
+	}
+	
+	@Override
 	public Furniture clone() {
 		return new SlimeStatue();
 	}
