@@ -55,6 +55,14 @@ public class EyeQueen extends EnemyMob {
 				if (yd < sig0) { // down
 					sprites[0][0][0] = new MobSprite(58, 6, 6, 6, 0);
 				}
+								
+				if (xd > sig0) { // right
+					sprites[0][0][0] = new MobSprite(58, 12, 6, 6, 0);
+				}			
+				if (xd < sig0) { // left
+					sprites[0][0][0] = new MobSprite(58, 18, 6, 6, 0);
+				}
+				
 							
 			} else {
 				// if the enemy was following the player, but has now lost it, it stops moving.
@@ -94,11 +102,11 @@ public class EyeQueen extends EnemyMob {
 		Sound.eyeChangePhase.play();
 		level.add(new EyeQueenPhase2(1), x, y);
 		
-		int randX = rnd.nextInt(10);
-		int randY = rnd.nextInt(9);
-		level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
-		level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
-		level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
+		int randX = rnd.nextInt(16);
+		int randY = rnd.nextInt(16);
+		level.add(new FireParticle(x - 0 + randX, y - 0 + randY));
+		level.add(new FireParticle(x - 32 + randX, y - 24 + randY));
+		level.add(new FireParticle(x - 26 + randX, y - 14 + randY));
 	}
 
 }

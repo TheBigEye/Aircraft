@@ -3,7 +3,7 @@ package minicraft.entity.mob.boss;
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
-import minicraft.entity.Arrow;
+import minicraft.entity.Fireball;
 import minicraft.entity.mob.EnemyMob;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.MobSprite;
@@ -19,6 +19,7 @@ public class EyeQueenPhase3 extends EnemyMob {
     
 	private int arrowtime;
 	private int artime;
+	private boolean DeathAnim = true;
 
     public EyeQueenPhase3(int lvl) {
     	super(5, sprites, 9, 100);
@@ -37,6 +38,8 @@ public class EyeQueenPhase3 extends EnemyMob {
 			getLevel().add(new Slime(0), x - 5, y);
 		}**/
 		
+		if (DeathAnim = true) {
+		
 		Player player = getClosestPlayer();
 		if (player != null) { // checks if player is on zombies level and if there is no time left on randonimity timer
 			int xd = player.x - x;
@@ -53,12 +56,12 @@ public class EyeQueenPhase3 extends EnemyMob {
 				//up
 				if (yd > sig0) {
 					sprites[0][0][0] = new MobSprite(70, 0, 6, 6, 0);
-				}
-				
+				}				
 				//down
 				if (yd < sig0) {
 					sprites[0][0][0] = new MobSprite(70, 6, 6, 6, 0);
 				}
+
 				
 			} else {
 				// if the enemy was following the player, but has now lost it, it stops moving.
@@ -73,13 +76,14 @@ public class EyeQueenPhase3 extends EnemyMob {
 			
 			int xd = player.x - x;
 			int yd = player.y - y;
-			if (xd * xd + yd * yd < 100 * 100) {
+			if (xd * xd + yd * yd < 500 * 500) {
 				if (artime < 1) {
-					level.add(new Arrow(this, dir, lvl));
-					level.add(new Arrow(this, dir, lvl));
+					level.add(new Fireball(this, dir, lvl));
+					level.add(new Fireball(this, dir, lvl));
 					artime = arrowtime;
 				}
 			}
+		}
 		}
 		
 		
@@ -104,6 +108,14 @@ public class EyeQueenPhase3 extends EnemyMob {
 		return true;
 	}
 
+	protected void delay(long milis)
+	{
+		try {
+			Thread.sleep(milis);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
     
 	public void die() {
 		Player player = getClosestPlayer();
@@ -113,6 +125,7 @@ public class EyeQueenPhase3 extends EnemyMob {
 		if (Settings.get("diff").equals("Normal")) {min = 1; max = 2;}
 		if (Settings.get("diff").equals("Hard")) {min = 0; max = 2;}
 		
+		DeathAnim = true;
 		super.die();
 		Sound.eyeBossDeath.play();
 		Game.setMenu(new EndGameDisplay(player));

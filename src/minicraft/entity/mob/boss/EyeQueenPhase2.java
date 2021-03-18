@@ -2,7 +2,7 @@ package minicraft.entity.mob.boss;
 
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
-import minicraft.entity.Arrow;
+import minicraft.entity.Fireball;
 import minicraft.entity.mob.EnemyMob;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.MobSprite;
@@ -50,11 +50,16 @@ public class EyeQueenPhase2 extends EnemyMob {
 				//up
 				if (yd > sig0) {
 					sprites[0][0][0] = new MobSprite(64, 0, 6, 6, 0);
-				}
-				
+				}				
 				//down
 				if (yd < sig0) {
 					sprites[0][0][0] = new MobSprite(64, 6, 6, 6, 0);
+				}
+				if (xd > sig0) { // right
+					sprites[0][0][0] = new MobSprite(64, 12, 6, 6, 0);
+				}			
+				if (xd < sig0) { // left
+					sprites[0][0][0] = new MobSprite(64, 18, 6, 6, 0);
 				}
 				
 			} else {
@@ -71,7 +76,8 @@ public class EyeQueenPhase2 extends EnemyMob {
 			int yd = player.y - y;
 			if (xd * xd + yd * yd < 100 * 100) {
 				if (artime < 1) {
-					level.add(new Arrow(this, dir, lvl));
+					level.add(new Fireball(this, dir, lvl));
+
 					artime = arrowtime;
 				}
 			}
