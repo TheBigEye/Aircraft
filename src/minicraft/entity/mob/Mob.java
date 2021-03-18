@@ -1,11 +1,13 @@
 package minicraft.entity.mob;
 
 import java.util.List;
+import java.util.Random;
 
 import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.furniture.Tnt;
+import minicraft.entity.particle.FireParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
 import minicraft.gfx.MobSprite;
@@ -14,6 +16,8 @@ import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public abstract class Mob extends Entity {
+	
+    private Random rnd = new Random();
 	
 	protected MobSprite[][] sprites; // This contains all the mob's sprites, sorted first by direction (index corresponding to the dir variable), and then by walk animation state.
 	public int walkDist = 0; // How far we've walked currently, incremented after each movement. This is used to change the sprite; "(walkDist >> 3) & 1" switches between a value of 0 and 1 every 8 increments of walkDist.
@@ -152,6 +156,33 @@ public abstract class Mob extends Entity {
 	public boolean isLight() {
 		if(level == null) return false;
 		return level.isLight(x>>4, y>>4);
+	}
+	
+	public boolean isBurning(boolean b) {
+		
+	if(level == null) return false;
+		
+		Tile tile = level.getTile(x >> 4, y >> 4); 
+		if (tile == Tiles.get("water")) {
+			return false;
+		}
+		
+		if (tile == Tiles.get("lava")) {
+			return true;
+		}
+		
+	if (b == true) {
+		if (random.nextInt(3000)==1) {
+			
+		int randX = rnd.nextInt(10);
+		int randY = rnd.nextInt(9);
+        		
+        level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
+		}
+	}
+		
+	 return tile == Tiles.get("grass") || tile == Tiles.get("dirt");
+		
 	}
 
 	/**
