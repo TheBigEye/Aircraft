@@ -23,7 +23,6 @@ public class LoadingDisplay extends Display {
 	private static String progressType = "";
 
 	private static String Build = "";
-	private static String Finish = "";
 
 	String[] BuildString = { "Generating", "Calculating", "Pre Calculating", "Building", "Melting", "Eroding",
 			"Planting", "Populating", "Molding", "Raising", };
@@ -92,8 +91,7 @@ public class LoadingDisplay extends Display {
 				Localization.getLocalized(msg) + ellipsis.updateAndGet(), percent + "%");
 		Font.drawCentered("May take a while, be patient", screen, Screen.h - 12, Color.get(1, 51));
 
-		Font.drawCentered(((progressType.length() > 0) ? (" " + Localization.getLocalized(progressType)) : ""), screen,
-				Screen.h - 30, Color.get(1, 51));
+		Font.drawCentered(((progressType.length() > 0) ? (" " + Localization.getLocalized(progressType)) : ""), screen, Screen.h - 30, Color.get(1, 51));
 		{
 			Sound.Intro.stop();
 			Sound.Intro2.stop();
