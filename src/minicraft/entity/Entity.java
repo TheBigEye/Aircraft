@@ -288,6 +288,9 @@ public abstract class Entity implements Tickable {
 			this.level = null;
 		}
 	}
+	
+	
+
 
 	/**
 	 * This should ONLY be called by the Level class. To properly add an entity to a
