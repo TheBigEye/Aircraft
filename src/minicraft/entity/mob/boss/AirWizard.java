@@ -75,7 +75,7 @@ public class AirWizard extends EnemyMob {
 				//attackType = 0; // attack type is set to 0, as the default.
 				if (health < maxHealth / 2) attackType = 1; // if at 1000 health (50%) or lower, attackType = 1
 				if (health < maxHealth / 10) attackType = 2; // if at 200 health (10%) or lower, attackType = 2
-				if (random.nextInt(3) == 0) {
+				if (random.nextInt(2) == 0) {
 					attackTime = 80 * (secondform ? 3 : 2); //attackTime set to 120 or 180 (2 or 3 seconds, at default 60 ticks/sec)
 				}
 				if (random.nextInt(3) == 1) {
