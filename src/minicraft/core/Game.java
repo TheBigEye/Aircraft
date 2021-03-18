@@ -135,19 +135,15 @@ public class Game {
 	public static void main(String[] args) {
 
 		if (debug) {
-			System.out.println("______________________________________________________________");
-			System.out.println("|           │ Class │ Package │ Subclass │ Subclass │ World  |");
-			System.out.println("|           │       │         │(same pkg)│(diff pkg)│        |");
-			System.out.println("|───────────┼───────┼─────────┼──────────┼──────────┼────────|");
-			System.out.println("|public     │   +   │    +    │    +     │     +    │   +    |");
-			System.out.println("|───────────┼───────┼─────────┼──────────┼──────────┼────────|");
-			System.out.println("|protected  │   +   │    +    │    +     │     +    │        |");
-			System.out.println("|───────────┼───────┼─────────┼──────────┼──────────┼────────|");
-			System.out.println("|no modifier│   +   │    +    │    +     │          │        |");
-			System.out.println("|───────────┼───────┼─────────┼──────────┼──────────┼────────|");
-			System.out.println("|private    │   +   │         │          │          │        |");
-			System.out.println("|___________|_______|_________|__________|__________|________|");
-			System.out.println(" + : accessible         blank : not accessible");
+			System.out.println("Current Operating system");
+			System.out.println("OS: " + System.getProperty("os.name"));
+			System.out.println("OS Version: " + System.getProperty("os.version"));
+			System.out.println("OS Arch: " + System.getProperty("os.arch"));
+			System.out.println("");
+			System.out.println("Java specifications");
+			System.out.println("Version: " + System.getProperty("java.version"));
+			System.out.println("Vendor: " + System.getProperty("java.vendor"));
+			System.out.println("Model: " + System.getProperty("sun.arch.data.model"));
 		}
 
 		Game.ERROR_TITLE = array[random.nextInt(6)];
