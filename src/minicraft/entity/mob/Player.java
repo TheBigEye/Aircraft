@@ -51,8 +51,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Player extends Mob implements ItemHolder, ClientTickable {
 	protected InputHandler input;
-	
-    
+	   
     private Random rnd = new Random();
 	
 	private static final int playerHurtTime = 30;
@@ -813,24 +812,24 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		// Halloween skin
 		if (time.getMonth() == Month.OCTOBER) {
 			if (time.getDayOfMonth() == 30) {
-			sprites =  MobSprite.compileMobSpriteAnimations(68, 40);
-			carrySprites = MobSprite.compileMobSpriteAnimations(68, 42);
+			sprites =  MobSprite.compileMobSpriteAnimations(0, 60);
+			carrySprites = MobSprite.compileMobSpriteAnimations(0, 62);	
 			}
 		}
 		
 		// me??
 		if (time.getMonth() == Month.JULY) {
 			if (time.getDayOfMonth() == 30) {
-			sprites =  MobSprite.compileMobSpriteAnimations(68, 44);
-			carrySprites = MobSprite.compileMobSpriteAnimations(68, 46);
+			sprites =  MobSprite.compileMobSpriteAnimations(0, 64);
+			carrySprites = MobSprite.compileMobSpriteAnimations(0, 66);		
 			}
 			if (time.getDayOfMonth() == 29) {
-			sprites =  MobSprite.compileMobSpriteAnimations(68, 44);
-			carrySprites = MobSprite.compileMobSpriteAnimations(68, 46);
+			sprites =  MobSprite.compileMobSpriteAnimations(0, 64);
+			carrySprites = MobSprite.compileMobSpriteAnimations(0, 66);		
 			}
 			if (time.getDayOfMonth() == 28) {
-			sprites =  MobSprite.compileMobSpriteAnimations(68, 44);
-			carrySprites = MobSprite.compileMobSpriteAnimations(68, 46);
+			sprites =  MobSprite.compileMobSpriteAnimations(0, 64);
+			carrySprites = MobSprite.compileMobSpriteAnimations(0, 66);		
 			}
 		}
 		
@@ -838,16 +837,16 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		// Markus skin
 		if (time.getMonth() == Month.JUNE) {
 			if (time.getDayOfMonth() == 1) {
-			sprites =  MobSprite.compileMobSpriteAnimations(68, 36);
-			carrySprites = MobSprite.compileMobSpriteAnimations(68, 38);
+			sprites =  MobSprite.compileMobSpriteAnimations(0, 56);
+			carrySprites = MobSprite.compileMobSpriteAnimations(0, 58);	
 			}
 			if (time.getDayOfMonth() == 2) {
-			sprites =  MobSprite.compileMobSpriteAnimations(68, 36);
-			carrySprites = MobSprite.compileMobSpriteAnimations(68, 38);
+			sprites =  MobSprite.compileMobSpriteAnimations(0, 56);
+			carrySprites = MobSprite.compileMobSpriteAnimations(0, 58);	
 			}
 			if (time.getDayOfMonth() == 3) {
-			sprites =  MobSprite.compileMobSpriteAnimations(68, 36);
-			carrySprites = MobSprite.compileMobSpriteAnimations(68, 38);
+			sprites =  MobSprite.compileMobSpriteAnimations(0, 56);
+			carrySprites = MobSprite.compileMobSpriteAnimations(0, 58);	
 			}
 		}
 		
