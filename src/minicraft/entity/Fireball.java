@@ -1,9 +1,11 @@
 package minicraft.entity;
 
 import java.util.List;
+import java.util.Random;
 
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
+import minicraft.entity.particle.FireParticle;
 import minicraft.gfx.Color;
 import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
@@ -13,6 +15,8 @@ public class Fireball extends Entity implements ClientTickable {
 	private int damage;
 	public Mob owner;
 	private int speed;
+
+	private Random rnd = new Random();
 
 	public Fireball(Mob owner, Direction dir, int dmg) {
 		this(owner, owner.x, owner.y, dir, dmg);
@@ -29,11 +33,11 @@ public class Fireball extends Entity implements ClientTickable {
 		col = Color.get(-1, 111, 222, 430);
 
 		if (damage > 3)
-			speed = 8;
+			speed = 2;
 		else if (damage >= 0)
-			speed = 6;
+			speed = 1;
 		else
-			speed = 4;
+			speed = 1;
 	}
 
 	/**
@@ -55,8 +59,7 @@ public class Fireball extends Entity implements ClientTickable {
 		x += dir.getX() * speed;
 		y += dir.getY() * speed;
 
-		// TODO I think I can just use the xr yr vars, and the normal system with
-		// touchedBy(entity) to detect collisions instead.
+		// TODO I think I can just use the xr yr vars, and the normal system with touchedBy(entity) to detect collisions instead.
 		List<Entity> entitylist = level.getEntitiesInRect(new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS));
 		boolean criticalHit = random.nextInt(11) < 9;
 		for (int i = 0; i < entitylist.size(); i++) {
@@ -66,6 +69,12 @@ public class Fireball extends Entity implements ClientTickable {
 				Mob mob = (Mob) hit;
 				int extradamage = (hit instanceof Player ? 0 : 3) + (criticalHit ? 0 : 1);
 				mob.hurt(owner, damage + extradamage, dir);
+
+				int randX = rnd.nextInt(10);
+				int randY = rnd.nextInt(9);
+
+				level.add(new FireParticle(x - 2 + randX, y - 2 + randY));
+
 			}
 
 			if (!level.getTile(x / 16, y / 16).mayPass(level, x / 16, y / 16, this)
@@ -79,18 +88,26 @@ public class Fireball extends Entity implements ClientTickable {
 		return false;
 	}
 
+	public int getLightRadius() {
+		return 2;
+	}
+
 	@Override
 	public void render(Screen screen) {
-		int xt = 0;
+		int xt = 4;
 		int yt = 2;
 
 		if (dir == Direction.LEFT)
-			xt = 1;
+			xt = 5;
 		if (dir == Direction.UP)
-			xt = 2;
+			xt = 6;
 		if (dir == Direction.DOWN)
-			xt = 3;
+			xt = 7;
+
+		int randX = rnd.nextInt(2);
+		int randY = rnd.nextInt(2);
 
 		screen.render(x - 4, y - 4, xt + yt * 32, 0);
+		level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
 	}
 }
