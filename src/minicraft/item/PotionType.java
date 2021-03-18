@@ -33,13 +33,15 @@ public enum PotionType {
 	xRegen (Color.get(1, 191, 63, 112), 2800),
 	Health (Color.get(1, 161, 46, 69), 0) {
 		public boolean toggleEffect(Player player, boolean addEffect) {
-			if(addEffect) player.heal(5);
+			if (addEffect)
+				player.heal(5);
 			return true;
 		}
 	},
 	xHealth (Color.get(1, 255, 63, 110), 0) {
 		public boolean toggleEffect(Player player, boolean addEffect) {
-			if(addEffect) player.heal(10);
+			if (addEffect)
+				player.heal(10);
 			return true;
 		}
 	},
@@ -53,48 +55,54 @@ public enum PotionType {
 	
 	Escape (Color.get(1, 85, 62, 62), 0) {
 		public boolean toggleEffect(Player player, boolean addEffect) {
-			if(addEffect) {
+			if (addEffect) {
 				int playerDepth = player.getLevel().depth;
-				
-				if(playerDepth == 0) {
-					if(!Game.isValidServer()) {
+
+				if (playerDepth == 0) {
+					if (!Game.isValidServer()) {
 						// player is in overworld
 						String note = "You can't escape from here!";
 						Game.notifications.add(note);
 					}
 					return false;
 				}
-				
+
 				int depthDiff = playerDepth > 0 ? -1 : 1;
-				
+
 				World.scheduleLevelChange(depthDiff, () -> {
 					Level plevel = World.levels[World.lvlIdx(playerDepth + depthDiff)];
-					if(plevel != null && !plevel.getTile(player.x >> 4, player.y >> 4).mayPass(plevel, player.x >> 4, player.y >> 4, player))
+					if (plevel != null && !plevel.getTile(player.x >> 4, player.y >> 4).mayPass(plevel, player.x >> 4,
+							player.y >> 4, player))
 						player.findStartPos(plevel, false);
 				});
 			}
 			return true;
 		}
 	};
-	
+
 	public int dispColor, duration;
 	public String name;
-	
+
 	PotionType(int col, int dur) {
 		dispColor = col;
 		duration = dur;
-		if(this.toString().equals("None")) name = "Potion";
-		else name = this + " Potion";
+		if (this.toString().equals("None"))
+			name = "Potion";
+		else
+			name = this + " Potion";
 	}
-	
+
 	public boolean toggleEffect(Player player, boolean addEffect) {
 		return duration > 0; // if you have no duration and do nothing, then you can't be used.
 	}
-	
+
 	public boolean transmitEffect() {
-		return true; // any effect which could be duplicated and result poorly should not be sent to the server.
-		// for the case of the Health potion, the player health is not transmitted separately until after the potion effect finishes, so having it send just gets the change there earlier.
+		return true; // any effect which could be duplicated and result poorly should not be sent to
+						// the server.
+		// for the case of the Health potion, the player health is not transmitted
+		// separately until after the potion effect finishes, so having it send just
+		// gets the change there earlier.
 	}
-	
+
 	public static final PotionType[] values = PotionType.values();
 }

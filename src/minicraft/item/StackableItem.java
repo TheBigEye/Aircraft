@@ -9,14 +9,14 @@ import minicraft.gfx.Sprite;
 // some items are direct instances of this class; those instances are the true "items", like stone, wood, wheat, or coal; you can't do anything with them besides use them to make something else.
 
 public class StackableItem extends Item {
-	
+
 	protected static ArrayList<Item> getAllInstances() {
 		ArrayList<Item> items = new ArrayList<>();
-	
+
 		items.add(new StackableItem("Wood", new Sprite(2, 1, 0)));
 		items.add(new StackableItem("Spruce Wood", new Sprite(1, 1, 0)));
 		items.add(new StackableItem("Birch Wood", new Sprite(0, 1, 0)));
-		
+
 		items.add(new StackableItem("Leaf", new Sprite(23, 0, 0)));
 		items.add(new StackableItem("Paper", new Sprite(3, 8, 0)));
 		items.add(new StackableItem("Leather", new Sprite(8, 0, 0)));
@@ -29,19 +29,18 @@ public class StackableItem extends Item {
 		items.add(new StackableItem("string", new Sprite(1, 4, 0)));
 		items.add(new StackableItem("feather", new Sprite(15, 3, 0)));
 		items.add(new StackableItem("egg", new Sprite(14, 3, 0)));
-		
+
 		// Elements
 		items.add(new StackableItem("Obsidian", new Sprite(17, 3, 0)));
 		items.add(new StackableItem("Stone", new Sprite(2, 0, 0)));
-		
+
 		items.add(new StackableItem("Andesite", new Sprite(0, 38, 0)));
 		items.add(new StackableItem("Diorite", new Sprite(1, 38, 0)));
 		items.add(new StackableItem("Granite", new Sprite(2, 38, 0)));
 		items.add(new StackableItem("Silicon", new Sprite(3, 38, 0)));
 		items.add(new StackableItem("Basalt", new Sprite(4, 38, 0)));
 		items.add(new StackableItem("Quartzite", new Sprite(5, 38, 0)));
-		
-		
+
 		// Dyes
 		items.add(new StackableItem("Ink sac", new Sprite(0, 22, 0)));
 		items.add(new StackableItem("Yellow dye", new Sprite(1, 22, 0)));
@@ -52,7 +51,7 @@ public class StackableItem extends Item {
 		items.add(new StackableItem("Pink dye", new Sprite(7, 22, 0)));
 		items.add(new StackableItem("Dark green dye", new Sprite(8, 22, 0)));
 		items.add(new StackableItem("Orange dye", new Sprite(14, 22, 0)));
-		
+
 		// Ores
 		items.add(new StackableItem("Coal", new Sprite(2, 4, 0)));
 		items.add(new StackableItem("Iron Ore", new Sprite(3, 4, 0)));
@@ -62,7 +61,7 @@ public class StackableItem extends Item {
 		items.add(new StackableItem("Gold", new Sprite(7, 4, 0)));
 		items.add(new StackableItem("Rose", new Sprite(5, 0, 0)));
 		items.add(new StackableItem("GunPowder", new Sprite(8, 4, 0)));
-	
+
 		items.add(new StackableItem("Slime", new Sprite(9, 4, 0)));
 		items.add(new StackableItem("glass", new Sprite(10, 4, 0)));
 		items.add(new StackableItem("cloth", new Sprite(11, 4, 0)));
@@ -80,58 +79,62 @@ public class StackableItem extends Item {
 		items.add(new StackableItem("Sharp I", new Sprite(2, 8, 0)));
 		items.add(new StackableItem("Sharp II", new Sprite(2, 8, 0)));
 		items.add(new StackableItem("Sharp III", new Sprite(2, 8, 0)));
-		
+
 		// Essences
-		//items.add(new StackableItem("Cordyceps essence", new Sprite(1, 7, 0)));
+		// items.add(new StackableItem("Cordyceps essence", new Sprite(1, 7, 0)));
 		items.add(new StackableItem("Sticky essence", new Sprite(2, 7, 0)));
 		items.add(new StackableItem("Gaseous essence", new Sprite(3, 7, 0)));
 		items.add(new StackableItem("Master essence", new Sprite(4, 7, 0)));
-		
+
 		return items;
 	}
-	
+
 	public int count;
-	///public int maxCount; // TODO I want to implement this later.
+	/// public int maxCount; // TODO I want to implement this later.
 	public int maxCount = 64;
-	
+
 	protected StackableItem(String name, Sprite sprite) {
 		super(name, sprite);
 		count = 1;
 	}
+
 	protected StackableItem(String name, Sprite sprite, int count) {
 		this(name, sprite);
 		this.count = count;
 	}
-	
-	public boolean stacksWith(Item other) { return other instanceof StackableItem && other.getName().equals(getName()); }
-	
-	/// this is used by (most) subclasses, to standardize the count decrement behavior. This is not the normal interactOn method.
+
+	public boolean stacksWith(Item other) {
+		return other instanceof StackableItem && other.getName().equals(getName());
+	}
+
+	/// this is used by (most) subclasses, to standardize the count decrement
+	/// behavior. This is not the normal interactOn method.
 	protected boolean interactOn(boolean subClassSuccess) {
-		if(subClassSuccess && !Game.isMode("creative"))
+		if (subClassSuccess && !Game.isMode("creative"))
 			count--;
 		return subClassSuccess;
 	}
-	
+
 	/** Called to determine if this item should be removed from an inventory. */
 	@Override
 	public boolean isDepleted() {
 		return count <= 0;
 	}
-	
+
 	@Override
 	public StackableItem clone() {
 		return new StackableItem(getName(), sprite, count);
 	}
-	
+
 	@Override
 	public String toString() {
-		return super.toString() + "-Stack_Size:"+count;
+		return super.toString() + "-Stack_Size:" + count;
 	}
-	
+
 	public String getData() {
-		return getName() +"_"+count;
+		return getName() + "_" + count;
 	}
-	
+
 	@Override
 	public String getDisplayName() {
 		String amt = (count > 999 ? 999 : count) + " ";

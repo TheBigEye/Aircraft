@@ -34,5 +34,7 @@ public class ShearItem extends Item {
 	}
 
 	@Override
-	public Item clone() { return new ShearItem(); }
+	public Item clone() {
+		return new ShearItem();
+	}
 }
