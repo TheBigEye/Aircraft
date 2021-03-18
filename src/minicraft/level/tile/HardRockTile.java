@@ -19,13 +19,15 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class HardRockTile extends Tile {
-	// theoretically the full sprite should never be used, so we can use a placeholder
-	private static ConnectorSprite sprite = new ConnectorSprite(HardRockTile.class, new Sprite(18, 9, 3, 3, 1, 3), new Sprite(21, 10, 2, 2, 1, 3), Sprite.missingTexture(2, 2));
-	
+	// theoretically the full sprite should never be used, so we can use a
+	// placeholder
+	private static ConnectorSprite sprite = new ConnectorSprite(HardRockTile.class, new Sprite(18, 9, 3, 3, 1, 3),
+			new Sprite(21, 10, 2, 2, 1, 3), Sprite.missingTexture(2, 2));
+
 	protected HardRockTile(String name) {
 		super(name, sprite);
 	}
-	
+
 	public boolean mayPass(Level level, int x, int y, Entity e) {
 		return false;
 	}
@@ -36,7 +38,7 @@ public class HardRockTile extends Tile {
 	}
 
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-		if(Game.isMode("creative"))
+		if (Game.isMode("creative"))
 			return false; // go directly to hurt method
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
@@ -55,15 +57,16 @@ public class HardRockTile extends Tile {
 	public void hurt(Level level, int x, int y, int dmg) {
 		int damage = level.getData(x, y) + dmg;
 		int hrHealth = 200;
-		if (Game.isMode("creative")) dmg = damage = hrHealth;
+		if (Game.isMode("creative"))
+			dmg = damage = hrHealth;
 		level.add(new SmashParticle(x * 16, y * 16));
 		Sound.monsterHurt.play();
 
 		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
 		if (damage >= hrHealth) {
 			level.setTile(x, y, Tiles.get("dirt"));
-			level.dropItem(x*16+8, y*16+8, 1, 3, Items.get("Stone"));
-			level.dropItem(x*16+8, y*16+8, 0, 1, Items.get("coal"));
+			level.dropItem(x * 16 + 8, y * 16 + 8, 1, 3, Items.get("Stone"));
+			level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("coal"));
 		} else {
 			level.setData(x, y, damage);
 		}
@@ -77,6 +80,7 @@ public class HardRockTile extends Tile {
 
 	public void tick(Level level, int xt, int yt) {
 		int damage = level.getData(xt, yt);
-		if (damage > 0) level.setData(xt, yt, damage - 1);
+		if (damage > 0)
+			level.setData(xt, yt, damage - 1);
 	}
 }

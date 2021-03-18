@@ -24,36 +24,39 @@ public class SandTile extends Tile {
 		pixels[1][1] = new Sprite.Px(9, 8, 0, 1);
 		steppedOn = new Sprite(pixels);
 	}
-	
-	private ConnectorSprite sprite = new ConnectorSprite(SandTile.class, new Sprite(6, 6, 3, 3, 1, 3), normal)
-	{
+
+	private ConnectorSprite sprite = new ConnectorSprite(SandTile.class, new Sprite(6, 6, 3, 3, 1, 3), normal) {
 		public boolean connectsTo(Tile tile, boolean isSide) {
-			if(!isSide) return true;
+			if (!isSide)
+				return true;
 			return tile.connectsToSand;
 		}
 	};
-	
+
 	protected SandTile(String name) {
-		super(name, (ConnectorSprite)null);
+		super(name, (ConnectorSprite) null);
 		csprite = sprite;
 		connectsToSand = true;
 		maySpawn = true;
 	}
-	
+
 	public void render(Screen screen, Level level, int x, int y) {
 		boolean steppedOn = level.getData(x, y) > 0;
-		
-		if(steppedOn) csprite.full = SandTile.steppedOn;
-		else csprite.full = SandTile.normal;
+
+		if (steppedOn)
+			csprite.full = SandTile.steppedOn;
+		else
+			csprite.full = SandTile.normal;
 
 		csprite.sparse.color = DirtTile.dCol(level.depth);
-		
+
 		csprite.render(screen, level, x, y);
 	}
 
 	public void tick(Level level, int x, int y) {
 		int d = level.getData(x, y);
-		if (d > 0) level.setData(x, y, d - 1);
+		if (d > 0)
+			level.setData(x, y, d - 1);
 	}
 
 	public void steppedOn(Level level, int x, int y, Entity entity) {
@@ -69,7 +72,7 @@ public class SandTile extends Tile {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("dirt"));
 					Sound.monsterHurt.play();
-					level.dropItem(xt*16+8, yt*16+8, Items.get("sand"));
+					level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("sand"));
 					return true;
 				}
 			}

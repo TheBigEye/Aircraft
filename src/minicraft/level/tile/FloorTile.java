@@ -51,14 +51,22 @@ public class FloorTile extends Tile {
 						level.setTile(xt, yt, Tiles.get("hole"));
 					}
 					Item drop;
-					switch(type) {
-						case Wood: drop = Items.get("Plank"); break;
-						case Spruce: drop = Items.get("Spruce Plank"); break;
-						case Birch: drop = Items.get("Birch Plank"); break;
-						default: drop = Items.get(type.name()+" Brick"); break;
+					switch (type) {
+					case Wood:
+						drop = Items.get("Plank");
+						break;
+					case Spruce:
+						drop = Items.get("Spruce Plank");
+						break;
+					case Birch:
+						drop = Items.get("Birch Plank");
+						break;
+					default:
+						drop = Items.get(type.name() + " Brick");
+						break;
 					}
 					Sound.monsterHurt.play();
-					level.dropItem(xt*16+8, yt*16+8, drop);
+					level.dropItem(xt * 16 + 8, yt * 16 + 8, drop);
 					return true;
 				}
 			}

@@ -14,29 +14,29 @@ import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class PurpleWoolTile extends Tile {
-    private static Sprite sprite = new Sprite(24, 30, 2, 2, 1);
+	private static Sprite sprite = new Sprite(24, 30, 2, 2, 1);
 
-    public PurpleWoolTile(String name) {
-        super(name, sprite);
-    }
+	public PurpleWoolTile(String name) {
+		super(name, sprite);
+	}
 
-    public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
-            if (tool.type == ToolType.Shovel) {
-                if (player.payStamina(3 - tool.level) && tool.payDurability()) {
-                    level.setTile(xt, yt, Tiles.get("hole"));
-                    Sound.monsterHurt.play();
-                    level.dropItem(xt*16+8, yt*16+8, Items.get("Purple Wool"));
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
+		if (item instanceof ToolItem) {
+			ToolItem tool = (ToolItem) item;
+			if (tool.type == ToolType.Shovel) {
+				if (player.payStamina(3 - tool.level) && tool.payDurability()) {
+					level.setTile(xt, yt, Tiles.get("hole"));
+					Sound.monsterHurt.play();
+					level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Purple Wool"));
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
-    public boolean mayPass(Level level, int x, int y, Entity e) {
-        return e.canWool();
-    }
+	public boolean mayPass(Level level, int x, int y, Entity e) {
+		return e.canWool();
+	}
 
 }

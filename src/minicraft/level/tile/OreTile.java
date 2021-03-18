@@ -30,26 +30,26 @@ public class OreTile extends Tile {
 		
 		private Item drop;
 		public final int color;
-		
+
 		OreType(Item drop, int color) {
 			this.drop = drop;
 			this.color = color;
 		}
-		
+
 		protected Item getOre() {
 			return drop.clone();
 		}
-    }
-	
+	}
+
 	protected OreTile(OreType o) {
 		super((o == OreTile.OreType.Lapis ? "Lapis" : o.name() + " Ore"), new Sprite(24 + o.color, 0, 2, 2, 1));
-        this.type = o;
+		this.type = o;
 		this.sprite = super.sprite;
 	}
 
 	public void render(Screen screen, Level level, int x, int y) {
 		sprite.color = DirtTile.dCol(level.depth);
-		sprite.render(screen, x*16, y*16);
+		sprite.render(screen, x * 16, y * 16);
 	}
 
 	public boolean mayPass(Level level, int x, int y, Entity e) {
@@ -62,7 +62,7 @@ public class OreTile extends Tile {
 	}
 
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-		if(Game.isMode("creative"))
+		if (Game.isMode("creative"))
 			return false; // go directly to hurt method
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
@@ -75,16 +75,17 @@ public class OreTile extends Tile {
 		}
 		return false;
 	}
-	
-    public Item getOre() {
-        return type.getOre();
-    }
-    
+
+	public Item getOre() {
+		return type.getOre();
+	}
+
 	public void hurt(Level level, int x, int y, int dmg) {
 		int damage = level.getData(x, y) + 1;
 		int oreH = random.nextInt(10) + 3;
-		if (Game.isMode("creative")) dmg = damage = oreH;
-		
+		if (Game.isMode("creative"))
+			dmg = damage = oreH;
+
 		level.add(new SmashParticle(x * 16, y * 16));
 		Sound.monsterHurt.play();
 
@@ -97,11 +98,12 @@ public class OreTile extends Tile {
 			} else {
 				level.setData(x, y, damage);
 			}
-			level.dropItem(x*16+8, y*16+8, count, type.getOre());
+			level.dropItem(x * 16 + 8, y * 16 + 8, count, type.getOre());
 		}
 	}
 
 	public void bumpedInto(Level level, int x, int y, Entity entity) {
-		/// this was used at one point to hurt the player if they touched the ore; that's probably why the sprite is so spikey-looking.
+		/// this was used at one point to hurt the player if they touched the ore;
+		/// that's probably why the sprite is so spikey-looking.
 	}
 }

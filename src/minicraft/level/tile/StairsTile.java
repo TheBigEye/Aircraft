@@ -13,22 +13,22 @@ import minicraft.level.Level;
 public class StairsTile extends Tile {
 	private static Sprite down = new Sprite(21, 0, 2, 2, 1, 0);
 	private static Sprite up = new Sprite(19, 0, 2, 2, 1, 0);
-	
+
 	protected StairsTile(String name, boolean leadsUp) {
-		super(name, leadsUp?up:down);
+		super(name, leadsUp ? up : down);
 		maySpawn = false;
 	}
-	
+
 	public void render(Screen screen, Level level, int x, int y) {
-		sprite.render(screen, x*16, y*16, 0, DirtTile.dCol(level.depth));
+		sprite.render(screen, x * 16, y * 16, 0, DirtTile.dCol(level.depth));
 	}
-	
+
 	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		super.interact(level, xt, yt, player, item, attackDir);
 
 		// Makes it so you can remove the stairs if you are in creative and debug mode.
-		if(item instanceof PowerGloveItem && Game.isMode("Creative") && Game.debug) {
+		if (item instanceof PowerGloveItem && Game.isMode("Creative") && Game.debug) {
 			level.setTile(xt, yt, Tiles.get("Grass"));
 			Sound.monsterHurt.play();
 			return true;
