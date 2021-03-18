@@ -18,6 +18,7 @@ import minicraft.gfx.Point;
 import minicraft.gfx.Screen;
 import minicraft.level.Level;
 import minicraft.screen.entry.BlankEntry;
+import minicraft.screen.entry.LinkEntry;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
@@ -52,7 +53,10 @@ public class TitleDisplay extends Display {
 				new BlankEntry(),
 				new SelectEntry("Storyline Guide (for the weak)", () -> Game.setMenu(new BookDisplay(BookData.storylineGuide))),
 				new BlankEntry(),
-				new SelectEntry("About", () -> Game.setMenu(new BookDisplay(BookData.about)))
+				new SelectEntry("About", () -> Game.setMenu(new BookDisplay(BookData.about))),
+				new BlankEntry(),
+				new BlankEntry(),
+				new LinkEntry(Color.BLUE, "Minicraft Discord", "https://discord.me/minicraft")
 
 			),
 			new SelectEntry("Exit", Game::quit)
