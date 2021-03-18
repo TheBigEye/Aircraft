@@ -31,6 +31,18 @@ public class FrostMob extends MobAi {
 		super(sprites, 5 + healthFactor * Settings.getIdx("diff"), 5*60*Updater.normSpeed, 45, 40);
 	}
 	
+	
+	@Override
+	public void tick() {
+		super.tick();
+		
+		Tile tile = level.getTile(x >> 4, y >> 4);
+		if ( tile == Tiles.get("sand")) {
+			remove();
+		}
+		
+	}
+	
 	@Override
 	public void render(Screen screen) {
 		super.render(screen);
