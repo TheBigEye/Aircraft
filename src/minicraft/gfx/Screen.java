@@ -212,47 +212,55 @@ public class Screen {
         }
     }
     
-    public void overlayBlind(Screen screen2, int currentLevel, int xa, int ya) {
-		  int[] oPixels = screen2.pixels;
-		    int i = 0;
-		    for (int y = 0; y < this.h; y++) {
-		      for (int x = 0; x < this.w; x++) {
-		        if (oPixels[i] > 0 || yOffset!= 0) {
-		          int intens2 = (120 - oPixels[i]) / 51;
-		          if (intens2 != 0) {
-		            switch (intens2) {
-		              case 1:
-		                this.pixels[i] = Color.createShadowCol(this.pixels[i], 0, Math.min(intens2, 1), Math.min(intens2, 1));
-		                break;
-		              case 2:
-		                this.pixels[i] = Color.createShadowCol(this.pixels[i], 0, Math.min(intens2, 2), Math.min(intens2, 2));
-		                break;
-		              case 3:
-		                this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 1), Math.min(intens2, 3), Math.min(intens2, 3));
-		                break;
-		              case -4:
-		                this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 3), Math.min(intens2, 3), Math.min(intens2, 3));
-		                break;
-		              case -3:
-		                this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 3), Math.min(intens2, 3), Math.min(intens2, 1));
-		                break;
-		              case -2:
-		                this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 2), Math.min(intens2, 2), 0);
-		                break;
-		              case -1:
-		                this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 1), Math.min(intens2, 1), 0);
-		                break;
-		            } 
-		          } else {
-		            this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.max(intens2 - 1, 0), Math.max(intens2, 0), Math.max(intens2, 0));
-		          } 
-		        } else {
-		          this.pixels[i] = 0;
-		        } 
-		        i++;
-		      } 
-		    } 
-		  }
+	public void overlayBlind(Screen screen2, int currentLevel, int xa, int ya) {
+		int[] oPixels = screen2.pixels;
+		int i = 0;
+		for (int y = 0; y < this.h; y++) {
+			for (int x = 0; x < this.w; x++) {
+				if (oPixels[i] > 0 || yOffset != 0) {
+					int intens2 = (120 - oPixels[i]) / 51;
+					if (intens2 != 0) {
+						switch (intens2) {
+						case 1:
+							this.pixels[i] = Color.createShadowCol(this.pixels[i], 0, Math.min(intens2, 1),
+									Math.min(intens2, 1));
+							break;
+						case 2:
+							this.pixels[i] = Color.createShadowCol(this.pixels[i], 0, Math.min(intens2, 2),
+									Math.min(intens2, 2));
+							break;
+						case 3:
+							this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 1),
+									Math.min(intens2, 3), Math.min(intens2, 3));
+							break;
+						case -4:
+							this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 3),
+									Math.min(intens2, 3), Math.min(intens2, 3));
+							break;
+						case -3:
+							this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 3),
+									Math.min(intens2, 3), Math.min(intens2, 1));
+							break;
+						case -2:
+							this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 2),
+									Math.min(intens2, 2), 0);
+							break;
+						case -1:
+							this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 1),
+									Math.min(intens2, 1), 0);
+							break;
+						}
+					} else {
+						this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.max(intens2 - 1, 0),
+								Math.max(intens2, 0), Math.max(intens2, 0));
+					}
+				} else {
+					this.pixels[i] = 0;
+				}
+				i++;
+			}
+		}
+	}
 
 
 	public void renderLight(int x, int y, int r) {
