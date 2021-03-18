@@ -360,26 +360,34 @@ public class Renderer extends Game {
 	static LocalDateTime time = LocalDateTime.now();
 	
 	private static void renderDebugInfo() {
-		int textcol = Color.WHITE;
+		
+		int textcol = Color.WHITE;		
+		
 		if (showinfo) { // renders show debug info on the screen.
 			ArrayList<String> info = new ArrayList<>();
 			//info.add("VERSION " + Initializer.VERSION);
 			
-			info.add("VERSION " + Game.BUILD + "                             "+ "Test:" + time.getHour()+time.getMinute()+time.getSecond());
-			info.add(""+time.toLocalDate()+ "                              "+ "Time:" + InfoDisplay.getTimeString());
-			info.add(Initializer.fra + " fps"+ "                                  "+ "Java:" + System.getProperty("java.version"));
-			info.add("day tiks:" + Updater.tickCount+" ("+Updater.getTime()+")");
+			info.add("VERSION " + Game.BUILD + "                            "+ "Test:" + time.getHour()+time.getMinute()+time.getSecond());
+			info.add(""+time.toLocalDate()+ "                             "+ "Time:" + InfoDisplay.getTimeString());
+			info.add(Initializer.fra + " fps"+ "                                 "+ "Java:" + System.getProperty("java.version"));
+			info.add("day tiks:" + Updater.tickCount+" ("+Updater.getTime()+")                "+ "Java arch:x" + System.getProperty("sun.arch.data.model"));
 			info.add((Updater.normSpeed * Updater.gamespeed) + " tps");
 			if(!isValidServer()) {
+				
+				//player info
 				info.add("walk spd:" + player.moveSpeed);
 				info.add("X:" + (player.x / 16) + "." + (player.x % 16));
 				info.add("Y:" + (player.y / 16) + "." + (player.y % 16));
 				info.add("");
 				if(levels[currentLevel] != null)
+					
+					//tile
 					info.add("Tile:" + levels[currentLevel].getTile(player.x>>4, player.y>>4).name);
 				    info.add("Id:" + levels[currentLevel].getTile(player.x>>4, player.y>>4).id);
 				    info.add("Depth:" + levels[currentLevel].depth);
 				    info.add("Data:" + levels[currentLevel].getData(player.x>>4, player.y>>4));
+				    
+				    //screen info
 				    info.add("Screen: " + java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight() +"x"+ java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth());
 				    info.add("Size: " + getWindowSize().getHeight() +"x"+ getWindowSize().getWidth());
 				if (isMode("score")) info.add("Score " + player.getScore());
@@ -433,6 +441,7 @@ public class Renderer extends Game {
 			}
 			
 			if (levels[currentLevel] != null) {
+				info.add("");
 				info.add("Seed: " + levels[currentLevel].getSeed());
 			}
 			
