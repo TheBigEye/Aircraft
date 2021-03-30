@@ -9,6 +9,7 @@ import minicraft.entity.mob.Player;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
 import minicraft.screen.EndGameDisplay;
+import minicraft.screen.EndMessageDisplay;
 
 public class EyeQueenPhase3 extends EnemyMob {
     private static final MobSprite[][][] sprites = new MobSprite[2][2][2];
@@ -129,6 +130,7 @@ public class EyeQueenPhase3 extends EnemyMob {
 		super.die();
 		Sound.eyeBossDeath.play();
 		Game.setMenu(new EndGameDisplay(player));
+		Game.setMenu(new EndMessageDisplay(player));
 	}
 
 }
