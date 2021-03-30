@@ -35,25 +35,27 @@ import minicraft.screen.RelPos;
 
 
 public class Renderer extends Game {
-	private Renderer() {}
+	private Renderer() {
+	}
+
 	private static Random random = new Random();
-	
+
 	public static final int HEIGHT = 288;
 	public static final int WIDTH = 432;
 	static float SCALE = 3;
 	private static String levelName = "";
-	
+
 	public static Screen screen; // Creates the main screen
-	
+
 	static Canvas canvas = new Canvas();
 	private static BufferedImage image; // creates an image to be displayed on the screen.
 	private static int[] pixels; // the array of pixels that will be displayed on the screen.
-	
+
 	private static Screen lightScreen; // Creates a front screen to render the darkness in caves (Fog of war).
-	
+
 	public static boolean readyToRenderGameplay = false;
 	public static boolean showinfo = false;
-	
+
 	private static Ellipsis ellipsis = new SmoothEllipsis(new TickUpdater());
 
 	private static void initSpriteSheets() throws IOException {
@@ -75,8 +77,9 @@ public class Renderer extends Game {
 	}
 	
 	static void initScreen() {
-		if(!HAS_GUI) return;
-		
+		if (!HAS_GUI)
+			return;
+
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
@@ -87,8 +90,8 @@ public class Renderer extends Game {
 			e.printStackTrace();
 		}
 		screen.pixels = pixels;
-		
-		if(HAS_GUI) {
+
+		if (HAS_GUI) {
 			canvas.createBufferStrategy(3);
 			canvas.requestFocus();
 		}
@@ -97,33 +100,34 @@ public class Renderer extends Game {
 	
 	/** renders the current screen. Called in game loop, a bit after tick(). */
 	public static void render() {
-		if(!HAS_GUI || screen == null) return; // no point in this if there's no gui... :P
-		
-		if(readyToRenderGameplay) {
-			if(isValidServer()) {
+		if (!HAS_GUI || screen == null)
+			return; // no point in this if there's no gui... :P
+
+		if (readyToRenderGameplay) {
+			if (isValidServer()) {
 				screen.clear(0);
-				Font.drawCentered("Awaiting client connections"+ ellipsis.updateAndGet(), screen, 10, Color.get(-1, 444));
+				Font.drawCentered("Awaiting client connections" + ellipsis.updateAndGet(), screen, 10,
+						Color.get(-1, 444));
 				Font.drawCentered("So far:", screen, 20, Color.get(-1, 444));
 				int i = 0;
-				for(String playerString: server.getClientInfo()) {
-					Font.drawCentered(playerString, screen, 30+i*10, Color.get(-1, 134));
+				for (String playerString : server.getClientInfo()) {
+					Font.drawCentered(playerString, screen, 30 + i * 10, Color.get(-1, 134));
 					i++;
 				}
-				
+
 				renderDebugInfo();
-			}
-			else {
+			} else {
 				renderLevel();
 				renderGui();
 			}
 		}
-		
+
 		if (menu != null) // renders menu, if present.
 			menu.render(screen);
-		
-		if (!canvas.hasFocus() && !ISONLINE) renderFocusNagger(); // calls the renderFocusNagger() method, which creates the "Click to Focus" message.
-		
-		
+
+		if (!canvas.hasFocus() && !ISONLINE)
+			renderFocusNagger(); // calls the renderFocusNagger() method, which creates the "Click to Focus" message.
+
 		BufferStrategy bs = canvas.getBufferStrategy(); // creates a buffer strategy to determine how the graphics should be buffered.
 		Graphics g = bs.getDrawGraphics(); // gets the graphics in which java draws the picture
 		g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight()); // draws the a rect to fill the whole window (to cover last?)
@@ -131,13 +135,13 @@ public class Renderer extends Game {
 		// scales the pixels.
 		int ww = getWindowSize().width;
 		int hh = getWindowSize().height;
-		
+
 		// gets the image offset.
 		int xo = (canvas.getWidth() - ww) / 2 + canvas.getParent().getInsets().left;
 		int yo = (canvas.getHeight() - hh) / 2 + canvas.getParent().getInsets().top;
-		g.drawImage(image, xo, yo, ww, hh, null); //draws the image on the window
+		g.drawImage(image, xo, yo, ww, hh, null); // draws the image on the window
 		g.dispose(); // releases any system items that are using this method. (so we don't have crappy framerates)
-		
+
 		bs.show(); // makes the picture visible. (probably)
 	}
 	
@@ -174,8 +178,8 @@ public class Renderer extends Game {
 			level.renderLight(lightScreen, xScroll, yScroll, brightnessMultiplier); // finds (and renders) all the light from objects (like the player, lanterns, and lava).
 			screen.overlay(lightScreen, currentLevel, xScroll, yScroll); // overlays the light screen over the main screen.	
 			
-			if (player != null && player.activeItem != null && player.activeItem.name.equals("Necronomicon")){
-				screen.overlayBlind(lightScreen, currentLevel, xScroll, yScroll);						
+			if (player != null && player.activeItem != null && player.activeItem.name.equals("AlAzif")){
+				screen.Blind(lightScreen, currentLevel, xScroll, yScroll);						
 			}
 		}
 	}
@@ -298,14 +302,15 @@ public class Renderer extends Game {
 		}
 		
 		/// This renders the potions overlay
-		if(player.showpotioneffects && player.potioneffects.size() > 0) {
+		if (player.showpotioneffects && player.potioneffects.size() > 0) {
 			Map.Entry<PotionType, Integer>[] effects = player.potioneffects.entrySet().toArray(new Map.Entry[0]);
 			// the key is potion type, value is remaining potion duration.
-			for(int i = 0; i < effects.length; i++) {
+			for (int i = 0; i < effects.length; i++) {
 				PotionType pType = effects[i].getKey();
 				int pTime = effects[i].getValue() / Updater.normSpeed;
-				Font.drawBackground("("+input.getMapping("potionEffects")+" to hide!)", screen, 300, 9);
-				Font.drawBackground(pType + " (" + (pTime / 60) + ":" + (pTime % 60) + ")", screen, 300, 17 + i * Font.textHeight(), pType.dispColor);
+				Font.drawBackground("(" + input.getMapping("potionEffects") + " to hide!)", screen, 300, 9);
+				Font.drawBackground(pType + " (" + (pTime / 60) + ":" + (pTime % 60) + ")", screen, 300,
+						17 + i * Font.textHeight(), pType.dispColor);
 			}
 		}
 		
@@ -418,12 +423,12 @@ public class Renderer extends Game {
 					levelName = "Hell";
 				}
 				
-				if(!isValidClient())
+				if (!isValidClient())
 					info.add("Mob Cnt " + levels[currentLevel].mobCount + "/" + levels[currentLevel].maxMobCount);
 				else
 					info.add("Mob Load Cnt " + levels[currentLevel].mobCount);
 			}
-			
+
 			/// Displays number of chests left, if on dungeon level.
 			if (levels[currentLevel] != null && (isValidServer() || currentLevel == 5 && !isValidClient())) {
 				if (levels[5].chestCount > 0)
@@ -431,24 +436,24 @@ public class Renderer extends Game {
 				else
 					info.add("Chests: Complete!");
 			}
-			
-			if(!isValidServer()) {
+
+			if (!isValidServer()) {
 				info.add("Hunger stam: " + player.getDebugHunger());
-				if(player.armor > 0) {
+				if (player.armor > 0) {
 					info.add("armor: " + player.armor);
 					info.add("dam buffer: " + player.armorDamageBuffer);
 				}
 			}
-			
+
 			if (levels[currentLevel] != null) {
 				info.add("");
 				info.add("Seed: " + levels[currentLevel].getSeed());
 			}
-			
+
 			FontStyle style = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(1);
-			if(Game.isValidServer()) {
+			if (Game.isValidServer()) {
 				style.setYPos(Screen.h).setRelTextPos(RelPos.TOP_RIGHT, true);
-				for(int i = 1; i < info.size(); i++) // reverse order
+				for (int i = 1; i < info.size(); i++) // reverse order
 					info.add(0, info.remove(i));
 			} else
 				style.setYPos(2);
@@ -459,18 +464,18 @@ public class Renderer extends Game {
 	/** Renders the "Click to focus" box when you click off the screen. */
 	private static void renderFocusNagger() {
 		String msg = "Click to focus!"; // the message when you click off the screen.
-		Updater.paused = true; //perhaps paused is only used for this.
+		Updater.paused = true; // perhaps paused is only used for this.
 		int xx = (Screen.w - Font.textWidth(msg)) / 2; // the width of the box
 		int yy = (HEIGHT - 8) / 2; // the height of the box
 		int w = msg.length(); // length of message in characters.
 		int h = 1;
-		
+
 		// renders the four corners of the box
 		screen.render(xx - 8, yy - 8, 0 + 21 * 32, 0, 3);
 		screen.render(xx + w * 8, yy - 8, 0 + 21 * 32, 1, 3);
 		screen.render(xx - 8, yy + 8, 0 + 21 * 32, 2, 3);
 		screen.render(xx + w * 8, yy + 8, 0 + 21 * 32, 3, 3);
-		
+
 		// renders each part of the box...
 		for (int x = 0; x < w; x++) {
 			screen.render(xx + x * 8, yy - 8, 1 + 21 * 32, 0, 3); // ...top part
@@ -485,15 +490,14 @@ public class Renderer extends Game {
 		for (int x = 0; x < w; x++) {
 			screen.render(xx + x * 8, yy, 3 + 21 * 32, 0, 3);
 		}
-		
+
 		// renders the focus nagger text with a flash effect...
 		if ((Updater.tickCount / 20) % 2 == 0) // ...medium yellow color
 			Font.draw(msg, screen, xx, yy, Color.get(1, 153));
 		else // ...bright yellow color
 			Font.draw(msg, screen, xx, yy, Color.get(5, 255));
 	}
-	
-	
+
 	static java.awt.Dimension getWindowSize() {
 		return new java.awt.Dimension(new Float(WIDTH * SCALE).intValue(), new Float(HEIGHT * SCALE).intValue());
 	}
