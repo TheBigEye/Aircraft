@@ -1001,7 +1001,7 @@ public class Level {
 					lastVillageY = y;
 
 					// a number between 2 and 4
-					int numHouses = random.nextInt(2) + 1;
+					int numHouses = random.nextInt(1) + 1;
 
 					// loops for each house in the village
 					for (int hs = 0; hs < numHouses; hs++) {
@@ -1019,9 +1019,9 @@ public class Level {
 						if (twoDoors) {
 							Structure.villageHouseNormal.draw(this, x + xo, y + yo);
 							new Librarian();
-						}/** else {
-							Structure.villageHouseNormal.draw(this, x + xo, y + yo);
-						}**/
+						}else {
+							Structure.villageHouseNormal2.draw(this, x + xo, y + yo);
+						}
 
 						// make the village look ruined
 						/**if (overlay == 1) {

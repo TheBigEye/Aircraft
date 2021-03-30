@@ -107,6 +107,7 @@ public class Structure {
 
 	// used for random villages
 	static final Structure villageHouseNormal;
+	static final Structure villageHouseNormal2;
 	static final Structure villageHouseTwoDoor;
 
 	static final Structure villageRuinedOverlay1;
@@ -211,22 +212,43 @@ public class Structure {
 
 		villageHouseNormal = new Structure();
 		villageHouseNormal.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass,O:Path",
-					"WWWWW***O***WWWWW\n" +
-					"WFFFW***O***WFFFW\n" +
-					"WFFFDOOOOOOODFFFW\n" +
-					"WFFFW***O***WFFFW\n" +
-					"WWWWW***O***WWWWW\n" +
-					"********O********\n" +
-					"*******OOO*******\n" +
-					"OOOOOOOOWOOOOOOOO\n" +
-					"*******OOO*******\n" +
-					"********O********\n" +
-					"WWWWW***O***WWWWW\n" +
-					"WFFFW***O***WFFFW\n" +
-					"WFFFDOOOOOOODFFFW\n" +
-					"WFFFW***O***WFFFW\n" +
-					"WWWWW***O***WWWWW\n" +
-					"********O********\n" 
+					"WWWWW**O**WWWWW\n" +
+					"WFFFW**O**WFFFW\n" +
+					"WFFFDOOOOODFFFW\n" +
+					"WFFFW**O**WFFFW\n" +
+					"WWWWW**O**WWWWW\n" +
+					"*******O*******\n" +
+					"******OOO******\n" +
+					"OOOOOOOWOOOOOOO\n" +
+					"******OOO******\n" +
+					"*******O*******\n" +
+					"WWWWW**O**WWWWW\n" +
+					"WFFFW**O**WFFFW\n" +
+					"WFFFDOOOOODFFFW\n" +
+					"WFFFW**O**WFFFW\n" +
+					"WWWWW**O**WWWWW\n" +
+					"***************\n" 
+		);
+		
+		villageHouseNormal2 = new Structure();
+		villageHouseNormal2.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass,O:Path",
+				    "*******O********\n" +
+					"WWWWW**O**WWWWW\n" +
+					"WFFFW**O**WFFFW\n" +
+					"WFFFW**O**WFFFW\n" +
+					"WFFFW**O**WFFFW\n" +
+					"WWDWW**O**WWDWW\n" +
+					"**O****O****O**\n" +
+					"**O***OOO***O**\n" +
+					"OOOOOOOWOOOOOOO\n" +
+					"**O***OOO***O**\n" +
+					"**O****O****O**\n" +
+					"WWDWW**O**WWDWW\n" +
+					"WFFFW**O**WFFFW\n" +
+					"WFFFW**O**WFFFW\n" +
+					"WFFFW**O**WFFFW\n" +
+					"WWWWW**O**WWWWW\n" +
+					"*******O*******\n" 
 		);
 
 		villageHouseTwoDoor = new Structure();
