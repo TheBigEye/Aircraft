@@ -1,9 +1,5 @@
 package minicraft.core;
 
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
 import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -12,14 +8,20 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
 import minicraft.core.io.ConsoleReader;
 import minicraft.network.MinicraftProtocol;
 import minicraft.screen.WorldSelectDisplay;
 
 public class Initializer extends Game {
-	private Initializer() {}
+	private Initializer() {
+	}
 
-	static int fra, tik; // these store the number of frames and ticks in the previous second, used for fps, at least.
+	static int fra, tik; // these store the number of frames and ticks in the previous second, used for
+							// fps, at least.
 
 	public static int getCurFps() {
 		return fra;
@@ -97,8 +99,9 @@ public class Initializer extends Game {
 			(new ConsoleReader()).start();
 		while (running) {
 			long now = System.nanoTime();
-			double nsPerTick = 1E9D / Updater.normSpeed; // nanosecs per sec divided by ticks per sec = nanosecs per tick
-			
+			double nsPerTick = 1E9D / Updater.normSpeed; // nanosecs per sec divided by ticks per sec = nanosecs per
+															// tick
+
 			if (menu == null)
 				nsPerTick /= Updater.gamespeed;
 			unprocessed += (now - lastTime) / nsPerTick; // figures out the unprocessed time between now and lastTime.
@@ -106,8 +109,9 @@ public class Initializer extends Game {
 			while (unprocessed >= 1) { // If there is unprocessed time, then tick.
 				// if(debug) System.out.println("Ticking...");
 				ticks++;
-				Updater.tick(); // calls the tick method (in which it calls the other tick methods throughout the code.
-				
+				Updater.tick(); // calls the tick method (in which it calls the other tick methods throughout
+								// the code.
+
 				unprocessed--;
 			}
 
@@ -144,8 +148,9 @@ public class Initializer extends Game {
 		JFrame frame = new JFrame(NAME);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout()); // sets the layout of the window
-		frame.add(Renderer.canvas, BorderLayout.CENTER); // Adds the game (which is a canvas) to the center of the screen.
-		
+		frame.add(Renderer.canvas, BorderLayout.CENTER); // Adds the game (which is a canvas) to the center of the
+															// screen.
+
 		frame.pack(); // squishes everything into the preferredSize.
 
 		try {

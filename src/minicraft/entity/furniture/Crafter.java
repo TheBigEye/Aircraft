@@ -10,23 +10,22 @@ import minicraft.item.Recipes;
 import minicraft.screen.CraftingDisplay;
 
 public class Crafter extends Furniture {
-	
+
 	public enum Type {
-		Workbench (new Sprite(16, 24, 2, 2, 2), 3, 2, Recipes.workbenchRecipes),
-		Oven (new Sprite(12, 24, 2, 2, 2), 3, 2, Recipes.ovenRecipes),
-		Furnace (new Sprite(14, 24, 2, 2, 2), 3, 2, Recipes.furnaceRecipes),
-		Anvil (new Sprite(8, 24, 2, 2, 2), 3, 2, Recipes.anvilRecipes),
-		Enchanter (new Sprite(24, 24, 2, 2, 2), 7, 2, Recipes.enchantRecipes),
-        Assembler (new Sprite(10, 26, 2, 2, 2), 7, 2, Recipes.assemblerRecipes),
-		Stonecutter (new Sprite(12, 26, 2, 2, 2), 7, 2, Recipes.stonecutterRecipes),
-		Brewery (new Sprite(14, 26, 2, 2, 2), 7, 2, Recipes.breweryRecipes),
-		Loom (new Sprite(26, 24, 2, 2, 2), 7, 2, Recipes.loomRecipes);
-		
+		Workbench(new Sprite(16, 24, 2, 2, 2), 3, 2, Recipes.workbenchRecipes),
+		Oven(new Sprite(12, 24, 2, 2, 2), 3, 2, Recipes.ovenRecipes),
+		Furnace(new Sprite(14, 24, 2, 2, 2), 3, 2, Recipes.furnaceRecipes),
+		Anvil(new Sprite(8, 24, 2, 2, 2), 3, 2, Recipes.anvilRecipes),
+		Enchanter(new Sprite(24, 24, 2, 2, 2), 7, 2, Recipes.enchantRecipes),
+		Assembler(new Sprite(10, 26, 2, 2, 2), 7, 2, Recipes.assemblerRecipes),
+		Stonecutter(new Sprite(12, 26, 2, 2, 2), 7, 2, Recipes.stonecutterRecipes),
+		Brewery(new Sprite(14, 26, 2, 2, 2), 7, 2, Recipes.breweryRecipes),
+		Loom(new Sprite(26, 24, 2, 2, 2), 7, 2, Recipes.loomRecipes);
+
 		public ArrayList<Recipe> recipes;
 		protected Sprite sprite;
 		protected int xr, yr;
-		
-		
+
 		Type(Sprite sprite, int xr, int yr, ArrayList<Recipe> list) {
 			this.sprite = sprite;
 			this.xr = xr;
@@ -35,29 +34,31 @@ public class Crafter extends Furniture {
 			Crafter.names.add(this.name());
 		}
 	}
+
 	public static ArrayList<String> names = new ArrayList<>();
-	
+
 	public Crafter.Type type;
-	
+
 	/**
 	 * Creates a crafter of a given type.
+	 * 
 	 * @param type What type of crafter this is.
 	 */
 	public Crafter(Crafter.Type type) {
 		super(type.name(), type.sprite, type.xr, type.yr);
 		this.type = type;
 	}
-	
+
 	public boolean use(Player player) {
 		Game.setMenu(new CraftingDisplay(type.recipes, type.name(), player));
 		return true;
 	}
-	
+
 	@Override
 	public Furniture clone() {
 		return new Crafter(type);
 	}
-	
+
 	@Override
 	public String toString() {
 		return type.name() + getDataPrints();

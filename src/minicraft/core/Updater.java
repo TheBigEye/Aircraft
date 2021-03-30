@@ -48,7 +48,9 @@ public class Updater extends Game {
 	public static int savecooldown; // Prevents saving many times too fast, I think.
 
 	public enum Time {
-		Morning(0), Day(dayLength / 4), Evening(dayLength / 2), Night(dayLength / 4 * 3);
+		Morning(0), Day(dayLength / 4), 
+		Evening(dayLength / 2), 
+		Night(dayLength / 4 * 3);
 
 		public int tickTime;
 
