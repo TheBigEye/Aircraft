@@ -81,9 +81,7 @@ public class Sound {
 	public static final Sound Snow2 = new Sound("/resources/sound/Tile/Snow 2.wav");
 	public static final Sound Snow3 = new Sound("/resources/sound/Tile/Snow 3.wav");
 	public static final Sound Snow4 = new Sound("/resources/sound/Tile/Snow 4.wav");
-
-	// Lawn tile
-	// public static final Sound Lawn = new Sound("/resources/sound/Tile/Lawn.wav");
+	
 
 	private Clip clip; // Creates a audio clip to be played
 
@@ -158,8 +156,7 @@ public class Sound {
 		clip.start();
 	}
 
-	// This repeats the same clip over and over again, Syntax:
-	// Sound.clip.loop(true);
+	// This repeats the same clip over and over again, 
 	public void loop(boolean start) {
 		if (!(boolean) Settings.get("sound") || clip == null)
 			return;
@@ -170,7 +167,7 @@ public class Sound {
 			clip.stop();
 	}
 
-	// This stops the clip, Syntax: Sound.clip.stop();
+	// This stops the clip
 	public void stop() {
 		clip.stop();
 

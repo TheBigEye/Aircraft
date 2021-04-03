@@ -77,8 +77,7 @@ public class Initializer extends Game {
 
 		FileHandler.determineGameDir(saveDir);
 
-		Network.autoclient = autoclient; // this will make the game automatically jump to the MultiplayerMenu, and
-											// attempt to connect to localhost.
+		Network.autoclient = autoclient; // this will make the game automatically jump to the MultiplayerMenu, and attempt to connect to localhost.
 	}
 
 	/**
@@ -97,20 +96,19 @@ public class Initializer extends Game {
 		// main game loop? calls tick() and render().
 		if (!HAS_GUI)
 			(new ConsoleReader()).start();
+		
 		while (running) {
 			long now = System.nanoTime();
-			double nsPerTick = 1E9D / Updater.normSpeed; // nanosecs per sec divided by ticks per sec = nanosecs per
-															// tick
-
+			double nsPerTick = 1E9D / Updater.normSpeed; // nanosecs per sec divided by ticks per sec = nanosecs per tick
+			
 			if (menu == null)
 				nsPerTick /= Updater.gamespeed;
-			unprocessed += (now - lastTime) / nsPerTick; // figures out the unprocessed time between now and lastTime.
-			lastTime = now;
+			    unprocessed += (now - lastTime) / nsPerTick; // figures out the unprocessed time between now and lastTime.
+			    lastTime = now;
+			    
 			while (unprocessed >= 1) { // If there is unprocessed time, then tick.
-				// if(debug) System.out.println("Ticking...");
 				ticks++;
-				Updater.tick(); // calls the tick method (in which it calls the other tick methods throughout
-								// the code.
+				Updater.tick(); // calls the tick method (in which it calls the other tick methods throughout the code.
 
 				unprocessed--;
 			}
@@ -148,8 +146,7 @@ public class Initializer extends Game {
 		JFrame frame = new JFrame(NAME);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout()); // sets the layout of the window
-		frame.add(Renderer.canvas, BorderLayout.CENTER); // Adds the game (which is a canvas) to the center of the
-															// screen.
+		frame.add(Renderer.canvas, BorderLayout.CENTER); // Adds the game (which is a canvas) to the center of the screen.
 
 		frame.pack(); // squishes everything into the preferredSize.
 

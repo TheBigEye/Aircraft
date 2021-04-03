@@ -68,13 +68,13 @@ public class SnowTile extends Tile {
 		if (entity instanceof Player) {
 			level.setData(x, y, 10);
 
-			if (random.nextInt(50) == 0) {
+			if (random.nextInt(30) == 1) {
 				Sound.Snow.play();
 			}
-			if (random.nextInt(50) == 10) {
+			if (random.nextInt(30) == 15) {
 				Sound.Snow.play();
 			}
-			if (random.nextInt(50) == 50) {
+			if (random.nextInt(30) == 30) {
 				Sound.Snow.play();
 			}
 

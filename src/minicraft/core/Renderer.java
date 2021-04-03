@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -37,8 +36,6 @@ import minicraft.screen.RelPos;
 public class Renderer extends Game {
 	private Renderer() {
 	}
-
-	private static Random random = new Random();
 
 	public static final int HEIGHT = 288;
 	public static final int WIDTH = 432;
