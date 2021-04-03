@@ -991,19 +991,16 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public void pickupItem(ItemEntity itemEntity) {
 		//Sound.pickup.play();
 		
-		if (random.nextInt(3) == 0) {
+		if (random.nextInt(4) == 1) {
 			Sound.pickup.play();
 		}
-		if (random.nextInt(3) == 1) {
-			Sound.pickup.play();
-		}
-		if (random.nextInt(3) == 2) {
+		if (random.nextInt(4) == 2) {
 			Sound.pickup3.play();
 		}
-		if (random.nextInt(3) == 3) {
+		if (random.nextInt(4) == 3) {
 			Sound.pickup4.play();
 		}
-		if (random.nextInt(3) == 4) {
+		if (random.nextInt(4) == 4) {
 			Sound.pickup4.play();
 		}
 
@@ -1105,6 +1102,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	@Override
 	public int getLightRadius() {
 		int r = 5; // the radius of the light.
+		
+		if (activeItem != null && activeItem.name.equals("Torch")){
+			r = 6;
+		}
 		
 		if (activeItem != null && activeItem instanceof FurnitureItem) { // if player is holding furniture
 			int rr = ((FurnitureItem) activeItem).furniture.getLightRadius(); // gets furniture light radius
