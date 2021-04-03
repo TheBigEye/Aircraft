@@ -1,7 +1,7 @@
 ## Aircraft
 A modified version of Minicraft+ that adds much more. take a look at all the [releases](https://github.com/TheBigEye/Aircraft-Mod/releases).
 
-![Aircraft_Title](https://user-images.githubusercontent.com/63316583/113478444-395afb80-945f-11eb-93eb-d8a6edb69309.png)
+![Aircraft_Title](https://user-images.githubusercontent.com/63316583/113478504-876fff00-945f-11eb-82eb-abbc913ec967.png)
 
 ## Characteristics
 
