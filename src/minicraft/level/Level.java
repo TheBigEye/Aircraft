@@ -25,6 +25,7 @@ import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
 import minicraft.entity.mob.EnemyMob;
 import minicraft.entity.mob.FrostMob;
+import minicraft.entity.mob.Goat;
 import minicraft.entity.mob.GuiMan;
 import minicraft.entity.mob.Knight;
 import minicraft.entity.mob.Mob;
@@ -732,9 +733,8 @@ public class Level {
 			if(depth == 0 && FrostMob.checkStartPos(this, nx, ny)) {
 				// spawns the villagers.
 				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new GuiMan()), nx, ny);
-				else if (rnd >= 68) add((new GuiMan()), nx, ny);
 				else add((new GuiMan()), nx, ny);
-				if (rnd <= 75) add((new GuiMan()), nx, ny);
+				if (rnd <= 75) add((new Goat()), nx, ny);
 				
 				spawned = true;
 			}

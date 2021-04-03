@@ -45,6 +45,7 @@ import minicraft.entity.mob.Chicken;
 import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
 import minicraft.entity.mob.EnemyMob;
+import minicraft.entity.mob.Goat;
 import minicraft.entity.mob.GuiMan;
 import minicraft.entity.mob.Keeper;
 import minicraft.entity.mob.Knight;
@@ -832,6 +833,7 @@ if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is m
 			case "Player": return null;
 			case "RemotePlayer": return null;
 			case "Cow": return new Cow();
+			case "Goat": return new Goat();
 			case "Sheep": return new Sheep();
 			case "Chicken": return new Chicken();
 			case "Pig": return new Pig();

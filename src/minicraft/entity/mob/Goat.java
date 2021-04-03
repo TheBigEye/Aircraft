@@ -6,21 +6,21 @@ import minicraft.item.Items;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
-public class GuiMan extends FrostMob {
-	private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(24, 4);
+public class Goat extends FrostMob {
+	private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 34);
 	
 	/**
-	 * Creates a Penguin Man.
+	 * Creates the cow with the right sprites and color.
 	 */
-	public GuiMan() {
-		super(sprites);
+	public Goat() {
+		super(sprites, 5);
 	}
 	
 	public void tick() {
 		super.tick();
 		
 		Player player = getClosestPlayer();
-		if (player != null && player.activeItem != null && player.activeItem.name.equals("Raw Fish")){ //This function will make the entity follow the player directly
+		if (player != null && player.activeItem != null && player.activeItem.name.equals("Wheat")){ //This function will make the entity follow the player directly
 			int xd = player.x - x;
 			int yd = player.y - y;
 				/// if player is less than 6.25 tiles away, then set move dir towards player
@@ -37,8 +37,10 @@ public class GuiMan extends FrostMob {
 			}
 		
 		Tile tile = level.getTile(x >> 4, y >> 4);
-		if ( tile == Tiles.get("grass")|| tile == Tiles.get("sand")) {
+		if ( tile == Tiles.get("grass")|| tile == Tiles.get("sand")|| tile == Tiles.get("lawn")|| tile == Tiles.get("flower")) {
 			remove();
+			level.add(new Sheep(), x, y);
+			
 		}
 		
 		}
@@ -50,7 +52,7 @@ public class GuiMan extends FrostMob {
 		if (Settings.get("diff").equals("Normal")) {min = 1; max = 2;}
 		if (Settings.get("diff").equals("Hard")) {min = 0; max = 1;}
 		
-		dropItem(min, max, Items.get("feather"));
+		dropItem(min, max, Items.get("leather"));
 		
 		super.die();
 	}

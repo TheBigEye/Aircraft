@@ -36,11 +36,6 @@ public class FrostMob extends MobAi {
 	public void tick() {
 		super.tick();
 		
-		Tile tile = level.getTile(x >> 4, y >> 4);
-		if ( tile == Tiles.get("sand")) {
-			remove();
-		}
-		
 	}
 	
 	@Override

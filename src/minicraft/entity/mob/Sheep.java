@@ -5,6 +5,8 @@ import minicraft.core.io.Settings;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
 import minicraft.item.Items;
+import minicraft.level.tile.Tile;
+import minicraft.level.tile.Tiles;
 
 public class Sheep extends PassiveMob {
 	private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 26);
@@ -59,6 +61,13 @@ public class Sheep extends PassiveMob {
 					//*that would be nice, but I'll just make it move randomly instead.
 				randomizeWalkDir(false);
 			}
+		
+		Tile tile = level.getTile(x >> 4, y >> 4);
+		if ( tile == Tiles.get("snow")) {
+			remove();
+			level.add(new Goat(), x, y);
+			
+		}
 		}
 	
 	public void shear() {

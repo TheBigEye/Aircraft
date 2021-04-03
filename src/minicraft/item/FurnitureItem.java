@@ -3,6 +3,7 @@ package minicraft.item;
 import java.util.ArrayList;
 
 import minicraft.core.Game;
+import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.furniture.Chest;
@@ -18,6 +19,7 @@ import minicraft.entity.furniture.statue.ZombieStatue;
 import minicraft.entity.mob.Chicken;
 import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
+import minicraft.entity.mob.Goat;
 import minicraft.entity.mob.GuiMan;
 import minicraft.entity.mob.Keeper;
 import minicraft.entity.mob.Knight;
@@ -52,6 +54,7 @@ public class FurnitureItem extends Item {
 		items.add(new FurnitureItem(new Spawner(new Cow())));
 		items.add(new FurnitureItem(new Spawner(new Pig())));
 		items.add(new FurnitureItem(new Spawner(new Sheep())));
+		items.add(new FurnitureItem(new Spawner(new Goat())));
 		items.add(new FurnitureItem(new Spawner(new Chicken())));
 		items.add(new FurnitureItem(new Spawner(new Cleric())));
 		items.add(new FurnitureItem(new Spawner(new Librarian())));
@@ -64,14 +67,17 @@ public class FurnitureItem extends Item {
 		items.add(new FurnitureItem(new Spawner(new Snake(1))));
 		items.add(new FurnitureItem(new Spawner(new Knight(1))));
 		items.add(new FurnitureItem(new Spawner(new OldGolem(1))));
+		
 		// Air Bosses
 		items.add(new FurnitureItem(new Spawner(new AirWizard(false))));
+		
 		// Principal Bosses
 		items.add(new FurnitureItem(new Spawner(new EyeQueen(1))));
 		items.add(new FurnitureItem(new Spawner(new Keeper(1))));
 
 		items.add(new FurnitureItem(new Chest()));
 		items.add(new FurnitureItem(new DungeonChest(false, true)));
+		
 		// add the various types of crafting furniture
 		for (Crafter.Type type : Crafter.Type.values()) {
 			items.add(new FurnitureItem(new Crafter(type)));
@@ -117,6 +123,9 @@ public class FurnitureItem extends Item {
 	 */
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 		if (tile.mayPass(level, xt, yt, furniture)) { // If the furniture can go on the tile
+
+			Sound.place.play();
+
 			// Placed furniture's X and Y positions
 			furniture.x = xt * 16 + 8;
 			furniture.y = yt * 16 + 8;
