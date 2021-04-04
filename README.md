@@ -11,12 +11,12 @@ Main Features
 - New vegetation.
 - New items, armors and weapons.
 
-- Enchanted Tools and Enchantment Books.
-- More types of Wood, Walls and Dors.
-- More durability in tools.
-- More diversity of biomes.
-- Villages with villagers and iron golems and rusty golems as mini-bosses.
-- Expanded sky dimension.
+- Enchanted Tools and Enchantment Books
+- More types of Wood, Walls and Dors
+- More durability in tools
+- More diversity of biomes and trees
+- Villages with villagers and iron golems and rusty golems as mini-bosses
+- Expanded sky dimension
 
 Technical side
 - An in-game game mode editor.
