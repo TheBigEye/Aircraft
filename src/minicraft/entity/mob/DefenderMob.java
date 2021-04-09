@@ -3,6 +3,7 @@ package minicraft.entity.mob;
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
+import minicraft.entity.Entity;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
 import minicraft.level.Level;
@@ -37,6 +38,17 @@ public class DefenderMob extends MobAi {
 	}
 	
 	@Override
+	protected void touchedBy(Entity entity) {
+		
+		if (Settings.get("diff").equals("Passive")) return;
+		
+		super.touchedBy(entity); 
+		if(entity instanceof Zombie) {
+			((Zombie)entity).hurt(this, 2 * (Settings.get("diff").equals("Hard") ? 3 : 1));
+		}
+	}
+	
+	@Override
 	public void randomizeWalkDir(boolean byChance) {
 		if(xa == 0 && ya == 0 && random.nextInt(5) == 0 || byChance || random.nextInt(randomWalkChance) == 0) {
 			randomWalkTime = randomWalkDuration;
@@ -66,7 +78,7 @@ public class DefenderMob extends MobAi {
 			return false;
 		
 		Tile tile = level.getTile(x >> 4, y >> 4);
-		return tile == Tiles.get("grass") || tile == Tiles.get("flower");
+		return tile == Tiles.get("path") || tile == Tiles.get("path");
 		
 	}
 	

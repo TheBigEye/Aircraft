@@ -69,6 +69,9 @@ Armure en Cuir
 Snake Armor
 Armure en Serpent
 
+Chain Mail Armor
+Armure de ChainMail
+
 Iron Armor
 Armure en Fer
 
@@ -77,6 +80,11 @@ Armure en Or
 
 Gem Armor
 Armure en Gemme
+
+# BoatItem.java
+
+Boat
+Bateau
 
 # BookItem.java
 
@@ -137,6 +145,18 @@ Pain
 Apple
 Pomme
 
+Frozen palette
+Palette congelée
+
+Mushroom Soup
+Soupe aux champignons
+
+Carrot Soup
+Soupe aux carottes
+
+Raw Chicken
+Poulet Cru
+
 Raw Pork
 Cochon Cru
 
@@ -161,6 +181,9 @@ Steak
 Gold Apple
 Pomme d'Or
 
+Gold Carrot
+Carotte d'Or
+
 # FurnitureItem.java
 
 Cow Spawner
@@ -171,6 +194,21 @@ Generateur a Cochons
 
 Sheep Spawner
 Generateur a Moutons
+
+Chicken Spawner
+Generateur a Poulet
+
+Cleric Spawner
+Generateur a Clerc
+
+Librarian Spawner
+Generateur a Bibliothécaire
+
+GuiMan Spawner
+Generateur a Pingouin
+
+Golem Spawner
+Generateur a Golem
 
 Slime Spawner
 Generateur a Slime
@@ -190,8 +228,17 @@ Generateur a Serpents
 Knight Spawner
 Generateur a Chevalier
 
+OldGolem Spawner
+Generateur a Ancien Golem
+
 AirWizard Spawner
 Generateur a Sorciers des Airs 
+
+EyeQueen Spawner
+Generateur a Oeil Reine
+
+Keeper Spawner
+Generateur a Gardien
 
 Workbench
 Atelier
@@ -207,6 +254,15 @@ Enclume
 
 Enchanter
 Enchanteur
+
+Assembler
+Assembleur
+
+Stonecutter
+Tailleur de pierre
+
+Brewery
+Brasserie
 
 Loom
 Metier a Tisser
@@ -226,8 +282,30 @@ Tnt
 Bed
 Lit
 
+SlimeStatue
+Statue de Slime
+
+ZombieStatue
+Statue de zombie
+
+SkeletonStatue
+Statue de squelette
+
 Chest
 Coffre
+
+Dungeon Chest
+Coffre de donjon
+
+# MapItem.java
+
+Map book
+Livre de carte
+
+# AmuletItem.java
+
+Eye Amulet
+Amulette des yeux
 
 # PotionType.java
 
@@ -237,20 +315,38 @@ Potion Nulle
 Speed Potion
 Potion de Vitesse
 
+xSpeed Potion
+Pocion de Vitesse X
+
 Light Potion
 Potion de Phosphorescence
+
+xLight Potion
+Potion de Phosphor X
 
 Swim Potion
 Potion de Nage
 
+xSwim Potion
+Potion de Nage X
+
 Energy Potion
 Potion Energetique
+
+xEnergy Potion
+Potion Energetique X
 
 Regen Potion
 Potion de Regeneration
 
+xRegen Potion
+Potion de Regen X
+
 Health Potion
 Potion de Vitalite.
+
+xHealth Potion
+Potion de Vitalite X
 
 Time Potion
 Potion de Temps
@@ -258,8 +354,14 @@ Potion de Temps
 Lava Potion
 Potion de Lave
 
+xLava Potion
+Potion de Lave X
+
 Shield Potion
 Potion de Bouclier
+
+xShield Potion
+Potion de Bouclier X
 
 Haste Potion
 Potion de Hate
@@ -277,8 +379,17 @@ Gant de Force
 Wood
 Bois
 
-Stone
-Pierre
+Spruce Wood
+Bois d'épicéa
+
+Birch Wood
+Bois de bouleau
+
+Leaf
+Feuille
+
+Paper
+Papier
 
 Leather
 Cuir
@@ -292,8 +403,68 @@ Cle
 arrow
 fleche
 
+Icicle
+Stalactite
+
+Stick
+Coller
+
+Bowl
+Bol
+
 string
 fil
+
+feather
+La plume
+
+egg
+Oeuf
+
+Stone
+Pierre
+
+Andesite
+Andesite
+
+Diorite
+Diorita
+
+Granite
+Granit
+
+Silicon
+Silicium
+
+Basalt
+Basalte
+
+Quartzite
+Quartzite
+
+Ink sac
+Sac d'encre
+
+Yellow dye
+Teinture jaune
+
+Green dye
+Teinture verte
+
+Red dye
+Teinture rouge
+
+Purple dye
+Teinture violette
+
+Pink dye
+Teinture rose
+
+Dark green dye
+Teinture vert fonce
+
+Orange dye
+Teinture orange
 
 Coal
 Charbon
@@ -337,10 +508,61 @@ Echelle
 Shard
 Tesson
 
+Gear
+Engrenage
+
+Spring
+Ressort
+
+Flint
+Silex
+
+Flint and Steel
+Silex et acier
+
+Protection I
+Protection I
+
+Protection II
+Protection II
+
+Protection III
+Protection III
+
+Sharp I
+Sharp I
+
+Sharp II
+Sharp II
+
+Sharp III
+Sharp III
+
+Cordyceps essence
+Essence de Cordyceps
+
+Sticky essence
+Essence collante
+
+Gaseous essence
+Essence gazeuse
+
+Master essence
+Maitre essence
+
 # TileItem.java
 
 Flower
 Fleur
+
+Orange Tulip
+Orange Tulip
+
+Red Mushroom
+Champignon rouge
+
+Brown Mushroom
+Champignon brun
 
 Acorn
 Gland
@@ -351,11 +573,29 @@ Terre
 Plank
 Planche
 
+Spruce Plank
+Planche d'épicéa
+
+Birch Plank
+Planche de bouleau
+
 Plank Wall
-Mur De Planches
+Mur de planches
+
+Spruce Wall
+Mur d'épicéa
+
+Birch Wall
+Mur de bouleau
 
 Wood Door
-Porte en Bois
+Porte en bois
+
+Spruce Door
+Porte en épicéa
+
+Birch Door
+Porte en bouleau
 
 Stone Brick
 Brique de Pierre
@@ -375,26 +615,59 @@ Mur d'Obsidienne
 Obsidian Door
 Porte d'Obsidienne
 
+Black Wool
+Laine noire
+
+Yellow Wool
+Laine jaune
+
+Green Wool
+Laine verte
+
+Blue Wool
+Laine bleue
+
+Red Wool
+Laine rouge
+
 Wool
 Laine
 
-Red Wool
-Laine Rouge
+Purple Wool
+Laine violette
 
-Blue Wool
-Laine Bleue
+Pink Wool
+Laine rose
 
-Green Wool
-Laine Verte
+Dark Green Wool
+Laine vert fonce
 
-Yellow Wool
-Laine Jaune
+Gray Wool
+Laine grise
 
-Black Wool
-Laine Noire
+Brown Wool
+Laine marron
+
+Magenta Wool
+Laine magenta
+
+Light Blue Wool
+Laine bleu clair
+
+Cyan Wool
+Laine cyan
+
+Orange Wool
+Laine orange
 
 Sand
 Sable
+
+Mycelium
+Mycelium
+
+Snow Ball
+Boule de neige
 
 Cactus
 Cactus
@@ -402,11 +675,17 @@ Cactus
 Seeds
 Graines
 
+Carrot
+Carotte
+
 Grass Seeds
 Graines d'Herbe
 
 Bone
 Os
+
+Bone powder
+Poudre d'os
 
 Cloud
 Nuage
@@ -448,6 +727,9 @@ Houe
 Sword
 Epee
 
+Spear
+Lance
+
 Pickaxe
 Pioche
 
@@ -462,6 +744,11 @@ CanneAPeche
 
 Claymore
 Argile
+
+# ShearItem.java
+
+Shear
+Tondre
 
 # TorchItem.java
 
@@ -480,19 +767,34 @@ Gem Ore
 Minerai de Gemme
 
 Wood Planks
-Planches de Bois
+Planches de bois
+
+Spruce Planks
+Planches d'épicéa
+
+Birch Planks
+Planches de bouleau
 
 Stone Bricks
-Briques de Pierre
+Briques de pierre
 
 Obsidian
 Obsidienne
 
 Wood Wall
-Mur de Bois
+Mur de bois
+
+Spruce Wall
+Mur d'épicéa
+
+Birch Wall
+Mur de bouleau
 
 Grass
 Herbe
+
+Mycelium
+Mycelium
 
 Dirt
 Terre
@@ -544,6 +846,9 @@ Terre Agricole
 
 Wheat
 Ble
+
+Carrot
+Carotte
 
 Hard Rock
 Roche Dure
@@ -713,6 +1018,33 @@ Echap pour retourner au menu
 Loading...
 Chargement...
 
+Generating...
+Générateur...
+
+Calculating...
+Calculateur...
+
+Pre Calculating...
+Pre Calculateur...
+
+Building...
+Bâtiment...
+
+Melting...
+Fusion...
+
+Eroding...
+Érodant...
+
+Planting...
+Planting...
+
+Molding...
+Moulage...
+
+Raising...
+Élevage...
+
 # MultiplayerMenu.java
 
 waiting...
@@ -803,8 +1135,14 @@ Retourner au Jeu
 Options
 Options
 
+Info
+Information
+
 Make World Multiplayer
 Rendre le Monde Jouable en Multijoueur
+
+World
+Monde
 
 Save Game
 Sauvegarder
@@ -831,8 +1169,8 @@ Inventaire
 
 # TitleMenu.java
 
-Play
-Jouer
+Singleplayer
+Joueur unique
 
 Load World
 Charger un Monde
@@ -840,11 +1178,14 @@ Charger un Monde
 New World
 Creer un Monde
 
-Join Online World
-Joindre un Monde en Ligne
+Multiplayer
+Multijoueur
 
 Options
 Options
+
+Credits
+Credits
 
 Help
 Aide

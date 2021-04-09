@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.function.ToIntFunction;
 
 import minicraft.core.Game;
-import minicraft.core.Network;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -320,7 +319,7 @@ public class Level {
 					Game.server.broadcastEntityAddition(entity, true);
 				
 				if (!Game.isValidServer() || !(entity instanceof Particle)) {
-					if (Game.debug) printEntityStatus("Adding ", entity, "furniture.DungeonChest", "mob.AirWizard", "mob.Player");
+					//if (Game.debug) printEntityStatus("Adding ", entity, "furniture.DungeonChest", "mob.AirWizard", "mob.Player");
 					
 					entities.add(entity);
 					if(entity instanceof Player)
@@ -453,7 +452,7 @@ public class Level {
 			if(Game.isValidServer() && !(entity instanceof Particle) && entity.getLevel() == this)
 				Game.server.broadcastEntityRemoval(entity, this, true);
 			
-			if(Game.debug) printEntityStatus("Removing ", entity, "mob.Player");
+			//if(Game.debug) printEntityStatus("Removing ", entity, "mob.Player");
 			
 			entity.remove(this); // this will safely fail if the entity's level doesn't match this one.
 			entities.remove(entity);
@@ -483,7 +482,7 @@ public class Level {
 		    Game.level.add((Game.player));
 		  }
 	
-	
+	/*
 	public void printEntityStatus(String entityMessage, Entity entity, String... searching) {
 		// "searching" can contain any number of class names I want to print when found.
 		String clazz = entity.getClass().getCanonicalName();
@@ -500,6 +499,7 @@ public class Level {
 			}
 		}
 	}
+	*/
 	
 	public void dropItem(int x, int y, int mincount, int maxcount, Item... items) {
 		dropItem(x, y, mincount+random.nextInt(maxcount-mincount+1), items);

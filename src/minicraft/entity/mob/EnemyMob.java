@@ -5,6 +5,7 @@ import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.entity.Entity;
 import minicraft.entity.furniture.Bed;
+import minicraft.entity.mob.villager.Golem;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
 import minicraft.level.Level;
@@ -89,6 +90,7 @@ public class EnemyMob extends MobAi {
 				randomizeWalkDir(false);
 			}
 		}		
+		
 		}
 	}
 	

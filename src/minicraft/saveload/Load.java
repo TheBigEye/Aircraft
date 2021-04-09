@@ -28,8 +28,6 @@ import minicraft.entity.Entity;
 import minicraft.entity.Fireball;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.Spark;
-import minicraft.entity.Spark2;
-import minicraft.entity.Spark3;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.furniture.Chest;
 import minicraft.entity.furniture.Crafter;
@@ -819,8 +817,8 @@ if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is m
 		int curLevel = Integer.parseInt(info.get(info.size()-1));
 		if(World.levels[curLevel] != null) {
 			World.levels[curLevel].add(newEntity, x, y);
-			if(Game.debug && newEntity instanceof RemotePlayer)
-				World.levels[curLevel].printEntityStatus("Loaded ", newEntity, "mob.RemotePlayer");
+			if(Game.debug && newEntity instanceof RemotePlayer) {}
+				//World.levels[curLevel].printEntityStatus("Loaded ", newEntity, "mob.RemotePlayer");
 		} else if(newEntity instanceof RemotePlayer && Game.isValidClient())
 			System.out.println("CLIENT: Remote player not added because on null level");
 		

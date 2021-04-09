@@ -66,6 +66,15 @@ public class Chest extends Furniture implements ItemHolder {
 		if (inventory.invSize() == 0)
 			super.take(player);
 	}
+	
+	/*
+	@Override
+	public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
+		if (inventory.invSize() == 0)
+			return super.interact(player, item, attackDir);
+		return false;
+	}
+	*/
 
 	@Override
 	protected String getUpdateString() {

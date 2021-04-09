@@ -48,7 +48,7 @@ public class Arrow extends Entity implements ClientTickable {
 	@Override
 	public void tick() {
 		if (x < 0 || x >> 4 > level.w || y < 0 || y >> 4 > level.h) {
-			remove(); // remove when out of bounds
+			remove(); // Remove when out of bounds
 			return;
 		}
 
@@ -59,9 +59,9 @@ public class Arrow extends Entity implements ClientTickable {
 		// touchedBy(entity) to detect collisions instead.
 		List<Entity> entitylist = level.getEntitiesInRect(new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS));
 		boolean criticalHit = random.nextInt(11) < 9;
-		for (int i = 0; i < entitylist.size(); i++) {
-			Entity hit = entitylist.get(i);
 
+		for (Entity hit : entitylist) {
+			
 			if (hit instanceof Mob && hit != owner) {
 				Mob mob = (Mob) hit;
 				int extradamage = (hit instanceof Player ? 0 : 3) + (criticalHit ? 0 : 1);

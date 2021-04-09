@@ -51,7 +51,7 @@ public class FileHandler extends Game {
 		File testFile = new File(gameDir);
 		testFile.mkdirs();
 
-		File oldFolder = new File(saveDir + "/.playminicraft/mods/Cthulhucraft");
+		File oldFolder = new File(saveDir + "/.playminicraft/mods/Aircraft");
 		if (oldFolder.exists() && !oldFolder.equals(testFile)) {
 			try {
 				copyFolderContents(oldFolder.toPath(), testFile.toPath(), RENAME_COPY, true);
