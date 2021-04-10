@@ -26,11 +26,10 @@ Technical side
 
 ## Screenshots
 In village...
-![Preview](https://user-images.githubusercontent.com/63316583/114254488-01374980-9986-11eb-8cf0-315be20443db.png)
+![114254488-01374980-9986-11eb-8cf0-315be20443db](https://user-images.githubusercontent.com/63316583/114254689-3db77500-9987-11eb-8905-5ed3ff38614d.png)
 
 In the underground...
-![Preview](https://user-images.githubusercontent.com/63316583/114254591-afdb8a00-9986-11eb-8e56-e0e41f9a5e14.png)
-
+![Preview](https://user-images.githubusercontent.com/63316583/114254700-4ad46400-9987-11eb-91de-a90fe81f742b.png)
 
 ## About
 - Aircraft is a mod that is totally based on [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived).
