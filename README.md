@@ -28,6 +28,10 @@ Technical side
 In village...
 ![Preview](https://user-images.githubusercontent.com/63316583/114254488-01374980-9986-11eb-8cf0-315be20443db.png)
 
+In the underground...
+![Preview](https://user-images.githubusercontent.com/63316583/114254591-afdb8a00-9986-11eb-8e56-e0e41f9a5e14.png)
+
+
 ## About
 - Aircraft is a mod that is totally based on [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived).
 - The mod has compatibility with Minicraft plus 2.0.6 and 2.0.7. (Older versions before 1.3 are compatible with 2.0.3 to 2.0.4).
