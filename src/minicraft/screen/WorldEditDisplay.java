@@ -59,8 +59,6 @@ public class WorldEditDisplay extends Display {
 	public void tick(InputHandler input) {
 		super.tick(input);
 
-		Sound.Heart.stop();
-
 		if (input.getKey("select").clicked) {
 			// do action
 			InputEntry entry;

@@ -72,8 +72,6 @@ public class TitleDisplay extends Display {
         super.init(null); // The TitleScreen never has a parent.
         Renderer.readyToRenderGameplay = false;
 
-        Sound.Heart.stop();
-
         if (random.nextInt(2) == 1) {
             Sound.Intro.loop(true);
             Sound.Intro2.stop();
@@ -181,8 +179,6 @@ public class TitleDisplay extends Display {
             count--;
             if (count == 0) reverse = false;
         }
-
-        Sound.Heart.stop();
 
         super.tick(input);
 

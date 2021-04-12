@@ -19,7 +19,6 @@ import minicraft.screen.entry.StringEntry;
 public class PauseDisplay extends Display {
 	
 	public PauseDisplay() {
-		Sound.Heart.stop();
 		String upString = Game.input.getMapping("cursor-up")+ Localization.getLocalized(" and ")+Game.input.getMapping("cursor-down")+Localization.getLocalized(" to Scroll");
 		String selectString = Game.input.getMapping("select")+Localization.getLocalized(": Choose");
 		
@@ -104,7 +103,6 @@ public class PauseDisplay extends Display {
 	@Override
 	public void tick(InputHandler input) {
 		super.tick(input);
-		Sound.Heart.stop();
 		if (input.getKey("pause").clicked)
 			Game.exitMenu();
 	}

@@ -166,7 +166,6 @@ public class WorldSelectDisplay extends Display {
 				break;
 			}
 		}
-		Sound.Heart.stop();
 	}
 
 	@Override
