@@ -50,15 +50,15 @@ public class FurnitureItem extends Item {
 		/// able to be changed.
 		// items.add(new FurnitureItem(new CommandBlock()));
 
-		items.add(new FurnitureItem(new Spawner(new KingZombie(1))));
+		//items.add(new FurnitureItem(new Spawner(new KingZombie(1))));
 		items.add(new FurnitureItem(new Spawner(new Cow())));
 		items.add(new FurnitureItem(new Spawner(new Pig())));
 		items.add(new FurnitureItem(new Spawner(new Sheep())));
 		items.add(new FurnitureItem(new Spawner(new Goat())));
 		items.add(new FurnitureItem(new Spawner(new Chicken())));
+		items.add(new FurnitureItem(new Spawner(new GuiMan())));
 		items.add(new FurnitureItem(new Spawner(new Cleric())));
 		items.add(new FurnitureItem(new Spawner(new Librarian())));
-		items.add(new FurnitureItem(new Spawner(new GuiMan())));
 		items.add(new FurnitureItem(new Spawner(new Golem())));
 		items.add(new FurnitureItem(new Spawner(new Slime(1))));
 		items.add(new FurnitureItem(new Spawner(new Zombie(1))));
