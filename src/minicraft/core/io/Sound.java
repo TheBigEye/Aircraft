@@ -15,161 +15,164 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import minicraft.core.Game;
 
 public class Sound {
-    // creates sounds from their respective files
+	// creates sounds from their respective files
 
-    // Player
-    public static final Sound playerHurt = new Sound("/resources/sound/Entity/Player/playerhurt.wav");
-    public static final Sound playerDeath = new Sound("/resources/sound/Entity/Player/death.wav");
-    public static final Sound Heart = new Sound("/resources/sound/Entity/Player/hearth.wav");
-    public static final Sound craft = new Sound("/resources/sound/Entity/Player/craft.wav");
+	// Player
+	public static final Sound playerHurt = new Sound("/resources/sound/Entity/Player/playerhurt.wav");
+	public static final Sound playerDeath = new Sound("/resources/sound/Entity/Player/death.wav");
+	public static final Sound craft = new Sound("/resources/sound/Entity/Player/craft.wav");
 
-    public static final Sound monsterHurt = new Sound("/resources/sound/monsterhurt.wav");
+	public static final Sound monsterHurt = new Sound("/resources/sound/monsterhurt.wav");
 
-    public static final Sound DestroySpawner = new Sound("/resources/sound/DestroySpawner.wav");
-    public static final Sound DestroySpawner2 = new Sound("/resources/sound/DestroySpawner 2.wav");
-    public static final Sound DestroySpawner3 = new Sound("/resources/sound/DestroySpawner 3.wav");
+	// Spawner
+	public static final Sound DestroySpawner = new Sound("/resources/sound/Entity/Spawner/DestroySpawner.wav");
+	public static final Sound DestroySpawner2 = new Sound("/resources/sound/Entity/Spawner/DestroySpawner 2.wav");
+	public static final Sound DestroySpawner3 = new Sound("/resources/sound/Entity/Spawner/DestroySpawner 3.wav");
 
-    // Air Wizard
-    public static final Sound bossDeath = new Sound("/resources/sound/Entity/AirWizard/bossdeath.wav");
-    public static final Sound changePhase = new Sound("/resources/sound/Entity/AirWizard/changephase.wav");
-    public static final Sound wizardAttack = new Sound("/resources/sound/Entity/AirWizard/wizardattack.wav");
+	// Air Wizard
+	public static final Sound bossDeath = new Sound("/resources/sound/Entity/AirWizard/bossdeath.wav");
+	public static final Sound changePhase = new Sound("/resources/sound/Entity/AirWizard/changephase.wav");
+	public static final Sound wizardAttack = new Sound("/resources/sound/Entity/AirWizard/wizardattack.wav");
 
-    // Eye Queen
-    public static final Sound eyeBossDeath = new Sound("/resources/sound/Entity/EyeQueen/eyedeath.wav");
-    public static final Sound eyeChangePhase = new Sound("/resources/sound/Entity/EyeQueen/changephase.wav");
+	// Eye Queen
+	public static final Sound eyeBossDeath = new Sound("/resources/sound/Entity/EyeQueen/eyedeath.wav");
+	public static final Sound eyeChangePhase = new Sound("/resources/sound/Entity/EyeQueen/changephase.wav");
 
-    public static final Sound fuse = new Sound("/resources/sound/fuse.wav");
+	// Fuse
+	public static final Sound fuse = new Sound("/resources/sound/fuse.wav");
 
-    // Explode
-    public static final Sound explode = new Sound("/resources/sound/explode.wav");
-    public static final Sound explode2 = new Sound("/resources/sound/explode 2.wav");
-    public static final Sound explode3 = new Sound("/resources/sound/explode 3.wav");
-    public static final Sound explode4 = new Sound("/resources/sound/explode 4.wav");
+	// Explode
+	public static final Sound explode = new Sound("/resources/sound/explode.wav");
+	public static final Sound explode2 = new Sound("/resources/sound/explode 2.wav");
+	public static final Sound explode3 = new Sound("/resources/sound/explode 3.wav");
+	public static final Sound explode4 = new Sound("/resources/sound/explode 4.wav");
 
-    // Pickup
-    public static final Sound pickup = new Sound("/resources/sound/pickup.wav");
-    public static final Sound pickup2 = new Sound("/resources/sound/pickup 2.wav");
-    public static final Sound pickup3 = new Sound("/resources/sound/pickup 3.wav");
-    public static final Sound pickup4 = new Sound("/resources/sound/pickup 4.wav");
+	// Pickup
+	public static final Sound pickup = new Sound("/resources/sound/Entity/Player/pickup.wav");
+	public static final Sound pickup2 = new Sound("/resources/sound/Entity/Player/pickup 2.wav");
+	public static final Sound pickup3 = new Sound("/resources/sound/Entity/Player/pickup 3.wav");
+	public static final Sound pickup4 = new Sound("/resources/sound/Entity/Player/pickup 4.wav");
 
-    // ???
-    public static final Sound place = new Sound("/resources/sound/Entity/Player/craft.wav");
+	// Place
+	public static final Sound place = new Sound("/resources/sound/Entity/Player/place.wav");
 
-    // Menu
-    public static final Sound back = new Sound("/resources/sound/Entity/Player/craft.wav");
-    public static final Sound select = new Sound("/resources/sound/select.wav");
-    public static final Sound confirm = new Sound("/resources/sound/confirm.wav");
-    public static final Sound PageUp = new Sound("/resources/sound/Page Up.wav");
+	// Menu
+	public static final Sound back = new Sound("/resources/sound/Entity/Player/craft.wav");
+	public static final Sound select = new Sound("/resources/sound/select.wav");
+	public static final Sound confirm = new Sound("/resources/sound/confirm.wav");
+	public static final Sound PageUp = new Sound("/resources/sound/Page Up.wav");
 
-    public static final Sound Intro = new Sound("/resources/sound/Music/Intro.wav");
-    public static final Sound Intro2 = new Sound("/resources/sound/Music/Intro 2.wav");
-    // public static final Sound Intro3 = new Sound("/resources/sound/Music/Intro 3.wav");
+	public static final Sound Intro = new Sound("/resources/sound/Music/Title/Intro.wav");
+	public static final Sound Intro2 = new Sound("/resources/sound/Music/Title/Intro 2.wav");
 
-    public static final Sound Call = new Sound("/resources/sound/Music/Call.wav");
+	public static final Sound Call = new Sound("/resources/sound/Music/Amulet/Call.wav");
 
-    // Cave and ambience sounds
-    public static final Sound Ambience1 = new Sound("/resources/sound/Enviroment/Ambience1.wav");
-    public static final Sound Ambience2 = new Sound("/resources/sound/Enviroment/Ambience2.wav");
-    public static final Sound Ambience3 = new Sound("/resources/sound/Enviroment/Ambience3.wav");
-    public static final Sound Ambience4 = new Sound("/resources/sound/Enviroment/Ambience4.wav");
-    public static final Sound Ambience5 = new Sound("/resources/sound/Enviroment/Ambience5.wav");
+	// Cave and ambience sounds
+	public static final Sound Ambience1 = new Sound("/resources/sound/Enviroment/Ambience1.wav");
+	public static final Sound Ambience2 = new Sound("/resources/sound/Enviroment/Ambience2.wav");
+	public static final Sound Ambience3 = new Sound("/resources/sound/Enviroment/Ambience3.wav");
+	public static final Sound Ambience4 = new Sound("/resources/sound/Enviroment/Ambience4.wav");
+	public static final Sound Ambience5 = new Sound("/resources/sound/Enviroment/Ambience5.wav");
 
-    public static final Sound HeavenAmbience = new Sound("/resources/sound/Enviroment/HeavenAmbience.wav");
+	public static final Sound HeavenAmbience = new Sound("/resources/sound/Enviroment/HeavenAmbience.wav");
 
-    // Snow tile
-    public static final Sound Snow = new Sound("/resources/sound/Tile/Snow.wav");
-    public static final Sound Snow2 = new Sound("/resources/sound/Tile/Snow 2.wav");
-    public static final Sound Snow3 = new Sound("/resources/sound/Tile/Snow 3.wav");
-    public static final Sound Snow4 = new Sound("/resources/sound/Tile/Snow 4.wav");
+	// Snow tile
+	public static final Sound Snow = new Sound("/resources/sound/Tile/Snow.wav");
+	public static final Sound Snow2 = new Sound("/resources/sound/Tile/Snow 2.wav");
+	public static final Sound Snow3 = new Sound("/resources/sound/Tile/Snow 3.wav");
+	public static final Sound Snow4 = new Sound("/resources/sound/Tile/Snow 4.wav");
+	
+	// Themes
+	public static final Sound Theme_Surface = new Sound("/resources/sound/Music/Background/Surface.wav");
+	public static final Sound Theme_Peaceful = new Sound("/resources/sound/Music/Background/Peaceful.wav");
 
+	private Clip clip; // Creates a audio clip to be played
 
-    private Clip clip; // Creates a audio clip to be played
+	public static void init() {
+	} // a way to initialize the class without actually doing anything
 
-    public static void init() {} // a way to initialize the class without actually doing anything
+	private Sound(String name) {
+		if (!Game.HAS_GUI)
+			return;
 
-    private Sound(String name) {
-        if (!Game.HAS_GUI)
-            return;
+		try {
+			URL url = getClass().getResource(name);
 
-        try {
-            URL url = getClass().getResource(name);
+			DataLine.Info info = new DataLine.Info(Clip.class, AudioSystem.getAudioFileFormat(url).getFormat());
 
-            DataLine.Info info = new DataLine.Info(Clip.class, AudioSystem.getAudioFileFormat(url).getFormat());
+			if (!AudioSystem.isLineSupported(info)) {
+				System.err.println("ERROR: Audio format of file " + name + " is not supported: " + AudioSystem.getAudioFileFormat(url));
 
-            if (!AudioSystem.isLineSupported(info)) {
-                System.err.println("ERROR: Audio format of file " + name + " is not supported: " +
-                    AudioSystem.getAudioFileFormat(url));
+				System.out.println("Supported audio formats:");
+				System.out.println("-source:");
+				Line.Info[] sinfo = AudioSystem.getSourceLineInfo(info);
+				Line.Info[] tinfo = AudioSystem.getTargetLineInfo(info);
+				for (int i = 0; i < sinfo.length; i++) {
+					if (sinfo[i] instanceof DataLine.Info) {
+						DataLine.Info dataLineInfo = (DataLine.Info) sinfo[i];
+						AudioFormat[] supportedFormats = dataLineInfo.getFormats();
+						for (AudioFormat af : supportedFormats)
+							System.out.println(af);
+					}
+				}
+				System.out.println("-target:");
+				for (int i = 0; i < tinfo.length; i++) {
+					if (tinfo[i] instanceof DataLine.Info) {
+						DataLine.Info dataLineInfo = (DataLine.Info) tinfo[i];
+						AudioFormat[] supportedFormats = dataLineInfo.getFormats();
+						for (AudioFormat af : supportedFormats)
+							System.out.println(af);
+					}
+				}
 
-                System.out.println("Supported audio formats:");
-                System.out.println("-source:");
-                Line.Info[] sinfo = AudioSystem.getSourceLineInfo(info);
-                Line.Info[] tinfo = AudioSystem.getTargetLineInfo(info);
-                for (int i = 0; i < sinfo.length; i++) {
-                    if (sinfo[i] instanceof DataLine.Info) {
-                        DataLine.Info dataLineInfo = (DataLine.Info) sinfo[i];
-                        AudioFormat[] supportedFormats = dataLineInfo.getFormats();
-                        for (AudioFormat af: supportedFormats)
-                            System.out.println(af);
-                    }
-                }
-                System.out.println("-target:");
-                for (int i = 0; i < tinfo.length; i++) {
-                    if (tinfo[i] instanceof DataLine.Info) {
-                        DataLine.Info dataLineInfo = (DataLine.Info) tinfo[i];
-                        AudioFormat[] supportedFormats = dataLineInfo.getFormats();
-                        for (AudioFormat af: supportedFormats)
-                            System.out.println(af);
-                    }
-                }
+				return;
+			}
 
-                return;
-            }
+			clip = (Clip) AudioSystem.getLine(info);
+			clip.open(AudioSystem.getAudioInputStream(url));
 
-            clip = (Clip) AudioSystem.getLine(info);
-            clip.open(AudioSystem.getAudioInputStream(url));
+			clip.addLineListener(e -> {
+				if (e.getType() == LineEvent.Type.STOP) {
+					clip.flush();
+					clip.setFramePosition(0);
+				}
+			});
 
-            clip.addLineListener(e -> {
-                if (e.getType() == LineEvent.Type.STOP) {
-                    clip.flush();
-                    clip.setFramePosition(0);
-                }
-            });
+		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+			System.err.println("Could not load sound file " + name);
+			e.printStackTrace();
+		}
+	}
+	// clip = music/sound name
 
-        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-            System.err.println("Could not load sound file " + name);
-            e.printStackTrace();
-        }
-    }
-    // clip = music/sound name
+	// This plays the clip only once, Syntax: Sound.clip.play();
+	public void play() {
+		if (!(boolean) Settings.get("sound") || clip == null)
+			return;
+		if (Game.isValidServer())
+			return;
 
-    // This plays the clip only once, Syntax: Sound.clip.play();
-    public void play() {
-        if (!(boolean) Settings.get("sound") || clip == null)
-            return;
-        if (Game.isValidServer())
-            return;
+		if (clip.isRunning() || clip.isActive())
+			clip.stop();
 
-        if (clip.isRunning() || clip.isActive())
-            clip.stop();
+		clip.start();
+	}
 
-        clip.start();
-    }
+	// This repeats the same clip over and over again,
+	public void loop(boolean start) {
+		if (!(boolean) Settings.get("sound") || clip == null)
+			return;
 
-    // This repeats the same clip over and over again, 
-    public void loop(boolean start) {
-        if (!(boolean) Settings.get("sound") || clip == null)
-            return;
+		if (start)
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+		else
+			clip.stop();
+	}
 
-        if (start)
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        else
-            clip.stop();
-    }
+	// This stops the clip
+	public void stop() {
+		clip.stop();
 
-    // This stops the clip
-    public void stop() {
-        clip.stop();
-
-    }
+	}
 
 }

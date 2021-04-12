@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
+import minicraft.core.io.SoundOGG;
 import minicraft.entity.ClientTickable;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
@@ -332,30 +335,30 @@ public class Level {
 		
 		// this play random music in game
 		if (Settings.get("ambient").equals("Nice")) {
-		if (random.nextInt(12800)==1) {
+		if (random.nextInt(28000)==1) {
 			
 			if (random.nextInt(3) == 0) {
-					
+				Sound.Theme_Surface.play();
 			}	
 			if (random.nextInt(3) == 1) {
-				
+				Sound.Theme_Surface.play();
 			}
 			if (random.nextInt(3) == 2) {
-				
+				Sound.Theme_Peaceful.play();
 			}
 			if (random.nextInt(3) == 3) {
-				
+				Sound.Theme_Peaceful.play();
 			}
 		}
 	}
 		
 		if (Settings.get("ambient").equals("Normal")) {
-		if (random.nextInt(12800)==1) {
+		if (random.nextInt(256000)==1) {
 		}
 	}
 		
 		if (Settings.get("ambient").equals("Scary")) {
-		if (random.nextInt(12800)==1) {
+		if (random.nextInt(128000)==1) {
 			
 			if (random.nextInt(8) == 0) {
 				Sound.Ambience1.play();					
@@ -790,6 +793,16 @@ public class Level {
 		for(Entity e: getEntityArray()) {
 			if (e.isTouching(area))
 				result.add(e);
+		}
+		return result;
+	}
+
+	public List<Entity> getEntitiesInRect(Predicate<Entity> filter, Rectangle area) {
+		List<Entity> result = new LinkedList<>();
+		for (Entity entity : entities) {
+			if (filter.test(entity) && entity.isTouching(area)) {
+				result.add(entity);
+			}
 		}
 		return result;
 	}
