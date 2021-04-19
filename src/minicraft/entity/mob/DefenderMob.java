@@ -46,6 +46,12 @@ public class DefenderMob extends MobAi {
 		if(entity instanceof Zombie) {
 			((Zombie)entity).hurt(this, 2 * (Settings.get("diff").equals("Hard") ? 3 : 1));
 		}
+		if(entity instanceof Skeleton) {
+			((Skeleton)entity).hurt(this, 2 * (Settings.get("diff").equals("Hard") ? 3 : 1));
+		}
+		if(entity instanceof Creeper) {
+			((Creeper)entity).hurt(this, 2 * (Settings.get("diff").equals("Hard") ? 3 : 1));
+		}
 	}
 	
 	@Override
@@ -71,15 +77,22 @@ public class DefenderMob extends MobAi {
 	 * @return true if the mob can spawn here, false if not.
 	 */
 	public static boolean checkStartPos(Level level, int x, int y) {
-		
-		int r = (Game.isMode("score") ? 22 : 15) + (Updater.getTime() == Updater.Time.Night ? 0 : 5); // get no-mob radius by
-		
-		if(!MobAi.checkStartPos(level, x, y, 80, r))
+
+		int r = (Game.isMode("score") ? 22 : 15) + (Updater.getTime() == Updater.Time.Night ? 0 : 10); // get no-mob radius by
+
+		if (!MobAi.checkStartPos(level, x, y, 16, r))
 			return false;
-		
+
 		Tile tile = level.getTile(x >> 4, y >> 4);
-		return tile == Tiles.get("path") || tile == Tiles.get("path");
-		
+		if (tile != Tiles.get("Wood Planks") && tile != Tiles.get("wood planks") && tile != Tiles.get("Path")
+				&& tile != Tiles.get("path")) {
+			return false;
+		} else if (tile != Tiles.get("Grass") && tile != Tiles.get("Sand") && tile != Tiles.get("Snow")
+				&& tile != Tiles.get("birch tree") && tile != Tiles.get("tree") && tile != Tiles.get("flower")
+				&& tile != Tiles.get("water") && tile != Tiles.get("wheat") && tile != Tiles.get("farmland")) {
+			return true;
+		} else
+			return false;
 	}
 	
 	@Override
