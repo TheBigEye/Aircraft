@@ -26,8 +26,10 @@ public class DeathChest extends Chest {
 		this.sprite = normalSprite;
 
 		/// set the expiration time based on the world difficulty.
-		if (Settings.get("diff").equals("Easy")) {
+		if (Settings.get("diff").equals("Passive")) {
 			time = 300 * Updater.normSpeed;
+		} else if (Settings.get("diff").equals("Easy")) {
+			time = 200 * Updater.normSpeed;
 		} else if (Settings.get("diff").equals("Normal")) {
 			time = 120 * Updater.normSpeed;
 		} else if (Settings.get("diff").equals("Hard")) {
