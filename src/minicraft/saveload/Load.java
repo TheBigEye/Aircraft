@@ -39,6 +39,7 @@ import minicraft.entity.furniture.Tnt;
 import minicraft.entity.furniture.statue.SkeletonStatue;
 import minicraft.entity.furniture.statue.SlimeStatue;
 import minicraft.entity.furniture.statue.ZombieStatue;
+import minicraft.entity.mob.Cat;
 import minicraft.entity.mob.Chicken;
 import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
@@ -67,7 +68,9 @@ import minicraft.entity.mob.villager.Cleric;
 import minicraft.entity.mob.villager.Golem;
 import minicraft.entity.mob.villager.Librarian;
 import minicraft.entity.mob.villager.OldGolem;
+import minicraft.entity.particle.BrightParticle;
 import minicraft.entity.particle.FireParticle;
+import minicraft.entity.particle.HeartParticle;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.SplashParticle;
 import minicraft.entity.particle.TextParticle;
@@ -828,6 +831,8 @@ if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is m
 	@Nullable
 	private static Entity getEntity(String string, int moblvl) {
 		switch(string) {
+		
+		    //Load Mob entities
 			case "Player": return null;
 			case "RemotePlayer": return null;
 			case "Cow": return new Cow();
@@ -838,6 +843,7 @@ if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is m
 			case "Cleric": return new Cleric();
 			case "Librarian": return new Librarian();
 			case "GuiMan": return new GuiMan();
+			case "Cat": return new Cat();
 			case "Golem": return new Golem();
 			case "Zombie": return new Zombie(moblvl);
 			case "Slime": return new Slime(moblvl);
@@ -855,6 +861,8 @@ if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is m
 			case "AirWizard": return new AirWizard(moblvl>1);
 			case "AirWizardPhase2": return new AirWizardPhase2(moblvl>1);
 			case "AirWizardPhase3": return new AirWizardPhase3(moblvl>1);
+			
+			//Load Furniture entities
 			case "Boat": return new Boat();
 			case "Spawner": return new Spawner(new Zombie(1));
 			case "Workbench": return new Crafter(Crafter.Type.Workbench);
@@ -878,10 +886,15 @@ if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is m
 			case "Arrow": return new Arrow(new Skeleton(0), 0, 0, Direction.NONE, 0);
 			case "Fireball": return new Fireball(new Skeleton(0), 0, 0, Direction.NONE, 0);
 			case "ItemEntity": return new ItemEntity(Items.get("unknown"), 0, 0);
+			
+			//Load Particles
 			case "FireParticle": return new FireParticle(0, 0);
 			case "SplashParticle": return new SplashParticle(0, 0);
+			case "HeartParticle": return new HeartParticle(0, 0);
+			case "BrightParticle": return new BrightParticle(0, 0);
 			case "SmashParticle": return new SmashParticle(0, 0);
 			case "TextParticle": return new TextParticle("", 0, 0, 0);
+			
 			default : System.err.println("LOAD ERROR: unknown or outdated entity requested: " + string);
 				return null;
 		}
