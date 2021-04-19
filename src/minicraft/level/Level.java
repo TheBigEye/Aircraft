@@ -25,6 +25,7 @@ import minicraft.entity.furniture.Spawner;
 import minicraft.entity.mob.Chicken;
 import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
+import minicraft.entity.mob.DefenderMob;
 import minicraft.entity.mob.EnemyMob;
 import minicraft.entity.mob.FrostMob;
 import minicraft.entity.mob.Goat;
@@ -43,6 +44,7 @@ import minicraft.entity.mob.Snake;
 import minicraft.entity.mob.Zombie;
 import minicraft.entity.mob.boss.AirWizard;
 import minicraft.entity.mob.villager.Cleric;
+import minicraft.entity.mob.villager.Golem;
 import minicraft.entity.mob.villager.Librarian;
 import minicraft.entity.mob.villager.OldGolem;
 import minicraft.entity.mob.villager.VillagerMob;
@@ -335,19 +337,23 @@ public class Level {
 		
 		// this play random music in game
 		if (Settings.get("ambient").equals("Nice")) {
-		if (random.nextInt(28000)==1) {
+		if (random.nextInt(48000)==1) {
 			
 			if (random.nextInt(3) == 0) {
 				Sound.Theme_Surface.play();
+				Sound.Theme_Peaceful.stop();
 			}	
 			if (random.nextInt(3) == 1) {
 				Sound.Theme_Surface.play();
+				Sound.Theme_Peaceful.stop();
 			}
 			if (random.nextInt(3) == 2) {
 				Sound.Theme_Peaceful.play();
+				Sound.Theme_Surface.stop();
 			}
 			if (random.nextInt(3) == 3) {
 				Sound.Theme_Peaceful.play();
+				Sound.Theme_Surface.stop();
 			}
 		}
 	}
@@ -733,6 +739,19 @@ public class Level {
 			
 			}
 			
+			
+			if(depth == 0 && DefenderMob.checkStartPos(this, nx, ny)) {
+				// spawns the villagers.
+				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new Golem()), nx, ny);
+				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new Golem()), nx, ny);
+				else if (rnd >= 34) add((new Golem()), nx, ny);
+				else add((new Golem()), nx, ny);
+				
+				spawned = true;
+			
+			}
+			
+			
 			if(depth == 0 && FrostMob.checkStartPos(this, nx, ny)) {
 				// spawns the villagers.
 				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new GuiMan()), nx, ny);
@@ -998,6 +1017,7 @@ public class Level {
 		new Librarian();
 		new Librarian();
 		new Cleric();
+		new Golem();
 
 		for (int i = 0; i < w / 128 * 4; i++) {
 			// makes 2-8 villages based on world size
