@@ -16,6 +16,7 @@ import minicraft.entity.furniture.Tnt;
 import minicraft.entity.furniture.statue.SkeletonStatue;
 import minicraft.entity.furniture.statue.SlimeStatue;
 import minicraft.entity.furniture.statue.ZombieStatue;
+import minicraft.entity.mob.Cat;
 import minicraft.entity.mob.Chicken;
 import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
@@ -57,6 +58,7 @@ public class FurnitureItem extends Item {
 		items.add(new FurnitureItem(new Spawner(new Goat())));
 		items.add(new FurnitureItem(new Spawner(new Chicken())));
 		items.add(new FurnitureItem(new Spawner(new GuiMan())));
+		items.add(new FurnitureItem(new Spawner(new Cat())));
 		items.add(new FurnitureItem(new Spawner(new Cleric())));
 		items.add(new FurnitureItem(new Spawner(new Librarian())));
 		items.add(new FurnitureItem(new Spawner(new Golem())));
