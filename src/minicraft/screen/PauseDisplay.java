@@ -8,7 +8,6 @@ import minicraft.core.MyUtils;
 import minicraft.core.Network;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
-import minicraft.core.io.Sound;
 import minicraft.gfx.Color;
 import minicraft.saveload.Save;
 import minicraft.screen.entry.BlankEntry;

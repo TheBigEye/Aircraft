@@ -30,8 +30,6 @@ public class TitleDisplay extends Display {
     private int count = 0; // this and reverse are for the logo; they produce the fade-in/out effect.
     private boolean reverse = false;
 
-    private Object timer;
-
     public TitleDisplay() {
         super(true, false, new Menu.Builder(false, 2, RelPos.CENTER,
                 new StringEntry(""),
@@ -74,11 +72,11 @@ public class TitleDisplay extends Display {
 
         if (random.nextInt(2) == 1) {
             Sound.Intro.loop(true);
-            Sound.Intro2.stop();
+            //Sound.Intro2.stop();
         }
         if (random.nextInt(2) == 2) {
             Sound.Intro2.loop(true);
-            Sound.Intro.stop();
+            //Sound.Intro.stop();
 
         }
 
@@ -228,19 +226,28 @@ public class TitleDisplay extends Display {
         //"Bye ben :(",
 
         // Also play 
+        "Also play Minicraft Plus!",
         "Also play InfinityTale!",
         "Also play Minicraft Deluxe!",
         "Also play Alecraft!",
         "Also play Hackcraft!",
         "Also play MiniCrate!",
         "Also play MiniCraft Mob Overload!",
+        "Also play Minitale!, oh right :(",
+        
+        "Playing "+Game.BUILD+", nice!",
 
+        
         // Now with...
         "Now with better fishing!",
+        "Now with better Weapons!",
         "Now with better tools!",
         "Now with better chests!",
         "Now with better dungeons!",
         "Now with better sounds!",
+        "Air Wizard now with phases!",
+        
+        
         "Only on PlayMinicraft.com!",
         "Playminicraft.com is the bomb!",
         "@MinicraftPlus on Twitter",
@@ -248,6 +255,7 @@ public class TitleDisplay extends Display {
         "Join the Forums!",
         "The Wiki is weak! Help it!",
 
+        
         "Notch is Awesome!",
         "Dillyg10 is cool as Ice!",
         "Shylor is the man!",
@@ -256,6 +264,7 @@ public class TitleDisplay extends Display {
         "TheBigEye.... Cake rain!",
         "ASCII",
 
+        
         "You should read Antidious Venomi!",
         "Oh Hi Mark",
         "Use the force!",
@@ -263,26 +272,32 @@ public class TitleDisplay extends Display {
         "Get him, Steve!",
         "Forty-Two!",
 
+        
         // kill
         "Kill Creeper, get Gunpowder!",
         "Kill Cow, get Beef!",
         "Kill Zombie, get Cloth!",
         "Kill Slime, get Slime!",
+        "Kill Slime, get Problems!",
         "Kill Skeleton, get Bones!",
+        "Kill Skeleton, get Arrows!",
         "Kill Sheep, get Wool!",
+        "Kill Goat, get Leather!",
         "Kill Pig, get Porkchop!",
         "Kill Chicken, get Feathers!",
+        "Kill Guiman, get more Feathers!",
 
         // Mineral levels
         "Gold > Iron",
         "Gem > Gold",
 
         "Test == InDev!",
-        "Story? Uhh...",
-        "Mod on phase A",
+        "Story? yes!",
+        "Mod on phase B",
 
         // What's that?
         "Infinite terrain? What's that?",
+        "Ceilings? What's is that?",
         "Redstone? What's that?",
         "Minecarts? What are those?",
         "Windows? I prefer Doors!",
@@ -291,7 +306,8 @@ public class TitleDisplay extends Display {
 
         // Not Included
         "Null not included",
-        "Herobine not included",
+        "Humans not included",
+        "Herobine not included?",
         "Mouse not included!",
         "No spiders included!",
         "No Endermen included!",
@@ -307,8 +323,9 @@ public class TitleDisplay extends Display {
         "Cows included!",
         "Sheep included!",
         "Chickens included!",
+        "Goats included!",
         "Pigs included!",
-        "Cthulhu included!",
+        "Cthulhu included?",
         "Enchantments Now Included!",
         "Multiplayer Now Included!",
         "Carrots Now Included!",
@@ -339,6 +356,7 @@ public class TitleDisplay extends Display {
         "In search of Gems!",
         "Life itself suspended by a thread",
         "saying ay-oh, that creeper's KO'd!",
+        
         "Gimmie a bucket!",
         "Farming with water!",
         "Press \"R\"!",
@@ -346,6 +364,8 @@ public class TitleDisplay extends Display {
         "Potions ftw!",
         "Beds ftw!",
         "Defeat the Air Wizard!",
+        "Defeat the Eye queen!",
+        "Defeat the Keeper!",
         "Conquer the Dungeon!",
         "One down, one to go...",
         "Loom + Wool = String!",
