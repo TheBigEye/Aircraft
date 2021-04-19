@@ -70,6 +70,9 @@ public class Cleric extends VillagerMob {
 			ClericTrdes.add(new Recipe("Apple_10", new String[] { "Emerald_1" }));
 			ClericTrdes.add(new Recipe("Emerald_10", new String[] { "Gem_1" }));
 			ClericTrdes.add(new Recipe("Iron_10", new String[] { "Gold_1" }));
+			ClericTrdes.add(new Recipe("stone_16", new String[] { "Gold_1" }));
+			ClericTrdes.add(new Recipe("sand_16", new String[] { "Gold_1" }));
+			ClericTrdes.add(new Recipe("carrot_3", new String[] { "Gold_1" }));
 
 			if (time.getDayOfMonth() == 17) {
 				ClericTrdes.add(new Recipe("Blue Clothes_1", new String[] { "Iron_3" }));
@@ -104,6 +107,33 @@ public class Cleric extends VillagerMob {
 				ClericTrdes.add(new Recipe("Iron_3", new String[] { "Gold Carrot_2" }));
 			}
 		}
+		
+		if (time.getMonth() == Month.JULY) {
+			ClericTrdes.add(new Recipe("Apple_10", new String[] { "Emerald_1" }));
+			ClericTrdes.add(new Recipe("Emerald_10", new String[] { "Gem_1" }));
+			ClericTrdes.add(new Recipe("Iron_10", new String[] { "Gold_1" }));
+
+			if (time.getDayOfMonth() == 17) {
+				ClericTrdes.add(new Recipe("Blue Clothes_1", new String[] { "Iron_3" }));
+				ClericTrdes.add(new Recipe("Lapiz_10", new String[] { "Iron_3" }));
+				ClericTrdes.add(new Recipe("Blue Wool_10", new String[] { "Iron_3" }));
+			}
+			if (time.getDayOfMonth() == 1) {
+				ClericTrdes.add(new Recipe("dirt_1", new String[] { "Gem_5" }));
+			}
+		}
+
+		// ???
+		if (time.getMonth() == Month.AUGUST) {
+			ClericTrdes.add(new Recipe("Wood_16", new String[] { "Iron_1" }));
+			ClericTrdes.add(new Recipe("Dirt_16", new String[] { "Iron_1" }));
+			ClericTrdes.add(new Recipe("Stone_8", new String[] { "Gold_1" }));
+
+			if (time.getDayOfMonth() == 6) {
+				ClericTrdes.add(new Recipe("dirt_1", new String[] { "Gem_5" }));
+			}
+		}
+
 
 		/*
 		 * ClericTrdes.add(new Recipe("Emerald_1", new String[] { "Apple_5" }));
