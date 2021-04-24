@@ -160,6 +160,24 @@ public class AirWizardPhase3 extends EnemyMob {
 		*/
 		super.render(screen);
 
+		
+		if (secondform) {
+
+			// Normal
+			for (int i = 0; i < 2; i++) {
+				MobSprite[][] list = MobSprite.compileMobSpriteAnimations(16, 18 + (i * 2));
+				sprites[i] = list;
+			}
+		} else {
+
+			// Secondform
+			for (int i = 0; i < 2; i++) {
+				MobSprite[][] list = MobSprite.compileMobSpriteAnimations(24, 18 + (i * 2));
+				sprites[i] = list;
+			}
+		}
+		
+		
 		int textcol = Color.get(1, 0, 204, 0);
 		int textcol2 = Color.get(1, 0, 51, 0);
 		int percent = health / (maxHealth / 100);
