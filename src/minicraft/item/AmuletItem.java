@@ -41,6 +41,7 @@ public class AmuletItem extends Item {
 		}
 		if (random.nextInt(3) == 2) {
 			level.add(new EyeQueen(1), player.x, player.y);
+			Updater.notifyAll("The eye queen has awakened!");
 			Updater.setTime(600000);
 		}
 
