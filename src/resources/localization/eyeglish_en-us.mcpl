@@ -872,8 +872,8 @@ Inventory
 
 # TitleMenu.java
 
-Play
-Play
+Singleplayer
+Singleplayer
 
 Load World
 Load World
@@ -881,11 +881,14 @@ Load World
 New World
 New World
 
-Join Online World
-Join Online World
+Multiplayer
+Multiplayer
 
 Options
 Options
+
+Credits
+Credits
 
 Help
 Help
