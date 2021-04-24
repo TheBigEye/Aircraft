@@ -8,7 +8,7 @@ import minicraft.gfx.MobSprite;
 import minicraft.item.Items;
 
 public class Cat extends PassiveMob {
-	private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(24, 10);
+	private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(24, 6);
 	private Random rnd = new Random();
 	
 	/**
