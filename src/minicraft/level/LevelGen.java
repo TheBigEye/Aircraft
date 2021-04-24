@@ -1137,7 +1137,7 @@ public class LevelGen {
             int lvl = maplvls[idx++ % maplvls.length];
             if (lvl > 1 || lvl < -4)
                 continue;
-            byte[][] fullmap = LevelGen.createAndValidateSkyMap(w, h);
+            byte[][] fullmap = LevelGen.createAndValidateTopMap(w, h);
             if (fullmap == null)
                 continue;
             byte[] map = fullmap[0];
