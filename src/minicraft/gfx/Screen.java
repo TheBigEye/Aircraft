@@ -125,9 +125,7 @@ public class Screen {
 
 		xTile %= currentSheet.width; // to avoid out of bounds
 		yTile %= currentSheet.height; // ^
-		int toffs = xTile * 8 + yTile * 8 * currentSheet.width; // Gets the offset of the sprite into the spritesheet
-																// pixel array, the 8's represent the size of the box.
-																// (8 by 8 pixel sprite boxes)
+		int toffs = xTile * 8 + yTile * 8 * currentSheet.width; // Gets the offset of the sprite into the spritesheet pixel array, the 8's represent the size of the box. (8 by 8 pixel sprite boxes)
 
 		/// THIS LOOPS FOR EVERY LITTLE PIXEL
 		for (int y = 0; y < 8; y++) { // Loops 8 times (because of the height of the tile)
@@ -144,9 +142,7 @@ public class Screen {
 				if (mirrorX)
 					xs = 7 - x; // Reverses the pixel for a mirroring effect
 
-				int col = currentSheet.pixels[toffs + xs + ys * currentSheet.width]; // Gets the color of the current
-																						// pixel from the value stored
-																						// in the sheet.
+				int col = currentSheet.pixels[toffs + xs + ys * currentSheet.width]; // Gets the color of the current pixel from the value stored in the sheet.
 
 				boolean isTransparent = (col >> 24 == 0);
 
@@ -159,7 +155,7 @@ public class Screen {
 					} else {
 						// Inserts the colors into the image
 						if (fullbright) {
-							pixels[position] = Color.WHITE;
+							pixels[position] = Color.RED;
 						} else {
 							pixels[position] = Color.upgrade(col);
 						}

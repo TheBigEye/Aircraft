@@ -117,7 +117,8 @@ public class EyeQueenPhase3 extends EnemyMob {
 			e.printStackTrace();
 		}
 	}
-    
+	
+	@SuppressWarnings("unused")
 	public void die() {
 		Player player = getClosestPlayer();
 		

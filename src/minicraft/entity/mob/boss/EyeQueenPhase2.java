@@ -105,7 +105,7 @@ public class EyeQueenPhase2 extends EnemyMob {
 		return true;
 	}
 
-    
+	@SuppressWarnings("unused")
 	public void die() {
 		int min = 0, max = 0;
 		if (Settings.get("diff").equals("Easy")) {min = 1; max = 3;}

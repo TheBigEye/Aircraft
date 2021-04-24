@@ -85,8 +85,7 @@ public class FileHandler extends Game {
 		top.delete();
 	}
 
-	public static void copyFolderContents(Path origFolder, Path newFolder, int ifExisting, boolean deleteOriginal)
-			throws IOException {
+	public static void copyFolderContents(Path origFolder, Path newFolder, int ifExisting, boolean deleteOriginal) throws IOException {
 		// I can determine the local folder structure with origFolder.relativize(file),
 		// then use newFolder.resolve(relative).
 		// if (Game.debug) System.out.println("Copying contents of folder " + origFolder

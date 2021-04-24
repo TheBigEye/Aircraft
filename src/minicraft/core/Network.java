@@ -21,7 +21,8 @@ import minicraft.screen.LoadingDisplay;
 import minicraft.screen.WorldSelectDisplay;
 
 public class Network extends Game {
-	private Network() {}
+	private Network() {
+	}
 
 	private static final Random random = new Random();
 
@@ -40,15 +41,13 @@ public class Network extends Game {
 			if (debug)
 				System.out.println("Fetching release list from github...");
 			try {
-				HttpResponse<JsonNode> response = Unirest
-						.get("https://api.github.com/repos/TheBigEye/Aircraft-Mod/releases").asJson();
+				HttpResponse<JsonNode> response = Unirest.get("https://api.github.com/repos/TheBigEye/Aircraft-Mod/releases").asJson();
 				// HttpResponse<JsonNode> response =
 				// Unirest.get("https://api.github.com/repos/TheBigEye/Cthulhucraft/releases").asJson();
 				// HttpResponse<JsonNode> response =
 				// Unirest.get("https://api.github.com/repos/chrisj42/minicraft-plus-revived/releases").asJson();
 				if (response.getStatus() != 200) {
-					System.err.println("Version request returned status code " + response.getStatus() + ": "
-							+ response.getStatusText());
+					System.err.println("Version request returned status code " + response.getStatus() + ": " + response.getStatusText());
 					System.err.println("Response body: " + response.getBody());
 					latestVersion = new VersionInfo(VERSION, "", "");
 				} else {
@@ -174,8 +173,7 @@ public class Network extends Game {
 			System.out.println("VERSIONCHECK: Checking for updates...");
 			findLatestVersion(() -> {
 				if (latestVersion.version.compareTo(Game.VERSION) > 0) // link new version
-					System.out.println("VERSIONCHECK: Found newer version: Version " + latestVersion.releaseName
-							+ " Available! Download direct from \"" + latestVersion.releaseUrl
+					System.out.println("VERSIONCHECK: Found newer version: Version " + latestVersion.releaseName + " Available! Download direct from \"" + latestVersion.releaseUrl
 							+ "\". Can also be found with change log at \"https://www.github.com/chrisj42/minicraft-plus-revived/releases\".");
 				else if (latestVersion.releaseName.length() > 0)
 					System.out.println("VERSIONCHECK: No updates found, you have the latest version.");
