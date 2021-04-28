@@ -347,24 +347,14 @@ public class Screen {
 	}
 
 	public void setPixel(int xp, int yp, int color) {
-		// Loops 8 times (because of the height of the tile)
-		for (int y = 0; y < 8; y++) {
-			if (y + yp < 0 || y + yp >= h) {
-				// If the pixel is out of bounds, then skip the rest of the loop.
-				continue;
-			}
+		// If the pixel is out of bounds, then skip the rest of the loop.
+		if (yp < 0 || yp >= h || xp < 0 || xp >= w) {
+			return;
+		}
 
-			// Loops 8 times (because of the width of the tile)
-			for (int x = 0; x < 8; x++) {
-				if (x + xp < 0 || x + xp >= w) {
-					// skip rest if out of bounds.
-					continue;
-				}
-
-				if (color >> 24 != 0) {
-					pixels[(x + xp) + (y + yp) * w] = color;
-				}
-			}
+		if (color >> 24 != 0) {
+			pixels[xp + yp * w] = color;
 		}
 	}
+
 }
