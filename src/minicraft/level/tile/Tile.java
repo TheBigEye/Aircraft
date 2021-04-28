@@ -39,7 +39,10 @@ public abstract class Tile {
 	protected ConnectorSprite csprite;
 	protected boolean connectsToSnow = false;
 	protected boolean connectsToObsidian = false;
-
+	
+	public boolean connectsToSkyGrass = false;
+	public boolean connectsToSkyHighGrass = false;
+	public boolean connectsToFerrosite = false;
 	{
 		light = 1;
 		maySpawn = false;

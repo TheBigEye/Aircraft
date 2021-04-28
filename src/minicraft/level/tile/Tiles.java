@@ -92,7 +92,15 @@ public final class Tiles {
 		tiles.set(64, new CloudTreeTile("Cloud Tree"));
 		tiles.set(65, new IceSpikeTile("Ice Spike"));
 		tiles.set(66, new ObsidianTile("Hard Obsidian"));
-
+		
+		//heaven tiles
+		tiles.set(67, new SkyGrassTile("Sky Grass"));
+		tiles.set(68, new SkyHighGrassTile("Sky High Grass"));
+		
+		tiles.set(69, new SkyLawnTile("Sky Lawn"));	
+		tiles.set(70, new FerrositeTile("Ferrosite"));
+		
+		
 		// WARNING: don't use this tile for anything!
 		tiles.set(255, new ConnectTile());
 
@@ -178,6 +186,13 @@ public final class Tiles {
 		oldids.set(158, "birch door");
 		oldids.set(159, "birch door");
 		oldids.set(160, "hard obsidian");
+		
+		//heaven tiles
+		oldids.set(161, "sky grass");
+		oldids.set(162, "sky high grass");
+		
+		oldids.set(163, "sky lawn");
+		oldids.set(164, "ferrosite");
 
 		// light/torch versions, for compatibility with before 1.9.4-dev3. (were removed
 		// in making dev3)
@@ -230,6 +245,12 @@ public final class Tiles {
 		oldids.set(180, "birch door");
 		oldids.set(181, "birch door");
 		oldids.set(182, "hard obsidian");
+		
+		// heaven tiles
+		oldids.set(183, "sky grass");
+		oldids.set(184, "sky high grass");
+		oldids.set(185, "sky lawn");
+		oldids.set(186, "ferrosite");
 
 		oldids.set(44, "torch grass");
 		oldids.set(40, "torch sand");

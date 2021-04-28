@@ -22,11 +22,11 @@ public class CloudTreeTile extends Tile {
 
 	protected CloudTreeTile(String name) {
 		super(name, (ConnectorSprite) null);
-		connectsToCloud = true;
+		connectsToSkyGrass = true;
 	}
 
 	public void render(Screen screen, Level level, int x, int y) {
-		Tiles.get("cloud").render(screen, level, x, y);
+		Tiles.get("Sky Grass").render(screen, level, x, y);
 
 		boolean u = level.getTile(x, y - 1) == this;
 		boolean l = level.getTile(x - 1, y) == this;
@@ -107,7 +107,7 @@ public class CloudTreeTile extends Tile {
 		if (damage >= treeHealth) {
 			level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Wood"));
 			level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Leaf"));
-			level.setTile(x, y, Tiles.get("cloud"));
+			level.setTile(x, y, Tiles.get("Sky Grass"));
 		} else {
 			level.setData(x, y, damage);
 		}

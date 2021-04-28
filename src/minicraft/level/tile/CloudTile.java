@@ -4,6 +4,7 @@ import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Player;
+import minicraft.gfx.Color;
 import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
@@ -41,5 +42,10 @@ public class CloudTile extends Tile {
 			}
 		}
 		return false;
+	}
+
+	public static int CloudCol(int depth) {
+		
+		return Color.get(1, 201, 201, 201);
 	}
 }
