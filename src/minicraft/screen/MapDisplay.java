@@ -5,16 +5,13 @@ import minicraft.core.io.InputHandler;
 import minicraft.gfx.Color;
 import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
-import minicraft.level.Level;
-import minicraft.level.tile.Tile;
 
 public class MapDisplay extends Display {
 
 	private static final int PLAYER_MARKER_SPRITE = 2 + 12 * 32;
 	private static final int PLAYER_MARKER_COLOR = Color.get(-1, 255, 0, 0);
-	
-	public MapDisplay() {
 
+	public MapDisplay() {
 		Menu.Builder builder = new Menu.Builder(true, 0, RelPos.CENTER);
 		builder.setTitle("map");
 		builder.setSize(140, 140);
