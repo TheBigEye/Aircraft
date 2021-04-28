@@ -10,10 +10,11 @@ public enum MapData {
 	
 	GRASS(Tiles.get("Grass").id, Color.get(1, 84, 168, 84)),	
     LAWN(Tiles.get("Lawn").id, Color.get(1, 96, 165, 96)),
+    ORANGE_TULIP(Tiles.get("Orange tulip").id, Color.get(1, 96, 165, 96)),
     //PATH(Tiles.get("Path").id, Color.get(1, 217, 160, 102)),  
    
     DIRT(Tiles.get("Dirt").id, Color.get(1, 131, 108, 108)),  
-    //FLOWER(Tiles.get("Flower").id, Color.YELLOW),   
+    FLOWER(Tiles.get("Flower").id, Color.get(1, 96, 165, 96)),
     HOLE(Tiles.get("Hole").id, Color.get(1, 61, 47, 8)),
     
     WATER(Tiles.get("Water").id, Color.get(1, 26, 44, 137)),    
@@ -31,6 +32,9 @@ public enum MapData {
     
     SAND(Tiles.get("Sand").id, Color.get(1, 226, 226, 111)),
     SNOW(Tiles.get("Snow").id, Color.get(1, 240, 240, 240)),
+    
+    ICE_SPIKE(Tiles.get("Ice Spike").id, Color.get(1, 240, 240, 240)),
+    
     STAIRS_UP(Tiles.get("Stairs Up").id, 0xffffff),
     STAIRS_DOWN(Tiles.get("Stairs Down").id, 0xffffff),
     WOOD_FLOOR(Tiles.get("Wood Planks").id, Color.get(1, 145, 79, 14)),
@@ -43,6 +47,7 @@ public enum MapData {
     OBSIDIAN_WALL(Tiles.get("Obsidian Wall").id, Color.get(1, 46, 24, 118)),
     OBSIDIAN_DOOR(Tiles.get("Obsidian Door").id, Color.get(1, 44, 21, 67)),
     
+    // Wools in the map
     WOOL(Tiles.get("Wool").id, Color.get(1, 220, 220, 220)),
     BLACK_WOOL(Tiles.get("Black Wool").id, Color.get(1, 21, 21, 21)),
     YELLOW_WOOL(Tiles.get("Yellow Wool").id, Color.get(1, 197, 197, 44)),
@@ -58,12 +63,22 @@ public enum MapData {
     CYAN_WOOL(Tiles.get("Cyan Wool").id, Color.get(1, 65, 109, 132)),
     ORANGE_WOOL(Tiles.get("Orange Wool").id, Color.get(1, 229, 110, 71)),
     
+    // Crops in the map
     FARMLAND(Tiles.get("Farmland").id, Color.get(1, 145, 75, 75)),
     WHEAT(Tiles.get("Wheat").id, Color.get(1, 226, 226, 111)),
+    CARROT(Tiles.get("Carrot").id, Color.get(1, 242, 131, 33)),
+    
     INFINITE_FALL(Tiles.get("Infinite Fall").id, Color.get(1, 0, 87, 122)),
     CLOUD(Tiles.get("cloud").id, Color.WHITE),
-    CLOUD_CACTUS(Tiles.get("Cloud Cactus").id, Color.GREEN);
+    CLOUD_CACTUS(Tiles.get("Cloud Cactus").id, Color.WHITE),
     
+    FERROSITE(Tiles.get("Ferrosite").id, Color.get(1, 203, 197, 121)),
+    
+	CLOUD_TREE(Tiles.get("Cloud Tree").id, Color.get(1, 71, 112, 68)),
+	SKY_LAWN(Tiles.get("Sky Lawn").id, Color.get(1, 86, 163, 131)),
+	SKY_HIGH_GRASS(Tiles.get("Sky High Grass").id, Color.get(1, 79, 150, 120)),
+	SKY_GRASS(Tiles.get("Sky Grass").id, Color.get(1, 90, 171, 138));
+	
     private static final Map<Integer, MapData> BY_ID = new HashMap<Integer, MapData>();
 	
     static {

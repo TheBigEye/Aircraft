@@ -13,9 +13,9 @@ public class MapDisplay extends Display {
 
 	public MapDisplay() {
 		Menu.Builder builder = new Menu.Builder(true, 0, RelPos.CENTER);
+		builder.setTitle("map");
 		builder.setSize(140, 140);
 		builder.setFrame(443, 1, 443);
-		builder.setTitle("map");
 
 		menus = new Menu[1];
 		menus[0] = builder.createMenu();
@@ -61,7 +61,6 @@ public class MapDisplay extends Display {
 				MapData mapData = MapData.getById(Game.levels[Game.currentLevel].getTile(x + smx, y + smy).id);
 				int color = mapData != null ? mapData.color : 0;
 
-				// by drawing with only one pixel at a time we can draw with much more precision
 				screen.setPixel(x + menuBounds.getLeft() + 6, y + menuBounds.getTop() + 6, color);
 			}
 		}
