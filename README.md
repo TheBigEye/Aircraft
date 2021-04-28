@@ -3,14 +3,11 @@ A modified version of Minicraft+ that adds much more. take a look at all the [re
 
 ![title](https://user-images.githubusercontent.com/63316583/113479425-732f0080-9465-11eb-86d9-ffcf2c865f84.png)
 
-## Characteristics
-
-Main Features
+# Main Features
 - New diversity of bosses.
 - New Mobs, Enemies and Animals.
 - New vegetation.
 - New items, armors and weapons.
-
 - Enchanted Tools and Enchantment Books
 - More types of Wood, Walls and Dors
 - More durability in tools
@@ -18,7 +15,7 @@ Main Features
 - Villages with villagers and iron golems and rusty golems as mini-bosses
 - Expanded sky dimension
 
-Technical side
+# Technical side
 - An in-game game mode editor.
 - More expanded debug screen.
 - Higher resolution window.
