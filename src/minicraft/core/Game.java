@@ -175,11 +175,11 @@ public class Game {
 		// JVM Runtime Memory
 		Runtime runtime = Runtime.getRuntime();
 		long i = runtime.maxMemory();
-        long j = runtime.totalMemory();
-        long k = runtime.freeMemory();
-        long l = i / 1024L / 1024L;
-        long i1 = j / 1024L / 1024L;
-        long j1 = k / 1024L / 1024L;
+		long j = runtime.totalMemory();
+		long k = runtime.freeMemory();
+		long l = i / 1024L / 1024L;
+		long i1 = j / 1024L / 1024L;
+		long j1 = k / 1024L / 1024L;
 
 		
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
@@ -198,28 +198,28 @@ public class Game {
 			errorDisplay.setBackground(Color.WHITE);
 
 			errorDisplay.setText(
-					//Crash message
-                    " An error occurred while trying to Read / Load the game \n" + 
-                    " This can be due to various things (old / corrupted worlds, some game bug or unexpected Java bug, etc.). \n" + 
-                    " If the problem persists, send a screenshot to the author.\n" + "\n" + 
+				// Crash message
+                " An error occurred while trying to Read / Load the game \n" + 
+                " This can be due to various things (old / corrupted worlds, some game bug or unexpected Java bug, etc.). \n" + 
+                " If the problem persists, send a screenshot to the author.\n" + "\n" + 
                     
-                    "--- BEGIN ERROR REPORT ---------" + "\n" +
-                    "Generated: " + time.toLocalDate() + "\n\n" +		                     
+                "--- BEGIN ERROR REPORT ---------" + "\n" +
+                "Generated: " + time.toLocalDate() + "\n\n" +		                     
 					
-                    "-- System Details --" + "\n" +
-                    "Details: " + "\n" +
-                    "        Aircraft Version: " + Game.BUILD + "\n" +
-		            "        Operting System: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") " + System.getProperty("os.version") + "\n" +
-		            "        Java Version: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor")+ "\n" +
-		            "        Java VM Version: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n" +
-					"        Memory: " + k + " bytes (" + j1 + " MB) / " + j + " bytes (" + i1 + " MB) up to " + i + " bytes (" + l + " MB)" + "\n\n" +
+                "-- System Details --" + "\n" +
+                "Details: " + "\n" +
+                "        Aircraft Version: " + Game.BUILD + "\n" +
+		        "        Operting System: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") " + System.getProperty("os.version") + "\n" +
+		        "        Java Version: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor")+ "\n" +
+		        "        Java VM Version: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n" +
+			    "        Memory: " + k + " bytes (" + j1 + " MB) / " + j + " bytes (" + i1 + " MB) up to " + i + " bytes (" + l + " MB)" + "\n\n" +
 		            
-                    "~~ERROR~~ " + "\n" +
+                "~~ERROR~~ " + "\n" +
 					
-			        string.toString() + "\n" +
+			     string.toString() + "\n" +
 			        
-                    "--- END ERROR REPORT ---------"
-			        );
+                "--- END ERROR REPORT ---------"
+			);
 			
 			errorDisplay.setEditable(false);
 			errorDisplay.setFont(new Font("Consolas", Font.PLAIN, 12));
