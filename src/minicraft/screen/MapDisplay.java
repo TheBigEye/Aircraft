@@ -105,8 +105,8 @@ public class MapDisplay extends Display {
 			}
 		}
 
-		for (int i = 0; i < 128; i++) {
-			for (int c = 0; c < 128; c++) {
+		for (int i = 0; i < 136; i++) {
+			for (int c = 0; c < 136; c++) {
 				int color = 0;
 				Tile tile = level.getTile(i + (offset[0] * 128), c + (offset[1] * 128));
 
