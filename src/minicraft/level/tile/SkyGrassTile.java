@@ -26,6 +26,7 @@ public class SkyGrassTile extends Tile {
 		super(name, sprite);
 		csprite.sides = csprite.sparse;
 		connectsToSkyGrass = true;
+		connectsToFerrosite = true;
 		maySpawn = true;
 	}
 
@@ -35,7 +36,11 @@ public class SkyGrassTile extends Tile {
 
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
-		Tiles.get("Cloud").render(screen, level, x, y);
+		if (Tiles.get("Cloud") != null) {
+			Tiles.get("Cloud").render(screen, level, x, y);
+		} else {
+            Tiles.get("Ferrosite").render(screen, level, x, y);
+		}
 		sprite.render(screen, level, x, y);
 	}
 
