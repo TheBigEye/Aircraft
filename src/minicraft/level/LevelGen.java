@@ -104,7 +104,7 @@ public class LevelGen {
 			 */
 			stepSize /= 2;
 			scale *= (scaleMod + 0.8);
-			scaleMod *= 0.3;
+			scaleMod *= 0.4;
 		} while (stepSize > 1); // this stops when the stepsize is < 1, aka 0 b/c it's an int. At this point
 		// there are no more mid values.
 	}
@@ -211,7 +211,6 @@ public class LevelGen {
 
 	private static byte[][] createAndValidateDungeon(int w, int h) {
 		random.setSeed(worldSeed);
-		int attempt = 0;
 		do {
 			byte[][] result = createDungeon(w, h);
 
@@ -232,7 +231,6 @@ public class LevelGen {
 
 	private static byte[][] createAndValidateSkyMap(int w, int h) {
 		random.setSeed(worldSeed);
-		int attempt = 0;
 		do {
 			byte[][] result = createSkyMap(w, h);
 
@@ -257,17 +255,16 @@ public class LevelGen {
 // Surface generation code ===================================================================================================================
 	
 	private static byte[][] createTopMap(int w, int h) { // create surface map?
-		
+
 		// creates a bunch of value maps, some with small size...
 		LevelGen mnoise1 = new LevelGen(w, h, 16);
 		LevelGen mnoise2 = new LevelGen(w, h, 16);
 		LevelGen mnoise3 = new LevelGen(w, h, 16);
-		
+
 		// ...and some with larger size..
 		LevelGen noise1 = new LevelGen(w, h, 32);
 		LevelGen noise2 = new LevelGen(w, h, 32);
 
-		
 		byte[] map = new byte[w * h];
 		byte[] data = new byte[w * h];
 
@@ -716,7 +713,6 @@ public class LevelGen {
 		for (int i = 0; i < w * h / 100; i++) {
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
-			int col = random.nextInt(4);
 			for (int j = 0; j < 20; j++) {
 				int xx = x + random.nextInt(2) - random.nextInt(2);
 				int yy = y + random.nextInt(2) - random.nextInt(2);
@@ -977,81 +973,57 @@ public class LevelGen {
 	private static byte[][] createSkyMap(int w, int h) {
 		LevelGen noise1 = new LevelGen(w, h, 8);
 		LevelGen noise2 = new LevelGen(w, h, 8);
-
+		
 		byte[] map = new byte[w * h];
 		byte[] data = new byte[w * h];
-
+		
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
 				int i = x + y * w;
-
+				
 				double val = Math.abs(noise1.values[i] - noise2.values[i]) * 3 - 2;
-
+				
 				double xd = x / (w - 1.0) * 2 - 1;
 				double yd = y / (h - 1.0) * 2 - 1;
-				if (xd < 0)
-					xd = -xd;
-				if (yd < 0)
-					yd = -yd;
+				if (xd < 0) xd = -xd;
+				if (yd < 0) yd = -yd;
 				double dist = xd >= yd ? xd : yd;
 				dist = dist * dist * dist * dist;
 				dist = dist * dist * dist * dist;
 				val = -val * 1 - 2.2;
 				val += 1 - dist * 20;
-
-				if (val < -0.25) {
+				
+				if (val < -0.26) {
 					map[i] = Tiles.get("Infinite Fall").id;
 				} else {
 					map[i] = Tiles.get("cloud").id;
 				}
 			}
 		}
-
-// --------------------------------------------------------------------------------------------------------------------------------------------
 		
-		// Generate cloud cactus in cloud tile
-		stairsLoop: for (int i = 0; i < w * h / 50; i++) {
+		/*stairsLoop:
+		for (int i = 0; i < w * h / 50; i++) {
 			int x = random.nextInt(w - 2) + 1;
 			int y = random.nextInt(h - 2) + 1;
-
+			
 			for (int yy = y - 1; yy <= y + 1; yy++)
 				for (int xx = x - 1; xx <= x + 1; xx++) {
-					if (map[xx + yy * w] != Tiles.get("cloud").id)
-						continue stairsLoop;
+					if (map[xx + yy * w] != Tiles.get("cloud").id) continue stairsLoop;
 				}
-
+			
 			map[x + y * w] = Tiles.get("Cloud Cactus").id;
-		}
+		}*/
 
 
 		// Generate skygrass in cloud tile
-		for (int i = 0; i < w * h / 2800; i++) {
-			int xs = random.nextInt(w);
-			int ys = random.nextInt(h);
-			for (int k = 0; k < 100; k++) {
-				int x = xs + random.nextInt(15) - 10;
-				int y = ys + random.nextInt(15) - 10;
-				for (int j = 0; j < 200; j++) {
-					int xo = x + random.nextInt(5) - random.nextInt(5);
-					int yo = y + random.nextInt(5) - random.nextInt(5);
-					for (int yy = yo - 1; yy <= yo + 1; yy++)
-						for (int xx = xo - 1; xx <= xo + 1; xx++)
-							if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-								if (map[xx + yy * w] == Tiles.get("cloud").id) {
-									map[xx + yy * w] = Tiles.get("Sky Grass").id;
-								}
-							}
-				}
-			}
-		}
 
 		for (int i = 0; i < w * h / 2800; i++) {
-			int xs = random.nextInt(w);
-			int ys = random.nextInt(h);
-			for (int k = 0; k < 100; k++) {
+			int xs = random.nextInt(w - 2);
+			int ys = random.nextInt(h - 2);
+			for (int k = 0; k < 90; k++) {
 				int x = xs + random.nextInt(21) - 10;
-				int y = ys + random.nextInt(21) - 10;
-				for (int j = 0; j < 200; j++) {
+				int y = ys + random.nextInt(24) - 10;
+				for (int j = 0; j < 190; j++) {
 					int xo = x + random.nextInt(5) - random.nextInt(5);
 					int yo = y + random.nextInt(5) - random.nextInt(5);
 					for (int yy = yo - 1; yy <= yo + 1; yy++)
@@ -1070,7 +1042,37 @@ public class LevelGen {
 		for (int i = 0; i < w * h / 400; i++) {
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
-			for (int j = 0; j < 60; j++) {
+			for (int j = 0; j < 80; j++) {
+				int xx = x + random.nextInt(5) - random.nextInt(5);
+				int yy = y + random.nextInt(5) - random.nextInt(5);
+				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+					if (map[xx + yy * w] == Tiles.get("Sky Grass").id) {
+						map[xx + yy * w] = Tiles.get("Sky High Grass").id;
+
+					}
+				}
+			}
+		}
+		
+		for (int i = 0; i < w * h / 400; i++) {
+			int x = random.nextInt(w);
+			int y = random.nextInt(h);
+			for (int j = 0; j < 80; j++) {
+				int xx = x + random.nextInt(5) - random.nextInt(5);
+				int yy = y + random.nextInt(5) - random.nextInt(5);
+				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+					if (map[xx + yy * w] == Tiles.get("Sky Grass").id) {
+						map[xx + yy * w] = Tiles.get("Sky High Grass").id;
+
+					}
+				}
+			}
+		}
+		
+		for (int i = 0; i < w * h / 800; i++) {
+			int x = random.nextInt(w);
+			int y = random.nextInt(h);
+			for (int j = 0; j < 100; j++) {
 				int xx = x + random.nextInt(5) - random.nextInt(5);
 				int yy = y + random.nextInt(5) - random.nextInt(5);
 				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
@@ -1083,37 +1085,23 @@ public class LevelGen {
 		}
 
 		// generate Ferrosite randomly in cloud tile
-		for (int i = 0; i < w * h / 450; i++) {
-			int x = random.nextInt(w);
-			int y = random.nextInt(h);
-			for (int j = 0; j < 80; j++) {
-				int xx = x + random.nextInt(5) - random.nextInt(5);
-				int yy = y + random.nextInt(5) - random.nextInt(5);
-				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-					if (map[xx + yy * w] == Tiles.get("cloud").id) {
-						map[xx + yy * w] = Tiles.get("Ferrosite").id;
-
-					}
-				}
-			}
-		}
-
 		for (int i = 0; i < w * h / 2800; i++) {
-			int xs = random.nextInt(w);
-			int ys = random.nextInt(h);
+			int xs = random.nextInt(w - random.nextInt(3));
+			int ys = random.nextInt(h - random.nextInt(3));
 			for (int k = 0; k < 100; k++) {
-				int x = xs + random.nextInt(12) - 10;
-				int y = ys + random.nextInt(12) - 10;
+				int x = xs + random.nextInt(21) - random.nextInt(10);
+				int y = ys + random.nextInt(21) - random.nextInt(10);
 				for (int j = 0; j < 200; j++) {
-					int xo = x + random.nextInt(5) - random.nextInt(5);
-					int yo = y + random.nextInt(5) - random.nextInt(5);
+					int xo = x + random.nextInt(6) - random.nextInt(5);
+					int yo = y + random.nextInt(6) - random.nextInt(5);
 					for (int yy = yo - 1; yy <= yo + 1; yy++)
 						for (int xx = xo - 1; xx <= xo + 1; xx++)
 							if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-								if (map[xx + yy * w] == Tiles.get("cloud").id) {
+								if (map[xx + yy * w] == Tiles.get("Cloud").id) {
 									map[xx + yy * w] = Tiles.get("Ferrosite").id;
-						}
-					}
+
+								}
+							}
 				}
 			}
 		}
@@ -1151,7 +1139,7 @@ public class LevelGen {
 			}
 		}
 
-		System.out.println("Seed: " + worldSeed + " Gen-Version " + Game.BUILD + "/" + Game.VERSION);
+		//System.out.println("Seed: " + worldSeed + " Gen-Version " + Game.BUILD + "/" + Game.VERSION);
 
 		int count = 0;
 		stairsLoop: for (int i = 0; i < w * h; i++) {
@@ -1177,22 +1165,33 @@ public class LevelGen {
 				break;
 		}
 
+		System.out.println("Seed: " + worldSeed + " Gen-Version " + Game.BUILD + "/" + Game.VERSION);
+		
 		return new byte[][] { map, data };
 	}
 
 	public static void main(String[] args) {
+		
+		/*
+		 * This is used to see seeds without having to run the game
+		 * I mean, this is a world viewer that uses the same method 
+		 * as above using perlin noise, to generate a world, and be 
+		 * able to see it in a JPane according to the size of the 
+		 * world generated
+		 */
+		
 		LevelGen.worldSeed = 0x100;
-
+		
 		// Fixes to get this method to work
-
+		
 		// AirWizard needs this in constructor
 		Game.gameDir = "";
-
+		
 		Tiles.initTileList();
+		
 		// End of fixes
-
 		int idx = -1;
-
+		
 		int[] maplvls = new int[args.length];
 		boolean valid = true;
 		if (maplvls.length > 0) {
@@ -1205,87 +1204,72 @@ public class LevelGen {
 					break;
 				}
 			}
-		} else
-			valid = false;
-
+		} else valid = false;
+		
 		if (!valid) {
 			maplvls = new int[1];
 			maplvls[0] = 0;
 		}
-
-		// noinspection InfiniteLoopStatement
+		
+		//noinspection InfiniteLoopStatement
 		while (true) {
 			int w = 256;
 			int h = 256;
-
+			
 			int lvl = maplvls[idx++ % maplvls.length];
-			if (lvl > 1 || lvl < -4)
-				continue;
-			byte[][] fullmap = LevelGen.createAndValidateTopMap(w, h);
-			if (fullmap == null)
-				continue;
+			if (lvl > 1 || lvl < -4) continue;
+			
+			//byte[][] fullmap = LevelGen.createAndValidateMap(w, h, lvl);
+			byte[][] fullmap = LevelGen.createAndValidateSkyMap(w, h);
+			
+			if (fullmap == null) continue;
 			byte[] map = fullmap[0];
-
+			
 			BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 			int[] pixels = new int[w * h];
 			for (int y = 0; y < h; y++) {
 				for (int x = 0; x < w; x++) {
-					int i = x + y * w;
-
-					if (map[i] == Tiles.get("water").id)
-						pixels[i] = 0x1a2c89;
-					if (map[i] == Tiles.get("iron Ore").id)
-						pixels[i] = 0x000080;
-					if (map[i] == Tiles.get("gold Ore").id)
-						pixels[i] = 0x000080;
-					if (map[i] == Tiles.get("gem Ore").id)
-						pixels[i] = 0x000080;
-					if (map[i] == Tiles.get("grass").id)
-						pixels[i] = 0x54a854;
-					if (map[i] == Tiles.get("flower").id)
-						pixels[i] = 0x54a854;
-					if (map[i] == Tiles.get("rock").id)
-						pixels[i] = 0x7a7a7a;
-					if (map[i] == Tiles.get("dirt").id)
-						pixels[i] = 0x836c6c;
-					if (map[i] == Tiles.get("sand").id)
-						pixels[i] = 0xe2e26f;
-					if (map[i] == Tiles.get("cactus").id)
-						pixels[i] = 0xe8e86d;
-					if (map[i] == Tiles.get("snow").id)
-						pixels[i] = 0xf0f0f0;
-					if (map[i] == Tiles.get("ice spike").id)
-						pixels[i] = 0xe6e6e6;
-					if (map[i] == Tiles.get("Stone Bricks").id)
-						pixels[i] = 0xa0a040;
-					if (map[i] == Tiles.get("tree").id)
-						pixels[i] = 0x255325;
-					if (map[i] == Tiles.get("birch tree").id)
-						pixels[i] = 0x0c750c;
-					if (map[i] == Tiles.get("fir tree").id)
-						pixels[i] = 0x138b62;
-					if (map[i] == Tiles.get("pine tree").id)
-						pixels[i] = 0x117f59;
-					if (map[i] == Tiles.get("lawn").id)
-						pixels[i] = 0x60a560;
-					if (map[i] == Tiles.get("orange tulip").id)
-						pixels[i] = 0x60a560;
-					if (map[i] == Tiles.get("Obsidian Wall").id)
-						pixels[i] = 0x0aa0a0;
-					if (map[i] == Tiles.get("Obsidian").id)
-						pixels[i] = 0x000000;
-					if (map[i] == Tiles.get("lava").id)
-						pixels[i] = 0xff2020;
-					if (map[i] == Tiles.get("cloud").id)
-						pixels[i] = 0xa0a0a0;
-					if (map[i] == Tiles.get("Stairs Down").id)
-						pixels[i] = 0xffffff;
-					if (map[i] == Tiles.get("Stairs Up").id)
-						pixels[i] = 0xffffff;
-					if (map[i] == Tiles.get("Cloud Cactus").id)
-						pixels[i] = 0xff00ff;
-					if (map[i] == Tiles.get("Cloud tree").id)
-						pixels[i] = 0xff33ff;
+					int i = x + y * w;				
+       
+					
+					
+					if (map[i] == Tiles.get("water").id) pixels[i] = 0x1a2c89;
+					if (map[i] == Tiles.get("lava").id) pixels[i] = 0xff2020;	
+					if (map[i] == Tiles.get("iron Ore").id) pixels[i] = 0x000080;
+					if (map[i] == Tiles.get("gold Ore").id) pixels[i] = 0x000080;
+					if (map[i] == Tiles.get("gem Ore").id) pixels[i] = 0x000080;
+					if (map[i] == Tiles.get("grass").id) pixels[i] = 0x54a854;
+					if (map[i] == Tiles.get("flower").id) pixels[i] = 0x54a854;
+					if (map[i] == Tiles.get("rock").id) pixels[i] = 0x7a7a7a;
+					if (map[i] == Tiles.get("dirt").id) pixels[i] = 0x836c6c;
+					if (map[i] == Tiles.get("sand").id) pixels[i] = 0xe2e26f;
+					if (map[i] == Tiles.get("cactus").id) pixels[i] = 0xe8e86d;
+					if (map[i] == Tiles.get("snow").id) pixels[i] = 0xf0f0f0;
+					if (map[i] == Tiles.get("ice spike").id) pixels[i] = 0xe6e6e6;
+					if (map[i] == Tiles.get("Stone Bricks").id) pixels[i] = 0xa0a040;
+					if (map[i] == Tiles.get("tree").id) pixels[i] = 0x255325;
+					if (map[i] == Tiles.get("birch tree").id) pixels[i] = 0x0c750c;
+					if (map[i] == Tiles.get("fir tree").id) pixels[i] = 0x138b62;
+					if (map[i] == Tiles.get("pine tree").id) pixels[i] = 0x117f59;
+					if (map[i] == Tiles.get("lawn").id) pixels[i] = 0x60a560;					
+					if (map[i] == Tiles.get("orange tulip").id) pixels[i] = 0x60a560;
+					
+					// Dungeon
+					if (map[i] == Tiles.get("Obsidian Wall").id) pixels[i] = 0x0aa0a0;					
+					if (map[i] == Tiles.get("Obsidian").id) pixels[i] = 0x000000;	
+					
+					// Stairs
+					if (map[i] == Tiles.get("Stairs Down").id) pixels[i] = 0xffffff;					
+					if (map[i] == Tiles.get("Stairs Up").id) pixels[i] = 0xffffff;	
+					
+					// Sky tiles
+					if (map[i] == Tiles.get("cloud").id) pixels[i] = 0xffffff;		
+					if (map[i] == Tiles.get("Cloud Cactus").id) pixels[i] = 0xfafafa;			
+					if (map[i] == Tiles.get("Cloud tree").id) pixels[i] = 0x477044;
+					if (map[i] == Tiles.get("Ferrosite").id) pixels[i] = 0xcbc579;				
+					if (map[i] == Tiles.get("Sky grass").id) pixels[i] = 0x5aab8a;
+					if (map[i] == Tiles.get("Sky lawn").id) pixels[i] = 0x56a383;
+					if (map[i] == Tiles.get("Sky high grass").id) pixels[i] = 0x4f9678;
 				}
 			}
 
