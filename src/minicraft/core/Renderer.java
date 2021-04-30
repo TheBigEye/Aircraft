@@ -392,7 +392,7 @@ public class Renderer extends Game {
 
 				// level names system
 				if (levels[currentLevel].depth == 1) {
-					levelName = "Heaven";
+					levelName = "Aether";
 				}
 				if (levels[currentLevel].depth == 0) {
 					levelName = "Surface";
