@@ -2,9 +2,10 @@ package minicraft.item;
 
 import java.util.ArrayList;
 
-import minicraft.core.Network;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import minicraft.core.Network;
 
 public class Items {
 
@@ -47,7 +48,7 @@ public class Items {
 		addAll(TileItem.getAllInstances());
 		addAll(FishingRodItem.getAllInstances());
 		addAll(ToolItem.getAllInstances());
-		addAll(ShearItem.getAllInstances());
+		//addAll(ShearItem.getAllInstances());
 		// addAll(Enchanted.getAllInstances());
 		// addAll(SharpSwordI.getAllInstances());
 		// addAll(SharpSwordII.getAllInstances());

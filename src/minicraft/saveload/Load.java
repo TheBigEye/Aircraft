@@ -744,7 +744,7 @@ if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is m
 					Sheep sheep = ((Sheep) mob);
 					if (info.get(3).equalsIgnoreCase("true")) {
 
-						sheep.cut = true;
+						sheep.isCut = true;
 					}
 
 					mob = sheep;

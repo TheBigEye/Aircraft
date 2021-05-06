@@ -14,11 +14,15 @@ public class ToolItem extends Item {
 	protected static ArrayList<Item> getAllInstances() {
 		ArrayList<Item> items = new ArrayList<>();
 
-		for (ToolType tooltype : ToolType.values()) {
-			for (int lvl = 0; lvl <= 4; lvl++)
-				items.add(new ToolItem(tooltype, lvl));
+		for(ToolType tool : ToolType.values()) {
+			if (!tool.noLevel) {
+				for(int lvl = 0; lvl <= 4; lvl++)
+					items.add(new ToolItem(tool, lvl));
+			} else {
+				items.add(new ToolItem(tool));
+			}
 		}
-
+		
 		return items;
 	}
 	
@@ -32,50 +36,53 @@ public class ToolItem extends Item {
 	
 	/** Tool Item, requires a tool type (ToolType.Sword, ToolType.Axe, ToolType.Hoe, etc) and a level (0 = wood, 2 = iron, 4 = gem, etc) */
 	public ToolItem(ToolType type, int level) {
-		super(LEVEL_NAMES[level] + " " + type.name(), new Sprite(type.sprite, 13 + level, 0));
-
+		super(LEVEL_NAMES[level] + " " + type.name(), new Sprite(type.xPos, type.yPos + level, 0));
+		
 		this.type = type;
 		this.level = level;
-
-		dur = (int) (type.durability * (level + 1)); // initial durability fetched from the ToolType
+		
+		dur = type.durability * (level+1); // initial durability fetched from the ToolType
 	}
 
+	public ToolItem(ToolType type) {
+		super(type.name(), new Sprite(type.xPos, type.yPos, 0));
+
+		this.type = type;
+		dur = type.durability;
+	}
+	
 	/** Gets the name of this tool (and it's type) as a display string. */
 	@Override
 	public String getDisplayName() {
-		return " " + Localization.getLocalized(LEVEL_NAMES[level]) + " " + Localization.getLocalized(type.toString());
+		if (!type.noLevel) return " " + Localization.getLocalized(LEVEL_NAMES[level]) + " " + Localization.getLocalized(type.toString());
+		else return " " + Localization.getLocalized(type.toString());
 	}
-
+	
 	public boolean isDepleted() {
 		return dur <= 0 && type.durability > 0;
 	}
-
+	
 	/** You can attack mobs with tools. */
 	public boolean canAttack() {
-		return true;
+		return type != ToolType.Shear;
 	}
-
+	
 	public boolean payDurability() {
-		if (dur <= 0)
-			return false;
-		if (!Game.isMode("creative"))
-			dur--;
+		if(dur <= 0) return false;
+		if(!Game.isMode("creative")) dur--;
 		return true;
 	}
-
+	
 	/** Gets the attack damage bonus from an item/tool (sword/axe) */
 	public int getAttackDamageBonus(Entity e) {
-		if (!payDurability())
+		if(!payDurability())
 			return 0;
-
-		if (e instanceof Mob) {
+		
+		if(e instanceof Mob) {
 			if (type == ToolType.Axe) {
 				return (level + 1) * 2 + random.nextInt(4); // wood axe damage: 2-5; gem axe damage: 10-13.
 			}
 			if (type == ToolType.Sword) {
-				return (level + 1) * 3 + random.nextInt(2 + level * level); // wood: 3-5 damage; gem: 15-32 damage.
-			}
-			if (type == ToolType.Spear) {
 				return (level + 1) * 3 + random.nextInt(2 + level * level); // wood: 3-5 damage; gem: 15-32 damage.
 			}
 			if (type == ToolType.Claymore) {
@@ -83,15 +90,15 @@ public class ToolItem extends Item {
 			}
 			return 1; // all other tools do very little damage to mobs.
 		}
-
+		
 		return 0;
 	}
-
+	
 	@Override
 	public String getData() {
-		return super.getData() + "_" + dur;
+		return super.getData()+"_"+dur;
 	}
-
+	
 	/** Sees if this item equals another. */
 	@Override
 	public boolean equals(Item item) {
@@ -101,14 +108,17 @@ public class ToolItem extends Item {
 		}
 		return false;
 	}
-
+	
 	@Override
-	public int hashCode() {
-		return type.name().hashCode() + level;
-	}
-
+	public int hashCode() { return type.name().hashCode() + level; }
+	
 	public ToolItem clone() {
-		ToolItem ti = new ToolItem(type, level);
+		ToolItem ti;
+		if (type.noLevel) {
+			ti = new ToolItem(type);
+		} else {
+			ti = new ToolItem(type, level);
+		}
 		ti.dur = dur;
 		return ti;
 	}
