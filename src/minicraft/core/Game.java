@@ -1,7 +1,8 @@
+// Package declaration
 package minicraft.core;
 
+// Default Java Libraries
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -10,16 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+//Graphics Java Libraries
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
-import javax.swing.plaf.FontUIResource;
 
+// Annotations
 import org.jetbrains.annotations.Nullable;
 
+// Game imports
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -37,6 +38,11 @@ import minicraft.screen.TitleDisplay;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
+/*
+ *This is the main class, where is all the important variables and
+ * functions that make up the game at the beginning of the game. 
+ */
+
 public class Game {
 	Game() {} // can't instantiate the Game class.
 
@@ -47,7 +53,7 @@ public class Game {
 
 	public static final String NAME = "Aircraft"; // This is the name on the application window
 	public static final String BUILD = "0.4"; // Aircraft version
-	public static final Version VERSION = new Version("2.0.7-dev2"); // Minicraft mod base version
+	public static final Version VERSION = new Version("2.0.7-dev3"); // Minicraft mod base version
 
 	// input used in Game, Player, and just about all the *Menu classes.
 	public static InputHandler input; 
@@ -60,10 +66,11 @@ public class Game {
 	public static int MAX_FPS = (int) Settings.get("fps");
 	public static Level level;
 
-	private static String ERROR_TITLE = "";
+	@SuppressWarnings("unused")
+	private static String errorSplash = "";
 	
 	// Crash window titles
-	static String[] array = {
+	static String[] Splash = {
 		"Who has put TNT?", "An error has occurred again??",
 		"Unexpected error again??", "Oh. That hurts :(",
 		"Sorry for the crash :(", "You can play our brother game, Minitale", "F, crash again??" 
@@ -168,18 +175,19 @@ public class Game {
 
 // Crash window log --------------------------------------------------------------------------------------------------------------------------------		
 
-		Game.ERROR_TITLE = array[random.nextInt(6)]; // six titles
+		Game.errorSplash = Splash[random.nextInt(6)]; // six titles
 
 		LocalDateTime time = LocalDateTime.now();
 		
 		// JVM Runtime Memory
 		Runtime runtime = Runtime.getRuntime();
-		long i = runtime.maxMemory();
-		long j = runtime.totalMemory();
-		long k = runtime.freeMemory();
-		long l = i / 1024L / 1024L;
-		long i1 = j / 1024L / 1024L;
-		long j1 = k / 1024L / 1024L;
+		long maxMemory = runtime.maxMemory();
+		long totalMemory = runtime.totalMemory();
+		long freeMemory = runtime.freeMemory();
+		
+		long l = maxMemory / 1024L / 1024L;
+		long i = totalMemory / 1024L / 1024L;
+		long j = freeMemory / 1024L / 1024L;
 
 		
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
@@ -190,15 +198,15 @@ public class Game {
 			throwable.printStackTrace(printer);
 
 			// Crash log Estructure
-			JTextArea errorDisplay = new JTextArea(
+			JTextArea CrashDisplay = new JTextArea(
 			// Nothing
 			);
 
-			errorDisplay.setForeground(Color.BLACK);
-			errorDisplay.setBackground(Color.WHITE);
+			CrashDisplay.setForeground(Color.BLACK);
+			CrashDisplay.setBackground(Color.WHITE);
 
-			errorDisplay.setText(
-				// Crash message
+			// Crash message
+			CrashDisplay.setText(
                 " An error occurred while trying to Read / Load the game \n" + 
                 " This can be due to various things (old / corrupted worlds, some game bug or unexpected Java bug, etc.). \n" + 
                 " If the problem persists, send a screenshot to the author.\n" + "\n" + 
@@ -212,18 +220,18 @@ public class Game {
 		        "        Operting System: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") " + System.getProperty("os.version") + "\n" +
 		        "        Java Version: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor")+ "\n" +
 		        "        Java VM Version: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n" +
-			    "        Memory: " + k + " bytes (" + j1 + " MB) / " + j + " bytes (" + i1 + " MB) up to " + i + " bytes (" + l + " MB)" + "\n\n" +
+			    "        Memory: " + freeMemory + " bytes (" + j + " MB) / " + totalMemory + " bytes (" + i + " MB) up to " + maxMemory + " bytes (" + l + " MB)" + "\n\n" +
 		            
-                "~~ERROR~~ " + "\n" +
+                " ~~ERROR~~ " + "\n" +
 					
 			     string.toString() + "\n" +
 			        
                 "--- END ERROR REPORT ---------"
 			);
 			
-			errorDisplay.setEditable(false);
-			errorDisplay.setFont(new Font("Consolas", Font.PLAIN, 12));
-			JScrollPane errorPane = new JScrollPane(errorDisplay);
+			CrashDisplay.setEditable(false);
+			CrashDisplay.setFont(new Font("Consolas", Font.PLAIN, 12));
+			JScrollPane errorPane = new JScrollPane(CrashDisplay);
 			errorPane.setSize(600, 400);
 
 			@SuppressWarnings("unused")
@@ -231,7 +239,7 @@ public class Game {
 			UIManager.put("OptionPane.background", Color.white);
 			UIManager.put("Panel.background", Color.white);	 
 
-			Icon Logo = new ImageIcon("src/resources/logo.png");
+			//Icon Logo = new ImageIcon("src/resources/logo.png");
 
 			JOptionPane.showMessageDialog(null, errorPane, "Aircraft has crashed!", JOptionPane.PLAIN_MESSAGE);
 		});
