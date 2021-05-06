@@ -29,7 +29,9 @@ import minicraft.entity.furniture.Furniture;
 import minicraft.entity.furniture.Tnt;
 import minicraft.entity.mob.villager.Cleric;
 import minicraft.entity.mob.villager.Librarian;
+import minicraft.entity.particle.FerrositeParticle;
 import minicraft.entity.particle.FireParticle;
+import minicraft.entity.particle.PotionParticle;
 import minicraft.entity.particle.SplashParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
@@ -68,16 +70,19 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 	private Random rnd = new Random();
 
+	// Attack static variables
 	private static final int playerHurtTime = 30;
 	private static final int INTERACT_DIST = 12;
 	private static final int ATTACK_DIST = 20;
 
+	// Score static variables
 	private static final int mtm = 300; // time given to increase multiplier before it goes back to 1.
 	public static final int MAX_MULTIPLIER = 50; // maximum score multiplier.
 
-	public double moveSpeed = 1; // the number of coordinate squares to move; each tile is 16x16.
-	private int score; // the player's score
+	public static double moveSpeed = 1; // the number of coordinate squares to move; each tile is 16x16.
 
+	// Score variables
+	private int score; // the player's score
 	private int multipliertime = mtm; // Time left on the current multiplier.
 	private int multiplier = 1; // Score multiplier
 
@@ -93,13 +98,13 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public static final int maxStat = 10;
 	public static final int maxHealth = maxStat, maxStamina = maxStat, maxHunger = maxStat;
 	public static final int maxArmor = 100;
-	
-	
-	public static MobSprite[][] sprites =  MobSprite.compileMobSpriteAnimations(0, 16);
+
+	// Player sprite variables
+	public static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 16);
 	private static MobSprite[][] carrySprites = MobSprite.compileMobSpriteAnimations(0, 18); // The sprites while carrying something.
 	private static MobSprite[][] suitSprites = MobSprite.compileMobSpriteAnimations(8, 16); // The "airwizard suit" sprites.
 	private static MobSprite[][] carrySuitSprites = MobSprite.compileMobSpriteAnimations(8, 18); // The "airwizard suit" sprites.
-	
+
 	private Inventory inventory;
 
 	public Item activeItem;
@@ -114,6 +119,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 	public int hunger, stamina, armor; // The current stats
 	public int armorDamageBuffer;
+
 	@Nullable
 	public ArmorItem curArmor; // The color/type of armor to be displayed.
 
@@ -123,19 +129,21 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 	private int hungerStamCnt, stamHungerTicks; // Tiers of hunger penalties before losing a burger.
 	private static final int maxHungerTicks = 400; // The cutoff value for stamHungerTicks
+	
 	private static final int[] maxHungerStams = { 10, 7, 5, 5 }; // hungerStamCnt required to lose a burger.
 	private static final int[] hungerTickCount = { 120, 30, 10, 10 }; // Ticks before decrementing stamHungerTicks.
 	private static final int[] hungerStepCount = { 8, 3, 1, 1 }; // Steps before decrementing stamHungerTicks.
 	private static final int[] minStarveHealth = { 5, 3, 0, 0 }; // min hearts required for hunger to hurt you.
+	
 	private int stepCount; // Used to penalize hunger for movement.
 	private int hungerChargeDelay; // The delay between each time the hunger bar increases your health
 	private int hungerStarveDelay; // The delay between each time the hunger bar decreases your health
-	
+
 	public HashMap<PotionType, Integer> potioneffects; // The potion effects currently applied to the player
 	public boolean showpotioneffects; // Whether to display the current potion effects on screen
 	private int cooldowninfo; // Prevents you from toggling the info pane on and off super fast.
 	private int regentick; // Counts time between each time the regen potion effect heals you.
-	
+
 	// private final int acs = 25; // Default ("start") arrow count
 	public int shirtColor = Color.get(1, 51, 51, 0); // Player shirt color.
 
@@ -143,9 +151,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public int maxFishingTicks = 120;
 	public int fishingTicks = maxFishingTicks;
 	public int fishingLevel;
-	
+
 	// Note: the player's health & max health are inherited from Mob.java
-	
+
 	public String getDebugHunger() {
 		return hungerStamCnt + "_" + stamHungerTicks;
 	}
@@ -288,6 +296,23 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			tickMultiplier();
 		
 		if (potioneffects.size() > 0 && !Bed.inBed(this)) {
+			
+			int randX = rnd.nextInt(10);
+			int randY = rnd.nextInt(9);
+
+			if (random.nextInt(18) == 1) {
+				level.add(new PotionParticle(x - 9 + randX, y - 21 + randY));
+			}
+			if (random.nextInt(18) == 4) {
+
+			}
+			if (random.nextInt(18) == 6) {
+				level.add(new PotionParticle(x - 9 + randX, y - 21 + randY));
+			}
+			if (random.nextInt(18) == 8) {
+
+			}
+			
 			for (PotionType potionType : potioneffects.keySet().toArray(new PotionType[0])) {
 				if (potioneffects.get(potionType) <= 1) // if time is zero (going to be set to 0 in a moment)...
 					PotionItem.applyPotion(this, potionType, false); // Automatically removes this potion effect.
@@ -296,6 +321,29 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			}
 		}
 
+		if (level.getTile(x / 16, y / 16) == Tiles.get("Ferrosite")) {
+			
+			int randX = rnd.nextInt(10);
+			int randY = rnd.nextInt(9);
+
+			if (random.nextInt(11) == 1) {
+				level.add(new FerrositeParticle(x - 9 + randX, y - 8 + randY));
+			}
+			if (random.nextInt(11) == 4) {
+
+			}
+			if (random.nextInt(11) == 6) {
+				level.add(new FerrositeParticle(x - 9 + randX, y - 8 + randY));
+			}
+			if (random.nextInt(11) == 8) {
+
+			}
+			if (random.nextInt(11) == 12) {
+				level.add(new FerrositeParticle(x - 9 + randX, y - 8 + randY));
+			}
+			
+		}
+		
 		if (isFishing) {
 			if (!Bed.inBed(this) && !isSwimming()) {
 				fishingTicks--;
@@ -1024,7 +1072,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	
 	/** What happens when the player interacts with a itemEntity */
 	public void pickupItem(ItemEntity itemEntity) {
-		// Sound.pickup.play();
 		
 		if (random.nextInt(4) == 1) {
 			Sound.pickup.play();
