@@ -1,13 +1,16 @@
 package minicraft.level.tile;
 
+import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
+import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
+import minicraft.item.PotionType;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
@@ -19,7 +22,7 @@ public class FerrositeTile extends Tile {
 			return tile != Tiles.get("Infinite fall");
 		}
 	};
-
+	
 	protected FerrositeTile(String name) {
 		super(name, sprite);
 		connectsToFerrosite = true;
@@ -29,6 +32,30 @@ public class FerrositeTile extends Tile {
 
 	public boolean mayPass(Level level, int x, int y, Entity e) {
 		return true;
+	}
+
+
+	public void steppedOn(Level level, int x, int y, Entity entity) {
+		if (entity instanceof Mob) {
+			level.setData(x, y, 10);
+		}
+		if (entity instanceof Player) {
+
+			level.setData(x, y, 10);
+
+			Player.moveSpeed = 3;
+			
+		} else {
+			if (random.nextInt(16) == 1) {
+				Player.moveSpeed = 1;
+			} 
+			if (Game.player.getPotionEffects().containsKey(PotionType.Speed) && random.nextInt(16) == 1) {
+				Player.moveSpeed = 2;
+			}
+			if (Game.player.getPotionEffects().containsKey(PotionType.xSpeed) && random.nextInt(16) == 1) {
+				Player.moveSpeed = 3;
+			}
+		}
 	}
 
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
