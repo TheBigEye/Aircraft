@@ -15,7 +15,11 @@
  */
 package org.jetbrains.annotations;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * An annotation which allows to specify for integral type (byte, char, short, int, long) an allowed values range.
