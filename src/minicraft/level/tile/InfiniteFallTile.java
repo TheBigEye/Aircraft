@@ -23,7 +23,7 @@ public class InfiniteFallTile extends Tile {
 	}
 
 	public boolean mayPass(Level level, int x, int y, Entity e) {
-		return e instanceof AirWizard || e instanceof AirWizardPhase2 || e instanceof AirWizardPhase3 || e instanceof Player && (((Player) e).skinon || Game.isMode("creative"));
+		return e instanceof AirWizard || e instanceof AirWizardPhase2 || e instanceof AirWizardPhase3 || e instanceof Player && (((Player) e).skinon || Game.isMode("creative") || Game.isMode("survival"));
 	}
 
 }

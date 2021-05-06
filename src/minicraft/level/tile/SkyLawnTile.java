@@ -14,7 +14,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class SkyLawnTile extends Tile {
-	private static Sprite flowerSprite = new Sprite(48, 8, 1);
+	private static Sprite LawnSprite = new Sprite(48, 8, 1);
 
 	protected SkyLawnTile(String name) {
 		super(name, (ConnectorSprite) null);
@@ -49,8 +49,8 @@ public class SkyLawnTile extends Tile {
 		x = x << 4;
 		y = y << 4;
 
-		flowerSprite.render(screen, x + 8 * shape, y);
-		flowerSprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
+		LawnSprite.render(screen, x + 8 * shape, y);
+		LawnSprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
 	}
 
 	public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
