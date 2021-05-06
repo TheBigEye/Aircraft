@@ -39,7 +39,7 @@ public abstract class Tile {
 	protected ConnectorSprite csprite;
 	protected boolean connectsToSnow = false;
 	protected boolean connectsToObsidian = false;
-	
+
 	public boolean connectsToSkyGrass = false;
 	public boolean connectsToSkyHighGrass = false;
 	public boolean connectsToFerrosite = false;
@@ -61,8 +61,7 @@ public abstract class Tile {
 	}
 
 	/**
-	 * This method is used by tiles to specify the default "data" they have in a
-	 * level's data array. Used for starting health, color/type of tile, etc.
+	 * This method is used by tiles to specify the default "data" they have in a level's data array. Used for starting health, color/type of tile, etc.
 	 */
 	/// at least, that was the idea at first...
 	public int getDefaultData() {
