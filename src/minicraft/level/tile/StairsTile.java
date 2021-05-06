@@ -36,4 +36,11 @@ public class StairsTile extends Tile {
 			return false;
 		}
 	}
+	
+	public int getLightRadius(Level level, int x, int y) {
+		if (up != null) {
+		return 2;
+		}
+		return 0;
+	}
 }
