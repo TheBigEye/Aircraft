@@ -89,7 +89,10 @@ public class LoadingDisplay extends Display {
 		int percent = Math.round(percentage);
 		Font.drawParagraph(screen, new FontStyle(Color.YELLOW), 6,
 				Localization.getLocalized(msg) + ellipsis.updateAndGet(), percent + "%");
+		
+		if (!WorldSelectDisplay.loadedWorld()) {
 		Font.drawCentered("May take a while, be patient", screen, Screen.h - 12, Color.get(1, 51));
+		}
 
 		Font.drawCentered(((progressType.length() > 0) ? (" " + Localization.getLocalized(progressType)) : ""), screen, Screen.h - 30, Color.get(1, 51));
 		{
