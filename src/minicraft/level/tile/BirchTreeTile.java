@@ -58,9 +58,6 @@ public class BirchTreeTile extends Tile {
 		}
 	}
 
-	// 6 grass
-	// 1 + 29
-
 	public void tick(Level level, int xt, int yt) {
 		int damage = level.getData(xt, yt);
 		if (damage > 0)

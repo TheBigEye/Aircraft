@@ -24,11 +24,17 @@ import minicraft.entity.furniture.DeathChest;
 import minicraft.entity.furniture.DungeonChest;
 import minicraft.entity.furniture.Lantern;
 import minicraft.entity.furniture.Spawner;
-import minicraft.entity.mob.*;
+import minicraft.entity.mob.EnemyMob;
+import minicraft.entity.mob.Mob;
+import minicraft.entity.mob.Player;
+import minicraft.entity.mob.RemotePlayer;
+import minicraft.entity.mob.Sheep;
 import minicraft.entity.mob.boss.AirWizard;
 import minicraft.entity.particle.Particle;
 import minicraft.entity.particle.TextParticle;
-import minicraft.item.*;
+import minicraft.item.Inventory;
+import minicraft.item.Item;
+import minicraft.item.PotionType;
 import minicraft.network.MinicraftServer;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
@@ -317,7 +323,7 @@ public class Save {
 			if(e instanceof EnemyMob)
 				extradata.append(":").append(((EnemyMob) m).lvl);
 			else if (e instanceof Sheep)
-				extradata.append(":").append(((Sheep) m).cut); // Saves if the sheep is cut. If not, we could reload the save and the wool would regenerate.
+				extradata.append(":").append(((Sheep) m).isCut); // Saves if the sheep is cut. If not, we could reload the save and the wool would regenerate.
 		}
 		
 		if(e instanceof Chest) {

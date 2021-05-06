@@ -12,7 +12,6 @@ import minicraft.gfx.Font;
 import minicraft.gfx.Screen;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.SelectEntry;
-import minicraft.screen.WorldSelectDisplay;
 
 public class WorldInfoDisplay extends Display {
 	

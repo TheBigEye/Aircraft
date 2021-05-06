@@ -3,7 +3,21 @@ package minicraft.level.tile;
 import java.util.ArrayList;
 
 import minicraft.core.Game;
-import minicraft.level.tile.wool.*;
+import minicraft.level.tile.wool.BlackWoolTile;
+import minicraft.level.tile.wool.BlueWoolTile;
+import minicraft.level.tile.wool.BrownWoolTile;
+import minicraft.level.tile.wool.CianWoolTile;
+import minicraft.level.tile.wool.DarkGreenWoolTile;
+import minicraft.level.tile.wool.GrayWoolTile;
+import minicraft.level.tile.wool.GreenWoolTile;
+import minicraft.level.tile.wool.LightBlueWoolTile;
+import minicraft.level.tile.wool.MagentaWoolTile;
+import minicraft.level.tile.wool.NormalWoolTile;
+import minicraft.level.tile.wool.OrangeWoolTile;
+import minicraft.level.tile.wool.PinkWoolTile;
+import minicraft.level.tile.wool.PurpleWoolTile;
+import minicraft.level.tile.wool.RedWoolTile;
+import minicraft.level.tile.wool.YellowWoolTile;
 
 public final class Tiles {
 	/// idea: to save tile names while saving space, I could encode the names in
@@ -92,15 +106,14 @@ public final class Tiles {
 		tiles.set(64, new CloudTreeTile("Cloud Tree"));
 		tiles.set(65, new IceSpikeTile("Ice Spike"));
 		tiles.set(66, new ObsidianTile("Hard Obsidian"));
-		
-		//heaven tiles
+
+		// heaven tiles
 		tiles.set(67, new SkyGrassTile("Sky Grass"));
 		tiles.set(68, new SkyHighGrassTile("Sky High Grass"));
-		
-		tiles.set(69, new SkyLawnTile("Sky Lawn"));	
+
+		tiles.set(69, new SkyLawnTile("Sky Lawn"));
 		tiles.set(70, new FerrositeTile("Ferrosite"));
-		
-		
+
 		// WARNING: don't use this tile for anything!
 		tiles.set(255, new ConnectTile());
 
@@ -186,11 +199,11 @@ public final class Tiles {
 		oldids.set(158, "birch door");
 		oldids.set(159, "birch door");
 		oldids.set(160, "hard obsidian");
-		
-		//heaven tiles
+
+		// heaven tiles
 		oldids.set(161, "sky grass");
 		oldids.set(162, "sky high grass");
-		
+
 		oldids.set(163, "sky lawn");
 		oldids.set(164, "ferrosite");
 
@@ -245,7 +258,7 @@ public final class Tiles {
 		oldids.set(180, "birch door");
 		oldids.set(181, "birch door");
 		oldids.set(182, "hard obsidian");
-		
+
 		// heaven tiles
 		oldids.set(183, "sky grass");
 		oldids.set(184, "sky high grass");

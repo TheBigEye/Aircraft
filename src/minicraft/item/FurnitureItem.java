@@ -33,7 +33,6 @@ import minicraft.entity.mob.Snake;
 import minicraft.entity.mob.Zombie;
 import minicraft.entity.mob.boss.AirWizard;
 import minicraft.entity.mob.boss.EyeQueen;
-import minicraft.entity.mob.boss.KingZombie;
 import minicraft.entity.mob.villager.Cleric;
 import minicraft.entity.mob.villager.Golem;
 import minicraft.entity.mob.villager.Librarian;
