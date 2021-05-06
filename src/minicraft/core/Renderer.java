@@ -33,7 +33,15 @@ import minicraft.screen.LoadingDisplay;
 import minicraft.screen.RelPos;
 
 /*
- *  Code reordered!
+ * The graphical functions of the game are represented here
+ * 
+ *  - Sprite sheets
+ *  - Graphic representation
+ *  - GUI
+ *  - Debugging GUI
+ *  - Hotbar
+ *  - Screen effects
+ *  - illumination
  */
 
 public class Renderer extends Game {
@@ -42,10 +50,13 @@ public class Renderer extends Game {
 	public static final int HEIGHT = 288;
 	public static final int WIDTH = 432;
 	static float SCALE = 3;
-	private static String levelName = "";
+	
+	private static String levelName = ""; // Used to store the names of the levels in the debug GUI
 
 	public static Screen screen; // Creates the main screen
+	
 	static Canvas canvas = new Canvas();
+	
 	private static BufferedImage image; // creates an image to be displayed on the screen.
 	private static int[] pixels; // the array of pixels that will be displayed on the screen.
 	private static Screen lightScreen; // Creates a front screen to render the darkness in caves (Fog of war).
@@ -55,6 +66,7 @@ public class Renderer extends Game {
 	private static Ellipsis ellipsis = new SmoothEllipsis(new TickUpdater());
 
 	// Load spritesheets
+	@SuppressWarnings("unused")
 	private static void initSpriteSheets() throws IOException {
 		BufferedImage[] sheets = Load.loadSpriteSheets();
 

@@ -75,22 +75,18 @@ public class Boat extends Entity {
 			if (Game.input.getKey("move-up").down)
 				ya -= 1;
 			if (Game.input.getKey("move-up").down) {
-				// boatUp = new Sprite(3, 30, 2, 2, 0);
 			}
 			if (Game.input.getKey("move-down").down)
 				ya += 1;
 			if (Game.input.getKey("move-down").down) {
-				// boatDown = new Sprite(5, 30, 2, 2, 0);
 			}
 			if (Game.input.getKey("move-left").down)
 				xa -= 1;
 			if (Game.input.getKey("move-left").down) {
-				// boatLeft = new Sprite(1, 30, 2, 2, 0);
 			}
 			if (Game.input.getKey("move-right").down)
 				xa += 1;
 			if (Game.input.getKey("move-right").down) {
-				// boatRight = new Sprite(7, 30, 2, 2, 0);
 			}
 
 			int randX = rnd.nextInt(10);
@@ -134,8 +130,7 @@ public class Boat extends Entity {
 		} else if (Game.isValidServer() && player instanceof RemotePlayer)
 			Game.server.getAssociatedThread((RemotePlayer) player).updatePlayerActiveItem(new BoatItem("Boat"));
 		else
-			System.out.println("WARNING: undefined behavior; online game was not server and ticked furniture: " + this
-					+ "; and/or player in online game found that isn't a RemotePlayer: " + player);
+			System.out.println("WARNING: undefined behavior; online game was not server and ticked furniture: " + this + "; and/or player in online game found that isn't a RemotePlayer: " + player);
 
 		// if (Game.debug) System.out.println("set active item of player " + player + " to " + player.activeItem + "; picked up furniture: " + this);
 	}
@@ -144,8 +139,7 @@ public class Boat extends Entity {
 		if (Updater.saving || (xa == 0 && ya == 0))
 			return true; // pretend that it kept moving
 
-		boolean stopped = true; // used to check if the entity has BEEN stopped, COMPLETELY; below checks for a
-								// lack of collision.
+		boolean stopped = true; // used to check if the entity has BEEN stopped, COMPLETELY; below checks for a lack of collision.
 		if (move2(xa, 0))
 			stopped = false; // becomes false if horizontal movement was successful.
 		if (move2(0, ya))
@@ -192,8 +186,7 @@ public class Boat extends Entity {
 																		// entity (aka: colliding) before moving.
 
 		int xr = 1, yr = 1;
-		List<Entity> isInside = level
-				.getEntitiesInRect(new Rectangle(x + (int) xa, y + (int) ya, xr * 2, yr * 2, Rectangle.CENTER_DIMS)); // gets the entities that this entity will touch once moved.
+		List<Entity> isInside = level.getEntitiesInRect(new Rectangle(x + (int) xa, y + (int) ya, xr * 2, yr * 2, Rectangle.CENTER_DIMS)); // gets the entities that this entity will touch once moved.
 		for (int i = 0; interact && i < isInside.size(); i++) {
 			/// cycles through entities about to be touched, and calls touchedBy(this) for each of them.
 			Entity e = isInside.get(i);
