@@ -3,21 +3,7 @@ package minicraft.level.tile;
 import java.util.ArrayList;
 
 import minicraft.core.Game;
-import minicraft.level.tile.wool.BlackWoolTile;
-import minicraft.level.tile.wool.BlueWoolTile;
-import minicraft.level.tile.wool.BrownWoolTile;
-import minicraft.level.tile.wool.CianWoolTile;
-import minicraft.level.tile.wool.DarkGreenWoolTile;
-import minicraft.level.tile.wool.GrayWoolTile;
-import minicraft.level.tile.wool.GreenWoolTile;
-import minicraft.level.tile.wool.LightBlueWoolTile;
-import minicraft.level.tile.wool.MagentaWoolTile;
-import minicraft.level.tile.wool.NormalWoolTile;
-import minicraft.level.tile.wool.OrangeWoolTile;
-import minicraft.level.tile.wool.PinkWoolTile;
-import minicraft.level.tile.wool.PurpleWoolTile;
-import minicraft.level.tile.wool.RedWoolTile;
-import minicraft.level.tile.wool.YellowWoolTile;
+
 
 public final class Tiles {
 	/// idea: to save tile names while saving space, I could encode the names in
@@ -33,6 +19,7 @@ public final class Tiles {
 		if (Game.debug)
 			System.out.println("Initializing tile list...");
 
+		// A total of 256 types of tiles are read
 		for (int i = 0; i < 256; i++)
 			tiles.add(null);
 
@@ -64,6 +51,8 @@ public final class Tiles {
 		tiles.set(23, new InfiniteFallTile("Infinite Fall"));
 		tiles.set(24, new CloudTile("Cloud"));
 		tiles.set(25, new CloudCactusTile("Cloud Cactus"));
+		
+		// Building tiles
 		tiles.set(26, new DoorTile(Tile.Material.Wood));
 		tiles.set(27, new DoorTile(Tile.Material.Spruce));
 		tiles.set(28, new DoorTile(Tile.Material.Birch));
@@ -79,40 +68,69 @@ public final class Tiles {
 		tiles.set(38, new WallTile(Tile.Material.Birch));
 		tiles.set(39, new WallTile(Tile.Material.Stone));
 		tiles.set(40, new WallTile(Tile.Material.Obsidian));
-		tiles.set(41, new NormalWoolTile("Wool"));
-		tiles.set(42, new PathTile("Path"));
-		tiles.set(43, new RedWoolTile("Red Wool"));
-		tiles.set(44, new BlueWoolTile("Blue Wool"));
-		tiles.set(45, new GreenWoolTile("Green Wool"));
-		tiles.set(46, new YellowWoolTile("Yellow Wool"));
-		tiles.set(47, new PurpleWoolTile("Purple Wool"));
-		tiles.set(48, new BlackWoolTile("Black Wool"));
-		tiles.set(49, new PinkWoolTile("Pink Wool"));
-		tiles.set(50, new DarkGreenWoolTile("Dark Green Wool"));
-		tiles.set(51, new GrayWoolTile("Gray Wool"));
-		tiles.set(52, new BrownWoolTile("Brown Wool"));
-		tiles.set(53, new MagentaWoolTile("Magenta Wool"));
-		tiles.set(54, new LightBlueWoolTile("Light Blue Wool"));
-		tiles.set(55, new CianWoolTile("Cyan Wool"));
-		tiles.set(56, new OrangeWoolTile("Orange Wool"));
-		tiles.set(57, new BirchTreeTile("Birch Tree"));
-		tiles.set(58, new CarrotTile("Carrot"));
-		tiles.set(59, new LawnTile("Lawn"));
-		tiles.set(60, new OrangeTulipTile("Orange Tulip"));
-		tiles.set(61, new SnowTile("Snow"));
-		tiles.set(62, new FirTreeTile("Fir Tree"));
-		tiles.set(63, new PineTreeTile("Pine Tree"));
 
-		tiles.set(64, new CloudTreeTile("Cloud Tree"));
-		tiles.set(65, new IceSpikeTile("Ice Spike"));
-		tiles.set(66, new ObsidianTile("Hard Obsidian"));
+		tiles.set(41, new PathTile("Path"));
+		
+		// Wool tiles
+		tiles.set(42, new Wool("Wool", Wool.WoolType.NORMAL));
+		tiles.set(43, new Wool("Red Wool", Wool.WoolType.RED));
+		tiles.set(44, new Wool("Blue Wool", Wool.WoolType.BLUE));
+		tiles.set(45, new Wool("Lime Wool", Wool.WoolType.LIME));
+		tiles.set(46, new Wool("Yellow Wool", Wool.WoolType.YELLOW));
+		tiles.set(47, new Wool("Purple Wool", Wool.WoolType.PURPLE));
+		tiles.set(48, new Wool("Black Wool", Wool.WoolType.BLACK));
+		tiles.set(49, new Wool("Pink Wool", Wool.WoolType.PINK));
+		tiles.set(50, new Wool("Green Wool", Wool.WoolType.GREEN));
+		tiles.set(51, new Wool("Light Gray Wool", Wool.WoolType.LIGHT_GRAY));
+		tiles.set(52, new Wool("Brown Wool", Wool.WoolType.BROWN));
+		tiles.set(53, new Wool("Magenta Wool", Wool.WoolType.MAGENTA));
+		tiles.set(54, new Wool("Light Blue Wool", Wool.WoolType.LIGHT_BLUE));
+		tiles.set(55, new Wool("Cyan Wool", Wool.WoolType.CYAN));
+		tiles.set(56, new Wool("Orange Wool", Wool.WoolType.ORANGE));
+		tiles.set(57, new Wool("Gray Wool", Wool.WoolType.GRAY));
+		
+		/* Alternative test ids (unused for incompatibility with old worlds)
+		tiles.set(42, new Wool("Wool", Wool.WoolType.NORMAL));
+		tiles.set(42-1, new Wool("Orange Wool", Wool.WoolType.ORANGE));
+		tiles.set(42-2, new Wool("Magenta Wool", Wool.WoolType.MAGENTA));
+		tiles.set(42-3, new Wool("Light Blue Wool", Wool.WoolType.LIGHT_BLUE));
+		tiles.set(42-4, new Wool("Yellow Wool", Wool.WoolType.YELLOW));
+		tiles.set(42-5, new Wool("Green Wool", Wool.WoolType.GREEN));
+		tiles.set(42-6, new Wool("Pink Wool", Wool.WoolType.PINK));
+		tiles.set(42-7, new Wool("Gray Wool", Wool.WoolType.GRAY));
+		tiles.set(42-8, new Wool("Cyan Wool", Wool.WoolType.CYAN));
+		tiles.set(42-9, new Wool("Purple Wool", Wool.WoolType.PURPLE));
+		tiles.set(42-10, new Wool("Blue Wool", Wool.WoolType.BLUE));
+		tiles.set(42-11, new Wool("Brown Wool", Wool.WoolType.BROWN));
+		tiles.set(42-12, new Wool("Dark Green Wool", Wool.WoolType.DARK_GREEN));
+		tiles.set(42-13, new Wool("Red Wool", Wool.WoolType.RED));
+		tiles.set(42-14, new Wool("Black Wool", Wool.WoolType.BLACK));
+		*/
+		
+		tiles.set(58, new BirchTreeTile("Birch Tree"));
+		tiles.set(59, new CarrotTile("Carrot"));
+		tiles.set(60, new LawnTile("Lawn"));
+		tiles.set(61, new OrangeTulipTile("Orange Tulip"));
+		
+		tiles.set(62, new SnowTile("Snow"));
+		
+		tiles.set(63, new FirTreeTile("Fir Tree"));
+		tiles.set(64, new SaplingTile("Fir Sapling", Tiles.get("Snow"), Tiles.get("Fir tree")));
+
+		tiles.set(65, new PineTreeTile("Pine Tree"));
+		tiles.set(66, new SaplingTile("Pine Sapling", Tiles.get("Snow"), Tiles.get("Pine tree")));
+
+		tiles.set(67, new CloudTreeTile("Cloud Tree"));
+		tiles.set(68, new IceSpikeTile("Ice Spike"));
+		tiles.set(69, new ObsidianTile("Hard Obsidian"));
 
 		// heaven tiles
-		tiles.set(67, new SkyGrassTile("Sky Grass"));
-		tiles.set(68, new SkyHighGrassTile("Sky High Grass"));
+		tiles.set(70, new SkyGrassTile("Sky Grass"));
+		tiles.set(71, new SkyHighGrassTile("Sky High Grass"));
+		tiles.set(72, new SkyLawnTile("Sky Lawn"));
+		tiles.set(73, new FerrositeTile("Ferrosite"));
+		
 
-		tiles.set(69, new SkyLawnTile("Sky Lawn"));
-		tiles.set(70, new FerrositeTile("Ferrosite"));
 
 		// WARNING: don't use this tile for anything!
 		tiles.set(255, new ConnectTile());
@@ -206,7 +224,7 @@ public final class Tiles {
 
 		oldids.set(163, "sky lawn");
 		oldids.set(164, "ferrosite");
-
+		
 		// light/torch versions, for compatibility with before 1.9.4-dev3. (were removed
 		// in making dev3)
 		oldids.set(100, "grass");
@@ -258,12 +276,7 @@ public final class Tiles {
 		oldids.set(180, "birch door");
 		oldids.set(181, "birch door");
 		oldids.set(182, "hard obsidian");
-
-		// heaven tiles
-		oldids.set(183, "sky grass");
-		oldids.set(184, "sky high grass");
-		oldids.set(185, "sky lawn");
-		oldids.set(186, "ferrosite");
+		
 
 		oldids.set(44, "torch grass");
 		oldids.set(40, "torch sand");

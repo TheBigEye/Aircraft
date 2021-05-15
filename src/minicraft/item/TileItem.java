@@ -23,6 +23,8 @@ public class TileItem extends StackableItem {
 		items.add(new TileItem("Flower", (new Sprite(4, 0, 0)), "flower", "grass"));
 		items.add(new TileItem("Orange Tulip", (new Sprite(22, 0, 0)), "orange tulip", "grass"));
 		items.add(new TileItem("Acorn", (new Sprite(1, 3, 0)), "tree Sapling", "grass"));
+		items.add(new TileItem("Fir Cone", (new Sprite(18, 3, 0)), "fir Sapling", "snow"));
+		items.add(new TileItem("Pine Cone", (new Sprite(19, 3, 0)), "pine Sapling", "snow"));
 		items.add(new TileItem("Dirt", (new Sprite(0, 0, 0)), "dirt", "hole", "water", "lava"));
 		items.add(new TileItem("Natural Rock", (new Sprite(2, 0, 0)), "rock", "hole", "dirt", "sand", "path", "grass"));
 
@@ -49,21 +51,22 @@ public class TileItem extends StackableItem {
 		items.add(new TileItem("Obsidian Wall", (new Sprite(7, 5, 0)), "Obsidian Wall", "Obsidian", "Hard Obsidian"));
 		items.add(new TileItem("Obsidian Door", (new Sprite(8, 5, 0)), "Obsidian Door", "Obsidian", "Hard Obsidian"));
 
-		items.add(new TileItem("Black Wool", (new Sprite(0, 21, 0)), "Black Wool", "hole", "water", "lava"));
-		items.add(new TileItem("Yellow Wool", (new Sprite(1, 21, 0)), "Yellow Wool", "hole", "water", "lava"));
-		items.add(new TileItem("Green Wool", (new Sprite(2, 21, 0)), "Green Wool", "hole", "water", "lava"));
-		items.add(new TileItem("Blue Wool", (new Sprite(3, 21, 0)), "Blue Wool", "hole", "water", "lava"));
-		items.add(new TileItem("Red Wool", (new Sprite(4, 21, 0)), "Red Wool", "hole", "water", "lava"));
 		items.add(new TileItem("Wool", (new Sprite(5, 21, 0)), "Wool", "hole", "water", "lava"));
-		items.add(new TileItem("Purple Wool", (new Sprite(6, 21, 0)), "Purple Wool", "hole", "water", "lava"));
-		items.add(new TileItem("Pink Wool", (new Sprite(7, 21, 0)), "Pink Wool", "hole", "water", "lava"));
-		items.add(new TileItem("Dark Green Wool", (new Sprite(8, 21, 0)), "Dark Green Wool", "hole", "water", "lava"));
-		items.add(new TileItem("Gray Wool", (new Sprite(9, 21, 0)), "Gray Wool", "hole", "water", "lava"));
+		items.add(new TileItem("Light Gray Wool", (new Sprite(9, 21, 0)), "Light Gray Wool", "hole", "water", "lava"));
+		items.add(new TileItem("Gray Wool", (new Sprite(15, 21, 0)), "Gray Wool", "hole", "water", "lava"));
+		items.add(new TileItem("Black Wool", (new Sprite(0, 21, 0)), "Black Wool", "hole", "water", "lava"));
 		items.add(new TileItem("Brown Wool", (new Sprite(10, 21, 0)), "Brown Wool", "hole", "water", "lava"));
-		items.add(new TileItem("Magenta Wool", (new Sprite(11, 21, 0)), "Magenta Wool", "hole", "water", "lava"));
-		items.add(new TileItem("Light Blue Wool", (new Sprite(12, 21, 0)), "Light Blue Wool", "hole", "water", "lava"));
-		items.add(new TileItem("Cyan Wool", (new Sprite(13, 21, 0)), "Cyan Wool", "hole", "water", "lava"));
+		items.add(new TileItem("Red Wool", (new Sprite(4, 21, 0)), "Red Wool", "hole", "water", "lava"));
 		items.add(new TileItem("Orange Wool", (new Sprite(14, 21, 0)), "Orange Wool", "hole", "water", "lava"));
+		items.add(new TileItem("Yellow Wool", (new Sprite(1, 21, 0)), "Yellow Wool", "hole", "water", "lava"));
+		items.add(new TileItem("Lime Wool", (new Sprite(2, 21, 0)), "Lime Wool", "hole", "water", "lava"));
+		items.add(new TileItem("Green Wool", (new Sprite(8, 21, 0)), "Green Wool", "hole", "water", "lava"));
+		items.add(new TileItem("Cyan Wool", (new Sprite(13, 21, 0)), "Cyan Wool", "hole", "water", "lava"));
+		items.add(new TileItem("Light Blue Wool", (new Sprite(12, 21, 0)), "Light Blue Wool", "hole", "water", "lava"));
+		items.add(new TileItem("Blue Wool", (new Sprite(3, 21, 0)), "Blue Wool", "hole", "water", "lava"));
+		items.add(new TileItem("Purple Wool", (new Sprite(6, 21, 0)), "Purple Wool", "hole", "water", "lava"));
+		items.add(new TileItem("Magenta Wool", (new Sprite(11, 21, 0)), "Magenta Wool", "hole", "water", "lava"));
+		items.add(new TileItem("Pink Wool", (new Sprite(7, 21, 0)), "Pink Wool", "hole", "water", "lava"));
 
 		items.add(new TileItem("Sand", (new Sprite(0, 3, 0)), "sand", "dirt", "water", "lava", "grass"));
 		items.add(new TileItem("Snow Ball", (new Sprite(10, 3, 0)), "snow", "grass", "dirt"));

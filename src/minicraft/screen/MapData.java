@@ -8,7 +8,7 @@ import minicraft.level.tile.Tiles;
 
 public enum MapData {
 	
-	GRASS(Tiles.get("Grass").id, Color.get(1, 84, 168, 84)),	
+    GRASS(Tiles.get("Grass").id, Color.get(1, 84, 168, 84)),	
     LAWN(Tiles.get("Lawn").id, Color.get(1, 96, 165, 96)),
     ORANGE_TULIP(Tiles.get("Orange tulip").id, Color.get(1, 96, 165, 96)),
     //PATH(Tiles.get("Path").id, Color.get(1, 217, 160, 102)),  
@@ -51,12 +51,12 @@ public enum MapData {
     WOOL(Tiles.get("Wool").id, Color.get(1, 220, 220, 220)),
     BLACK_WOOL(Tiles.get("Black Wool").id, Color.get(1, 21, 21, 21)),
     YELLOW_WOOL(Tiles.get("Yellow Wool").id, Color.get(1, 197, 197, 44)),
-    GREEN_WOOL(Tiles.get("Green Wool").id, Color.get(1, 71, 178, 59)),
+    LIME_WOOL(Tiles.get("Lime Wool").id, Color.get(1, 71, 178, 59)),
     BLUE_WOOL(Tiles.get("Blue Wool").id, Color.get(1, 51, 75, 160)),
     RED_WOOL(Tiles.get("Red Wool").id, Color.get(1, 132, 44, 44)),
     PURPLE_WOOL(Tiles.get("Purple Wool").id, Color.get(1, 127, 63, 180)),
     PINK_WOOL(Tiles.get("Pink Wool").id, Color.get(1, 224, 175, 198)),
-    DARK_GREEN_WOOL(Tiles.get("Dark Green Wool").id, Color.get(1, 53, 70, 29)),
+    GREEN_WOOL(Tiles.get("Green Wool").id, Color.get(1, 53, 70, 29)),
     BROWN_WOOL(Tiles.get("Brown Wool").id, Color.get(1, 91, 56, 36)),
     MAGENTA_WOOL(Tiles.get("Magenta Wool").id, Color.get(1, 184, 87, 194)),
     LIGHT_BLUE_WOOL(Tiles.get("Light Blue Wool").id, Color.get(1, 111, 155, 220)),
@@ -74,10 +74,10 @@ public enum MapData {
     
     FERROSITE(Tiles.get("Ferrosite").id, Color.get(1, 203, 197, 121)),
     
-	CLOUD_TREE(Tiles.get("Cloud Tree").id, Color.get(1, 71, 112, 68)),
-	SKY_LAWN(Tiles.get("Sky Lawn").id, Color.get(1, 86, 163, 131)),
-	SKY_HIGH_GRASS(Tiles.get("Sky High Grass").id, Color.get(1, 79, 150, 120)),
-	SKY_GRASS(Tiles.get("Sky Grass").id, Color.get(1, 90, 171, 138));
+    CLOUD_TREE(Tiles.get("Cloud Tree").id, Color.get(1, 71, 112, 68)),
+    SKY_LAWN(Tiles.get("Sky Lawn").id, Color.get(1, 86, 163, 131)),
+    SKY_HIGH_GRASS(Tiles.get("Sky High Grass").id, Color.get(1, 79, 150, 120)),
+    SKY_GRASS(Tiles.get("Sky Grass").id, Color.get(1, 90, 171, 138));
 	
     private static final Map<Integer, MapData> BY_ID = new HashMap<Integer, MapData>();
 	
