@@ -14,51 +14,31 @@ import minicraft.core.Game;
 
 public class InputHandler implements KeyListener {
 	/**
-	 * This class handles key presses; this also implements MouseListener... but I
-	 * have no idea why. It's not used in any way. Ever. As far as I know. Anyway,
-	 * here are a few tips about this class:
+	 * This class handles key presses; this also implements MouseListener... but I have no idea why. It's not used in any way. Ever. As far as I know. Anyway, here are a few tips about this class:
 	 * 
-	 * -This class must instantiated to be used; and it's pretty much always called
-	 * "input" in the code.
+	 * -This class must instantiated to be used; and it's pretty much always called "input" in the code.
 	 * 
-	 * -The keys are stored in two arrays, one for physical keyboard keys(called
-	 * "keyboard"), and one for "keys" you make-up (called "keymap") to represent
-	 * different actions ("virtual keys", you could say).
+	 * -The keys are stored in two arrays, one for physical keyboard keys(called "keyboard"), and one for "keys" you make-up (called "keymap") to represent different actions ("virtual keys", you
+	 * could say).
 	 * 
-	 * -All the Keys in the keyboard array are generated automatically as you ask
-	 * for them in the code (if they don't already exist), so there's no need to
-	 * define anything in the keyboard array here. --Note: this shouldn't matter,
-	 * but keys that are not asked for or defined as values here in keymap will be
-	 * ignored when it comes to key presses.
+	 * -All the Keys in the keyboard array are generated automatically as you ask for them in the code (if they don't already exist), so there's no need to define anything in the keyboard array
+	 * here. --Note: this shouldn't matter, but keys that are not asked for or defined as values here in keymap will be ignored when it comes to key presses.
 	 * 
-	 * -All the "virtual keys" in keymap "map" to a Key object in the keyboard
-	 * array; that is to say, keymap contains a HashMap of string keys, to string
-	 * values. The keys are the names of the actions, and the values are the names
-	 * of the keyboard keys you physically press to do them.
+	 * -All the "virtual keys" in keymap "map" to a Key object in the keyboard array; that is to say, keymap contains a HashMap of string keys, to string values. The keys are the names of the
+	 * actions, and the values are the names of the keyboard keys you physically press to do them.
 	 * 
-	 * -To get whether a key is pressed or not, use input.getKey("key"), where "key"
-	 * is the name of the key, either physical or virtual. If virtual, all it does
-	 * is then fetch the corrosponding key from keyboard anyway; but it allows one
-	 * to change the controls while still making the same key requests in the code.
+	 * -To get whether a key is pressed or not, use input.getKey("key"), where "key" is the name of the key, either physical or virtual. If virtual, all it does is then fetch the corrosponding key
+	 * from keyboard anyway; but it allows one to change the controls while still making the same key requests in the code.
 	 * 
-	 * -If you want to have multiple possibilities at once when it comes to which
-	 * key to press to do something, you can! just put a "|" between the mappings.
-	 * For example, say you wanted both "wasd" and arrow key controls to work, at
-	 * the same time. How you do this is in the construstor below, where it says
-	 * "keymap.put(" UP, DOWN, LEFT, and RIGHT.
+	 * -If you want to have multiple possibilities at once when it comes to which key to press to do something, you can! just put a "|" between the mappings. For example, say you wanted both "wasd"
+	 * and arrow key controls to work, at the same time. How you do this is in the construstor below, where it says "keymap.put(" UP, DOWN, LEFT, and RIGHT.
 	 * 
-	 * -This class supports modifier keys as inputs. To specify a "compound" key
-	 * (one using modifiders), write "MOD1-MOD2-KEY", that is, "SHIFT-ALT-D" or
-	 * "ALT-F", with a "-" between the keys. ALWAYS put the actual trigger key last,
-	 * after all modifiers (the modifiers are: shift, ctrl, and alt).
+	 * -This class supports modifier keys as inputs. To specify a "compound" key (one using modifiders), write "MOD1-MOD2-KEY", that is, "SHIFT-ALT-D" or "ALT-F", with a "-" between the keys. ALWAYS
+	 * put the actual trigger key last, after all modifiers (the modifiers are: shift, ctrl, and alt).
 	 * 
-	 * --All the magic happens in the getKey() method: If the String keyname input
-	 * has hyphens("-"), then it's a compound key, and it splits it up between the
-	 * hyphens. Then, it compares which modifiers are currently being pressed, and
-	 * which are being requested. Then, a Key object is created, which if the
-	 * modifiers match, reflects the non-modifier key's "down" and "clicked" values;
-	 * otherwise they're both false. --If a key with no hyph is requested, it skips
-	 * most of that and just gives you the Key, generating it if needed.
+	 * --All the magic happens in the getKey() method: If the String keyname input has hyphens("-"), then it's a compound key, and it splits it up between the hyphens. Then, it compares which
+	 * modifiers are currently being pressed, and which are being requested. Then, a Key object is created, which if the modifiers match, reflects the non-modifier key's "down" and "clicked" values;
+	 * otherwise they're both false. --If a key with no hyph is requested, it skips most of that and just gives you the Key, generating it if needed.
 	 * 
 	 */
 	public String keyToChange = null; // this is used when listening to change key bindings.
@@ -149,6 +129,8 @@ public class InputHandler implements KeyListener {
 		// keymap.put("FPSDISP", "F3"); // toggle fps display
 		keymap.put("INFO", "SHIFT-I"); // toggle player stats display
 		keymap.put("WORLD-INFO", "I"); // toggle world info display
+
+		keymap.put("FULLSCREEN", "F11");
 	}
 
 	public void resetKeyBindings() {
@@ -207,7 +189,7 @@ public class InputHandler implements KeyListener {
 				else
 					sticky = down;
 				clicked = sticky; // set clicked to false, since we're done processing; UNLESS the key has been
-									// held down for a bit, and hasn't yet been released.
+							 // held down for a bit, and hasn't yet been released.
 
 				// reset the presses and absorbs, to ensure they don't get too high, or something:
 				presses = 0;
@@ -287,7 +269,8 @@ public class InputHandler implements KeyListener {
 		if (keytext.contains("|")) {
 			/// multiple key possibilities exist for this action; so, combine the results of each one!
 			key = new Key();
-			for (String keyposs : keytext.split("\\|")) { // String.split() uses regex, and "|" is a special character, so it must be escaped; but the backslash must be passed in, so it needs escaping.
+			for (String keyposs : keytext.split("\\|")) { // String.split() uses regex, and "|" is a special character, so it must be escaped; but the backslash must be passed in, so it needs
+											 // escaping.
 				Key aKey = getKey(keyposs, false); // this time, do NOT attempt to fetch from keymap.
 
 				// it really does combine using "or":
@@ -329,8 +312,7 @@ public class InputHandler implements KeyListener {
 					foundA = true;
 			}
 		}
-		boolean modMatch = getKey("shift").down == foundS && getKey("ctrl").down == foundC
-				&& getKey("alt").down == foundA;
+		boolean modMatch = getKey("shift").down == foundS && getKey("ctrl").down == foundC && getKey("alt").down == foundA;
 
 		if (keytext.contains("-")) { // we want to return a compound key, but still care about the trigger key.
 			Key mainKey = key; // move the fetched key to a different variable
@@ -350,9 +332,8 @@ public class InputHandler implements KeyListener {
 	/// this method provides a way to press physical keys without actually
 	/// generating a key event.
 	/*
-	 * public void pressKey(String keyname, boolean pressed) { Key key =
-	 * getPhysKey(keyname); key.toggle(pressed); //System.out.println("Key " +
-	 * keyname + " is clicked: " + getPhysKey(keyname).clicked); }
+	 * public void pressKey(String keyname, boolean pressed) { Key key = getPhysKey(keyname); key.toggle(pressed); //System.out.println("Key " + keyname + " is clicked: " +
+	 * getPhysKey(keyname).clicked); }
 	 */
 
 	public ArrayList<String> getAllPressedKeys() {
@@ -409,8 +390,7 @@ public class InputHandler implements KeyListener {
 	}
 
 	private String getCurModifiers() {
-		return (getKey("ctrl").down ? "CTRL-" : "") + (getKey("alt").down ? "ALT-" : "")
-				+ (getKey("shift").down ? "SHIFT-" : "");
+		return (getKey("ctrl").down ? "CTRL-" : "") + (getKey("alt").down ? "ALT-" : "") + (getKey("shift").down ? "SHIFT-" : "");
 	}
 
 	/** Used by Save.java, to save user key preferences. */
@@ -420,7 +400,7 @@ public class InputHandler implements KeyListener {
 		for (String keyname : keymap.keySet()) // go though each mapping
 			if (!keyname.contains("=debug") || Game.debug)
 				keystore.add(keyname + ";" + keymap.get(keyname)); // add the mapping values as one string, seperated by
-																	// a semicolon.
+													 // a semicolon.
 
 		return keystore.toArray(new String[0]); // return the array of encoded key preferences.
 	}
