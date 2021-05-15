@@ -21,6 +21,11 @@ A modified version of Minicraft+ that adds much more. take a look at all the [re
 - Higher resolution window.
 - Notable graphics improvement (based on Rcraft texture pack).
 
+## About
+- Aircraft is a mod that is totally based on [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived).
+- The mod has compatibility with Minicraft plus 2.0.6 and 2.0.7. (Older versions before 1.3 are compatible with 2.0.3 to 2.0.4).
+- The mod is in Beta phase, it is continuously updated to clean most of the bugs, make maintenance and add features.
+
 ## Screenshots
 In village...
 ![114254488-01374980-9986-11eb-8cf0-315be20443db](https://user-images.githubusercontent.com/63316583/114254689-3db77500-9987-11eb-8905-5ed3ff38614d.png)
@@ -28,7 +33,3 @@ In village...
 In the underground...
 ![Preview](https://user-images.githubusercontent.com/63316583/114254700-4ad46400-9987-11eb-91de-a90fe81f742b.png)
 
-## About
-- Aircraft is a mod that is totally based on [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived).
-- The mod has compatibility with Minicraft plus 2.0.6 and 2.0.7. (Older versions before 1.3 are compatible with 2.0.3 to 2.0.4).
-- The mod is in Beta phase, it is continuously updated to clean most of the bugs, make maintenance and add features.
