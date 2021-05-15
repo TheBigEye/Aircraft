@@ -20,6 +20,7 @@ A modified version of Minicraft+ that adds much more. take a look at all the [re
 - More expanded debug screen.
 - Higher resolution window.
 - Notable graphics improvement (based on Rcraft texture pack).
+- Multi-texture packs support
 
 ## About
 - Aircraft is a mod that is totally based on [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived).
