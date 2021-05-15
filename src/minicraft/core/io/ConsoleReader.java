@@ -489,7 +489,7 @@ public class ConsoleReader extends Thread {
 				}
 
 				try {
-					int radius = new Integer(args[2]);
+					int radius = Integer.valueOf(args[2]);
 					allEntities.addAll(rp.getLevel().getEntitiesInRect(
 							new Rectangle(rp.x, rp.y, radius * 2, radius * 2, Rectangle.CENTER_DIMS)));
 					allEntities.remove(rp);
@@ -561,8 +561,7 @@ public class ConsoleReader extends Thread {
 			String command = stdin.nextLine().trim();
 			if (command.length() == 0)
 				continue;
-			List<String> parsed = new ArrayList<>();
-			parsed.addAll(Arrays.asList(command.split(" ")));
+			List<String> parsed = new ArrayList<>(Arrays.asList(command.split(" ")));
 			int lastIdx = -1;
 			for (int i = 0; i < parsed.size(); i++) {
 				if (parsed.get(i).contains("\"")) {
