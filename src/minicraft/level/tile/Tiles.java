@@ -3,6 +3,10 @@ package minicraft.level.tile;
 import java.util.ArrayList;
 
 import minicraft.core.Game;
+import minicraft.level.tile.farming.CarrotTile;
+import minicraft.level.tile.farming.FarmTile;
+import minicraft.level.tile.farming.PotatoTile;
+import minicraft.level.tile.farming.WheatTile;
 
 
 public final class Tiles {
@@ -109,29 +113,29 @@ public final class Tiles {
 		
 		tiles.set(58, new BirchTreeTile("Birch Tree"));
 		tiles.set(59, new CarrotTile("Carrot"));
-		tiles.set(60, new LawnTile("Lawn"));
-		tiles.set(61, new OrangeTulipTile("Orange Tulip"));
+		tiles.set(60, new PotatoTile("Potato"));
+		tiles.set(61, new LawnTile("Lawn"));
+		tiles.set(62, new OrangeTulipTile("Orange Tulip"));
 		
-		tiles.set(62, new SnowTile("Snow"));
+		tiles.set(63, new SnowTile("Snow"));
 		
-		tiles.set(63, new FirTreeTile("Fir Tree"));
-		tiles.set(64, new SaplingTile("Fir Sapling", Tiles.get("Snow"), Tiles.get("Fir tree")));
+		tiles.set(64, new FirTreeTile("Fir Tree"));
+		tiles.set(65, new SaplingTile("Fir Sapling", Tiles.get("Snow"), Tiles.get("Fir tree")));
 
-		tiles.set(65, new PineTreeTile("Pine Tree"));
-		tiles.set(66, new SaplingTile("Pine Sapling", Tiles.get("Snow"), Tiles.get("Pine tree")));
+		tiles.set(66, new PineTreeTile("Pine Tree"));
+		tiles.set(67, new SaplingTile("Pine Sapling", Tiles.get("Snow"), Tiles.get("Pine tree")));
 
-		tiles.set(67, new CloudTreeTile("Cloud Tree"));
-		tiles.set(68, new IceSpikeTile("Ice Spike"));
-		tiles.set(69, new ObsidianTile("Hard Obsidian"));
+		tiles.set(68, new CloudTreeTile("Cloud Tree"));
+		tiles.set(69, new IceSpikeTile("Ice Spike"));
+		tiles.set(70, new ObsidianTile("Hard Obsidian"));
 
 		// heaven tiles
-		tiles.set(70, new SkyGrassTile("Sky Grass"));
-		tiles.set(71, new SkyHighGrassTile("Sky High Grass"));
-		tiles.set(72, new SkyLawnTile("Sky Lawn"));
-		tiles.set(73, new FerrositeTile("Ferrosite"));
+		tiles.set(71, new SkyGrassTile("Sky Grass"));
+		tiles.set(72, new SkyHighGrassTile("Sky High Grass"));
+		tiles.set(73, new SkyLawnTile("Sky Lawn"));
+		tiles.set(74, new FerrositeTile("Ferrosite"));
 		
-
-
+		
 		// WARNING: don't use this tile for anything!
 		tiles.set(255, new ConnectTile());
 

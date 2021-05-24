@@ -50,6 +50,14 @@ public class Zombie extends EnemyMob {
 			level.dropItem(x, y, Items.get("iron"));
 		}
 		
+		if(random.nextInt(100) < 4) {
+			level.dropItem(x, y, Items.get("Potato"));
+		}
+		
+		if(random.nextInt(255) < 4) {
+			level.dropItem(x, y, Items.get("Carrot"));
+		}
+		
 		if(random.nextInt(40) == 19) {
 			int rand = random.nextInt(3);
 			if(rand == 0) {

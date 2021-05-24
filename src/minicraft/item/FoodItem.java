@@ -25,9 +25,11 @@ public class FoodItem extends StackableItem {
 		items.add(new FoodItem("Cooked Chicken", new Sprite(30, 0, 0), 4));
 		items.add(new FoodItem("Cooked Fish", new Sprite(15, 0, 0), 3));
 		items.add(new FoodItem("Cooked Pork", new Sprite(11, 0, 0), 3));
+		items.add(new FoodItem("Baked Potato", new Sprite(33, 0, 0), 3));
 		items.add(new FoodItem("Steak", new Sprite(13, 0, 0), 3));
 		items.add(new FoodItem("Gold Apple", new Sprite(17, 0, 0), 10));
 		items.add(new FoodItem("Carrot", new Sprite(18, 0, 0), 2));
+		items.add(new FoodItem("Potato", new Sprite(18, 0, 0), 2));
 		items.add(new FoodItem("Gold Carrot", new Sprite(19, 0, 0), 9));
 
 		return items;
