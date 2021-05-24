@@ -36,6 +36,8 @@ public class AmuletItem extends Item {
 	@Override
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 
+		//Game.setMenu(new LevelTransitionDisplay(-5));
+		
 		if (random.nextInt(3) == 1) {
 			Sound.Call.play();
 		}

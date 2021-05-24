@@ -138,11 +138,11 @@ public class LevelGen {
 			return createAndValidateTopMap(w, h);
 		if (level == -4)
 			return createAndValidateDungeon(w, h);
-		/**
-		 * if (level == -5) return createAndValidateHell(w, h);
-		 **/
+		
+		if (level == -5) return createAndValidateHell(w, h);
+		 
 
-		if (level > -4 && level < 0)
+		if (level > -5 && level < 0)
 			return createAndValidateUndergroundMap(w, h, -level);
 
 		System.err.println("LevelGen ERROR: level index is not valid. Could not generate a level.");
@@ -229,6 +229,30 @@ public class LevelGen {
 		} while (true);
 	}
 
+	private static byte[][] createAndValidateHell(int w, int h) {
+		random.setSeed(worldSeed);
+		do {
+			byte[][] result = createHell(w, h);
+
+			int[] count = new int[256];
+
+			for (int i = 0; i < w * h; i++) {
+				count[result[0][i] & 0xff]++;
+			}
+			if (count[Tiles.get("rock").id & 0xff] < 100)
+				continue;
+			if (count[Tiles.get("grass").id & 0xff] < 100)
+				continue;
+			if (count[Tiles.get("tree").id & 0xff] < 100)
+				continue;
+			if (count[Tiles.get("Stairs Down").id & 0xff] < w / 21)
+				continue; // size 128 = 6 stairs min
+
+			return result;
+
+		} while (true);
+	}
+	
 	private static byte[][] createAndValidateSkyMap(int w, int h) {
 		random.setSeed(worldSeed);
 		do {
@@ -821,6 +845,295 @@ public class LevelGen {
 // End dungeons generation ========================================================================================================================
 	
 	
+	private static byte[][] createHell(int w, int h) { // create HELL
+
+		// creates a bunch of value maps, some with small size...
+		LevelGen mnoise1 = new LevelGen(w, h, 16);
+		LevelGen mnoise2 = new LevelGen(w, h, 16);
+		LevelGen mnoise3 = new LevelGen(w, h, 16);
+
+		// ...and some with larger size..
+		LevelGen noise1 = new LevelGen(w, h, 32);
+		LevelGen noise2 = new LevelGen(w, h, 32);
+
+		byte[] map = new byte[w * h];
+		byte[] data = new byte[w * h];
+
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				int i = x + y * w;
+
+				double val = Math.abs(noise1.values[i] - noise2.values[i]) * 3 - 2;
+				double mval = Math.abs(mnoise1.values[i] - mnoise2.values[i]);
+				mval = Math.abs(mval - mnoise3.values[i]) * 3 - 2;
+
+				// this calculates a sort of distance based on the current coordinate.
+				double xd = x / (w - 1.0) * 2 - 1;
+				double yd = y / (h - 1.0) * 2 - 1;
+				if (xd < 0)
+					xd = -xd;
+				if (yd < 0)
+					yd = -yd;
+				double dist = xd >= yd ? xd : yd;
+				dist = dist * dist * dist * dist;
+				dist = dist * dist * dist * dist;
+				val += 1 - dist * 20;
+
+				// Code of the type of terrain, this according to the user's option
+				switch ((String) Settings.get("Type")) {
+				case "Island":
+
+					if (val < -0.5) {
+						if (Settings.get("Theme").equals("Hell"))
+							map[i] = Tiles.get("lava").id;
+						else
+							map[i] = Tiles.get("water").id;
+					} else if (val > 0.5 && mval < -1.5) {
+						map[i] = Tiles.get("rock").id;
+					} else {
+						map[i] = Tiles.get("grass").id;
+					}
+
+					break;
+				case "Box":
+
+					if (val < -1.5) {
+						if (Settings.get("Theme").equals("Hell")) {
+							map[i] = Tiles.get("lava").id;
+						} else {
+							map[i] = Tiles.get("water").id;
+						}
+					} else if (val > 0.5 && mval < -1.5) {
+						map[i] = Tiles.get("rock").id;
+					} else {
+						map[i] = Tiles.get("grass").id;
+					}
+
+					break;
+				case "Mountain":
+
+					if (val < -0.4) {
+						map[i] = Tiles.get("grass").id;
+					} else if (val > 0.5 && mval < -1.5) {
+						if (Settings.get("Theme").equals("Hell")) {
+							map[i] = Tiles.get("lava").id;
+						} else {
+							map[i] = Tiles.get("water").id;
+						}
+					} else {
+						map[i] = Tiles.get("rock").id;
+					}
+					break;
+
+				case "Irregular":
+					if (val < -0.5 && mval < -0.5) {
+						if (Settings.get("Theme").equals("Hell")) {
+							map[i] = Tiles.get("lava").id;
+						}
+						if (!Settings.get("Theme").equals("Hell")) {
+							map[i] = Tiles.get("water").id;
+						}
+					} else if (val > 0.5 && mval < -1.5) {
+						map[i] = Tiles.get("rock").id;
+					} else {
+						map[i] = Tiles.get("grass").id;
+					}
+					break;
+				}
+			}
+		}
+		
+// According to the configuration or seed, these biomes are established -----------------------------------------------------------------------
+			
+		
+// Add trees to biomes ------------------------------------------------------------------------------------------------------------------------		
+		
+		// Classic forest biome
+			for (int i = 0; i < w * h / 200; i++) {
+				int x = random.nextInt(w);
+				int y = random.nextInt(h);
+				for (int j = 0; j < 200; j++) {
+					int xx = x + random.nextInt(15) - random.nextInt(15);
+					int yy = y + random.nextInt(15) - random.nextInt(15);
+					if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+						if (map[xx + yy * w] == Tiles.get("grass").id) {
+							map[xx + yy * w] = Tiles.get("tree").id;
+						}
+					}
+				}
+			}
+		
+		
+		// Plain biome, add trees
+			for (int i = 0; i < w * h / 1200; i++) {
+				int x = random.nextInt(w);
+				int y = random.nextInt(h);
+				for (int j = 0; j < 200; j++) {
+					int xx = x + random.nextInt(15) - random.nextInt(15);
+					int yy = y + random.nextInt(15) - random.nextInt(15);
+					if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+						if (map[xx + yy * w] == Tiles.get("grass").id) {
+							map[xx + yy * w] = Tiles.get("tree").id;
+						}
+					}
+				}
+			}
+
+		// Tundra biome, add pine trees
+			for (int i = 0; i < w * h / 200; i++) {
+				int x = random.nextInt(w);
+				int y = random.nextInt(h);
+				for (int j = 0; j < 60; j++) {
+					int xx = x + random.nextInt(15) - random.nextInt(15);
+					int yy = y + random.nextInt(15) - random.nextInt(15);
+					if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+						if (map[xx + yy * w] == Tiles.get("snow").id) {
+							map[xx + yy * w] = Tiles.get("pine tree").id;
+						}
+					}
+				}
+			}
+
+		// Plain biome, Add less trees
+			for (int i = 0; i < w * h / 2800; i++) {
+				int x = random.nextInt(w);
+				int y = random.nextInt(h);
+				for (int j = 0; j < 200; j++) {
+					int xx = x + random.nextInt(15) - random.nextInt(15);
+					int yy = y + random.nextInt(15) - random.nextInt(15);
+					if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+						if (map[xx + yy * w] == Tiles.get("grass").id) {
+							map[xx + yy * w] = Tiles.get("tree").id;
+						}
+					}
+				}
+			}
+
+
+			for (int i = 0; i < w * h / 400; i++) {
+				int x = random.nextInt(w);
+				int y = random.nextInt(h);
+				for (int j = 0; j < 200; j++) {
+					int xx = x + random.nextInt(15) - random.nextInt(15);
+					int yy = y + random.nextInt(15) - random.nextInt(15);
+					if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+						if (map[xx + yy * w] == Tiles.get("grass").id) {
+							map[xx + yy * w] = Tiles.get("tree").id;
+						}
+					}
+				}
+			}
+
+		// Plain biome, add birch tree
+			for (int i = 0; i < w * h / 400; i++) {
+				int x = random.nextInt(w);
+				int y = random.nextInt(h);
+				for (int j = 0; j < 60; j++) {
+					int xx = x + random.nextInt(15) - random.nextInt(15);
+					int yy = y + random.nextInt(15) - random.nextInt(15);
+					if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+						if (map[xx + yy * w] == Tiles.get("grass").id) {
+							map[xx + yy * w] = Tiles.get("birch tree").id;
+
+						}
+					}
+				}
+			}
+		
+
+		
+//Add flower and plants to biomes -------------------------------------------------------------------------------------------------------------
+		
+		for (int i = 0; i < w * h / 400; i++) {
+			int x = random.nextInt(w);
+			int y = random.nextInt(h);
+			int col = random.nextInt(4);
+			for (int j = 0; j < 30; j++) {
+				int xx = x + random.nextInt(5) - random.nextInt(5);
+				int yy = y + random.nextInt(5) - random.nextInt(5);
+				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+					if (map[xx + yy * w] == Tiles.get("grass").id) {
+						map[xx + yy * w] = Tiles.get("flower").id;
+						// map[xx + yy * w] = Tiles.get("lawn").id;
+						data[xx + yy * w] = (byte) (col + random.nextInt(4) * 16); // data determines which way the flower faces
+					}
+				}
+			}
+		}
+		for (int i = 0; i < w * h / 400; i++) {
+			int x = random.nextInt(w);
+			int y = random.nextInt(h);
+			int col = random.nextInt(4);
+			for (int j = 0; j < 100; j++) {
+				int xx = x + random.nextInt(5) - random.nextInt(5);
+				int yy = y + random.nextInt(5) - random.nextInt(5);
+				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+					if (map[xx + yy * w] == Tiles.get("grass").id) {
+						map[xx + yy * w] = Tiles.get("lawn").id;
+						data[xx + yy * w] = (byte) (col + random.nextInt(4) * 16);
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < w * h / 100; i++) {
+			int x = random.nextInt(w);
+			int y = random.nextInt(h);
+			int col = random.nextInt(4);
+			for (int j = 0; j < 20; j++) {
+				int xx = x + random.nextInt(4) - random.nextInt(4);
+				int yy = y + random.nextInt(4) - random.nextInt(4);
+				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+					if (map[xx + yy * w] == Tiles.get("grass").id) {
+						map[xx + yy * w] = Tiles.get("orange tulip").id;
+						data[xx + yy * w] = (byte) (col + random.nextInt(4) * 16);
+					}
+				}
+			}
+		}
+
+		// Generate the stairs inside the rock --------------------------------------------------------------------------------------------------------
+
+				int count = 0;
+
+				if (Game.debug)
+					System.out.println("Finishing hell generation...");
+
+				stairsLoop: for (int i = 0; i < w * h / 100; i++) { // loops a certain number of times, more for bigger world
+					
+					// sizes.
+					int x = random.nextInt(w - 2) + 1;
+					int y = random.nextInt(h - 2) + 1;
+
+					// the first loop, which checks to make sure that a new stairs tile will be
+					// completely surrounded by rock.
+					for (int yy = y - 1; yy <= y + 1; yy++)
+						for (int xx = x - 1; xx <= x + 1; xx++)
+							if (map[xx + yy * w] != Tiles.get("rock").id)
+								continue stairsLoop;
+
+					// this should prevent any stairsDown tile from being within 30 tiles of any
+					// other stairsDown tile.
+					for (int yy = Math.max(0, y - stairRadius); yy <= Math.min(h - 1, y + stairRadius); yy++)
+						for (int xx = Math.max(0, x - stairRadius); xx <= Math.min(w - 1, x + stairRadius); xx++)
+							if (map[xx + yy * w] == Tiles.get("Stairs Down").id)
+								continue stairsLoop;
+
+					map[x + y * w] = Tiles.get("Stairs Down").id;
+
+					count++;
+					if (count >= w / 21)
+						break;
+				}
+
+				// System.out.println("min="+min);
+				// System.out.println("max="+max);
+				// average /= w*h;
+				// System.out.println(average);
+
+				return new byte[][] { map, data };
+			}
+	
 // Generate cave system ===========================================================================================================================
 	private static byte[][] createUndergroundMap(int w, int h, int depth) {
 		LevelGen mnoise1 = new LevelGen(w, h, 16);
@@ -1217,7 +1530,7 @@ public class LevelGen {
 			int h = 256;
 			
 			int lvl = maplvls[idx++ % maplvls.length];
-			if (lvl > 1 || lvl < -4) continue;
+			if (lvl > 1 || lvl < -5) continue;
 			
 			//byte[][] fullmap = LevelGen.createAndValidateMap(w, h, lvl);
 			byte[][] fullmap = LevelGen.createAndValidateSkyMap(w, h);
