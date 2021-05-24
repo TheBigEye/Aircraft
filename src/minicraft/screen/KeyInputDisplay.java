@@ -27,7 +27,7 @@ public class KeyInputDisplay extends Display {
 	
 	public KeyInputDisplay() {
 		super(true);
-		builder = new Menu.Builder(false, 0, RelPos.CENTER, getEntries())
+		builder = new Menu.Builder(true, 1, RelPos.CENTER, getEntries())
 			.setTitle("Controls")
 			.setPositioning(new Point(Screen.w/2, Screen.h - Font.textHeight()*5), RelPos.TOP);
 		

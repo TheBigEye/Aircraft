@@ -15,7 +15,8 @@ import minicraft.screen.entry.SelectEntry;
 public class OptionsDisplay extends Display {
 	
 	public OptionsDisplay() {
-		super(true, new Menu.Builder(false, 6, RelPos.LEFT,
+		super(false, new Menu.Builder(true, 6, RelPos.LEFT,
+				new BlankEntry(),
 				Settings.getEntry("diff"),
 				Settings.getEntry("fps"),
 				Settings.getEntry("sound"),
