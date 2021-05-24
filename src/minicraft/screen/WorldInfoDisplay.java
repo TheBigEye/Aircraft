@@ -27,7 +27,6 @@ public class WorldInfoDisplay extends Display {
 				new BlankEntry(),
 				new BlankEntry(),
 				new BlankEntry(),
-				new BlankEntry(),
 				Settings.getEntry("mode"),
 				new SelectEntry("Open World Folder", () -> {
 	                try {

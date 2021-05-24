@@ -54,7 +54,7 @@ public class TitleDisplay extends Display {
                     new SelectEntry("About", () -> Game.setMenu(new BookDisplay(BookData.about))),
                     new BlankEntry(),
                     new BlankEntry(),
-                    new LinkEntry(Color.BLUE, "Minicraft Discord", "https://discord.me/minicraft")
+                    new LinkEntry(Color.BLUE, "c", "https://discord.me/minicraft")
 
                 ),
                 new SelectEntry("Exit", Game::quit)
@@ -236,7 +236,8 @@ public class TitleDisplay extends Display {
         "Also play Minitale!, oh right :(",
         
         "Playing "+Game.BUILD+", nice!",
-
+        "Based in Minicraft+, nice!",
+        "Updates always",
         
         // Now with...
         "Now with better fishing!",
@@ -361,16 +362,21 @@ public class TitleDisplay extends Display {
         "Farming with water!",
         "Press \"R\"!",
         "Get the High-Score!",
+        "I see a dreamer!",
         "Potions ftw!",
         "Beds ftw!",
+        
         "Defeat the Air Wizard!",
         "Defeat the Eye queen!",
         "Defeat the Keeper!",
+        "Defeat me",
+        
         "Conquer the Dungeon!",
         "One down, one to go...",
         "Loom + Wool = String!",
         "String + Wood = Rod!",
         "Sand + Gunpowder = TNT!",
+        
         "Sleep at Night!",
         "Farm at Day!",
         "Explanation Mark!",
