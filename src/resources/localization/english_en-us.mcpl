@@ -33,6 +33,7 @@ Death Chest
 Death Chest
 
 # Player.java
+
 Player
 Player
 
@@ -71,6 +72,9 @@ Leather Armor
 Snake Armor
 Snake Armor
 
+ChainMail Armor
+ChainMail Armor
+
 Iron Armor
 Iron Armor
 
@@ -79,6 +83,11 @@ Gold Armor
 
 Gem Armor
 Gem Armor
+
+# BoatItem.java
+
+Boat
+Boat
 
 # BookItem.java
 
@@ -139,6 +148,18 @@ Bread
 Apple
 Apple
 
+Frozen palette
+Frozen palette
+
+Mushroom Soup
+Mushroom Soup
+
+Carrot Soup
+Carrot Soup
+
+Raw Chicken
+Raw Chicken
+
 Raw Pork
 Raw Pork
 
@@ -147,6 +168,9 @@ Raw Fish
 
 Raw Beef
 Raw Beef
+
+Cooked Chicken
+Cooked Chicken
 
 Pork Chop
 Pork Chop
@@ -163,11 +187,14 @@ Steak
 Gold Apple
 Gold Apple
 
-Baked Potato
-Baked Potato
+Gold Carrot
+Gold Carrot
 
 # FurnitureItem.java
 
+KingZombie Spawner
+KingZombie Spawner
+
 Cow Spawner
 Cow Spawner
 
@@ -177,11 +204,35 @@ Pig Spawner
 Sheep Spawner
 Sheep Spawner
 
+Goat Spawner
+Goat Spawner
+
+Chicken Spawner
+Chicken Spawner
+
+Cleric Spawner
+Cleric Spawner
+
+Librarian Spawner
+Librarian Spawner
+
+GuiMan Spawner
+GuiMan Spawner
+
+Cat Spawner
+Cat Spawner
+
+Golem Spawner
+Golem Spawner
+
 Slime Spawner
 Slime Spawner
 
 Zombie Spawner
 Zombie Spawner
+
+Mooshroom Spawner
+Mooshroom Spawner
 
 Creeper Spawner
 Creeper Spawner
@@ -195,8 +246,20 @@ Snake Spawner
 Knight Spawner
 Knight Spawner
 
+OldGolem Spawner
+OldGolem Spawner
+
 AirWizard Spawner
 AirWizard Spawner
+
+EyeQueen Spawner
+EyeQueen Spawner
+
+Cthulhu Spawner
+Cthulhu Spawner
+
+Keeper Spawner
+Keeper Spawner
 
 Workbench
 Workbench
@@ -212,6 +275,15 @@ Anvil
 
 Enchanter
 Enchanter
+
+Assembler
+Assembler
+
+Stonecutter
+Stonecutter
+
+Brewery
+Brewery
 
 Loom
 Loom
@@ -231,8 +303,30 @@ Tnt
 Bed
 Bed
 
+SlimeStatue
+Slime Statue
+
+ZombieStatue
+Zombie Statue
+
+SkeletonStatue
+Skeleton Statue
+
 Chest
 Chest
+
+Dungeon Chest
+Dungeon Chest
+
+# MapItem.java
+
+Map book
+Map book
+
+# AmuletItem.java
+
+Eye Amulet
+Eye Amulet
 
 # PotionType.java
 
@@ -242,20 +336,38 @@ None Potion
 Speed Potion
 Speed Potion
 
+xSpeed Potion
+xSpeed Potion
+
 Light Potion
 Light Potion
+
+xLight Potion
+xLight Potion
 
 Swim Potion
 Swim Potion
 
+xSwim Potion
+xSwim Potion
+
 Energy Potion
 Energy Potion
+
+xEnergy Potion
+xEnergy Potion
 
 Regen Potion
 Regen Potion
 
+xRegen Potion
+xRegen Potion
+
 Health Potion
 Health Potion
+
+xHealth Potion
+xHealth Potion
 
 Time Potion
 Time Potion
@@ -263,8 +375,14 @@ Time Potion
 Lava Potion
 Lava Potion
 
+xLava Potion
+xLava Potion
+
 Shield Potion
 Shield Potion
+
+xShield Potion
+xShield Potion
 
 Haste Potion
 Haste Potion
@@ -290,8 +408,17 @@ Shear
 Wood
 Wood
 
-Stone
-Stone
+Spruce Wood
+Spruce Wood
+
+Birch Wood
+Birch Wood
+
+Leaf
+Leaf
+
+Paper
+Paper
 
 Leather
 Leather
@@ -305,8 +432,44 @@ Key
 arrow
 arrow
 
+Icicle
+Icicle
+
+Stick
+Stick
+
+Bowl
+Bowl
+
 string
 string
+
+feather
+feather
+
+egg
+egg
+
+Stone
+Stone
+
+Andesite
+Andesite
+
+Diorite
+Diorite
+
+Granite
+Granite
+
+Silicon
+Silicon
+
+Basalt
+Basalt
+
+Quartzite
+Quartzite
 
 Coal
 Coal
@@ -344,31 +507,112 @@ cloth
 gem
 gem
 
+emerald
+emerald
+
 Scale
 Scale
 
 Shard
 Shard
+
+Gear
+Gear
+
+Spring
+Spring
+
+Flint
+Flint
+
+Flint and Steel
+Flint and Steel
+
+Protection I
+Protection I
+
+Protection II
+Protection II
+
+Protection III
+Protection III
+
+Sharp I
+Sharp I
+
+Sharp II
+Sharp II
+
+Sharp III
+Sharp III
+
+Cordyceps essence
+Cordyceps essence
+
+Sticky essence
+Sticky essence
+
+Gaseous essence
+Gaseous essence
+
+Master essence
+Master essence
 
 # TileItem.java
 
 Flower
 Flower
 
+Orange Tulip
+Orange Tulip
+
+Red Mushroom
+Red Mushroom
+
+Brown Mushroom
+Brown Mushroom
+
 Acorn
 Acorn
+
+Fir Cone
+Fir Cone
+
+Pine Cone
+Pine Cone
 
 Dirt
 Dirt
 
+Natural Rock
+Natural Rock
+
 Plank
 Plank
+
+Spruce Plank
+Spruce Plank
+
+Birch Plank
+Birch Plank
 
 Plank Wall
 Plank Wall
 
+Spruce Wall
+Spruce Wall
+
+Birch Wall
+Birch Wall
+
 Wood Door
 Wood Door
+
+Spruce Door
+Spruce Door
+
+Birch Door
+Birch Door
 
 Stone Brick
 Stone Brick
@@ -391,35 +635,77 @@ Obsidian Door
 Wool
 Wool
 
-Red Wool
-Red Wool
+Light Gray Wool
+Light Gray Wool
 
-Blue Wool
-Blue Wool
-
-Green Wool
-Green Wool
-
-Yellow Wool
-Yellow Wool
+Gray Wool
+Gray Wool
 
 Black Wool
 Black Wool
 
+Brown Wool
+Brown Wool
+
+Red Wool
+Red Wool
+
+Orange Wool
+Orange Wool
+
+Yellow Wool
+Yellow Wool
+
+Lime Wool
+Lime Wool
+
+Green Wool
+Green Wool
+
+Cyan Wool
+Cyan Wool
+
+Light Blue Wool
+Light Blue Wool
+
+Blue Wool
+Blue Wool
+
+Purple Wool
+Purple Wool
+
+Magenta Wool
+Magenta Wool
+
+Pink Wool
+Pink Wool
+
 Sand
 Sand
+
+Mycelium
+Mycelium
+
+Snow Ball
+Snow Ball
 
 Cactus
 Cactus
 
-Wheat Seeds
-Wheat Seeds
+Seeds
+Seeds
+
+Carrot
+Carrot
 
 Grass Seeds
 Grass Seeds
 
 Bone
 Bone
+
+Bone powder
+Bone powder
 
 Cloud
 Cloud
@@ -447,8 +733,8 @@ Gold
 Gem
 Gem
 
-Potato
-Potato
+Fishing Rod
+Fishing Rod
 
 # FishingRodItem.java
 
@@ -475,6 +761,9 @@ Hoe
 Sword
 Sword
 
+Spear
+Spear
+
 Pickaxe
 Pickaxe
 
@@ -486,6 +775,14 @@ Bow
 
 Claymore
 Claymore
+
+Shear
+Tijera
+
+# ShearItem.java
+
+Shear
+Tijeras
 
 # TorchItem.java
 
@@ -506,6 +803,12 @@ Gem Ore
 Wood Planks
 Wood Planks
 
+Spruce Planks
+Spruce Planks
+
+Birch Planks
+Birch Planks
+
 Stone Bricks
 Stone Bricks
 
@@ -515,8 +818,17 @@ Obsidian
 Wood Wall
 Wood Wall
 
+Spruce Wall
+Spruce Wall
+
+Birch Wall
+Birch Wall
+
 Grass
 Grass
+
+Mycelium
+Mycelium
 
 Dirt
 Dirt
@@ -568,6 +880,9 @@ Farmland
 
 Wheat
 Wheat
+
+Carrot
+Carrot
 
 Hard Rock
 Hard Rock
@@ -742,6 +1057,36 @@ ESCAPE to Return to menu
 
 Loading
 Loading
+
+Generating
+Generating
+
+Calculating
+Calculating
+
+Pre Calculating
+Pre Calculating
+
+Building
+Building
+
+Melting
+Melting
+
+Eroding
+Eroding
+
+Planting
+Planting
+
+Molding
+Molding
+
+Raising
+Raising
+
+Rendering
+Rendering
 
 World
 World
@@ -1009,6 +1354,9 @@ Max FPS
 Difficulty
 Difficulty
 
+Passive
+Passive
+
 Easy
 Easy
 
@@ -1041,6 +1389,9 @@ Sound
 
 Autosave
 Autosave
+
+Ambient
+Ambient
 
 World Size
 World Size

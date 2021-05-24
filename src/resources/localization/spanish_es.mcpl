@@ -134,7 +134,7 @@ Cyan Clothes
 Ropa Turquesa
 
 Reg Clothes
-Ropa Reg
+Ropa Regular
 
 # FoodItem.java
 
@@ -165,6 +165,9 @@ Pescado crudo
 Raw Beef
 Bistec crudo
 
+Cooked Chicken
+Pollo cocinado
+
 Pork Chop
 Chuleta de Cerdo
 
@@ -183,7 +186,6 @@ Manzana Dorada
 Gold Carrot
 Zanahoria Dorada
 
-
 # FurnitureItem.java
 
 KingZombie Spawner
@@ -198,6 +200,9 @@ Generador de Cerdo
 Sheep Spawner
 Generador de Oveja
 
+Goat Spawner
+Generador de Cabra
+
 Chicken Spawner
 Generador de Pollo
 
@@ -209,6 +214,9 @@ Generador de Bibliotecario
 
 GuiMan Spawner
 Generador de Pinguino
+
+Cat Spawner
+Generador de Gatos
 
 Golem Spawner
 Generador de Golem
@@ -385,6 +393,11 @@ Pocion
 
 Power Glove
 Guante
+
+# ShearItem.java
+
+Shear
+Tijera
 
 # StackableItem.java
 
@@ -582,8 +595,17 @@ Hongo cafe
 Acorn
 Bellota
 
+Fir Cone
+Cono de abeto
+
+Pine Cone
+Cono de pino
+
 Dirt
 Tierra
+
+Natural Rock
+Piedra natural
 
 Plank
 Tablon
@@ -630,50 +652,53 @@ Muro de Obsidiana
 Obsidian Door
 Puerta de Obsidiana
 
-Black Wool
-Lana Negra
-
-Yellow Wool
-Lana Amarilla
-
-Green Wool
-Lana Verde
-
-Blue Wool
-Lana Azul
-
-Red Wool
-Lana Roja
-
 Wool
 Lana
 
-Purple Wool
-Lana Purpura
-
-Pink Wool
-Lana Rosa
-
-Dark Green Wool
-Lana Verde oscuro
+Light Gray Wool
+Lana gris claro
 
 Gray Wool
-Lana Gris
+Lana gris
+
+Black Wool
+Lana negra
 
 Brown Wool
 Lana Marron
 
-Magenta Wool
-Lana Magenta
-
-Light Blue Wool
-Lana Celeste
-
-Cyan Wool
-Lana Cian
+Red Wool
+Lana roja
 
 Orange Wool
-Lana Naranja
+Lana naranja
+
+Yellow Wool
+Lana amarilla
+
+Lime Wool
+Lana lima
+
+Green Wool
+Lana verde
+
+Cyan Wool
+Lana cian
+
+Light Blue Wool
+Lana celeste
+
+Blue Wool
+Lana azul
+
+Purple Wool
+Lana morada
+
+Magenta Wool
+Lana magenta
+
+Pink Wool
+Lana rosa
 
 Sand
 Arena
@@ -731,6 +756,20 @@ Gema
 Fishing Rod
 Caña de Pescar
 
+# FishingRodItem.java
+
+Wood Fishing Rod
+Caña de pescar de madera
+
+Iron Fishing Rod
+Caña de pescar de hierro
+
+Gold Fishing Rod
+Caña de pescar de oro
+
+Gem Fishing Rod
+Caña de pescar de gema
+
 # ToolType.java
 
 Hoe
@@ -759,6 +798,9 @@ Caña De Pescar
 
 Claymore
 Casa antigua
+
+Shear
+Tijera
 
 # ShearItem.java
 
@@ -1217,10 +1259,13 @@ Instructions
 Instrucciones
 
 Storyline Guide (for the weak)
-Guía de historias (para los débiles)
+Guia de historias (para los debiles)
 
 About
 Acerca de
+
+Minicraft Discord
+Discord de Minicraft
 
 Quit
 Salir
@@ -1233,6 +1278,9 @@ Salir
  
  to return
  para regresar
+
+Mod by TheBigEye
+Mod por TheBigEye
 
 # WorldEditMenu.java
 
@@ -1283,7 +1331,7 @@ Delete
 Eliminar
 
 to confirm
- para confirmar
+para confirmar
  
 to return
 para regresar
@@ -1352,6 +1400,9 @@ Sonido
 
 Autosave
 Autoguardado
+
+Ambient
+Ambiente
 
 World Size
 Tamaño del Mundo

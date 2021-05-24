@@ -873,129 +873,129 @@ Inventory
 # TitleMenu.java
 
 Singleplayer
-Singleplayer
+reyalpelgniS
 
 Load World
-Load World
+dlroW daoL
 
 New World
-New World
+dlroW weN
 
 Multiplayer
-Multiplayer
+reyalpitluM
 
 Options
-Options
+snoitpO
 
 Credits
-Credits
+stiderC
 
 Help
-Help
+pleH
 
 Instructions
-Instructions
+snoitcurtsnI
 
 Storyline Guide (for the weak)
-Storyline Guide (for the weak)
+ediuG enilyrotS
 
 About
-About
+tuobA
 
 Quit
-Quit
+tiuQ
 
  to select
  to select
  
  to accept
- to accept
+ tpecca ot
  
  to return
- to return
+ nruter ot
 
 # WorldEditMenu.java
 
 New World Name:
-New World Name:
+emaN dlroW weN:
 
 Are you sure you want to delete
-065114101032121111117032115117114101032121111117032119097110116032116111032100101108101116101013010013010
+eteled ot tnaw uoy erus uoy erA
 
 This can not be undone!
-084104105115032099097110032110111116032098101032117110100111110101033013010013010
+!enodnu eb ton nac sihT
 
  to confirm
- to confirm
+ mrifnoc ot
  
  to cancel
- to cancel
+ lecnac ot
 
 # WorldGenMenu.java
 
 World Seed
-World Seed
+deeS dlroW
 
 Enter World Name
-Enter World Name
+emaN dlroW retnE
 
 Trouble with world name?
 Trouble with world name?
 
 by default, w and s move the cursor up and down. This can be changed in the key binding menu. To type the letter instead of moving the cursor, hold the shift key while typing the world name.
-098121032100101102097117108116044032119032097110100032115032109111118101032116104101032104117109097110032117112032097110100032100111119110046032084104105115032099097110032098101032099104097110103101100032105110032116104101032107101121032098105110100105110103032109101110117046032084111032116121112101032116104101032108101116116101114032105110115116101097100032111102032109111118105110103032116104101032099117114115111114044032104111108100032100111119110032116104101032083104105102116032107101121032097115032121111117032116121112101032116104101032110097109101032111102032116104101032119111114108100
+.eman dlrow eht gnipyt elihw yek tfihs eht dloh ,rosruc eht gnivom fo daetsni rettel eht epyt oT .unem gnidnib yek eht ni degnahc eb nac sihT .nwod dna pu rosruc eht evom s dna w ,tluafed yb
 
 Create World
-100101115116114111121032119111114108100
+dlroW etaerC
 
 World Gen Options
-087111114108100032071101110032079112116105111110115
+snoitpO neG dlroW
 
 # WorldSelectMenu.java
 
  to Copy
- 116111032067108111110101
+ ypoC ot
 
  to Rename
- 116111032082101110097109101
+ emaneR ot
 
  to Delete
- 116111032067114101097116101
+ eteleD ot
 
  to confirm
- 116111032099111110102105114109
+ mrifnoc ot
  
  to return
- 116111032114101116117114110
+ nruter ot
 
 Select World
-083101108101099116032087111114108100
+dlroW tceleS
 
 Select a World to Delete
-083101108101099116032097032087111114108100032116111032067114101097116101
+eteleD ot dlroW a tceleS
 
 Select a World to Rename
-083101108101099116032097032087111114108100032116111032082101110097109101
+emaneR ot dlroW a tceleS
 
 Select a World to Copy
-083101108101099116032097032087111114108100032116111032067111112121
+Select a World to Copy
 
 Higher version, cannot load world!
-072105103104101114032116105109101044032099097110110111116032108111097100032119111114108100033
+!dlrow daol tonnac ,noisrev rehgiH
 
 World Version:
-World Version:
+noisreV dlroW:
 
 # LocalizationMenu.java
 
 Languages
-Languages
+segaugnaL
 
 Language
-Language
+egaugnaL
 
 Select
-Select
+tceleS
 
 ### screen end
 
@@ -1022,31 +1022,31 @@ Game Mode
 Game Mode
 
 Survival
-114101097108105116121013010013010
+lavivruS
 
 Creative
-117110099111110115099105111117115013010013010
+evitaerC
 
 Hardcore
-110105103104116109097114101013010013010
+erocdraH
 
 Score
-Score
+erocS
 
 Time (Score Mode)
 Time (Score Mode)
 
 Sound
-Sound
+dnuoS
 
 Autosave
-083101108102032100101115116114117099116105111110
+evasotuA
 
 World Size
-World Size
+eziS dlroW
 
 World Theme
-World Theme
+emehT dlroW
 
 Normal
 078111114109097108013010013010
