@@ -74,6 +74,9 @@ public class Initializer extends Game {
 				}
 
 				Game.CUSTOM_PORT = customPort;
+			} else if (args[i].equals("--fullscreen")) {
+				// Initializes fullscreen
+				Updater.FULLSCREEN = true;
 			}
 		}
 
