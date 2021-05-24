@@ -1,5 +1,7 @@
+// Package declaration
 package minicraft.core;
 
+// Default Java Libraries
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -10,8 +12,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 
+// Graphics Java Libraries
 import javax.imageio.ImageIO;
 
+// Game imports
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Color;
@@ -31,6 +35,8 @@ import minicraft.saveload.Load;
 import minicraft.screen.InfoDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.RelPos;
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*
  * The graphical functions of the game are represented here
@@ -57,8 +63,8 @@ public class Renderer extends Game {
 	
 	static Canvas canvas = new Canvas();
 	
-	private static BufferedImage image; // creates an image to be displayed on the screen.
-	private static int[] pixels; // the array of pixels that will be displayed on the screen.
+	private static BufferedImage image; // Creates an image to be displayed on the screen.
+	private static int[] pixels; // The array of pixels that will be displayed on the screen.
 	private static Screen lightScreen; // Creates a front screen to render the darkness in caves (Fog of war).
 	public static boolean readyToRenderGameplay = false;
 	public static boolean showinfo = false;
@@ -70,7 +76,7 @@ public class Renderer extends Game {
 	private static void initSpriteSheets() throws IOException {
 		BufferedImage[] sheets = Load.loadSpriteSheets();
 
-		// these actually set the sprites to be used
+		// These actually set the sprites to be used
 		SpriteSheet itemSheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/items.png")));
 		SpriteSheet tileSheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/tiles.png")));
 		SpriteSheet entitySheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/entities.png")));
@@ -115,11 +121,10 @@ public class Renderer extends Game {
 		if (readyToRenderGameplay) {
 			if (isValidServer()) {
 				screen.clear(0);
-				Font.drawCentered("Awaiting client connections" + ellipsis.updateAndGet(), screen, 10,
-					Color.get(-1, 444));
+				Font.drawCentered("Awaiting client connections" + ellipsis.updateAndGet(), screen, 10, Color.get(-1, 444));
 				Font.drawCentered("So far:", screen, 20, Color.get(-1, 444));
 				int i = 0;
-				for (String playerString: server.getClientInfo()) {
+				for (String playerString : server.getClientInfo()) {
 					Font.drawCentered(playerString, screen, 30 + i * 10, Color.get(-1, 134));
 					i++;
 				}
@@ -131,39 +136,39 @@ public class Renderer extends Game {
 			}
 		}
 
-		if (menu != null) // renders menu, if present.
+		if (menu != null) // Renders menu, if present.
 			menu.render(screen);
 
 		if (!canvas.hasFocus() && !ISONLINE)
-			renderFocusNagger(); // calls the renderFocusNagger() method, which creates the "Click to Focus" message.
+			renderFocusNagger(); // Calls the renderFocusNagger() method, which creates the "Click to Focus" message.
 
-		BufferStrategy bs = canvas.getBufferStrategy(); // creates a buffer strategy to determine how the graphics should be buffered.
-		Graphics g = bs.getDrawGraphics(); // gets the graphics in which java draws the picture
-		g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight()); // draws the a rect to fill the whole window (to cover last?)
+		BufferStrategy bs = canvas.getBufferStrategy(); // Creates a buffer strategy to determine how the graphics should be buffered.
+		Graphics g = bs.getDrawGraphics(); // Gets the graphics in which java draws the picture
+		g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Draws the a rect to fill the whole window (to cover last?)
 
-		// scales the pixels.
+		// Scales the pixels.
 		int ww = getWindowSize().width;
 		int hh = getWindowSize().height;
 
-		// gets the image offset.
+		// Gets the image offset.
 		int xo = (canvas.getWidth() - ww) / 2 + canvas.getParent().getInsets().left;
 		int yo = (canvas.getHeight() - hh) / 2 + canvas.getParent().getInsets().top;
-		g.drawImage(image, xo, yo, ww, hh, null); // draws the image on the window
-		g.dispose(); // releases any system items that are using this method. (so we don't have crappy framerates)
+		g.drawImage(image, xo, yo, ww, hh, null); // Draws the image on the window
+		g.dispose(); // Releases any system items that are using this method. (so we don't have crappy framerates)
 
-		bs.show(); // makes the picture visible. (probably)
+		bs.show(); // Makes the picture visible. (probably)
 	}
 
 	private static void renderLevel() {
 		Level level = levels[currentLevel];
 		if (level == null) return;
 
-		int xScroll = player.x - Screen.w / 2; // scrolls the screen in the x axis.
-		int yScroll = player.y - (Screen.h - 8) / 2; // scrolls the screen in the y axis.
+		int xScroll = player.x - Screen.w / 2; // Scrolls the screen in the x axis.
+		int yScroll = player.y - (Screen.h - 8) / 2; // Scrolls the screen in the y axis.
 
-		//stop scrolling if the screen is at the ...
-		if (xScroll<0) xScroll = 0; // ...left border.
-		if (yScroll<0) yScroll = 0; // ...top border.
+		// Ttop scrolling if the screen is at the ...
+		if (xScroll<0) xScroll = 0; // ...Left border.
+		if (yScroll<0) yScroll = 0; // ...Top border.
 		if (xScroll > level.w * 16 - Screen.w) xScroll = level.w * 16 - Screen.w; // ...right border.
 		if (yScroll > level.h * 16 - Screen.h) yScroll = level.h * 16 - Screen.h; // ...bottom border.
 		if (currentLevel > 3) { // if the current level is higher than 3 (which only the sky level (and dungeon) is)
@@ -192,6 +197,7 @@ public class Renderer extends Game {
 	}
 
 	/** Renders the main game GUI (hearts, Stamina bolts, name of the current item, etc.) */
+	@SuppressWarnings("unchecked")
 	private static void renderGui() {
 		// This draws the black square where the selected item would be if you were holding it
 		if (!isMode("creative") || player.activeItem != null) {
@@ -364,18 +370,24 @@ public class Renderer extends Game {
 
 	static LocalDateTime time = LocalDateTime.now();
 
+	@SuppressWarnings("static-access")
 	private static void renderDebugInfo() {
 
 		int textcol = Color.WHITE;
-
+		
+		if (debug) {
+		    textcol = Color.YELLOW;
+		}
+		
 		if (showinfo) { // renders show debug info on the screen.
 			ArrayList<String> info = new ArrayList<>();
 			//info.add("VERSION " + Initializer.VERSION);
 
-			info.add("VERSION " + Game.BUILD + "                            " + "Test:" + time.getHour() + time.getMinute() + time.getSecond());
-			info.add("" + time.toLocalDate() + "                             " + "Time:" + InfoDisplay.getTimeString());
-			info.add(Initializer.fra + " fps" + "                                 " + "Java:" + System.getProperty("java.version"));
-			info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")                " + "Java arch:x" + System.getProperty("sun.arch.data.model"));
+			info.add("Version: " + Game.BUILD + " (" + Game.VERSION +")                " + "Test:" + time.getHour() + time.getMinute() + time.getSecond());
+			info.add("Engine: " + "Minicraft Plus" + "                   " + "Time:" + InfoDisplay.getTimeString());
+			info.add("" + time.toLocalDate() + "                               " + "Java:" + System.getProperty("java.version"));
+			info.add(Initializer.fra + " fps" + "                                   " + "Java arch:x" + System.getProperty("sun.arch.data.model"));
+			info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")");
 			info.add((Updater.normSpeed * Updater.gamespeed) + " tps");
 			if (!isValidServer()) {
 
@@ -500,6 +512,7 @@ public class Renderer extends Game {
 			Font.draw(msg, screen, xx, yy, Color.get(5, 255));
 	}
 
+	@SuppressWarnings("deprecation")
 	static java.awt.Dimension getWindowSize() {
 		return new java.awt.Dimension(new Float(WIDTH * SCALE).intValue(), new Float(HEIGHT * SCALE).intValue());
 	}

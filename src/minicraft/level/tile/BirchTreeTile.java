@@ -58,6 +58,7 @@ public class BirchTreeTile extends Tile {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public void tick(Level level, int xt, int yt) {
 		int damage = level.getData(xt, yt);
 		if (damage > 0)

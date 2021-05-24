@@ -26,6 +26,7 @@ public class IceSpikeTile extends Tile {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		int damage = level.getData(x, y) + dmg;
 		int cHealth = 10;

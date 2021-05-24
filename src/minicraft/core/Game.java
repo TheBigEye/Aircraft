@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-//Graphics Java Libraries
+// Graphics Java Libraries
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -75,9 +75,11 @@ public class Game {
 		"Unexpected error again??", "Oh. That hurts :(",
 		"Sorry for the crash :(", "You can play our brother game, Minitale", "F, crash again??" 
 	};
-
+	
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
+	
+	
 	/*****************************************************
 	 * This specifies a custom port instead of default to
 	 * server-side using --port parameter if something goes
@@ -197,7 +199,7 @@ public class Game {
 			PrintWriter printer = new PrintWriter(string);
 			throwable.printStackTrace(printer);
 
-			// Crash log Estructure
+			// Crash log Structure
 			JTextArea CrashDisplay = new JTextArea(
 			// Nothing
 			);
@@ -207,7 +209,8 @@ public class Game {
 
 			// Crash message
 			CrashDisplay.setText(
-                " An error occurred while trying to Read / Load the game \n" + 
+					
+                " An error occurred while trying to Read the game \n" + 
                 " This can be due to various things (old / corrupted worlds, some game bug or unexpected Java bug, etc.). \n" + 
                 " If the problem persists, send a screenshot to the author.\n" + "\n" + 
                     
@@ -216,11 +219,12 @@ public class Game {
 					
                 "-- System Details --" + "\n" +
                 "Details: " + "\n" +
-                "        Aircraft Version: " + Game.BUILD + "\n" +
-		        "        Operting System: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") " + System.getProperty("os.version") + "\n" +
-		        "        Java Version: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor")+ "\n" +
-		        "        Java VM Version: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n" +
-			    "        Memory: " + freeMemory + " bytes (" + j + " MB) / " + totalMemory + " bytes (" + i + " MB) up to " + maxMemory + " bytes (" + l + " MB)" + "\n\n" +
+                "        Aircraft mod Version: " + Game.BUILD + "\n" +
+                "        Minicraft plus base Version: " + Game.VERSION + "\n" +
+		    "        Operting System: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") " + System.getProperty("os.version") + "\n" +
+		    "        Java Version: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor")+ "\n" +
+		    "        Java VM Version: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n" +
+		    "        Memory: " + freeMemory + " bytes (" + j + " MB) / " + totalMemory + " bytes (" + i + " MB) up to " + maxMemory + " bytes (" + l + " MB)" + "\n\n" +
 		            
                 " ~~ERROR~~ " + "\n" +
 					
@@ -272,14 +276,19 @@ public class Game {
 		// Create a game window
 		Initializer.createAndDisplayFrame();
 
-		// Display objets in the screen
+		// Display objects in the screen
 		Renderer.initScreen();
+		
+		// Update fullscreen frame if Updater.FULLSCREEN was updated previously
+		if (Updater.FULLSCREEN) {
+			Updater.updateFullscreen();
+		}
 
 		// Start tick() count
 		Initializer.run();
 
 // Exit events -------------------------------------------------------------------------------------------------------------------------------------
-
+		
 		if (debug)
 			System.out.println("Main game loop ended; Terminating application...");
 

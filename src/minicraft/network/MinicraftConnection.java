@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import minicraft.core.Game;
-import minicraft.core.io.Sound;
 import minicraft.item.PotionType;
 
 public abstract class MinicraftConnection extends Thread implements MinicraftProtocol {
@@ -147,9 +146,6 @@ public abstract class MinicraftConnection extends Thread implements MinicraftPro
 	}
 
 	public boolean isConnected() {
-
-		Sound.Intro.stop();
-		Sound.Intro2.stop();
 
 		return socket != null && !socket.isClosed() && socket.isConnected();
 	}

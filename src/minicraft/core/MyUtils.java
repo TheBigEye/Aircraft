@@ -29,7 +29,7 @@ public final class MyUtils {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException ignored) {
-		}
+	      }
 	}
 
 	public static <T> T fromNetworkStatus(T offline, T client, T server) {

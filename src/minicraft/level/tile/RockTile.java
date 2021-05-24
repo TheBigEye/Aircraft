@@ -59,6 +59,7 @@ public class RockTile extends Tile {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	public void hurt(Level level, int x, int y, int dmg) {
 		int damage = level.getData(x, y) + dmg;
 		int rockHealth = 50;

@@ -87,8 +87,6 @@ public class Chicken extends PassiveMob {
 			if (yd > sig0)
 				ya = +1;
 		} else {
-			// if the Pet was following the player, but has now lost it, it stops moving.
-			// *that would be nice, but I'll just make it move randomly instead.
 			randomizeWalkDir(false);
 		}
 	}

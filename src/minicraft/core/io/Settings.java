@@ -10,6 +10,7 @@ import minicraft.screen.entry.RangeEntry;
 
 public class Settings {
 
+	@SuppressWarnings("rawtypes")
 	private static HashMap<String, ArrayEntry> options = new HashMap<>();
 
 	static {
@@ -74,6 +75,7 @@ public class Settings {
 	}
 
 	// return the ArrayEntry object associated with the given option name.
+	@SuppressWarnings("rawtypes")
 	public static ArrayEntry getEntry(String option) {
 		return options.get(option.toLowerCase());
 	}
