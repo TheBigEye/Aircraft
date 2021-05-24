@@ -28,7 +28,7 @@ public class LoadingDisplay extends Display {
 			"Planting", "Populating", "Molding", "Raising", };
 
 	private static Random random = new Random();
-
+	
 	private Timer t;
 	private String msg = "";
 	private Ellipsis ellipsis = new SmoothEllipsis(new TimeUpdater());
@@ -37,6 +37,7 @@ public class LoadingDisplay extends Display {
 		super(true, false);
 		t = new Timer(500, e -> {
 			World.initWorld();
+			msg = "Rendering";
 			Game.setMenu(null);
 		});
 		t.setRepeats(false);
@@ -53,6 +54,7 @@ public class LoadingDisplay extends Display {
 			LoadingDisplay.Build = BuildString[random.nextInt(9)];
 		msg = Build;
 		t.start();
+		
 	}
 
 	@Override
