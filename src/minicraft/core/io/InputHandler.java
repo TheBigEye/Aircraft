@@ -128,7 +128,6 @@ public class InputHandler implements KeyListener {
 		keymap.put("POTIONEFFECTS", "P"); // toggle potion effect display
 		// keymap.put("FPSDISP", "F3"); // toggle fps display
 		keymap.put("INFO", "SHIFT-I"); // toggle player stats display
-		keymap.put("WORLD-INFO", "I"); // toggle world info display
 
 		keymap.put("FULLSCREEN", "F11");
 	}
