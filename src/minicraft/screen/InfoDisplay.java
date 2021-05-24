@@ -11,7 +11,7 @@ public class InfoDisplay extends Display {
 	
 	public InfoDisplay() {
 		//noinspection SuspiciousNameCombination
-		super(new Menu.Builder(true, 4, RelPos.LEFT, StringEntry.useLines(
+		super(new Menu.Builder(true, 2, RelPos.LEFT, StringEntry.useLines(
 			"----------------------------",
 			"Time Played: " + getTimeString(),
 			"Current Score: " + Game.player.getScore(),
