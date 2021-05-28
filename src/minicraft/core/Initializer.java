@@ -81,6 +81,7 @@ public class Initializer extends Game {
 		}
 
         Game.debug = debug;
+        Game.packet_debug = packetdebug;
         HAS_GUI = !autoserver;
 
         FileHandler.determineGameDir(saveDir);

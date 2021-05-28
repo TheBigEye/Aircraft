@@ -263,6 +263,8 @@ public class MinicraftClient extends MinicraftConnection {
 	public boolean parsePacket(InputType inType, String alldata) {
 		String[] data = alldata.split(";");
 
+		if (Game.packet_debug) System.out.println("Received:" + inType.toString() + ", " + alldata);
+		
 		switch (inType) {
 		case INVALID:
 			System.err.println("CLIENT received error: " + alldata);

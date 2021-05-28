@@ -355,19 +355,19 @@ public class Level {
 
 				if (random.nextInt(3) == 0) {
 					Sound.Theme_Surface.play();
-					Sound.Theme_Peaceful.stop();
+
 				}
 				if (random.nextInt(3) == 1) {
 					Sound.Theme_Surface.play();
-					Sound.Theme_Peaceful.stop();
+
 				}
 				if (random.nextInt(3) == 2) {
 					Sound.Theme_Peaceful.play();
-					Sound.Theme_Surface.stop();
+
 				}
 				if (random.nextInt(3) == 3) {
 					Sound.Theme_Peaceful.play();
-					Sound.Theme_Surface.stop();
+
 				}
 			}
 		}
@@ -405,8 +405,8 @@ public class Level {
 				for (int i = 0; i < w * h / 50; i++) {
 					int xt = random.nextInt(w);
 					int yt = random.nextInt(w);
-					getTile(xt, yt).tick(this, xt, yt);
-					if (Game.isValidServer())
+					boolean notableTick = getTile(xt, yt).tick(this, xt, yt);
+					if(Game.isValidServer() && notableTick)
 						Game.server.broadcastTileUpdate(this, xt, yt);
 				}
 			}

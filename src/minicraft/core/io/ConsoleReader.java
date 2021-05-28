@@ -60,14 +60,11 @@ public class ConsoleReader extends Thread {
 	}
 
 	private enum Command {
-		HELP("--all | [cmd]",
-				"describes the function of each command. Specify a command name to read more about how to use it.",
+		HELP("--all | [cmd]", "describes the function of each command. Specify a command name to read more about how to use it.",
 				"no arguments: prints a list of all available commands, with a short description of each.",
 				"cmd: a command name. will print the short description of that command, along with usage details such as what parameters/arguments it uses, and what function each argument has, and what the defualt behavior is if a given argument is ommitted.",
-				"--all: prints the long description of all the commands.", "Usage symbol meanings:",
-				"\t| = OR; specifies two possible choices for a given argument.",
-				"\t[] = Optional; the arguments within may be specified, but they are not required.",
-				"\t<> = Required; you must include the arguments within for the command to work.",
+				"--all: prints the long description of all the commands.", "Usage symbol meanings:", "\t| = OR; specifies two possible choices for a given argument.",
+				"\t[] = Optional; the arguments within may be specified, but they are not required.", "\t<> = Required; you must include the arguments within for the command to work.",
 				"Note that the usage symbols may be nested, so a <> inside a [] is only required if you do whatever else is inside the [].") {
 			public void run(String[] args) {
 				if (args.length == 0) {
@@ -78,31 +75,26 @@ public class ConsoleReader extends Thread {
 					return;
 				}
 
-				Command query = ConsoleReader.getCommandByName(args[0]); // prints its own error message if the command
-																			// wasn't found.
+				Command query = ConsoleReader.getCommandByName(args[0]); // prints its own error message if the command wasn't found.
 				if (query != null)
 					System.out.println(query.getDetailedHelp());
 			}
 		},
 
-		STATUS(null, "display some server stats.",
-				"displays game version, server fps, and number of players connected.") {
+		STATUS(null, "display some server stats.", "displays game version, server fps, and number of players connected.") {
 			public void run(String[] args) {
-				System.out.println("Running " + Game.NAME + ' ' + "Minicraft " + Game.VERSION
-						+ (Game.debug ? " (debug mode)" : ""));
+				System.out.println("Running " + Game.NAME + ' ' + "Minicraft engine " + Game.VERSION + (Game.debug ? " (debug mode)" : ""));
 				System.out.println("Fps: " + Initializer.getCurFps());
 				System.out.println("Players connected: " + Game.server.getNumPlayers());
 				System.out.println("");
-				System.out.println("The server only supports " + Game.NAME + Game.BUILD);
+				System.out.println("The server is running on " + Game.NAME + ' ' + Game.BUILD);
 				for (String info : Game.server.getClientInfo())
 					System.out.println("\t" + info);
 			}
 		},
 
-		CONFIG("[option_name [value]]", "change various server settings.",
-				"no arguments: displays all config options and their current values",
-				"option_name: displays the current value of that option",
-				"option_name value:, will set the option to the specified value, provided it is a valid value for that option.") {
+		CONFIG("[option_name [value]]", "change various server settings.", "no arguments: displays all config options and their current values",
+				"option_name: displays the current value of that option", "option_name value:, will set the option to the specified value, provided it is a valid value for that option.") {
 
 			public void run(String[] args) {
 				if (args.length == 0) {
@@ -111,11 +103,9 @@ public class ConsoleReader extends Thread {
 				} else {
 					Config configOption = null;
 					try {
-						configOption = Enum.valueOf(Config.class,
-								args[0].toUpperCase(Localization.getSelectedLocale()));
+						configOption = Enum.valueOf(Config.class, args[0].toUpperCase(Localization.getSelectedLocale()));
 					} catch (IllegalArgumentException ex) {
-						System.out.println("\"" + args[0]
-								+ "\" is not a valid config option. run \"config\" for a list of the available config options.");
+						System.out.println("\"" + args[0] + "\" is not a valid config option. run \"config\" for a list of the available config options.");
 					}
 					if (configOption == null)
 						return;
@@ -146,8 +136,7 @@ public class ConsoleReader extends Thread {
 			public void run(String[] args) {
 				Command.STOP.run(null); // shuts down the server.
 				try {
-					Thread.sleep(500); // give the computer some time to, uh, recuperate? idk, I think it's a good
-										// idea.
+					Thread.sleep(500); // give the computer some time to, uh, recuperate? idk, I think it's a good idea.
 				} catch (InterruptedException ignored) {
 				}
 				Network.startMultiplayerServer(); // start the server back up.
@@ -161,8 +150,7 @@ public class ConsoleReader extends Thread {
 			}
 		},
 
-		GAMEMODE("<mode>", "change the server gamemode.",
-				"mode: one of the following: c(reative), su(rvivial), t(imed) / score, h(ardcore)") {
+		GAMEMODE("<mode>", "change the server gamemode.", "mode: one of the following: c(reative), su(rvivial), t(imed) / score, h(ardcore)") {
 			public void run(String[] args) {
 				if (args.length != 1) {
 					System.out.println("Incorrect number of arguments. Please specify the game mode in one word:");
@@ -202,8 +190,7 @@ public class ConsoleReader extends Thread {
 			}
 		},
 
-		TIME("[timeString]", "sets or prints the time of day.",
-				"no arguments: prints the current time of day, in ticks.",
+		TIME("[timeString]", "sets or prints the time of day.", "no arguments: prints the current time of day, in ticks.",
 				"timeString: sets the time of day to the given value; it can be a number, in which case it is a tick count from 0 to 64000 or so, or one of the following strings: Morning, Day, Evening, Night. the time of day will be set to the beginning of the given time period.") {
 			public void run(String[] args) {
 				if (args.length == 0) {
@@ -237,8 +224,7 @@ public class ConsoleReader extends Thread {
 			}
 		},
 
-		MSG("[username] <message>", "make a message appear on other players' screens.",
-				"w/o username: sends to all players,", "with username: sends to that player only.") {
+		MSG("[username] <message>", "make a message appear on other players' screens.", "w/o username: sends to all players,", "with username: sends to that player only.") {
 			public void run(String[] args) {
 				if (args.length == 0) {
 					System.out.println("Please specify a message to send.");
@@ -253,8 +239,7 @@ public class ConsoleReader extends Thread {
 				}
 
 				String message = args[args.length - 1];
-				for (MinicraftServerThread clientThread : Game.server
-						.getAssociatedThreads(usernames.toArray(new String[usernames.size()]), true))
+				for (MinicraftServerThread clientThread : Game.server.getAssociatedThreads(usernames.toArray(new String[usernames.size()]), true))
 					clientThread.sendNotification(message, 50);
 			}
 		},
@@ -264,15 +249,14 @@ public class ConsoleReader extends Thread {
 				"if the second argument is a player name, then the first player will be teleported to the second player, possibly traversing different levels.",
 				"if world coordinates are specified, an x and y coordinate are required. A level depth may optionally be specified to go to a different level; if not specified, the current level is assumed.",
 				"the symbol \"~\" may be used in place of an x or y coordinate, or a level, to mean the current player position on that axis. additionally, an offset may be specified by writing it like so: \"~-3 ~\". this means 3 tiles to the left of the current player position.") { /// future
-																																																																							/// usage:
-																																																																							/// "<x>
-																																																																							/// <y>
-																																																																							/// |
-																																																																							/// "
+																																																	 /// usage:
+																																																	 /// "<x>
+																																																	 /// <y>
+																																																	 /// |
+																																																	 /// "
 			public void run(String[] args) {
 				if (args.length == 0) {
-					System.out.println(
-							"You must specify a username, and coordinates or another username to teleport to.");
+					System.out.println("You must specify a username, and coordinates or another username to teleport to.");
 					printHelp(this);
 					return;
 				}
@@ -303,8 +287,7 @@ public class ConsoleReader extends Thread {
 							}
 						}
 					} catch (NumberFormatException ex) {
-						System.out.println(
-								"Invalid command syntax; specify a player or world coordinates for tp destination.");
+						System.out.println("Invalid command syntax; specify a player or world coordinates for tp destination.");
 						printHelp(this);
 						return;
 					}
@@ -312,8 +295,7 @@ public class ConsoleReader extends Thread {
 					// user specified the username of another player to tp to.
 					MinicraftServerThread destClientThread = Game.server.getAssociatedThread(args[1]);
 					if (destClientThread == null) {
-						System.out
-								.println("Could not find player with username \"" + args[0] + "\" for tp destination.");
+						System.out.println("Could not find player with username \"" + args[0] + "\" for tp destination.");
 						return;
 					}
 
@@ -354,8 +336,7 @@ public class ConsoleReader extends Thread {
 						playerToMove.updateSyncArea(oldxt, oldyt);
 					}
 
-					System.out.println("Teleported player " + playerToMove.getUsername() + " to tile coordinates " + xt
-							+ "," + yt + ", on level " + level.depth);
+					System.out.println("Teleported player " + playerToMove.getUsername() + " to tile coordinates " + xt + "," + yt + ", on level " + level.depth);
 				} else {
 					System.out.println("Could not perform teleport; Coordinates are not valid...");
 				}
@@ -369,8 +350,7 @@ public class ConsoleReader extends Thread {
 			}
 		},
 
-		KILL("<playername> | @[!]<all|entity|player|mob> <level | <playername> <radius>>",
-				"Kills the specified entities.", "Specifying only a playername will kill that player.",
+		KILL("<playername> | @[!]<all|entity|player|mob> <level | <playername> <radius>>", "Kills the specified entities.", "Specifying only a playername will kill that player.",
 				"In the second form, use @all to refer to all entities, @entity to refer to all non-mob entities, @mob to refer to only mob entities, and @player to refer to all players.",
 				"the \"!\" reverses the effect.", "@_ level will target all matching entities for that level.",
 				"using a playername and radius will target all matching entities within the given radius of the player, the radius being a number of tiles.") {
@@ -470,8 +450,7 @@ public class ConsoleReader extends Thread {
 				try {
 					allEntities.addAll(Arrays.asList(Game.levels[new Integer(args[1])].getEntityArray()));
 				} catch (NumberFormatException ex) {
-					System.out
-							.println("Invalid entity targeting format: Specified level is not an integer: " + args[1]);
+					System.out.println("Invalid entity targeting format: Specified level is not an integer: " + args[1]);
 					return null;
 				} catch (IndexOutOfBoundsException ex) {
 					System.out.println("Invalid entity targeting format: Specified level does not exist: " + args[1]);
@@ -490,12 +469,10 @@ public class ConsoleReader extends Thread {
 
 				try {
 					int radius = Integer.valueOf(args[2]);
-					allEntities.addAll(rp.getLevel().getEntitiesInRect(
-							new Rectangle(rp.x, rp.y, radius * 2, radius * 2, Rectangle.CENTER_DIMS)));
+					allEntities.addAll(rp.getLevel().getEntitiesInRect(new Rectangle(rp.x, rp.y, radius * 2, radius * 2, Rectangle.CENTER_DIMS)));
 					allEntities.remove(rp);
 				} catch (NumberFormatException ex) {
-					System.out
-							.println("Invalid entity targeting format: Specified radius is not an integer: " + args[2]);
+					System.out.println("Invalid entity targeting format: Specified radius is not an integer: " + args[2]);
 					return null;
 				}
 			}
@@ -550,7 +527,7 @@ public class ConsoleReader extends Thread {
 		Scanner stdin = new Scanner(System.in);
 		try {
 			Thread.sleep(500); // this is to let it get past the debug statements at world load, and any
-								// others, maybe, if not in debug mode.
+						 // others, maybe, if not in debug mode.
 		} catch (InterruptedException ignored) {
 		}
 		System.out.println("Type \"help\" for a list of commands...");
@@ -575,7 +552,7 @@ public class ConsoleReader extends Thread {
 						lastIdx = i; // set the "last quote" variable.
 
 					parsed.set(i, parsed.get(i).replaceFirst("\"", "")); // remove the parsed quote character from the
-																			// string.
+														 // string.
 					i--; // so that this string can be parsed again, in case there is another quote.
 				}
 			}

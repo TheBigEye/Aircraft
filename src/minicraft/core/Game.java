@@ -4,6 +4,7 @@ package minicraft.core;
 // Default Java Libraries
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
@@ -49,11 +50,12 @@ public class Game {
 	private static Random random = new Random();
 
 	public static boolean debug = false;
+	public static boolean packet_debug = false;
 	public static boolean HAS_GUI = true;
 
 	public static final String NAME = "Aircraft"; // This is the name on the application window
 	public static final String BUILD = "0.4"; // Aircraft version
-	public static final Version VERSION = new Version("2.0.7-dev3"); // Minicraft mod base version
+	public static final Version VERSION = new Version("2.0.7-dev4"); // Minicraft mod base version
 
 	// input used in Game, Player, and just about all the *Menu classes.
 	public static InputHandler input; 
@@ -198,6 +200,8 @@ public class Game {
 			StringWriter string = new StringWriter();
 			PrintWriter printer = new PrintWriter(string);
 			throwable.printStackTrace(printer);
+			
+			if(GraphicsEnvironment.isHeadless()) return;
 
 			// Crash log Structure
 			JTextArea CrashDisplay = new JTextArea(

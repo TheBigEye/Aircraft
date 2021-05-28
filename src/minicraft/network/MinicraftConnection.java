@@ -96,6 +96,8 @@ public abstract class MinicraftConnection extends Thread implements MinicraftPro
 		if (socket == null)
 			return;
 
+		if (Game.packet_debug && Game.isConnectedClient()) System.out.println("Sent:" + inType.toString() + ", " + data);
+		
 		char inTypeChar = (char) (inType.ordinal() + 1);
 		// if (Game.debug && inType == InputType.TILES) System.out.println(this + ": printing " + inType + " data:");
 		if (data.contains("\0"))
