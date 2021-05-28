@@ -59,6 +59,11 @@ public class DirtTile extends Tile {
 					level.setTile(xt, yt, Tiles.get("hole"));
 					Sound.monsterHurt.play();
 					level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("dirt"));
+					
+					if (random.nextInt(64) == 0) { // 2% chance to drop bones
+						level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("bone"));
+					}
+					
 					return true;
 				}
 			}

@@ -6,6 +6,8 @@ import minicraft.core.Game;
 import minicraft.level.tile.farming.CarrotTile;
 import minicraft.level.tile.farming.FarmTile;
 import minicraft.level.tile.farming.PotatoTile;
+import minicraft.level.tile.farming.SkyFarmTile;
+import minicraft.level.tile.farming.SkyWartTile;
 import minicraft.level.tile.farming.WheatTile;
 
 
@@ -26,7 +28,7 @@ public final class Tiles {
 		// A total of 256 types of tiles are read
 		for (int i = 0; i < 256; i++)
 			tiles.add(null);
-
+		
 		tiles.set(0, new GrassTile("Grass"));
 		tiles.set(1, new DirtTile("Dirt"));
 		tiles.set(2, new FlowerTile("Flower"));
@@ -93,48 +95,39 @@ public final class Tiles {
 		tiles.set(56, new Wool("Orange Wool", Wool.WoolType.ORANGE));
 		tiles.set(57, new Wool("Gray Wool", Wool.WoolType.GRAY));
 		
-		/* Alternative test ids (unused for incompatibility with old worlds)
-		tiles.set(42, new Wool("Wool", Wool.WoolType.NORMAL));
-		tiles.set(42-1, new Wool("Orange Wool", Wool.WoolType.ORANGE));
-		tiles.set(42-2, new Wool("Magenta Wool", Wool.WoolType.MAGENTA));
-		tiles.set(42-3, new Wool("Light Blue Wool", Wool.WoolType.LIGHT_BLUE));
-		tiles.set(42-4, new Wool("Yellow Wool", Wool.WoolType.YELLOW));
-		tiles.set(42-5, new Wool("Green Wool", Wool.WoolType.GREEN));
-		tiles.set(42-6, new Wool("Pink Wool", Wool.WoolType.PINK));
-		tiles.set(42-7, new Wool("Gray Wool", Wool.WoolType.GRAY));
-		tiles.set(42-8, new Wool("Cyan Wool", Wool.WoolType.CYAN));
-		tiles.set(42-9, new Wool("Purple Wool", Wool.WoolType.PURPLE));
-		tiles.set(42-10, new Wool("Blue Wool", Wool.WoolType.BLUE));
-		tiles.set(42-11, new Wool("Brown Wool", Wool.WoolType.BROWN));
-		tiles.set(42-12, new Wool("Dark Green Wool", Wool.WoolType.DARK_GREEN));
-		tiles.set(42-13, new Wool("Red Wool", Wool.WoolType.RED));
-		tiles.set(42-14, new Wool("Black Wool", Wool.WoolType.BLACK));
-		*/
-		
-		tiles.set(58, new BirchTreeTile("Birch Tree"));
-		tiles.set(59, new CarrotTile("Carrot"));
-		tiles.set(60, new PotatoTile("Potato"));
+		tiles.set(58, new CarrotTile("Carrot"));
+		tiles.set(59, new PotatoTile("Potato"));
+		tiles.set(60, new SkyWartTile("Sky Wart"));
 		tiles.set(61, new LawnTile("Lawn"));
 		tiles.set(62, new OrangeTulipTile("Orange Tulip"));
 		
 		tiles.set(63, new SnowTile("Snow"));
 		
-		tiles.set(64, new FirTreeTile("Fir Tree"));
-		tiles.set(65, new SaplingTile("Fir Sapling", Tiles.get("Snow"), Tiles.get("Fir tree")));
+		tiles.set(64, new BirchTreeTile("Birch Tree"));
+		tiles.set(65, new SaplingTile("Birch Sapling", Tiles.get("Grass"), Tiles.get("Birch tree")));
+		
+		tiles.set(66, new FirTreeTile("Fir Tree"));
+		tiles.set(67, new SaplingTile("Fir Sapling", Tiles.get("Snow"), Tiles.get("Fir tree")));
 
-		tiles.set(66, new PineTreeTile("Pine Tree"));
-		tiles.set(67, new SaplingTile("Pine Sapling", Tiles.get("Snow"), Tiles.get("Pine tree")));
+		tiles.set(68, new PineTreeTile("Pine Tree"));
+		tiles.set(69, new SaplingTile("Pine Sapling", Tiles.get("Snow"), Tiles.get("Pine tree")));
 
-		tiles.set(68, new CloudTreeTile("Cloud Tree"));
-		tiles.set(69, new IceSpikeTile("Ice Spike"));
-		tiles.set(70, new ObsidianTile("Hard Obsidian"));
+		tiles.set(70, new CloudTreeTile("Cloud Tree"));
+		
+		tiles.set(71, new IceSpikeTile("Ice Spike"));
+		tiles.set(72, new ObsidianTile("Hard Obsidian"));
 
 		// heaven tiles
-		tiles.set(71, new SkyGrassTile("Sky Grass"));
-		tiles.set(72, new SkyHighGrassTile("Sky High Grass"));
-		tiles.set(73, new SkyLawnTile("Sky Lawn"));
-		tiles.set(74, new FerrositeTile("Ferrosite"));
+		tiles.set(73, new SkyGrassTile("Sky Grass"));
+		tiles.set(74, new SkyHighGrassTile("Sky High Grass"));
+		tiles.set(75, new SkyDirtTile("Sky Dirt"));
+		tiles.set(76, new SkyLawnTile("Sky Lawn"));
+		tiles.set(77, new FerrositeTile("Ferrosite"));
+		tiles.set(78, new SkyFarmTile("Sky Farmland"));
 		
+		
+		//tiles.set(?, new SandRockTile("Sand rock"));
+	
 		
 		// WARNING: don't use this tile for anything!
 		tiles.set(255, new ConnectTile());
@@ -222,12 +215,6 @@ public final class Tiles {
 		oldids.set(159, "birch door");
 		oldids.set(160, "hard obsidian");
 
-		// heaven tiles
-		oldids.set(161, "sky grass");
-		oldids.set(162, "sky high grass");
-
-		oldids.set(163, "sky lawn");
-		oldids.set(164, "ferrosite");
 		
 		// light/torch versions, for compatibility with before 1.9.4-dev3. (were removed
 		// in making dev3)

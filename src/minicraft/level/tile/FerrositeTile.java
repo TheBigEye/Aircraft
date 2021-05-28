@@ -39,7 +39,7 @@ public class FerrositeTile extends Tile {
 		if (entity instanceof Mob) {
 			level.setData(x, y, 10);
 		}
-		if (entity instanceof Player) {
+		/*if (entity instanceof Player) {
 
 			level.setData(x, y, 10);
 
@@ -55,7 +55,7 @@ public class FerrositeTile extends Tile {
 			if (Game.player.getPotionEffects().containsKey(PotionType.xSpeed) && random.nextInt(16) == 1) {
 				Player.moveSpeed = 3;
 			}
-		}
+		}*/
 	}
 
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {

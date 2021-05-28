@@ -96,8 +96,7 @@ public class Items {
 			if (allowNull)
 				return null;
 			else {
-				System.out.println(
-						"WARNING: Items.get passed argument \"null\" when null is not allowed; returning UnknownItem. StackTrace:");
+				System.err.println("WARNING: Items.get passed argument \"null\" when null is not allowed; returning UnknownItem. StackTrace:");
 				Thread.dumpStack();
 				return new UnknownItem("NULL");
 			}

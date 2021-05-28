@@ -5,6 +5,7 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
+import minicraft.gfx.Color;
 import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
@@ -40,6 +41,17 @@ public class SandTile extends Tile {
 		maySpawn = true;
 	}
 
+	protected static int sCol(int depth) {
+		switch (depth) {
+		case 0:
+			return Color.get(1, 237, 190, 82); // surface.
+		case -4:
+			return Color.get(1, 237, 190, 82); // dungeons.
+		default:
+			return Color.get(1, 237, 190, 82); // caves.
+		}
+	}
+	
 	public void render(Screen screen, Level level, int x, int y) {
 		boolean steppedOn = level.getData(x, y) > 0;
 
@@ -53,10 +65,13 @@ public class SandTile extends Tile {
 		csprite.render(screen, level, x, y);
 	}
 
-	public void tick(Level level, int x, int y) {
-		int d = level.getData(x, y);
-		if (d > 0)
-			level.setData(x, y, d - 1);
+	public boolean tick(Level level, int x, int y) {
+		int damage = level.getData(x, y);
+		if (damage > 0) {
+			level.setData(x, y, damage - 1);
+			return true;
+		}
+		return false;
 	}
 
 	public void steppedOn(Level level, int x, int y, Entity entity) {

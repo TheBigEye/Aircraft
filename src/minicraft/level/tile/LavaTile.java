@@ -34,66 +34,17 @@ public class LavaTile extends Tile {
 		return e.canSwim();
 	}
 
-	public void tick(Level level, int xt, int yt) {
+	public boolean tick(Level level, int xt, int yt) {
 		int xn = xt;
 		int yn = yt;
 
-		if (random.nextBoolean())
-			xn += random.nextInt(2) * 2 - 1;
-		else
-			yn += random.nextInt(2) * 2 - 1;
+		if (random.nextBoolean()) xn += random.nextInt(2) * 2 - 1;
+		else yn += random.nextInt(2) * 2 - 1;
 
 		if (level.getTile(xn, yn) == Tiles.get("hole")) {
 			level.setTile(xn, yn, this);
 		}
-		if (level.getTile(xn, yn) == Tiles.get("Wood Planks")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Black Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Yellow Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Green Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Blue Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Red Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Purple Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Pink Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Dark Green Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Gray Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Brown Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Magenta Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Light Blue Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Cyan Wool")) {
-			level.setTile(xn, yn, this);
-		}
-		if (level.getTile(xn, yn) == Tiles.get("Orange Wool")) {
-			level.setTile(xn, yn, this);
-		}
+		return false;
 	}
 
 	public int getLightRadius(Level level, int x, int y) {

@@ -13,15 +13,21 @@ import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
-public class FarmTile extends Tile {
-	private static Sprite sprite = new Sprite(12, 0, 2, 2, 1, true, new int[][] { { 1, 0 }, { 0, 1 } });
+public class SkyFarmTile extends Tile {
+	private static Sprite sprite = new Sprite(12, 3, 2, 2, 1, true, new int[][] { { 1, 0 }, { 0, 1 } });
 
-	public FarmTile(String name) {
+	public SkyFarmTile(String name) {
 		super(name, sprite);
+		connectsToSkyGrass = true;
+		connectsToSkyDirt = true;
+
 	}
 
-	protected FarmTile(String name, Sprite sprite) {
+	protected SkyFarmTile(String name, Sprite sprite) {
 		super(name, sprite);
+		connectsToSkyGrass = true;
+		connectsToSkyDirt = true;
+
 	}
 
 	@Override
@@ -30,7 +36,7 @@ public class FarmTile extends Tile {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					level.setTile(xt, yt, Tiles.get("Dirt"));
+					level.setTile(xt, yt, Tiles.get("Sky dirt"));
 					Sound.monsterHurt.play();
 					return true;
 				}
@@ -55,6 +61,6 @@ public class FarmTile extends Tile {
 			return;
 		if (level.getData(xt, yt) < 5)
 			return;
-		level.setTile(xt, yt, Tiles.get("Dirt"));
+		level.setTile(xt, yt, Tiles.get("Sky dirt"));
 	}
 }

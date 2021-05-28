@@ -41,8 +41,10 @@ public abstract class Tile {
 	protected boolean connectsToObsidian = false;
 
 	public boolean connectsToSkyGrass = false;
+	protected boolean connectsToSkyDirt = false;
 	public boolean connectsToSkyHighGrass = false;
 	public boolean connectsToFerrosite = false;
+	
 	{
 		light = 1;
 		maySpawn = false;
@@ -102,8 +104,7 @@ public abstract class Tile {
 	}
 
 	/** Update method */
-	public void tick(Level level, int xt, int yt) {
-	}
+	public boolean tick(Level level, int xt, int yt) { return false; }
 
 	/** What happens when you are inside the tile (ex: lava) */
 	public void steppedOn(Level level, int xt, int yt, Entity entity) {

@@ -11,11 +11,11 @@ import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
-public class Plant extends FarmTile {
+public class SkyPlant extends SkyFarmTile {
     protected static int maxAge = 100;
     private String name;
 
-    protected Plant(String name) {
+    protected SkyPlant(String name) {
         super(name, (Sprite)null);
         this.name = name;
     }
@@ -41,18 +41,18 @@ public class Plant extends FarmTile {
 
         int age = level.getData(xt, yt);
         if (age < maxAge) {
-            if (!IfWater(level, xt, yt)) level.setData(xt, yt, age + 1);
-            else if (IfWater(level, xt, yt)) level.setData(xt, yt, age + 2);
+            if (!IfCloud(level, xt, yt)) level.setData(xt, yt, age + 1);
+            else if (IfCloud(level, xt, yt)) level.setData(xt, yt, age + 2);
             return true;
         }
 
         return false;
     }
 
-    protected boolean IfWater(Level level, int xs, int ys) {
-        Tile[] areaTiles = level.getAreaTiles(xs, ys, 2);
+    protected boolean IfCloud(Level level, int xs, int ys) {
+        Tile[] areaTiles = level.getAreaTiles(xs, ys, 1);
         for(Tile t: areaTiles)
-            if(t == Tiles.get("Water"))
+            if(t == Tiles.get("Cloud"))
                 return true;
 
         return false;

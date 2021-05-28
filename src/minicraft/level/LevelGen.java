@@ -139,10 +139,10 @@ public class LevelGen {
 		if (level == -4)
 			return createAndValidateDungeon(w, h);
 		
-		if (level == -5) return createAndValidateHell(w, h);
+		//if (level == -5) return createAndValidateHell(w, h);
 		 
 
-		if (level > -5 && level < 0)
+		if (level > -4 && level < 0)
 			return createAndValidateUndergroundMap(w, h, -level);
 
 		System.err.println("LevelGen ERROR: level index is not valid. Could not generate a level.");
@@ -223,13 +223,15 @@ public class LevelGen {
 				continue;
 			if (count[Tiles.get("Obsidian Wall").id & 0xff] < 100)
 				continue;
+			if (count[Tiles.get("Hard obsidian").id & 0xff] < 100)
+				continue;
 
 			return result;
 
 		} while (true);
 	}
 
-	private static byte[][] createAndValidateHell(int w, int h) {
+/*	private static byte[][] createAndValidateHell(int w, int h) {
 		random.setSeed(worldSeed);
 		do {
 			byte[][] result = createHell(w, h);
@@ -251,7 +253,7 @@ public class LevelGen {
 			return result;
 
 		} while (true);
-	}
+	}*/
 	
 	private static byte[][] createAndValidateSkyMap(int w, int h) {
 		random.setSeed(worldSeed);
@@ -277,7 +279,7 @@ public class LevelGen {
 	
 	
 // Surface generation code ===================================================================================================================
-	
+
 	private static byte[][] createTopMap(int w, int h) { // create surface map?
 
 		// creates a bunch of value maps, some with small size...
@@ -321,6 +323,7 @@ public class LevelGen {
 							map[i] = Tiles.get("lava").id;
 						else
 							map[i] = Tiles.get("water").id;
+
 					} else if (val > 0.5 && mval < -1.5) {
 						map[i] = Tiles.get("rock").id;
 					} else {
@@ -375,9 +378,9 @@ public class LevelGen {
 				}
 			}
 		}
-		
+
 // According to the configuration or seed, these biomes are established -----------------------------------------------------------------------
-		
+
 		// Desert (big) biome
 		if (Settings.get("Theme").equals("Desert")) {
 
@@ -385,8 +388,8 @@ public class LevelGen {
 				int xs = random.nextInt(w);
 				int ys = random.nextInt(h);
 				for (int k = 0; k < 10; k++) {
-					int x = xs + random.nextInt(26) - 10;
-					int y = ys + random.nextInt(26) - 10;
+					int x = xs + random.nextInt(29) - 10;
+					int y = ys + random.nextInt(29) - 10;
 					for (int j = 0; j < 100; j++) {
 						int xo = x + random.nextInt(5) - random.nextInt(5);
 						int yo = y + random.nextInt(5) - random.nextInt(5);
@@ -474,9 +477,8 @@ public class LevelGen {
 			}
 		}
 
-		
-// Add trees to biomes ------------------------------------------------------------------------------------------------------------------------		
-		
+// Add trees to biomes ------------------------------------------------------------------------------------------------------------------------
+
 		// Classic forest biome
 		if (Settings.get("Theme").equals("Forest")) {
 			for (int i = 0; i < w * h / 200; i++) {
@@ -493,7 +495,7 @@ public class LevelGen {
 				}
 			}
 		}
-		
+
 		// Plain biome, add trees
 		if (!Settings.get("Theme").equals("Forest") && !Settings.get("Theme").equals("Plain")) {
 			for (int i = 0; i < w * h / 1200; i++) {
@@ -596,7 +598,6 @@ public class LevelGen {
 			}
 		}
 
-		
 		if (!Settings.get("Theme").equals("Plain")) {
 			for (int i = 0; i < w * h / 400; i++) {
 				int x = random.nextInt(w);
@@ -663,9 +664,8 @@ public class LevelGen {
 			}
 		}
 
-		
-//Add flower and plants to biomes -------------------------------------------------------------------------------------------------------------
-		
+// Add flower and plants to biomes -------------------------------------------------------------------------------------------------------------
+
 		for (int i = 0; i < w * h / 400; i++) {
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
@@ -714,7 +714,7 @@ public class LevelGen {
 			}
 		}
 
-		for (int i = 0; i < w * h / 100; i++) {
+		for (int i = 0; i < w * h / 150; i++) {
 			int xx = random.nextInt(w);
 			int yy = random.nextInt(h);
 			if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
@@ -748,7 +748,21 @@ public class LevelGen {
 			}
 		}
 
-		
+		/*for (int i = 0; i < w * h / 400; i++) {
+			int x = random.nextInt(w);
+			int y = random.nextInt(h);
+			for (int j = 0; j < 80; j++) {
+				int xx = x + random.nextInt(6) - random.nextInt(3);
+				int yy = y + random.nextInt(6) - random.nextInt(3);
+				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+					if (map[xx + yy * w] == Tiles.get("sand").id) {
+						map[xx + yy * w] = Tiles.get("sand rock").id;
+
+					}
+				}
+			}
+		}*/
+
 // Generate the stairs inside the rock --------------------------------------------------------------------------------------------------------
 
 		int count = 0;
@@ -757,7 +771,7 @@ public class LevelGen {
 			System.out.println("Generating stairs for surface level...");
 
 		stairsLoop: for (int i = 0; i < w * h / 100; i++) { // loops a certain number of times, more for bigger world
-			
+
 			// sizes.
 			int x = random.nextInt(w - 2) + 1;
 			int y = random.nextInt(h - 2) + 1;
@@ -835,17 +849,34 @@ public class LevelGen {
 					if (map[xx + yy * w] != Tiles.get("Obsidian Wall").id)
 						continue lavaLoop;
 				}
+			
+			
 
 			// Generate structure (lava pool)
 			Structure.lavaPool.draw(map, x, y, w);
 		}
 
+		for (int i = 0; i < w * h / 100; i++) {
+			int x = random.nextInt(w);
+			int y = random.nextInt(h);
+			for (int j = 0; j < 20; j++) {
+				int xx = x + random.nextInt(3) - random.nextInt(3);
+				int yy = y + random.nextInt(3) - random.nextInt(3);
+				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+					if (map[xx + yy * w] == Tiles.get("Obsidian").id) {
+						map[xx + yy * w] = Tiles.get("Hard obsidian").id;
+					}
+					
+				}
+			}
+		}
+		
 		return new byte[][] { map, data };
 	}
 // End dungeons generation ========================================================================================================================
 	
 	
-	private static byte[][] createHell(int w, int h) { // create HELL
+/*	private static byte[][] createHell(int w, int h) { // create HELL
 
 		// creates a bunch of value maps, some with small size...
 		LevelGen mnoise1 = new LevelGen(w, h, 16);
@@ -1132,7 +1163,7 @@ public class LevelGen {
 				// System.out.println(average);
 
 				return new byte[][] { map, data };
-			}
+			}*/
 	
 // Generate cave system ===========================================================================================================================
 	private static byte[][] createUndergroundMap(int w, int h, int depth) {
@@ -1530,7 +1561,7 @@ public class LevelGen {
 			int h = 256;
 			
 			int lvl = maplvls[idx++ % maplvls.length];
-			if (lvl > 1 || lvl < -5) continue;
+			if (lvl > 1 || lvl < -4) continue;
 			
 			//byte[][] fullmap = LevelGen.createAndValidateMap(w, h, lvl);
 			byte[][] fullmap = LevelGen.createAndValidateSkyMap(w, h);

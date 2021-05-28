@@ -59,21 +59,13 @@ public class BirchTreeTile extends Tile {
 	}
 
 	@SuppressWarnings("unused")
-	public void tick(Level level, int xt, int yt) {
+	public boolean tick(Level level, int xt, int yt) {
 		int damage = level.getData(xt, yt);
-		if (damage > 0)
+		if (damage > 0) {
 			level.setData(xt, yt, damage - 1);
-
-		if (random.nextInt(40) != 0)
-			return;
-
-		int xn = xt;
-		int yn = yt;
-
-		if (random.nextBoolean())
-			xn += random.nextInt(2) * 2 - 1;
-		else
-			yn += random.nextInt(2) * 2 - 1;
+			return true;
+		}
+		return false;
 	}
 
 	public boolean mayPass(Level level, int x, int y, Entity e) {
@@ -118,6 +110,7 @@ public class BirchTreeTile extends Tile {
 		if (damage >= treeHealth) {
 			level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Birch Wood"));
 			level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Leaf"));
+			level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Birch cone"));
 			level.setTile(x, y, Tiles.get("grass"));
 		} else {
 			level.setData(x, y, damage);

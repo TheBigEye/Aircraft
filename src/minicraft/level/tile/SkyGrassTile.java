@@ -30,14 +30,26 @@ public class SkyGrassTile extends Tile {
 		maySpawn = true;
 	}
 
-	public void tick(Level level, int xt, int yt) {
+	public boolean tick(Level level, int xt, int yt) {
+		// TODO revise this method.
+		if (random.nextInt(40) != 0) return false;
+		
+		int xn = xt;
+		int yn = yt;
+		
+		if (random.nextBoolean()) xn += random.nextInt(2) * 2 - 1;
+		else yn += random.nextInt(2) * 2 - 1;
 
+		if (level.getTile(xn, yn) == Tiles.get("Sky dirt")) {
+			level.setTile(xn, yn, this);
+		}
+		return false;
 	}
 
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
-		if (Tiles.get("Cloud") != null) {
-			Tiles.get("Cloud").render(screen, level, x, y);
+		if (Tiles.get("cloud") != null) {
+			Tiles.get("cloud").render(screen, level, x, y);
 		} else {
             Tiles.get("Ferrosite").render(screen, level, x, y);
 		}
@@ -49,28 +61,26 @@ public class SkyGrassTile extends Tile {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					level.setTile(xt, yt, Tiles.get("Cloud")); // would allow you to shovel cloud, I think.
+					level.setTile(xt, yt, Tiles.get("Sky dirt")); // would allow you to shovel cloud, I think.
 					Sound.monsterHurt.play();
 					if (random.nextInt(5) == 0) { // 20% chance to drop seeds
-						level.dropItem(xt * 16 + 8, yt * 16 + 8, 2, Items.get("dirt"));
+						//level.dropItem(xt * 16 + 8, yt * 16 + 8, 2, Items.get("dirt"));
 					}
 					return true;
+				}
+			}
+
+			if (tool.type == ToolType.Pickaxe) {
+				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+					//level.setTile(xt, yt, Tiles.get("path"));
+					Sound.monsterHurt.play();
 				}
 			}
 			if (tool.type == ToolType.Hoe) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					level.setTile(xt, yt, Tiles.get("dirt"));
+					level.setTile(xt, yt, Tiles.get("sky farmland"));
 					Sound.monsterHurt.play();
-					if (random.nextInt(5) != 0) { // 80% chance to drop seeds
-						level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("dirt"));
-					}
 					return true;
-				}
-			}
-			if (tool.type == ToolType.Pickaxe) {
-				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					level.setTile(xt, yt, Tiles.get("path"));
-					Sound.monsterHurt.play();
 				}
 			}
 		}

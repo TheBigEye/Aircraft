@@ -54,11 +54,13 @@ public class SnowTile extends Tile {
 
 	}
 
-	public void tick(Level level, int x, int y) {
-		int d = level.getData(x, y);
-		if (d > 0)
-			level.setData(x, y, d - 1);
-
+	public boolean tick(Level level, int x, int y) {
+		int damage = level.getData(x, y);
+		if (damage > 0) {
+			level.setData(x, y, damage - 1);
+			return true;
+		}
+		return false;
 	}
 
 	public void steppedOn(Level level, int x, int y, Entity entity) {

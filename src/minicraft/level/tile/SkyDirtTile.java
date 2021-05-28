@@ -3,6 +3,7 @@ package minicraft.level.tile;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
+import minicraft.gfx.Color;
 import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
@@ -12,30 +13,47 @@ import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
 
-public class SkyHighGrassTile extends Tile {
-	private static ConnectorSprite sprite = new ConnectorSprite(SkyHighGrassTile.class, new Sprite(51, 6, 3, 3, 1, 3), new Sprite(54, 6, 2, 2, 1)) {
+public class SkyDirtTile extends Tile {
+	private static ConnectorSprite sprite = new ConnectorSprite(SkyDirtTile.class, new Sprite(44, 9, 3, 3, 1, 3),
+			new Sprite(47, 9, 2, 2, 1)) {
 		public boolean connectsTo(Tile tile, boolean isSide) {
 			if (!isSide)
 				return true;
-			return tile.connectsToSkyHighGrass;
+			return tile.connectsToSkyDirt;
 		}
 	};
 
-	protected SkyHighGrassTile(String name) {
+	protected SkyDirtTile(String name) {
 		super(name, sprite);
-		csprite.sides = csprite.sparse;
-		connectsToSkyHighGrass = true;
 		connectsToSkyGrass = true;
+		connectsToSkyDirt = true;
 		maySpawn = true;
 	}
 
-	public boolean tick(Level level, int xt, int yt) {
-		return false;
+	protected static int dCol(int depth) {
+		switch (depth) {
+		case 0:
+			return Color.get(1, 129, 105, 83); // surface.
+		case -4:
+			return Color.get(1, 76, 30, 100); // dungeons.
+		default:
+			return Color.get(1, 102); // caves.
+		}
 	}
 
-	@Override
+	protected static int dIdx(int depth) {
+		switch (depth) {
+		case 0:
+			return 0; // surface
+		case -4:
+			return 2; // dungeons
+		default:
+			return 1; // caves
+		}
+	}
+
 	public void render(Screen screen, Level level, int x, int y) {
-		Tiles.get("Sky Grass").render(screen, level, x, y);
+		Tiles.get("sky grass").render(screen, level, x, y);
 		sprite.render(screen, level, x, y);
 	}
 
@@ -44,18 +62,22 @@ public class SkyHighGrassTile extends Tile {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					level.setTile(xt, yt, Tiles.get("Sky Grass")); // would allow you to shovel cloud, I think.
+					level.setTile(xt, yt, Tiles.get("cloud"));
 					Sound.monsterHurt.play();
-					if (random.nextInt(5) == 0) { // 20% chance to drop seeds
-						level.dropItem(xt * 16 + 8, yt * 16 + 8, 2, Items.get("dirt"));
+					level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Sky dirt"));
+					
+					if (random.nextInt(64) == 0) { // 2% chance to drop bones
+						level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("bone"));
 					}
+					
 					return true;
 				}
 			}
-			if (tool.type == ToolType.Pickaxe) {
+			if (tool.type == ToolType.Hoe) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					level.setTile(xt, yt, Tiles.get("path"));
+					level.setTile(xt, yt, Tiles.get("sky farmland"));
 					Sound.monsterHurt.play();
+					return true;
 				}
 			}
 		}

@@ -61,10 +61,13 @@ public class TestTile extends Tile {
 	// 6 grass
 	// 1 + 29
 
-	public void tick(Level level, int xt, int yt) {
+	public boolean tick(Level level, int xt, int yt) {
 		int damage = level.getData(xt, yt);
-		if (damage > 0)
+		if (damage > 0) {
 			level.setData(xt, yt, damage - 1);
+			return true;
+		}
+		return false;
 	}
 
 	public boolean mayPass(Level level, int x, int y, Entity e) {

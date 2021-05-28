@@ -52,7 +52,7 @@ public class TorchTile extends Tile {
 		sprite.render(screen, x * 16 + 4, y * 16 + 4);
 	}
 
-	public void tick(Level level, int x, int y) {
+	public boolean tick(Level level, int x, int y) {
 
 		if (random.nextInt(5) == 1) {
 
@@ -63,6 +63,7 @@ public class TorchTile extends Tile {
 				LIGHT = 5;
 			}
 		}
+		return false;
 
 	}
 

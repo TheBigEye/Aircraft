@@ -21,6 +21,7 @@ public enum MapData {
     LAVA(Tiles.get("Lava").id, Color.RED),
     
     ROCK(Tiles.get("Rock").id, Color.get(1, 122, 122, 122)),   
+    //SAND_ROCK(Tiles.get("Sand Rock").id, Color.get(1, 214, 214, 77)),   
     HARD_ROCK(Tiles.get("Hard Rock").id, Color.get(1, 127, 126, 107)),
     
     CACTUS(Tiles.get("Cactus").id, Color.get(1, 183, 183, 91)),
@@ -77,6 +78,7 @@ public enum MapData {
     CLOUD_TREE(Tiles.get("Cloud Tree").id, Color.get(1, 71, 112, 68)),
     SKY_LAWN(Tiles.get("Sky Lawn").id, Color.get(1, 86, 163, 131)),
     SKY_HIGH_GRASS(Tiles.get("Sky High Grass").id, Color.get(1, 79, 150, 120)),
+    SKY_DIRT(Tiles.get("Sky Dirt").id, Color.get(1, 73, 108, 114)),
     SKY_GRASS(Tiles.get("Sky Grass").id, Color.get(1, 90, 171, 138));
 	
     private static final Map<Integer, MapData> BY_ID = new HashMap<Integer, MapData>();

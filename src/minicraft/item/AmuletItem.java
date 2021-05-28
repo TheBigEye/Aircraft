@@ -12,6 +12,7 @@ import minicraft.entity.mob.boss.EyeQueen;
 import minicraft.gfx.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
+import minicraft.screen.LevelTransitionDisplay;
 
 public class AmuletItem extends Item {
 
@@ -36,7 +37,7 @@ public class AmuletItem extends Item {
 	@Override
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 
-		//Game.setMenu(new LevelTransitionDisplay(-5));
+		Game.setMenu(new LevelTransitionDisplay(-4));
 		
 		if (random.nextInt(3) == 1) {
 			Sound.Call.play();

@@ -29,10 +29,10 @@ public class ObsidianTile extends Tile {
 		maySpawn = true;
 	}
 
-	public void tick(Level level, int xt, int yt) {
+	public boolean tick(Level level, int xt, int yt) {
 		// TODO revise this method.
-		if (random.nextInt(40) != 0)
-			return;
+		if (random.nextInt(40) != 0) return false;
+		return false;
 
 	}
 

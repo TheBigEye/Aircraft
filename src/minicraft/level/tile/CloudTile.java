@@ -52,6 +52,7 @@ public class CloudTile extends Tile {
 			}
 		}
 		return false;
+		
 	}
 
 	public static int CloudCol(int depth) {

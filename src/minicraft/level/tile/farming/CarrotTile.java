@@ -20,15 +20,13 @@ public class CarrotTile extends Plant {
 		super(name);
 	}
 
-	static {
-		maxAge = 100;
-	}
 	
+	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		int age = level.getData(x, y);
-		int icon = age / 10;
+		int icon = age / (maxAge / 5);
 
-		Tiles.get("farmland").render(screen, level, x, y);
+		Tiles.get("Farmland").render(screen, level, x, y);
 
 		screen.render(x * 16 + 0, y * 16 + 0, 13 + 1 * 32 + icon, 0, 1);
 		screen.render(x * 16 + 8, y * 16 + 0, 13 + 1 * 32 + icon, 0, 1);
@@ -43,20 +41,6 @@ public class CarrotTile extends Plant {
 				return true;
 
 		return false;
-	}
-
-	public void tick(Level level, int xt, int yt) {
-		if (random.nextInt(2) == 0)
-			return;
-
-		int age = level.getData(xt, yt);
-		if (!IfWater(level, xt, yt)) {
-			if (age < 50)
-				level.setData(xt, yt, age + 0);
-		} else if (IfWater(level, xt, yt)) {
-			if (age < 50)
-				level.setData(xt, yt, age + 1);
-		}
 	}
 
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
@@ -90,7 +74,7 @@ public class CarrotTile extends Plant {
 	 protected void harvest(Level level, int x, int y, Entity entity) {
 		int age = level.getData(x, y);
 
-		level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Carrot"));
+		//level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Carrot"));
 
 		int count = 0;
 		if (age >= 50) {
