@@ -14,7 +14,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class OrangeTulipTile extends Tile {
-	private static Sprite flowerSprite = new Sprite(4, 9, 1);
+	private static final Sprite flowerSprite = new Sprite(4, 9, 1);
 
 	protected OrangeTulipTile(String name) {
 		super(name, (ConnectorSprite) null);

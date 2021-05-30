@@ -14,7 +14,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class FlowerTile extends Tile {
-	private static Sprite flowerSprite = new Sprite(3, 8, 1);
+	private static final Sprite flowerSprite = new Sprite(3, 8, 1);
 
 	protected FlowerTile(String name) {
 		super(name, (ConnectorSprite) null);

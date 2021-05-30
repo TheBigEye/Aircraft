@@ -15,7 +15,7 @@ import minicraft.item.Items;
 import minicraft.level.Level;
 
 public class IceSpikeTile extends Tile {
-	private static Sprite iceSprite = new Sprite(4, 12, 1);
+	private static final Sprite iceSprite = new Sprite(4, 12, 1);
 
 	protected IceSpikeTile(String name) {
 		super(name, iceSprite);

@@ -14,7 +14,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class SkyLawnTile extends Tile {
-	private static Sprite LawnSprite = new Sprite(48, 8, 1);
+	private static final Sprite LawnSprite = new Sprite(48, 8, 1);
 
 	protected SkyLawnTile(String name) {
 		super(name, (ConnectorSprite) null);
