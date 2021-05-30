@@ -16,6 +16,7 @@ import minicraft.gfx.Color;
 import minicraft.gfx.Font;
 import minicraft.gfx.Point;
 import minicraft.gfx.Screen;
+import minicraft.gfx.Sprite;
 import minicraft.level.Level;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.LinkEntry;
@@ -29,9 +30,10 @@ public class TitleDisplay extends Display {
     private int rand;
     private int count = 0; // this and reverse are for the logo; they produce the fade-in/out effect.
     private boolean reverse = false;
-
+    
     public TitleDisplay() {
-        super(true, false, new Menu.Builder(false, 2, RelPos.CENTER,
+	    
+        super(false, false, new Menu.Builder(true, 2, RelPos.CENTER,
                 new StringEntry(""),
                 new BlankEntry(),
                 new SelectEntry("Singleplayer", () -> {
@@ -54,7 +56,7 @@ public class TitleDisplay extends Display {
                     new SelectEntry("About", () -> Game.setMenu(new BookDisplay(BookData.about))),
                     new BlankEntry(),
                     new BlankEntry(),
-                    new LinkEntry(Color.BLUE, "c", "https://discord.me/minicraft")
+                    new LinkEntry(Color.BLUE, "Discord", "https://discord.me/minicraft")
 
                 ),
                 new SelectEntry("Exit", Game::quit)
@@ -184,12 +186,29 @@ public class TitleDisplay extends Display {
 
     @Override
     public void render(Screen screen) {
+        screen.clear(0);
+	    
+        // Background sprite
+        int hh = 264;
+        int ww = 408;
+        int xxo = (Screen.w - ww * 8) / 2; // X location of the title
+        int yyo = 12; // Y location of the title
+        
+        for (int y = 0; y < hh; y++) {
+              for (int x = 0; x < ww; x++) {
+            	  screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x + 15, y + 32, 0, 3));
+              }
+          }
+        
+        // Reender the options
         super.render(screen);
-
+        
+        // Title sprite
         int h = 6; // Height of squares (on the spritesheet)
         int w = 20; // Width of squares (on the spritesheet)
         int xo = (Screen.w - w * 8) / 2; // X location of the title
         int yo = 55; // Y location of the title
+
 
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
@@ -221,7 +240,7 @@ public class TitleDisplay extends Display {
         "Happy XMAS!",
         "Happy birthday BigEye :)",
         "Happy birthday Zaq :)",
-        "Happy birthday A.L.I.C.E :)",
+        "Thanks A.L.I.C.E!",
 
         //"Bye ben :(",
 
