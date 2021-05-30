@@ -28,6 +28,11 @@ public class WallTile extends Tile {
 
 	protected WallTile(Material type) {
 		super(type.name() + " Wall", (ConnectorSprite) null);
+		
+		connectsToSkyGrass = true;
+		connectsToSkyHighGrass = true;
+		connectsToSkyDirt = true;
+		
 		this.type = type;
 		switch (type) {
 		case Wood:
@@ -74,7 +79,7 @@ public class WallTile extends Tile {
 			return false; // go directly to hurt method
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
-			if (tool.type == ToolType.Pickaxe) {
+			if (tool.type == type.getRequiredTool()) {
 				if (level.depth != -3 || type != Material.Obsidian || AirWizard.beaten) {
 					if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 						hurt(level, xt, yt, random.nextInt(10) + (tool.level) * 5 + 10);

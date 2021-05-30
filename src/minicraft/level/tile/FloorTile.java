@@ -18,6 +18,11 @@ public class FloorTile extends Tile {
 	
 	protected FloorTile(Material type) {
 		super((type == Material.Wood ? "Wood Planks" : type == Material.Spruce ? "Spruce Planks" : type == Material.Birch ? "Birch Planks" : type == Material.Obsidian ? "Obsidian" : type.name()+" Bricks"), (Sprite)null);
+		
+		connectsToSkyGrass = true;
+		connectsToSkyHighGrass = true;
+		connectsToSkyDirt = true;
+		
 		this.type = type;
 		maySpawn = true;
 		switch(type) {
@@ -43,7 +48,7 @@ public class FloorTile extends Tile {
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
-			if (tool.type == ToolType.Pickaxe) {
+			if (tool.type == type.getRequiredTool()) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					if (level.depth == 1) {
 						level.setTile(xt, yt, Tiles.get("Cloud"));

@@ -11,6 +11,7 @@ import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
+import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public abstract class Tile {
@@ -18,8 +19,22 @@ public abstract class Tile {
 	protected Random random = new Random();
 
 	protected enum Material {
-		Wood, Spruce, Birch, Stone, Obsidian;
+		Wood(ToolType.Axe),
+		Spruce(ToolType.Axe),
+		Birch(ToolType.Axe),
+		Stone(ToolType.Pickaxe),
+		Obsidian(ToolType.Pickaxe);
 		public static final Material[] values = Material.values();
+		
+		private final ToolType requiredTool;
+
+		Material(ToolType requiredTool) {
+			this.requiredTool = requiredTool;
+		}
+
+		public ToolType getRequiredTool() {
+			return requiredTool;
+		}
 	}
 
 	public final String name;
@@ -92,10 +107,28 @@ public abstract class Tile {
 		return 0;
 	}
 
+	
+	/**
+	 * Hurt the tile with a specified amount of damage.
+	 * @param level The level this happened on.
+	 * @param x X pos of the tile.
+	 * @param y Y pos of the tile.
+	 * @param source The mob that damaged the tile.
+	 * @param dmg Damage to taken.
+	 * @param attackDir The direction of the player hitting.
+	 * @return If the damage was applied.
+	 */
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		return false;
 	}
 
+	/**
+	 * Hurt the tile with a specified amount of damage.
+	 * @param level The level this happened on.
+	 * @param x X position of the tile.
+	 * @param y Y position of the tile.
+	 * @param dmg The damage taken.
+	 */
 	public void hurt(Level level, int x, int y, int dmg) {
 	}
 
