@@ -43,7 +43,7 @@ public class AirWizard extends EnemyMob {
      * @param secondform determines if the wizard should be level 2 or 1.
      */
     public AirWizard(boolean secondform) {
-        super(secondform ? 2 : 1, sprites, secondform ? 4000 : 1500, false, 16 * 8, -1, 10, 50);
+        super(secondform ? 2 : 1, sprites, secondform ? 6000 : 3500, false, 16 * 8, -1, 10, 50);
 
         this.secondform = secondform;
         if (secondform) speed = 3;
