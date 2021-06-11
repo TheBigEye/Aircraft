@@ -17,13 +17,12 @@ public class Recipe {
 		product = sep[0].toUpperCase(); // assigns the result item
 		amount = Integer.parseInt(sep[1]);
 
-		for (int i = 0; i < reqItems.length; i++) {
-			String[] curSep = reqItems[i].split("_");
+		for (String reqItem : reqItems) {
+			String[] curSep = reqItem.split("_");
 			String curItem = curSep[0].toUpperCase(); // the current cost that's being added to costs.
 			int amt = Integer.parseInt(curSep[1]);
 			boolean added = false;
-			for (String cost : costs.keySet().toArray(new String[0])) { // loop through the costs that have already been
-																		// added
+			for (String cost : costs.keySet().toArray(new String[0])) { // loop through the costs that have already been added
 				if (cost.equals(curItem)) {
 					costs.put(cost, costs.get(cost) + amt);
 					added = true;

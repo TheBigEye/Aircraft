@@ -1,6 +1,5 @@
 package minicraft.level.tile;
 
-import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
@@ -10,7 +9,6 @@ import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
-import minicraft.item.PotionType;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;

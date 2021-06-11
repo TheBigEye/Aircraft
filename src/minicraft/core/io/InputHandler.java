@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import minicraft.core.Game;
 
+
 public class InputHandler implements KeyListener {
 	/**
 	 * This class handles key presses; this also implements MouseListener... but I have no idea why. It's not used in any way. Ever. As far as I know. Anyway, here are a few tips about this class:
@@ -119,6 +120,13 @@ public class InputHandler implements KeyListener {
 		keymap.put("PICKUP", "V|P"); // pickup torches / furniture; this replaces the power glove.
 		keymap.put("DROP-ONE", "Q"); // drops the item in your hand, or selected in your inventory, by ones; it won't drop an entire stack
 		keymap.put("DROP-STACK", "SHIFT-Q"); // drops the item in your hand, or selected in your inventory, entirely; even if it's a stack.
+		
+		// toggle inventory searcher bar
+		keymap.put("SEARCHER-BAR", "SHIFT-T");
+
+		// seek for next/previous match in inventory searcher bar
+		keymap.put("PAGE-UP", "PAGE_UP");
+		keymap.put("PAGE-DOWN", "PAGE_DOWN");
 
 		keymap.put("PAUSE", "ESCAPE"); // pause the Game.
 

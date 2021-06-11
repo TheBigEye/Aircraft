@@ -1,5 +1,7 @@
+// Package declaration
 package minicraft.level;
 
+// Default Java Libraries
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -11,6 +13,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
+// Game imports
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
@@ -55,6 +58,21 @@ import minicraft.item.Item;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 import minicraft.level.tile.TorchTile;
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+
+/* 
+ * This class is in charge of managing events or functions related to the world (Level)
+ * 
+ *  - Level variables
+ *  - Sky dungeon generation
+ *  - Checks for entities (Airwizard, mobs and dungeon chests)
+ *  - Random music system
+ *  - Mob spawn system
+ *  - Mob removal system
+ *  - Dungeons generation
+ *  - Village generation
+ */
 
 public class Level {
 	private Random random = new Random();
@@ -999,7 +1017,11 @@ public class Level {
 	
 	
 	private void generateSpawnerStructures() {
+		
+		if (Game.debug) System.out.println("Trying to generate a spawner dungeon...");
+		
 		for (int i = 0; i < 18 / -depth * (w / 128); i++) {
+			
 			/// for generating spawner dungeons
 			MobAi m;
 			int r = random.nextInt(5);
@@ -1069,24 +1091,57 @@ public class Level {
 					add(c, sp.x - 16, sp.y - 16);
 				}
 			}
+			
 		}
+		if (Game.debug) System.out.println("Spawner dungeon generated!");
 	}
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	/*
+	 * Generates the villages on the level
+	 * 
+	 * Villages are somewhat limited in their generation...
+	 * 
+	 * In this list shows the probabilities of generating
+	 * villages according to the size of the world
+	 * 
+	 *  128 x 128 = 0 - 1 can be generated
+	 *  256 x 256 = 2 - 3 can be generated
+	 *  512 x 512 = 3 - 4 can be generated
+	 *  1024 x 1024 = 4 - 4 can be generated
+	 *  
+	 *  Villages can only be generated on grass, they may
+	 *  be able to generate in the middle of deserts .. but that
+	 *  is because the generation of the world is somewhat uneven,
+	 *  so there may be grass in a desert, and the village can be
+	 *  generated there
+	 *  
+       *  Previously the villages had no paths ..
+       *  the first attempt was to make them in the code ..
+       *  but it was quite buggy :(, so I got bored and put them
+       *  directly in the structures file (structure.java)
+	 *  
+	 */
+	
 	private void generateVillages() {
 		int lastVillageX = 0;
 		int lastVillageY = 0;
 
+		// Checks the spawn of villagers
 		new Librarian();
 		new Librarian();
 		new Cleric();
 		new Cleric();
 		new Golem();
 
+		if (Game.debug) System.out.println("Trying to generate a village...");
+		
+		// makes 2-8 villages based on world size
 		for (int i = 0; i < w / 128 * 4; i++) {
-			// makes 2-8 villages based on world size
 
+			// tries 10 times for each one
 			for (int t = 0; t < 10; t++) {
-				// tries 10 times for each one
 
 				int x = random.nextInt(w);
 				int y = random.nextInt(h);
@@ -1123,7 +1178,7 @@ public class Level {
 						if (hasChest) {
 							Chest c = new Chest();
 							c.populateInvRandom("villagehouse", 1);
-							add(c, (x + random.nextInt(2) + xo) << 2, (y + random.nextInt(2) + yo) << 2);
+							add(c, (x + random.nextInt(1) + xo) << 1, (y + random.nextInt(1) + yo) << 1);
 						}
 					}
 
@@ -1131,8 +1186,12 @@ public class Level {
 				}
 			}
 		}
+		
+		if (Game.debug) System.out.println("Village generated!");
 	}
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------	
+	
 	public String toString() {
 		return "Level(depth=" + depth + ")";
 	}

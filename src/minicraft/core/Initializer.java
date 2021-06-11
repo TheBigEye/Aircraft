@@ -31,7 +31,6 @@ public class Initializer extends Game {
         return fra;
     }
 
-	@SuppressWarnings("unused")
 	static void parseArgs(String[] args) {
 		boolean debug = false;
 		boolean packetdebug = false;

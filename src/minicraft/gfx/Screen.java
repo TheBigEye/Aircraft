@@ -16,6 +16,30 @@ public class Screen {
 	private int xOffset;
 	private int yOffset;
 
+	  public static int s2tx(int val) {
+		    return val / 16;
+		  }
+		  
+		  public static int s2ty(int val) {
+		    return val / 16;
+		  }
+		  
+		  public static int t2sx(int val) {
+		    return val * 16;
+		  }
+		  
+		  public static int t2sy(int val) {
+		    return val * 16;
+		  }
+		  
+		  public int s2vx(int val) {
+		    return val - this.xOffset;
+		  }
+		  
+		  public int s2vy(int val) {
+		    return val - this.yOffset;
+		  }
+	
 	// used for mirroring an image:
 	private static final int BIT_MIRROR_X = 0x01; // written in hexadecimal; binary: 01
 	private static final int BIT_MIRROR_Y = 0x02; // binary: 10
@@ -306,6 +330,34 @@ public class Screen {
 		}
 	}
 
+	  public void renderShadow(int x, int y, int r) {
+		    x = s2vx(x);
+		    y = s2vy(y);
+		    int x0 = x - r;
+		    int x1 = x + r;
+		    int y0 = y - r;
+		    int y1 = y + r;
+		    if (x0 < 0)
+		      x0 = 0; 
+		    if (y0 < 0)
+		      y0 = 0; 
+		    if (x1 > this.w)
+		      x1 = this.w; 
+		    if (y1 > this.h)
+		      y1 = this.h; 
+		    for (int yy = y0; yy < y1; yy++) {
+		      int yd = yy - y;
+		      yd *= yd;
+		      for (int xx = x0; xx < x1; xx++) {
+		        int xd = xx - x;
+		        int dist = xd * xd + yd;
+		        if (dist <= r * r)
+		          this.pixels[xx + yy * this.w] = 8421504; 
+		      } 
+		    } 
+		  }
+	
+	
 	public void renderLight(int x, int y, int r) {
 		// applies offsets:
 		x -= xOffset;

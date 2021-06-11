@@ -894,11 +894,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		LocalDateTime time = LocalDateTime.now();
 
 		// Halloween skin
-		if (time.getMonth() == Month.OCTOBER) {
-			if (time.getDayOfMonth() == 30) {
-				sprites = MobSprite.compileMobSpriteAnimations(0, 60);
-				carrySprites = MobSprite.compileMobSpriteAnimations(0, 62);
-			}
+		if (Game.IS_SpookyDay == true) {
+			sprites = MobSprite.compileMobSpriteAnimations(0, 60);
+			carrySprites = MobSprite.compileMobSpriteAnimations(0, 62);
 		}
 
 		// Me??

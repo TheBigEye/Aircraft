@@ -42,7 +42,7 @@ public class LevelGen {
 		
 		int stepSize = featureSize;
 		double scale = 1.1 / w;
-		double scaleMod = 1.3;
+		double scaleMod = 1.2;
 		do {
 			int halfStep = stepSize / 2;
 			for (int y = 0; y < h; y += stepSize) {
@@ -1370,8 +1370,8 @@ public class LevelGen {
 				int x = xs + random.nextInt(21) - 10;
 				int y = ys + random.nextInt(24) - 10;
 				for (int j = 0; j < 190; j++) {
-					int xo = x + random.nextInt(5) - random.nextInt(5);
-					int yo = y + random.nextInt(5) - random.nextInt(5);
+					int xo = x + random.nextInt(5) - random.nextInt(5) + random.nextInt(2);
+					int yo = y + random.nextInt(5) - random.nextInt(5) + random.nextInt(2);
 					for (int yy = yo - 1; yy <= yo + 1; yy++)
 						for (int xx = xo - 1; xx <= xo + 1; xx++)
 							if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
@@ -1436,8 +1436,8 @@ public class LevelGen {
 			int xs = random.nextInt(w - random.nextInt(3));
 			int ys = random.nextInt(h - random.nextInt(3));
 			for (int k = 0; k < 100; k++) {
-				int x = xs + random.nextInt(21) - random.nextInt(10);
-				int y = ys + random.nextInt(21) - random.nextInt(10);
+				int x = xs + random.nextInt(19) - random.nextInt(10) + random.nextInt(4);
+				int y = ys + random.nextInt(19) - random.nextInt(10) + random.nextInt(4);
 				for (int j = 0; j < 200; j++) {
 					int xo = x + random.nextInt(6) - random.nextInt(5);
 					int yo = y + random.nextInt(6) - random.nextInt(5);
@@ -1475,8 +1475,8 @@ public class LevelGen {
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
 			for (int j = 0; j < 100; j++) {
-				int xx = x + random.nextInt(16) - random.nextInt(16);
-				int yy = y + random.nextInt(16) - random.nextInt(16);
+				int xx = x + random.nextInt(16) - random.nextInt(16) + random.nextInt(5);
+				int yy = y + random.nextInt(16) - random.nextInt(16) + random.nextInt(5);
 				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
 					if (map[xx + yy * w] == Tiles.get("Sky grass").id) {
 						map[xx + yy * w] = Tiles.get("Cloud tree").id;
@@ -1582,7 +1582,7 @@ public class LevelGen {
 			if (lvl > 1 || lvl < -4) continue;
 			
 			//byte[][] fullmap = LevelGen.createAndValidateMap(w, h, lvl);
-			byte[][] fullmap = LevelGen.createAndValidateTopMap(w, h);
+			byte[][] fullmap = LevelGen.createAndValidateSkyMap(w, h);
 			
 			if (fullmap == null) continue;
 			byte[] map = fullmap[0];
@@ -1632,6 +1632,7 @@ public class LevelGen {
 					if (map[i] == Tiles.get("Sky grass").id) pixels[i] = 0x5aab8a;
 					if (map[i] == Tiles.get("Sky lawn").id) pixels[i] = 0x56a383;
 					if (map[i] == Tiles.get("Sky high grass").id) pixels[i] = 0x4f9678;
+					if (map[i] == Tiles.get("Holy rock").id) pixels[i] = 0x7a7a7a;
 				}
 			}
 

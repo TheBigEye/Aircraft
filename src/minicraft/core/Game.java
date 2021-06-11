@@ -8,6 +8,7 @@ import java.awt.GraphicsEnvironment;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -51,13 +52,17 @@ public class Game {
 
 	public static boolean debug = false;
 	public static boolean packet_debug = false;
-	public static boolean HAS_GUI = true;
+	public static boolean HAS_GUI = true; 
+	
+	public static boolean IS_FestiveDay = false; 
+	public static boolean IS_SpookyDay = false; 
+	public static boolean IS_JokeDay = false; 
 
 	public static final String NAME = "Aircraft"; // This is the name on the application window
 	public static final String BUILD = "0.4"; // Aircraft version
 	public static final Version VERSION = new Version("2.0.7-dev4"); // Minicraft mod base version
 
-	// input used in Game, Player, and just about all the *Menu classes.
+	// Input used in Game, Player, and just about all the *Menu classes.
 	public static InputHandler input; 
 	public static Player player;
 
@@ -75,7 +80,8 @@ public class Game {
 	static String[] Splash = {
 		"Who has put TNT?", "An error has occurred again??",
 		"Unexpected error again??", "Oh. That hurts :(",
-		"Sorry for the crash :(", "You can play our brother game, Minitale", "F, crash again??" 
+		"Sorry for the crash :(", "You can play our brother game, Minitale",
+		"F, crash again??" 
 	};
 	
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -91,7 +97,7 @@ public class Game {
 
 	public static int CUSTOM_PORT = MinicraftProtocol.PORT;
 
-	static Display menu = null, newMenu = null; // the current menu you are on.
+	static Display menu = null, newMenu = null; // The current menu you are on.
 
 	// Sets the current menu.
 	public static void setMenu(@Nullable Display display) {
@@ -255,7 +261,38 @@ public class Game {
 // Start events ------------------------------------------------------------------------------------------------------------------------------------
 
 		Initializer.parseArgs(args);
+		
 
+		// --------------------------------------------------------------
+		
+		// Day events :,)
+		if (time.getMonth() == Month.DECEMBER) { // Xmax day :)
+			if (time.getDayOfMonth() == 24) {
+				IS_FestiveDay = true;
+			}
+		} else {
+			IS_FestiveDay = false;
+		}
+
+		if (time.getMonth() == Month.OCTOBER) { // Halloween OooooOOOoo!
+			if (time.getDayOfMonth() == 31) {
+				IS_SpookyDay = true;
+			}
+		} else {
+			IS_SpookyDay = false;
+		}
+
+		if (time.getMonth() == Month.APRIL) { // April Fools :)
+			if (time.getDayOfMonth() == 1) {
+				IS_JokeDay = true;
+			}
+		} else {
+			IS_JokeDay = false;
+		}
+		
+		// --------------------------------------------------------------
+		
+		
 		// Input declaration
 		input = new InputHandler(Renderer.canvas);
 
@@ -263,7 +300,7 @@ public class Game {
 		Tiles.initTileList();
 		Sound.init();
 		Settings.init();
-
+	
 		World.resetGame(); // "half"-starts a new game, to set up initial variables
 		player.eid = 0;
 		new Load(true); // this loads any saved preferences.

@@ -1,6 +1,5 @@
 package minicraft.entity.mob.boss;
 
-import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Fireball;
@@ -8,8 +7,6 @@ import minicraft.entity.mob.EnemyMob;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
-import minicraft.screen.EndGameDisplay;
-import minicraft.screen.EndMessageDisplay;
 
 public class EyeQueenPhase3 extends EnemyMob {
     private static final MobSprite[][][] sprites = new MobSprite[2][2][2];
