@@ -33,9 +33,8 @@ public class TitleDisplay extends Display {
     
     public TitleDisplay() {
 	    
-        super(false, false, new Menu.Builder(true, 2, RelPos.CENTER,
+        super(false, false, new Menu.Builder(true, 1, RelPos.CENTER,
                 new StringEntry(""),
-                new BlankEntry(),
                 new SelectEntry("Singleplayer", () -> {
                     if (WorldSelectDisplay.getWorldNames().size() > 0)
                         Game.setMenu(new Display(true, new Menu.Builder(false, 2, RelPos.CENTER,
@@ -48,6 +47,7 @@ public class TitleDisplay extends Display {
                 new SelectEntry("Multiplayer", () -> Game.setMenu(new MultiplayerDisplay())),
                 new SelectEntry("Options", () -> Game.setMenu(new OptionsDisplay())),
                 new SelectEntry("Credits", () -> Game.setMenu(new BookDisplay(BookData.credits))),
+                new SelectEntry("Textures", () -> Game.setMenu(new TexturePackDisplay())),
                 displayFactory("Help",
                     new SelectEntry("Instructions", () -> Game.setMenu(new BookDisplay(BookData.instructions))),
                     new BlankEntry(),
@@ -72,12 +72,14 @@ public class TitleDisplay extends Display {
         super.init(null); // The TitleScreen never has a parent.
         Renderer.readyToRenderGameplay = false;
 
-        if (random.nextInt(2) == 1) {
-            Sound.Intro.loop(true);
+        //Sound.Intro.loop(true);
+        
+        if (random.nextInt(2) == 0) {
+            Sound.Intro.play();
             //Sound.Intro2.stop();
         }
-        if (random.nextInt(2) == 2) {
-            Sound.Intro2.loop(true);
+        if (random.nextInt(2) == 1) {
+            Sound.Intro2.play();
             //Sound.Intro.stop();
 
         }
@@ -184,37 +186,36 @@ public class TitleDisplay extends Display {
 
     }
 
-    @Override
-    public void render(Screen screen) {
-        screen.clear(0);
-	    
-        // Background sprite
-        int hh = 264;
-        int ww = 408;
-        int xxo = (Screen.w - ww * 8) / 2; // X location of the title
-        int yyo = 12; // Y location of the title
-        
-        for (int y = 0; y < hh; y++) {
-              for (int x = 0; x < ww; x++) {
-            	  screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x + 15, y + 32, 0, 3));
-              }
-          }
-        
-        // Reender the options
-        super.render(screen);
-        
-        // Title sprite
-        int h = 6; // Height of squares (on the spritesheet)
-        int w = 20; // Width of squares (on the spritesheet)
-        int xo = (Screen.w - w * 8) / 2; // X location of the title
-        int yo = 55; // Y location of the title
+	@Override
+	public void render(Screen screen) {
+		screen.clear(0);
 
+		// Background sprite
+		int hh = 33;// Height of squares (on the spritesheet)
+		int ww = 400;// Width of squares (on the spritesheet)
+		int xxo = (Screen.w - ww * 8) / 2; // X location of the title
+		int yyo = 12; // Y location of the title
 
-        for (int y = 0; y < h; y++) {
-            for (int x = 0; x < w; x++) {
-                screen.render(xo + x * 8, yo + y * 8, x + (y + 7) * 32, 0, 3);
-            }
-        }
+		for (int y = 0; y < hh; y++) {
+			for (int x = 0; x < ww; x++) {
+				screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x - 8, y + 32, 0, 3));
+			}
+		}
+
+		// Render the options
+		super.render(screen);
+
+		// Title sprite
+		int h = 6; // Height of squares (on the spritesheet)
+		int w = 20; // Width of squares (on the spritesheet)
+		int xo = (Screen.w - w * 8) / 2; // X location of the title
+		int yo = 55; // Y location of the title
+
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				screen.render(xo + x * 8, yo + y * 8, x + (y + 7) * 32, 0, 3);
+			}
+		}
 
         boolean isblue = splashes[rand].contains("blue");
         boolean isGreen = splashes[rand].contains("Green");
@@ -230,9 +231,9 @@ public class TitleDisplay extends Display {
         Font.drawCentered(splashes[rand], screen, 100, splashColor);
 
         //Font.draw("Version " + Game.BUILD, screen, 1, 1, Color.get(1, 51));
-        Font.draw(Game.BUILD, screen, 1, 1, Color.get(1, 51));
+        //Font.draw(Game.BUILD, screen, 1, 1, Color.get(1, 100));
 
-        Font.drawCentered("Mod by TheBigEye", screen, Screen.h - 12, Color.get(1, 51));
+        //Font.drawCentered("Mod by TheBigEye", screen, Screen.h - 11, Color.get(1, 100));
     }
 
     private static final String[] splashes = {
@@ -254,9 +255,9 @@ public class TitleDisplay extends Display {
         "Also play MiniCraft Mob Overload!",
         "Also play Minitale!, oh right :(",
         
-        "Playing "+Game.BUILD+", nice!",
+        "Playing " + Game.BUILD + ", nice!",
         "Based in Minicraft+, nice!",
-        "Updates always",
+        "Updates always!",
         
         // Now with...
         "Now with better fishing!",
