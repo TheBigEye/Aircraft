@@ -1,17 +1,6 @@
 package minicraft.screen;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
-
-import javax.imageio.ImageIO;
-
+import minicraft.core.FileHandler;
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.gfx.Color;
@@ -19,132 +8,149 @@ import minicraft.gfx.Font;
 import minicraft.gfx.Screen;
 import minicraft.gfx.SpriteSheet;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class TexturePackDisplay extends Display {
-	  
-	  public String Default = "Default";
-	  
-	  public static int selected = 0;
-	  
-	  public int numberoftps = 0;
-	  
-	  public List<String> texturepacks = new ArrayList<String>();
-	  
-	  public File location = new File(String.valueOf(System.getenv("APPDATA")) + "/playminicraft/mods/Aircraft/TexturePacks");
-	  
-	  public TexturePackDisplay() {
-	    texturepacks.add(this.Default);
-	    numberoftps++;
-	    location.mkdirs();
-	    File[] listOfFiles = location.listFiles();
-	    for (int i = 0; i < listOfFiles.length; i++) {
-	      String files = listOfFiles[i].getName();
-	      if (files.length() > 4 && files.substring(files.length() - 4).equals(".zip")) {
-	        texturepacks.add(listOfFiles[i].getName());
-	        numberoftps++;
-	      } 
-	    } 
-	  }
-	  
-	  public void tick(InputHandler input) {
-          if (input.getKey("MOVE-DOWN").clicked && 
-	      selected > 0)
-	      selected--; 
-	    if (input.getKey("MOVE-UP").clicked && 
-	      selected < numberoftps - 1)
-	      selected++; 
-		if (input.getKey("menu").clicked || input.getKey("attack").clicked || input.getKey("exit").clicked) {
-	      Game.exitMenu();
-	    if ((((texturepacks.size() > 0) ? 1 : 0) & ((selected > 0) ? 1 : 0)) != 0) {
-	      File f = new File(this.location + "/" + (String)this.texturepacks.get(selected));
-	      setSpriteSheet(f);
-	    } else {
-	      try {
-	      	SpriteSheet itemSheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/items.png")));
-	      	SpriteSheet tileSheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/tiles.png")));
-			SpriteSheet entitySheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/entities.png")));
-			SpriteSheet guiSheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/gui.png")));
-			
-			
-	      } catch (IOException e) {
-	        e.printStackTrace();
-	      } 
-	    } 
-	    }
-	  }
-	  
-	  public void render(Screen screen) {
-	    screen.clear(0);
-	    int selectedp1 = selected + 1;
-	    int selectedm1 = selected - 1;
-	    String dselectedp1 = "";
-	    String dselectedm1 = "";
-	    if (selectedp1 > numberoftps - 1) {
-	      dselectedp1 = "";
-	    } else {
-	      dselectedp1 = texturepacks.get(selectedp1);
-	    } 
-	    if (selectedm1 < 0) {
-	      dselectedm1 = "";
-	    } else {
-	      dselectedm1 = texturepacks.get(selectedm1);
-	    } 
-	    Font.draw("Texture Packs", screen, 28, 8, Color.get(0, 555, 555, 555));
-	    Font.draw(NameShortenIfLong(texturepacks.get(selected)), screen, 2, 80, Color.get(0, 555, 555, 555));
-	    Font.draw(NameShortenIfLong(dselectedm1), screen, 2, 72, Color.get(0, 222, 222, 222));
-	    Font.draw(NameShortenIfLong(dselectedp1), screen, 2, 90, Color.get(0, 222, 222, 222));
-	    Font.drawCentered("Arrows keys, X, C", screen, Screen.h - 11, Color.get(0, 222, 222, 222));
-	    int h = 2;
-	    int w = 13;
-	    int titleColor = Color.get(0, 8, 131, 551);
-	    int xo = (screen.w - w * 8) / 2;
-	    int yo = 24;
-	    for (int y = 0; y < h; y++) {
-	      for (int x = 0; x < w; x++)
-	        screen.render(xo + x * 8, yo + y * 8, x + (y + 6) * 32, titleColor, 0); 
-	    } 
-	    screen.render(24, 48, 134, Color.get(-1, 110, 330, 550), 0);
-	    screen.render(48, 48, 136, Color.get(-1, 110, 330, 550), 0);
-	    screen.render(72, 48, 164, Color.get(-1, 100, 321, 45), 0);
-	    screen.render(96, 48, 384, Color.get(0, 200, 500, 533), 0);
-	    screen.render(120, 48, 135, Color.get(-1, 100, 320, 430), 0);
-	  }
-	  
-	  public String NameShortenIfLong(String s) {
-	    String New;
-	    if (s.length() > 20) {
-	      New = String.valueOf(s.substring(0, 16)) + "...";
-	    } else {
-	      New = s;
-	    } 
-	    return New;
-	  }
-	  
-	  public void setSpriteSheet(File f) {
-	    try {
-	      ZipFile zfile = new ZipFile(f);
-	      Enumeration<? extends ZipEntry> entries = zfile.entries();
-	      while (entries.hasMoreElements()) {
-	        ZipEntry zipEntry = entries.nextElement();
-	        if (!zipEntry.isDirectory()) {
-	          String fileName = zipEntry.getName();
-	          if (fileName.endsWith(".png")) {
-	            InputStream zis = zfile.getInputStream(zipEntry);
-	            if (selected != 0)
-	              try {
-	                SpriteSheet itemSheet = new SpriteSheet(ImageIO.read(zis));
-	                SpriteSheet tileSheet = new SpriteSheet(ImageIO.read(zis));
-	                SpriteSheet entitySheet = new SpriteSheet(ImageIO.read(zis));
-	                SpriteSheet guiSheet = new SpriteSheet(ImageIO.read(zis));
-	              } catch (IOException iOException) {} 
-	          } 
-	        } 
-	      } 
-	      zfile.close();
-	    } catch (ZipException e) {
-	      e.printStackTrace();
-	    } catch (IOException e) {
-	      e.printStackTrace();
-	    } 
-	  }
-	}
+
+    private static final String DEFAULT_TEXTURE_PACK = "Default"; // Default texture :)
+    private static final String[] ENTRY_NAMES = new String[] {
+		    
+        "items.png", // Items sheet
+        "tiles.png", // Tiles sheet
+        "entities.png", // Entities sheet
+        "gui.png" // GUI Elements sheet
+        
+    };
+
+    private final List < String > textureList;
+    private final File location;
+
+    private int selected;
+    private boolean shouldUpdate;
+
+    /* The texture packs are put in a folder "Textures packs".
+     * Many texture packs can be put according to the number of files.
+     */
+
+    public TexturePackDisplay() {
+        this.textureList = new ArrayList < > ();
+        this.textureList.add(TexturePackDisplay.DEFAULT_TEXTURE_PACK);
+
+        // Generate texture packs folder
+        this.location = new File(FileHandler.getSystemGameDir() + "/" + FileHandler.getLocalGameDir() + "/TexturePacks");
+        this.location.mkdirs();
+
+        // Read and add the .zip file to the texture pack list
+        for (String fileName: Objects.requireNonNull(location.list())) {
+            if (fileName.endsWith(".zip")) { // only .zip files ok?
+                textureList.add(fileName);
+            }
+        }
+    }
+
+	private void updateSpriteSheet(Screen screen) throws IOException {
+		SpriteSheet[] sheets = new SpriteSheet[TexturePackDisplay.ENTRY_NAMES.length];
+		if (selected == 0) {
+			sheets[0] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/items.png")));
+			sheets[1] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/tiles.png")));
+			sheets[2] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/entities.png")));
+			sheets[3] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/gui.png")));
+		} else {
+			try (ZipFile zipFile = new ZipFile(new File(location, textureList.get(selected)))) {
+				for (int i = 0; i < TexturePackDisplay.ENTRY_NAMES.length; i++) {
+					ZipEntry entry = zipFile.getEntry(TexturePackDisplay.ENTRY_NAMES[i]);
+					if (entry != null) {
+						try (InputStream inputEntry = zipFile.getInputStream(entry)) {
+							sheets[i] = new SpriteSheet(ImageIO.read(inputEntry));
+						}
+                    }
+                }
+            }
+        }
+
+        // Set texture pack
+        screen.setSheet(sheets[0], sheets[1], sheets[2], sheets[3]);
+    }
+
+    @Override
+    public void tick(InputHandler input) {
+        if (input.getKey("menu").clicked || input.getKey("attack").clicked || input.getKey("exit").clicked) {
+            Game.exitMenu();
+            return;
+        }
+
+        if (input.getKey("MOVE-DOWN").clicked && selected > 0) {
+            selected--;
+            shouldUpdate = true;
+        }
+        if (input.getKey("MOVE-UP").clicked && selected < textureList.size() - 1) {
+            selected++;
+            shouldUpdate = true;
+        }
+    }
+
+    // In case the name is too big ...
+    private static String shortNameIfLong(String name) {
+        return name.length() > 22 ? name.substring(0, 16) + "..." : name;
+    }
+
+    @Override
+    public void render(Screen screen) {
+        screen.clear(0);
+
+        if (shouldUpdate) {
+            shouldUpdate = false;
+
+            try {
+            	
+            	System.out.println("Works!!");
+            	
+                updateSpriteSheet(screen);
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
+
+        String selectedUp = selected + 1 > textureList.size() - 1 ? "" : textureList.get(selected + 1);
+        String selectedDown = selected - 1 < 0 ? "" : textureList.get(selected - 1);
+
+        // Render the menu
+        Font.drawCentered("Texture Packs", screen, Screen.h - 280, Color.get(0, 555, 555, 555)); // Title
+        Font.drawCentered(TexturePackDisplay.shortNameIfLong(selectedDown), screen, Screen.h - 110, Color.GRAY); // Unselected space
+        Font.drawCentered(TexturePackDisplay.shortNameIfLong(textureList.get(selected)), screen, Screen.h - 120, Color.GREEN); // Selection
+        Font.drawCentered(TexturePackDisplay.shortNameIfLong(selectedUp), screen, Screen.h - 130, Color.GRAY); // Other unselected space
+        Font.drawCentered("Use " + Game.input.getMapping("MOVE-DOWN") + ", " + Game.input.getMapping("MOVE-UP"), screen, Screen.h - 11, Color.get(0, 111, 111, 111)); // Controls
+
+
+        int h = 2;
+        int w = 15;
+        int xo = (Screen.w - w * 8) / 2;
+        int yo = 28;
+
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                screen.render(xo + x * 8, yo + y * 8, x + y * 32, 0, 3); // Texture pack logo
+            }
+        }
+
+        /* Unnecessary for now...
+         * This part is used to test the change of textures
+         * in some future it may be useful
+         *
+         *screen.render(24, 48, 134, Color.get(-1, 110, 330, 550), 0);
+         *screen.render(48, 48, 136, Color.get(-1, 110, 330, 550), 0);
+         *screen.render(72, 48, 164, Color.get(-1, 100, 321, 45), 0);
+         *screen.render(96, 48, 384, Color.get(0, 200, 500, 533), 0);
+         *screen.render(120, 48, 135, Color.get(-1, 100, 320, 430), 0);
+         */
+    }
+
+}

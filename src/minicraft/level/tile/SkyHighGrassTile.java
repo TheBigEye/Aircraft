@@ -45,7 +45,7 @@ public class SkyHighGrassTile extends Tile {
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("Sky Grass")); // would allow you to shovel cloud, I think.
-					Sound.monsterHurt.play();
+					Sound.Tile_generic_hurt.play();
 					if (random.nextInt(5) == 0) { // 20% chance to drop seeds
 						level.dropItem(xt * 16 + 8, yt * 16 + 8, 2, Items.get("dirt"));
 					}
@@ -55,7 +55,7 @@ public class SkyHighGrassTile extends Tile {
 			if (tool.type == ToolType.Pickaxe) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("path"));
-					Sound.monsterHurt.play();
+					Sound.Tile_generic_hurt.play();
 				}
 			}
 		}

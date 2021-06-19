@@ -126,7 +126,7 @@ public class EyeQueenPhase3 extends EnemyMob {
 		
 		DeathAnim = true;
 		super.die();
-		Sound.eyeBossDeath.play();
+		Sound.Mob_eyeBoss_death.play();
 		//Game.setMenu(new EndGameDisplay(player));
 		//Game.setMenu(new EndMessageDisplay(player));
 	}

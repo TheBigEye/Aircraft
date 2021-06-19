@@ -62,7 +62,7 @@ public class FerrositeTile extends Tile {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Shovel && player.payStamina(5)) {
 				level.setTile(xt, yt, Tiles.get("Infinite fall")); // would allow you to shovel cloud, I think.
-				Sound.monsterHurt.play();
+				Sound.Tile_generic_hurt.play();
 				level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 3, Items.get("cloud"));
 				return true;
 			}

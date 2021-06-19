@@ -214,13 +214,13 @@ public class AirWizardPhase2 extends EnemyMob {
 	/** What happens when the air wizard dies */
 	public void die() {
 		Player[] players = level.getPlayers();
-		Sound.changePhase.play();
+		Sound.Mob_wizard_changePhase.play();
 		if (players.length > 0) { // if the player is still here
 			for(Player p: players)
 				p.addScore((secondform ? 500000 : 100000)); // give the player 100K or 500K points.
 		}
 		
-		Sound.changePhase.play();
+		Sound.Mob_wizard_changePhase.play();
 		
 		if(!secondform) {
 			level.add(new AirWizardPhase3(1), x, y);

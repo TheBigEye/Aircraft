@@ -47,33 +47,33 @@ public class ObsidianTile extends Tile {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					Sound.monsterHurt.play();
+					Sound.Tile_generic_hurt.play();
 					return true;
 				}
 			}
 			if (tool.type == ToolType.Hoe) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					Sound.monsterHurt.play();
+					Sound.Tile_generic_hurt.play();
 					return true;
 				}
 			}
 			if (tool.type == ToolType.Pickaxe && tool.level == 0) {
-				Sound.monsterHurt.play();
+				Sound.Tile_generic_hurt.play();
 			}
 			if (tool.type == ToolType.Pickaxe && tool.level == 1) {
-				Sound.monsterHurt.play();
+				Sound.Tile_generic_hurt.play();
 			}
 			if (tool.type == ToolType.Pickaxe && tool.level == 2) {
-				Sound.monsterHurt.play();
+				Sound.Tile_generic_hurt.play();
 			}
 			if (tool.type == ToolType.Pickaxe && tool.level == 3) {
-				Sound.monsterHurt.play();
+				Sound.Tile_generic_hurt.play();
 			}
 			if (tool.type == ToolType.Pickaxe && tool.level == 4) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("hole"));
 					level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 3, Items.get("Obsidian"));
-					Sound.monsterHurt.play();
+					Sound.Tile_generic_hurt.play();
 				}
 			}
 		}

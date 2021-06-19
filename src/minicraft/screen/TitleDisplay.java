@@ -47,7 +47,7 @@ public class TitleDisplay extends Display {
                 new SelectEntry("Multiplayer", () -> Game.setMenu(new MultiplayerDisplay())),
                 new SelectEntry("Options", () -> Game.setMenu(new OptionsDisplay())),
                 new SelectEntry("Credits", () -> Game.setMenu(new BookDisplay(BookData.credits))),
-                new SelectEntry("Textures", () -> Game.setMenu(new TexturePackDisplay())),
+                //new SelectEntry("Textures", () -> Game.setMenu(new TexturePackDisplay())),
                 displayFactory("Help",
                     new SelectEntry("Instructions", () -> Game.setMenu(new BookDisplay(BookData.instructions))),
                     new BlankEntry(),
@@ -138,7 +138,7 @@ public class TitleDisplay extends Display {
             rand = random.nextInt(splashes.length - 3) + 3;
 
         }
-
+        
         World.levels = new Level[World.levels.length];
 
         if (Game.player == null || Game.player instanceof RemotePlayer)
@@ -275,6 +275,7 @@ public class TitleDisplay extends Display {
         "MinicraftPlus on Youtube",
         "Join the Forums!",
         "The Wiki is weak! Help it!",
+        "Great little community!",
 
         
         "Notch is Awesome!",
@@ -282,9 +283,10 @@ public class TitleDisplay extends Display {
         "Shylor is the man!",
         "Chris J is great with portals!",
         "AntVenom loves cows! Honest!",
-        "TheBigEye.... Cake rain!",
+        "The eye and Cake rain!",
         "ASCII",
 
+        "nobody should read this! #404",
         
         "You should read Antidious Venomi!",
         "Oh Hi Mark",
@@ -324,6 +326,7 @@ public class TitleDisplay extends Display {
         "Windows? I prefer Doors!",
         "2.5D FTW!",
         "Grab your friends!",
+        "Sky?, better Aether",
 
         // Not Included
         "Null not included",
@@ -334,6 +337,7 @@ public class TitleDisplay extends Display {
         "No Endermen included!",
         "3rd dimension not included!",
         "Orange box not included",
+        "Alpha version not included!",
 
         // Included
         "Villagers included!",
@@ -350,6 +354,7 @@ public class TitleDisplay extends Display {
         "Enchantments Now Included!",
         "Multiplayer Now Included!",
         "Carrots Now Included!",
+        "Potatos Now Included!",
         "Boats Now Included!",
         "Maps Now Included!",
         "Books included!",
@@ -357,6 +362,8 @@ public class TitleDisplay extends Display {
         "Big eye included!",
         //"Nether Now Included?",
 
+        "Shhh!,secret dimension!",
+        
         // Worlds
         "Bigger Worlds!",
         "World types!",
@@ -365,12 +372,16 @@ public class TitleDisplay extends Display {
         "Desert Biome!",
         "Forest Biome!",
         "Snow Biome!",
+        "Better sky",
+        "Slow world gen :(",
 
         // Ideas
         "Sugarcane is a Idea!",
         "Milk is an idea!",
         "Cakes is an idea!",
 
+        "Texture packs!",
+        
         "Creeper, aw man",
         "So we back in the mine,",
         "pickaxe swinging from side to side",
@@ -389,13 +400,15 @@ public class TitleDisplay extends Display {
         "Defeat the Air Wizard!",
         "Defeat the Eye queen!",
         "Defeat the Keeper!",
-        "Defeat me",
+        "Defeat me...",
         
         "Conquer the Dungeon!",
         "One down, one to go...",
         "Loom + Wool = String!",
         "String + Wood = Rod!",
         "Sand + Gunpowder = TNT!",
+        
+        "Try Eyenglish!",
         
         "Sleep at Night!",
         "Farm at Day!",
@@ -405,9 +418,9 @@ public class TitleDisplay extends Display {
         "Why is this blue?",
         "Green is a nice color!",
         "Red is my favorite color!",
-        "Hmmmm Orange!",
+        "Hmmm Orange!",
         "Yellow = Happy!",
-        "Y U NO BOAT!?",
+        //"Y U NO BOAT!?",
         "Made with 10000% Vitamin Z!",
         "Too much DP!",
         "Punch the Moon!",
@@ -429,6 +442,7 @@ public class TitleDisplay extends Display {
         "001100010011000000110001!",
         "011010000110110101101101?",
         "...zzz...",
-        "The cake is a lie!",
+        
+        "Something cool is coming ;)",
     };
 }

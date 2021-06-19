@@ -69,7 +69,7 @@ public class FloorTile extends Tile {
 						drop = Items.get(type.name() + " Brick");
 						break;
 					}
-					Sound.monsterHurt.play();
+					Sound.Tile_generic_hurt.play();
 					level.dropItem(xt * 16 + 8, yt * 16 + 8, drop);
 					return true;
 				}

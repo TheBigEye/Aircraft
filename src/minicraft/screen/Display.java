@@ -61,7 +61,7 @@ public class Display {
 			if (input.getKey(shift+"right").clicked) selection++;
 			
 			if(prevSel != selection) {
-				Sound.select.play();
+				Sound.GUI_select.play();
 				
 				int delta = selection - prevSel;
 				selection = prevSel;

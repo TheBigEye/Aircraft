@@ -1072,16 +1072,16 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public void pickupItem(ItemEntity itemEntity) {
 		
 		if (random.nextInt(4) == 1) {
-			Sound.pickup.play();
+			Sound.Mob_player_pickup.play();
 		}
 		if (random.nextInt(4) == 2) {
-			Sound.pickup3.play();
+			Sound.Mob_player_pickup_3.play();
 		}
 		if (random.nextInt(4) == 3) {
-			Sound.pickup4.play();
+			Sound.Mob_player_pickup_4.play();
 		}
 		if (random.nextInt(4) == 4) {
-			Sound.pickup4.play();
+			Sound.Mob_player_pickup_4.play();
 		}
 
 		
@@ -1222,7 +1222,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		if (curArmor != null)
 			dc.getInventory().add(curArmor);
 
-		Sound.playerDeath.play();
+		Sound.Mob_player_death.play();
 
 		if (!Game.ISONLINE)
 			World.levels[Game.currentLevel].add(dc);
@@ -1255,7 +1255,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		
 		int healthDam = 0, armorDam = 0;
 		if (fullPlayer) {
-			Sound.playerHurt.play();
+			Sound.Mob_player_hurt.play();
 			if (curArmor == null) { // No armor
 				healthDam = damage; // Subtract that amount
 			} else { // Has armor
@@ -1280,7 +1280,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				}
 			}
 		} else
-			Sound.monsterHurt.play();
+			Sound.Mob_player_hurt.play();
 		
 		if (healthDam > 0 || !fullPlayer) {
 			level.add(new TextParticle("" + damage, x, y, Color.get(-1, 504)));

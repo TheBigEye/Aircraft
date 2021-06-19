@@ -479,6 +479,7 @@ public class Renderer extends Game {
 	private static void renderFocusNagger() {
 		String msg = "Click to focus!"; // the message when you click off the screen.
 		Updater.paused = true; // perhaps paused is only used for this.
+		
 		int xx = (Screen.w - Font.textWidth(msg)) / 2; // the width of the box
 		int yy = (HEIGHT - 8) / 2; // the height of the box
 		int w = msg.length(); // length of message in characters.

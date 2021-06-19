@@ -69,7 +69,7 @@ public class SandRockTile extends Tile {
 			coalLvl = 1;
 		}
 		level.add(new SmashParticle(x * 16, y * 16));
-		Sound.monsterHurt.play();
+		Sound.Tile_generic_hurt.play();
 
 		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
 		if (damage >= rockHealth) {

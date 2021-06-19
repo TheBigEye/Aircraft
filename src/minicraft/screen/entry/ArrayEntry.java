@@ -117,7 +117,7 @@ public class ArrayEntry<T> extends ListEntry {
 			selection++;
 
 		if (prevSel != selection) {
-			Sound.select.play();
+			Sound.GUI_select.play();
 			moveSelection(selection - prevSel);
 		}
 	}

@@ -87,7 +87,7 @@ public class OreTile extends Tile {
 			dmg = damage = oreH;
 
 		level.add(new SmashParticle(x * 16, y * 16));
-		Sound.monsterHurt.play();
+		Sound.Tile_generic_hurt.play();
 
 		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
 		if (dmg > 0) {

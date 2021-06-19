@@ -26,7 +26,8 @@ public class OptionsDisplay extends Display {
 				new BlankEntry(),
 				new SelectEntry("Change Key Bindings", () -> Game.setMenu(new KeyInputDisplay())),
 				Settings.getEntry("language"),
-				Settings.getEntry("textures"),
+				//Settings.getEntry("textures"),
+				new SelectEntry("Texture packs", () -> Game.setMenu(new TexturePackDisplay())),
 				new BlankEntry(),
 				new SelectEntry("Open Game Folder", () -> {
 	                try {

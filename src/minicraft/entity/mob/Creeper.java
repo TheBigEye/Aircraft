@@ -73,7 +73,20 @@ public class Creeper extends EnemyMob {
 			if (playerInRange) {
 				// blow up
 				
-				Sound.explode.play();
+				
+				if (random.nextInt(4) == 1) {
+					Sound.Mob_creeper_explode.play();
+				}
+				if (random.nextInt(4) == 2) {
+					Sound.Mob_creeper_explode_4.play();
+				}
+				if (random.nextInt(4) == 3) {
+					Sound.Mob_creeper_explode.play();
+				}
+				if (random.nextInt(4) == 4) {
+					Sound.Mob_creeper_explode_4.play();
+				}
+				
 				
 				// figure out which tile the mob died on
 				int xt = x >> 4;
@@ -157,7 +170,7 @@ public class Creeper extends EnemyMob {
 		
 		if (entity instanceof Player) {
 			if (fuseTime == 0 && !fuseLit) {
-				Sound.fuse.play();
+				Sound.Mob_creeper_fuse.play();
 				fuseTime = MAX_FUSE_TIME;
 				fuseLit = true;
 			}
@@ -194,7 +207,7 @@ public class Creeper extends EnemyMob {
 			 	boolean wasLit = fuseLit;
 				fuseLit = Boolean.parseBoolean(val);
 				if(fuseLit && !wasLit)
-					Sound.fuse.play();
+					Sound.Mob_creeper_fuse.play();
 		}
 		
 		return false;

@@ -113,7 +113,7 @@ public class EyeQueenPhase2 extends EnemyMob {
 		if (Settings.get("diff").equals("Hard")) {min = 0; max = 2;}
 		
 		super.die();
-		Sound.eyeChangePhase.play();
+		Sound.Mob_eyeBoss_changePhase.play();
 		level.add(new EyeQueenPhase3(1), x, y);
 	}
 

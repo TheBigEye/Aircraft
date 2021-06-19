@@ -101,7 +101,7 @@ public class CraftingDisplay extends Display {
 			if(r.getCanCraft()) {
 				r.craft(player);
 				
-				Sound.craft.play();
+				Sound.Mob_player_craft.play();
 				
 				refreshData();
 				for(Recipe recipe: recipes)

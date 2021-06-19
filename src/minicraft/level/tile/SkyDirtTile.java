@@ -63,7 +63,7 @@ public class SkyDirtTile extends Tile {
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("cloud"));
-					Sound.monsterHurt.play();
+					Sound.Tile_generic_hurt.play();
 					level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Sky dirt"));
 					
 					if (random.nextInt(64) == 0) { // 2% chance to drop bones
@@ -76,7 +76,7 @@ public class SkyDirtTile extends Tile {
 			if (tool.type == ToolType.Hoe) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("sky farmland"));
-					Sound.monsterHurt.play();
+					Sound.Tile_generic_hurt.play();
 					return true;
 				}
 			}

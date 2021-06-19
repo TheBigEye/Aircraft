@@ -74,7 +74,7 @@ public class TorchTile extends Tile {
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (item instanceof PowerGloveItem) {
 			level.setTile(xt, yt, this.onType);
-			Sound.monsterHurt.play();
+			Sound.Tile_generic_hurt.play();
 			int randX = rnd.nextInt(20);
 			int randY = rnd.nextInt(19);
 			level.add(new FireParticle(xt - 1 + randX, yt - 1 + randY));

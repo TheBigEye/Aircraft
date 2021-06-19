@@ -63,7 +63,7 @@ public class Tnt extends Furniture implements ActionListener {
 						Tnt tnt = (Tnt) e;
 						if (!tnt.fuseLit) {
 							tnt.fuseLit = true;
-							Sound.fuse.play();
+							Sound.Furniture_tnt_fuse.play();
 							tnt.ftik = FUSE_TIME * 2 / 3;
 						}
 					}
@@ -72,16 +72,16 @@ public class Tnt extends Furniture implements ActionListener {
 				// Sound.explode.play();
 
 				if (random.nextInt(4) == 1) {
-					Sound.explode2.play();
+					Sound.Furniture_tnt_explode.play();
 				}
 				if (random.nextInt(4) == 2) {
-					Sound.explode3.play();
+					Sound.Furniture_tnt_explode_2.play();
 				}
 				if (random.nextInt(4) == 3) {
-					Sound.explode4.play();
+					Sound.Furniture_tnt_explode_3.play();
 				}
 				if (random.nextInt(4) == 4) {
-					Sound.explode4.play();
+					Sound.Furniture_tnt_explode_4.play();
 				}
 
 				int xt = x >> 4;
@@ -124,7 +124,7 @@ public class Tnt extends Furniture implements ActionListener {
 	public boolean interact(Player player, Item heldItem, Direction attackDir) {
 		if (!fuseLit) {
 			fuseLit = true;
-			Sound.fuse.play();
+			Sound.Furniture_tnt_fuse.play();
 			return true;
 		}
 

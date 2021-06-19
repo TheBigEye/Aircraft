@@ -25,7 +25,7 @@ public class PathTile extends Tile {
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("hole"));
-					Sound.monsterHurt.play();
+					Sound.Tile_generic_hurt.play();
 					level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("dirt"));
 					return true;
 				}

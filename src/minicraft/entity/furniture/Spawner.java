@@ -153,7 +153,7 @@ public class Spawner extends Furniture {
 		// if (Game.debug) level.printLevelLoc("spawning new " + mob, (newmob.x>>4), (newmob.y>>4), "...");
 
 		level.add(newmob);
-		Sound.monsterHurt.play();
+		Sound.Furniture_spawner_spawn.play();
 		for (int i = 0; i < 6; i++) {
 			int randX = rnd.nextInt(16);
 			int randY = rnd.nextInt(12);
@@ -166,7 +166,7 @@ public class Spawner extends Furniture {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
 
-			Sound.monsterHurt.play();
+			Sound.Furniture_spawner_hurt.play();
 
 			int dmg;
 			if (Game.isMode("creative"))
@@ -187,16 +187,16 @@ public class Spawner extends Furniture {
 				level.remove(this);
 
 				if (random.nextInt(4) == 0) {
-					Sound.playerHurt.play();
+					Sound.Furniture_spawner_hurt.play();
 				}
 				if (random.nextInt(4) == 1) {
-					Sound.DestroySpawner.play();
+					Sound.Furniture_spawner_destroy.play();
 				}
 				if (random.nextInt(4) == 2) {
-					Sound.DestroySpawner2.play();
+					Sound.Furniture_spawner_destroy_2.play();
 				}
 				if (random.nextInt(4) == 3) {
-					Sound.DestroySpawner3.play();
+					Sound.Furniture_spawner_destroy_3.play();
 				}
 
 				// Sound.playerDeath.play();

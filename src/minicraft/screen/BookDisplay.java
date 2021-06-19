@@ -6,7 +6,6 @@ import java.util.Arrays;
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
-import minicraft.core.io.Sound;
 import minicraft.gfx.Color;
 import minicraft.gfx.Font;
 import minicraft.gfx.Point;
@@ -99,13 +98,13 @@ public class BookDisplay extends Display {
 		
 		if (input.getKey("cursor-left").clicked)
 			turnPage(-1); // this is what turns the page back
-		if (input.getKey("cursor-left").clicked)
-			Sound.PageUp.play();
+		//if (input.getKey("cursor-left").clicked)
+			//Sound.GUI_PageUp.play();
 
 		if (input.getKey("cursor-right").clicked)
 			turnPage(1); // this is what turns the page forward
-		if (input.getKey("cursor-right").clicked)
-			Sound.PageUp.play();
+		//if (input.getKey("cursor-right").clicked)
+			//Sound.GUI_PageUp.play();
 
 	}
 }

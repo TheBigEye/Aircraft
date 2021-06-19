@@ -58,11 +58,11 @@ public class MultiplayerDisplay extends Display {
 		Game.ISONLINE = true;
 		Game.ISHOST = false;
 		
-		if(savedUUID == null) savedUUID = "";
-		if(email == null) email = "";
-		if(savedUsername == null) savedUsername = "";
+		if (savedUUID == null) savedUUID = "";
+		if (email == null) email = "";
+		if (savedUsername == null) savedUsername = "";
 		
-		if(pingSite)
+		if (pingSite)
 			contactAccountServer(() -> {});
 	}
 	
@@ -70,7 +70,7 @@ public class MultiplayerDisplay extends Display {
 	public MultiplayerDisplay(String ipAddress) {
 		this(false);
 		contactAccountServer(() -> {
-			if(curState == State.ENTERIP) { // login was automatic
+			if (curState == State.ENTERIP) { // login was automatic
 				setWaitMessage("connecting to server");
 				Game.client = new MinicraftClient(savedUsername,this, ipAddress);
 			} else
@@ -84,25 +84,25 @@ public class MultiplayerDisplay extends Display {
 		Unirest.get(domain).asBinaryAsync(new Callback<InputStream>() {
 			@Override
 			public void completed(HttpResponse<InputStream> httpResponse) {
-				if(httpResponse.getStatus() == 200)
+				if (httpResponse.getStatus() == 200)
 					online = true;
 				else
 					System.err.println("warning: minicraft site ping returned status code " + httpResponse.getStatus());
 				
-				if(savedUUID.length() > 0) {
+				if (savedUUID.length() > 0) {
 					// there is a previous login that can be used; check that it's valid
 					setWaitMessage("attempting log in");
 					//if (Game.debug) System.out.println("fetching username for uuid");
 					fetchName(savedUUID);
 				}
 				
-				if(curState == State.ERROR)
+				if (curState == State.ERROR)
 					return;
 				
 				// at this point, the game is online, and either the player could log in automatically, or has to enter their
 				// email and password.
 				
-				if(savedUsername.length() == 0 || savedUUID.length() == 0)
+				if (savedUsername.length() == 0 || savedUUID.length() == 0)
 					curState = State.LOGIN; // the player must log in manually.
 				else {
 					typing = savedIP;
@@ -115,7 +115,7 @@ public class MultiplayerDisplay extends Display {
 			@Override
 			public void failed(UnirestException e) {
 				System.err.println("website ping failed: "+e.getMessage());
-				if(!e.getMessage().equalsIgnoreCase("connection reset by peer"))
+				if (!e.getMessage().equalsIgnoreCase("connection reset by peer"))
 					e.printStackTrace();
 				cancelled();
 			}
@@ -123,7 +123,7 @@ public class MultiplayerDisplay extends Display {
 			@Override
 			public void cancelled() {
 				System.err.println("website ping cancelled.");
-				if(savedUsername.length() == 0 || savedUUID.length() == 0) {
+				if (savedUsername.length() == 0 || savedUUID.length() == 0) {
 					// couldn't validate username, and can't enter offline mode b/c there is no username
 					setError("could not connect to playminicraft account server, but no login data saved; cannot enter offline mode.", false);
 					return;
@@ -145,8 +145,8 @@ public class MultiplayerDisplay extends Display {
 				
 				inputIsValid = typing.length() != 0;
 				
-				if(input.getKey("select").clicked && inputIsValid) {
-					if(typingEmail) {
+				if (input.getKey("select").clicked && inputIsValid) {
+					if (typingEmail) {
 						typingEmail = false;
 						email = typing;
 						//new Save(game);
@@ -162,12 +162,12 @@ public class MultiplayerDisplay extends Display {
 			case ENTERIP:
 				typing = input.addKeyTyped(typing, null);
 				connectTimeout.tick(input);
-				if(input.getKey("select").clicked) {
+				if (input.getKey("select").clicked) {
 					setWaitMessage("connecting to server");
 					savedIP = typing;
 					new Thread(() -> {
 						Game.client = new MinicraftClient(savedUsername, this, typing, connectTimeout.getValue()*1000); // typing = ipAddress
-						if(Game.client.isConnected())
+						if (Game.client.isConnected())
 							new Save(); // write the saved ip to file
 						typing = "";
 					}).start();
@@ -184,12 +184,12 @@ public class MultiplayerDisplay extends Display {
 			
 			case WAITING:
 				/// this is just in case something gets set too early or something and the error state is overridden.
-				if(errorMessage.length() > 0)
+				if (errorMessage.length() > 0)
 					curState = State.ERROR;
 				break;
 		}
 		
-		if(input.getKey("exit").clicked && !Game.ISHOST) {
+		if (input.getKey("exit").clicked && !Game.ISHOST) {
 			Game.setMenu(new TitleDisplay());
 		}
 	}
@@ -205,7 +205,7 @@ public class MultiplayerDisplay extends Display {
 				@Override
 				public void completed(HttpResponse<JsonNode> response) {
 					JSONObject json = response.getBody().getObject();
-					if(Game.debug) System.out.println("received json from login attempt: " + json.toString());
+					if (Game.debug) System.out.println("received json from login attempt: " + json.toString());
 					switch(json.getString("status")) {
 						case "error":
 							setError(json.getString("message"), false); // in case the user abandoned the menu, don't drag them back.
@@ -247,7 +247,7 @@ public class MultiplayerDisplay extends Display {
 			e.printStackTrace();
 		}
 		
-		if(response != null) {
+		if (response != null) {
 			JSONObject json = response.getBody().getObject();
 			//if(Game.debug) System.out.println("received json from username request: " + json.toString());
 			switch(json.getString("status")) {
@@ -279,10 +279,10 @@ public class MultiplayerDisplay extends Display {
 	
 	public void setError(String msg) { setError(msg, true); }
 	private void setError(String msg, boolean overrideMenu) {
-		if(curState == State.ERROR) return; // keep original message
+		if (curState == State.ERROR) return; // keep original message
 		this.curState = State.ERROR;
 		errorMessage = msg;
-		if(overrideMenu && Game.getMenu() != this && Game.isValidClient())
+		if (overrideMenu && Game.getMenu() != this && Game.isValidClient())
 			Game.setMenu(this); // if you don't override the menu, then you'd have to already be viewing the multiplayer menu.
 	}
 	
@@ -294,7 +294,7 @@ public class MultiplayerDisplay extends Display {
 			case ENTERIP:
 				Font.drawCentered("logged in as: " + savedUsername, screen, 6, Color.get(1, 102, 255, 102));
 				
-				if(!online)
+				if (!online)
 					Font.drawCentered("offline mode: local servers only", screen, Screen.h/2 - Font.textHeight()*6, Color.get(1, 153, 153, 255));
 				
 				Font.drawCentered("Enter ip address to connect to:", screen, Screen.h/2-Font.textHeight()*2-2, Color.get(1, 255));
@@ -312,7 +312,7 @@ public class MultiplayerDisplay extends Display {
 				Font.drawCentered(msg, screen, Screen.h/2-6, Color.WHITE);
 				
 				msg = typing;
-				if(!typingEmail)
+				if (!typingEmail)
 					//noinspection ReplaceAllDot
 					msg = msg.replaceAll(".", ".");
 				Font.drawCentered(msg, screen, Screen.h/2+6, (inputIsValid?Color.get(1, 204):Color.RED));
@@ -343,8 +343,8 @@ public class MultiplayerDisplay extends Display {
 				break;
 		}
 		
-		if(curState == State.ENTERIP || curState == State.ERROR) {
-			Font.drawCentered("Press "+Game.input.getMapping("exit")+" to return", screen, Screen.h-Font.textHeight()*2, Color.GRAY);
+		if (curState == State.ENTERIP || curState == State.ERROR) {
+			Font.drawCentered("Press " + Game.input.getMapping("exit") + " to return", screen, Screen.h-Font.textHeight() * 2, Color.GRAY);
 		}
 	}
 }

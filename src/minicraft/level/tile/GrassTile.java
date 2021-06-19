@@ -57,7 +57,7 @@ public class GrassTile extends Tile {
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("dirt"));
-					Sound.monsterHurt.play();
+					Sound.Tile_generic_hurt.play();
 					if (random.nextInt(5) == 0) { // 20% chance to drop seeds
 						level.dropItem(xt * 16 + 8, yt * 16 + 8, 2, Items.get("seeds"));
 					}
@@ -67,7 +67,7 @@ public class GrassTile extends Tile {
 			if (tool.type == ToolType.Hoe) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("dirt"));
-					Sound.monsterHurt.play();
+					Sound.Tile_generic_hurt.play();
 					if (random.nextInt(15) == 0) { // 80% chance to drop seeds
 						level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("seeds"));
 					}
@@ -80,7 +80,7 @@ public class GrassTile extends Tile {
 			if (tool.type == ToolType.Pickaxe) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("path"));
-					Sound.monsterHurt.play();
+					Sound.Tile_generic_hurt.play();
 					if (random.nextInt(5) == 0) { // 20% chance to drop seeds
 						level.dropItem(xt * 16 + 8, yt * 16 + 8, 2, Items.get("seeds"));
 					}

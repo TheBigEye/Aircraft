@@ -87,7 +87,6 @@ public class Game {
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
 	
-	
 	/*****************************************************
 	 * This specifies a custom port instead of default to
 	 * server-side using --port parameter if something goes
@@ -112,7 +111,7 @@ public class Game {
 			return; // no action required; cannot exit from no menu
 		}
 
-		Sound.back.play();
+		Sound.GUI_back.play();
 		newMenu = menu.getParent();
 	}
 

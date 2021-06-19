@@ -72,6 +72,11 @@ public class FishingRodItem extends Item {
     public boolean isDepleted() {
         if (random.nextInt(100) > 120 - uses + level * 6) { // breaking is random, the lower the level, and the more times you use it, the higher the chance
             Game.notifications.add("Your Fishing rod broke.");
+            
+            if (random.nextInt(1000) == 16) {
+            	Game.notifications.add("065 108 105 099 101 044 032 116 101 032 097 109 111 046 046 046"); // Bug check (Not touch!)
+            }
+            
             return true;
         }
         return false;

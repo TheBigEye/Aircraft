@@ -205,7 +205,7 @@ public class AirWizard extends EnemyMob {
         }
 
         //Sound.bossDeath.play(); // play boss-death sound.
-        Sound.changePhase.play();
+        Sound.Mob_wizard_changePhase.play();
 
         if (!secondform) {
             level.add(new AirWizardPhase2(1), x, y);

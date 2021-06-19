@@ -42,7 +42,15 @@ public class FileHandler extends Game {
 			System.out.println("system game dir: " + systemGameDir);
 
 	}
+	
+	public static String getSystemGameDir() {
+		    return systemGameDir;
+	}
 
+	public static String getLocalGameDir() {
+		    return localGameDir;
+	}
+	
 	static void determineGameDir(String saveDir) {
 		gameDir = saveDir + localGameDir;
 		if (debug)

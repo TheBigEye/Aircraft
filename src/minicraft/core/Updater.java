@@ -199,8 +199,7 @@ public class Updater extends Game {
 			if (menu != null) {
 				// a menu is active.
 				if (player != null)
-					player.tick(); // it is CRUCIAL that the player is ticked HERE, before the menu is ticked. I'm
-								 // not quite sure why... the menus break otherwise, though.
+					player.tick(); // it is CRUCIAL that the player is ticked HERE, before the menu is ticked. I'm not quite sure why... the menus break otherwise, though.
 				menu.tick(input);
 				paused = true;
 			} else {

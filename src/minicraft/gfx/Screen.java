@@ -82,6 +82,21 @@ public class Screen {
 	public Screen(Screen model) {
 		this(model.sheets[0], model.sheets[1], model.sheets[2], model.sheets[3]);
 	}
+	
+	public void setSheet(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet) {
+		    if (itemSheet != null) {
+		        sheets[0] = itemSheet;
+		    }
+		    if (tileSheet != null) {
+		        sheets[1] = tileSheet;
+		    }
+		    if (entitySheet != null) {
+		        sheets[2] = entitySheet;
+		    }
+		    if (guiSheet != null) {
+		        sheets[3] = guiSheet;
+		    }
+		}
 
 	/** Clears all the colors on the screen */
 	public void clear(int color) {
