@@ -21,13 +21,14 @@ import java.util.zip.ZipFile;
 public class TexturePackDisplay extends Display {
 
     private static final String DEFAULT_TEXTURE_PACK = "Default"; // Default texture :)
+    private static final String LEGACY_TEXTURE_PACK = "Legacy"; // Default texture :)
     private static final String[] ENTRY_NAMES = new String[] {
-		    
+
         "items.png", // Items sheet
         "tiles.png", // Tiles sheet
         "entities.png", // Entities sheet
         "gui.png" // GUI Elements sheet
-        
+
     };
 
     private final List < String > textureList;
@@ -43,6 +44,7 @@ public class TexturePackDisplay extends Display {
     public TexturePackDisplay() {
         this.textureList = new ArrayList < > ();
         this.textureList.add(TexturePackDisplay.DEFAULT_TEXTURE_PACK);
+        this.textureList.add(TexturePackDisplay.LEGACY_TEXTURE_PACK);
 
         // Generate texture packs folder
         this.location = new File(FileHandler.getSystemGameDir() + "/" + FileHandler.getLocalGameDir() + "/TexturePacks");
@@ -56,21 +58,29 @@ public class TexturePackDisplay extends Display {
         }
     }
 
-	private void updateSpriteSheet(Screen screen) throws IOException {
-		SpriteSheet[] sheets = new SpriteSheet[TexturePackDisplay.ENTRY_NAMES.length];
-		if (selected == 0) {
-			sheets[0] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/items.png")));
-			sheets[1] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/tiles.png")));
-			sheets[2] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/entities.png")));
-			sheets[3] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/gui.png")));
-		} else {
-			try (ZipFile zipFile = new ZipFile(new File(location, textureList.get(selected)))) {
-				for (int i = 0; i < TexturePackDisplay.ENTRY_NAMES.length; i++) {
-					ZipEntry entry = zipFile.getEntry(TexturePackDisplay.ENTRY_NAMES[i]);
-					if (entry != null) {
-						try (InputStream inputEntry = zipFile.getInputStream(entry)) {
-							sheets[i] = new SpriteSheet(ImageIO.read(inputEntry));
-						}
+    private void updateSpriteSheet(Screen screen) throws IOException {
+        SpriteSheet[] sheets = new SpriteSheet[TexturePackDisplay.ENTRY_NAMES.length];
+
+        if (selected == 1) {
+            sheets[0] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/custom/items_legacy.png")));
+            sheets[1] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/custom/tiles_legacy.png")));
+            sheets[2] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/custom/entities_legacy.png")));
+            sheets[3] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/custom/gui_legacy.png")));
+            
+        } else if (selected == 0) {
+            sheets[0] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/items.png")));
+            sheets[1] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/tiles.png")));
+            sheets[2] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/entities.png")));
+            sheets[3] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/gui.png")));
+            
+        } else {
+            try (ZipFile zipFile = new ZipFile(new File(location, textureList.get(selected)))) {
+                for (int i = 0; i < TexturePackDisplay.ENTRY_NAMES.length; i++) {
+                    ZipEntry entry = zipFile.getEntry(TexturePackDisplay.ENTRY_NAMES[i]);
+                    if (entry != null) {
+                        try (InputStream inputEntry = zipFile.getInputStream(entry)) {
+                            sheets[i] = new SpriteSheet(ImageIO.read(inputEntry));
+                        }
                     }
                 }
             }
@@ -82,20 +92,25 @@ public class TexturePackDisplay extends Display {
 
     @Override
     public void tick(InputHandler input) {
-        if (input.getKey("menu").clicked || input.getKey("attack").clicked || input.getKey("exit").clicked) {
+        if (input.getKey("menu").clicked || input.getKey("exit").clicked) {
             Game.exitMenu();
             return;
         }
 
         if (input.getKey("MOVE-DOWN").clicked && selected > 0) {
             selected--;
-            shouldUpdate = true;
+
         }
         if (input.getKey("MOVE-UP").clicked && selected < textureList.size() - 1) {
             selected++;
+
+        }
+
+        if (input.getKey("SELECT").clicked) {
             shouldUpdate = true;
         }
     }
+
 
     // In case the name is too big ...
     private static String shortNameIfLong(String name) {
@@ -110,9 +125,6 @@ public class TexturePackDisplay extends Display {
             shouldUpdate = false;
 
             try {
-            	
-            	System.out.println("Works!!");
-            	
                 updateSpriteSheet(screen);
             } catch (IOException exception) {
                 exception.printStackTrace();
@@ -129,7 +141,7 @@ public class TexturePackDisplay extends Display {
         Font.drawCentered(TexturePackDisplay.shortNameIfLong(selectedUp), screen, Screen.h - 130, Color.GRAY); // Other unselected space
         Font.drawCentered("Use " + Game.input.getMapping("MOVE-DOWN") + ", " + Game.input.getMapping("MOVE-UP"), screen, Screen.h - 11, Color.get(0, 111, 111, 111)); // Controls
 
-
+        
         int h = 2;
         int w = 15;
         int xo = (Screen.w - w * 8) / 2;

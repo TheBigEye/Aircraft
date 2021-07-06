@@ -36,11 +36,13 @@ import minicraft.entity.mob.Knight;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.MobAi;
 import minicraft.entity.mob.PassiveMob;
+import minicraft.entity.mob.Phyg;
 import minicraft.entity.mob.Pig;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.RemotePlayer;
 import minicraft.entity.mob.Sheep;
 import minicraft.entity.mob.Skeleton;
+import minicraft.entity.mob.SkyMob;
 import minicraft.entity.mob.Slime;
 import minicraft.entity.mob.Snake;
 import minicraft.entity.mob.Zombie;
@@ -66,7 +68,7 @@ import minicraft.level.tile.TorchTile;
  * 
  *  - Level variables
  *  - Sky dungeon generation
- *  - Checks for entities (Airwizard, mobs and dungeon chests)
+ *  - Checks for entities (AirWizard, mobs and dungeon chests)
  *  - Random music system
  *  - Mob spawn system
  *  - Mob removal system
@@ -96,7 +98,7 @@ public class Level {
 	public byte[] data; // an array of the data of the tiles in the world. // ?
 	
 	public final int depth; // depth level of the level
-	public int monsterDensity = 7; // affects the number of monsters that are on the level, bigger the number the less monsters spawn.
+	public int monsterDensity = 8; // affects the number of monsters that are on the level, bigger the number the less monsters spawn.
 	public int maxMobCount;
 	public int chestCount;
 	public int mobCount = 0;
@@ -744,7 +746,7 @@ public class Level {
 			
 			// spawns the enemy mobs; first part prevents enemy mob spawn on surface on first day, more or less.
 			if (Settings.get("diff").equals("Passive") == false) {
-			if ((Updater.getTime() == Updater.Time.Night || depth != 0) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
+			if ((Updater.getTime() == Updater.Time.Night || depth != 0 || depth != 1) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
 				if(depth != -4) { // normal mobs
 					if (rnd <= 40) add((new Slime(lvl)), nx, ny);
 					else if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
@@ -816,6 +818,16 @@ public class Level {
 				
 				spawned = true;
 			}
+			
+			if(depth == 1 && SkyMob.checkStartPos(this, nx, ny)) {
+				// spawns the villagers.
+				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new Phyg()), nx, ny);
+				else add((new Phyg()), nx, ny);
+				if (rnd <= 75) add((new Phyg()), nx, ny);
+				
+				spawned = true;
+			}
+			
 		}
 	}
 
@@ -1011,6 +1023,7 @@ public class Level {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	private boolean noStairs(int x, int y) {
 		return getTile(x, y) != Tiles.get("Stairs Down");
 	}

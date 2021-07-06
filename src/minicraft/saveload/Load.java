@@ -50,6 +50,7 @@ import minicraft.entity.mob.Keeper;
 import minicraft.entity.mob.Knight;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.MobAi;
+import minicraft.entity.mob.Phyg;
 import minicraft.entity.mob.Pig;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.RemotePlayer;
@@ -840,6 +841,7 @@ if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is m
 			case "Sheep": return new Sheep();
 			case "Chicken": return new Chicken();
 			case "Pig": return new Pig();
+			case "Phyg": return new Phyg();
 			case "Cleric": return new Cleric();
 			case "Librarian": return new Librarian();
 			case "GuiMan": return new GuiMan();

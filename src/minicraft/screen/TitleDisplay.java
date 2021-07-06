@@ -30,9 +30,9 @@ public class TitleDisplay extends Display {
     private int rand;
     private int count = 0; // this and reverse are for the logo; they produce the fade-in/out effect.
     private boolean reverse = false;
-    
+
     public TitleDisplay() {
-	    
+
         super(false, false, new Menu.Builder(true, 1, RelPos.CENTER,
                 new StringEntry(""),
                 new SelectEntry("Singleplayer", () -> {
@@ -47,7 +47,6 @@ public class TitleDisplay extends Display {
                 new SelectEntry("Multiplayer", () -> Game.setMenu(new MultiplayerDisplay())),
                 new SelectEntry("Options", () -> Game.setMenu(new OptionsDisplay())),
                 new SelectEntry("Credits", () -> Game.setMenu(new BookDisplay(BookData.credits))),
-                //new SelectEntry("Textures", () -> Game.setMenu(new TexturePackDisplay())),
                 displayFactory("Help",
                     new SelectEntry("Instructions", () -> Game.setMenu(new BookDisplay(BookData.instructions))),
                     new BlankEntry(),
@@ -72,22 +71,17 @@ public class TitleDisplay extends Display {
         super.init(null); // The TitleScreen never has a parent.
         Renderer.readyToRenderGameplay = false;
 
-        //Sound.Intro.loop(true);
-        
+
         if (random.nextInt(2) == 0) {
             Sound.Intro.play();
-            //Sound.Intro2.stop();
+            
         }
         if (random.nextInt(2) == 1) {
             Sound.Intro2.play();
-            //Sound.Intro.stop();
 
         }
 
-        // check version
-        //checkVersion();
-
-        /// this is useful to just ensure that everything is really reset as it should be. 
+        /// This is useful to just ensure that everything is really reset as it should be. 
         if (Game.server != null) {
             if (Game.debug) System.out.println("wrapping up loose server ends");
             Game.server.endConnection();
@@ -100,7 +94,7 @@ public class TitleDisplay extends Display {
         }
         Game.ISONLINE = false;
 
-        //events
+        // Events
         LocalDateTime time = LocalDateTime.now();
         if (time.getMonth() == Month.DECEMBER) {
             if (time.getDayOfMonth() == 19) rand = 1;
@@ -138,32 +132,13 @@ public class TitleDisplay extends Display {
             rand = random.nextInt(splashes.length - 3) + 3;
 
         }
-        
+
         World.levels = new Level[World.levels.length];
 
         if (Game.player == null || Game.player instanceof RemotePlayer)
-            // was online, need to reset player
+            // Was online, need to reset player
             World.resetGame(false);
     }
-
-    /*
-    private void checkVersion() {
-    	VersionInfo latestVersion = Network.getLatestVersion();
-    	if(latestVersion == null) {
-    		Network.findLatestVersion(this::checkVersion);
-    	}
-    	else {
-    		if(Game.debug) System.out.println("latest version = "+latestVersion.version);
-    		if(latestVersion.version.compareTo(Game.VERSION) > 0) { // link new version
-    			menus[0].updateEntry(0, new StringEntry("New: "+latestVersion.releaseName, Color.GREEN));
-    			menus[0].updateEntry(1, new LinkEntry(Color.GREEN, "--Select here to Download--", latestVersion.releaseUrl, "Direct link to latest version: " + latestVersion.releaseUrl + "\nCan also be found here with change log: https://www.github.com/TheBigEye/Cthulhucraft/releases"));
-    		}
-    		else if(latestVersion.releaseName.length() > 0)
-    			menus[0].updateEntry(0, new StringEntry("You have the latest version.", Color.DARK_GRAY));
-    		else
-    			menus[0].updateEntry(0, new StringEntry("Connection failed, could not check for updates.", Color.RED));
-    	}
-    }*/
 
     @NotNull
     private static SelectEntry displayFactory(String entryText, ListEntry...entries) {
@@ -186,36 +161,36 @@ public class TitleDisplay extends Display {
 
     }
 
-	@Override
-	public void render(Screen screen) {
-		screen.clear(0);
+    @Override
+    public void render(Screen screen) {
+        screen.clear(0);
 
-		// Background sprite
-		int hh = 33;// Height of squares (on the spritesheet)
-		int ww = 400;// Width of squares (on the spritesheet)
-		int xxo = (Screen.w - ww * 8) / 2; // X location of the title
-		int yyo = 12; // Y location of the title
+        // Background sprite
+        int hh = 33; // Height of squares (on the spritesheet)
+        int ww = 400; // Width of squares (on the spritesheet)
+        int xxo = (Screen.w - ww * 8) / 2; // X location of the title
+        int yyo = 12; // Y location of the title
 
-		for (int y = 0; y < hh; y++) {
-			for (int x = 0; x < ww; x++) {
-				screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x - 8, y + 32, 0, 3));
-			}
-		}
+        for (int y = 0; y < hh; y++) {
+            for (int x = 0; x < ww; x++) {
+                screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x - 8, y + 32, 0, 3));
+            }
+        }
 
-		// Render the options
-		super.render(screen);
+        // Render the options
+        super.render(screen);
 
-		// Title sprite
-		int h = 6; // Height of squares (on the spritesheet)
-		int w = 20; // Width of squares (on the spritesheet)
-		int xo = (Screen.w - w * 8) / 2; // X location of the title
-		int yo = 55; // Y location of the title
+        // Title sprite
+        int h = 6; // Height of squares (on the spritesheet)
+        int w = 20; // Width of squares (on the spritesheet)
+        int xo = (Screen.w - w * 8) / 2; // X location of the title
+        int yo = 55; // Y location of the title
 
-		for (int y = 0; y < h; y++) {
-			for (int x = 0; x < w; x++) {
-				screen.render(xo + x * 8, yo + y * 8, x + (y + 7) * 32, 0, 3);
-			}
-		}
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                screen.render(xo + x * 8, yo + y * 8, x + (y + 7) * 32, 0, 3);
+            }
+        }
 
         boolean isblue = splashes[rand].contains("blue");
         boolean isGreen = splashes[rand].contains("Green");
@@ -224,18 +199,35 @@ public class TitleDisplay extends Display {
         boolean isOrange = splashes[rand].contains("Orange");
         boolean isYellow = splashes[rand].contains("Yellow");
 
-        /// this isn't as complicated as it looks. It just gets a color based off of count, which oscilates between 0 and 25.
+        /// This isn't as complicated as it looks. It just gets a color based off of count, which oscilates between 0 and 25.
         int bcol = 5 - count / 5; // this number ends up being between 1 and 5, inclusive.
         int splashColor = isblue ? Color.BLUE : isRed ? Color.RED : isRed2 ? Color.RED : isGreen ? Color.GREEN : isOrange ? Color.ORANGE : isYellow ? Color.YELLOW : Color.get(1, bcol * 51, bcol * 51, bcol * 25);
 
         Font.drawCentered(splashes[rand], screen, 100, splashColor);
 
-        //Font.draw("Version " + Game.BUILD, screen, 1, 1, Color.get(1, 51));
-        //Font.draw(Game.BUILD, screen, 1, 1, Color.get(1, 100));
 
-        //Font.drawCentered("Mod by TheBigEye", screen, Screen.h - 11, Color.get(1, 100));
+        /*
+         * In case the game has the "in_dev" mode set to true
+         * it will show the version as in "Development"
+         * 
+         * In case it is false, it will show the numerical
+         * version of the game
+         */
+        if (Game.in_dev == true) {
+            Font.draw("InDev " + Game.BUILD, screen, 1, 1, Color.get(1, 51));
+
+        } else {
+            Font.draw(Game.BUILD, screen, 1, 1, Color.get(1, 100));
+
+        }
+
+
+        /*
+         * Show the author's name below the options
+         */
+        Font.drawCentered("Mod by TheBigEye", screen, Screen.h - 11, Color.get(1, 51));
     }
-
+    
     private static final String[] splashes = {
         "Happy birthday Minicraft!",
         "Happy XMAS!",
@@ -286,7 +278,7 @@ public class TitleDisplay extends Display {
         "The eye and Cake rain!",
         "ASCII",
 
-        "nobody should read this! #404",
+        "Nobody should read this! #404",
         
         "You should read Antidious Venomi!",
         "Oh Hi Mark",

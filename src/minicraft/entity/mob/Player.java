@@ -378,12 +378,24 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			onStairDelay = 10; // Resets the delay, if on a stairs tile, but the delay is greater than 0. In other words, this prevents you from ever activating a level change on a stair tile, UNTIL you get off the tile for 10+ ticks.
 		} else if (onStairDelay > 0) onStairDelay--; // Decrements stairDelay if it's > 0, but not on stair tile... does the player get removed from the tile beforehand, or something?
 
+		
 		if (onTile == Tiles.get("Infinite Fall") && !Game.isMode("creative")) {
-			if (onFallDelay <= 0) {
+			
+			if (random.nextInt(6) == 5) {
+				Updater.notifyAll("Watch out so you won't slip and fall!");
+			} 
+			if (random.nextInt(50) == 1 && onFallDelay <= 0) {
+				
+				if (Game.player.getPotionEffects().containsKey(PotionType.Speed) && random.nextInt(16) == 1) {
+					Player.moveSpeed = 1;
+				}
+					
 				World.scheduleLevelChange(-1);
 				onFallDelay = 40;
+				
 				return;
 			}
+			
 		} else if (onFallDelay > 0)
 			onFallDelay--;
 

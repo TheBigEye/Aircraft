@@ -1,5 +1,6 @@
 package minicraft.level.tile;
 
+import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
@@ -9,6 +10,7 @@ import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
+import minicraft.item.PotionType;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
@@ -37,7 +39,7 @@ public class FerrositeTile extends Tile {
 		if (entity instanceof Mob) {
 			level.setData(x, y, 10);
 		}
-		/*if (entity instanceof Player) {
+		if (entity instanceof Player) {
 
 			level.setData(x, y, 10);
 
@@ -53,7 +55,7 @@ public class FerrositeTile extends Tile {
 			if (Game.player.getPotionEffects().containsKey(PotionType.xSpeed) && random.nextInt(16) == 1) {
 				Player.moveSpeed = 3;
 			}
-		}*/
+		}
 	}
 
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {

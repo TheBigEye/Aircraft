@@ -51,6 +51,7 @@ public class Game {
 	private static Random random = new Random();
 
 	public static boolean debug = false;
+	public static boolean in_dev = true;
 	public static boolean packet_debug = false;
 	public static boolean HAS_GUI = true; 
 	

@@ -168,6 +168,7 @@ public class Updater extends Game {
 		if (isValidServer()) {
 			/// this is to keep the game going while online, even with an unfocused window.
 			input.tick();
+			
 			for (Level floor : levels) {
 				if (floor == null)
 					continue;
