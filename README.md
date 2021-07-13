@@ -1,7 +1,8 @@
 # Aircraft
-A modified version of Minicraft+ that adds much more. take a look at all the [releases](https://github.com/TheBigEye/Aircraft-Mod/releases).
 
 ![title](https://user-images.githubusercontent.com/63316583/113479425-732f0080-9465-11eb-86d9-ffcf2c865f84.png)
+
+A modified version of Minicraft+ that adds much more. take a look at all the [releases](https://github.com/TheBigEye/Aircraft-Mod/releases).
 
 ## Main Features
 - New diversity of bosses.
