@@ -1,0 +1,13 @@
+## Tasks (0.4, Aether update)
+
+### Code:
+[ ] Eliminate NULL or meaningless references within the code
+[✓] Check that multiplayer is still stable after loading an old world.
+[✓] Refine the timing of the animation when the player falls off the edge of a cloud
+[ ] Check that the AirWizard is not stuck in Holystone
+
+## Mobs and features:
+[ ] Reactivate spawn of the Sheepuffs
+[✓] Fix the Hitbox of some big bosses
+[ ] Rewrite the Holytone generation (so that it is not very few in the world)
+[✓] Rewrite part of the cloud generation (To make the transition of biomes smoother)
