@@ -8,7 +8,7 @@ All the [releases](https://github.com/TheBigEye/Aircraft-Mod/releases).
 Graphics:
 
 * More detailed and renewed graphics and textures (based on Rcraft texture pack for Minicraft+ made by RiverOaken).
-* Semi-transparent GUI (Without those annoying black boxes behind the letters), plus centered.
+* Semi-transparent GUI (Without those annoying black boxes behind the letters), and more centered.
 * Debug screen (F3 screen) expanded with detailed information regarding the game.
 * Higher screen resolution.
 * Full screen when pressing F11.
