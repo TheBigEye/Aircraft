@@ -4,24 +4,41 @@
 
 A modified version of Minicraft+ that adds much more. take a look at all the [releases](https://github.com/TheBigEye/Aircraft-Mod/releases).
 
-## Main Features
-- New diversity of bosses.
-- New Mobs, Enemies and Animals.
-- New vegetation.
-- New items, armors and weapons.
-- Enchanted Tools and Enchantment Books
-- More types of Wood, Walls and Dors
-- More durability in tools
-- More diversity of biomes and trees
-- Villages with villagers and iron golems and rusty golems as mini-bosses
-- Expanded sky dimension
+## Main features
+Graphics:
 
-## Technical side
-- An in-game game mode editor.
-- More expanded debug screen.
-- Higher resolution window.
-- Notable graphics improvement (based on Rcraft texture pack).
-- Multi-texture packs support
+* More detailed and renewed graphics and textures (based on Rcraft texture pack for Minicraft+ made by RiverOaken).
+* Semi-transparent GUI (Without those annoying black boxes behind the letters), plus centered.
+* Debug screen (F3 screen) expanded with detailed information regarding the game.
+* Higher screen resolution.
+* Full screen when pressing F11.
+
+Mobs and bosses:
+
+* More diversity of mobs both peaceful and hostile.
+* Villagers, with whom you can trade items in exchange for emeralds or other mineral or item, appear in the villages along with the golems.
+* Golems, they are mobs made and iron, they take care of the villages (for now they do not do much to protect the villagers, their A.I is somewhat basic), the old Golems are the hostile variant of the normal golems, they are generally rusted and found in caves.
+* Penguins and chickens, with this you get feathers, chickens spawn in the plains and forest biome, penguins spawn in the tundra biome.
+* Kepper, the guardian of the underground, has 2 phases, summons slimes and drops a lot of slime and sticky essence when defeated (Don't hit the slimes too often, they may get revenge :) ).
+* Eye queen, the final boss, with 3 phases, throws fireballs (a big change is coming soon :) ).
+* AirWizard, now has 3 phases, you know where to find it.
+
+World generation and biomes:
+
+* Paths were added to the villages (they are still being modified).
+* Air wizard house removed (temporarily) to add the sky dungeon in the Sky dimension.
+* Expanded sky dimension (spoiler)
+* More vegetation (Lawn and flowers).
+* Added tundra biome (Soon it will be divided into 3 sub-biomes when the infinite worlds are possible).
+* More types of trees were added with their respective types of wood and their variants in doors, walls and floors, (Birch and fir, more trees will be added soon).
+* The Generation of the world may take a while due to the process that the game takes to generate them is less optimized, but it works perfectly if you have patience.
+
+Technical side :
+* An in-game game mode editor.
+* Multi-texture packs support.
+* Crash screen more detailed in information
+* More durability in tools
+* Enchanted Tools and Enchantment Books
 
 ## About
 - Aircraft is a mod that is totally based on [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived).
