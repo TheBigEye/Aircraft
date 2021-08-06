@@ -154,6 +154,7 @@ public enum MapData {
 	    
     CLOUD_TREE(Tiles.get("Cloud Tree").id, Color.get(1, 71, 112, 68)),
     GOLDEN_CLOUD_TREE(Tiles.get("Golden Cloud Tree").id, Color.get(1, 187, 161, 79)),
+    BLUE_CLOUD_TREE(Tiles.get("Blue Cloud Tree").id, Color.get(1, 0, 118, 158)),
     HOLY_ROCK(Tiles.get("Holy Rock").id, Color.get(1, 232, 232, 232)),
     SKY_LAWN(Tiles.get("Sky Lawn").id, Color.get(1, 86, 163, 131)),
     SKY_HIGH_GRASS(Tiles.get("Sky High Grass").id, Color.get(1, 79, 150, 120)),

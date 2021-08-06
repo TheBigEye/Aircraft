@@ -41,6 +41,7 @@ import minicraft.entity.mob.Pig;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.RemotePlayer;
 import minicraft.entity.mob.Sheep;
+import minicraft.entity.mob.Sheepuff;
 import minicraft.entity.mob.Skeleton;
 import minicraft.entity.mob.SkyMob;
 import minicraft.entity.mob.Slime;
@@ -371,24 +372,46 @@ public class Level {
 		
 		// this play random music in game
 		if (Settings.get("ambient").equals("Nice")) {
-			if (random.nextInt(48000) == 1) {
-
-				if (random.nextInt(3) == 0) {
+			if (random.nextInt(46000) == 1) {
+				
+				// Surface
+				if (random.nextInt(3) == 0 && depth == 0) {
 					Sound.Theme_Surface.play();
 
 				}
-				if (random.nextInt(3) == 1) {
+				if (random.nextInt(3) == 1 && depth == 0) {
 					Sound.Theme_Surface.play();
 
 				}
-				if (random.nextInt(3) == 2) {
+				if (random.nextInt(3) == 2 && depth == 0) {
 					Sound.Theme_Peaceful.play();
 
 				}
-				if (random.nextInt(3) == 3) {
+				if (random.nextInt(3) == 3 && depth == 0) {
 					Sound.Theme_Peaceful.play();
 
 				}
+				
+						
+				// Cave
+				if (random.nextInt(3) == 0 && depth == -1 | depth == -2 | depth == -3) {
+					Sound.Ambience1.play();
+
+				}
+				if (random.nextInt(3) == 1 && depth == -1 | depth == -2 | depth == -3) {
+					Sound.Ambience2.play();
+
+				}
+				if (random.nextInt(3) == 2 && depth == -1 | depth == -2 | depth == -3) {
+					Sound.Ambience3.play();
+
+				}
+				if (random.nextInt(3) == 3 && depth == -1 | depth == -2 | depth == -3) {
+					Sound.Ambience4.play();
+
+				}
+				
+				
 			}
 		}
 
@@ -746,7 +769,7 @@ public class Level {
 			
 			// spawns the enemy mobs; first part prevents enemy mob spawn on surface on first day, more or less.
 			if (Settings.get("diff").equals("Passive") == false) {
-			if ((Updater.getTime() == Updater.Time.Night || depth != 0 || depth != 1) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
+			if ((Updater.getTime() == Updater.Time.Night || depth != 0) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
 				if(depth != -4) { // normal mobs
 					if (rnd <= 40) add((new Slime(lvl)), nx, ny);
 					else if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
@@ -822,7 +845,7 @@ public class Level {
 			if(depth == 1 && SkyMob.checkStartPos(this, nx, ny)) {
 				// spawns the villagers.
 				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new Phyg()), nx, ny);
-				else add((new Phyg()), nx, ny);
+				else add((new Sheepuff()), nx, ny);
 				if (rnd <= 75) add((new Phyg()), nx, ny);
 				
 				spawned = true;
@@ -1138,8 +1161,8 @@ public class Level {
 	 */
 	
 	private void generateVillages() {
-		int lastVillageX = 0;
-		int lastVillageY = 0;
+		int lastVillageX = 8;
+		int lastVillageY = 8;
 
 		// Checks the spawn of villagers
 		new Librarian();
@@ -1165,7 +1188,7 @@ public class Level {
 					lastVillageY = y;
 
 					// a number between 2 and 4
-					int numHouses = random.nextInt(1) + 1;
+					int numHouses = 1;
 
 					// loops for each house in the village
 					for (int hs = 0; hs < numHouses; hs++) {
@@ -1176,8 +1199,8 @@ public class Level {
 						int xo = hs == 0 || hs == 3 ? -8 : 8;
 						int yo = hs < 2 ? -8 : 8;
 
-						xo += random.nextInt(5) - 4;
-						yo += random.nextInt(5) - 4;
+						xo += random.nextInt(8);
+						yo += random.nextInt(8);
 
 						if (twoDoors) {
 							Structure.villageHouseNormal.draw(this, x + xo, y + yo);

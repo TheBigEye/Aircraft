@@ -74,6 +74,7 @@ public class Game {
 	public static int MAX_FPS = (int) Settings.get("fps");
 	public static Level level;
 
+
 	@SuppressWarnings("unused")
 	private static String errorSplash = "";
 	
@@ -231,10 +232,10 @@ public class Game {
                 "Details: " + "\n" +
                 "        Aircraft mod Version: " + Game.BUILD + "\n" +
                 "        Minicraft plus base Version: " + Game.VERSION + "\n" +
-		    "        Operting System: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") " + System.getProperty("os.version") + "\n" +
-		    "        Java Version: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor")+ "\n" +
-		    "        Java VM Version: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n" +
-		    "        Memory: " + freeMemory + " bytes (" + j + " MB) / " + totalMemory + " bytes (" + i + " MB) up to " + maxMemory + " bytes (" + l + " MB)" + "\n\n" +
+		        "        Operting System: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") " + System.getProperty("os.version") + "\n" +
+		        "        Java Version: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor")+ "\n" +
+		        "        Java VM Version: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n" +
+		        "        Memory: " + freeMemory + " bytes (" + j + " MB) / " + totalMemory + " bytes (" + i + " MB) up to " + maxMemory + " bytes (" + l + " MB)" + "\n\n" +
 		            
                 " ~~ERROR~~ " + "\n" +
 					

@@ -1,20 +1,22 @@
 ## Tasks (0.4, Aether update)
 
 ### Code:
-[ ] Eliminate NULL or meaningless references within the code.
+[75%] Eliminate NULL or meaningless references within the code.
 [✓] Check that multiplayer is still stable after loading an old world.
 [✓] Refine the timing of the animation when the player falls off the edge of a cloud.
 [X] Try the new texture system with more animations (FAIL).
-[ ] Check that the AirWizard is not stuck in Holystone.
-[ ] Update translations.
+[25%] Check that the AirWizard is not stuck in Holystone.
+[43%] Update translations.
+[ ] Optimizations ._.
 
 ## Mobs and features:
-[ ] Update legacy textures.
-[ ] Reactivate spawn of the Sheepuffs.
+[67%] Update legacy textures.
+[✓] Reactivate spawn of the Sheepuffs.
 [✓] Fix the Hitbox of some big bosses.
-[ ] Rewrite the Holytone generation (so that it is not very few in the world).
+[✓] Rewrite the Holytone generation (so that it is not very few in the world).
 [✓] Rewrite part of the cloud generation (To make the transition of biomes smoother).
 [ ] Add crafting recipes for new items.
 [ ] Add chests to the sky dungeon.
 [ ] Replace the rock walls and floors of the Sky dungeon with Holystone walls and floors.
 [ ] Add Holystone door, floor and wall variant.
+[95%] Add more Trees to the sky

@@ -33,7 +33,7 @@ public class HolyRockTile extends Tile {
 	}
 
 	public void render(Screen screen, Level level, int x, int y) {
-		Tiles.get("cloud").render(screen, level, x, y);
+		Tiles.get("Ferrosite").render(screen, level, x, y);
 		//sprite.sparse.color = SandTile.sCol(level.depth);
 		sprite.render(screen, level, x, y);
 	}
@@ -86,7 +86,7 @@ public class HolyRockTile extends Tile {
 				}
 				level.dropItem(x * 16 + 8, y * 16 + 8, mincoal, maxcoal, Items.get("coal"));
 			}
-			level.setTile(x, y, Tiles.get("cloud"));
+			level.setTile(x, y, Tiles.get("Ferrosite"));
 		} else {
 			level.setData(x, y, damage);
 		}

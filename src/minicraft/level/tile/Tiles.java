@@ -126,6 +126,7 @@ public final class Tiles {
         tiles.set(78, new SkyFarmTile("Sky Farmland"));
         tiles.set(79, new HolyRockTile("Holy Rock"));
         tiles.set(80, new GoldenCloudTreeTile("Golden Cloud Tree"));
+        tiles.set(81, new BlueCloudTreeTile("Blue Cloud Tree"));
 
 
         //tiles.set(?, new SandRockTile("Sand rock"));

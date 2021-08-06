@@ -80,8 +80,9 @@ public class NoiseMap {
 			int w = 512;
 			int h = 512;
 
-			NoiseMap noise1 = new NoiseMap(w, h, 256);
-			NoiseMap noise2 = new NoiseMap(w, h, 128);
+			NoiseMap noise1 = new NoiseMap(w, h, 32);
+			NoiseMap noise2 = new NoiseMap(w, h, 16);
+			
 			BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 			int[] pixels = new int[w * h];
 			for (int y = 0; y < h; y++) {

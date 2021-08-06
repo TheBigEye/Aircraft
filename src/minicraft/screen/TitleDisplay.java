@@ -34,7 +34,7 @@ public class TitleDisplay extends Display {
     public TitleDisplay() {
 
         super(false, false, new Menu.Builder(true, 1, RelPos.CENTER,
-                new StringEntry(""),
+                //new StringEntry(""),
                 new SelectEntry("Singleplayer", () -> {
                     if (WorldSelectDisplay.getWorldNames().size() > 0)
                         Game.setMenu(new Display(true, new Menu.Builder(false, 2, RelPos.CENTER,
@@ -166,10 +166,10 @@ public class TitleDisplay extends Display {
         screen.clear(0);
 
         // Background sprite
-        int hh = 33; // Height of squares (on the spritesheet)
-        int ww = 400; // Width of squares (on the spritesheet)
+        int hh = 39; // Height of squares (on the spritesheet)
+        int ww = 416; // Width of squares (on the spritesheet)
         int xxo = (Screen.w - ww * 8) / 2; // X location of the title
-        int yyo = 12; // Y location of the title
+        int yyo = 0; // Y location of the title
 
         for (int y = 0; y < hh; y++) {
             for (int x = 0; x < ww; x++) {
@@ -205,7 +205,6 @@ public class TitleDisplay extends Display {
 
         Font.drawCentered(splashes[rand], screen, 100, splashColor);
 
-
         /*
          * In case the game has the "in_dev" mode set to true
          * it will show the version as in "Development"
@@ -214,24 +213,21 @@ public class TitleDisplay extends Display {
          * version of the game
          */
         if (Game.in_dev == true) {
-            Font.draw("InDev " + Game.BUILD, screen, 1, 1, Color.get(1, 51));
-
+            Font.draw("Pre " + Game.BUILD, screen, 1, 280, Color.GRAY);
         } else {
-            Font.draw(Game.BUILD, screen, 1, 1, Color.get(1, 100));
-
+            Font.draw(Game.BUILD, screen, 1, 280, Color.get(1, 100));
         }
-
 
         /*
          * Show the author's name below the options
          */
-        Font.drawCentered("Mod by TheBigEye", screen, Screen.h - 11, Color.get(1, 51));
+        Font.draw("Mod by TheBigEye", screen, 300, 280, Color.GRAY);
     }
     
     private static final String[] splashes = {
         "Happy birthday Minicraft!",
         "Happy XMAS!",
-        "Happy birthday BigEye :)",
+        "Happy birthday Eye :)",
         "Happy birthday Zaq :)",
         "Thanks A.L.I.C.E!",
 
@@ -249,7 +245,7 @@ public class TitleDisplay extends Display {
         
         "Playing " + Game.BUILD + ", nice!",
         "Based in Minicraft+, nice!",
-        "Updates always!",
+        "Updates always!, nice?",
         
         // Now with...
         "Now with better fishing!",
@@ -278,14 +274,14 @@ public class TitleDisplay extends Display {
         "The eye and Cake rain!",
         "ASCII",
 
-        "Nobody should read this! #404",
-        
+        "Nobody should read this! #404",     
         "You should read Antidious Venomi!",
         "Oh Hi Mark",
         "Use the force!",
         "Keep calm!",
         "Get him, Steve!",
         "Forty-Two!",
+        "A hostile paradise",
 
         
         // kill
@@ -434,6 +430,9 @@ public class TitleDisplay extends Display {
         "001100010011000000110001!",
         "011010000110110101101101?",
         "...zzz...",
+        
+        // Tributes
+        "Rick May, 1940 - 2020",
         
         "Something cool is coming ;)",
     };

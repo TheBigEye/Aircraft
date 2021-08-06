@@ -55,6 +55,7 @@ import minicraft.entity.mob.Pig;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.RemotePlayer;
 import minicraft.entity.mob.Sheep;
+import minicraft.entity.mob.Sheepuff;
 import minicraft.entity.mob.Skeleton;
 import minicraft.entity.mob.Slime;
 import minicraft.entity.mob.Snake;
@@ -839,6 +840,7 @@ if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is m
 			case "Cow": return new Cow();
 			case "Goat": return new Goat();
 			case "Sheep": return new Sheep();
+			case "Sheepuff": return new Sheepuff();
 			case "Chicken": return new Chicken();
 			case "Pig": return new Pig();
 			case "Phyg": return new Phyg();
