@@ -69,6 +69,7 @@ public class KingZombie extends EnemyMob {
 }*/
 	
 	public void die() {
+		if (Settings.get("diff").equals("Peaceful")) dropItem(20, 20, Items.get("cloth"));
 		if (Settings.get("diff").equals("Easy")) dropItem(20, 20, Items.get("cloth"));
 		if (Settings.get("diff").equals("Normal")) dropItem(15, 15, Items.get("cloth"));
 		if (Settings.get("diff").equals("Hard")) dropItem(10, 10, Items.get("cloth"));

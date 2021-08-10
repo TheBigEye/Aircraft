@@ -40,7 +40,7 @@ public class DefenderMob extends MobAi {
 	@Override
 	protected void touchedBy(Entity entity) {
 		
-		if (Settings.get("diff").equals("Passive")) return;
+		if (Settings.get("diff").equals("Peaceful")) return;
 		
 		super.touchedBy(entity); 
 		if(entity instanceof Zombie) {

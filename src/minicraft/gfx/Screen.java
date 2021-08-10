@@ -58,32 +58,31 @@ public class Screen {
 	private SpriteSheet[] sheetsCustom;
 
 	public Screen(SpriteSheet sheet) {
-		this(sheet, sheet, sheet, sheet);
+		this(sheet, sheet, sheet, sheet, sheet, sheet);
 		this.sheet = sheet;
 	}
 
-	public Screen(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet) {
+	public Screen(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet, SpriteSheet iconsSheet, SpriteSheet background) {
 
-		sheets = new SpriteSheet[] { itemSheet, tileSheet, entitySheet, guiSheet };
+		sheets = new SpriteSheet[] { itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background };
 
 		/// screen width and height are determined by the actual game window size,
 		/// meaning the screen is only as big as the window.
 		pixels = new int[Screen.w * Screen.h]; // makes new integer array for all the pixels on the screen.
 	}
 
-	public Screen(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet,
-			SpriteSheet itemSheetCustom, SpriteSheet tileSheetCustom, SpriteSheet entitySheetCustom,
-			SpriteSheet guiSheetCustom) {
-		this(itemSheet, tileSheet, entitySheet, guiSheet);
+	public Screen(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet, SpriteSheet iconsSheet, SpriteSheet background,
+			SpriteSheet itemSheetCustom, SpriteSheet tileSheetCustom, SpriteSheet entitySheetCustom, SpriteSheet guiSheetCustom, SpriteSheet iconsSheetCustom, SpriteSheet backgroundCustom) {
+		this(itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background);
 
-		sheetsCustom = new SpriteSheet[] { itemSheetCustom, tileSheetCustom, entitySheetCustom, guiSheetCustom };
+		sheetsCustom = new SpriteSheet[] { itemSheetCustom, tileSheetCustom, entitySheetCustom, guiSheetCustom, iconsSheetCustom, backgroundCustom };
 	}
 
 	public Screen(Screen model) {
-		this(model.sheets[0], model.sheets[1], model.sheets[2], model.sheets[3]);
+		this(model.sheets[0], model.sheets[1], model.sheets[2], model.sheets[3], model.sheets[4], model.sheets[5]);
 	}
 	
-	public void setSheet(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet) {
+	public void setSheet(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet, SpriteSheet iconsSheet, SpriteSheet background) {
 		    if (itemSheet != null) {
 		        sheets[0] = itemSheet;
 		    }
@@ -96,6 +95,12 @@ public class Screen {
 		    if (guiSheet != null) {
 		        sheets[3] = guiSheet;
 		    }
+		    if (iconsSheet != null) {
+		    	sheets[4] = iconsSheet;
+			}
+		    if (background != null) {
+		    	sheets[5] = background;
+			}
 		}
 
 	/** Clears all the colors on the screen */
@@ -194,7 +199,7 @@ public class Screen {
 					} else {
 						// Inserts the colors into the image
 						if (fullbright) {
-							pixels[position] = Color.RED;
+							pixels[position] = Color.WHITE; // mob color when hit
 						} else {
 							pixels[position] = Color.upgrade(col);
 						}
@@ -241,7 +246,13 @@ public class Screen {
 	 * minimum pixel lighness required to ensure that the pixel will always remain
 	 * lit.
 	 */
-	private int[] dither = new int[] { 0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5 };
+	
+	private static final int[] dither = new int[] {
+			0, 8, 2, 10,
+			12, 4, 14, 6,
+			3, 11, 1, 9,
+			15, 7, 13, 5
+		};
 
 	/** Overlays the screen with pixels */
 	public void overlay(Screen screen2, int currentLevel, int xa, int ya) {

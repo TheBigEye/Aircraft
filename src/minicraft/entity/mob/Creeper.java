@@ -47,7 +47,7 @@ public class Creeper extends EnemyMob {
 	public void tick() {
 		super.tick();
 		
-		if (Settings.get("diff").equals("Passive")) return; // Creeper should not explode if player is in passive mode
+		if (Settings.get("diff").equals("Peaceful")) return; // Creeper should not explode if player is in passive mode
 		
 		if (fuseTime > 0) {
 			fuseTime--; // fuse getting shorter...
@@ -166,7 +166,7 @@ public class Creeper extends EnemyMob {
 	@Override
 	protected void touchedBy(Entity entity) {
 		
-		if (Settings.get("diff").equals("Passive")) return;
+		if (Settings.get("diff").equals("Peaceful")) return;
 		
 		if (entity instanceof Player) {
 			if (fuseTime == 0 && !fuseLit) {

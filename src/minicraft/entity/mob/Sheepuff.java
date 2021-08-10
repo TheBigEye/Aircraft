@@ -37,7 +37,7 @@ public class Sheepuff extends SkyMob {
 	
 	public void die() {
 		int min = 0, max = 0;
-		if (Settings.get("diff").equals("Passive")) {min = 1; max = 3;}
+		if (Settings.get("diff").equals("Peaceful")) {min = 1; max = 3;}
 		if (Settings.get("diff").equals("Easy")) {min = 1; max = 3;}
 		if (Settings.get("diff").equals("Normal")) {min = 1; max = 2;}
 		if (Settings.get("diff").equals("Hard")) {min = 0; max = 2;}

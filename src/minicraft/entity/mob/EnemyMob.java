@@ -72,7 +72,7 @@ public class EnemyMob extends MobAi {
 		super.tick();
 		
 		
-		if (Settings.get("diff").equals("Passive") == false) {
+		if (Settings.get("diff").equals("Peaceful") == false) {
 		Player player = getClosestPlayer();
 		if (player != null && !Bed.sleeping() && randomWalkTime <= 0) { // checks if player is on zombies level and if there is no time left on randonimity timer
 			int xd = player.x - x;
@@ -102,7 +102,7 @@ public class EnemyMob extends MobAi {
 	@Override
 	protected void touchedBy(Entity entity) { // if an entity (like the player) touches the enemy mob
 		
-		if (Settings.get("diff").equals("Passive")) return;
+		if (Settings.get("diff").equals("Peaceful")) return;
 		
 		super.touchedBy(entity); // hurts the player, damage is based on lvl.
 		if(entity instanceof Player) {

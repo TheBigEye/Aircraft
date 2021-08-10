@@ -23,10 +23,8 @@ public class OptionsDisplay extends Display {
 				Settings.getEntry("ambient"),
 				Settings.getEntry("autosave"),
 				Settings.getEntry("skinon"),
-				new BlankEntry(),
 				new SelectEntry("Change Key Bindings", () -> Game.setMenu(new KeyInputDisplay())),
 				Settings.getEntry("language"),
-				//Settings.getEntry("textures"),
 				new SelectEntry("Texture packs", () -> Game.setMenu(new TexturePackDisplay())),
 				new BlankEntry(),
 				new SelectEntry("Open Game Folder", () -> {

@@ -92,7 +92,7 @@ public class Spawner extends Furniture {
 			resetSpawnInterval();
 		}
 
-		if (Settings.get("diff").equals("Passive")) {
+		if (Settings.get("diff").equals("Peaceful")) {
 			resetSpawnInterval();
 		}
 	}

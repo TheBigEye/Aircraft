@@ -135,7 +135,7 @@ public class MinicraftServer extends Thread implements MinicraftProtocol {
 		return threadList.size();
 	}
 
-	private MinicraftServerThread[] getThreads() {
+	public MinicraftServerThread[] getThreads() {
 		return threadList.toArray(new MinicraftServerThread[threadList.size()]);
 	}
 

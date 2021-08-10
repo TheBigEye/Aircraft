@@ -22,7 +22,7 @@ import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.LinkEntry;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
-import minicraft.screen.entry.StringEntry;
+import minicraft.screen.tutorial.TutorialDisplay;
 
 public class TitleDisplay extends Display {
     private static final Random random = new Random();
@@ -50,7 +50,8 @@ public class TitleDisplay extends Display {
                 displayFactory("Help",
                     new SelectEntry("Instructions", () -> Game.setMenu(new BookDisplay(BookData.instructions))),
                     new BlankEntry(),
-                    new SelectEntry("Storyline Guide (for the weak)", () -> Game.setMenu(new BookDisplay(BookData.storylineGuide))),
+                    //new SelectEntry("Storyline Guide", () -> Game.setMenu(new BookDisplay(BookData.storylineGuide))),
+                    new SelectEntry("Tutorial", () -> Game.setMenu(new TutorialDisplay())),
                     new BlankEntry(),
                     new SelectEntry("About", () -> Game.setMenu(new BookDisplay(BookData.about))),
                     new BlankEntry(),
@@ -173,7 +174,7 @@ public class TitleDisplay extends Display {
 
         for (int y = 0; y < hh; y++) {
             for (int x = 0; x < ww; x++) {
-                screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x - 8, y + 32, 0, 3));
+                screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x - 8 , y , 0, 5));
             }
         }
 
@@ -195,13 +196,12 @@ public class TitleDisplay extends Display {
         boolean isblue = splashes[rand].contains("blue");
         boolean isGreen = splashes[rand].contains("Green");
         boolean isRed = splashes[rand].contains("Red");
-        boolean isRed2 = splashes[rand].contains("Red");
         boolean isOrange = splashes[rand].contains("Orange");
         boolean isYellow = splashes[rand].contains("Yellow");
 
         /// This isn't as complicated as it looks. It just gets a color based off of count, which oscilates between 0 and 25.
         int bcol = 5 - count / 5; // this number ends up being between 1 and 5, inclusive.
-        int splashColor = isblue ? Color.BLUE : isRed ? Color.RED : isRed2 ? Color.RED : isGreen ? Color.GREEN : isOrange ? Color.ORANGE : isYellow ? Color.YELLOW : Color.get(1, bcol * 51, bcol * 51, bcol * 25);
+        int splashColor = isblue ? Color.BLUE : isRed ? Color.RED : isGreen ? Color.GREEN : isOrange ? Color.ORANGE : isYellow ? Color.YELLOW : Color.get(1, bcol * 51, bcol * 51, bcol * 25);
 
         Font.drawCentered(splashes[rand], screen, 100, splashColor);
 

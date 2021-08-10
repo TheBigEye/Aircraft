@@ -1,14 +1,5 @@
 package minicraft.screen;
 
-import minicraft.core.FileHandler;
-import minicraft.core.Game;
-import minicraft.core.io.InputHandler;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
-import minicraft.gfx.SpriteSheet;
-
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,16 +9,29 @@ import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import javax.imageio.ImageIO;
+
+import minicraft.core.FileHandler;
+import minicraft.core.Game;
+import minicraft.core.io.InputHandler;
+import minicraft.gfx.Color;
+import minicraft.gfx.Font;
+import minicraft.gfx.Screen;
+import minicraft.gfx.SpriteSheet;
+
 public class TexturePackDisplay extends Display {
 
     private static final String DEFAULT_TEXTURE_PACK = "Default"; // Default texture :)
-    private static final String LEGACY_TEXTURE_PACK = "Legacy"; // Default texture :)
+    private static final String LEGACY_TEXTURE_PACK = "Legacy"; // Legacy texture :)
     private static final String[] ENTRY_NAMES = new String[] {
 
-        "items.png", // Items sheet
-        "tiles.png", // Tiles sheet
-        "entities.png", // Entities sheet
-        "gui.png" // GUI Elements sheet
+        "items.png", // Items sheet (0)
+        "tiles.png", // Tiles sheet  (1)
+        "entities.png", // Entities sheet (2)
+        "gui.png", // GUI Elements sheet (3)
+        "icons.png", // More GUI Elements sheet (4)
+        
+        "background.png" // More GUI Elements sheet (5)
 
     };
 
@@ -43,11 +47,11 @@ public class TexturePackDisplay extends Display {
 
     public TexturePackDisplay() {
         this.textureList = new ArrayList < > ();
-        this.textureList.add(TexturePackDisplay.DEFAULT_TEXTURE_PACK);
+        this.textureList.add(TexturePackDisplay.DEFAULT_TEXTURE_PACK); // Entries are added
         this.textureList.add(TexturePackDisplay.LEGACY_TEXTURE_PACK);
 
         // Generate texture packs folder
-        this.location = new File(FileHandler.getSystemGameDir() + "/" + FileHandler.getLocalGameDir() + "/TexturePacks");
+        this.location = new File(FileHandler.getSystemGameDir() + "/" + FileHandler.getLocalGameDir() + "/Texture Packs");
         this.location.mkdirs();
 
         // Read and add the .zip file to the texture pack list
@@ -61,17 +65,21 @@ public class TexturePackDisplay extends Display {
     private void updateSpriteSheet(Screen screen) throws IOException {
         SpriteSheet[] sheets = new SpriteSheet[TexturePackDisplay.ENTRY_NAMES.length];
 
-        if (selected == 1) {
-            sheets[0] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/custom/items_legacy.png")));
-            sheets[1] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/custom/tiles_legacy.png")));
-            sheets[2] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/custom/entities_legacy.png")));
-            sheets[3] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/custom/gui_legacy.png")));
+        if (selected == 1) { // Legacy textures
+            sheets[0] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/items_legacy.png")));
+            sheets[1] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/tiles_legacy.png")));
+            sheets[2] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/entities_legacy.png")));
+            sheets[3] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/gui_legacy.png")));
+            sheets[4] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/icons_legacy.png")));
+            sheets[5] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/background_legacy.png")));
             
-        } else if (selected == 0) {
+        } else if (selected == 0) { // Default textures
             sheets[0] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/items.png")));
             sheets[1] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/tiles.png")));
             sheets[2] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/entities.png")));
             sheets[3] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/gui.png")));
+            sheets[4] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/icons.png")));
+            sheets[5] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/background.png")));
             
         } else {
             try (ZipFile zipFile = new ZipFile(new File(location, textureList.get(selected)))) {
@@ -87,7 +95,7 @@ public class TexturePackDisplay extends Display {
         }
 
         // Set texture pack
-        screen.setSheet(sheets[0], sheets[1], sheets[2], sheets[3]);
+        screen.setSheet(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
     }
 
     @Override

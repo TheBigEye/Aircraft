@@ -43,7 +43,7 @@ public class SlimyWizard extends EnemyMob {
 	}
 	
 	public void die() {
-		if (Settings.get("diff").equals("Passive")) dropItem(2, 30, Items.get("slime"));
+		if (Settings.get("diff").equals("Peaceful")) dropItem(2, 30, Items.get("slime"));
 		if (Settings.get("diff").equals("Easy")) dropItem(2, 30, Items.get("slime"));
 		if (Settings.get("diff").equals("Normal")) dropItem(2, 20, Items.get("slime"));
 		if (Settings.get("diff").equals("Hard")) dropItem(1, 10, Items.get("slime"));

@@ -29,6 +29,7 @@ import minicraft.entity.furniture.Furniture;
 import minicraft.entity.furniture.Tnt;
 import minicraft.entity.mob.villager.Cleric;
 import minicraft.entity.mob.villager.Librarian;
+import minicraft.entity.particle.CloudParticle;
 import minicraft.entity.particle.FerrositeParticle;
 import minicraft.entity.particle.FireParticle;
 import minicraft.entity.particle.PotionParticle;
@@ -130,10 +131,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	private int hungerStamCnt, stamHungerTicks; // Tiers of hunger penalties before losing a burger.
 	private static final int maxHungerTicks = 400; // The cutoff value for stamHungerTicks
 	
-	private static final int[] maxHungerStams = { 10, 7, 5, 5 }; // hungerStamCnt required to lose a burger.
-	private static final int[] hungerTickCount = { 120, 30, 10, 10 }; // Ticks before decrementing stamHungerTicks.
-	private static final int[] hungerStepCount = { 8, 3, 1, 1 }; // Steps before decrementing stamHungerTicks.
-	private static final int[] minStarveHealth = { 5, 3, 0, 0 }; // min hearts required for hunger to hurt you.
+	private static final int[] maxHungerStams = {12, 10, 7, 5}; // hungerStamCnt required to lose a burger.
+	private static final int[] hungerTickCount = {150, 120, 30, 10}; // Ticks before decrementing stamHungerTicks.
+	private static final int[] hungerStepCount = {-1, 8, 3, 1}; // Steps before decrementing stamHungerTicks.
+	private static final int[] minStarveHealth = {7, 5, 3, 0}; // min hearts required for hunger to hurt you.
 	
 	private int stepCount; // Used to penalize hunger for movement.
 	private int hungerChargeDelay; // The delay between each time the hunger bar increases your health
@@ -297,6 +298,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		
 		if (potioneffects.size() > 0 && !Bed.inBed(this)) {
 			
+			// Add potion particles...
 			int randX = rnd.nextInt(10);
 			int randY = rnd.nextInt(9);
 
@@ -321,6 +323,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			}
 		}
 
+		// Display Ferrosite cloud particles when walk
 		if (level.getTile(x / 16, y / 16) == Tiles.get("Ferrosite")) {
 			
 			int randX = rnd.nextInt(10);
@@ -329,17 +332,27 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			if (random.nextInt(11) == 1) {
 				level.add(new FerrositeParticle(x - 9 + randX, y - 8 + randY));
 			}
-			if (random.nextInt(11) == 4) {
-
-			}
 			if (random.nextInt(11) == 6) {
 				level.add(new FerrositeParticle(x - 9 + randX, y - 8 + randY));
 			}
-			if (random.nextInt(11) == 8) {
-
-			}
 			if (random.nextInt(11) == 12) {
 				level.add(new FerrositeParticle(x - 9 + randX, y - 8 + randY));
+			}
+			
+		}
+		if (level.getTile(x / 16, y / 16) == Tiles.get("Cloud")) {
+			
+			int randX = rnd.nextInt(10);
+			int randY = rnd.nextInt(9);
+
+			if (random.nextInt(11) == 1) {
+				level.add(new CloudParticle(x - 9 + randX, y - 8 + randY));
+			}
+			if (random.nextInt(11) == 6) {
+				level.add(new CloudParticle(x - 9 + randX, y - 8 + randY));
+			}
+			if (random.nextInt(11) == 12) {
+				level.add(new CloudParticle(x - 9 + randX, y - 8 + randY));
 			}
 			
 		}
@@ -386,9 +399,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			} 
 			if (random.nextInt(50) == 1 && onFallDelay <= 0) {
 				
-				if (Game.player.getPotionEffects().containsKey(PotionType.Speed) && random.nextInt(16) == 1) {
-					Player.moveSpeed = 1;
-				}
+				//if (Game.player.getPotionEffects().containsKey(PotionType.Speed) && random.nextInt(16) == 1) {
+					//Player.moveSpeed = 1;
+				//}
 					
 				World.scheduleLevelChange(-1);
 				onFallDelay = 40;
@@ -443,7 +456,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			}
 
 			if (Updater.tickCount % Player.hungerTickCount[diffIdx] == 0)
-				stamHungerTicks--; // hunger due to time.
+				if (!(Settings.get("diff") == "Peaceful"))
+					stamHungerTicks--; // hunger due to time.
 
 			if (stepCount >= Player.hungerStepCount[diffIdx]) {
 				stamHungerTicks--; // hunger due to exercise.
@@ -899,7 +913,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		return dmg;
 	}
 	
+
 	@Override
+	@SuppressWarnings("incomplete-switch")
 	public void render(Screen screen) {
 		
 		// Skin events
@@ -1312,6 +1328,25 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		super.remove();
 	}
 	
+	// Activate when Ferrosite problem has solved
+	protected String getUpdateString() {
+        String updates = super.getUpdateString() + ";";
+        updates += "skinon,"+skinon+
+        ";shirtColor,"+shirtColor+
+        ";armor,"+armor+
+        ";stamina,"+stamina+
+        ";health,"+health+
+        ";hunger,"+hunger+
+        ";attackTime,"+attackTime+
+        ";attackDir,"+attackDir.ordinal()+
+        ";activeItem,"+(activeItem==null?"null": activeItem.getData())+
+        ";isFishing,"+(isFishing==true?"1": "0")+
+        ";moveSpeed,"+moveSpeed;
+        
+        return updates;
+    }
+	
+	/*
 	protected String getUpdateString() {
 		String updates = super.getUpdateString() + ";";
 		updates += "skinon,"+skinon+
@@ -1324,10 +1359,44 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		";attackDir,"+attackDir.ordinal()+
 		";activeItem,"+(activeItem==null?"null": activeItem.getData())+
 		";isFishing,"+(isFishing==true?"1": "0");
-		
+
 		return updates;
-	}
+	}*/
 	
+	// Activate when Ferrosite problem has solved
+    @Override
+    protected boolean updateField(String field, String val) {
+        if (super.updateField(field, val)) return true;
+        switch (field) {
+            case "skinon": skinon = Boolean.parseBoolean(val); return true;
+            case "shirtColor": shirtColor = Integer.parseInt(val); return true;
+            case "armor": armor = Integer.parseInt(val); return true;
+            case "stamina": stamina = Integer.parseInt(val); return true;
+            case "health": health = Integer.parseInt(val); return true;
+            case "hunger": hunger = Integer.parseInt(val); return true;
+            case "score": score = Integer.parseInt(val); return true;
+            case "mult": multiplier = Integer.parseInt(val); return true;
+            case "attackTime": attackTime = Integer.parseInt(val); return true;
+            case "attackDir": attackDir = Direction.values[Integer.parseInt(val)]; return true;
+            case "activeItem": 
+                activeItem = Items.get(val, true);
+                attackItem = activeItem != null && activeItem.canAttack() ? activeItem : null;
+                return true;
+            case "isFishing": isFishing = Integer.parseInt(val) == 1; return true;
+            case "potioneffects":
+                potioneffects.clear();
+                for(String potion: val.split(":")) {
+                    String[] parts = potion.split("_");
+                    potioneffects.put(PotionType.values[Integer.parseInt(parts[0])], Integer.parseInt(parts[1]));
+                }
+                return true;
+            case "moveSpeed": moveSpeed = Double.parseDouble(val); return true;
+        }
+        
+        return false;
+    }
+	
+	/*
 	@Override
 	protected boolean updateField(String field, String val) {
 		if (super.updateField(field, val)) return true;
@@ -1355,9 +1424,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				}
 				return true;
 		}
-		
+
 		return false;
-	}
+	}*/
 	
 	public final String getPlayerData() {
 		List<String> datalist = new ArrayList<>();

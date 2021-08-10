@@ -372,44 +372,66 @@ public class Level {
 		
 		// this play random music in game
 		if (Settings.get("ambient").equals("Nice")) {
-			if (random.nextInt(46000) == 1) {
+			if (random.nextInt(8096) == 1) {
 				
 				// Surface
-				if (random.nextInt(3) == 0 && depth == 0) {
+				if (random.nextInt(3) == 0 && depth == 0) { // Surface only
 					Sound.Theme_Surface.play();
 
 				}
-				if (random.nextInt(3) == 1 && depth == 0) {
-					Sound.Theme_Surface.play();
+				if (random.nextInt(3) == 1 && depth == 0 | depth == -1) { // Surface and underground
+					Sound.Theme_Cave.play();
 
 				}
-				if (random.nextInt(3) == 2 && depth == 0) {
+				if (random.nextInt(3) == 2 && depth == 0) { // Surface only
 					Sound.Theme_Peaceful.play();
 
 				}
-				if (random.nextInt(3) == 3 && depth == 0) {
+				if (random.nextInt(3) == 3 && depth == 0) { // Surface only
 					Sound.Theme_Peaceful.play();
 
 				}
 				
 						
 				// Cave
-				if (random.nextInt(3) == 0 && depth == -1 | depth == -2 | depth == -3) {
+				if (random.nextInt(5) == 0 && depth == -1) { // Cave
 					Sound.Ambience1.play();
 
 				}
-				if (random.nextInt(3) == 1 && depth == -1 | depth == -2 | depth == -3) {
+				if (random.nextInt(5) == 1 && depth == -1) { // Cave
 					Sound.Ambience2.play();
 
 				}
-				if (random.nextInt(3) == 2 && depth == -1 | depth == -2 | depth == -3) {
+				if (random.nextInt(5) == 2 && depth == -1 | depth == -2) { // Cave and cavern
 					Sound.Ambience3.play();
 
 				}
-				if (random.nextInt(3) == 3 && depth == -1 | depth == -2 | depth == -3) {
+				if (random.nextInt(5) == 3 && depth == -1 | depth == -2) { // Cave and cavern
 					Sound.Ambience4.play();
 
 				}
+				
+				if (random.nextInt(5) == 4 && depth == -2) { // Cavern 
+					Sound.Theme_Cavern.play();
+
+				}
+				
+				if (random.nextInt(5) == 5 && depth == -2){ // Cavern 
+					Sound.Theme_Cavern_drip.play();
+
+				}
+				
+				
+				// Sky
+				if (random.nextInt(1) == 0 && depth == 1) { // Sky
+					Sound.Theme_Surface.play();
+
+				}
+				if (random.nextInt(1) == 1 && depth == 1) { // Sky
+					Sound.Theme_Fall.play();
+
+				}
+
 				
 				
 			}
@@ -768,7 +790,7 @@ public class Level {
 			//System.out.println("trySpawn on level " + depth + " of lvl " + lvl + " mob w/ rand " + rnd + " at tile " + nx + "," + ny);
 			
 			// spawns the enemy mobs; first part prevents enemy mob spawn on surface on first day, more or less.
-			if (Settings.get("diff").equals("Passive") == false) {
+			if (Settings.get("diff").equals("Peaceful") == false) {
 			if ((Updater.getTime() == Updater.Time.Night || depth != 0) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
 				if(depth != -4) { // normal mobs
 					if (rnd <= 40) add((new Slime(lvl)), nx, ny);

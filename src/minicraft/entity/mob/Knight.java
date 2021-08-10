@@ -24,7 +24,7 @@ public class Knight extends EnemyMob {
 	}
 
 	public void die() {
-		if (Settings.get("diff").equals("Easy"))
+		if (Settings.get("diff").equals("Peaceful") | Settings.get("diff").equals("Easy"))
 			dropItem(1, 3, Items.get("shard"));
 		else
 			dropItem(0, 2, Items.get("shard")

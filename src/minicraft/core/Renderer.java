@@ -81,15 +81,19 @@ public class Renderer extends Game {
 		SpriteSheet tileSheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/tiles.png")));
 		SpriteSheet entitySheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/entities.png")));
 		SpriteSheet guiSheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/gui.png")));
+		SpriteSheet iconsSheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/icons.png")));
+		SpriteSheet background = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/background.png")));
 
 		// Custom texture pack
-		SpriteSheet itemSheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/custom/items_legacy.png")));
-		SpriteSheet tileSheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/custom/tiles_legacy.png")));
-		SpriteSheet entitySheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/custom/entities_legacy.png")));
-		SpriteSheet guiSheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/custom/gui_legacy.png")));
+		SpriteSheet itemSheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/items_legacy.png")));
+		SpriteSheet tileSheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/tiles_legacy.png")));
+		SpriteSheet entitySheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/entities_legacy.png")));
+		SpriteSheet guiSheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/gui_legacy.png")));
+		SpriteSheet iconsSheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/icons_legacy.png")));
+		SpriteSheet backgroundCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/background_legacy.png")));
 
-		screen = new Screen(itemSheet, tileSheet, entitySheet, guiSheet, itemSheetCustom, tileSheetCustom, entitySheetCustom, guiSheetCustom);
-		lightScreen = new Screen(itemSheet, tileSheet, entitySheet, guiSheet, itemSheetCustom, tileSheetCustom, entitySheetCustom, guiSheetCustom);
+		screen = new Screen(itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background, itemSheetCustom, tileSheetCustom, entitySheetCustom, guiSheetCustom, iconsSheetCustom, backgroundCustom);
+		lightScreen = new Screen(itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background, itemSheetCustom, tileSheetCustom, entitySheetCustom, guiSheetCustom, iconsSheetCustom, backgroundCustom);
 	}
 
 	static void initScreen() {

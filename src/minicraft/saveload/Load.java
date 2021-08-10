@@ -71,9 +71,11 @@ import minicraft.entity.mob.villager.Golem;
 import minicraft.entity.mob.villager.Librarian;
 import minicraft.entity.mob.villager.OldGolem;
 import minicraft.entity.particle.BrightParticle;
+import minicraft.entity.particle.CloudParticle;
 import minicraft.entity.particle.FireParticle;
 import minicraft.entity.particle.HeartParticle;
 import minicraft.entity.particle.SmashParticle;
+import minicraft.entity.particle.SmokeParticle;
 import minicraft.entity.particle.SplashParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
@@ -897,6 +899,8 @@ if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is m
 			case "HeartParticle": return new HeartParticle(0, 0);
 			case "BrightParticle": return new BrightParticle(0, 0);
 			case "SmashParticle": return new SmashParticle(0, 0);
+			case "SmokeParticle": return new SmokeParticle(0, 0);
+			case "CloudParticle": return new CloudParticle(0, 0);
 			case "TextParticle": return new TextParticle("", 0, 0, 0);
 			
 			default : System.err.println("LOAD ERROR: unknown or outdated entity requested: " + string);
