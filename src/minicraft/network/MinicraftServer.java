@@ -825,6 +825,7 @@ public class MinicraftServer extends Thread implements MinicraftProtocol {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void broadcastData(InputType inType, String data, List<MinicraftServerThread> threads) {
 		for (MinicraftServerThread thread : threads)
 			thread.sendData(inType, data);

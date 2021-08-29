@@ -58,7 +58,11 @@ public class SkyLawnTile extends Tile {
 				if (player.payStamina(2 - tool.level) && tool.payDurability()) {
 					level.setTile(x, y, Tiles.get("sky grass"));
 					Sound.Tile_generic_hurt.play();
-					level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Seeds"));
+					
+					if (random.nextInt(20) == 1) { // 20% chance to drop sky seeds
+					level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));
+					}
+					
 					return true;
 				}
 			}
@@ -67,7 +71,9 @@ public class SkyLawnTile extends Tile {
 	}
 
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-		level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Seeds"));
+		if (random.nextInt(12) == 1) { // 20% chance to drop sky seeds
+		level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));
+		}
 		level.setTile(x, y, Tiles.get("sky grass"));
 		return true;
 	}

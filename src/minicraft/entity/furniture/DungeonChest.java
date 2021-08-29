@@ -2,9 +2,12 @@ package minicraft.entity.furniture;
 
 import java.util.Random;
 
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.World;
+import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.boss.AirWizard;
@@ -13,6 +16,7 @@ import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
 import minicraft.gfx.Sprite;
 import minicraft.item.Inventory;
+import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.StackableItem;
 
@@ -22,7 +26,7 @@ public class DungeonChest extends Chest {
 	
 	public Random random = new Random();
 	private boolean isLocked;
-	
+
 	/**
 	 * Creates a custom chest with the name Dungeon Chest.
 	 * @param populateInv
@@ -33,34 +37,18 @@ public class DungeonChest extends Chest {
 
 	public DungeonChest(boolean populateInv, boolean unlocked) {
 		super("Dungeon Chest");
-		if (!unlocked)
-			this.sprite = lockSprite;
-		else
-			this.sprite = openSprite;
-
 		if (populateInv) {
 			populateInv();
 		}
-		
+
 		setLocked(!unlocked);
 	}
-	
+
 	@Override
 	public Furniture clone() {
 		return new DungeonChest(false, !this.isLocked);
 	}
-	
-	public boolean isLocked() {
-		return isLocked;
-	}
 
-	public void setLocked(boolean locked) {
-		this.isLocked = locked;
-
-		// auto update sprite
-		sprite = locked ? DungeonChest.lockSprite : DungeonChest.openSprite;
-	}
-	
 	public boolean use(Player player) {
 		if (isLocked) {
 			boolean activeKey = player.activeItem != null && player.activeItem.equals(Items.get("Key"));
@@ -74,16 +62,16 @@ public class DungeonChest extends Chest {
 						player.getInventory().removeItem(Items.get("key"));
 					}
 				}
-				
+
 				isLocked = false;
 				this.sprite = openSprite; // set to the unlocked color
-				
+
 				level.add(new SmashParticle(x * 16, y * 16));
 				level.add(new TextParticle("-1 key", x, y, Color.RED));
 				level.chestCount--;
 				if(level.chestCount == 0) { // if this was the last chest...
 					level.dropItem(x, y, 5, Items.get("Gold Apple"));
-					
+
 					Updater.notifyAll("You hear a noise from the surface!", -100); // notify the player of the developments
 					// add a level 2 airwizard to the middle surface level.
 					AirWizard wizard = new AirWizard(true);
@@ -91,81 +79,58 @@ public class DungeonChest extends Chest {
 					wizard.y = World.levels[World.lvlIdx(0)].h / 2;
 					World.levels[World.lvlIdx(0)].add(wizard);
 				}
-				
+
 				return super.use(player); // the player unlocked the chest.
 			}
-			
+
 			return false; // the chest is locked, and the player has no key.
 		}
 		else return super.use(player); // the chest was already unlocked.
 	}
-	
+
 	/**
 	 * Populate the inventory of the DungeonChest using the loot table system
 	 */
 	private void populateInv() {
 		Inventory inv = getInventory(); // Yes, I'm that lazy. ;P
 		inv.clearInv(); // clear the inventory.
-	  /*inv.tryAdd(5, Items.get("steak"), 6);
-		inv.tryAdd(5, Items.get("cooked pork"), 6);
-		inv.tryAdd(4, Items.get("Wood"), 20);
-		inv.tryAdd(4, Items.get("Wool"), 12);
-		inv.tryAdd(2, Items.get("coal"), 4);
-		inv.tryAdd(5, Items.get("gem"), 7);
-		inv.tryAdd(5, Items.get("gem"), 8);
-		inv.tryAdd(8, Items.get("Gem Armor"));
-		inv.tryAdd(6, Items.get("Gold Armor"));
-		inv.tryAdd(5, Items.get("Iron Armor"), 2);
-		inv.tryAdd(3, Items.get("potion"), 10);
-		inv.tryAdd(4, Items.get("speed potion"), 2);
-		inv.tryAdd(6, Items.get("speed potion"), 5);
-		inv.tryAdd(3, Items.get("light potion"), 2);
-		inv.tryAdd(4, Items.get("light potion"), 3);
-		inv.tryAdd(7, Items.get("regen potion"));
-		inv.tryAdd(7, Items.get("energy potion"));
-		inv.tryAdd(14, Items.get("time potion"));
-		inv.tryAdd(14, Items.get("shield potion"));
-		inv.tryAdd(7, Items.get("lava potion"));
-		inv.tryAdd(5, Items.get("haste potion"), 3);
-		
-		inv.tryAdd(6, Items.get("Gold Bow"));
-		inv.tryAdd(7, Items.get("Gem Bow"));
-		inv.tryAdd(4, Items.get("Gold Sword"));
-		inv.tryAdd(7, Items.get("Gem Sword"));
-		inv.tryAdd(4, Items.get("Rock Claymore"));
-		inv.tryAdd(6, Items.get("Iron Claymore"));
-		
-		if(inv.invSize() < 1) { // add this if none of the above was added.
-			inv.add(Items.get("steak"), 6);
-			inv.add(Items.get("Time Potion"));
-			inv.add(Items.get("Gem Axe"));
-		}*/
-		
+
 		populateInvRandom("dungeonchest", 0);
 	}
-	
+
+	public boolean isLocked() {
+		return isLocked;
+	}
+
+	public void setLocked(boolean locked) {
+		this.isLocked = locked;
+
+		// auto update sprite
+		sprite = locked ? DungeonChest.lockSprite : DungeonChest.openSprite;
+	}
+
 	/** what happens if the player tries to push a Dungeon Chest. */
 	@Override
 	protected void touchedBy(Entity entity) {
 		if(!isLocked) // can only be pushed if unlocked.
 			super.touchedBy(entity);
 	}
-	
-	/** what happens if the player tries to grab a Dungeon Chest. */
+
 	@Override
-	public void take(Player player) {
-		if(!isLocked) // can only be taken if unlocked.
-			super.take(player);
+	public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
+		if(!isLocked)
+			return super.interact(player, item, attackDir);
+		return false;
 	}
-	
+
 	@Override
 	protected String getUpdateString() {
 		String updates = super.getUpdateString() + ";";
 		updates += "isLocked,"+isLocked;
-		
+
 		return updates;
 	}
-	
+
 	@Override
 	protected boolean updateField(String field, String val) {
 		if(super.updateField(field, val)) return true;
@@ -174,7 +139,7 @@ public class DungeonChest extends Chest {
 				isLocked = Boolean.parseBoolean(val);
 				return true;
 		}
-		
+
 		return false;
 	}
 }

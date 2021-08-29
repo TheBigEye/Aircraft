@@ -12,7 +12,6 @@ import minicraft.entity.mob.boss.EyeQueen;
 import minicraft.gfx.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
-import minicraft.screen.LevelTransitionDisplay;
 
 public class AmuletItem extends Item {
 

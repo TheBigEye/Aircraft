@@ -11,6 +11,7 @@ public class RangeEntry extends ArrayEntry<Integer> {
 		return ints;
 	}
 
+	@SuppressWarnings("unused")
 	private int min, max;
 
 	public RangeEntry(String label, int min, int max, int initial) {

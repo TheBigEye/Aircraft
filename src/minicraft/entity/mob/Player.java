@@ -133,7 +133,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	
 	private static final int[] maxHungerStams = {12, 10, 7, 5}; // hungerStamCnt required to lose a burger.
 	private static final int[] hungerTickCount = {150, 120, 30, 10}; // Ticks before decrementing stamHungerTicks.
-	private static final int[] hungerStepCount = {-1, 8, 3, 1}; // Steps before decrementing stamHungerTicks.
+	private static final int[] hungerStepCount = {32, 8, 3, 1}; // Steps before decrementing stamHungerTicks.
 	private static final int[] minStarveHealth = {7, 5, 3, 0}; // min hearts required for hunger to hurt you.
 	
 	private int stepCount; // Used to penalize hunger for movement.
@@ -1329,7 +1329,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	}
 	
 	// Activate when Ferrosite problem has solved
-	protected String getUpdateString() {
+	/*protected String getUpdateString() {
         String updates = super.getUpdateString() + ";";
         updates += "skinon,"+skinon+
         ";shirtColor,"+shirtColor+
@@ -1344,9 +1344,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         ";moveSpeed,"+moveSpeed;
         
         return updates;
-    }
+    }*/
 	
-	/*
+	
 	protected String getUpdateString() {
 		String updates = super.getUpdateString() + ";";
 		updates += "skinon,"+skinon+
@@ -1361,8 +1361,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		";isFishing,"+(isFishing==true?"1": "0");
 
 		return updates;
-	}*/
+	}
 	
+	/*
 	// Activate when Ferrosite problem has solved
     @Override
     protected boolean updateField(String field, String val) {
@@ -1394,9 +1395,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         }
         
         return false;
-    }
+    }*/
 	
-	/*
+	
 	@Override
 	protected boolean updateField(String field, String val) {
 		if (super.updateField(field, val)) return true;
@@ -1426,7 +1427,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		}
 
 		return false;
-	}*/
+	}
 	
 	public final String getPlayerData() {
 		List<String> datalist = new ArrayList<>();

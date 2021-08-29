@@ -471,6 +471,30 @@ Basalt
 Quartzite
 Quartzite
 
+Ink sac
+Ink sac
+
+Yellow dye
+Yellow dye
+
+Green dye
+Green dye
+
+Red dye
+Red dye
+
+Purple dye
+Purple dye
+
+Pink dye
+Pink dye
+
+Dark green dye
+Dark green dye
+
+Orange dye
+Orange dye
+
 Coal
 Coal
 
@@ -575,6 +599,9 @@ Brown Mushroom
 Acorn
 Acorn
 
+Birch Cone
+Birch Cone
+
 Fir Cone
 Fir Cone
 
@@ -584,8 +611,14 @@ Pine Cone
 Dirt
 Dirt
 
+Sky dirt
+Sky dirt
+
 Natural Rock
 Natural Rock
+
+Natural Hard Rock
+Natural Hard Rock
 
 Plank
 Plank
@@ -697,6 +730,12 @@ Seeds
 
 Carrot
 Carrot
+
+Potato
+Potato
+
+Sky wart
+Sky wart
 
 Grass Seeds
 Grass Seeds
@@ -777,12 +816,12 @@ Claymore
 Claymore
 
 Shear
-Tijera
+Shear
 
 # ShearItem.java
 
 Shear
-Tijeras
+Shear
 
 # TorchItem.java
 
@@ -1091,6 +1130,9 @@ Rendering
 World
 World
 
+May take a while, be patient
+May take a while, be patient
+
 # MultiplayerMenu.java
 
 waiting...
@@ -1173,6 +1215,12 @@ Options
 Change language
 Change language
 
+Texture packs
+Texture packs
+
+Open Game Folder
+Open Game Folder
+
 # PauseMenu.java
 
 Return to Game
@@ -1181,8 +1229,14 @@ Return to Game
 Options
 Options
 
+info
+info
+
 Make World Multiplayer
 Make World Multiplayer
+
+World
+World
 
 Save Game
 Save Game
@@ -1204,11 +1258,11 @@ Main Menu
 
 # PauseDisplay.java
 
-No
-No
+Yes
+Yes
 
-Yes
-Yes
+No
+No
 
 # PlayerInvMenu.java
 
@@ -1246,6 +1300,9 @@ Storyline Guide (for the weak)
 
 About
 About
+
+Minicraft discord
+Minicraft discord
 
 Quit
 Quit
@@ -1354,8 +1411,8 @@ Max FPS
 Difficulty
 Difficulty
 
-Passive
-Passive
+Peaceful
+Peaceful
 
 Easy
 Easy
@@ -1431,5 +1488,126 @@ Irregular
 
 Wear Suit
 Wear Suit
+
+# TutorialDisplay.java
+
+Welcome to the tutorial!,
+Welcome to the tutorial!,
+
+are you new? Don't worry,
+are you new? Don't worry,
+
+here you will learn the
+here you will learn the
+
+basics of the game,
+basics of the game,
+
+have fun!
+have fun!
+
+Moving the character
+Moving the character
+
+Mobs?, What's that
+Mobs?, What's that
+
+How to Attack
+How to Attack
+
+The Inventory
+The Inventory
+
+The Villagers
+The Villagers
+
+Furnitures
+Furnitures
+
+Crafting
+Crafting
+
+Potions
+Potions
+
+Farming
+Farming
+
+Mining
+Mining
+
+Bosses
+Bosses
+
+# ControlsTutorial.java
+
+Moving the character.
+Moving the character.
+
+You can move your character through
+You can move your character through
+
+the keyboard, unfortunately
+the keyboard, unfortunately
+
+there is no mouse :(
+there is no mouse :(
+
+You can move with:
+You can move with:
+
+You can also change the controls to
+You can also change the controls to
+
+your liking in:
+your liking in:
+
+Options > Change Key bindings
+Options > Change Key bindings
+
+
+# MobsTutorial.java
+
+Mobs?, What's that.
+Mobs?, What's that.
+
+Mobs are all the creatures that inhabit
+Mobs are all the creatures that inhabit
+
+the world, they can be peaceful like
+the world, they can be peaceful like
+
+Animals, Villagers, etc, and they can be
+Animals, Villagers, etc, and they can be
+
+Hostile like Zombies, Skeletons, etc.
+Hostile like Zombies, Skeletons, etc.
+
+Peaceful mobs:
+Peaceful mobs:
+
+Hostile mobs:
+Hostile mobs:
+
+
+# CombatTutorial.java
+
+How to Attack.
+How to Attack.
+
+You can attack with:
+You can attack with:
+
+When killing some mobs, they drop loot or
+When killing some mobs, they drop loot or
+
+materials for the crafting of other items:
+materials for the crafting of other items:
+
+You can also hit Tiles, like trees or rocks
+You can also hit Tiles, like trees or rocks
+
+to get resources and modify your environment:
+to get resources and modify your environment:
 
 ### minicraft end

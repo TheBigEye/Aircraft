@@ -51,7 +51,7 @@ public class Game {
 	private static Random random = new Random();
 
 	public static boolean debug = false;
-	public static boolean in_dev = true;
+	public static boolean in_dev = false;
 	public static boolean packet_debug = false;
 	public static boolean HAS_GUI = true; 
 	
@@ -61,7 +61,7 @@ public class Game {
 
 	public static final String NAME = "Aircraft"; // This is the name on the application window
 	public static final String BUILD = "0.4"; // Aircraft version
-	public static final Version VERSION = new Version("2.0.7-dev4"); // Minicraft mod base version
+	public static final Version VERSION = new Version("2.0.7"); // Minicraft mod base version
 
 	// Input used in Game, Player, and just about all the *Menu classes.
 	public static InputHandler input; 
@@ -79,7 +79,7 @@ public class Game {
 	private static String errorSplash = "";
 	
 	// Crash window titles
-	static String[] Splash = {
+	private static String[] Splash = {
 		"Who has put TNT?", "An error has occurred again??",
 		"Unexpected error again??", "Oh. That hurts :(",
 		"Sorry for the crash :(", "You can play our brother game, Minitale",
@@ -89,12 +89,12 @@ public class Game {
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
 	
-	/*****************************************************
+	/**
 	 * This specifies a custom port instead of default to
 	 * server-side using --port parameter if something goes
 	 * wrong in setting the new port it'll use the default
 	 * one {@link MinicraftProtocol#PORT}
-	 *****************************************************/
+	 **/
 
 	public static int CUSTOM_PORT = MinicraftProtocol.PORT;
 
@@ -336,4 +336,5 @@ public class Game {
 
 		System.exit(0);
 	}
+
 }

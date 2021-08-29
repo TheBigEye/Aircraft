@@ -7,6 +7,7 @@ import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
+import minicraft.item.Items;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
@@ -62,8 +63,8 @@ public class SkyGrassTile extends Tile {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("Sky dirt")); // would allow you to shovel cloud, I think.
 					Sound.Tile_generic_hurt.play();
-					if (random.nextInt(5) == 0) { // 20% chance to drop seeds
-						//level.dropItem(xt * 16 + 8, yt * 16 + 8, 2, Items.get("dirt"));
+					if (random.nextInt(20) == 0) { // 20% chance to drop sky seeds
+						level.dropItem(xt * 16 + 8, yt * 16 + 8, 2, Items.get("Sky seeds"));
 					}
 					return true;
 				}

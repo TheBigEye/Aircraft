@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import minicraft.core.Game;
 import minicraft.core.MyUtils;
-import minicraft.core.Network;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.gfx.Color;
@@ -29,12 +28,14 @@ public class PauseDisplay extends Display {
 			//new SelectEntry("World", () -> Game.setMenu(new WorldInfoDisplay()))
 			));
 		
+		/*
 		if(!Game.ISONLINE) {
 			entries.add(new SelectEntry("Make World Multiplayer", () -> {
 				Game.setMenu(null);
 				Network.startMultiplayerServer();
 			}));
 		}
+		*/
 		
 		if(!Game.isValidClient()) {
 			entries.add(new SelectEntry("World", () -> Game.setMenu(new WorldInfoDisplay())));

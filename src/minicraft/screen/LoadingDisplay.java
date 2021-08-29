@@ -37,7 +37,7 @@ public class LoadingDisplay extends Display {
 		super(true, false);
 		t = new Timer(500, e -> {
 			World.initWorld();
-			msg = "Rendering";
+			msg = Localization.getLocalized("Rendering");
 			Game.setMenu(null);
 		});
 		t.setRepeats(false);
@@ -49,9 +49,9 @@ public class LoadingDisplay extends Display {
 		percentage = 0;
 		progressType = "World";
 		if (WorldSelectDisplay.loadedWorld())
-			msg = "Loading";
+			msg = Localization.getLocalized("Loading");
 		else
-			LoadingDisplay.Build = BuildString[random.nextInt(9)];
+			LoadingDisplay.Build = Localization.getLocalized(BuildString[random.nextInt(9)]);
 		msg = Build;
 		t.start();
 		
@@ -62,7 +62,7 @@ public class LoadingDisplay extends Display {
 		percentage = 0;
 		if (!WorldSelectDisplay.loadedWorld()) {
 			LoadingDisplay.Build = BuildString[random.nextInt(9)];
-			msg = Build;
+			msg = Localization.getLocalized(Build);
 			progressType = "World";
 			new Save(WorldSelectDisplay.getWorldName());
 			Game.notifications.clear();
@@ -95,7 +95,7 @@ public class LoadingDisplay extends Display {
 		if (!WorldSelectDisplay.loadedWorld()) {
 			Font.drawParagraph(screen, new FontStyle(Color.YELLOW), 0,
 					Localization.getLocalized(msg) + ellipsis.updateAndGet(), percent + "%");
-		      Font.drawCentered("May take a while, be patient", screen, Screen.h - 12, Color.get(1, 51));
+		      Font.drawCentered(Localization.getLocalized("May take a while, be patient"), screen, Screen.h - 12, Color.get(1, 51));
 		}
 
 		Font.drawCentered(((progressType.length() > 0) ? (" " + Localization.getLocalized(progressType)) : ""), screen, Screen.h - 30, Color.get(1, 51));

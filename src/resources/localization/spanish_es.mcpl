@@ -46,7 +46,7 @@ Home Sweet Home!
 Hogar Dulce Hogar!
 
 Mode penalty: -2 health
-Modo de penalizaciÛn: -2 de salud
+Modo de penalizaci√≥n: -2 de salud
 
 You don't have a home!
 No tienes una casa!
@@ -327,7 +327,7 @@ Amuleto del ojo
 # PotionType.java
 
 None Potion
-Ninguna PociÛn
+Ninguna Poci√≥n
 
 Speed Potion
 Pocion de Velocidad
@@ -519,7 +519,7 @@ Slime
 Slime
 
 glass
-cristal
+Vidrio
 
 cloth
 tela
@@ -595,6 +595,9 @@ Hongo cafe
 Acorn
 Bellota
 
+Birch Cone
+Cono de abedul
+
 Fir Cone
 Cono de abeto
 
@@ -604,8 +607,14 @@ Cono de pino
 Dirt
 Tierra
 
+Sky dirt
+Tierra del cielo
+
 Natural Rock
 Piedra natural
+
+Natural Hard Rock
+Piedra natural dura
 
 Plank
 Tablon
@@ -718,6 +727,12 @@ Semillas
 Carrot
 Zanahoria
 
+Potato
+Patata
+
+Sky wart
+Verruga del Cielo
+
 Grass Seeds
 Semillas de Pasto
 
@@ -734,7 +749,7 @@ Can only be placed on
 Solo se puede colocar en
 
 Dig a hole first!
-°Cava un hoyo primero!
+¬°Cava un hoyo primero!
 
 # ToolItem.java
 
@@ -754,21 +769,21 @@ Gem
 Gema
 
 Fishing Rod
-CaÒa de Pescar
+Ca√±a de Pescar
 
 # FishingRodItem.java
 
 Wood Fishing Rod
-CaÒa de pescar de madera
+Ca√±a de pescar de madera
 
 Iron Fishing Rod
-CaÒa de pescar de hierro
+Ca√±a de pescar de hierro
 
 Gold Fishing Rod
-CaÒa de pescar de oro
+Ca√±a de pescar de oro
 
 Gem Fishing Rod
-CaÒa de pescar de gema
+Ca√±a de pescar de gema
 
 # ToolType.java
 
@@ -794,7 +809,7 @@ Bow
 Arco
 
 FishingRod
-CaÒa De Pescar
+Ca√±a De Pescar
 
 Claymore
 Casa antigua
@@ -824,13 +839,13 @@ Gem Ore
 Mena de Gema
 
 Wood Planks
-TablÛn de Madera
+Tabl√≥n de Madera
 
 Spruce Planks
-TablÛn de abeto
+Tabl√≥n de abeto
 
 Birch Planks
-TablÛn de abedul
+Tabl√≥n de abedul
 
 Stone Bricks
 Ladrillo de piedra
@@ -911,7 +926,7 @@ Hard Rock
 Roca Dura
 
 Infinite Fall
-CaÌda Infinita
+Ca√≠da Infinita
 
 Cloud
 Nube
@@ -975,7 +990,7 @@ There is nothing of use here.
 No hay nada de uso aqui.
 
 Still nothing... :P
-TodavÌa nada... :P
+Todav√≠a nada... :P
 
 # CraftingMenu.java
 
@@ -1027,7 +1042,7 @@ Time Played:
 Tiempo Jugado: 
 
 Current Score: 
-PuntuaciÛn Actual: 
+Puntuaci√≥n Actual: 
 
 Exit
 Salir
@@ -1047,7 +1062,7 @@ key sequence
 secuencia de tecla
 
 Are you sure you want to reset all key bindings to the default keys?
-Est·s seguro que quieres reiniciar todos los atajos de teclado a las teclas predeterminadas?
+Est√°s seguro que quieres reiniciar todos los atajos de teclado a las teclas predeterminadas?
 
 enter to confirm
 enter para confirmar
@@ -1056,51 +1071,60 @@ escape to cancel
 ESC para cancelar
 
 Confirm Action
-Confirmar AcciÛn
+Confirmar Acci√≥n
 
 Press C/Enter to change key binding
 Presiona C/Enter para cambiar el atajo de teclado
 
 Press A to add key binding
-Presiona A para aÒadir atajo de teclado
+Presiona A para a√±adir atajo de teclado
 
 Shift-D to reset all keys to default
 Shift-D para restablecer todas las teclas a sus valores predeterminados
 
 ESCAPE to Return to menu
-ESC para Regresar al men˙
+ESC para Regresar al men√∫
 
 # LoadingDisplay.java
 
 Loading...
 Cargando...
 
-Generating...
-Generando...
+Generating
+Generando
 
-Calculating...
-Calculando...
+Calculating
+Calculando
 
-Pre Calculating...
-Pre Calculando...
+Pre Calculating
+Pre Calculando
 
-Building...
-Construyendo...
+Building
+Construyendo
 
-Melting...
-Derritiendo...
+Melting
+Derritiendo
 
-Eroding...
-Erosionando...
+Eroding
+Erosionando
 
-Planting...
-Plantando...
+Planting
+Plantando
 
-Molding...
-Moldeando...
+Molding
+Moldeando
 
-Raising...
-Elevando...
+Raising
+Elevando
+
+Rendering
+Renderizando
+
+World
+Mundo
+
+May take a while, be patient
+Puede tardar un tiempo, tenga paciencia
 
 # MultiplayerMenu.java
 
@@ -1111,16 +1135,16 @@ nothing
 nada
 
 attempting log in
-intentando iniciar sesiÛn
+intentando iniciar sesi√≥n
 
 no internet connection, but no login data saved; cannot enter offline mode.
-no hay conexiÛn a Internet, pero no se guardaron datos de inicio de sesiÛn; no puede ingresar al modo fuera de lÌnea.
+no hay conexi√≥n a Internet, pero no se guardaron datos de inicio de sesi√≥n; no puede ingresar al modo fuera de l√≠nea.
 
 connecting to server
 conectando al servidor
 
 logging in
-iniciando sesiÛn
+iniciando sesi√≥n
 
 saving credentials
 guardando credenciales
@@ -1129,7 +1153,7 @@ login failed.
 error de inicio de sesion.
 
 problem with saved login data; please exit and login again.
-problema con los datos de inicio de sesiÛn guardados; por favor salga y vuelva a iniciar sesiÛn.
+problema con los datos de inicio de sesi√≥n guardados; por favor salga y vuelva a iniciar sesi√≥n.
 
 Internal server error: Couldn't fetch username from uuid
 Error interno del servidor: no se pudo obtener el nombre de usuario de uuid
@@ -1138,19 +1162,19 @@ logged in as:
 conectado como: 
 
 offline mode: local servers only
-modo fuera de lÌnea: solo servidores locales
+modo fuera de l√≠nea: solo servidores locales
 
 Enter ip address to connect to:
-Ingrese la direcciÛn de IP para conectarse:
+Ingrese la direcci√≥n de IP para conectarse:
 
 Press Shift-Escape to logout
-Presione Shift-ESC para cerrar la sesiÛn
+Presione Shift-ESC para cerrar la sesi√≥n
 
 Enter email:
 Ingrese correo electronico:
 
 Enter password:
-Ingrese contraseÒa:
+Ingrese contrase√±a:
 
 field is blank
 el campo esta en blanco
@@ -1183,6 +1207,12 @@ Opciones
 
 Change language
 Cambiar idioma
+
+Texture packs
+Paquetes de texturas
+
+Open Game Folder
+Abrir carpeta del juego
 
 # PauseMenu.java
 
@@ -1264,7 +1294,7 @@ Guia de historias (para los debiles)
 About
 Acerca de
 
-Minicraft Discord
+Minicraft discord
 Discord de Minicraft
 
 Quit
@@ -1291,7 +1321,7 @@ Are you sure you want to delete
 Estas seguro que quieres eliminarlo
 
 This can not be undone!
-°Esto no se puede deshacer!
+¬°Esto no se puede deshacer!
 
  to confirm
  para confirmar
@@ -1308,10 +1338,10 @@ Enter World Name
 Ingrese Nombre del Mundo
 
 Trouble with world name?
-øProblema con el nombre?
+¬øProblema con el nombre?
 
 by default, w and s move the cursor up and down. This can be changed in the key binding menu. To type the letter instead of moving the cursor, hold the shift key while typing the world name.
-de forma predeterminada, w y s mueven el cursor hacia arriba y hacia abajo. Esto se puede cambiar en el men˙ de enlace de teclas. Para escribir la letra en lugar de mover el cursor, mantenga presionada la tecla May˙s mientras escribe el nombre del mundo.
+de forma predeterminada, w y s mueven el cursor hacia arriba y hacia abajo. Esto se puede cambiar en el men√∫ de enlace de teclas. Para escribir la letra en lugar de mover el cursor, mantenga presionada la tecla May√∫s mientras escribe el nombre del mundo.
 
 Create World
 Crear Mundo
@@ -1321,26 +1351,41 @@ Opciones de Generador de Mundo
 
 # WorldSelectMenu.java
 
-Copy
-Copiar
+to Copy
+para Copiar
 
-Rename
-Renombrar
+to Rename
+para Renombrar
 
-Delete
-Eliminar
+to Delete
+para Eliminar
 
-to confirm
-para confirmar
+ to confirm
+ para confirmar
  
-to return
-para regresar
+ to return
+ para regresar
  
 Select World
 Seleccionar Mundo
 
+Select a World to Delete
+Seleccione un mundo para eliminar
+
+Select a World to Rename
+Seleccione un mundo para renombrar
+
+Select a World to Copy
+Seleccione un mundo para copiar
+
 Select a World to
 Selecionar un Mundo para
+
+Higher version, cannot load world!
+¬°Versi√≥n superior, no se puede cargar el mundo!
+
+World Version:
+Version del mundo:
 
 # LocalizationMenu.java
 
@@ -1351,7 +1396,7 @@ Language
 Idioma
 
 Select
-Seleciionar
+Seleccionar
 
 ### screen end
 
@@ -1365,8 +1410,8 @@ Max FPS
 Difficulty
 Dificultad
 
-Passive
-Pasiva
+Peaceful
+Pacifico
 
 Easy
 Facil
@@ -1405,7 +1450,7 @@ Ambient
 Ambiente
 
 World Size
-TamaÒo del Mundo
+Tama√±o del Mundo
 
 World Theme
 Tema del Mundo
@@ -1435,12 +1480,133 @@ Box
 Caja
 
 Mountain
-MontaÒa
+Monta√±a
 
 Irregular
 Irregular
 
 Wear Suit
 Usar traje
+
+# TutorialDisplay.java
+
+Welcome to the tutorial!,
+Bienvenido al tutorial!,
+
+are you new? Don't worry,
+eres nuevo? No te preocupes
+
+here you will learn the
+aqui aprenderas lo
+
+basics of the game,
+basico del juego,
+
+have fun!
+Diviertete!
+
+Moving the character
+Mover el personaje
+
+Mobs?, What's that
+Mobs?, Que es eso?
+
+How to Attack
+Como atacar
+
+The Inventory
+El inventario
+
+The Villagers
+Los Aldeanos
+
+Furnitures
+Muebles
+
+Crafting
+Crafteo
+
+Potions
+Pociones
+
+Farming
+Agricultura
+
+Mining
+Mineria
+
+Bosses
+Jefes
+
+# ControlsTutorial.java
+
+Moving the character.
+Mover el personaje.
+
+You can move your character through
+Puedes mover tu personaje a trav√©s
+
+the keyboard, unfortunately
+del teclado, desafortunadamente
+
+there is no mouse :(
+aqui no hay mouse :(
+
+You can move with:
+Puedes moverte con:
+
+You can also change the controls to
+Tambi√©n puedes cambiar los controles a
+
+your liking in:
+tu gusto en:
+
+Options > Change Key bindings
+Opciones > Cambiar Atajos
+
+
+# MobsTutorial.java
+
+Mobs?, What's that.
+Mobs?, Que es eso?.
+
+Mobs are all the creatures that inhabit
+Los Mobs son todas las criaturas que habitan
+
+the world, they can be peaceful like
+El mundo, ellos pueden ser pac√≠ficos como
+
+Animals, Villagers, etc, and they can be
+Los Animales, aldeanos, etc., y pueden ser
+
+Hostile like Zombies, Skeletons, etc.
+Hostiles como zombis, esqueletos, etc.
+
+Peaceful mobs:
+Mobs pacificos:
+
+Hostile mobs:
+Mobs hostiles:
+
+
+# CombatTutorial.java
+
+How to Attack.
+Como atacar.
+
+You can attack with:
+Puedes atacar con:
+
+When killing some mobs, they drop loot or
+Cuando matas a algunos Mobs, sueltan bot√≠n o
+
+materials for the crafting of other items:
+materiales para el crafteo de otros items:
+
+You can also hit Tiles, like trees or rocks
+Tambi√©n puedes golpear Tiles, como Arboles o Rocas.
+
+to get resources and modify your environment:
+para obtener recursos y modificar tu entorno:
 
 ### minicraft end

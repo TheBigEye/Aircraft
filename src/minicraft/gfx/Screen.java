@@ -47,6 +47,7 @@ public class Screen {
 	public int[] pixels; // pixels on the screen
 
 	// DEPRECATED!!!! for backwards compatibility during porting
+	@SuppressWarnings("unused")
 	private SpriteSheet sheet; // the sprite sheet used in the Game.
 
 	// since each sheet is 256x256 pixels, each one has 1024 8x8 "tiles"
@@ -306,6 +307,7 @@ public class Screen {
 		}
 	}
 
+	@SuppressWarnings("static-access")
 	public void Blind(Screen screen2, int currentLevel, int xa, int ya) {
 		int[] oPixels = screen2.pixels;
 		int i = 0;
@@ -356,7 +358,8 @@ public class Screen {
 		}
 	}
 
-	  public void renderShadow(int x, int y, int r) {
+	  @SuppressWarnings("static-access")
+	public void renderShadow(int x, int y, int r) {
 		    x = s2vx(x);
 		    y = s2vy(y);
 		    int x0 = x - r;

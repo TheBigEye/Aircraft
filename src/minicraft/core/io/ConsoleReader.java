@@ -523,6 +523,7 @@ public class ConsoleReader extends Thread {
 		shouldRun = true;
 	}
 
+	@SuppressWarnings("resource")
 	public void run() {
 		Scanner stdin = new Scanner(System.in);
 		try {

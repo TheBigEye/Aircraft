@@ -187,7 +187,7 @@ public class WorldSelectDisplay extends Display {
 				Font.drawCentered(Localization.getLocalized("Higher version, cannot load world!"), screen,
 						Font.textHeight() * 5, col);
 			}
-			Font.drawCentered("World Version: " + (version.compareTo(new Version("1.9.2")) <= 0 ? "~" : "") + version,
+			Font.drawCentered(Localization.getLocalized("World Version:") + (version.compareTo(new Version("1.9.2")) <= 0 ? "~" : "") + version,
 					screen, Font.textHeight() * 7 / 2, col);
 		}
 
@@ -195,8 +195,6 @@ public class WorldSelectDisplay extends Display {
 				Screen.h - 60, Color.GRAY);
 		Font.drawCentered(Game.input.getMapping("exit") + Localization.getLocalized(" to return"), screen,
 				Screen.h - 40, Color.GRAY);
-		// Font.drawCentered(Settings.getEntry("mode")+"", screen, Screen.h - 65,
-		// Color.GRAY);
 
 		String title = Localization.getLocalized("Select World");
 		int color = Color.WHITE;

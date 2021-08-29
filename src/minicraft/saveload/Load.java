@@ -637,6 +637,7 @@ public class Load {
 		if(isLocalSave) System.out.println("Warning: Assuming version of save file is current while loading entity: " + entityData);
 		return Load.loadEntity(entityData, Game.VERSION, isLocalSave);
 	}
+	@SuppressWarnings({ "unused", "rawtypes" })
 	@Nullable
 	public static Entity loadEntity(String entityData, Version worldVer, boolean isLocalSave) {
 		entityData = entityData.trim();

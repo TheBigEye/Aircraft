@@ -15,6 +15,7 @@ public class SharpSwordI extends Item {
 		return items;
 	}
 
+	@SuppressWarnings("unused")
 	private Random random = new Random();
 	protected String SharpI;
 	private Sprite sprite;

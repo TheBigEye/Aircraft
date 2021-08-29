@@ -43,6 +43,10 @@ public class TorchTile extends Tile {
 		this.onType = onType;
 		this.connectsToSand = onType.connectsToSand;
 		this.connectsToGrass = onType.connectsToGrass;
+		this.connectsToSkyGrass = onType.connectsToSkyGrass;
+		this.connectsToSkyHighGrass = onType.connectsToSkyHighGrass;
+		this.connectsToSkyDirt = onType.connectsToSkyDirt;
+		this.connectsToFerrosite = onType.connectsToFerrosite;
 		this.connectsToSnow = onType.connectsToSnow;
 		this.connectsToFluid = onType.connectsToFluid;
 	}

@@ -17,11 +17,7 @@ public class Recipes {
 
 	static {
 		craftRecipes.add(new Recipe("Workbench_1", "Wood_4"));
-		// craftRecipes.add(new Recipe("Workbench_1", "Spruce Wood_4"));
-		// craftRecipes.add(new Recipe("Workbench_1", "Birch Wood_4"));
 		craftRecipes.add(new Recipe("Stick_4", "Wood_2"));
-		// craftRecipes.add(new Recipe("Stick_4", "Spruce Wood_2"));
-		// craftRecipes.add(new Recipe("Stick_4", "Birch Wood_2"));
 		craftRecipes.add(new Recipe("Torch_4", "Stick_2", "coal_1"));
 		craftRecipes.add(new Recipe("Grass Seeds_1", "seeds_1", "Flower_2"));
 		craftRecipes.add(new Recipe("Bone powder_3", "bone_1"));
@@ -37,11 +33,10 @@ public class Recipes {
 		craftRecipes.add(new Recipe("Birch Wall_1", "Birch plank_3"));
 		craftRecipes.add(new Recipe("Birch Door_1", "Birch plank_5"));
 
-		workbenchRecipes.add(new Recipe("Torch_4", "Stick_2", "coal_1"));
+		workbenchRecipes.add(new Recipe("Torch_4", "Stick_2", "coal_2"));
 		workbenchRecipes.add(new Recipe("Lantern_1", "Wood_8", "slime_4", "glass_3"));
 		workbenchRecipes.add(new Recipe("Paper_3", "Leaf_3", "Wood_3"));
 		workbenchRecipes.add(new Recipe("Book_1", "Leather_5", "Paper_5"));
-		workbenchRecipes.add(new Recipe("Map book_1", "Book_10", "Paper_5", "Lapis_2"));
 		workbenchRecipes.add(new Recipe("Boat_1", "Wood_30", "Leather_5", "Wood Shovel_2"));
 		workbenchRecipes.add(new Recipe("Bowl_3", "Wood_15"));
 		workbenchRecipes.add(new Recipe("Frozen palette_2", "Stick_4", "Apple_4", "icicle_4"));
@@ -59,10 +54,10 @@ public class Recipes {
 		workbenchRecipes.add(new Recipe("Gem Fishing Rod_1", "Gem_10", "String_3"));
 
 		loomRecipes.add(new Recipe("red dye_1", "rose_1"));
-		loomRecipes.add(new Recipe("green dye_1", "Cactus_1"));
+		loomRecipes.add(new Recipe("lime dye_1", "Cactus_1"));
 		loomRecipes.add(new Recipe("yellow dye_1", "Flower_1"));
 		loomRecipes.add(new Recipe("pink dye_1", "red dye_1", "Bone powder_1"));
-		loomRecipes.add(new Recipe("dark green dye_1", "green dye_1", "Ink sac_1"));
+		loomRecipes.add(new Recipe("green dye_1", "lime dye_1", "Ink sac_1"));
 		loomRecipes.add(new Recipe("orange dye_1", "Orange tulip_1"));
 		loomRecipes.add(new Recipe("purple dye_1", "Lapis_1", "Ink sac_1"));
 
@@ -70,12 +65,12 @@ public class Recipes {
 		loomRecipes.add(new Recipe("Wool_1", "String_3"));
 		loomRecipes.add(new Recipe("black wool_1", "Wool_1", "Ink sac_1"));
 		loomRecipes.add(new Recipe("yellow wool_1", "Wool_1", "yellow dye_1"));
-		loomRecipes.add(new Recipe("green wool_1", "Wool_1", "green dye_1"));
+		loomRecipes.add(new Recipe("lime wool_1", "Wool_1", "lime dye_1"));
 		loomRecipes.add(new Recipe("blue wool_1", "Wool_1", "Lapis_1"));
 		loomRecipes.add(new Recipe("red wool_1", "Wool_1", "red dye_1"));
 		loomRecipes.add(new Recipe("purple wool_1", "Wool_1", "purple dye_1"));
 		loomRecipes.add(new Recipe("pink wool_1", "Wool_1", "pink dye_1"));
-		loomRecipes.add(new Recipe("dark green wool_1", "Wool_1", "dark green dye_1"));
+		loomRecipes.add(new Recipe("green wool_1", "Wool_1", "green dye_1"));
 		loomRecipes.add(new Recipe("gray wool_1", "Wool_1", "Ink sac_1", "Bone powder_1"));
 		loomRecipes.add(new Recipe("red wool_1", "Wool_1", "red dye_1"));
 
@@ -104,12 +99,10 @@ public class Recipes {
 		workbenchRecipes.add(new Recipe("Rock Pickaxe_1", "Stick_2", "Stone_3"));
 		workbenchRecipes.add(new Recipe("Rock Shovel_1", "Stick_2", "Stone_1"));
 		workbenchRecipes.add(new Recipe("Rock Bow_1", "Stick_3", "Stone_3", "string_3"));
-
 		workbenchRecipes.add(new Recipe("arrow_3", "Stick_1", "Stone_2"));
-		workbenchRecipes.add(new Recipe("Leather Armor_1", "leather_10"));
-		workbenchRecipes.add(new Recipe("Snake Armor_1", "scale_15"));
 
 		loomRecipes.add(new Recipe("Leather Armor_1", "leather_10"));
+		loomRecipes.add(new Recipe("Snake Armor_1", "scale_15"));
 
 		anvilRecipes.add(new Recipe("Shear_1", "iron_2"));
 		anvilRecipes.add(new Recipe("Iron Armor_1", "iron_10"));
@@ -159,6 +152,7 @@ public class Recipes {
 		ovenRecipes.add(new Recipe("cooked pork_1", "raw pork_1", "coal_1"));
 		ovenRecipes.add(new Recipe("steak_1", "raw beef_1", "coal_1"));
 		ovenRecipes.add(new Recipe("cooked fish_1", "raw fish_1", "coal_1"));
+		ovenRecipes.add(new Recipe("baked potato_1", "potato_1", "coal_1"));
 		ovenRecipes.add(new Recipe("bread_1", "wheat_4"));
 		ovenRecipes.add(new Recipe("cooked chicken_1", "raw chicken_1", "coal_1"));
 		// ovenRecipes.add(new Recipe("Mushroom Soup_3", "Bowl_3", "Red Mushroom_3",
@@ -199,13 +193,13 @@ public class Recipes {
 		stonecutterRecipes.add(new Recipe("Quartzite_3", "Stone_3", "coal_1"));
 		stonecutterRecipes.add(new Recipe("Flint_3", "Stone_3", "coal_1"));
 
-		breweryRecipes.add(new Recipe("xSpeed Potion_1", "speed potion_2", "coal_5"));
-		breweryRecipes.add(new Recipe("xLight Potion_1", "light potion_2", "coal_5"));
-		breweryRecipes.add(new Recipe("xSwim Potion_1", "swim potion_2", "coal_5"));
-		breweryRecipes.add(new Recipe("xLava Potion_1", "lava potion_2", "coal_5"));
-		breweryRecipes.add(new Recipe("xEnergy Potion_1", "energy potion_2", "coal_5"));
-		breweryRecipes.add(new Recipe("xRegen Potion_1", "regen potion_2", "coal_5"));
-		breweryRecipes.add(new Recipe("xHealth Potion_1", "health potion_2", "coal_5"));
+		breweryRecipes.add(new Recipe("xSpeed Potion_1", "speed potion_2", "Sky wart_5"));
+		breweryRecipes.add(new Recipe("xLight Potion_1", "light potion_2", "Sky wart_4"));
+		breweryRecipes.add(new Recipe("xSwim Potion_1", "swim potion_2", "Sky wart_5"));
+		breweryRecipes.add(new Recipe("xLava Potion_1", "lava potion_2", "Sky wart_6"));
+		breweryRecipes.add(new Recipe("xEnergy Potion_1", "energy potion_2", "Sky wart_6"));
+		breweryRecipes.add(new Recipe("xRegen Potion_1", "regen potion_2", "Sky wart_5"));
+		breweryRecipes.add(new Recipe("xHealth Potion_1", "health potion_2", "Sky wart_5"));
 
 	}
 

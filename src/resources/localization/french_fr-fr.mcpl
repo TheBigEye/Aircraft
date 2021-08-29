@@ -146,7 +146,7 @@ Apple
 Pomme
 
 Frozen palette
-Palette congelée
+Palette congelÃ©e
 
 Mushroom Soup
 Soupe aux champignons
@@ -202,7 +202,7 @@ Cleric Spawner
 Generateur a Clerc
 
 Librarian Spawner
-Generateur a Bibliothécaire
+Generateur a BibliothÃ©caire
 
 GuiMan Spawner
 Generateur a Pingouin
@@ -380,7 +380,7 @@ Wood
 Bois
 
 Spruce Wood
-Bois d'épicéa
+Bois d'Ã©picÃ©a
 
 Birch Wood
 Bois de bouleau
@@ -574,7 +574,7 @@ Plank
 Planche
 
 Spruce Plank
-Planche d'épicéa
+Planche d'Ã©picÃ©a
 
 Birch Plank
 Planche de bouleau
@@ -583,7 +583,7 @@ Plank Wall
 Mur de planches
 
 Spruce Wall
-Mur d'épicéa
+Mur d'Ã©picÃ©a
 
 Birch Wall
 Mur de bouleau
@@ -592,7 +592,7 @@ Wood Door
 Porte en bois
 
 Spruce Door
-Porte en épicéa
+Porte en Ã©picÃ©a
 
 Birch Door
 Porte en bouleau
@@ -770,7 +770,7 @@ Wood Planks
 Planches de bois
 
 Spruce Planks
-Planches d'épicéa
+Planches d'Ã©picÃ©a
 
 Birch Planks
 Planches de bouleau
@@ -785,7 +785,7 @@ Wood Wall
 Mur de bois
 
 Spruce Wall
-Mur d'épicéa
+Mur d'Ã©picÃ©a
 
 Birch Wall
 Mur de bouleau
@@ -1019,7 +1019,7 @@ Loading...
 Chargement...
 
 Generating...
-Générateur...
+GÃ©nÃ©rateur...
 
 Calculating...
 Calculateur...
@@ -1028,13 +1028,13 @@ Pre Calculating...
 Pre Calculateur...
 
 Building...
-Bâtiment...
+BÃ¢timent...
 
 Melting...
 Fusion...
 
 Eroding...
-Érodant...
+Ã‰rodant...
 
 Planting...
 Planting...
@@ -1043,7 +1043,7 @@ Molding...
 Moulage...
 
 Raising...
-Élevage...
+Ã‰levage...
 
 # MultiplayerMenu.java
 

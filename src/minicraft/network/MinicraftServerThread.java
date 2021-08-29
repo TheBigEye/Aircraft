@@ -252,6 +252,7 @@ public class MinicraftServerThread extends MinicraftConnection {
 
 	
 	
+	@SuppressWarnings("resource")
 	private File getRemotePlayerFile() {
 		File[] clientFiles = serverInstance.getRemotePlayerFiles();
 

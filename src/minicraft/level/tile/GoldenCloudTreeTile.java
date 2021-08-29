@@ -25,6 +25,9 @@ public class GoldenCloudTreeTile extends Tile {
 		connectsToSkyHighGrass = true;
 		connectsToSkyGrass = true;
 	}
+	
+	private int LIGHT = 5;
+	private int tickc = 0;
 
 	public void render(Screen screen, Level level, int x, int y) {
 		Tiles.get("Sky High Grass").render(screen, level, x, y);
@@ -61,10 +64,24 @@ public class GoldenCloudTreeTile extends Tile {
 	}
 
 	public boolean tick(Level level, int xt, int yt) {
+	
+
 		int damage = level.getData(xt, yt);
 		if (damage > 0) {
-			level.setData(xt, yt, damage - 1);
+			level.setData(xt, yt, damage - 1);		
 			return true;
+		}
+		
+		tickc++;
+		
+		if (tickc >= 16) {
+			
+			if (random.nextInt(5) == 5) {
+				LIGHT = 5;
+			}else
+				LIGHT = 4;
+			
+			tickc = 0;
 		}
 		return false;
 	}
@@ -114,5 +131,9 @@ public class GoldenCloudTreeTile extends Tile {
 		} else {
 			level.setData(x, y, damage);
 		}
+	}
+	
+	public int getLightRadius(Level level, int x, int y) {
+		return LIGHT;
 	}
 }

@@ -194,6 +194,15 @@ Invocar Cavaleiro
 AirWizard Spawner
 Invocar Mago dos Ventos
 
+EyeQueen Spawner
+Invocar EyeQueen
+
+Cthulhu Spawner
+Invocar Cthulhu
+
+Keeper Spawner
+Invocar Guardiões
+
 Workbench
 Mesa de fabricação
 
@@ -208,6 +217,15 @@ Bigorna
 
 Enchanter
 Encantadora
+
+Assembler
+Montador
+
+Stonecutter
+Cortador de pedra
+
+Brewery
+Destilador
 
 Loom
 Costureira
@@ -227,8 +245,30 @@ Dinamite
 Bed
 Cama
 
+SlimeStatue
+Estatua de limo
+
+ZombieStatue
+Estatua de zumbi
+
+SkeletonStatue
+Estatua de Esqueleto
+
 Chest
 Baú
+
+Dungeon Chest
+Baú de masmorra
+
+# MapItem.java
+
+Map book
+Livro de mapas
+
+# AmuletItem.java
+
+Eye Amulet
+Amuleto de olho
 
 # PotionType.java
 
@@ -238,20 +278,38 @@ Poção vazia
 Speed Potion
 Poção de Agilidade
 
+xSpeed Potion
+Poção de Agilidade X
+
 Light Potion
 Poção da Luz
+
+xLight Potion
+Poção da Luz X
 
 Swim Potion
 Poção da Natação
 
+xSwim Potion
+Poção da Natação X
+
 Energy Potion
 Poção da Energia
+
+xEnergy Potion
+Poção da Energia X
 
 Regen Potion
 Poção Regeneradora
 
+xRegen Potion
+Poção de Regen X
+
 Health Potion
 Poção da Vida
+
+xHealth Potion
+Poção da Vida X
 
 Time Potion
 Poção do Tempo
@@ -259,8 +317,14 @@ Poção do Tempo
 Lava Potion
 Poção da Lava
 
+xLava Potion
+Poção da Lava X
+
 Shield Potion
 Poção do Escudo
+
+xShield Potion
+Poção de Escudo X
 
 Haste Potion
 Poção de Pressa
@@ -273,13 +337,30 @@ Poção
 Power Glove
 Luva do Poder
 
+# ShearItem.java
+
+Shear
+Tesoura
+
 # StackableItem.java
 
 Wood
 Lenha
 
+Spruce Wood
+Madeira de Abeto
+
+Birch Wood
+Madeira de bétula
+
 Stone
 Pedra
+
+Leaf
+Folha
+
+Paper
+Papel
 
 Leather
 Couro
@@ -293,8 +374,65 @@ Chave
 arrow
 Flecha
 
+Icicle
+Carambano
+
+Stick
+Bastão
+
+Bowl
+tigela
+
 string
 Linha
+
+feather
+Pluma
+
+egg
+Ovo
+
+Andesite
+Andesita
+
+Diorite
+Diorita
+
+Granite
+Granito
+
+Silicon
+Silicio
+
+Basalt
+Basalto
+
+Quartzite
+Quartzito
+
+Ink sac
+Saco de tinta
+
+Yellow dye
+Tonalidade amarela
+
+Green dye
+Tonalidade verde
+
+Red dye
+Tonalidade vermelha
+
+Purple dye
+Tonalidade Roxa
+
+Pink dye
+Tonalidade rosa
+
+Dark green dye
+Tonalidade verde escura
+
+Orange dye
+Tonalidade laranja
 
 Coal
 Carvão
@@ -338,25 +476,106 @@ Squama
 Shard
 Caco
 
+Gear
+Engrenagem
+
+Spring
+Resorte
+
+Flint
+Pederneira 
+
+Flint and Steel
+Isqueiro
+
+Protection I
+Proteção I
+
+Protection II
+Proteção II
+
+Protection III
+Proteção III
+
+Sharp I
+Edge I
+
+Sharp II
+Edge II
+
+Sharp III
+Edge III
+
+Cordyceps essence
+Essência Cordyceps
+
+Sticky essence
+Essência pegajosa
+
+Gaseous essence
+Essência gasosa
+
+Master essence
+Essência mestre
+
 # TileItem.java
 
 Flower
 Flor
 
+Orange Tulip
+Tulipa laranja
+
 Acorn
 Noz
+
+Birch Cone
+Cone de bétula
+
+Fir Cone
+Cone de abeto
+
+Pine Cone
+Pinha
 
 Dirt
 Terra
 
+Sky dirt
+Terra do paraíso
+
+Natural Rock
+Pedra natural
+
+Natural Hard Rock
+Pedra natural dura
+
 Plank
 Tábua
+
+Spruce Plank
+Tábua de Abeto
+
+Birch Plank
+Tábua de bétula
 
 Plank Wall
 Parede de Madeira
 
+Spruce Wall
+Parede de Abeto
+
+Birch Wall
+Parede de bétula
+
 Wood Door
 Porta de Madeira
+
+Spruce Door
+Porta de Abeto
+
+Birch Door
+Porta de bétula
 
 Stone Brick
 Tijolos de Pedra
@@ -379,23 +598,56 @@ Porta de Obsidiana
 Wool
 Lã
 
-Red Wool
-Lã Vermelha
+Light Gray Wool
+Lã cinza claro
 
-Blue Wool
-Lã Azul
-
-Green Wool
-Lã Verde
-
-Yellow Wool
-Lã Amarela
+Gray Wool
+Lã cinza
 
 Black Wool
-Lã Preta
+Lã preta
+
+Brown Wool
+Lã marrom
+
+Red Wool
+Lã vermelha
+
+Orange Wool
+Lã laranja
+
+Yellow Wool
+Lã amarela
+
+Lime Wool
+Lã de limão
+
+Green Wool
+Lã verde
+
+Cyan Wool
+Lã ciano
+
+Light Blue Wool
+Lã azul claro
+
+Blue Wool
+Lã azul
+
+Purple Wool
+Lã roxa
+
+Magenta Wool
+Lã magenta
+
+Pink Wool
+Lã rosa
 
 Sand
 Areia
+
+Snow Ball
+Bola de neve
 
 Cactus
 Cacto
@@ -403,11 +655,23 @@ Cacto
 Seeds
 Sementes
 
+Carrot
+Cenoura
+
+Potato
+Batata
+
+Sky wart
+Verruga celeste
+
 Grass Seeds
 Sementes de erva
 
 Bone
 Osso
+
+Bone powder
+Pó ósseo
 
 Cloud
 Nuvem
@@ -449,6 +713,9 @@ Enxada
 Sword
 Espada
 
+Spear
+Lança
+
 Pickaxe
 Picareta
 
@@ -463,6 +730,14 @@ Vara de Pesca
 
 Claymore
 Espada Escocesa
+
+Shear
+Tesoura
+
+# ShearItem.java
+
+Shear
+Tesoura
 
 # TorchItem.java
 
@@ -711,8 +986,44 @@ ESC para Retornar ao menu
 
 # LoadingDisplay.java
 
-Loading...
-Carregando...
+Loading
+Carregando
+
+Generating
+Gerando
+
+Calculating
+Calculando
+
+Pre Calculating
+Pre Calculando
+
+Building
+Construção
+
+Melting
+Derretendo
+
+Eroding
+Erodindo
+
+Planting
+Plantio
+
+Molding
+Moldagem
+
+Raising
+Subindo
+
+Rendering
+Renderização
+
+World
+Mundo
+
+May take a while, be patient
+Pode demorar um pouco, por favor seja paciente
 
 # MultiplayerMenu.java
 
@@ -796,6 +1107,12 @@ Opções
 Change language
 Mudar idioma
 
+Texture packs
+Pacote de texturas
+
+Open Game Folder
+Abra a pasta do jogo
+
 # PauseMenu.java
 
 Return to Game
@@ -804,11 +1121,17 @@ Retornar ao Jogo
 Options
 Opções
 
+info
+em formação
+
 Make World Multiplayer
 Abrir para Multiplayer
 
 Save Game
 Salvar Mundo
+
+World
+Mundo
 
  and 
  e 
@@ -832,8 +1155,8 @@ Inventário
 
 # TitleMenu.java
 
-Play
-Jogar
+Singleplayer
+Um jogador
 
 Load World
 Carregar Mundo
@@ -841,8 +1164,8 @@ Carregar Mundo
 New World
 Novo Mundo
 
-Join Online World
-Entrar em Mundo Online
+Multiplayer
+Multijogador
 
 Options
 Ajustes
@@ -859,6 +1182,9 @@ História (para os fracos)
 About
 Sobre
 
+Minicraft discord
+Minicraft discord
+
 Quit
 Sair
 
@@ -870,6 +1196,9 @@ Sair
  
  to return
  para retornar
+
+Mod by TheBigEye
+Mod por TheBigEye
 
 # WorldEditMenu.java
 
@@ -910,14 +1239,14 @@ Opções de Geração
 
 # WorldSelectMenu.java
 
-Copy
-Copiar
+to Copy
+para Copiar
 
-Rename
-Renomear
+to Rename
+para Renomear
 
-Delete
-Remover
+to Delete
+para Remover
 
  to confirm
  para confirmar
@@ -928,8 +1257,23 @@ Remover
 Select World
 Selecionar Mundo
 
+Select a World to Delete
+Selecione um mundo para remover
+
+Select a World to Rename
+Selecione um mundo para renomear
+
+Select a World to Copy
+Selecione um mundo para copiar
+
 Select a World to
 Selecione um Mundo para
+
+Higher version, cannot load world!
+Versão superior, não consigo carregar o mundo!
+
+World Version:
+Versão mundial:
 
 # LocalizationMenu.java
 
@@ -953,6 +1297,9 @@ Máximo de QPS
 
 Difficulty
 Dificuldade
+
+Peaceful
+Pacifico
 
 Easy
 Fácil
@@ -1025,5 +1372,126 @@ Irregular
 
 Wear Suit
 Guarda-Roupa
+
+# TutorialDisplay.java
+
+Welcome to the tutorial!,
+Bem-vindo ao tutorial!
+
+are you new? Don't worry,
+é novo? Não te preocupes
+
+here you will learn the
+aqui você vai aprender
+
+basics of the game,
+básico do jogo,
+
+have fun!
+Divirta-se!
+
+Moving the character
+Mova o personagem
+
+Mobs?, What's that
+Mobs?, O que é isso?
+
+How to Attack
+Como atacar
+
+The Inventory
+O inventário
+
+The Villagers
+Os aldeões
+
+Furnitures
+Móveis
+
+Crafting
+Construindo
+
+Potions
+Poções
+
+Farming
+Agricultura
+
+Mining
+Mineração
+
+Bosses
+Chefes
+
+# ControlsTutorial.java
+
+Moving the character.
+Mova o personagem.
+
+You can move your character through
+Você pode mover seu personagem através
+
+the keyboard, unfortunately
+teclado, infelizmente
+
+there is no mouse :(
+não há mouse aqui :(
+
+You can move with:
+Você pode se mover com:
+
+You can also change the controls to
+Você também pode alterar os controles para
+
+your liking in:
+seu gosto em:
+
+Options > Change Key bindings
+Opções> Mudar vinculações
+
+
+# MobsTutorial.java
+
+Mobs?, What's that.
+Mobs?, O que é isso?
+
+Mobs are all the creatures that inhabit
+Mobs são todas criaturas que habitam
+
+the world, they can be peaceful like
+O mundo, eles podem ser pacificos como
+
+Animals, Villagers, etc, and they can be
+Animais, aldeões, etc., e podem ser
+
+Hostile like Zombies, Skeletons, etc.
+Hostis como zumbis, esqueletos, etc.
+
+Peaceful mobs:
+Mobs pacificos:
+
+Hostile mobs:
+Mobs hostis:
+
+
+# CombatTutorial.java
+
+How to Attack.
+Como atacar.
+
+You can attack with:
+Você pode atacar com:
+
+When killing some mobs, they drop loot or
+Quando você mata alguns mobs, eles deixam saques ou
+
+materials for the crafting of other items:
+materiais para a elaboração de outros itens:
+
+You can also hit Tiles, like trees or rocks
+Você também pode acertar Ladrilhos, como Árvores ou Rochas.
+
+to get resources and modify your environment:
+para obter recursos e modificar seu ambiente:
 
 ### minicraft end

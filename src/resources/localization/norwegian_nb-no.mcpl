@@ -749,6 +749,36 @@ ESC for å gå tilbake til menyen
 Loading...
 Laster...
 
+Generating
+Genererer
+
+Calculating
+Regnet ut
+
+Pre Calculating
+Forhåndsberegning
+
+Building
+Building
+
+Melting
+Smelting
+
+Eroding
+Erosjon
+
+Planting
+Planting
+
+Molding
+Planting
+
+Raising
+Løfting
+
+Rendering
+Reproduksjon
+
 World
 Verden
 
@@ -834,6 +864,12 @@ Innstillinger
 Change language
 Skift språk
 
+Texture packs
+Teksturpakker
+
+Open Game Folder
+Åpne spillmappen
+
 # PauseMenu.java
 
 Return to Game
@@ -844,6 +880,9 @@ Innstillinger
 
 Make World Multiplayer
 Gjør verdenen til flerspiller
+
+World
+Verden
 
 Save Game
 Lagre spill
@@ -908,6 +947,9 @@ Historie guide
 About
 Om spillet
 
+Minicraft discord
+Minicraft discord
+
 Quit
 Avslutt
 
@@ -919,6 +961,9 @@ Avslutt
  
  to return
  for å gå tilbake
+
+Mod by TheBigEye
+Mod av TheBigEye
 
 # WorldEditMenu.java
 
@@ -959,38 +1004,41 @@ Verden instillinger
 
 # WorldSelectMenu.java
 
- to Copy
- for å kopiere
+to Copy
+å kopiere
 
- to Rename
- for å gi nytt navn
+to Rename
+å gi nytt navn
 
- to Delete
- for å slette
+to Delete
+å slette
 
  to confirm
- for å bekrefte
+ å bekrefte
  
  to return
- for å avbryte
-
+ å returnere
+ 
 Select World
-Velg verden
+Velg Verden
 
 Select a World to Delete
-Velg en verden til å Slette
+Velg en verden du vil slette
 
 Select a World to Rename
-Velg en verden til å endre navn
+Velg en verden du vil gi nytt navn til
 
 Select a World to Copy
-Velg en verden til å Kopiere
+Velg en verden du vil kopiere
+
+Select a World to
+Velg en verden til
 
 Higher version, cannot load world!
-Høyere versjon, kan ikke laste verden!
+Toppversjon, kan ikke laste verden!
 
 World Version:
-Verden Versjon:
+Verdens versjon:
 
 # LocalizationMenu.java
 
@@ -1014,6 +1062,9 @@ Maks FPS
 
 Difficulty
 Vanskelighetsgrad
+
+Peaceful
+Fredelig
 
 Easy
 Lett
@@ -1047,6 +1098,9 @@ Lyd
 
 Autosave
 Autolagre
+
+Ambient
+Stemning
 
 World Size
 Verden størrelse
@@ -1086,5 +1140,126 @@ Uregulær
 
 Wear Suit
 Ta på drakt
+
+# TutorialDisplay.java
+
+Welcome to the tutorial!,
+Velkommen til opplæringen!
+
+are you new? Don't worry,
+er du ny? Ikke bekymre deg
+
+here you will learn the
+her vil du lære
+
+basics of the game,
+grunnleggende i spillet,
+
+have fun!
+Ha det gøy!
+
+Moving the character
+Flytt karakteren
+
+Mobs?, What's that
+Mobs?, Hva er det?
+
+How to Attack
+Hvordan angripe
+
+The Inventory
+Beholdningen
+
+The Villagers
+Landsbyboerne
+
+Furnitures
+Møbler
+
+Crafting
+Utdypning
+
+Potions
+Potions
+
+Farming
+jordbruk
+
+Mining
+Gruvedrift
+
+Bosses
+Sjefer
+
+# ControlsTutorial.java
+
+Moving the character.
+Flytt karakteren.
+
+You can move your character through
+Du kan flytte karakteren din gjennom
+
+the keyboard, unfortunately
+tastatur, dessverre
+
+there is no mouse :(
+det er ingen mus her :(
+
+You can move with:
+Du kan flytte med:
+
+You can also change the controls to
+Du kan også endre kontrollene til
+
+your liking in:
+din smak i:
+
+Options > Change Key bindings
+Valg > Endre nøkkelbindinger
+
+
+# MobsTutorial.java
+
+Mobs?, What's that.
+Mobs?, Hva er det?.
+
+Mobs are all the creatures that inhabit
+Mobber er alle skapninger som bor
+
+the world, they can be peaceful like
+Verden, de kan være fredelige som
+
+Animals, Villagers, etc, and they can be
+Dyr, landsbyboere, etc., og kan være
+
+Hostile like Zombies, Skeletons, etc.
+Fiender som zombier, skjeletter, etc.
+
+Peaceful mobs:
+Fredelige mobber:
+
+Hostile mobs:
+Fiendtlige mobber:
+
+
+# CombatTutorial.java
+
+How to Attack.
+Hvordan angripe.
+
+You can attack with:
+Du kan angripe med:
+
+When killing some mobs, they drop loot or
+Når du dreper noen mobber, slipper de tyvegods eller
+
+materials for the crafting of other items:
+materialer for å lage andre ting:
+
+You can also hit Tiles, like trees or rocks
+for å få ressurser og endre miljøet ditt:
+
+to get resources and modify your environment:
+for å få ressurser og endre miljøet ditt:
 
 ### minicraft end

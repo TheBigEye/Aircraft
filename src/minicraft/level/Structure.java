@@ -103,7 +103,7 @@ public class Structure {
         static final Structure mobDungeonEast;
         static final Structure mobDungeonWest;
 
-        static final Structure airWizardHouse;
+        static final Structure skyDungeon;
 
         // used for random villages
         static final Structure villageHouseNormal;
@@ -182,33 +182,33 @@ public class Structure {
                         "WBBBW"
                 );
 
-                airWizardHouse = new Structure();
-                airWizardHouse.setData("F:Stone Bricks,W:Stone Wall,D:Stone Door",
+                skyDungeon = new Structure();
+                skyDungeon.setData("F:Stone Bricks,W:Stone Wall,D:Stone Door,S:Sky Wart,T:Red Wool",
                         "***********************\n" +
                         "******WWWWWWWWWWW******\n" +
-                        "*****WWFFFFFFFFFWW*****\n" +
+                        "******WFFFFFFFFFW******\n" +
                         "******WWWWFFFWWWW******\n" +
                         "*********WWDWW*********\n" +
-                        "**W*******WFW*******W**\n" +
+                        "**********WFW**********\n" +
                         "*WWW******WFW******WWW*\n" +
                         "*WFW******WFW******WFW*\n" +
-                        "*WFW****WWWFWWW****WFW*\n" +
-                        "*WFWW***WFFFFFW***WWFW*\n" +
-                        "*WFFWWWWWFFFFFWWWWWFFW*\n" +
-                        "*WFFDFFFFFFFFFFFFFDFFW*\n" +
-                        "*WFFWWWWWFFFFFWWWWWFFW*\n" +
-                        "*WFWW***WFFFFFW***WWFW*\n" +
-                        "*WFW****WWWFWWW****WFW*\n" +
+                        "*WFW****WWWTWWW****WFW*\n" +
+                        "*WFWW***WSSTSSW***WWFW*\n" +
+                        "*WFFWWWWWSTTTSWWWWWFFW*\n" +
+                        "*WFFDFFFTTTTTTTFFFDFFW*\n" +
+                        "*WFFWWWWWSTTTSWWWWWFFW*\n" +
+                        "*WFWW***WSSTSSW***WWFW*\n" +
+                        "*WFW****WWWTWWW****WFW*\n" +
                         "*WFW******WFW******WFW*\n" +
                         "*WWW******WFW******WWW*\n" +
-                        "**W*******WFW*******W**\n" +
+                        "**********WFW**********\n" +
                         "*********WWDWW*********\n" +
                         "******WWWWFFFWWWW******\n" +
-                        "*****WWFFFFFFFFFWW*****\n" +
+                        "******WFFFFFFFFFW******\n" +
                         "******WWWWWWWWWWW******\n" +
                         "***********************"
                 );
-                airWizardHouse.addFurniture(0, 0, new Crafter(Crafter.Type.Enchanter));
+                skyDungeon.addFurniture(0, 0, new Crafter(Crafter.Type.Enchanter));
 
                 villageHouseNormal = new Structure();
                 villageHouseNormal.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass,O:Path",

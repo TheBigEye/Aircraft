@@ -8,11 +8,6 @@ import java.util.Random;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-
 import minicraft.entity.Entity;
 import minicraft.level.Level;
 import minicraft.network.MinicraftServer;
@@ -33,33 +28,6 @@ public class Network extends Game {
 	// obviously, this can be null.
 	public static VersionInfo getLatestVersion() {
 		return latestVersion;
-	}
-
-	public static void findLatestVersion(Action callback) {
-		new Thread(() -> {
-			// fetch the latest version from github
-			if (debug)
-				System.out.println("Fetching release list from github...");
-			try {
-				HttpResponse<JsonNode> response = Unirest.get("https://api.github.com/repos/TheBigEye/Aircraft-Mod/releases").asJson();
-				// HttpResponse<JsonNode> response =
-				// Unirest.get("https://api.github.com/repos/TheBigEye/Cthulhucraft/releases").asJson();
-				// HttpResponse<JsonNode> response =
-				// Unirest.get("https://api.github.com/repos/chrisj42/minicraft-plus-revived/releases").asJson();
-				if (response.getStatus() != 200) {
-					System.err.println("Version request returned status code " + response.getStatus() + ": " + response.getStatusText());
-					System.err.println("Response body: " + response.getBody());
-					latestVersion = new VersionInfo(VERSION, "", "");
-				} else {
-					latestVersion = new VersionInfo(response.getBody().getArray().getJSONObject(0));
-				}
-			} catch (UnirestException e) {
-				e.printStackTrace();
-				latestVersion = new VersionInfo(VERSION, "", "");
-			}
-
-			callback.act(); // finished.
-		}).start();
 	}
 
 	@Nullable
@@ -122,7 +90,11 @@ public class Network extends Game {
 		return prefix;
 	}
 
+	@SuppressWarnings("unused")
 	public static void startMultiplayerServer() {
+		System.out.println("Sorry, the Multiplayer is being remodeled, it will not be available in this version.");
+		if(true) return;
+		
 		if (debug)
 			System.out.println("Starting multiplayer server...");
 
@@ -169,18 +141,7 @@ public class Network extends Game {
 
 		new Load(WorldSelectDisplay.getWorldName(), server); // load server config
 
-		if (latestVersion == null) {
-			System.out.println("VERSIONCHECK: Checking for updates...");
-			findLatestVersion(() -> {
-				if (latestVersion.version.compareTo(Game.VERSION) > 0) // link new version
-					System.out.println("VERSIONCHECK: Found newer version: Version " + latestVersion.releaseName + " Available! Download direct from \"" + latestVersion.releaseUrl
-							+ "\". Can also be found with change log at \"https://www.github.com/chrisj42/minicraft-plus-revived/releases\".");
-				else if (latestVersion.releaseName.length() > 0)
-					System.out.println("VERSIONCHECK: No updates found, you have the latest version.");
-				else
-					System.out.println("VERSIONCHECK: Connection failed, could not check for updates.");
-			});
-		}
+
 	}
 
 }

@@ -11,7 +11,7 @@ import minicraft.gfx.Screen;
 public class Arrow extends Entity implements ClientTickable {
 	private Direction dir;
 	private int damage;
-	public Mob owner;
+	private Mob owner;
 	private int speed;
 
 	public Arrow(Mob owner, Direction dir, int dmg) {

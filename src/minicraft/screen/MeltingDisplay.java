@@ -25,6 +25,7 @@ public class MeltingDisplay extends Display {
 	private final RecipeMenu recipeMenu;
 	private final Menu.Builder itemCountMenu, costsMenu, meltDisplay;
 
+	@SuppressWarnings("unused")
 	private final StackableItem[] fuelList = new StackableItem[]{ (StackableItem) Items.get("Coal") }; // Must be a stackable item
 	private final StackableItem currentFuel = (StackableItem) Items.get("Coal");
 

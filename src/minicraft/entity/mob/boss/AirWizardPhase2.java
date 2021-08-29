@@ -91,7 +91,7 @@ public class AirWizardPhase2 extends EnemyMob {
 		
 		if (attackTime > 0) {
 			xa = ya = 0;
-			attackTime--; // attackTime will decrease by 1.
+			attackTime--; // attackTime will decrease by 7% every time.
 			double dir = attackTime; //assigns a local direction variable from the attack time.
 			double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2; // speed is dependent on the attackType. (higher attackType, faster speeds)
 			level.add(new Spark2(this, Math.cos(dir) * speed, Math.sin(dir) * speed)); // adds a spark entity with the cosine and sine of dir times speed.
@@ -136,7 +136,7 @@ public class AirWizardPhase2 extends EnemyMob {
 	public void doHurt(int damage, Direction attackDir) {
 		super.doHurt(damage, attackDir);
 		if (attackDelay == 0 && attackTime == 0) {
-			attackDelay = 60 * 2;
+			attackDelay = 60 * 3;
 		}
 	}
 	

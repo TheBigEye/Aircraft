@@ -30,10 +30,12 @@ public class HolyRockTile extends Tile {
 	protected HolyRockTile(String name) {
 		super(name, (ConnectorSprite) null);
 		csprite = sprite;
+		connectsToSkyHighGrass = true;
+		connectsToSkyGrass = true;
 	}
 
 	public void render(Screen screen, Level level, int x, int y) {
-		Tiles.get("Ferrosite").render(screen, level, x, y);
+		Tiles.get("Sky high grass").render(screen, level, x, y);
 		//sprite.sparse.color = SandTile.sCol(level.depth);
 		sprite.render(screen, level, x, y);
 	}
@@ -86,7 +88,7 @@ public class HolyRockTile extends Tile {
 				}
 				level.dropItem(x * 16 + 8, y * 16 + 8, mincoal, maxcoal, Items.get("coal"));
 			}
-			level.setTile(x, y, Tiles.get("Ferrosite"));
+			level.setTile(x, y, Tiles.get("Sky High grass"));
 		} else {
 			level.setData(x, y, damage);
 		}

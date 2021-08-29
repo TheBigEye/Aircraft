@@ -148,9 +148,9 @@ public class Renderer extends Game {
 
 		BufferStrategy bs = canvas.getBufferStrategy(); // Creates a buffer strategy to determine how the graphics should be buffered.
 		Graphics g = bs.getDrawGraphics(); // Gets the graphics in which java draws the picture
-		g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Draws the a rect to fill the whole window (to cover last?)
+		g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight()); // draws a rect to fill the whole window (to cover last?)
 
-		// Scales the pixels.
+		// Scale the pixels.
 		int ww = getWindowSize().width;
 		int hh = getWindowSize().height;
 
@@ -259,7 +259,6 @@ public class Renderer extends Game {
 		}
 
 		/// NOTIFICATIONS
-
 		if (permStatus.size() == 0 && notifications.size() > 0) {
 			Updater.notetick++;
 			if (notifications.size() > 3) { //only show 3 notifs max at one time; erase old notifs.
@@ -278,7 +277,6 @@ public class Renderer extends Game {
 		}
 
 		// SCORE MODE ONLY:
-
 		if (isMode("score")) {
 			int seconds = (int) Math.ceil(Updater.scoreTime / (double) Updater.normSpeed);
 			int minutes = seconds / 60;
@@ -372,44 +370,43 @@ public class Renderer extends Game {
 			player.activeItem.renderHUD(screen, 20 * 8, Screen.h - 9, Color.WHITE);
 	}
 
-	static LocalDateTime time = LocalDateTime.now();
+	private static LocalDateTime time = LocalDateTime.now();
 
 	@SuppressWarnings("static-access")
-	private static void renderDebugInfo() {
+	private static void renderDebugInfo() { // renders show debug info on the screen.
 
 		int textcol = Color.WHITE;
 		
 		if (debug) {
-		    textcol = Color.YELLOW;
+		    textcol = Color.GREEN;
 		}
 		
-		if (showinfo) { // renders show debug info on the screen.
+		if (showinfo) { 
 			ArrayList<String> info = new ArrayList<>();
-			//info.add("VERSION " + Initializer.VERSION);
-
-			info.add("Version: " + Game.BUILD + " (" + Game.VERSION +")                " + "Test:" + time.getHour() + time.getMinute() + time.getSecond());
-			info.add("Engine: " + "Minicraft Plus" + "                   " + "Time:" + InfoDisplay.getTimeString());
-			info.add("" + time.toLocalDate() + "                               " + "Java:" + System.getProperty("java.version"));
-			info.add(Initializer.fra + " fps" + "                                   " + "Java arch:x" + System.getProperty("sun.arch.data.model"));
-			info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")");
-			info.add((Updater.normSpeed * Updater.gamespeed) + " tps");
+			
+			info.add("Version: " + Game.BUILD + " (" + Game.VERSION +")                    " + "Time:" + InfoDisplay.getTimeString());
+			info.add("Engine: " + "Minicraft Plus" + "                  " + "Java:" + System.getProperty("java.version"));
+			info.add("" + time.toLocalDate() + "                              " + "Java arch:x" + System.getProperty("sun.arch.data.model"));
+			info.add(Initializer.fra + " fps" + "                                  " + "Max mem:" + Updater.MaxMem);
+			info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")                  " + "Total mem:" + Updater.TotalMem);
+			info.add((Updater.normSpeed * Updater.gamespeed) + " tps                                " + "Free mem: " + Updater.FreeMem);
 			if (!isValidServer()) {
 
-				//player info
+				// player info
 				info.add("walk spd:" + player.moveSpeed);
 				info.add("X:" + (player.x / 16) + "." + (player.x % 16));
 				info.add("Y:" + (player.y / 16) + "." + (player.y % 16));
 				info.add("");
 				if (levels[currentLevel] != null)
 
-					//tile
+				// tile
 				info.add("Tile:" + levels[currentLevel].getTile(player.x >> 4, player.y >> 4).name);
 				info.add("Id:" + levels[currentLevel].getTile(player.x >> 4, player.y >> 4).id);
 				info.add("Data:" + levels[currentLevel].getData(player.x >> 4, player.y >> 4));
 				info.add("Depth:" + levels[currentLevel].depth);
 				info.add("");
 
-				//screen info
+				// screen info
 				info.add("Screen: " + java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight() + "x" + java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth());
 				info.add("Current: " + getWindowSize().getHeight() + "x" + getWindowSize().getWidth());
 				if (isMode("score")) info.add("Score " + player.getScore());

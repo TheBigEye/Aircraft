@@ -48,6 +48,6 @@ public class LavaTile extends Tile {
 	}
 
 	public int getLightRadius(Level level, int x, int y) {
-		return 6;
+		return 5;
 	}
 }

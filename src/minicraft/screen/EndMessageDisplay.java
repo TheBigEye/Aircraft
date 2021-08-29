@@ -73,6 +73,7 @@ public class EndMessageDisplay extends Display {
 			super.render(screen);
 	}
 
+	@SuppressWarnings("unused")
 	private StringEntry[] getAndWriteUnlocks() {
 		int scoreTime = (int) Settings.get("scoretime");
 		ArrayList<Integer> unlocks = new ArrayList<>();

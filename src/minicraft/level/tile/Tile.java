@@ -24,6 +24,8 @@ public abstract class Tile {
 		Birch(ToolType.Axe),
 		Stone(ToolType.Pickaxe),
 		Obsidian(ToolType.Pickaxe);
+		
+		
 		public static final Material[] values = Material.values();
 		
 		private final ToolType requiredTool;
@@ -55,6 +57,7 @@ public abstract class Tile {
 	protected boolean connectsToSnow = false;
 	protected boolean connectsToObsidian = false;
 
+	
 	public boolean connectsToSkyGrass = false;
 	protected boolean connectsToSkyDirt = false;
 	public boolean connectsToSkyHighGrass = false;
@@ -148,7 +151,7 @@ public abstract class Tile {
 		return false;
 	}
 
-	/** Sees if the tile connects to Water or Lava. */
+	/** Sees if the tile connects to a fluid. */
 	public boolean connectsToLiquid() {
 		return connectsToFluid;
 	}

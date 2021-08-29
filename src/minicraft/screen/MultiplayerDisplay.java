@@ -137,7 +137,9 @@ public class MultiplayerDisplay extends Display {
 		});
 	}
 	
+
 	@Override
+	@SuppressWarnings("incomplete-switch")
 	public void tick(InputHandler input) {
 		switch(curState) {
 			case LOGIN:

@@ -100,15 +100,16 @@ public class EyeQueen extends EnemyMob {
 		if (Settings.get("diff").equals("Normal")) {min = 1; max = 2;}
 		if (Settings.get("diff").equals("Hard")) {min = 0; max = 2;}
 		
-		super.die();
-		Sound.Mob_eyeBoss_changePhase.play();
-		level.add(new EyeQueenPhase2(1), x, y);
-		
 		int randX = rnd.nextInt(16);
 		int randY = rnd.nextInt(16);
 		level.add(new FireParticle(x - 0 + randX, y - 0 + randY));
 		level.add(new FireParticle(x - 32 + randX, y - 24 + randY));
 		level.add(new FireParticle(x - 26 + randX, y - 14 + randY));
+		
+		super.die();
+		Sound.Mob_eyeBoss_changePhase.play();
+		level.add(new EyeQueenPhase2(1), x, y);
+		
 	}
 
 }

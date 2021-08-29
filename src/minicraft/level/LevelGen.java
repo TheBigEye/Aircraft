@@ -18,13 +18,12 @@ public class LevelGen {
 
   private static long worldSeed = 0; // Always is 0
   private static final Random random = new Random(worldSeed);
-  public double[] values; // An array of doubles, used to help making noise for the map
-  private int w,
-  h; // width and height of the map
+  private double[] values; // An array of doubles, used to help making noise for the map
+  private int w, h; // width and height of the map
   private static final int stairRadius = 15;
 
   /** This creates noise to create random values for level generation */
-  public LevelGen(int w, int h, int featureSize) {
+  private LevelGen(int w, int h, int featureSize) {
     this.w = w;
     this.h = h;
 
@@ -39,7 +38,7 @@ public class LevelGen {
 
     int stepSize = featureSize;
     double scale = 1.3 / w;
-    double scaleMod = 1.3;
+    double scaleMod = 1;
     do {
       int halfStep = stepSize / 2;
       for (int y = 0; y < h; y += stepSize) {
@@ -971,22 +970,91 @@ public class LevelGen {
         }
       }
     }
+    
+    
+    if (w == 256 && h == 256 || w == 512 && h == 512 || w == 1024 && h == 1024){ // For 256x or more size worlds
 
     // Generate skygrass in cloud tile
-    for (int i = 0; i < w * h / 2800; i++) {
-      int xs = random.nextInt(w - 2);
-      int ys = random.nextInt(h - 2);
+    for (int i = 0; i < w * h / 1024; i++) {
+      int xs = w / 2 - 30;
+      int ys = h / 2 - 30;
       for (int k = 0; k < 90; k++) {
-        int x = xs + random.nextInt(28) - 10;
-        int y = ys + random.nextInt(30) - 10;
+        int x = xs; //+ random.nextInt(28) - 10;
+        int y = ys; //+ random.nextInt(30) - 10;
         for (int j = 0; j < 190; j++) {
-          int xo = x + random.nextInt(10) - random.nextInt(5) + random.nextInt(3);
-          int yo = y + random.nextInt(10) - random.nextInt(5) + random.nextInt(3);
+          int xo = x + random.nextInt(60) - random.nextInt(16) + random.nextInt(8);
+          int yo = y + random.nextInt(60) - random.nextInt(16) + random.nextInt(8);
           for (int yy = yo - 1; yy <= yo + 1; yy++)
           for (int xx = xo - 1; xx <= xo + 1; xx++)
           if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
             if (map[xx + yy * w] == Tiles.get("cloud").id) {
               map[xx + yy * w] = Tiles.get("Sky Grass").id;
+
+            }
+          }
+        }
+      }
+    }
+    
+    // Generate skygrass in cloud tile
+    for (int i = 0; i < w * h / 2800; i++) {
+      int xs = w / 2 - 30;
+      int ys = h / 2 - 30;
+      for (int k = 0; k < 90; k++) {
+        int x = xs + random.nextInt(28) - random.nextInt(10);
+        int y = ys + random.nextInt(30) - random.nextInt(10);
+        for (int j = 0; j < 190; j++) {
+          int xo = x + random.nextInt(60) - random.nextInt(16) + random.nextInt(8);
+          int yo = y + random.nextInt(60) - random.nextInt(16) + random.nextInt(8);
+          for (int yy = yo - 1; yy <= yo + 1; yy++)
+          for (int xx = xo - 1; xx <= xo + 1; xx++)
+          if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+            if (map[xx + yy * w] == Tiles.get("cloud").id) {
+              map[xx + yy * w] = Tiles.get("Sky Grass").id;
+
+            }
+          }
+        }
+      }
+    }
+    
+    // Generate skygrass in cloud tile
+    for (int i = 0; i < w * h / 2800; i++) {
+      int xs = w / 2 - 15;
+      int ys = h / 2 - 15;
+      for (int k = 0; k < 90; k++) {
+        int x = xs + random.nextInt(28) - random.nextInt(10);
+        int y = ys + random.nextInt(30) - random.nextInt(10);
+        for (int j = 0; j < 190; j++) {
+          int xo = x + random.nextInt(30) - random.nextInt(16) + random.nextInt(8);
+          int yo = y + random.nextInt(30) - random.nextInt(16) + random.nextInt(8);
+          for (int yy = yo - 1; yy <= yo + 1; yy++)
+          for (int xx = xo - 1; xx <= xo + 1; xx++)
+          if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+            if (map[xx + yy * w] == Tiles.get("Infinite Fall").id) {
+              map[xx + yy * w] = Tiles.get("Sky high Grass").id;
+
+            }
+          }
+        }
+      }
+    }
+    
+    // Generate skygrass in cloud tile
+    for (int i = 0; i < w * h / 2800; i++) {
+      int xs = w / 2 - 40;
+      int ys = h / 2 - 40;
+      for (int k = 0; k < 90; k++) {
+        int x = xs + random.nextInt(28) - random.nextInt(10);
+        int y = ys + random.nextInt(30) - random.nextInt(10);
+        for (int j = 0; j < 190; j++) {
+          int xo = x + random.nextInt(80) - random.nextInt(30) + random.nextInt(12);
+          int yo = y + random.nextInt(80) - random.nextInt(30) + random.nextInt(12);
+          for (int yy = yo - 1; yy <= yo + 1; yy++)
+          for (int xx = xo - 1; xx <= xo + 1; xx++)
+          if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+            if (map[xx + yy * w] == Tiles.get("Cloud").id) {
+              map[xx + yy * w] = Tiles.get("Ferrosite").id;
 
             }
           }
@@ -1020,28 +1088,6 @@ public class LevelGen {
           if (map[xx + yy * w] == Tiles.get("Sky Grass").id) {
             map[xx + yy * w] = Tiles.get("Sky High Grass").id;
 
-          }
-        }
-      }
-    }
-
-    // Generate ferrosite randomly in cloud tile
-    for (int i = 0; i < w * h / 2800; i++) {
-      int xs = random.nextInt(w - 2);
-      int ys = random.nextInt(h - 2);
-      for (int k = 0; k < 90; k++) {
-        int x = xs + random.nextInt(21) - 10;
-        int y = ys + random.nextInt(24) - 10;
-        for (int j = 0; j < 190; j++) {
-          int xo = x + random.nextInt(8) - random.nextInt(5) + random.nextInt(2);
-          int yo = y + random.nextInt(8) - random.nextInt(5) + random.nextInt(2);
-          for (int yy = yo - 1; yy <= yo + 1; yy++)
-          for (int xx = xo - 1; xx <= xo + 1; xx++)
-          if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-            if (map[xx + yy * w] == Tiles.get("cloud").id) {
-              map[xx + yy * w] = Tiles.get("Ferrosite").id;
-
-            }
           }
         }
       }
@@ -1101,8 +1147,8 @@ public class LevelGen {
       int x = random.nextInt(w);
       int y = random.nextInt(h);
       for (int j = 0; j < 100; j++) {
-        int xx = x + random.nextInt(14) - random.nextInt(14) + random.nextInt(5);
-        int yy = y + random.nextInt(14) - random.nextInt(14) + random.nextInt(5);
+        int xx = x + random.nextInt(14) - random.nextInt(12) + random.nextInt(5);
+        int yy = y + random.nextInt(14) - random.nextInt(12) + random.nextInt(5);
         if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
           if (map[xx + yy * w] == Tiles.get("Sky high grass").id) {
             map[xx + yy * w] = Tiles.get("Golden cloud tree").id;
@@ -1116,15 +1162,174 @@ public class LevelGen {
       int x = random.nextInt(w);
       int y = random.nextInt(h);
       for (int j = 0; j < 100; j++) {
-        int xx = x + random.nextInt(6) + random.nextInt(4);
-        int yy = y + random.nextInt(6) + random.nextInt(4);
+        int xx = x + random.nextInt(12) + random.nextInt(6);
+        int yy = y + random.nextInt(12) + random.nextInt(6);
         if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-          if (map[xx + yy * w] == Tiles.get("Ferrosite").id) {
+          if (map[xx + yy * w] == Tiles.get("Sky high grass").id) {
             map[xx + yy * w] = Tiles.get("Holy rock").id;
 
           }
         }
       }
+    }
+    
+    
+    } else { // for 128x worlds
+
+        // Generate skygrass in cloud tile
+        for (int i = 0; i < w * h / 2800; i++) {
+          int xs = random.nextInt(w - 2);
+          int ys = random.nextInt(h - 2);
+          for (int k = 0; k < 90; k++) {
+            int x = xs + random.nextInt(28) - 10;
+            int y = ys + random.nextInt(30) - 10;
+            for (int j = 0; j < 190; j++) {
+              int xo = x + random.nextInt(10) - random.nextInt(5) + random.nextInt(3);
+              int yo = y + random.nextInt(10) - random.nextInt(5) + random.nextInt(3);
+              for (int yy = yo - 1; yy <= yo + 1; yy++)
+              for (int xx = xo - 1; xx <= xo + 1; xx++)
+              if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+                if (map[xx + yy * w] == Tiles.get("cloud").id) {
+                  map[xx + yy * w] = Tiles.get("Sky Grass").id;
+
+                }
+              }
+            }
+          }
+        }
+
+        // Generate Sky high grass in sky grass tile
+        for (int i = 0; i < w * h / 400; i++) {
+          int x = random.nextInt(w);
+          int y = random.nextInt(h);
+          for (int j = 0; j < 80; j++) {
+            int xx = x + random.nextInt(10) - random.nextInt(5) + random.nextInt(3);
+            int yy = y + random.nextInt(10) - random.nextInt(5) + random.nextInt(3);
+            if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+              if (map[xx + yy * w] == Tiles.get("Sky Grass").id) {
+                map[xx + yy * w] = Tiles.get("Sky High Grass").id;
+
+              }
+            }
+          }
+        }
+
+        for (int i = 0; i < w * h / 800; i++) {
+          int x = random.nextInt(w);
+          int y = random.nextInt(h);
+          for (int j = 0; j < 100; j++) {
+            int xx = x + random.nextInt(6) + random.nextInt(4);
+            int yy = y + random.nextInt(6) + random.nextInt(4);
+            if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+              if (map[xx + yy * w] == Tiles.get("Sky Grass").id) {
+                map[xx + yy * w] = Tiles.get("Sky High Grass").id;
+
+              }
+            }
+          }
+        }
+
+        // Generate ferrosite randomly in cloud tile
+        for (int i = 0; i < w * h / 2800; i++) {
+          int xs = random.nextInt(w - 2);
+          int ys = random.nextInt(h - 2);
+          for (int k = 0; k < 90; k++) {
+            int x = xs + random.nextInt(21) - 10;
+            int y = ys + random.nextInt(24) - 10;
+            for (int j = 0; j < 190; j++) {
+              int xo = x + random.nextInt(8) - random.nextInt(5) + random.nextInt(2);
+              int yo = y + random.nextInt(8) - random.nextInt(5) + random.nextInt(2);
+              for (int yy = yo - 1; yy <= yo + 1; yy++)
+              for (int xx = xo - 1; xx <= xo + 1; xx++)
+              if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+                if (map[xx + yy * w] == Tiles.get("cloud").id) {
+                  map[xx + yy * w] = Tiles.get("Ferrosite").id;
+
+                }
+              }
+            }
+          }
+        }
+
+        //  Generate sky lawn in Sky grass
+        for (int i = 0; i < w * h / 400; i++) {
+          int x = random.nextInt(w);
+          int y = random.nextInt(h);
+          int col = random.nextInt(4);
+          for (int j = 0; j < 100; j++) {
+            int xx = x + random.nextInt(5) - random.nextInt(5);
+            int yy = y + random.nextInt(5) - random.nextInt(5);
+            if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+              if (map[xx + yy * w] == Tiles.get("sky grass").id) {
+                map[xx + yy * w] = Tiles.get("sky lawn").id;
+                data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16);
+              }
+            }
+          }
+        }
+
+        // Generate Normal cloud trees
+        for (int i = 0; i < w * h / 400; i++) {
+          int x = random.nextInt(w);
+          int y = random.nextInt(h);
+          for (int j = 0; j < 100; j++) {
+            int xx = x + random.nextInt(16) - random.nextInt(16) + random.nextInt(5);
+            int yy = y + random.nextInt(16) - random.nextInt(16) + random.nextInt(5);
+            if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+              if (map[xx + yy * w] == Tiles.get("Sky grass").id) {
+                map[xx + yy * w] = Tiles.get("Cloud tree").id;
+
+              }
+            }
+          }
+        }
+
+        // Generate Normal blue cloud trees
+        for (int i = 0; i < w * h / 200; i++) {
+          int x = random.nextInt(w);
+          int y = random.nextInt(h);
+          for (int j = 0; j < 100; j++) {
+            int xx = x + random.nextInt(16) - random.nextInt(16) + random.nextInt(5);
+            int yy = y + random.nextInt(16) - random.nextInt(16) + random.nextInt(5);
+            if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+              if (map[xx + yy * w] == Tiles.get("Sky grass").id) {
+                map[xx + yy * w] = Tiles.get("Blue cloud tree").id;
+
+              }
+            }
+          }
+        }
+
+        // Generate Golden cloud trees
+        for (int i = 0; i < w * h / 400; i++) {
+          int x = random.nextInt(w);
+          int y = random.nextInt(h);
+          for (int j = 0; j < 100; j++) {
+            int xx = x + random.nextInt(14) - random.nextInt(14) + random.nextInt(5);
+            int yy = y + random.nextInt(14) - random.nextInt(14) + random.nextInt(5);
+            if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+              if (map[xx + yy * w] == Tiles.get("Sky high grass").id) {
+                map[xx + yy * w] = Tiles.get("Golden cloud tree").id;
+
+              }
+            }
+          }
+        }
+
+        for (int i = 0; i < w * h / 800; i++) {
+          int x = random.nextInt(w);
+          int y = random.nextInt(h);
+          for (int j = 0; j < 100; j++) {
+            int xx = x + random.nextInt(6) + random.nextInt(4);
+            int yy = y + random.nextInt(6) + random.nextInt(4);
+            if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+              if (map[xx + yy * w] == Tiles.get("Ferrosite").id) {
+                map[xx + yy * w] = Tiles.get("Holy rock").id;
+
+              }
+            }
+          }
+        }
     }
 
     int count = 0;
@@ -1196,8 +1401,8 @@ public class LevelGen {
     }
 
     while (true) {
-      int w = 256;
-      int h = 256;
+      int w = 512;
+      int h = 512;
 
       int lvl = maplvls[idx++%maplvls.length];
       if (lvl > 1 || lvl < -4) continue;
@@ -1274,7 +1479,7 @@ public class LevelGen {
       System.out.println("Seed: " + worldSeed + " Gen-Version " + Game.BUILD);
 
       img.setRGB(0, 0, w, h, pixels, 0, w);
-      JOptionPane.showMessageDialog(null, null, "Another Map", JOptionPane.PLAIN_MESSAGE, new ImageIcon(img.getScaledInstance(w * 2, h * 2, Image.SCALE_AREA_AVERAGING)));
+      JOptionPane.showMessageDialog(null, null, "Another Map", JOptionPane.PLAIN_MESSAGE, new ImageIcon(img.getScaledInstance(w * 1, h * 1, Image.SCALE_AREA_AVERAGING)));
       if (LevelGen.worldSeed == 0x100) LevelGen.worldSeed = 0xAAFF20;
       else LevelGen.worldSeed = 0x100;
     }

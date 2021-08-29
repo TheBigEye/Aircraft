@@ -94,6 +94,7 @@ public class LegacyLoad {
 		updateUnlocks(unlocksFile);
 	}
 	
+	@SuppressWarnings("unused")
 	public void loadFromFile(String filename) {
 		data.clear();
 		extradata.clear();

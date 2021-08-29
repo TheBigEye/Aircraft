@@ -17,10 +17,10 @@ public class OldGolem extends EnemyMob {
 	
 	/**
 	 * Creates a bad golem of the given level.
-	 * @param lvl Zombie's level.
+	 * @param lvl Golem's level.
 	 */
 	public OldGolem(int lvl) {
-		super(lvl, sprites, 1, 100);
+		super(lvl, sprites, 3, 100);
 	}
 	
 	@Override

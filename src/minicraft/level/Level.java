@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -21,6 +22,9 @@ import minicraft.core.io.Sound;
 import minicraft.entity.ClientTickable;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
+import minicraft.entity.Spark;
+import minicraft.entity.Spark2;
+import minicraft.entity.Spark3;
 import minicraft.entity.furniture.Chest;
 import minicraft.entity.furniture.DungeonChest;
 import minicraft.entity.furniture.Spawner;
@@ -81,30 +85,32 @@ public class Level {
 	private Random random = new Random();
 	
 	private static final String[] levelNames = { "Heaven", "Surface", "Iron", "Gold", "Lava", "Dungeon", "Hell" };
-
-	public static String getLevelName(int depth) {
-		return levelNames[-1 * depth + 1];
-	}
-
-	public static String getDepthString(int depth) {
-		return "Level " + (depth < 0 ? "B" + (-depth) : depth);
-	}
+	public static String getLevelName(int depth) { return levelNames[-1 * depth + 1]; }
+	public static String getDepthString(int depth) { return "Level " + (depth<0?"B" + (-depth):depth); }
 	
 	private static final int MOB_SPAWN_FACTOR = 100; // the chance of a mob actually trying to spawn when trySpawn is called equals: mobCount / maxMobCount * MOB_SPAWN_FACTOR. so, it basically equals the chance, 1/number, of a mob spawning when the mob cap is reached. I hope that makes sense...
 	
-	public int w, h; // width and height of the level
-	private long seed; // the used seed that was used to generate the world
+	public int w, h; // Width and height of the level
+	private long seed; // The used seed that was used to generate the world
 	
-	public byte[] tiles; // an array of all the tiles in the world.
-	public byte[] data; // an array of the data of the tiles in the world. // ?
+	public byte[] tiles; // An array of all the tiles in the world.
+	public byte[] data; // An array of the data of the tiles in the world. // ?
 	
-	public final int depth; // depth level of the level
-	public int monsterDensity = 8; // affects the number of monsters that are on the level, bigger the number the less monsters spawn.
+	public final int depth; // Depth level of the level
+	public int monsterDensity = 8; // Affects the number of monsters that are on the level, bigger the number the less monsters spawn.
 	public int maxMobCount;
 	public int chestCount;
 	public int mobCount = 0;
 	
+
+	/**
+	 * I will be using this lock to avoid concurrency exceptions in entities and sparks set
+	 */
+	private final Object entityLock = new Object();
 	private Set<Entity> entities = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the entities in the world
+	private Set<Spark> sparks = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the sparks in the world
+	private Set<Spark2> sparks2 = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the sparks2 in the world
+	private Set<Spark3> sparks3 = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the sparks3 in the world
 	private Set<Player> players = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the players in the world
 	private List<Entity> entitiesToAdd = new ArrayList<>(); /// entities that will be added to the level on next tick are stored here. This is for the sake of multithreading optimization. (hopefully)
 	private List<Entity> entitiesToRemove = new ArrayList<>(); /// entities that will be removed from the level on next tick are stored here. This is for the sake of multithreading optimization. (hopefully)
@@ -112,32 +118,27 @@ public class Level {
 	// creates a sorter for all the entities to be rendered.
 	private static Comparator<Entity> spriteSorter = Comparator.comparingInt(new ToIntFunction<Entity>() {
 		@Override
-		public int applyAsInt(Entity e) {
-			return e.y;
-		}
+		public int applyAsInt(Entity e) { return e.y; }
 	});
 	
 	public Entity[] getEntitiesToSave() {
-		Entity[] allEntities = new Entity[entities.size() + entitiesToAdd.size()];
+		Entity[] allEntities = new Entity[entities.size() + sparks.size() + sparks2.size() + sparks3.size() + entitiesToAdd.size()];
 		Entity[] toAdd = entitiesToAdd.toArray(new Entity[entitiesToAdd.size()]);
 		Entity[] current = getEntityArray();
 		System.arraycopy(current, 0, allEntities, 0, current.length);
 		System.arraycopy(toAdd, 0, allEntities, current.length, toAdd.length);
-
+		
 		return allEntities;
 	}
 	
 	/// This is a solely debug method I made, to make printing repetitive stuff easier.
-	// should be changed to accept prepend and entity, or a tile (as an Object). It will get the coordinates and class name from the object, and will divide coords by 16 if passed an entity.
-	public void printLevelLoc(String prefix, int x, int y) {
-		printLevelLoc(prefix, x, y, "");
-	}
-
+	// Should be changed to accept prepend and entity, or a tile (as an Object). It will get the coordinates and class name from the object, and will divide coords by 16 if passed an entity.
+	public void printLevelLoc(String prefix, int x, int y) { printLevelLoc(prefix, x, y, ""); }
 	public void printLevelLoc(String prefix, int x, int y, String suffix) {
-		String levelName = getLevelName(depth);
-
-		System.out.println(prefix + " on " + levelName + " level (" + x + "," + y + ")" + suffix);
-	}
+	String levelName = getLevelName(depth);
+	
+		System.out.println(prefix + " on " + levelName + " level ("+ x +","+ y +")" + suffix);
+	} 
 	
 	public void printTileLocs(Tile t) {
 		for (int x = 0; x < w; x++)
@@ -160,28 +161,23 @@ public class Level {
 	
 	private void updateMobCap() {
 		maxMobCount = 150 + 150 * Settings.getIdx("diff");
-		if (depth == 1)
-			maxMobCount /= 2;
-		if (depth == 0 || depth == -4)
-			maxMobCount = maxMobCount * 2 / 3;
+		if(depth == 1) maxMobCount /= 2;
+		if(depth == 0 || depth == -4) maxMobCount = maxMobCount * 2 / 3;
 	}
 	
-	@SuppressWarnings("unchecked") // @SuppressWarnings ignores the warnings (yellow underline) in this method.
-	/** Level which the world is contained in */
 	public Level(int w, int h, long seed, int level, Level parentLevel, boolean makeWorld) {
 		depth = level;
 		this.w = w;
 		this.h = h;
 		this.seed = seed;
-		byte[][] maps; // multidimensional array (an array within a array), used for the map
-		int saveTile;
+		byte[][] maps; // Multidimensional array (an array within a array), used for the map
 		
-		if (level != -4 && level != 0)
+		if(level != -4 && level != 0)
 			monsterDensity = 8;
 	
 		updateMobCap();
 		
-		if (!makeWorld) {
+		if(!makeWorld) {
 			int arrsize = w * h;
 			tiles = new byte[arrsize];
 			data = new byte[arrsize];
@@ -205,37 +201,37 @@ public class Level {
 
 		if (level == 0)
 			generateVillages();
-
+		
+		
 		if (parentLevel != null) { // If the level above this one is not null (aka, if this isn't the sky level)
 			for (int y = 0; y < h; y++) { // loop through height
 				for (int x = 0; x < w; x++) { // loop through width
 					if (parentLevel.getTile(x, y) == Tiles.get("Stairs Down")) { // If the tile in the level above the current one is a stairs down then...
 						if (level == -4) /// make the obsidian wall formation around the stair in the dungeon level
 							Structure.dungeonGate.draw(this, x, y);
-
+						
 						else if (level == 0) { // surface
-							if (Game.debug)
-								System.out.println("Setting tiles around " + x + "," + y + " to hard rock");
+							if (Game.debug) System.out.println("Setting tiles around "+x+","+y+" to hard rock");
 							setAreaTiles(x, y, 1, Tiles.get("Hard Rock"), 0); // surround the sky stairs with hard rock
-						} else // any other level, the up-stairs should have dirt on all sides.
+						}
+						else // any other level, the up-stairs should have dirt on all sides.
 							setAreaTiles(x, y, 1, Tiles.get("dirt"), 0);
-
 						setTile(x, y, Tiles.get("Stairs Up")); // set a stairs up tile in the same position on the current level
 					}
 				}
 			}
-		} else { // this is the sky level
-			boolean placedHouse = false;
-			while (!placedHouse) {
+			
+		} else { // This is the sky level
+			boolean placedSkyDungeon = false;
+			while (!placedSkyDungeon) {
 				int x = random.nextInt(this.w - 7);
 				int y = random.nextInt(this.h - 5);
 
-				// Sound.HeavenAmbience.play();
-
+				// Generate the sky dungeon (always in Sky grass tile)
 				if (this.getTile(x - 3, y - 2) == Tiles.get("Sky grass") && this.getTile(x + 3, y - 2) == Tiles.get("Sky grass")) {
 					if (this.getTile(x - 3, y + 2) == Tiles.get("Sky grass") && this.getTile(x + 3, y + 2) == Tiles.get("Sky grass")) {
-						Structure.airWizardHouse.draw(this, x, y);
-						placedHouse = true;
+						Structure.skyDungeon.draw(this, x, y);
+						placedSkyDungeon = true;
 					}
 				}
 			}
@@ -266,53 +262,51 @@ public class Level {
 	}
 
 	private void checkAirWizard(boolean check) {
-		if (depth == 1 && !AirWizard.beaten) { // add the airwizard to the surface
-
+		if (depth == 1 && !AirWizard.beaten) { // Add the airwizard to the surface
+			
 			boolean found = false;
 			if (check) {
-				for (Entity e : entitiesToAdd)
+				for (Entity e: entitiesToAdd)
 					if (e instanceof AirWizard)
 						found = true;
-				for (Entity e : entities)
-					if (e instanceof AirWizard)
+				for (Entity e: entities)
+					if(e instanceof AirWizard)
 						found = true;
 			}
-
+			
 			if (!found) {
 				AirWizard aw = new AirWizard(false);
-				add(aw, w / 2, h / 2, true);
+				add(aw, w/2, h/2, true);
 			}
 		}
 	}
-
+	
 	public void checkChestCount() {
 		checkChestCount(true);
 	}
-
+	
 	private void checkChestCount(boolean check) {
-		/// if the level is the dungeon, and we're not just loading the world...
-		if (depth != -4)
-			return;
-
+		// If the level is the dungeon, and we're not just loading the world...
+		if (depth != -4) return;
+		
 		int numChests = 0;
-
-		if (check) {
-			for (Entity e : entitiesToAdd)
-				if (e instanceof DungeonChest)
+		
+		if(check) {
+			for(Entity e: entitiesToAdd)
+				if(e instanceof DungeonChest)
 					numChests++;
-			for (Entity e : entities)
-				if (e instanceof DungeonChest)
+			for(Entity e: entities)
+				if(e instanceof DungeonChest)
 					numChests++;
-			if (Game.debug)
-				System.out.println("Found " + numChests + " chests.");
+			if (Game.debug) System.out.println("Found " + numChests + " chests.");
 		}
 		
 		/// make DungeonChests!
 		for (int i = numChests; i < 10 * (w / 128); i++) {
 			DungeonChest d = new DungeonChest(true);
 			boolean addedchest = false;
-			while (!addedchest) { // keep running until we successfully add a DungeonChest
-				// pick a random tile:
+			while(!addedchest) { // keep running until we successfully add a DungeonChest
+				//pick a random tile:
 				int x2 = random.nextInt(16 * w) / 16;
 				int y2 = random.nextInt(16 * h) / 16;
 				if (getTile(x2, y2) == Tiles.get("Obsidian")) {
@@ -346,27 +340,89 @@ public class Level {
 			}
 		}
 	}
+	
+	private void tickEntity(Entity entity) {
+		if (entity == null) return;
+
+		if (Game.hasConnectedClients() && entity instanceof Player && !(entity instanceof RemotePlayer)) {
+			if (Game.debug)
+				System.out.println("SERVER is removing regular player " + entity + " from level " + this);
+			entity.remove();
+		}
+		if (Game.isValidServer() && entity instanceof Particle) {
+			// there is no need to track this.
+			if (Game.debug)
+				System.out.println("SERVER warning: Found particle in entity list: " + entity + ". Removing from level " + this);
+			entity.remove();
+		}
+
+		if (entity.isRemoved()) {
+			remove(entity);
+			return;
+		}
+
+		if (entity != Game.player) { // player is ticked separately, others are ticked on server
+			if (!Game.isValidClient())
+				entity.tick(); /// the main entity tick call.
+			else if (entity instanceof ClientTickable)
+				((ClientTickable) entity).clientTick();
+		}
+
+		if (entity.isRemoved() || entity.getLevel() != this) {
+			remove(entity);
+			return;
+		}
+
+		if (Game.hasConnectedClients()) // this means it's a server
+			Game.server.broadcastEntityUpdate(entity);
+	}
 
 	public void tick(boolean fullTick) {
 		int count = 0;
-
-		while (entitiesToAdd.size() > 0) {
-			Entity entity = entitiesToAdd.get(0);
+		Iterator<Entity> entityAdderIt = entitiesToAdd.iterator();
+		while (entityAdderIt.hasNext()) {
+			Entity entity = entityAdderIt.next();
 			boolean inLevel = entities.contains(entity);
-
-			if (!inLevel) {
-				if (Game.isValidServer())
+			
+			if(!inLevel) {
+				if(Game.isValidServer())
 					Game.server.broadcastEntityAddition(entity, true);
-
+				
 				if (!Game.isValidServer() || !(entity instanceof Particle)) {
 					// if (Game.debug) printEntityStatus("Adding ", entity, "furniture.DungeonChest", "mob.AirWizard", "mob.Player");
-
-					entities.add(entity);
-					if (entity instanceof Player)
-						players.add((Player) entity);
+					
+					synchronized (entityLock) {
+						if (entity instanceof Spark) {
+							sparks.add((Spark) entity);
+						} else {
+							entities.add(entity);
+							if (entity instanceof Player) {
+								players.add((Player) entity);
+							}
+						}
+						
+						if (entity instanceof Spark2) {
+							sparks2.add((Spark2) entity);
+						} else {
+							entities.add(entity);
+							if (entity instanceof Player) {
+								players.add((Player) entity);
+							}
+						}
+						
+						if (entity instanceof Spark3) {
+							sparks3.add((Spark3) entity);
+						} else {
+							entities.add(entity);
+							if (entity instanceof Player) {
+								players.add((Player) entity);
+							}
+						}
+						
+					}
 				}
 			}
-			entitiesToAdd.remove(entity);
+			entityAdderIt.remove();
 		}
 		
 		
@@ -378,16 +434,13 @@ public class Level {
 				if (random.nextInt(3) == 0 && depth == 0) { // Surface only
 					Sound.Theme_Surface.play();
 
-				}
-				if (random.nextInt(3) == 1 && depth == 0 | depth == -1) { // Surface and underground
+				} else if (random.nextInt(3) == 1 && depth == 0 | depth == -1) { // Surface and underground
 					Sound.Theme_Cave.play();
 
-				}
-				if (random.nextInt(3) == 2 && depth == 0) { // Surface only
+				} else if (random.nextInt(3) == 2 && depth == 0) { // Surface only
 					Sound.Theme_Peaceful.play();
 
-				}
-				if (random.nextInt(3) == 3 && depth == 0) { // Surface only
+				} else if (random.nextInt(3) == 3 && depth == 0) { // Surface only
 					Sound.Theme_Peaceful.play();
 
 				}
@@ -397,26 +450,19 @@ public class Level {
 				if (random.nextInt(5) == 0 && depth == -1) { // Cave
 					Sound.Ambience1.play();
 
-				}
-				if (random.nextInt(5) == 1 && depth == -1) { // Cave
+				} else if (random.nextInt(5) == 1 && depth == -1) { // Cave
 					Sound.Ambience2.play();
 
-				}
-				if (random.nextInt(5) == 2 && depth == -1 | depth == -2) { // Cave and cavern
+				} else if (random.nextInt(5) == 2 && depth == -1 | depth == -2) { // Cave and cavern
 					Sound.Ambience3.play();
 
-				}
-				if (random.nextInt(5) == 3 && depth == -1 | depth == -2) { // Cave and cavern
+				} else if (random.nextInt(5) == 3 && depth == -1 | depth == -2) { // Cave and cavern
 					Sound.Ambience4.play();
 
-				}
-				
-				if (random.nextInt(5) == 4 && depth == -2) { // Cavern 
+				} else if (random.nextInt(5) == 4 && depth == -2) { // Cavern 
 					Sound.Theme_Cavern.play();
 
-				}
-				
-				if (random.nextInt(5) == 5 && depth == -2){ // Cavern 
+				} else if (random.nextInt(5) == 5 && depth == -2){ // Cavern 
 					Sound.Theme_Cavern_drip.play();
 
 				}
@@ -427,7 +473,7 @@ public class Level {
 					Sound.Theme_Surface.play();
 
 				}
-				if (random.nextInt(1) == 1 && depth == 1) { // Sky
+				else if (random.nextInt(1) == 1 && depth == 1) { // Sky
 					Sound.Theme_Fall.play();
 
 				}
@@ -477,45 +523,16 @@ public class Level {
 			}
 			
 			// entity loop
-			for (Entity e : getEntityArray()) {
-				if (e == null)
-					continue;
 
-				if (Game.hasConnectedClients() && e instanceof Player && !(e instanceof RemotePlayer)) {
-					if (Game.debug)
-						System.out.println("SERVER is removing regular player " + e + " from level " + this);
-					e.remove();
-				}
-				if (Game.isValidServer() && e instanceof Particle) {
-					// there is no need to track this.
-					if (Game.debug)
-						System.out.println("SERVER warning: Found particle in entity list: " + e + ". Removing from level " + this);
-					e.remove();
-				}
 
-				if (e.isRemoved())
-					continue;
-
-				if (e != Game.player) { // player is ticked separately, others are ticked on server
-					if (!Game.isValidClient())
-						e.tick(); /// the main entity tick call.
-					else if (e instanceof ClientTickable)
-						((ClientTickable) e).clientTick();
-				}
-
-				if (e.isRemoved())
-					continue;
-
-				if (Game.hasConnectedClients()) // this means it's a server
-					Game.server.broadcastEntityUpdate(e);
-
-				if (e instanceof Mob)
-					count++;
+			for (Entity e : entities) {
+				tickEntity(e);
+				if (e instanceof Mob) count++;
 			}
 
-			for (Entity e : getEntityArray())
-				if (e.isRemoved() || e.getLevel() != this)
-					remove(e);
+			sparks.forEach(this::tickEntity);
+			sparks2.forEach(this::tickEntity);
+			sparks3.forEach(this::tickEntity);
 		}
 		
 		while (count > maxMobCount) {
@@ -546,7 +563,24 @@ public class Level {
 			// if(Game.debug) printEntityStatus("Removing ", entity, "mob.Player");
 
 			entity.remove(this); // this will safely fail if the entity's level doesn't match this one.
-			entities.remove(entity);
+			
+			if (entity instanceof Spark) {
+				sparks.remove(entity);
+			} else {
+				entities.remove(entity);
+			}
+			
+			if (entity instanceof Spark2) {
+				sparks2.remove(entity);
+			} else {
+				entities.remove(entity);
+			}
+			
+			if (entity instanceof Spark3) {
+				sparks3.remove(entity);
+			} else {
+				entities.remove(entity);
+			}
 
 			if (entity instanceof Player)
 				players.remove(entity);
@@ -561,16 +595,6 @@ public class Level {
 		if (fullTick && count < maxMobCount && !Game.isValidClient())
 			trySpawn();
 
-	}
-	
-	
-	public static void changeLevel(int dir) {
-		Game.level.remove(Game.player);
-		Game.currentLevel += dir;
-		Game.level = Game.levels[Game.currentLevel];
-		Game.player.x = (Game.player.x >> 4) * 16 + 8;
-		Game.player.y = (Game.player.y >> 4) * 16 + 8;
-		Game.level.add((Game.player));
 	}
 	
 	/*
@@ -893,7 +917,25 @@ public class Level {
 	}
 	
 	public Entity[] getEntityArray() {
-		return entities.toArray(new Entity[0]);
+		Entity[] entityArray = new Entity[entities.size() + sparks.size() + sparks2.size() + sparks3.size()];
+		int index = 0;
+
+		for (Entity entity : entities) {
+			entityArray[index++] = entity;
+		}
+		for (Spark spark : sparks) {
+			entityArray[index++] = spark;
+		}
+		
+		for (Spark2 spark2 : sparks2) {
+			entityArray[index++] = spark2;
+		}
+		
+		for (Spark3 spark3 : sparks3) {
+			entityArray[index++] = spark3;
+		}
+
+		return entityArray;
 	}
 	
 	public List<Entity> getEntitiesInTiles(int xt, int yt, int radius) {
@@ -904,11 +946,30 @@ public class Level {
 	public final List<Entity> getEntitiesInTiles(int xt, int yt, int radius, boolean includeGiven, Class<? extends Entity>... entityClasses) {
 		return getEntitiesInTiles(xt - radius, yt - radius, xt + radius, yt + radius, includeGiven, entityClasses);
 	}
-
+	
+	
+	/**
+	 * Get entities in a certain area on the level.
+	 * @param xt0 Left
+	 * @param yt0 Top
+	 * @param xt1 Right
+	 * @param yt1 Bottom
+	 */
 	public List<Entity> getEntitiesInTiles(int xt0, int yt0, int xt1, int yt1) {
 		return getEntitiesInTiles(xt0, yt0, xt1, yt1, false);
 	}
 
+	
+	/**
+	 * Get entities in a certain area on the level, and filter them by class.
+	 * @param xt0 Left
+	 * @param yt0 Top
+	 * @param xt1 Right
+	 * @param yt1 Bottom
+	 * @param includeGiven If we should accept entities that match the provided entityClasses. If false, we ignore the provided entityClasses.
+	 * @param entityClasses Entities to accept.
+	 * @return A list of entities in the area.
+	 */
 	@SafeVarargs
 	public final List<Entity> getEntitiesInTiles(int xt0, int yt0, int xt1, int yt1, boolean includeGiven, Class<? extends Entity>... entityClasses) {
 		List<Entity> contained = new ArrayList<>();
@@ -917,10 +978,14 @@ public class Level {
 			int yt = e.y >> 4;
 			if (xt >= xt0 && xt <= xt1 && yt >= yt0 && yt <= yt1) {
 				boolean matches = false;
-				for (int i = 0; !matches && i < entityClasses.length; i++)
-					if (entityClasses[i].isAssignableFrom(e.getClass()))
-						matches = true;
 
+				// Look through all entity classes to see if they match the current entity we are at.
+				for (int i = 0; !matches && i < entityClasses.length; i++)
+					// If the current entity and an entity class match.
+					matches = entityClasses[i].isAssignableFrom(e.getClass());
+
+				// Add if the current entity matches an entity class and includeGiven is true.
+				// If includeGiven is false, add if it doesn't match.
 				if (matches == includeGiven)
 					contained.add(e);
 			}
@@ -931,13 +996,12 @@ public class Level {
 
 	public List<Entity> getEntitiesInRect(Rectangle area) {
 		List<Entity> result = new ArrayList<>();
-		for (Entity e : getEntityArray()) {
+		for(Entity e: getEntityArray()) {
 			if (e.isTouching(area))
 				result.add(e);
 		}
 		return result;
 	}
-
 	public List<Entity> getEntitiesInRect(Predicate<Entity> filter, Rectangle area) {
 		List<Entity> result = new LinkedList<>();
 		for (Entity entity : entities) {
@@ -951,80 +1015,70 @@ public class Level {
 	/// finds all entities that are an instance of the given entity.
 	public Entity[] getEntitiesOfClass(Class<? extends Entity> targetClass) {
 		ArrayList<Entity> matches = new ArrayList<>();
-		for (Entity e : getEntityArray()) {
-			if (targetClass.isAssignableFrom(e.getClass()))
+		for(Entity e: getEntityArray()) {
+			if(targetClass.isAssignableFrom(e.getClass()))
 				matches.add(e);
 		}
-
+		
 		return matches.toArray(new Entity[0]);
 	}
-
+	
 	public Player[] getPlayers() {
 		return players.toArray(new Player[players.size()]);
 	}
-
+	
 	public Player getClosestPlayer(int x, int y) {
 		Player[] players = getPlayers();
-		if (players.length == 0)
+		if(players.length == 0)
 			return null;
-
+		
 		Player closest = players[0];
 		int xd = closest.x - x;
 		int yd = closest.y - y;
-		for (int i = 1; i < players.length; i++) {
+		for(int i = 1; i < players.length; i++) {
 			int curxd = players[i].x - x;
 			int curyd = players[i].y - y;
-			if (xd * xd + yd * yd > curxd * curxd + curyd * curyd) {
+			if(xd*xd + yd*yd > curxd*curxd + curyd*curyd) {
 				closest = players[i];
 				xd = curxd;
 				yd = curyd;
 			}
 		}
-
+		
 		return closest;
 	}
-
-	public Point[] getAreaTilePositions(int x, int y, int r) {
-		return getAreaTilePositions(x, y, r, r);
-	}
-
+	
+	public Point[] getAreaTilePositions(int x, int y, int r) { return getAreaTilePositions(x, y, r, r); }
 	public Point[] getAreaTilePositions(int x, int y, int rx, int ry) {
 		ArrayList<Point> local = new ArrayList<>();
-		for (int yp = y - ry; yp <= y + ry; yp++)
-			for (int xp = x - rx; xp <= x + rx; xp++)
-				if (xp >= 0 && xp < w && yp >= 0 && yp < h)
+		for(int yp = y-ry; yp <= y+ry; yp++)
+			for(int xp = x-rx; xp <= x+rx; xp++)
+				if(xp >= 0 && xp < w && yp >= 0 && yp < h)
 					local.add(new Point(xp, yp));
 		return local.toArray(new Point[local.size()]);
 	}
 	
-	public Tile[] getAreaTiles(int x, int y, int r) {
-		return getAreaTiles(x, y, r, r);
-	}
-
+	public Tile[] getAreaTiles(int x, int y, int r) { return getAreaTiles(x, y, r, r); }
 	public Tile[] getAreaTiles(int x, int y, int rx, int ry) {
 		ArrayList<Tile> local = new ArrayList<>();
-
-		for (Point p : getAreaTilePositions(x, y, rx, ry))
+		
+		for(Point p: getAreaTilePositions(x, y, rx, ry))
 			local.add(getTile(p.x, p.y));
-
+		
 		return local.toArray(new Tile[local.size()]);
 	}
 	
-	public void setAreaTiles(int xt, int yt, int r, Tile tile, int data) {
-		setAreaTiles(xt, yt, r, tile, data, false);
-	}
-
+	public void setAreaTiles(int xt, int yt, int r, Tile tile, int data) { setAreaTiles(xt, yt, r, tile, data, false); }
 	public void setAreaTiles(int xt, int yt, int r, Tile tile, int data, boolean overwriteStairs) {
-		for (int y = yt - r; y <= yt + r; y++) {
+		for(int y = yt-r; y <= yt+r; y++) {
 			for (int x = xt - r; x <= xt + r; x++) {
-				if (overwriteStairs || (!getTile(x, y).name.toLowerCase().contains("stairs")))
+				if(overwriteStairs || (!getTile(x, y).name.toLowerCase().contains("stairs")))
 					setTile(x, y, tile, data);
 			}
 		}
 	}
-
 	public void setAreaTiles(int xt, int yt, int r, Tile tile, int data, String[] blacklist) {
-		for (int y = yt - r; y <= yt + r; y++) {
+		for(int y = yt-r; y <= yt+r; y++) {
 			for (int x = xt - r; x <= xt + r; x++) {
 				if (!Arrays.asList(blacklist).contains(getTile(x, y).name.toLowerCase()))
 					setTile(x, y, tile, data);
@@ -1036,126 +1090,121 @@ public class Level {
 	public interface TileCheck {
 		boolean check(Tile t, int x, int y);
 	}
-
-	public List<Point> getMatchingTiles(Tile search) {
-		return getMatchingTiles((t, x, y) -> t.equals(search));
-	}
-
+	
+	public List<Point> getMatchingTiles(Tile search) { return getMatchingTiles((t, x, y) -> t.equals(search)); }
 	public List<Point> getMatchingTiles(Tile... search) {
 		return getMatchingTiles((t, x, y) -> {
-			for (Tile poss : search)
-				if (t.equals(poss))
+			for(Tile poss: search)
+				if(t.equals(poss))
 					return true;
 			return false;
 		});
 	}
-
 	public List<Point> getMatchingTiles(TileCheck condition) {
 		List<Point> matches = new ArrayList<>();
-		for (int y = 0; y < h; y++)
-			for (int x = 0; x < w; x++)
-				if (condition.check(getTile(x, y), x, y))
+		for(int y = 0; y < h; y++)
+			for(int x = 0; x < w; x++)
+				if(condition.check(getTile(x, y), x, y))
 					matches.add(new Point(x, y));
-
+		
 		return matches;
 	}
-
+	
 	public boolean isLight(int x, int y) {
-		for (Tile t : getAreaTiles(x, y, 3))
-			if (t instanceof TorchTile)
+		for(Tile t: getAreaTiles(x, y, 3))
+			if(t instanceof TorchTile)
 				return true;
-
+		
 		return false;
 	}
-
+	
 	@SuppressWarnings("unused")
 	private boolean noStairs(int x, int y) {
 		return getTile(x, y) != Tiles.get("Stairs Down");
 	}
 	
-	
 	private void generateSpawnerStructures() {
-		
-		if (Game.debug) System.out.println("Trying to generate a spawner dungeon...");
-		
-		for (int i = 0; i < 18 / -depth * (w / 128); i++) {
-			
-			/// for generating spawner dungeons
-			MobAi m;
-			int r = random.nextInt(5);
-			if (r == 1) {
-				m = new Skeleton(-depth);
-			} else if (r == 2 || r == 0) {
-				m = new Slime(-depth);
-			} else {
-				m = new Zombie(-depth);
-			}
-			
-			Spawner sp = new Spawner(m);
-			int x3 = random.nextInt(16 * w) / 16;
-			int y3 = random.nextInt(16 * h) / 16;
-			if (getTile(x3, y3) == Tiles.get("dirt")) {
-				boolean xaxis2 = random.nextBoolean();
-				
-				if (xaxis2) {
-					for (int s2 = x3; s2 < w - s2; s2++) {
-						if (getTile(s2, y3) == Tiles.get("rock")) {
-							sp.x = s2 * 16 - 24;
-							sp.y = y3 * 16 - 24;
-						}
-					}
-				} else {
-					for (int s2 = y3; s2 < y3 - s2; s2++) {
-						if (getTile(x3, s2) == Tiles.get("rock")) {
-							sp.x = x3 * 16 - 24;
-							sp.y = s2 * 16 - 24;
-						}
-					}
-				}
-				
-				if (sp.x == 0 && sp.y == 0) {
-					sp.x = x3 * 16 - 8;
-					sp.y = y3 * 16 - 8;
-				}
 
-				if (getTile(sp.x / 16, sp.y / 16) == Tiles.get("rock")) {
-					setTile(sp.x / 16, sp.y / 16, Tiles.get("dirt"));
-				}
+	    if (Game.debug) System.out.println("Trying to generate a spawner dungeon...");
 
-				Structure.mobDungeonCenter.draw(this, sp.x / 16, sp.y / 16);
+	    for (int i = 0; i < 18 / -depth * (w / 128); i++) {
 
-				if (getTile(sp.x / 16, sp.y / 16 - 4) == Tiles.get("dirt")) {
-					Structure.mobDungeonNorth.draw(this, sp.x / 16, sp.y / 16 - 5);
-				}
-				if (getTile(sp.x / 16, sp.y / 16 + 4) == Tiles.get("dirt")) {
-					Structure.mobDungeonSouth.draw(this, sp.x / 16, sp.y / 16 + 5);
-				}
-				if (getTile(sp.x / 16 + 4, sp.y / 16) == Tiles.get("dirt")) {
-					Structure.mobDungeonEast.draw(this, sp.x / 16 + 5, sp.y / 16);
-				}
-				if (getTile(sp.x / 16 - 4, sp.y / 16) == Tiles.get("dirt")) {
-					Structure.mobDungeonWest.draw(this, sp.x / 16 - 5, sp.y / 16);
-				}
+	        /// for generating spawner dungeons
+	        MobAi m;
+	        int r = random.nextInt(5);
+	        if (r == 1) {
+	            m = new Skeleton(-depth);
+	        } else if (r == 2 || r == 0) {
+	            m = new Slime(-depth);
+	        } else {
+	            m = new Zombie(-depth);
+	        }
 
-				add(sp);
-				for (int rpt = 0; rpt < 2; rpt++) {
-					if (random.nextInt(2) != 0)
-						continue;
-					Chest c = new Chest();
-					int chance = -depth;
+	        Spawner sp = new Spawner(m);
+	        int x3 = random.nextInt(16 * w) / 16;
+	        int y3 = random.nextInt(16 * h) / 16;
+	        if (getTile(x3, y3) == Tiles.get("dirt")) {
+	            boolean xaxis2 = random.nextBoolean();
 
-					c.populateInvRandom("minidungeon", chance);
+	            if (xaxis2) {
+	                for (int s2 = x3; s2 < w - s2; s2++) {
+	                    if (getTile(s2, y3) == Tiles.get("rock")) {
+	                        sp.x = s2 * 16 - 24;
+	                        sp.y = y3 * 16 - 24;
+	                    }
+	                }
+	            } else {
+	                for (int s2 = y3; s2 < y3 - s2; s2++) {
+	                    if (getTile(x3, s2) == Tiles.get("rock")) {
+	                        sp.x = x3 * 16 - 24;
+	                        sp.y = s2 * 16 - 24;
+	                    }
+	                }
+	            }
 
-					add(c, sp.x - 16, sp.y - 16);
-				}
-			}
-			
-		}
-		if (Game.debug) System.out.println("Spawner dungeon generated!");
+	            if (sp.x == 0 && sp.y == 0) {
+	                sp.x = x3 * 16 - 8;
+	                sp.y = y3 * 16 - 8;
+	            }
+
+	            if (getTile(sp.x / 16, sp.y / 16) == Tiles.get("rock")) {
+	                setTile(sp.x / 16, sp.y / 16, Tiles.get("dirt"));
+	            }
+
+	            Structure.mobDungeonCenter.draw(this, sp.x / 16, sp.y / 16);
+
+	            if (getTile(sp.x / 16, sp.y / 16 - 4) == Tiles.get("dirt")) {
+	                Structure.mobDungeonNorth.draw(this, sp.x / 16, sp.y / 16 - 5);
+	            }
+	            if (getTile(sp.x / 16, sp.y / 16 + 4) == Tiles.get("dirt")) {
+	                Structure.mobDungeonSouth.draw(this, sp.x / 16, sp.y / 16 + 5);
+	            }
+	            if (getTile(sp.x / 16 + 4, sp.y / 16) == Tiles.get("dirt")) {
+	                Structure.mobDungeonEast.draw(this, sp.x / 16 + 5, sp.y / 16);
+	            }
+	            if (getTile(sp.x / 16 - 4, sp.y / 16) == Tiles.get("dirt")) {
+	                Structure.mobDungeonWest.draw(this, sp.x / 16 - 5, sp.y / 16);
+	            }
+
+	            add(sp);
+	            for (int rpt = 0; rpt < 2; rpt++) {
+	                if (random.nextInt(2) != 0)
+	                    continue;
+	                Chest c = new Chest();
+	                int chance = -depth;
+
+	                c.populateInvRandom("minidungeon", chance);
+
+	                add(c, sp.x - 16, sp.y - 16);
+	            }
+	        }
+
+	    }
+	    if (Game.debug) System.out.println("Spawner dungeon generated!");
 	}
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------
-	
+	//--------------------------------------------------------------------------------------------------------------------------------------------------
+
 	/*
 	 * Generates the villages on the level
 	 * 
@@ -1175,82 +1224,82 @@ public class Level {
 	 *  so there may be grass in a desert, and the village can be
 	 *  generated there
 	 *  
-       *  Previously the villages had no paths ..
-       *  the first attempt was to make them in the code ..
-       *  but it was quite buggy :(, so I got bored and put them
-       *  directly in the structures file (structure.java)
+	 *  Previously the villages had no paths ..
+	 *  the first attempt was to make them in the code ..
+	 *  but it was quite buggy :(, so I got bored and put them
+	 *  directly in the structures file (structure.java)
 	 *  
 	 */
-	
+
 	private void generateVillages() {
-		int lastVillageX = 8;
-		int lastVillageY = 8;
+	    int lastVillageX = 8;
+	    int lastVillageY = 8;
 
-		// Checks the spawn of villagers
-		new Librarian();
-		new Librarian();
-		new Cleric();
-		new Cleric();
-		new Golem();
+	    // Checks the spawn of villagers
+	    new Librarian();
+	    new Librarian();
+	    new Cleric();
+	    new Cleric();
+	    new Golem();
 
-		if (Game.debug) System.out.println("Trying to generate a village...");
-		
-		// makes 2-8 villages based on world size
-		for (int i = 0; i < w / 128 * 4; i++) {
+	    if (Game.debug) System.out.println("Trying to generate a village...");
 
-			// tries 10 times for each one
-			for (int t = 0; t < 10; t++) {
+	    // makes 2-8 villages based on world size
+	    for (int i = 0; i < w / 128 * 4; i++) {
 
-				int x = random.nextInt(w);
-				int y = random.nextInt(h);
+	        // tries 10 times for each one
+	        for (int t = 0; t < 10; t++) {
 
-				// makes sure the village isn't to close to the previous village
-				if (getTile(x, y) == Tiles.get("grass") && (Math.abs(x - lastVillageX) > 32 && Math.abs(y - lastVillageY) > 32)) {
-					lastVillageX = x;
-					lastVillageY = y;
+	            int x = random.nextInt(w);
+	            int y = random.nextInt(h);
 
-					// a number between 2 and 4
-					int numHouses = 1;
+	            // makes sure the village isn't to close to the previous village
+	            if (getTile(x, y) == Tiles.get("grass") && (Math.abs(x - lastVillageX) > 32 && Math.abs(y - lastVillageY) > 32)) {
+	                lastVillageX = x;
+	                lastVillageY = y;
 
-					// loops for each house in the village
-					for (int hs = 0; hs < numHouses; hs++) {
-						boolean hasChest = random.nextBoolean();
-						boolean twoDoors = random.nextBoolean();
+	                // a number between 2 and 4
+	                int numHouses = 1;
 
-						// basically just gets what offset this house should have from the center of the village
-						int xo = hs == 0 || hs == 3 ? -8 : 8;
-						int yo = hs < 2 ? -8 : 8;
+	                // loops for each house in the village
+	                for (int hs = 0; hs < numHouses; hs++) {
+	                    boolean hasChest = random.nextBoolean();
+	                    boolean twoDoors = random.nextBoolean();
 
-						xo += random.nextInt(8);
-						yo += random.nextInt(8);
+	                    // basically just gets what offset this house should have from the center of the village
+	                    int xo = hs == 0 || hs == 3 ? -8 : 8;
+	                    int yo = hs < 2 ? -8 : 8;
 
-						if (twoDoors) {
-							Structure.villageHouseNormal.draw(this, x + xo, y + yo);
-							new Librarian();
-						} else {
-							Structure.villageHouseNormal2.draw(this, x + xo, y + yo);
-							new Cleric();
-						}
+	                    xo += random.nextInt(8);
+	                    yo += random.nextInt(8);
 
-						// add a chest to some of the houses
-						if (hasChest) {
-							Chest c = new Chest();
-							c.populateInvRandom("villagehouse", 1);
-							add(c, (x + random.nextInt(1) + xo) << 1, (y + random.nextInt(1) + yo) << 1);
-						}
-					}
+	                    if (twoDoors) {
+	                        Structure.villageHouseNormal.draw(this, x + xo, y + yo);
+	                        new Librarian();
+	                    } else {
+	                        Structure.villageHouseNormal2.draw(this, x + xo, y + yo);
+	                        new Cleric();
+	                    }
 
-					break;
-				}
-			}
-		}
-		
-		if (Game.debug) System.out.println("Village generated!");
+	                    // add a chest to some of the houses
+	                    if (hasChest) {
+	                        Chest c = new Chest();
+	                        c.populateInvRandom("villagehouse", 1);
+	                        add(c, (x + random.nextInt(1) + xo) << 1, (y + random.nextInt(1) + yo) << 1);
+	                    }
+	                }
+
+	                break;
+	            }
+	        }
+	    }
+
+	    if (Game.debug) System.out.println("Village generated!");
 	}
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------	
-	
+	//--------------------------------------------------------------------------------------------------------------------------------------------------	
+
 	public String toString() {
-		return "Level(depth=" + depth + ")";
+	    return "Level(depth=" + depth + ")";
 	}
 }

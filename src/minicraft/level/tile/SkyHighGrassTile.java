@@ -30,6 +30,18 @@ public class SkyHighGrassTile extends Tile {
 	}
 
 	public boolean tick(Level level, int xt, int yt) {
+		// TODO revise this method.
+		if (random.nextInt(40) != 0) return false;
+		
+		int xn = xt;
+		int yn = yt;
+		
+		if (random.nextBoolean()) xn += random.nextInt(2) * 2 - 1;
+		else yn += random.nextInt(2) * 2 - 1;
+
+		if (level.getTile(xn, yn) == Tiles.get("Sky Dirt")) {
+			level.setTile(xn, yn, this);
+		}
 		return false;
 	}
 
@@ -46,15 +58,15 @@ public class SkyHighGrassTile extends Tile {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("Sky Grass")); // would allow you to shovel cloud, I think.
 					Sound.Tile_generic_hurt.play();
-					if (random.nextInt(5) == 0) { // 20% chance to drop seeds
-						level.dropItem(xt * 16 + 8, yt * 16 + 8, 2, Items.get("dirt"));
+					if (random.nextInt(5) == 0) { // 45% chance to drop sky dirt
+						level.dropItem(xt * 16 + 8, yt * 16 + 8, 2, Items.get("Sky dirt"));
 					}
 					return true;
 				}
 			}
 			if (tool.type == ToolType.Pickaxe) {
-				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					level.setTile(xt, yt, Tiles.get("path"));
+				if (player.payStamina(1 - tool.level)) {
+					// level.setTile(xt, yt, Tiles.get("path"));
 					Sound.Tile_generic_hurt.play();
 				}
 			}

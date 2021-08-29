@@ -6,7 +6,6 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.RemotePlayer;
 import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
@@ -15,7 +14,6 @@ import minicraft.item.PotionType;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
-import minicraft.network.MinicraftServerThread;
 
 public class FerrositeTile extends Tile {
 	private static ConnectorSprite sprite = new ConnectorSprite(FerrositeTile.class, new Sprite(12, 22, 3, 3, 1, 3), new Sprite(15, 24, 2, 2, 1, 3), new Sprite(15, 22, 2, 2, 1)) {
@@ -43,7 +41,7 @@ public class FerrositeTile extends Tile {
 			level.setData(x, y, 10);
 		}
 		
-		if (Game.isValidServer()) {
+		/*if (Game.isValidServer()) {
 		    for (MinicraftServerThread serverThread : Game.server.getThreads()) {
 		        RemotePlayer remotePlayer = serverThread.getClient();
 
@@ -61,25 +59,27 @@ public class FerrositeTile extends Tile {
 					}
 				}
 		    }
-		} else {
+		} else {*/
 			
 			if (entity instanceof Player) {
+				
+				level.setData(x, y, 10);
 
 		        Player.moveSpeed = 3;
 		        
 			} else {
-
+				if (random.nextInt(16) == 1) {
 					Player.moveSpeed = 1;
-
-					if (Game.player.getPotionEffects().containsKey(PotionType.Speed)) {
-						Player.moveSpeed = 2;
-					}
-					if (Game.player.getPotionEffects().containsKey(PotionType.xSpeed)) {
-						Player.moveSpeed = 3;
-					}
+				} 
+				if (Game.player.getPotionEffects().containsKey(PotionType.Speed) && random.nextInt(16) == 1) {
+					Player.moveSpeed = 2;
+				}
+				if (Game.player.getPotionEffects().containsKey(PotionType.xSpeed) && random.nextInt(16) == 1) {
+					Player.moveSpeed = 3;
+				}
 			}
 		}
-	}
+	//}
 
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		// creative mode

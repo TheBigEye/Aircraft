@@ -32,13 +32,16 @@ public class Updater extends Game {
 	public static final int dayLength = 64800; // this value determines how long one game day is.
 	public static final int sleepEndTime = dayLength / 8; // this value determines when the player "wakes up" in the
 										 // morning.
-	public static final int sleepStartTime = dayLength / 2 + dayLength / 8; // this value determines when the player
-													 // allowed to sleep.
+	public static final int sleepStartTime = dayLength / 2 + dayLength / 8; // this value determines when the player allowed to sleep.
 	public static int noon = 32400; // this value determines when the sky switches from getting lighter to getting
 							 // darker.
 	public static int gameTime = 0; // This stores the total time (number of ticks) you've been playing your
 	public static boolean pastDay1 = true; // used to prevent mob spawn on surface on day 1.
 	public static int scoreTime; // time remaining for score mode
+	
+	public static long MaxMem = 0; // This store the max JVM memory
+	public static long TotalMem = 0; // This store the total used memory
+	public static long FreeMem = 0; // This store the free memory
 
 	/**
 	 * Indicates if FullScreen Mode has been toggled.
@@ -84,7 +87,7 @@ public class Updater extends Game {
 	
 	// VERY IMPORTANT METHOD!! Makes everything keep happening.
 	// In the end, calls menu.tick() if there's a menu, or level.tick() if no menu.
-	@SuppressWarnings("static-access")
+	@SuppressWarnings({ "static-access", "unused" })
 	public static void tick() {
 		if (Updater.HAS_GUI && input.getKey("FULLSCREEN").clicked) {
 			Updater.FULLSCREEN = !Updater.FULLSCREEN;
@@ -196,6 +199,17 @@ public class Updater extends Game {
 					if (levels[i] != null)
 						levels[i].tick(i == currentLevel);
 			}
+			
+			// JVM Runtime Memory
+			Runtime runtime = Runtime.getRuntime();
+			long maxMemory = runtime.maxMemory();
+			long totalMemory = runtime.totalMemory();
+			long freeMemory = runtime.freeMemory();
+			
+			MaxMem = maxMemory / 1024L / 1024L;	// Max JVM memory (mb)
+			TotalMem = totalMemory / 1024L / 1024L; // Used memory (mb)
+			FreeMem = freeMemory / 1024L / 1024L; // Free memory (mb)
+			
 
 			if (menu != null) {
 				// a menu is active.

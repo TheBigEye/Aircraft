@@ -10,6 +10,7 @@ public enum PotionType {
 	None (Color.get(1, 22, 22, 137), 0),
 	
 	Speed (Color.get(1, 23, 46, 23), 4200) {
+		@SuppressWarnings("static-access")
 		public boolean toggleEffect(Player player, boolean addEffect) {
 			player.moveSpeed += (double)( addEffect ? 1 : (player.moveSpeed > 1 ? -1 : 0) );
 			return true;
@@ -17,6 +18,7 @@ public enum PotionType {
 	},
 	
 	xSpeed (Color.get(1, 48, 68, 34), 6200) {
+		@SuppressWarnings("static-access")
 		public boolean toggleEffect(Player player, boolean addEffect) {
 			player.moveSpeed += (double)( addEffect ? 2 : (player.moveSpeed > 1 ? -2 : 0) );
 			return true;

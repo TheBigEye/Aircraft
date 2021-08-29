@@ -46,6 +46,7 @@ public abstract class Entity implements Tickable {
 	private String prevUpdates = ""; /// holds the last value returned from getUpdateString(), for comparison with the next call.
 	private String curDeltas = ""; /// holds the updates returned from the last time getUpdates() was called.
 	private boolean accessedUpdates = false;
+	@SuppressWarnings("unused")
 	private long lastUpdate;
 
 	/**

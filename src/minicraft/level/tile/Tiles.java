@@ -296,6 +296,9 @@ public final class Tiles {
         oldids.set(199, "torch snow");
         oldids.set(200, "torch spruce planks");
         oldids.set(201, "torch birch planks");
+        oldids.set(202, "torch sky grass");
+        oldids.set(203, "torch sky high grass");
+        oldids.set(204, "torch sky dirt");
     }
 
     private static int overflowCheck = 0;

@@ -44,12 +44,12 @@ public class StackableItem extends Item {
 		// Dyes
 		items.add(new StackableItem("Ink sac", new Sprite(0, 22, 0)));
 		items.add(new StackableItem("Yellow dye", new Sprite(1, 22, 0)));
-		items.add(new StackableItem("Green dye", new Sprite(2, 22, 0)));
+		items.add(new StackableItem("Lime dye", new Sprite(2, 22, 0)));
 		items.add(new StackableItem("Red dye", new Sprite(4, 22, 0)));
 		items.add(new StackableItem("Bone powder", new Sprite(5, 22, 0)));
 		items.add(new StackableItem("Purple dye", new Sprite(6, 22, 0)));
 		items.add(new StackableItem("Pink dye", new Sprite(7, 22, 0)));
-		items.add(new StackableItem("Dark green dye", new Sprite(8, 22, 0)));
+		items.add(new StackableItem("Green dye", new Sprite(8, 22, 0)));
 		items.add(new StackableItem("Orange dye", new Sprite(14, 22, 0)));
 
 		// Ores

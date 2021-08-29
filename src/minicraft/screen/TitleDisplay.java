@@ -44,7 +44,7 @@ public class TitleDisplay extends Display {
                     else
                         Game.setMenu(new WorldGenDisplay());
                 }),
-                new SelectEntry("Multiplayer", () -> Game.setMenu(new MultiplayerDisplay())),
+                //new SelectEntry("Multiplayer", () -> Game.setMenu(new MultiplayerDisplay())),
                 new SelectEntry("Options", () -> Game.setMenu(new OptionsDisplay())),
                 new SelectEntry("Credits", () -> Game.setMenu(new BookDisplay(BookData.credits))),
                 displayFactory("Help",
@@ -56,7 +56,7 @@ public class TitleDisplay extends Display {
                     new SelectEntry("About", () -> Game.setMenu(new BookDisplay(BookData.about))),
                     new BlankEntry(),
                     new BlankEntry(),
-                    new LinkEntry(Color.BLUE, "Discord", "https://discord.me/minicraft")
+                    new LinkEntry(Color.BLUE, "Minicraft discord", "https://discord.me/minicraft")
 
                 ),
                 new SelectEntry("Exit", Game::quit)
@@ -326,6 +326,7 @@ public class TitleDisplay extends Display {
         "3rd dimension not included!",
         "Orange box not included",
         "Alpha version not included!",
+        "Cthulhu sold separately",
 
         // Included
         "Villagers included!",

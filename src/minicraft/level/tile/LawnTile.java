@@ -14,7 +14,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class LawnTile extends Tile {
-	private static final Sprite flowerSprite = new Sprite(4, 8, 1);
+	private static final Sprite lawnSprite = new Sprite(4, 8, 1);
 
 	protected LawnTile(String name) {
 		super(name, (ConnectorSprite) null);
@@ -47,8 +47,8 @@ public class LawnTile extends Tile {
 		x = x << 4;
 		y = y << 4;
 
-		flowerSprite.render(screen, x + 8 * shape, y);
-		flowerSprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
+		lawnSprite.render(screen, x + 8 * shape, y);
+		lawnSprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
 	}
 
 	public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
@@ -67,7 +67,9 @@ public class LawnTile extends Tile {
 	}
 
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+		
 		level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Seeds"));
+		
 		level.setTile(x, y, Tiles.get("grass"));
 		return true;
 	}

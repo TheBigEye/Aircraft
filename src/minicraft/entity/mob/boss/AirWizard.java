@@ -94,7 +94,7 @@ public class AirWizard extends EnemyMob {
 
         if (attackTime > 0) {
             xa = ya = 0;
-            attackTime *= 0.92; // attackTime will decrease by 7% every time.
+			attackTime *= 0.92; // attackTime will decrease by 7% every time.
             double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1); //assigns a local direction variable from the attack time.
             double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2; // speed is dependent on the attackType. (higher attackType, faster speeds)
             level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed)); // adds a spark entity with the cosine and sine of dir times speed.
@@ -130,7 +130,7 @@ public class AirWizard extends EnemyMob {
             int xd = player.x - x; // x dist to player
             int yd = player.y - y; // y dist to player
             if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) { // if a random number, 0-3, equals 0, and the player is less than 50 blocks away, and attackDelay and attackTime equal 0...
-                attackDelay = 60 * 5; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
+                attackDelay = 60 * 4; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
             }
         }
     }

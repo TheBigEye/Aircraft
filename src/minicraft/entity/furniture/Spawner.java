@@ -75,6 +75,7 @@ public class Spawner extends Furniture {
 	 * @param c The class.
 	 * @return String representation of the classname.
 	 */
+	@SuppressWarnings("rawtypes")
 	private static String getClassName(Class c) {
 		String fullName = c.getCanonicalName();
 		return fullName.substring(fullName.lastIndexOf(".") + 1);
@@ -221,7 +222,6 @@ public class Spawner extends Furniture {
 	}
 
 	@Override
-	@SuppressWarnings("JavaReflectionMemberAccess")
 	public boolean use(Player player) {
 		if (Game.isMode("creative") && mob instanceof EnemyMob) {
 			lvl++;

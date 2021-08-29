@@ -17,6 +17,7 @@ public class EyeQueenPhase3 extends EnemyMob {
     
 	private int arrowtime;
 	private int artime;
+	@SuppressWarnings("unused")
 	private boolean DeathAnim = true;
 
     public EyeQueenPhase3(int lvl) {

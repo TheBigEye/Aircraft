@@ -212,6 +212,7 @@ public class MinicraftClient extends MinicraftConnection {
 		return serverPlayerCount;
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	private void changeState(State newState) {
 		if (Game.debug)
 			System.out.println("CLIENT: client state change from " + curState + " to " + newState);
@@ -260,6 +261,7 @@ public class MinicraftClient extends MinicraftConnection {
 	}
 
 	/** This method is responsible for parsing all data received by the socket. */
+	@SuppressWarnings("incomplete-switch")
 	public boolean parsePacket(InputType inType, String alldata) {
 		String[] data = alldata.split(";");
 

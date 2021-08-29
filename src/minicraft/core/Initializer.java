@@ -144,6 +144,8 @@ public class Initializer extends Game {
         }
     }
 
+
+    
     /// Creates and displays the JFrame window that the game appears in.
     static void createAndDisplayFrame() {
         if (!HAS_GUI)
