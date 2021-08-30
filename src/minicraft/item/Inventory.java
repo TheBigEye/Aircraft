@@ -9,8 +9,8 @@ import org.jetbrains.annotations.Nullable;
 import minicraft.entity.furniture.Furniture;
 
 public class Inventory {
-	private Random random = new Random();
-	private List<Item> items = new ArrayList<>(); // the list of items that is in the inventory.
+	private final Random random = new Random();
+	private final List<Item> items = new ArrayList<>(); // The list of items that is in the inventory.
 
 	/**
 	 * Returns all the items which are in this inventory.
@@ -18,9 +18,7 @@ public class Inventory {
 	 * @return ArrayList containing all the items in the inventory.
 	 */
 	public List<Item> getItems() {
-		List<Item> newItems = new ArrayList<>();
-		newItems.addAll(items);
-		return newItems;
+		return new ArrayList<>(items);
 	}
 
 	public void clearInv() {
@@ -31,10 +29,20 @@ public class Inventory {
 		return items.size();
 	}
 
+	/**
+	 * Get one item in this inventory.
+	 * @param idx The index of the item in the inventory's item array.
+	 * @return The specified item.
+	 */
 	public Item get(int idx) {
 		return items.get(idx);
 	}
 
+	/**
+	 * Remove an item in this inventory.
+	 * @param idx The index of the item in the inventory's item array.
+	 * @return The removed item.
+	 */
 	public Item remove(int idx) {
 		return items.remove(idx);
 	}

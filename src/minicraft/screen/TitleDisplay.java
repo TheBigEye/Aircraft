@@ -305,6 +305,11 @@ public class TitleDisplay extends Display {
         "Test == InDev!",
         "Story? yes!",
         "Mod on phase B",
+        
+		"Axes: good against plants!",
+		"Picks: good against rocks!",
+		"Shovels: good against dirt!",
+		"Swords: good against mobs!",
 
         // What's that?
         "Infinite terrain? What's that?",
