@@ -1,101 +1,110 @@
 package minicraft.screen;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import minicraft.core.Game;
-import minicraft.core.Renderer;
 import minicraft.core.io.InputHandler;
+import minicraft.core.io.Localization;
 import minicraft.gfx.Color;
 import minicraft.gfx.Font;
-import minicraft.gfx.FontStyle;
 import minicraft.gfx.Point;
 import minicraft.gfx.Screen;
+import minicraft.gfx.SpriteSheet;
 import minicraft.screen.entry.StringEntry;
 
-import org.jetbrains.annotations.NotNull;
-
 public class BookDisplay extends Display {
-	
-	private static final int DISPLAY_WIDTH = 256;
-	private static final int DISPLAY_HEIGHT = 128;
-	
-	static final int TEXT_AREA_WIDTH = DISPLAY_WIDTH - 12;
-	static final int TEXT_AREA_HEIGHT = DISPLAY_HEIGHT - 24;
-	static final int LINE_SPACING = 2;
-	
-	private final Menu.Builder builder;
-	
-	int page;
-	String[] pages;
-	
-	private final int pageNumberDisplayIdx;
-	
-	private final boolean hasTitlePage;
-	
-	public BookDisplay(@NotNull String text) { this(text, false); }
-	public BookDisplay(@NotNull String book, boolean hasTitlePage) {
-		this.hasTitlePage = hasTitlePage;
-		
-		pages = book.split("\0", -1);
-		
-		pageNumberDisplayIdx = pages.length;
-		
-		menus = new Menu[pages.length + (hasTitlePage ? 2 : 1)];
-		
-		builder =  new Menu.Builder(false, 3, RelPos.CENTER).setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT).setPositioning(new Point(Renderer.WIDTH/2, Renderer.HEIGHT/2), RelPos.CENTER).setFrame(443, 3, 443);
-		
-		for (int p = 0; p < pages.length; p++) {
-			menus[p] = builder.createMenu();
-		}
-		
-		menus[pageNumberDisplayIdx] = updatePageNumber();
-		
+
+	// null characters "\0" denote page breaks.
+	private static final String defaultBook = " \n \0" + "There is nothing of use here." + "\0 \0"
+			+ "Still nothing... :P";
+
+	private static final int spacing = 3;
+	private static final int minX = 15, maxX = 15 + 8 * 32, minY = 8 * 5, maxY = 8 * 5 + 8 * 16;
+
+	private String[][] lines;
+	protected int page;
+
+	private final boolean hasTitle;
+	private final boolean showPageCount;
+	private final int pageOffset;
+
+	public BookDisplay(String book) {
+		this(book, false);
+	}
+
+	public BookDisplay(String book, boolean hasTitle) {// this(book, hasTitle, !hasTitle); }
+		// public BookDisplay(String book, boolean hasTitle, boolean hideCountIfOnePage)
+		// {
 		page = 0;
+		if (book == null) {
+			book = defaultBook;
+			hasTitle = false;
+		}
+		book = Localization.getLocalized(book);
+		this.hasTitle = hasTitle;
+
+		ArrayList<String[]> pages = new ArrayList<>();
+		String[] splitContents = book.split("\0");
+		for (String content : splitContents) {
+			String[] remainder = { content };
+			while (remainder[remainder.length - 1].length() > 0) {
+				remainder = Font.getLines(remainder[remainder.length - 1], maxX - minX, maxY - minY, spacing, true);
+				pages.add(Arrays.copyOf(remainder, remainder.length - 1)); // removes the last element of remainder, which is the leftover.			
+			}
+		}
+
+		lines = pages.toArray(new String[pages.size()][]);
+
+		showPageCount = hasTitle || lines.length != 1;
+		pageOffset = showPageCount ? 1 : 0;
+
+		Menu.Builder builder = new Menu.Builder(true, spacing, RelPos.CENTER);
+
+		Menu pageCount = builder // the small rect for the title
+				.setPositioning(new Point(Screen.w / 2, 0), RelPos.BOTTOM)
+				.setEntries(StringEntry.useLines(Color.BLACK, "Page", hasTitle ? "Title" : "1/" + lines.length))
+				.setSelection(1).createMenu();
+
+		builder.setPositioning(new Point(Screen.w / 2, pageCount.getBounds().getBottom() + spacing), RelPos.BOTTOM)
+				.setSize(maxX - minX + SpriteSheet.boxWidth * 2, maxY - minY + SpriteSheet.boxWidth * 2)
+				.setShouldRender(false);
+
+		menus = new Menu[lines.length + pageOffset];
+		if (showPageCount)
+			menus[0] = pageCount;
+		for (int i = 0; i < lines.length; i++) {
+			menus[i + pageOffset] = builder.setEntries(StringEntry.useLines(Color.WHITE, lines[i])).createMenu();
+		}
+
+		menus[page + pageOffset].shouldRender = true;
 	}
-	
-	protected int getPageCount() {
-		return pages.length;
+
+	protected void turnPage(int dir) {
+		if (page + dir >= 0 && page + dir < lines.length) {
+			menus[page + pageOffset].shouldRender = false;
+			page += dir;
+			if (showPageCount)
+				menus[0].updateSelectedEntry(new StringEntry(
+						page == 0 && hasTitle ? "Title" : (page + 1) + "/" + lines.length, Color.BLACK));
+			menus[page + pageOffset].shouldRender = true;
+		}
 	}
-	
-	private Menu updatePageNumber() {
-		return builder
-			.setSize(64, 24)
-			.setPositioning(new Point(48, 28), RelPos.CENTER)
-			.setEntries(new StringEntry(
-				(page + (hasTitlePage ? 0 : 1)) + "/" + (getPageCount() - (hasTitlePage ? 1 : 0)),
-				Color.BLACK
-			))
-			.createMenu();
-	}
-	
+
 	@Override
 	public void tick(InputHandler input) {
-		if (input.getKey("cursor-left").clicked) turnPage(-1);
-		if (input.getKey("cursor-right").clicked) turnPage(1);
-		if (input.getKey("exit").clicked)
-			Game.exitMenu();
-	}
-	
-	void turnPage(int direction) {
-		if (!(page + direction < 0 || page + direction > getPageCount() - 1)) {
-			page += direction;
-		}
+		if (input.getKey("menu").clicked || input.getKey("exit").clicked)
+			Game.exitMenu(); // this is what closes the book; TODO if books were editable, I would probably remake the book here with the edited pages.
 		
-		menus[pageNumberDisplayIdx] = updatePageNumber();
-	}
-	
-	@Override
-	public void render(Screen screen) {
-		FontStyle fontStyle;
-		
-		if (hasTitlePage && page == 0) {
-			fontStyle = new FontStyle(Color.WHITE).setShadowType(Color.BLACK, true);
-			// if(Game.debug) System.out.println("showing title");
-		} else {
-			menus[pageNumberDisplayIdx].render(screen);
-			fontStyle = new FontStyle(Color.BLACK).setXPos(24).setYPos(44);
-		}
-		
-		menus[page].render(screen);
-		
-		Font.drawParagraph(pages[page], screen, TEXT_AREA_WIDTH, TEXT_AREA_HEIGHT, fontStyle, LINE_SPACING);
+		if (input.getKey("cursor-left").clicked)
+			turnPage(-1); // this is what turns the page back
+		//if (input.getKey("cursor-left").clicked)
+			//Sound.GUI_PageUp.play();
+
+		if (input.getKey("cursor-right").clicked)
+			turnPage(1); // this is what turns the page forward
+		//if (input.getKey("cursor-right").clicked)
+			//Sound.GUI_PageUp.play();
+
 	}
 }
