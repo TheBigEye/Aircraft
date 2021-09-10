@@ -81,7 +81,6 @@ import minicraft.entity.particle.SplashParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
 import minicraft.item.ArmorItem;
-import minicraft.item.BookItem;
 import minicraft.item.Inventory;
 import minicraft.item.Item;
 import minicraft.item.Items;
@@ -609,51 +608,15 @@ public class Load {
 
 				int count = Integer.parseInt(curData[1]);
 
-				if(newItem instanceof StackableItem) {
-					((StackableItem)newItem).count = count;
+				if (newItem instanceof StackableItem) {
+					((StackableItem) newItem).count = count;
 					inventory.add(newItem);
-				} else
-					inventory.add(newItem, count);
+				} else inventory.add(newItem, count);
 			} else {
 				Item toAdd = Items.get(item);
-				if (toAdd instanceof BookItem) {
-					if (item.contains(";")) {
-						try {
-							// tmpData is used so that loadBook (or more accurately, loadFromFile) doesn't overwrite the other items in the inventory
-							ArrayList<String> tmpData = new ArrayList<>(data);
-							String text = loadBook("BookData", Integer.parseInt(item.split(";")[1]));
-							data = tmpData;
-
-							// find our "fake" returns and replace them with "true" ones for the in-game book text
-							text = text.replace("\\n", "\n");
-
-							((BookItem) toAdd).setText(text);
-							inventory.add(toAdd);
-						} catch (Exception e) {
-							// if the data doesn't exist or the index isn't an integer
-							System.out.println("WARNING: Bad data for book");
-						}
-					} else {
-						// it's not editable, so we can just add it
-						inventory.add(toAdd);
-					}
-				} else {
-					inventory.add(toAdd);
-				}
+				inventory.add(toAdd);
 			}
 		}
-	}
-	
-	private String loadBook(String filename, int idx) {
-		String file;
-		try {
-			file = loadFromFile(location + filename + extension, false);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
-		}
-		// split the file at returns and get the right one
-		return file.split("\n")[idx];
 	}
 	
 	private void loadEntities(String filename) {
