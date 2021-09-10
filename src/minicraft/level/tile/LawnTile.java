@@ -58,7 +58,11 @@ public class LawnTile extends Tile {
 				if (player.payStamina(2 - tool.level) && tool.payDurability()) {
 					level.setTile(x, y, Tiles.get("grass"));
 					Sound.Tile_generic_hurt.play();
-					level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Seeds"));
+					
+					if (random.nextInt(3) == 1) { // 28% chance to drop Seeds
+						level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Seeds"));
+					}
+					
 					return true;
 				}
 			}
@@ -68,7 +72,9 @@ public class LawnTile extends Tile {
 
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		
-		level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Seeds"));
+		if (random.nextInt(6) == 1) { // 20% chance to drop sky seeds
+			level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Seeds"));
+		}
 		
 		level.setTile(x, y, Tiles.get("grass"));
 		return true;

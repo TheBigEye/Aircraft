@@ -184,8 +184,7 @@ public class Level {
 			return;
 		}
 		
-		if (Game.debug)
-			System.out.println("Making level " + level + "...");
+		if(Game.debug) System.out.println("Making level "+level+"...");
 
 		maps = LevelGen.createAndValidateMap(w, h, level);
 		if (maps == null) {
@@ -204,19 +203,20 @@ public class Level {
 		
 		
 		if (parentLevel != null) { // If the level above this one is not null (aka, if this isn't the sky level)
-			for (int y = 0; y < h; y++) { // loop through height
-				for (int x = 0; x < w; x++) { // loop through width
+			for (int y = 0; y < h; y++) { // Loop through height
+				for (int x = 0; x < w; x++) { // Loop through width
 					if (parentLevel.getTile(x, y) == Tiles.get("Stairs Down")) { // If the tile in the level above the current one is a stairs down then...
-						if (level == -4) /// make the obsidian wall formation around the stair in the dungeon level
+						if (level == -4) /// Make the obsidian wall formation around the stair in the dungeon level
 							Structure.dungeonGate.draw(this, x, y);
 						
-						else if (level == 0) { // surface
-							if (Game.debug) System.out.println("Setting tiles around "+x+","+y+" to hard rock");
-							setAreaTiles(x, y, 1, Tiles.get("Hard Rock"), 0); // surround the sky stairs with hard rock
+						else if (level == 0) { // Surface
+							if (Game.debug) System.out.println("Setting tiles around "+ x +","+ y +" to hard rock");
+							setAreaTiles(x, y, 1, Tiles.get("Hard Rock"), 0); // Surround the sky stairs with hard rock
 						}
-						else // any other level, the up-stairs should have dirt on all sides.
+						else // Any other level, the up-stairs should have dirt on all sides.
 							setAreaTiles(x, y, 1, Tiles.get("dirt"), 0);
-						setTile(x, y, Tiles.get("Stairs Up")); // set a stairs up tile in the same position on the current level
+
+						setTile(x, y, Tiles.get("Stairs Up")); // Set a stairs up tile in the same position on the current level
 					}
 				}
 			}
@@ -270,7 +270,7 @@ public class Level {
 					if (e instanceof AirWizard)
 						found = true;
 				for (Entity e: entities)
-					if(e instanceof AirWizard)
+					if (e instanceof AirWizard)
 						found = true;
 			}
 			
@@ -291,24 +291,26 @@ public class Level {
 		
 		int numChests = 0;
 		
-		if(check) {
-			for(Entity e: entitiesToAdd)
-				if(e instanceof DungeonChest)
+		if (check) {
+			for (Entity e: entitiesToAdd)
+				if (e instanceof DungeonChest)
 					numChests++;
-			for(Entity e: entities)
-				if(e instanceof DungeonChest)
+			for (Entity e: entities)
+				if (e instanceof DungeonChest)
 					numChests++;
 			if (Game.debug) System.out.println("Found " + numChests + " chests.");
 		}
 		
-		/// make DungeonChests!
+		/// Make DungeonChests!
 		for (int i = numChests; i < 10 * (w / 128); i++) {
 			DungeonChest d = new DungeonChest(true);
 			boolean addedchest = false;
-			while(!addedchest) { // keep running until we successfully add a DungeonChest
-				//pick a random tile:
+			while(!addedchest) { // Keep running until we successfully add a DungeonChest
+				
+				// Pick a random tile:
 				int x2 = random.nextInt(16 * w) / 16;
 				int y2 = random.nextInt(16 * h) / 16;
+				
 				if (getTile(x2, y2) == Tiles.get("Obsidian")) {
 					boolean xaxis = random.nextBoolean();
 					if (xaxis) {

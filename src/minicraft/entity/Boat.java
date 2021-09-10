@@ -3,8 +3,11 @@ package minicraft.entity;
 import java.util.List;
 import java.util.Random;
 
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.Game;
 import minicraft.core.Updater;
+import minicraft.core.io.Sound;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.RemotePlayer;
 import minicraft.entity.particle.SplashParticle;
@@ -12,6 +15,7 @@ import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.item.BoatItem;
+import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
 
 public class Boat extends Entity {
@@ -121,18 +125,23 @@ public class Boat extends Entity {
 		return true;
 	}
 
-	public void take(Player player) {
-		remove(); // remove this from the world
-		if (!Game.ISONLINE) {
-			if (!Game.isMode("creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem))
-				player.getInventory().add(0, player.activeItem); // put whatever item the player is holding into their inventory (should never be a power glove, since it is put in a taken out again all in the same frame).
-			player.activeItem = new BoatItem("Boat"); // make this the player's current item.
-		} else if (Game.isValidServer() && player instanceof RemotePlayer)
-			Game.server.getAssociatedThread((RemotePlayer) player).updatePlayerActiveItem(new BoatItem("Boat"));
-		else
-			System.out.println("WARNING: undefined behavior; online game was not server and ticked furniture: " + this + "; and/or player in online game found that isn't a RemotePlayer: " + player);
-
-		// if (Game.debug) System.out.println("set active item of player " + player + " to " + player.activeItem + "; picked up furniture: " + this);
+	public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
+		if (item instanceof PowerGloveItem) {
+			Sound.Mob_generic_hurt.play();
+			if (!Game.ISONLINE) {
+				remove();
+				if (!Game.isMode("creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem))
+					player.getInventory().add(0, player.activeItem); // put whatever item the player is holding into their inventory
+				player.activeItem = new BoatItem("Boat"); // make this the player's current item.
+				return true;
+			} else if (Game.isValidServer() && player instanceof RemotePlayer) {
+				remove();
+				Game.server.getAssociatedThread((RemotePlayer) player).updatePlayerActiveItem(new BoatItem("Boat"));
+				return true;
+			} else
+				System.out.println("WARNING: undefined behavior; online game was not server and ticked furniture: " + this + "; and/or player in online game found that isn't a RemotePlayer: " + player);
+		}
+		return false;
 	}
 
 	public boolean move(double xa, double ya) {

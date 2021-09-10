@@ -122,15 +122,15 @@ public class DungeonChest extends Chest {
 			return super.interact(player, item, attackDir);
 		return false;
 	}
-
+	
 	@Override
 	protected String getUpdateString() {
 		String updates = super.getUpdateString() + ";";
 		updates += "isLocked,"+isLocked;
-
+		
 		return updates;
 	}
-
+	
 	@Override
 	protected boolean updateField(String field, String val) {
 		if(super.updateField(field, val)) return true;
@@ -139,7 +139,7 @@ public class DungeonChest extends Chest {
 				isLocked = Boolean.parseBoolean(val);
 				return true;
 		}
-
+		
 		return false;
 	}
 }
