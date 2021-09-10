@@ -65,6 +65,7 @@ import minicraft.screen.LoadingDisplay;
 import minicraft.screen.PauseDisplay;
 import minicraft.screen.PlayerInvDisplay;
 import minicraft.screen.WorldSelectDisplay;
+import minicraft.util.Vector2;
 
 public class Player extends Mob implements ItemHolder, ClientTickable {
 	protected InputHandler input;
@@ -147,7 +148,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 	// private final int acs = 25; // Default ("start") arrow count
 	public int shirtColor = Color.get(1, 51, 51, 0); // Player shirt color.
-
+	
 	public boolean isFishing = false;
 	public int maxFishingTicks = 120;
 	public int fishingTicks = maxFishingTicks;
@@ -512,30 +513,34 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		if (Updater.savecooldown > 0 && !Updater.saving)
 			Updater.savecooldown--;
 		
-		
+		// Handle player input. Input is handled by the menu if we are in one.
 		if (Game.getMenu() == null && !Bed.inBed(this)) {
-			// This is where movement detection occurs.
-			int xa = 0, ya = 0;
-			if (onFallDelay <= 0) { // prevent movement while falling
-				if (input.getKey("move-up").down) ya--;
-				if (input.getKey("move-down").down) ya++;
-				if (input.getKey("move-left").down) xa--;
-				if (input.getKey("move-right").down) xa++;
+			// Create the raw movement vector.
+			Vector2 vec = new Vector2(0, 0);
+
+			// Move while we are not falling.
+			if (onFallDelay <= 0) {
+				if (input.getKey("move-up").down) vec.y--;
+				if (input.getKey("move-down").down) vec.y++;
+				if (input.getKey("move-left").down) vec.x--;
+				if (input.getKey("move-right").down) vec.x++;
 			}
 			
 			// Executes if not saving; and... essentially halves speed if out of stamina.
-			if ((xa != 0 || ya != 0) && (staminaRechargeDelay % 2 == 0 || isSwimming()) && !Updater.saving) {
+			if ((vec.x != 0 || vec.y != 0) && (staminaRechargeDelay % 2 == 0 || isSwimming()) && !Updater.saving) {
 				double spd = moveSpeed * (potioneffects.containsKey(PotionType.Speed) ? 1.5D : 1);
 				
-				int xd = (int) (xa * spd);
-				int yd = (int) (ya * spd);
+				int xd = (int) (vec.x * spd);
+				int yd = (int) (vec.y * spd);
 				
 				Direction newDir = Direction.getDirection(xd, yd);
 				if(newDir == Direction.NONE) newDir = dir;
 				
+				// On multiplayer move the local player.
 				if ((xd != 0 || yd != 0 || newDir != dir) && Game.isConnectedClient() && this == Game.player)
 					Game.client.move(this, x+xd, y+yd);
 				
+				// Move the player
 				boolean moved = move(xd, yd); // THIS is where the player moves; part of Mob.java
 				if (moved) stepCount++;
 			}
@@ -922,7 +927,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		LocalDateTime time = LocalDateTime.now();
 
 		// Halloween skin
-		if (Game.IS_SpookyDay == true) {
+		if (Game.IS_Halloween == true) {
 			sprites = MobSprite.compileMobSpriteAnimations(0, 60);
 			carrySprites = MobSprite.compileMobSpriteAnimations(0, 62);
 		}
@@ -981,7 +986,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				int randX = rnd.nextInt(10);
 				int randY = rnd.nextInt(9);
 
-				level.add(new SplashParticle(x - 8 + randX, y - 8 + randY));
+				level.add(new SplashParticle(x - 8 + randX, y - 8 + randY)); // Add water particles
 
 			} else if (level.getTile(x / 16, y / 16) == Tiles.get("lava")) {
 				screen.render(xo + 0, yo + 3, 6 + 2 * 32, 1, 3); // Render the water graphic
@@ -990,7 +995,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				int randX = rnd.nextInt(10);
 				int randY = rnd.nextInt(9);
 
-				level.add(new FireParticle(x - 8 + randX, y - 8 + randY));
+				level.add(new FireParticle(x - 8 + randX, y - 8 + randY)); // Add fire particles
 			}
 		}
 
@@ -1358,7 +1363,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		";attackTime,"+attackTime+
 		";attackDir,"+attackDir.ordinal()+
 		";activeItem,"+(activeItem==null?"null": activeItem.getData())+
-		";isFishing,"+(isFishing==true?"1": "0");
+		";isFishing,"+(isFishing==true?"1": "0")+
+        ";moveSpeed,"+moveSpeed;
 
 		return updates;
 	}
@@ -1424,6 +1430,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 					potioneffects.put(PotionType.values[Integer.parseInt(parts[0])], Integer.parseInt(parts[1]));
 				}
 				return true;
+            case "moveSpeed": moveSpeed = Double.parseDouble(val); return true;
 		}
 
 		return false;

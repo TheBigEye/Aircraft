@@ -96,6 +96,8 @@ public class Level {
 	public byte[] tiles; // An array of all the tiles in the world.
 	public byte[] data; // An array of the data of the tiles in the world. // ?
 	
+	private int Random_Music;
+	
 	public final int depth; // Depth level of the level
 	public int monsterDensity = 8; // Affects the number of monsters that are on the level, bigger the number the less monsters spawn.
 	public int maxMobCount;
@@ -428,13 +430,17 @@ public class Level {
 		
 		// this play random music in game
 		if (Settings.get("ambient").equals("Nice")) {
-			if (random.nextInt(8096) == 1) {
-				
+			
+	        Random_Music++;
+	        
+	        if (Random_Music >= 16000) {
+	        	Random_Music = 0;
+	        
 				// Surface
 				if (random.nextInt(3) == 0 && depth == 0) { // Surface only
 					Sound.Theme_Surface.play();
 
-				} else if (random.nextInt(3) == 1 && depth == 0 | depth == -1) { // Surface and underground
+				} else if (random.nextInt(3) == 1 && depth == 0 || depth == -1) { // Surface and underground
 					Sound.Theme_Cave.play();
 
 				} else if (random.nextInt(3) == 2 && depth == 0) { // Surface only
@@ -453,10 +459,10 @@ public class Level {
 				} else if (random.nextInt(5) == 1 && depth == -1) { // Cave
 					Sound.Ambience2.play();
 
-				} else if (random.nextInt(5) == 2 && depth == -1 | depth == -2) { // Cave and cavern
+				} else if (random.nextInt(5) == 2 && depth == -1 || depth == -2) { // Cave and cavern
 					Sound.Ambience3.play();
 
-				} else if (random.nextInt(5) == 3 && depth == -1 | depth == -2) { // Cave and cavern
+				} else if (random.nextInt(5) == 3 && depth == -1 || depth == -2) { // Cave and cavern
 					Sound.Ambience4.play();
 
 				} else if (random.nextInt(5) == 4 && depth == -2) { // Cavern 
@@ -1254,7 +1260,7 @@ public class Level {
 	            int y = random.nextInt(h);
 
 	            // makes sure the village isn't to close to the previous village
-	            if (getTile(x, y) == Tiles.get("grass") && (Math.abs(x - lastVillageX) > 32 && Math.abs(y - lastVillageY) > 32)) {
+	            if (getTile(x, y) == Tiles.get("grass") && (Math.abs(x - lastVillageX) > 28 && Math.abs(y - lastVillageY) > 28)) {
 	                lastVillageX = x;
 	                lastVillageY = y;
 
@@ -1264,7 +1270,7 @@ public class Level {
 	                // loops for each house in the village
 	                for (int hs = 0; hs < numHouses; hs++) {
 	                    boolean hasChest = random.nextBoolean();
-	                    boolean twoDoors = random.nextBoolean();
+	                    boolean hasCrops = random.nextBoolean();
 
 	                    // basically just gets what offset this house should have from the center of the village
 	                    int xo = hs == 0 || hs == 3 ? -8 : 8;
@@ -1273,13 +1279,15 @@ public class Level {
 	                    xo += random.nextInt(8);
 	                    yo += random.nextInt(8);
 
-	                    if (twoDoors) {
-	                        Structure.villageHouseNormal.draw(this, x + xo, y + yo);
+	                    if (hasCrops) {
+	                        Structure.villageCrops.draw(this, x + xo, y + yo);
 	                        new Librarian();
 	                    } else {
 	                        Structure.villageHouseNormal2.draw(this, x + xo, y + yo);
 	                        new Cleric();
 	                    }
+	                    	
+	                  
 
 	                    // add a chest to some of the houses
 	                    if (hasChest) {

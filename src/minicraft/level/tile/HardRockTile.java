@@ -19,8 +19,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class HardRockTile extends Tile {
-	// theoretically the full sprite should never be used, so we can use a
-	// placeholder
+
 	private static ConnectorSprite sprite = new ConnectorSprite(HardRockTile.class, new Sprite(18, 9, 3, 3, 1, 3),
 			new Sprite(21, 10, 2, 2, 1, 3), Sprite.missingTexture(2, 2));
 
@@ -48,10 +47,19 @@ public class HardRockTile extends Tile {
 					return true;
 				}
 			} else {
-				Game.notifications.add("Gem Pickaxe Required.");
+				
+				if (random.nextInt(4) == 2) {
+					Game.notifications.add("Gem Pickaxe Required.");
+				}
+				
+				fail(level, xt, yt);
 			}
 		}
 		return false;
+	}
+	
+	public void fail(Level level, int x, int y) {
+		level.add(new TextParticle("X", x * 16 + 8, y * 16 + 8, Color.RED));
 	}
 
 	public void hurt(Level level, int x, int y, int dmg) {

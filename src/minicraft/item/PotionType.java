@@ -99,8 +99,7 @@ public enum PotionType {
 	}
 
 	public boolean transmitEffect() {
-		return true; // any effect which could be duplicated and result poorly should not be sent to
-						// the server.
+		return true; // any effect which could be duplicated and result poorly should not be sent to the server.
 		// for the case of the Health potion, the player health is not transmitted
 		// separately until after the potion effect finishes, so having it send just
 		// gets the change there earlier.

@@ -42,6 +42,10 @@ public class DoorTile extends Tile {
 			closedSprite = new Sprite(45, 16, 2, 2, 1);
 			openSprite = new Sprite(43, 16, 2, 2, 1);
 			break;
+		case Holy:
+			closedSprite = new Sprite(55, 16, 2, 2, 1);
+			openSprite = new Sprite(53, 16, 2, 2, 1);
+			break;
 		}
 		sprite = closedSprite;
 	}
@@ -57,7 +61,7 @@ public class DoorTile extends Tile {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == type.getRequiredTool()) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					level.setTile(xt, yt, Tiles.get(id + 5)); // will get the corresponding floor tile.
+					level.setTile(xt, yt, Tiles.get(id + 6)); // will get the corresponding floor tile.
 					Sound.Tile_generic_hurt.play();
 					level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get(type.name() + " Door"));
 					return true;

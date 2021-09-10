@@ -16,7 +16,7 @@ public class HoleTile extends Tile {
 
 	protected HoleTile(String name) {
 		super(name, sprite);
-		connectsToSand = true;
+		connectsToSand = false;
 		connectsToFluid = true;
 	}
 

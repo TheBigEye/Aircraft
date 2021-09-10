@@ -54,6 +54,10 @@ public class WallTile extends Tile {
 			sprite = new ConnectorSprite(WallTile.class, new Sprite(40, 14, 3, 3, 1, 3), new Sprite(43, 14, 2, 2, 1, 3),
 					new Sprite(41, 15, 2, 2, 1, 0, true));
 			break;
+		case Holy:
+			sprite = new ConnectorSprite(WallTile.class, new Sprite(50, 14, 3, 3, 1, 3), new Sprite(53, 14, 2, 2, 1, 3),
+					new Sprite(51, 15, 2, 2, 1, 0, true));
+			break;
 		}
 		csprite = sprite;
 	}
@@ -125,9 +129,13 @@ public class WallTile extends Tile {
 				itemName = "Birch Plank";
 				tilename = "Birch Planks";
 				break;
+			case Holy:
+				itemName = "Holy Brick";
+				tilename = "Holy Bricks";
+				break;
 			}
 
-			level.dropItem(x * 16 + 8, y * 16 + 8, 1, 5 - type.ordinal(), Items.get(itemName));
+			level.dropItem(x * 16 + 8, y * 16 + 8, 1, 6 - type.ordinal(), Items.get(itemName));
 			level.setTile(x, y, Tiles.get(tilename));
 		} else {
 			level.setData(x, y, damage);

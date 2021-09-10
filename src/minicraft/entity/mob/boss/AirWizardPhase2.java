@@ -226,7 +226,7 @@ public class AirWizardPhase2 extends EnemyMob {
 			level.add(new AirWizardPhase3(1), x, y);
 			Updater.notifyAll("You don't escape from this");
 			if (!beaten) Updater.notifyAll("", 200);
-			beaten = true;
+			beaten = false;
 		} else {
 			level.add(new AirWizardPhase3(1), x, y);
 			Updater.notifyAll("This does not end!");

@@ -5,6 +5,7 @@ import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
+import minicraft.entity.mob.villager.VillagerMob;
 import minicraft.gfx.Sprite;
 import minicraft.item.Items;
 import minicraft.level.Level;
@@ -60,7 +61,7 @@ public class Plant extends FarmTile {
 
     /** Default harvest method, used for everything that doesn't really need any special behavior. */
     protected void harvest(Level level, int x, int y, Entity entity) {
-	  if (entity instanceof ItemEntity) return;  
+	  if (entity instanceof ItemEntity || entity instanceof VillagerMob) return;  
         int age = level.getData(x, y);
 
         //level.dropItem(x * 16 + 8, y * 16 + 8, 1, Items.get(name + " Seeds"));

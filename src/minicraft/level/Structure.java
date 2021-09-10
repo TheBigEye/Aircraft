@@ -6,6 +6,8 @@ import java.util.HashSet;
 import minicraft.entity.furniture.Crafter;
 import minicraft.entity.furniture.Furniture;
 import minicraft.entity.furniture.Lantern;
+import minicraft.entity.furniture.statue.SkeletonStatue;
+import minicraft.entity.furniture.statue.ZombieStatue;
 import minicraft.gfx.Point;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
@@ -106,7 +108,7 @@ public class Structure {
         static final Structure skyDungeon;
 
         // used for random villages
-        static final Structure villageHouseNormal;
+        static final Structure villageCrops;
         static final Structure villageHouseNormal2;
         static final Structure villageHouseTwoDoor;
 
@@ -183,7 +185,7 @@ public class Structure {
                 );
 
                 skyDungeon = new Structure();
-                skyDungeon.setData("F:Stone Bricks,W:Stone Wall,D:Stone Door,S:Sky Wart,T:Red Wool",
+                skyDungeon.setData("F:Holy Bricks,W:Holy Wall,D:Holy Door,S:Sky Wart,T:Red Wool",
                         "***********************\n" +
                         "******WWWWWWWWWWW******\n" +
                         "******WFFFFFFFFFW******\n" +
@@ -210,8 +212,8 @@ public class Structure {
                 );
                 skyDungeon.addFurniture(0, 0, new Crafter(Crafter.Type.Enchanter));
 
-                villageHouseNormal = new Structure();
-                villageHouseNormal.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass,O:Path",
+                villageCrops = new Structure();
+                villageCrops.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass,O:Path,C:potato,Z:wheat,X:Water",
                         "WWWWW**O**WWWWW\n" +
                         "WFFFW**O**WFFFW\n" +
                         "WFFFDOOOOODFFFW\n" +
@@ -219,16 +221,17 @@ public class Structure {
                         "WWWWW**O**WWWWW\n" +
                         "*******O*******\n" +
                         "******OOO******\n" +
-                        "OOOOOOOWOOOOOOO\n" +
-                        "******OOO******\n" +
-                        "*******O*******\n" +
-                        "WWWWW**O**WWWWW\n" +
-                        "WFFFW**O**WFFFW\n" +
-                        "WFFFDOOOOODFFFW\n" +
-                        "WFFFW**O**WFFFW\n" +
-                        "WWWWW**O**WWWWW\n" +
+                        "OOOOOOOGOOOOOOO\n" +
+                        "******OOO***O**\n" +
+                        "*******O****O**\n" +
+                        "WWWWW**O**ZZXCC\n" +
+                        "WFFFW**O**ZZXCC\n" +
+                        "WFFFDOOO**ZZXCC\n" +
+                        "WFFFW**O**ZZXCC\n" +
+                        "WWWWW**O**ZZXCC\n" +
                         "***************\n"
                 );
+                villageCrops.addFurniture(0, -1, new ZombieStatue());
 
                 villageHouseNormal2 = new Structure();
                 villageHouseNormal2.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass,O:Path",
@@ -240,7 +243,7 @@ public class Structure {
                         "WWDWW**O**WWDWW\n" +
                         "**O****O****O**\n" +
                         "**O***OOO***O**\n" +
-                        "OOOOOOOWOOOOOOO\n" +
+                        "OOOOOOOGOOOOOOO\n" +
                         "**O***OOO***O**\n" +
                         "**O****O****O**\n" +
                         "WWDWW**O**WWDWW\n" +
@@ -250,6 +253,7 @@ public class Structure {
                         "WWWWW**O**WWWWW\n" +
                         "*******O*******\n"
                 );
+                villageHouseNormal2.addFurniture(0, -1, new SkeletonStatue());
 
                 villageHouseTwoDoor = new Structure();
                 villageHouseTwoDoor.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass",

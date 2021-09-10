@@ -53,26 +53,39 @@ public class Recipes {
 		workbenchRecipes.add(new Recipe("Gold Fishing Rod_1", "Gold_10", "String_3"));
 		workbenchRecipes.add(new Recipe("Gem Fishing Rod_1", "Gem_10", "String_3"));
 
-		loomRecipes.add(new Recipe("red dye_1", "rose_1"));
-		loomRecipes.add(new Recipe("lime dye_1", "Cactus_1"));
-		loomRecipes.add(new Recipe("yellow dye_1", "Flower_1"));
-		loomRecipes.add(new Recipe("pink dye_1", "red dye_1", "Bone powder_1"));
-		loomRecipes.add(new Recipe("green dye_1", "lime dye_1", "Ink sac_1"));
-		loomRecipes.add(new Recipe("orange dye_1", "Orange tulip_1"));
-		loomRecipes.add(new Recipe("purple dye_1", "Lapis_1", "Ink sac_1"));
+		loomRecipes.add(new Recipe("Light gray dye_1", "Gray dye_1", "Ink sac_1"));
+		loomRecipes.add(new Recipe("Gray dye_1", "Bone powder_1", "Ink sac_1"));
+		loomRecipes.add(new Recipe("Green dye_1", "Lime dye_1", "Ink sac_1"));
+		loomRecipes.add(new Recipe("Lime dye_1", "Cactus_1"));
+		loomRecipes.add(new Recipe("Yellow dye_1", "Flower_1"));
+		loomRecipes.add(new Recipe("Orange dye_1", "Orange tulip_1"));
+		loomRecipes.add(new Recipe("Brown dye_1", "Orange tulip_1", "Ink sac_1"));
+		loomRecipes.add(new Recipe("Red dye_1", "Rose_1"));
+		loomRecipes.add(new Recipe("Pink dye_1", "Red dye_1", "Bone powder_1"));
+		loomRecipes.add(new Recipe("Magenta dye_1", "Red dye_1", "Ink sac_1"));
+		loomRecipes.add(new Recipe("Purple dye_1", "Blue dye_1", "Ink sac_1"));
+		loomRecipes.add(new Recipe("Blue dye_1", "Lapis_1", "Ink sac_1"));
+		loomRecipes.add(new Recipe("Cyan dye_1", "Lime dye_1", "Blue dye_1"));
+		loomRecipes.add(new Recipe("Light blue dye_1", "Blue dye_1", "Bone powder_1"));
 
 		loomRecipes.add(new Recipe("String_3", "Wool_1"));
 		loomRecipes.add(new Recipe("Wool_1", "String_3"));
-		loomRecipes.add(new Recipe("black wool_1", "Wool_1", "Ink sac_1"));
-		loomRecipes.add(new Recipe("yellow wool_1", "Wool_1", "yellow dye_1"));
-		loomRecipes.add(new Recipe("lime wool_1", "Wool_1", "lime dye_1"));
-		loomRecipes.add(new Recipe("blue wool_1", "Wool_1", "Lapis_1"));
-		loomRecipes.add(new Recipe("red wool_1", "Wool_1", "red dye_1"));
-		loomRecipes.add(new Recipe("purple wool_1", "Wool_1", "purple dye_1"));
-		loomRecipes.add(new Recipe("pink wool_1", "Wool_1", "pink dye_1"));
-		loomRecipes.add(new Recipe("green wool_1", "Wool_1", "green dye_1"));
-		loomRecipes.add(new Recipe("gray wool_1", "Wool_1", "Ink sac_1", "Bone powder_1"));
-		loomRecipes.add(new Recipe("red wool_1", "Wool_1", "red dye_1"));
+		loomRecipes.add(new Recipe("Light gray wool_1", "Wool_1", "Light gray dye_1"));
+		loomRecipes.add(new Recipe("Gray wool_1", "Wool_1", "Gray dye_1"));
+		loomRecipes.add(new Recipe("Black wool_1", "Wool_1", "Ink sac_1"));
+		loomRecipes.add(new Recipe("Green wool_1", "Wool_1", "Green dye_1"));
+		loomRecipes.add(new Recipe("Lime wool_1", "Wool_1", "Lime dye_1"));
+		loomRecipes.add(new Recipe("Yellow wool_1", "Wool_1", "Yellow dye_1"));
+		loomRecipes.add(new Recipe("Orange wool_1", "Wool_1", "Orange dye_1"));
+		loomRecipes.add(new Recipe("Brown wool_1", "Wool_1", "Brown dye_1"));
+		loomRecipes.add(new Recipe("Red wool_1", "Wool_1", "Red dye_1"));
+		loomRecipes.add(new Recipe("Pink wool_1", "Wool_1", "Pink dye_1"));
+		loomRecipes.add(new Recipe("Magenta wool_1", "Wool_1", "Magenta dye_1"));
+		loomRecipes.add(new Recipe("Purple wool_1", "Wool_1", "Purple dye_1"));
+		loomRecipes.add(new Recipe("Blue wool_1", "Wool_1", "Blue dye_1"));
+		loomRecipes.add(new Recipe("Cyan wool_1", "Wool_1", "Cyan dye_1"));
+		loomRecipes.add(new Recipe("Light blue wool_1", "Wool_1", "Light blue dye_1"));
+
 
 		loomRecipes.add(new Recipe("Bed_1", "Wood_5", "Wool_3"));
 

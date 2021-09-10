@@ -122,7 +122,7 @@ public class InputHandler implements KeyListener {
 		keymap.put("DROP-STACK", "SHIFT-Q"); // drops the item in your hand, or selected in your inventory, entirely; even if it's a stack.
 		
 		// toggle inventory searcher bar
-		keymap.put("SEARCHER-BAR", "SHIFT-T");
+		keymap.put("SEARCHER-BAR", "F");
 
 		// seek for next/previous match in inventory searcher bar
 		keymap.put("PAGE-UP", "PAGE_UP");

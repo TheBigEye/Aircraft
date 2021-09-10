@@ -23,7 +23,8 @@ public abstract class Tile {
 		Spruce(ToolType.Axe),
 		Birch(ToolType.Axe),
 		Stone(ToolType.Pickaxe),
-		Obsidian(ToolType.Pickaxe);
+		Obsidian(ToolType.Pickaxe), 
+		Holy(ToolType.Pickaxe);
 		
 		
 		public static final Material[] values = Material.values();

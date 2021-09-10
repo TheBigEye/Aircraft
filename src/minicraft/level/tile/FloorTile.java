@@ -16,7 +16,7 @@ public class FloorTile extends Tile {
 	protected Material type;
 	
 	protected FloorTile(Material type) {
-		super((type == Material.Wood ? "Wood Planks" : type == Material.Spruce ? "Spruce Planks" : type == Material.Birch ? "Birch Planks" : type == Material.Obsidian ? "Obsidian" : type.name()+" Bricks"), (Sprite)null);
+		super((type == Material.Wood ? "Wood Planks" : type == Material.Spruce ? "Spruce Planks" : type == Material.Birch ? "Birch Planks" : type == Material.Holy ? "Holy Bricks" : type == Material.Obsidian ? "Obsidian" : type.name()+" Bricks"), (Sprite)null);
 		
 		connectsToSkyGrass = true;
 		connectsToSkyHighGrass = true;
@@ -39,6 +39,9 @@ public class FloorTile extends Tile {
 				break;
 			case Birch:
 				sprite = new Sprite(45, 14, 2, 2, 1, 0);
+				break;
+			case Holy:
+				sprite = new Sprite(55, 14, 2, 2, 1, 0);
 				break;
 		}
 		super.sprite = sprite;

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.entity.Direction;
+import minicraft.entity.particle.FireParticle;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
 import minicraft.item.Item;
@@ -23,6 +24,10 @@ public class Sheep extends PassiveMob {
 	// Cut
 	public boolean isCut = false;
 	private int ageWhenCut = 0;
+	
+	// Burn
+	public boolean isBurn = false;
+    private int burnTime = 0;
 
 	/**
 	 * Creates a sheep entity.
@@ -50,8 +55,9 @@ public class Sheep extends PassiveMob {
 	public void tick() {
 		super.tick();
 
-		if (age - ageWhenCut > WOOL_GROW_TIME)
+		if (age - ageWhenCut > WOOL_GROW_TIME) {
 			isCut = false;
+		}
 
 		Player player = getClosestPlayer();
 		if (player != null && player.activeItem != null && player.activeItem.name.equals("Wheat")) { // This function will make the entity follow the player directly
@@ -81,10 +87,34 @@ public class Sheep extends PassiveMob {
 			level.add(new Goat(), x, y);
 
 		}
+		
+		if (isBurn == true) {
+	        burnTime++;
+	        if (burnTime >= 128) {
+	        	burnTime = 0;
+	        	isBurn = false;
+	        }		
+	        
+	        if (burnTime >= 1) {
+	        	if (random.nextInt(4) == 2) {
+	        		int randX = random.nextInt(10);
+	        		int randY = random.nextInt(9);
+	        		
+	        		level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
+	        	
+	        		this.hurt(this, 1);
+	        	}	
+	        }
+	        
+		} else {
+			burnTime = 0; // Check
+		}
+		
 	}
 
 	public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
 		if (isCut) return false;
+		if (isBurn) return false;
 
 		if (item instanceof ToolItem) {
 			if (((ToolItem) item).type == ToolType.Shear) {
@@ -93,9 +123,17 @@ public class Sheep extends PassiveMob {
 				ageWhenCut = age;
 				return true;
 			}
+			
+			if (((ToolItem) item).type == ToolType.Flintnsteel) {
+				isBurn = true;
+				isCut = true;
+				ageWhenCut = age;
+				return true;
+			}
 		}
 		return false;
 	}
+	
 
 	public void die() {
 		int min = 0, max = 0;
@@ -104,7 +142,7 @@ public class Sheep extends PassiveMob {
 		if (Settings.get("diff").equals("Normal")) {min = 1; max = 2;}
 		if (Settings.get("diff").equals("Hard")) {min = 0; max = 2;}
 
-		if (!isCut) dropItem(min, max, Items.get("wool"));
+		if (!isCut || !isBurn) dropItem(min, max, Items.get("wool"));
 		dropItem(min, max, Items.get("Raw Beef"));
 
 		super.die();

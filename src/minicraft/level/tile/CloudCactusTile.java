@@ -19,7 +19,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class CloudCactusTile extends Tile {
-	private static Sprite sprite = new Sprite(6, 2, 2, 2, 1);
+	private static Sprite sprite = new Sprite(27, 24, 2, 2, 1);
 
 	protected CloudCactusTile(String name) {
 		super(name, sprite);
@@ -59,14 +59,14 @@ public class CloudCactusTile extends Tile {
 
 		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
 		if (damage >= health) {
-			level.setTile(x, y, Tiles.get("Cloud"));
+			level.setTile(x, y, Tiles.get("Ferrosite"));
 		} else
 			level.setData(x, y, damage);
 	}
 
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
-		Tiles.get("Cloud").render(screen, level, x, y);
+		Tiles.get("Ferrosite").render(screen, level, x, y);
 
 		sprite.render(screen, x << 4, y << 4);
 	}

@@ -151,15 +151,15 @@ public enum MapData {
 	CLOUD_CACTUS(Tiles.get("Cloud Cactus").id, Color.WHITE),
 	    
 	FERROSITE(Tiles.get("Ferrosite").id, Color.get(1, 203, 197, 121)),
-	    
     CLOUD_TREE(Tiles.get("Cloud Tree").id, Color.get(1, 71, 112, 68)),
     GOLDEN_CLOUD_TREE(Tiles.get("Golden Cloud Tree").id, Color.get(1, 187, 161, 79)),
     BLUE_CLOUD_TREE(Tiles.get("Blue Cloud Tree").id, Color.get(1, 0, 118, 158)),
-    HOLY_ROCK(Tiles.get("Holy Rock").id, Color.get(1, 232, 232, 232)),
+    HOLY_ROCK(Tiles.get("Holy Rock").id, Color.get(1, 97, 147, 126)),
     SKY_LAWN(Tiles.get("Sky Lawn").id, Color.get(1, 86, 163, 131)),
     SKY_HIGH_GRASS(Tiles.get("Sky High Grass").id, Color.get(1, 79, 150, 120)),
     SKY_DIRT(Tiles.get("Sky Dirt").id, Color.get(1, 73, 108, 114)),
-    SKY_GRASS(Tiles.get("Sky Grass").id, Color.get(1, 90, 171, 138));
+    SKY_GRASS(Tiles.get("Sky Grass").id, Color.get(1, 90, 171, 138)),
+    SKY_FERN(Tiles.get("Sky Fern").id, Color.get(1, 92, 137, 109));
 	    
   
     private static final Map<Integer, MapData> BY_ID = new HashMap<Integer, MapData>();

@@ -77,10 +77,10 @@ public class HolyRockTile extends Tile {
 		if (damage >= rockHealth) {
 			int count = random.nextInt(1) + 0;
 			if (coalLvl == 0) {
-				level.dropItem(x * 16 + 8, y * 16 + 8, 1, 4, Items.get("Sand"));
+				level.dropItem(x * 16 + 8, y * 16 + 8, 1, 4, Items.get("Holy stone"));
 			}
 			if (coalLvl == 1) {
-				level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Sand"));
+				level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Holy stone"));
 				int mincoal = 0, maxcoal = 1;
 				if (!Settings.get("diff").equals("Hard")) {
 					mincoal++;

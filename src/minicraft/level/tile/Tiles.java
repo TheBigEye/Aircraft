@@ -64,69 +64,73 @@ public final class Tiles {
         tiles.set(28, new DoorTile(Tile.Material.Birch));
         tiles.set(29, new DoorTile(Tile.Material.Stone));
         tiles.set(30, new DoorTile(Tile.Material.Obsidian));
-        tiles.set(31, new FloorTile(Tile.Material.Wood));
-        tiles.set(32, new FloorTile(Tile.Material.Spruce));
-        tiles.set(33, new FloorTile(Tile.Material.Birch));
-        tiles.set(34, new FloorTile(Tile.Material.Stone));
-        tiles.set(35, new FloorTile(Tile.Material.Obsidian));
-        tiles.set(36, new WallTile(Tile.Material.Wood));
-        tiles.set(37, new WallTile(Tile.Material.Spruce));
-        tiles.set(38, new WallTile(Tile.Material.Birch));
-        tiles.set(39, new WallTile(Tile.Material.Stone));
-        tiles.set(40, new WallTile(Tile.Material.Obsidian));
+        tiles.set(31, new DoorTile(Tile.Material.Holy));
+        tiles.set(32, new FloorTile(Tile.Material.Wood));
+        tiles.set(33, new FloorTile(Tile.Material.Spruce));
+        tiles.set(34, new FloorTile(Tile.Material.Birch));
+        tiles.set(35, new FloorTile(Tile.Material.Stone));
+        tiles.set(36, new FloorTile(Tile.Material.Obsidian));
+        tiles.set(37, new FloorTile(Tile.Material.Holy));
+        tiles.set(38, new WallTile(Tile.Material.Wood));
+        tiles.set(39, new WallTile(Tile.Material.Spruce));
+        tiles.set(40, new WallTile(Tile.Material.Birch));
+        tiles.set(41, new WallTile(Tile.Material.Stone));
+        tiles.set(42, new WallTile(Tile.Material.Obsidian));
+        tiles.set(43, new WallTile(Tile.Material.Holy));
 
-        tiles.set(41, new PathTile("Path"));
+        tiles.set(44, new PathTile("Path"));
 
         // Wool tiles
-        tiles.set(42, new Wool("Wool", Wool.WoolType.NORMAL));
-        tiles.set(43, new Wool("Red Wool", Wool.WoolType.RED));
-        tiles.set(44, new Wool("Blue Wool", Wool.WoolType.BLUE));
-        tiles.set(45, new Wool("Lime Wool", Wool.WoolType.LIME));
-        tiles.set(46, new Wool("Yellow Wool", Wool.WoolType.YELLOW));
-        tiles.set(47, new Wool("Purple Wool", Wool.WoolType.PURPLE));
-        tiles.set(48, new Wool("Black Wool", Wool.WoolType.BLACK));
-        tiles.set(49, new Wool("Pink Wool", Wool.WoolType.PINK));
-        tiles.set(50, new Wool("Green Wool", Wool.WoolType.GREEN));
-        tiles.set(51, new Wool("Light Gray Wool", Wool.WoolType.LIGHT_GRAY));
-        tiles.set(52, new Wool("Brown Wool", Wool.WoolType.BROWN));
-        tiles.set(53, new Wool("Magenta Wool", Wool.WoolType.MAGENTA));
-        tiles.set(54, new Wool("Light Blue Wool", Wool.WoolType.LIGHT_BLUE));
-        tiles.set(55, new Wool("Cyan Wool", Wool.WoolType.CYAN));
-        tiles.set(56, new Wool("Orange Wool", Wool.WoolType.ORANGE));
-        tiles.set(57, new Wool("Gray Wool", Wool.WoolType.GRAY));
+        tiles.set(45, new Wool("Wool", Wool.WoolType.NORMAL));
+        tiles.set(46, new Wool("Red Wool", Wool.WoolType.RED));
+        tiles.set(47, new Wool("Blue Wool", Wool.WoolType.BLUE));
+        tiles.set(48, new Wool("Lime Wool", Wool.WoolType.LIME));
+        tiles.set(49, new Wool("Yellow Wool", Wool.WoolType.YELLOW));
+        tiles.set(50, new Wool("Purple Wool", Wool.WoolType.PURPLE));
+        tiles.set(51, new Wool("Black Wool", Wool.WoolType.BLACK));
+        tiles.set(52, new Wool("Pink Wool", Wool.WoolType.PINK));
+        tiles.set(53, new Wool("Green Wool", Wool.WoolType.GREEN));
+        tiles.set(54, new Wool("Light Gray Wool", Wool.WoolType.LIGHT_GRAY));
+        tiles.set(55, new Wool("Brown Wool", Wool.WoolType.BROWN));
+        tiles.set(56, new Wool("Magenta Wool", Wool.WoolType.MAGENTA));
+        tiles.set(57, new Wool("Light Blue Wool", Wool.WoolType.LIGHT_BLUE));
+        tiles.set(58, new Wool("Cyan Wool", Wool.WoolType.CYAN));
+        tiles.set(59, new Wool("Orange Wool", Wool.WoolType.ORANGE));
+        tiles.set(60, new Wool("Gray Wool", Wool.WoolType.GRAY));
 
-        tiles.set(58, new CarrotTile("Carrot"));
-        tiles.set(59, new PotatoTile("Potato"));
-        tiles.set(60, new SkyWartTile("Sky Wart"));
-        tiles.set(61, new LawnTile("Lawn"));
-        tiles.set(62, new OrangeTulipTile("Orange Tulip"));
+        tiles.set(61, new CarrotTile("Carrot"));
+        tiles.set(62, new PotatoTile("Potato"));
+        tiles.set(63, new SkyWartTile("Sky Wart"));
+        tiles.set(64, new LawnTile("Lawn"));
+        tiles.set(65, new OrangeTulipTile("Orange Tulip"));
 
-        tiles.set(63, new SnowTile("Snow"));
+        tiles.set(66, new SnowTile("Snow"));
 
-        tiles.set(64, new BirchTreeTile("Birch Tree"));
-        tiles.set(65, new SaplingTile("Birch Sapling", Tiles.get("Grass"), Tiles.get("Birch tree")));
+        tiles.set(67, new BirchTreeTile("Birch Tree"));
+        tiles.set(68, new SaplingTile("Birch Sapling", Tiles.get("Grass"), Tiles.get("Birch tree")));
 
-        tiles.set(66, new FirTreeTile("Fir Tree"));
-        tiles.set(67, new SaplingTile("Fir Sapling", Tiles.get("Snow"), Tiles.get("Fir tree")));
+        tiles.set(69, new FirTreeTile("Fir Tree"));
+        tiles.set(70, new SaplingTile("Fir Sapling", Tiles.get("Snow"), Tiles.get("Fir tree")));
 
-        tiles.set(68, new PineTreeTile("Pine Tree"));
-        tiles.set(69, new SaplingTile("Pine Sapling", Tiles.get("Snow"), Tiles.get("Pine tree")));
+        tiles.set(71, new PineTreeTile("Pine Tree"));
+        tiles.set(72, new SaplingTile("Pine Sapling", Tiles.get("Snow"), Tiles.get("Pine tree")));
 
-        tiles.set(70, new CloudTreeTile("Cloud Tree"));
+        tiles.set(73, new CloudTreeTile("Cloud Tree"));
 
-        tiles.set(71, new IceSpikeTile("Ice Spike"));
-        tiles.set(72, new ObsidianTile("Hard Obsidian"));
+        tiles.set(74, new IceSpikeTile("Ice Spike"));
+        tiles.set(75, new ObsidianTile("Hard Obsidian"));
 
         // heaven tiles
-        tiles.set(73, new SkyGrassTile("Sky Grass"));
-        tiles.set(74, new SkyHighGrassTile("Sky High Grass"));
-        tiles.set(75, new SkyDirtTile("Sky Dirt"));
-        tiles.set(76, new SkyLawnTile("Sky Lawn"));
-        tiles.set(77, new FerrositeTile("Ferrosite"));
-        tiles.set(78, new SkyFarmTile("Sky Farmland"));
-        tiles.set(79, new HolyRockTile("Holy Rock"));
-        tiles.set(80, new GoldenCloudTreeTile("Golden Cloud Tree"));
-        tiles.set(81, new BlueCloudTreeTile("Blue Cloud Tree"));
+        tiles.set(76, new SkyGrassTile("Sky Grass"));
+        tiles.set(77, new SkyHighGrassTile("Sky High Grass"));
+        tiles.set(78, new SkyDirtTile("Sky Dirt"));
+        tiles.set(79, new SkyLawnTile("Sky Lawn"));
+        tiles.set(80, new FerrositeTile("Ferrosite"));
+        tiles.set(81, new SkyFarmTile("Sky Farmland"));
+        tiles.set(82, new HolyRockTile("Holy Rock"));
+        tiles.set(83, new GoldenCloudTreeTile("Golden Cloud Tree"));
+        tiles.set(84, new BlueCloudTreeTile("Blue Cloud Tree"));
+        tiles.set(85, new SkyFernTile("Sky Fern"));
 
 
         //tiles.set(?, new SandRockTile("Sand rock"));

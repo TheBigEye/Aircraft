@@ -70,8 +70,13 @@ public class Chest extends Furniture implements ItemHolder {
 	/*
 	@Override
 	public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
-		if (inventory.invSize() == 0)
+		if (Game.isMode("creative")) { // Can pickup in Creative
 			return super.interact(player, item, attackDir);
+		} else { // But not in others gamemodes	
+			if (inventory.invSize() == 0) {
+				return super.interact(player, item, attackDir);
+			}
+		}
 		return false;
 	}
 	*/

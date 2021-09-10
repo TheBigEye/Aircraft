@@ -36,37 +36,48 @@ public class Localization {
 	private static String[] loadedLanguages = getLanguagesFromDirectory();
 	
 	static {
-		if(loadedLanguages == null)
+		if (loadedLanguages == null) {
 			loadedLanguages = new String[] {selectedLanguage};
+		}
 		
 		loadSelectedLanguageFile();
 	}
 	
 	@NotNull
 	public static String getLocalized(String key) {
-		if(key.matches("^[ ]*$")) return key; // blank, or just whitespace
-		
+		if (key.matches("^[ ]*$")) {
+			return key; // blank, or just whitespace
+			
+		}
 		try {
 			@SuppressWarnings("unused")
 			double num = Double.parseDouble(key);
 			return key; // this is a number; don't try to localize it
-		} catch(NumberFormatException ignored) {}
+			
+		} catch (NumberFormatException ignored) {}
 		
 		String localString = localization.get(key);
 		
 		if (Game.debug && localString == null) {
-			if(!knownUnlocalizedStrings.contains(key))
+			if (!knownUnlocalizedStrings.contains(key)) {
 				System.out.println("The string \"" + key + "\" is not localized, returning itself instead.");
+			}
 			knownUnlocalizedStrings.add(key);
 		}
 		
 		return (localString == null ? key : localString);
 	}
 	
-	public static Locale getSelectedLocale() { return locales.getOrDefault(selectedLanguage, Locale.getDefault()); }
+	public static Locale getSelectedLocale() {
+		return locales.getOrDefault(selectedLanguage, Locale.getDefault()); 
+		
+	}
 	
 	@NotNull
-	public static String getSelectedLanguage() { return selectedLanguage; }
+	public static String getSelectedLanguage() {
+		return selectedLanguage; 
+		
+	}
 	
 	public static void changeLanguage(String newLanguage) {
 		selectedLanguage = newLanguage;
@@ -76,12 +87,10 @@ public class Localization {
 	private static void loadSelectedLanguageFile() {
 		String fileText = getFileAsString();
 		
-		// System.out.println("File:");
-		// System.out.println(fileText);
-		
 		String currentKey = "";
 		
 		for (String line : fileText.split("\r\n|\n|\r")) {
+			
 			// # at the start of a line means the line is a comment.
 			if (line.startsWith("#")) continue;
 			if (line.matches("^[ ]*$")) continue;
@@ -98,7 +107,6 @@ public class Localization {
 	@NotNull
 	private static String getFileAsString() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(Game.class.getResourceAsStream(localizationFiles.getOrDefault(selectedLanguage, "/resources/localization/english_en-us.mcpl")), StandardCharsets.UTF_8));
-
 
 		return String.join("\n", reader.lines().toArray(String[]::new));
 		// Using getResourceAsStream since we're publishing this as a jar file.
@@ -119,7 +127,9 @@ public class Localization {
 			if (src != null) {
 				URL jar = src.getLocation();
 				ZipInputStream zip = new ZipInputStream(jar.openStream());
+				
 				int reads = 0;
+				
 				while(true) {
 					ZipEntry e = zip.getNextEntry();
 					

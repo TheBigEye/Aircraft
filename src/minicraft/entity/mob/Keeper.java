@@ -21,7 +21,7 @@ public class Keeper extends EnemyMob {
 	public void tick() {
 		super.tick();
 		
-		if (Game.isMode("Creative")) return; // Should not attack if player is in creative
+		// if (Game.isMode("Creative")) return; // Should not attack if player is in creative
 		
 		if (random.nextInt(1500)==1) {
 			getLevel().add(new Slime(0), x, y + 5);
@@ -31,19 +31,37 @@ public class Keeper extends EnemyMob {
 		}
 		
 		Player player = getClosestPlayer();
-		if (player != null && player != null) { // checks if player is on zombies level and if there is no time left on randonimity timer
+		if (player != null) { 
 			int xd = player.x - x;
 			int yd = player.y - y;
-				/// if player is less than 6.25 tiles away, then set move dir towards player
-				int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
+
+				int sig0 = 1; 
+				
 				xa = ya = 0;
+				
 				if (xd < sig0) xa = -1;
 				if (xd > sig0) xa = +1;
 				if (yd < sig0) ya = -1;
 				if (yd > sig0) ya = +1;
+				
+				// texture phases				
+				if (yd > sig0) { // up
+					sprites[0][0][0] = new MobSprite(52, 0, 6, 6, 0);
+				}			
+				if (yd < sig0) { // down
+					sprites[0][0][0] = new MobSprite(52, 6, 6, 6, 0);
+				}
+								
+				if (xd > sig0) { // right
+					sprites[0][0][0] = new MobSprite(52, 12, 6, 6, 0);
+				}			
+				if (xd < sig0) { // left
+					sprites[0][0][0] = new MobSprite(52, 18, 6, 6, 0);
+				}
+				
 			} else {
 				// if the enemy was following the player, but has now lost it, it stops moving.
-					//*that would be nice, but I'll just make it move randomly instead.
+				//*that would be nice, but I'll just make it move randomly instead.
 				randomizeWalkDir(false);
 			}
 		}

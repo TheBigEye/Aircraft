@@ -2,15 +2,26 @@ package minicraft.entity.mob;
 
 import java.util.Random;
 
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.io.Settings;
+import minicraft.entity.Direction;
+import minicraft.entity.particle.FireParticle;
 import minicraft.entity.particle.HeartParticle;
 import minicraft.gfx.MobSprite;
+import minicraft.item.Item;
 import minicraft.item.Items;
+import minicraft.item.ToolItem;
+import minicraft.item.ToolType;
 
 public class Cow extends PassiveMob {
 	private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 24);
 	
 	private Random rnd = new Random();
+	
+	// Burn
+	public boolean isBurn = false;
+    private int burnTime = 0;
 	
 	/**
 	 * Creates the cow with the right sprites and color.
@@ -64,6 +75,40 @@ public class Cow extends PassiveMob {
 			// *that would be nice, but I'll just make it move randomly instead.
 			randomizeWalkDir(false);
 		}
+		if (isBurn == true) {
+	        burnTime++;
+	        if (burnTime >= 128) {
+	        	burnTime = 0;
+	        	isBurn = false;
+	        }		
+	        
+	        if (burnTime >= 1) {
+	        	if (random.nextInt(4) == 2) {
+	        		int randX = random.nextInt(10);
+	        		int randY = random.nextInt(9);
+	        		
+	        		level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
+	        	
+	        		this.hurt(this, 1);
+	        	}	
+	        }
+	        
+		} else {
+			burnTime = 0; // Check
+		}
+		
+		}
+	
+	public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
+		if (isBurn) return false;
+
+		if (item instanceof ToolItem) {			
+			if (((ToolItem) item).type == ToolType.Flintnsteel) {
+				isBurn = true;
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void die() {

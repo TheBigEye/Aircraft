@@ -53,9 +53,9 @@ import minicraft.screen.RelPos;
 public class Renderer extends Game {
 	private Renderer() {}
 
-	public static final int HEIGHT = 288;
-	public static final int WIDTH = 432;
-	static float SCALE = 3;
+	public static final int HEIGHT = 288; // This is the hight of the game * scale
+	public static final int WIDTH = 432; // This is the width of the game * scale
+	static float SCALE = 3; // scales the window
 	
 	private static String levelName = ""; // Used to store the names of the levels in the debug GUI
 
@@ -116,6 +116,8 @@ public class Renderer extends Game {
 			canvas.requestFocus();
 		}
 	}
+	
+
 
 	/** Renders the current screen. Called in game loop, a bit after tick(). */
 	public static void render() {
@@ -385,11 +387,11 @@ public class Renderer extends Game {
 			ArrayList<String> info = new ArrayList<>();
 			
 			info.add("Version: " + Game.BUILD + " (" + Game.VERSION +")                    " + "Time:" + InfoDisplay.getTimeString());
-			info.add("Engine: " + "Minicraft Plus" + "                  " + "Java:" + System.getProperty("java.version"));
-			info.add("" + time.toLocalDate() + "                              " + "Java arch:x" + System.getProperty("sun.arch.data.model"));
-			info.add(Initializer.fra + " fps" + "                                  " + "Max mem:" + Updater.MaxMem);
-			info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")                  " + "Total mem:" + Updater.TotalMem);
-			info.add((Updater.normSpeed * Updater.gamespeed) + " tps                                " + "Free mem: " + Updater.FreeMem);
+			info.add("Engine: " + "Minicraft Plus" + "                  " + "Java:" + GameInfo.Java_Version);
+			info.add("" + time.toLocalDate() + "                              " + "Java arch:x" + GameInfo.Java_Arch);
+			info.add(Initializer.fra + " fps" + "                                  " + "Max mem:" + GameInfo.max_Memory);
+			info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")                  " + "Total mem:" + GameInfo.total_Memory);
+			info.add((Updater.normSpeed * Updater.gamespeed) + " tps                                " + "Free mem: " + GameInfo.free_Memory);
 			if (!isValidServer()) {
 
 				// player info
@@ -515,6 +517,7 @@ public class Renderer extends Game {
 	}
 
 	@SuppressWarnings("deprecation")
+	public
 	static java.awt.Dimension getWindowSize() {
 		return new java.awt.Dimension(new Float(WIDTH * SCALE).intValue(), new Float(HEIGHT * SCALE).intValue());
 	}

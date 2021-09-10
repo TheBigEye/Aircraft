@@ -2,6 +2,8 @@ package minicraft.entity;
 
 import java.util.List;
 
+import minicraft.core.Game;
+import minicraft.core.io.Sound;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.boss.AirWizard;
@@ -13,7 +15,7 @@ public class Spark extends Entity {
     private double xa, ya; // the x and y acceleration
     private double xx, yy; // the x and y positions
     private int time; // the amount of time that has passed
-    private AirWizard owner; // the AirWizard that created this spark
+	private final AirWizard owner; // The AirWizard that created this spark
 
 	/**
 	 * Creates a new spark. Owner is the AirWizard which is spawning this spark.
@@ -31,17 +33,17 @@ public class Spark extends Entity {
 		this.ya = ya;
 		
 		// Max time = 389 ticks. Min time = 360 ticks.
-		lifeTime = 15 * 10 + random.nextInt(30);
+		lifeTime = 15 * 13 + random.nextInt(30);
 	}
 
     @Override
     public void tick() {
         time++;
         if (time >= lifeTime) {
-            remove(); // remove this from the world
+            remove(); // Remove this from the world
             return;
         }
-        // move the spark:
+        // Move the spark:
         xx += xa;
         yy += ya;
         x = (int) xx;
@@ -49,8 +51,6 @@ public class Spark extends Entity {
 
         xx += xa;
         yy += ya;
-
-        
         
         Player player = getClosestPlayer();
         int xd = player.x - x;
@@ -79,10 +79,24 @@ public class Spark extends Entity {
 			ya -= 1;
 			
 		}
+		
+		if (random.nextInt(4) == 1) {
+			
+			xa -= 1;
+			ya += 1;
+			
+		}
+		
+		if (random.nextInt(4) == 2) {
+			
+			xa += 1;
+			ya -= 1;
+			
+		}
 
-		// if the entity is a mob, but not a Air Wizard, then hurt the mob with 1 damage.
+		// if the entity is a mob, but not a Air Wizard, then hurt the mob with 2 damage.
 		List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizard), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS)); // gets the entities in the current position to hit.
-		toHit.forEach(entity -> ((Mob) entity).hurt(owner, 1));
+		toHit.forEach(entity -> ((Mob) entity).hurt(owner, 2));
 	}
 	
 	/** Can this entity block you? Nope. */
@@ -92,12 +106,19 @@ public class Spark extends Entity {
 
 	@Override
 	public void render(Screen screen) {
-		/* this first part is for the blinking effect */
-		if (time >= lifeTime - 6 * 20) {
-			if (time / 6 % 2 == 0) return; // if time is divisible by 12, then skip the rest of the code.
-		}
+		int randmirror = 0;
 
-		int randmirror = random.nextInt(4);
+		// If we are in a menu, or we are on a server.
+		if (Game.getMenu() == null || Game.ISONLINE) {
+			
+			// The blinking effect.
+			if (time >= lifeTime - 6 * 20) {
+				if (time / 6 % 2 == 0) return; // If time is divisible by 12, then skip the rest of the code.
+			}
+
+			randmirror = random.nextInt(4);
+		
+		}
 
 		screen.render(x - 4, y - 4 - 2, 0 + 20 * 32, randmirror, 2); // renders the spark
 	}
@@ -107,6 +128,6 @@ public class Spark extends Entity {
 	 * @return the owners id as a string.
 	 */
 	public String getData() {
-		return owner.eid+"";
+		return owner.eid + "";
 	}
 }

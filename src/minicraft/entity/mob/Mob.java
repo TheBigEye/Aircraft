@@ -157,33 +157,6 @@ public abstract class Mob extends Entity {
 		if(level == null) return false;
 		return level.isLight(x>>4, y>>4);
 	}
-	
-	public boolean isBurning(boolean b) {
-		
-	if(level == null) return false;
-		
-		Tile tile = level.getTile(x >> 4, y >> 4); 
-		if (tile == Tiles.get("water")) {
-			return false;
-		}
-		
-		if (tile == Tiles.get("lava")) {
-			return true;
-		}
-		
-	if (b == true) {
-		if (random.nextInt(3000)==1) {
-			
-		int randX = rnd.nextInt(10);
-		int randY = rnd.nextInt(9);
-        		
-        level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
-		}
-	}
-		
-	 return tile == Tiles.get("grass") || tile == Tiles.get("dirt");
-		
-	}
 
 	/**
 	 * Checks if the mob is swimming (standing on a liquid tile).

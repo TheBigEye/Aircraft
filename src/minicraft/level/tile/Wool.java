@@ -37,22 +37,22 @@ public class Wool extends Tile {
     }
 
     public enum WoolType {
-            BLACK(new Sprite(30, 30, 2, 2, 1)),
-            BLUE(new Sprite(28, 28, 2, 2, 1)),
-            BROWN(new Sprite(20, 30, 2, 2, 1)),
-            CYAN(new Sprite(18, 28, 2, 2, 1)),
-            GREEN(new Sprite(22, 30, 2, 2, 1)),
-            LIGHT_GRAY(new Sprite(16, 28, 2, 2, 1)),
-            LIME(new Sprite(30, 28, 2, 2, 1)),
-            LIGHT_BLUE(new Sprite(18, 30, 2, 2, 1)),
-            MAGENTA(new Sprite(20, 28, 2, 2, 1)),
             NORMAL(new Sprite(26, 30, 2, 2, 1)),
-            ORANGE(new Sprite(16, 30, 2, 2, 1)),
-            PINK(new Sprite(24, 28, 2, 2, 1)),
-            PURPLE(new Sprite(24, 30, 2, 2, 1)),
-            RED(new Sprite(26, 28, 2, 2, 1)),
+            LIGHT_GRAY(new Sprite(16, 28, 2, 2, 1)),
+            GRAY(new Sprite(22, 28, 2, 2, 1)),
+            BLACK(new Sprite(30, 30, 2, 2, 1)),
+            GREEN(new Sprite(22, 30, 2, 2, 1)),
+            LIME(new Sprite(30, 28, 2, 2, 1)),
             YELLOW(new Sprite(28, 30, 2, 2, 1)),
-            GRAY(new Sprite(22, 28, 2, 2, 1));
+            ORANGE(new Sprite(16, 30, 2, 2, 1)),
+            BROWN(new Sprite(20, 30, 2, 2, 1)),
+            RED(new Sprite(26, 28, 2, 2, 1)),
+            PINK(new Sprite(24, 28, 2, 2, 1)),
+            MAGENTA(new Sprite(20, 28, 2, 2, 1)),
+            PURPLE(new Sprite(24, 30, 2, 2, 1)),
+            BLUE(new Sprite(28, 28, 2, 2, 1)),
+            CYAN(new Sprite(18, 28, 2, 2, 1)),
+            LIGHT_BLUE(new Sprite(18, 30, 2, 2, 1));
 
         public final Sprite sprite;
 

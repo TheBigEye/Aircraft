@@ -97,7 +97,7 @@ public class AirWizardPhase3 extends EnemyMob {
 		if (player != null && randomWalkTime == 0) { // if there is a player around, and the walking is not random
 			int xd = player.x - x; // the horizontal distance between the player and the air wizard.
 			int yd = player.y - y; // the vertical distance between the player and the air wizard.
-			if (xd * xd + yd * yd < 16*16 * 4*4) {
+			if (xd * xd + yd * yd < 16*16 * 2*2) {
 				/// Move away from the player if less than 2 blocks away
 				
 				xa = 0; //accelerations

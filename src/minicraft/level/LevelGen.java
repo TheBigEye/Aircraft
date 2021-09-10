@@ -21,6 +21,7 @@ public class LevelGen {
   private double[] values; // An array of doubles, used to help making noise for the map
   private int w, h; // width and height of the map
   private static final int stairRadius = 15;
+  
 
   /** This creates noise to create random values for level generation */
   private LevelGen(int w, int h, int featureSize) {
@@ -218,8 +219,8 @@ public class LevelGen {
   }
 
   // Surface generation code 
-  private static byte[][] createTopMap(int w, int h) { // create surface map?
-
+  private static byte[][] createTopMap(int w, int h) { // create surface map
+	  
     // creates a bunch of value maps, some with small size...
     LevelGen mnoise1 = new LevelGen(w, h, 16);
     LevelGen mnoise2 = new LevelGen(w, h, 16);
@@ -312,7 +313,7 @@ public class LevelGen {
         }
       }
     }
-
+    
     // According to the configuration or seed, these biomes are established 
 
     // Desert (big) biome
@@ -737,6 +738,7 @@ public class LevelGen {
 
   // Dungeons generation code
   private static byte[][] createDungeon(int w, int h) {
+	  
     LevelGen noise1 = new LevelGen(w, h, 8);
     LevelGen noise2 = new LevelGen(w, h, 8);
 
@@ -766,7 +768,7 @@ public class LevelGen {
         }
       }
     }
-
+    
     lavaLoop: for (int i = 0; i < w * h / 450; i++) {
       int x = random.nextInt(w - 2) + 1;
       int y = random.nextInt(h - 2) + 1;
@@ -803,6 +805,7 @@ public class LevelGen {
 
   // Generate cave system
   private static byte[][] createUndergroundMap(int w, int h, int depth) {
+	  
     LevelGen mnoise1 = new LevelGen(w, h, 16);
     LevelGen mnoise2 = new LevelGen(w, h, 16);
     LevelGen mnoise3 = new LevelGen(w, h, 16);
@@ -940,7 +943,7 @@ public class LevelGen {
   }
 
   // Sky dimension generation
-  private static byte[][] createSkyMap(int w, int h) {
+  private static byte[][] createSkyMap(int w, int h) {  
     LevelGen noise1 = new LevelGen(w, h, 8);
     LevelGen noise2 = new LevelGen(w, h, 8);
 
@@ -1109,6 +1112,22 @@ public class LevelGen {
         }
       }
     }
+    
+    //  Generate sky lawn in Sky grass
+    for (int i = 0; i < w * h / 400; i++) {
+      int x = random.nextInt(w);
+      int y = random.nextInt(h);
+      int col = random.nextInt(4);
+      for (int j = 0; j < 100; j++) {
+        int xx = x + random.nextInt(5) - random.nextInt(5);
+        int yy = y + random.nextInt(5) - random.nextInt(5);
+        if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+          if (map[xx + yy * w] == Tiles.get("sky high grass").id) {
+            map[xx + yy * w] = Tiles.get("sky fern").id;
+          }
+        }
+      }
+    }
 
     // Generate Normal cloud trees
     for (int i = 0; i < w * h / 400; i++) {
@@ -1172,6 +1191,16 @@ public class LevelGen {
         }
       }
     }
+    
+    for (int i = 0; i < w * h / 150; i++) {
+        int xx = random.nextInt(w);
+        int yy = random.nextInt(h);
+        if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+          if (map[xx + yy * w] == Tiles.get("Ferrosite").id) {
+            map[xx + yy * w] = Tiles.get("Cloud cactus").id;
+          }
+        }
+      }
     
     
     } else { // for 128x worlds
@@ -1357,17 +1386,19 @@ public class LevelGen {
       map,
       data
     };
+    
   }
+
 
   public static void main(String[] args) {
 
     /*
-         * This is used to see seeds without having to run the game
-         * I mean, this is a world viewer that uses the same method 
-         * as above using perlin noise, to generate a world, and be 
-         * able to see it in a JPane according to the size of the 
-         * world generated
-         */
+     * This is used to see seeds without having to run the game
+     * I mean, this is a world viewer that uses the same method 
+     * as above using perlin noise, to generate a world, and be 
+     * able to see it in a JPane according to the size of the 
+     * world generated
+     */
 
     LevelGen.worldSeed = 0x100;
 

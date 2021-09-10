@@ -50,43 +50,46 @@ public class Settings {
 	}
 
 	private static int getRefreshRate() {
-		if (GraphicsEnvironment.isHeadless())
+		if (GraphicsEnvironment.isHeadless()) {
 			return 60;
-
-		int hz = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode()
-				.getRefreshRate();
-		if (hz == DisplayMode.REFRESH_RATE_UNKNOWN)
+		}
+		
+		int hz = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate();
+		
+		if (hz == DisplayMode.REFRESH_RATE_UNKNOWN) {
 			return 60;
-		if (hz > 300)
+		}
+		if (hz > 300) {
 			return 60;
-		if (10 > hz)
+		}
+		if (10 > hz) {
 			return 60;
+		}
 		return hz;
 	}
 
-	// returns the value of the specified option
+	// Returns the value of the specified option
 	public static Object get(String option) {
 		return options.get(option.toLowerCase()).getValue();
 	}
 
-	// returns the index of the value in the list of values for the specified option
+	// Returns the index of the value in the list of values for the specified option
 	public static int getIdx(String option) {
 		return options.get(option.toLowerCase()).getSelection();
 	}
 
-	// return the ArrayEntry object associated with the given option name.
+	// Return the ArrayEntry object associated with the given option name.
 	@SuppressWarnings("rawtypes")
 	public static ArrayEntry getEntry(String option) {
 		return options.get(option.toLowerCase());
 	}
 
-	// sets the value of the given option name, to the given value, provided it is a
-	// valid value for that option.
+	// Sets the value of the given option name, to the given value, provided it is a valid value for that option.
 	public static void set(String option, Object value) {
 		options.get(option.toLowerCase()).setValue(value);
 	}
 
-	// sets the index of the value of the given option, provided it is a valid index
+	// Sets the index of the value of the given option, provided it is a valid index
 	public static void setIdx(String option, int idx) {
 		options.get(option.toLowerCase()).setSelection(idx);
 	}

@@ -25,7 +25,7 @@ public class Initializer extends Game {
 	 * @see Renderer#HAS_GUI
 	 */
 	static JFrame frame;
-	static int fra, tik; // these store the number of frames and ticks in the previous second, used for fps, at least.
+	static int fra, tik; // These store the number of frames and ticks in the previous second, used for fps, at least.
 
     public static int getCurFps() {
         return fra;

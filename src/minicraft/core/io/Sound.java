@@ -14,11 +14,12 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import minicraft.core.Game;
 
-public class Sound {// creates sounds from their respective files
+public class Sound { // Creates sounds from their respective files
 
 
     // IMPORTANT: Do not modify these variables, they determine the path of each category of sounds, changing them would cause errors
     private static String MOB_SOUNDS_DIR = "/resources/sound/Mob/";
+    private static String PARTICLE_SOUNDS_DIR = "/resources/sound/Particle/";
     private static String FURNITURE_SOUNDS_DIR = "/resources/sound/Furniture/";
     private static String GUI_SOUNDS_DIR = "/resources/sound/GUI/";
 
@@ -36,7 +37,7 @@ public class Sound {// creates sounds from their respective files
 
     // Generic mob
     public static final Sound Mob_generic_hurt = new Sound(MOB_SOUNDS_DIR + "monsterhurt.wav");
-
+    
     // Air Wizard
     public static final Sound Mob_wizard_death = new Sound(MOB_SOUNDS_DIR + "AirWizard/bossdeath.wav");
     public static final Sound Mob_wizard_changePhase = new Sound(MOB_SOUNDS_DIR + "AirWizard/changephase.wav");
@@ -52,6 +53,11 @@ public class Sound {// creates sounds from their respective files
     public static final Sound Mob_creeper_explode_2 = new Sound(MOB_SOUNDS_DIR + "Creeper/explode 2.wav");
     public static final Sound Mob_creeper_explode_3 = new Sound(MOB_SOUNDS_DIR + "Creeper/explode 3.wav");
     public static final Sound Mob_creeper_explode_4 = new Sound(MOB_SOUNDS_DIR + "Creeper/explode 4.wav");
+    
+    // Particles sounds =============================================================================================================
+    
+    // Sparks
+    public static final Sound Particle_spark_spawn = new Sound(PARTICLE_SOUNDS_DIR + "Spark/Spawn.wav");
 
     // Furniture sounds =============================================================================================================
 
@@ -68,13 +74,6 @@ public class Sound {// creates sounds from their respective files
     public static final Sound Furniture_tnt_explode_2 = new Sound(FURNITURE_SOUNDS_DIR + "Tnt/explode 2.wav");
     public static final Sound Furniture_tnt_explode_3 = new Sound(FURNITURE_SOUNDS_DIR + "Tnt/explode 3.wav");
     public static final Sound Furniture_tnt_explode_4 = new Sound(FURNITURE_SOUNDS_DIR + "Tnt/explode 4.wav");
-
-
-    // Pickup
-    //public static final Sound pickup = new Sound(Mob_Sounds + "Player/pickup.wav");
-    //public static final Sound pickup2 = new Sound(Mob_Sounds + "Player/pickup 2.wav");
-    //public static final Sound pickup3 = new Sound(Mob_Sounds + "Player/pickup 3.wav");
-    //public static final Sound pickup4 = new Sound(Mob_Sounds + "Player/pickup 4.wav");
 
     // GUI sounds ===================================================================================================================
 
@@ -116,15 +115,14 @@ public class Sound {// creates sounds from their respective files
     public static final Sound Theme_Cavern = new Sound("/resources/sound/Music/Background/Cavern.wav");
     public static final Sound Theme_Cavern_drip = new Sound("/resources/sound/Music/Background/Cavern drip.wav");
 
-
-
     private Clip clip; // Creates a audio clip to be played
 
     public static void init() {} // A way to initialize the class without actually doing anything
 
     private Sound(String name) {
-        if (!Game.HAS_GUI)
+        if (!Game.HAS_GUI) {
             return;
+        }
 
         try {
             URL url = getClass().getResource(name);
@@ -136,23 +134,31 @@ public class Sound {// creates sounds from their respective files
 
                 System.out.println("Supported audio formats:");
                 System.out.println("-source:");
+                
                 Line.Info[] sinfo = AudioSystem.getSourceLineInfo(info);
                 Line.Info[] tinfo = AudioSystem.getTargetLineInfo(info);
+                
                 for (int i = 0; i < sinfo.length; i++) {
                     if (sinfo[i] instanceof DataLine.Info) {
+                    	
                         DataLine.Info dataLineInfo = (DataLine.Info) sinfo[i];
                         AudioFormat[] supportedFormats = dataLineInfo.getFormats();
-                        for (AudioFormat af: supportedFormats)
+                        
+                        for (AudioFormat af: supportedFormats) {
                             System.out.println(af);
+                        }
                     }
                 }
                 System.out.println("-target:");
                 for (int i = 0; i < tinfo.length; i++) {
                     if (tinfo[i] instanceof DataLine.Info) {
+                    	
                         DataLine.Info dataLineInfo = (DataLine.Info) tinfo[i];
                         AudioFormat[] supportedFormats = dataLineInfo.getFormats();
-                        for (AudioFormat af: supportedFormats)
+                        
+                        for (AudioFormat af: supportedFormats) {
                             System.out.println(af);
+                        }
                     }
                 }
 
@@ -174,37 +180,34 @@ public class Sound {// creates sounds from their respective files
             e.printStackTrace();
         }
     }
-    // clip = music/sound name
 
-    // This plays the clip only once, Syntax: Sound.clip.play();
-    public void play() {
-        if (!(boolean) Settings.get("sound") || clip == null)
+    public void play() { // This plays the clip only once, Syntax: Sound.clip.play();
+        if (!(boolean) Settings.get("sound") || clip == null) {
             return;
-        if (Game.isValidServer())
+        }
+        if (Game.isValidServer()) {
             return;
-
-        if (clip.isRunning() || clip.isActive())
-            clip.stop();
-
+        }
+        if (clip.isRunning() || clip.isActive()) {
+            clip.stop(); 
+        }
         clip.start();
     }
 
 
-    public void loop(boolean start) {// This repeats the same clip over and over again,
-        if (!(boolean) Settings.get("sound") || clip == null)
-            return;
-
-        if (start)
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        else
-            clip.stop();
-        
+    public void loop(boolean start) { // This repeats the same clip over and over again,
+        if (!(boolean) Settings.get("sound") || clip == null) {
+            return;  
+        }
+        if (start) {
+            clip.loop(Clip.LOOP_CONTINUOUSLY); 
+        } else {
+            clip.stop();  
+        }
     }
 
-
-    public void stop() {// This stops the clip
+    public void stop() { // This stops the clip
         clip.stop();
-
     }
 
 }

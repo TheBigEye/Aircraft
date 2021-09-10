@@ -1,7 +1,9 @@
 package minicraft.level.tile.farming;
 
 import minicraft.entity.Entity;
+import minicraft.entity.ItemEntity;
 import minicraft.entity.mob.Player;
+import minicraft.entity.mob.villager.VillagerMob;
 import minicraft.gfx.Screen;
 import minicraft.item.Items;
 import minicraft.level.Level;
@@ -37,6 +39,7 @@ public class PotatoTile extends Plant {
 
 	@Override
 	protected void harvest(Level level, int x, int y, Entity entity) {
+	    if (entity instanceof ItemEntity || entity instanceof VillagerMob) return;
 		int age = level.getData(x, y);
 
 		int count = 0;

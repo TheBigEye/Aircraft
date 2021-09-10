@@ -1,7 +1,5 @@
-// Package declaration
 package minicraft.core;
 
-// Default Java Libraries
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -13,16 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-// Graphics Java Libraries
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
-// Annotations
 import org.jetbrains.annotations.Nullable;
 
-// Game imports
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -46,25 +41,26 @@ import minicraft.screen.TitleDisplay;
  */
 
 public class Game {
-	Game() {} // can't instantiate the Game class.
+	Game() {} // Can't instantiate the Game class.
 
 	private static Random random = new Random();
 
 	public static boolean debug = false;
-	public static boolean in_dev = false;
 	public static boolean packet_debug = false;
 	public static boolean HAS_GUI = true; 
 	
-	public static boolean IS_FestiveDay = false; 
-	public static boolean IS_SpookyDay = false; 
-	public static boolean IS_JokeDay = false; 
+	public static boolean in_dev = false;
+	
+	// Game events (Shhhh is seeeecret)
+	public static boolean IS_Christmas = false; 
+	public static boolean IS_Halloween = false; 
+	public static boolean IS_April_fools = false; 
 
 	public static final String NAME = "Aircraft"; // This is the name on the application window
 	public static final String BUILD = "0.4"; // Aircraft version
-	public static final Version VERSION = new Version("2.0.7"); // Minicraft mod base version
+	public static final Version VERSION = new Version("2.0.7"); // Minicraft plus mod base version
 
-	// Input used in Game, Player, and just about all the *Menu classes.
-	public static InputHandler input; 
+	public static InputHandler input; // Input used in Game, Player, and just about all the *Menu classes.
 	public static Player player;
 
 	// The directory in which all the game files are stored
@@ -73,16 +69,15 @@ public class Game {
 
 	public static int MAX_FPS = (int) Settings.get("fps");
 	public static Level level;
-
-
-	@SuppressWarnings("unused")
-	private static String errorSplash = "";
 	
 	// Crash window titles
 	private static String[] Splash = {
-		"Who has put TNT?", "An error has occurred again??",
-		"Unexpected error again??", "Oh. That hurts :(",
-		"Sorry for the crash :(", "You can play our brother game, Minitale",
+		"Who has put TNT?",
+		"An error has occurred again??",
+		"Unexpected error again??",
+		"Oh. That hurts :(",
+		"Sorry for the crash :(",
+		"You can play our brother game, Minitale",
 		"F, crash again??" 
 	};
 	
@@ -90,12 +85,10 @@ public class Game {
 
 	
 	/**
-	 * This specifies a custom port instead of default to
-	 * server-side using --port parameter if something goes
-	 * wrong in setting the new port it'll use the default
-	 * one {@link MinicraftProtocol#PORT}
-	 **/
-
+	 * This specifies a custom port instead of default to server-side using
+	 * --port parameter if something goes wrong in setting the new port
+	 * it'll use the default one {@link MinicraftProtocol#PORT}
+	 */
 	public static int CUSTOM_PORT = MinicraftProtocol.PORT;
 
 	static Display menu = null, newMenu = null; // The current menu you are on.
@@ -108,9 +101,11 @@ public class Game {
 	public static void exitMenu() {
 
 		if (menu == null) {
-			if (debug)
+			if (debug) {
 				System.out.println("Game.exitMenu(): No menu found, returning!");
-			return; // no action required; cannot exit from no menu
+				
+			}
+			return; // No action required; cannot exit from no menu
 		}
 
 		Sound.GUI_back.play();
@@ -158,49 +153,33 @@ public class Game {
 
 	static boolean running = true;
 
+	@SuppressWarnings("unused")
+	private static String errorSplash; // Store the splashes n the crash screen
+
 	// Quit function
 	public static void quit() {
-		if (isConnectedClient())
+		if (isConnectedClient()) {
 			client.endConnection();
-		if (isValidServer())
+			
+		}
+		if (isValidServer()) {
 			server.endConnection();
+			
+		}
 		running = false;
 	}
 
 	// Main functions
 	public static void main(String[] args) {
 
-// System info in debug ----------------------------------------------------------------------------------------------------------------------------
+// Crash window log ------------------------------------------------------------------------------------------------------------------------------
+		
+		// Load the splashes 
+		Game.errorSplash = Splash[random.nextInt(Splash.length)]; 
 
-		if (debug) {
-			System.out.println("Current Operating system");
-			System.out.println("OS: " + System.getProperty("os.name"));
-			System.out.println("OS Version: " + System.getProperty("os.version"));
-			System.out.println("OS Arch: " + System.getProperty("os.arch"));
-			System.out.println("");
-			System.out.println("Java specifications");
-			System.out.println("Version: " + System.getProperty("java.version"));
-			System.out.println("Vendor: " + System.getProperty("java.vendor"));
-			System.out.println("Model: " + System.getProperty("sun.arch.data.model"));
-		}
-
-// Crash window log --------------------------------------------------------------------------------------------------------------------------------		
-
-		Game.errorSplash = Splash[random.nextInt(6)]; // six titles
-
+		// Load the time vars
 		LocalDateTime time = LocalDateTime.now();
-		
-		// JVM Runtime Memory
-		Runtime runtime = Runtime.getRuntime();
-		long maxMemory = runtime.maxMemory();
-		long totalMemory = runtime.totalMemory();
-		long freeMemory = runtime.freeMemory();
-		
-		long l = maxMemory / 1024L / 1024L;
-		long i = totalMemory / 1024L / 1024L;
-		long j = freeMemory / 1024L / 1024L;
-
-		
+	
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
 			throwable.printStackTrace();
 
@@ -211,9 +190,7 @@ public class Game {
 			if(GraphicsEnvironment.isHeadless()) return;
 
 			// Crash log Structure
-			JTextArea CrashDisplay = new JTextArea(
-			// Nothing
-			);
+			JTextArea CrashDisplay = new JTextArea();
 
 			CrashDisplay.setForeground(Color.BLACK);
 			CrashDisplay.setBackground(Color.WHITE);
@@ -221,10 +198,9 @@ public class Game {
 			// Crash message
 			CrashDisplay.setText(
 					
-                " An error occurred while trying to Read the game \n" + 
-                " This can be due to various things (old / corrupted worlds, some game bug or unexpected Java bug, etc.). \n" + 
+                " " + Game.errorSplash + "\n" +
                 " If the problem persists, send a screenshot to the author.\n" + "\n" + 
-                    
+
                 "--- BEGIN ERROR REPORT ---------" + "\n" +
                 "Generated: " + time.toLocalDate() + "\n\n" +		                     
 					
@@ -232,12 +208,12 @@ public class Game {
                 "Details: " + "\n" +
                 "        Aircraft mod Version: " + Game.BUILD + "\n" +
                 "        Minicraft plus base Version: " + Game.VERSION + "\n" +
-		        "        Operting System: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") " + System.getProperty("os.version") + "\n" +
-		        "        Java Version: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor")+ "\n" +
-		        "        Java VM Version: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n" +
-		        "        Memory: " + freeMemory + " bytes (" + j + " MB) / " + totalMemory + " bytes (" + i + " MB) up to " + maxMemory + " bytes (" + l + " MB)" + "\n\n" +
+		        "        Operting System: " + GameInfo.OS_Name + " (" + GameInfo.OS_Arch + ") " + GameInfo.OS_Version + "\n" +
+		        "        Java Version: " + GameInfo.Java_Version + ", " + GameInfo.Java_Vendor + "\n" +
+		        "        Java VM Version: " + GameInfo.JVM_Name + " (" + GameInfo.JVM_Info + "), " + GameInfo.JVM_Vendor + "\n" +
+		        "        Memory: " + GameInfo.Memory_info + "\n\n" +
 		            
-                " ~~ERROR~~ " + "\n" +
+                "~~ERROR~~ " + "\n" +
 					
 			     string.toString() + "\n" +
 			        
@@ -249,52 +225,45 @@ public class Game {
 			JScrollPane errorPane = new JScrollPane(CrashDisplay);
 			errorPane.setSize(600, 400);
 
-			@SuppressWarnings("unused")
-			UIManager UI = new UIManager();
 			UIManager.put("OptionPane.background", Color.white);
 			UIManager.put("Panel.background", Color.white);	 
 
-			//Icon Logo = new ImageIcon("src/resources/logo.png");
-
-			JOptionPane.showMessageDialog(null, errorPane, "Aircraft has crashed!", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showOptionDialog(null, errorPane, "Aircraft has crashed!", JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, args, thread);
 		});
+		
+
+
 
 // Start events ------------------------------------------------------------------------------------------------------------------------------------
 
 		Initializer.parseArgs(args);
-		
 
-		// --------------------------------------------------------------
-		
-		// Day events :,)
-		if (time.getMonth() == Month.DECEMBER) { // Xmax day :)
+		// Initialize game events
+		if (time.getMonth() == Month.DECEMBER) { // Christmas 
 			if (time.getDayOfMonth() == 24) {
-				IS_FestiveDay = true;
+				IS_Christmas = true;
 			}
 		} else {
-			IS_FestiveDay = false;
+			IS_Christmas = false;
 		}
 
-		if (time.getMonth() == Month.OCTOBER) { // Halloween OooooOOOoo!
+		if (time.getMonth() == Month.OCTOBER) { // Halloween
 			if (time.getDayOfMonth() == 31) {
-				IS_SpookyDay = true;
+				IS_Halloween = true;
 			}
 		} else {
-			IS_SpookyDay = false;
+			IS_Halloween = false;
 		}
 
-		if (time.getMonth() == Month.APRIL) { // April Fools :)
+		if (time.getMonth() == Month.APRIL) { // April Fools 
 			if (time.getDayOfMonth() == 1) {
-				IS_JokeDay = true;
+				IS_April_fools = true;
 			}
 		} else {
-			IS_JokeDay = false;
+			IS_April_fools = false;
 		}
 		
-		// --------------------------------------------------------------
-		
-		
-		// Input declaration
+		// Initialize input handler
 		input = new InputHandler(Renderer.canvas);
 
 		// Load events
@@ -304,14 +273,17 @@ public class Game {
 	
 		World.resetGame(); // "half"-starts a new game, to set up initial variables
 		player.eid = 0;
-		new Load(true); // this loads any saved preferences.
+		new Load(true); // This loads any saved preferences.
 
-		if (Network.autoclient)
+		if (Network.autoclient) {
 			setMenu(new MultiplayerDisplay("localhost"));
-		else if (!HAS_GUI)
+			
+		} else if (!HAS_GUI) {
 			Network.startMultiplayerServer();
-		else
-			setMenu(new TitleDisplay()); // sets menu to the title screen.
+			
+		} else {
+			setMenu(new TitleDisplay()); // Sets menu to the title screen.
+		}
 
 // Window events ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -331,8 +303,9 @@ public class Game {
 
 // Exit events -------------------------------------------------------------------------------------------------------------------------------------
 		
-		if (debug)
+		if (debug) {
 			System.out.println("Main game loop ended; Terminating application...");
+		}
 
 		System.exit(0);
 	}

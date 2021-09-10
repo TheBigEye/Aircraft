@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import org.jetbrains.annotations.Nullable;
 
 import minicraft.core.Game;
+import minicraft.core.GameInfo;
 import minicraft.core.Network;
 import minicraft.core.Updater;
 import minicraft.core.World;
@@ -104,6 +105,9 @@ public class Load {
 	
 	private Version worldVer;
 	private boolean hasGlobalPrefs = false;
+	
+	
+	
 	
 	{
 		worldVer = null;
@@ -230,6 +234,7 @@ public class Load {
 	}
 	
 	public static String loadFromFile(String filename, boolean isWorldSave) throws IOException {
+		
 		StringBuilder total = new StringBuilder();
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -833,8 +838,11 @@ if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is m
 		return newEntity;
 	}
 	
+	
+	
 	@Nullable
 	private static Entity getEntity(String string, int moblvl) {
+		
 		switch(string) {
 		
 		    //Load Mob entities
@@ -906,6 +914,9 @@ if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is m
 			
 			default : System.err.println("LOAD ERROR: unknown or outdated entity requested: " + string);
 				return null;
+				
 		}
+		
 	}
+	
 }

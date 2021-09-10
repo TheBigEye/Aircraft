@@ -26,20 +26,24 @@ public class FileHandler extends Game {
 		OS = System.getProperty("os.name").toLowerCase();
 		String local = "playminicraft/mods/Aircraft";
 
-		if (OS.contains("windows")) // windows
+		if (OS.contains("windows")) { // Windows filesystem
 			systemGameDir = System.getenv("APPDATA");
-		else {
+			
+		} else {
 			systemGameDir = System.getProperty("user.home");
-			if (!OS.contains("mac"))
-				local = "." + local; // Linux
+			if (!OS.contains("mac")) { // Linux filesystem
+				local = "." + local; 
+			}
 		}
 
 		localGameDir = "/" + local;
 
-		if (Game.debug)
-			System.out.println("os name: \"" + OS + "\"");
-		if (Game.debug)
-			System.out.println("system game dir: " + systemGameDir);
+		if (Game.debug) {
+			System.out.println("OS name: \"" + OS + "\"");
+		}
+		if (Game.debug) {
+			System.out.println("System game dir: " + systemGameDir);
+		}
 
 	}
 	
@@ -53,8 +57,10 @@ public class FileHandler extends Game {
 	
 	static void determineGameDir(String saveDir) {
 		gameDir = saveDir + localGameDir;
-		if (debug)
+		
+		if (debug) {
 			System.out.println("Determined gameDir: " + gameDir);
+		}
 
 		File testFile = new File(gameDir);
 		testFile.mkdirs();
@@ -81,13 +87,17 @@ public class FileHandler extends Game {
 	}
 
 	private static void deleteFolder(File top) {
-		if (top == null)
+		if (top == null) {
 			return;
+		}
 		if (top.isDirectory()) {
 			File[] subfiles = top.listFiles();
-			if (subfiles != null)
-				for (File subfile : subfiles)
+			
+			if (subfiles != null) {
+				for (File subfile : subfiles) {
 					deleteFolder(subfile);
+				}
+			}
 		}
 		// noinspection ResultOfMethodCallIgnored
 		top.delete();
@@ -101,11 +111,14 @@ public class FileHandler extends Game {
 
 		Files.walkFileTree(origFolder, new FileVisitor<Path>() {
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
+				
 				String newFilename = newFolder.resolve(origFolder.relativize(file)).toString();
+				
 				if (new File(newFilename).exists()) {
-					if (ifExisting == SKIP)
+					if (ifExisting == SKIP) {
 						return FileVisitResult.CONTINUE;
-					else if (ifExisting == RENAME_COPY) {
+						
+					} else if (ifExisting == RENAME_COPY) {
 						newFilename = newFilename.substring(0, newFilename.lastIndexOf("."));
 						do {
 							newFilename += "(Old)";
@@ -116,8 +129,9 @@ public class FileHandler extends Game {
 
 				Path newFile = new File(newFilename).toPath();
 
-				if (Game.debug)
-					System.out.println("visiting file " + file + "; translating to " + newFile);
+				if (Game.debug) {
+					System.out.println("Visiting file " + file + "; translating to " + newFile);
+				}
 
 				try {
 					Files.copy(file, newFile, StandardCopyOption.REPLACE_EXISTING);
@@ -140,8 +154,9 @@ public class FileHandler extends Game {
 			}
 		});
 
-		if (deleteOriginal)
+		if (deleteOriginal) {
 			deleteFolder(origFolder.toFile());
+		}
 	}
 
 }

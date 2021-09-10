@@ -14,11 +14,11 @@ public class PassiveMob extends MobAi {
 	
 	/**
 	 * Constructor for a non-hostile (passive) mob.
-	 * healthFactor = 3.
+	 * healthFactor = 4.
 	 * @param sprites The mob's sprites.
 	 */
 	public PassiveMob(MobSprite[][] sprites) {
-		this(sprites, 3);
+		this(sprites, 4);
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class PassiveMob extends MobAi {
 		
 		int r = (Game.isMode("score") ? 22 : 15) + (Updater.getTime() == Updater.Time.Night ? 0 : 5); // get no-mob radius by
 		
-		if(!MobAi.checkStartPos(level, x, y, 80, r))
+		if (!MobAi.checkStartPos(level, x, y, 80, r))
 			return false;
 		
 		Tile tile = level.getTile(x >> 4, y >> 4);
