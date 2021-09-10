@@ -81,6 +81,7 @@ import minicraft.entity.particle.SplashParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
 import minicraft.item.ArmorItem;
+import minicraft.item.BookItem;
 import minicraft.item.Inventory;
 import minicraft.item.Item;
 import minicraft.item.Items;
@@ -608,15 +609,51 @@ public class Load {
 
 				int count = Integer.parseInt(curData[1]);
 
-				if (newItem instanceof StackableItem) {
-					((StackableItem) newItem).count = count;
+				if(newItem instanceof StackableItem) {
+					((StackableItem)newItem).count = count;
 					inventory.add(newItem);
-				} else inventory.add(newItem, count);
+				} else
+					inventory.add(newItem, count);
 			} else {
 				Item toAdd = Items.get(item);
-				inventory.add(toAdd);
+				if (toAdd instanceof BookItem) {
+					if (item.contains(";")) {
+						try {
+							// tmpData is used so that loadBook (or more accurately, loadFromFile) doesn't overwrite the other items in the inventory
+							ArrayList<String> tmpData = new ArrayList<>(data);
+							String text = loadBook("BookData", Integer.parseInt(item.split(";")[1]));
+							data = tmpData;
+
+							// find our "fake" returns and replace them with "true" ones for the in-game book text
+							text = text.replace("\\n", "\n");
+
+							((BookItem) toAdd).setText(text);
+							inventory.add(toAdd);
+						} catch (Exception e) {
+							// if the data doesn't exist or the index isn't an integer
+							System.out.println("WARNING: Bad data for book");
+						}
+					} else {
+						// it's not editable, so we can just add it
+						inventory.add(toAdd);
+					}
+				} else {
+					inventory.add(toAdd);
+				}
 			}
 		}
+	}
+	
+	private String loadBook(String filename, int idx) {
+		String file;
+		try {
+			file = loadFromFile(location + filename + extension, false);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
+		}
+		// split the file at returns and get the right one
+		return file.split("\n")[idx];
 	}
 	
 	private void loadEntities(String filename) {
@@ -642,18 +679,16 @@ public class Load {
 		if(isLocalSave) System.out.println("Warning: Assuming version of save file is current while loading entity: " + entityData);
 		return Load.loadEntity(entityData, Game.VERSION, isLocalSave);
 	}
-	@SuppressWarnings({ "unused", "rawtypes" })
+
 	@Nullable
 	public static Entity loadEntity(String entityData, Version worldVer, boolean isLocalSave) {
 		entityData = entityData.trim();
 		if (entityData.length() == 0) return null;
-		
-		List<String> info = new ArrayList<>(); // this gets everything inside the "[...]" after the entity name.
-		//System.out.println("Loading entity:" + entityData);
-		String[] stuff = entityData.substring(entityData.indexOf("[") + 1, entityData.indexOf("]")).split(":");
-		info.addAll(Arrays.asList(stuff));
-		
-		String entityName = entityData.substring(0, entityData.indexOf("[")); // this gets the text before "[", which is the entity name.
+
+		String[] stuff = entityData.substring(entityData.indexOf("[") + 1, entityData.indexOf("]")).split(":"); // This gets everything inside the "[...]" after the entity name.
+		List<String> info = new ArrayList<>(Arrays.asList(stuff));
+
+		String entityName = entityData.substring(0, entityData.indexOf("[")); // This gets the text before "[", which is the entity name.
 		
 		if (entityName.equals("Player") && Game.debug && Game.isValidClient())
 			System.out.println("CLIENT WARNING: Loading regular player: " + entityData);
@@ -867,7 +902,7 @@ if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is m
 			case "Knight": return new Knight(moblvl);
 			case "OldGolem": return new OldGolem(moblvl);
 			case "Snake": return new Snake(moblvl);
-			case "Cthulhu": return new EyeQueen(moblvl);
+			case "Cthulhu": return new EyeQueen(moblvl); // Check...
 			case "EyeQueen": return new EyeQueen(moblvl);
 			case "EyeQueenPhase2": return new EyeQueenPhase2(moblvl);
 			case "EyeQueenPhase3": return new EyeQueenPhase3(moblvl);

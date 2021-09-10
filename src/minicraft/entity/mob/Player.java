@@ -1038,55 +1038,66 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			curSprite.renderRow(0, screen, xo, yo, -1, shirtColor);
 		}
 		
+
 		// Renders slashes:
-		
 		if (attackTime > 0) {
 			switch (attackDir) {
-			case UP: // If currently attacking upwards...
-				screen.render(xo + 0, yo - 4, 3 + 2 * 32, 0, 3); // Render left half-slash
-				screen.render(xo + 8, yo - 4, 3 + 2 * 32, 1, 3); // Render right half-slash (mirror of left).
-				if (attackItem != null && !(attackItem instanceof PowerGloveItem)) { // If the player had an item when they last attacked...
-					attackItem.sprite.render(screen, xo + 4, yo - 4, 1); // Then render the icon of the item, mirrored
-				}
-				break;
-			case LEFT: // Attacking to the left... (Same as above)
-				screen.render(xo - 4, yo, 4 + 2 * 32, 1, 3);
-				screen.render(xo - 4, yo + 8, 4 + 2 * 32, 3, 3);
-				if (attackItem != null && !(attackItem instanceof PowerGloveItem)) {
-					attackItem.sprite.render(screen, xo - 4, yo + 4, 1);
-				}
-				break;
-			case RIGHT: // Attacking to the right (Same as above)
-				screen.render(xo + 8 + 4, yo, 4 + 2 * 32, 0, 3);
-				screen.render(xo + 8 + 4, yo + 8, 4 + 2 * 32, 2, 3);
-				if (attackItem != null && !(attackItem instanceof PowerGloveItem)) {
-					attackItem.sprite.render(screen, xo + 8 + 4, yo + 4);
-				}
-				break;
-			case DOWN: // Attacking downwards (Same as above)
-				screen.render(xo + 0, yo + 8 + 4, 3 + 2 * 32, 2, 3);
-				screen.render(xo + 8, yo + 8 + 4, 3 + 2 * 32, 3, 3);
-				if (attackItem != null && !(attackItem instanceof PowerGloveItem)) {
-					attackItem.sprite.render(screen, xo + 4, yo + 8 + 4);
-				}
-				break;
+			
+			    case UP:  // if currently attacking upwards...
+			    	screen.render(xo + 0, yo - 4, 3 + 2 * 32, 0, 3); //render left half-slash
+			    	screen.render(xo + 8, yo - 4, 3 + 2 * 32, 1, 3); //render right half-slash (mirror of left).
+			    	if (attackItem != null) { // if the player had an item when they last attacked...
+			    		attackItem.sprite.render(screen, xo + 4, yo - 4, 1); // then render the icon of the item, mirrored
+			    	}
+			    	break;
+			    	
+			    case LEFT:  // Attacking to the left... (Same as above)
+			    	screen.render(xo - 4, yo, 4 + 2 * 32, 1, 3);
+			    	screen.render(xo - 4, yo + 8, 4 + 2 * 32, 3, 3);
+			    	if (attackItem != null) {
+			    		attackItem.sprite.render(screen, xo - 4, yo + 4, 1);
+			    	}
+			    	break;
+			    	
+			    case RIGHT:  // Attacking to the right (Same as above)
+			    	screen.render(xo + 8 + 4, yo, 4 + 2 * 32, 0, 3);
+			    	screen.render(xo + 8 + 4, yo + 8, 4 + 2 * 32, 2, 3);
+			    	if (attackItem != null) {
+			    		attackItem.sprite.render(screen, xo + 8 + 4, yo + 4);
+			    	}
+			    	break;
+			
+			    case DOWN:  // Attacking downwards (Same as above)
+			    	screen.render(xo + 0, yo + 8 + 4, 3 + 2 * 32, 2, 3);
+			    	screen.render(xo + 8, yo + 8 + 4, 3 + 2 * 32, 3, 3);
+			    	if (attackItem != null) {
+			    		attackItem.sprite.render(screen, xo + 4, yo + 8 + 4);
+			    	}
+			    	break;
+			    	
+				case NONE:
+					break;
 			}
 		}
-
+		
 		if (isFishing) {
 			switch (dir) {
 			case UP:
 				screen.render(xo + 4, yo - 4, fishingLevel + 11 * 32, 1);
 				break;
+				
 			case LEFT:
 				screen.render(xo - 4, yo + 4, fishingLevel + 11 * 32, 1);
 				break;
+				
 			case RIGHT:
 				screen.render(xo + 8 + 4, yo + 4, fishingLevel + 11 * 32, 0);
 				break;
+				
 			case DOWN:
 				screen.render(xo + 4, yo + 8 + 4, fishingLevel + 11 * 32, 0);
 				break;
+				
 			case NONE:
 				break;
 			}

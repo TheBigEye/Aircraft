@@ -136,6 +136,7 @@ public class Game {
 
 	public static MinicraftServer server = null;
 
+
 	/** Checks if you are a host and the game is a server */
 	public static boolean isValidServer() {
 		return ISONLINE && ISHOST && server != null;

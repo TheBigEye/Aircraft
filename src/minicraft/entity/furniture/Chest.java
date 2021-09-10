@@ -3,7 +3,10 @@ package minicraft.entity.furniture;
 import java.io.IOException;
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.Game;
+import minicraft.entity.Direction;
 import minicraft.entity.ItemHolder;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Sprite;
@@ -62,13 +65,6 @@ public class Chest extends Furniture implements ItemHolder {
 	}
 
 	@Override
-	public void take(Player player) {
-		if (inventory.invSize() == 0)
-			super.take(player);
-	}
-	
-	/*
-	@Override
 	public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
 		if (Game.isMode("creative")) { // Can pickup in Creative
 			return super.interact(player, item, attackDir);
@@ -79,7 +75,6 @@ public class Chest extends Furniture implements ItemHolder {
 		}
 		return false;
 	}
-	*/
 
 	@Override
 	protected String getUpdateString() {

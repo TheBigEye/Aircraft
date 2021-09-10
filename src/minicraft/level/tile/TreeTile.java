@@ -79,8 +79,8 @@ public class TreeTile extends Tile {
 
 	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-		if (Game.isMode("creative"))
-			return false; // go directly to hurt method
+		if (Game.isMode("Creative"))
+			return false; // Go directly to hurt method
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Axe) {
@@ -107,9 +107,9 @@ public class TreeTile extends Tile {
 
 		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
 		if (damage >= treeHealth) {
-			level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Wood"));
-			level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Acorn"));
-			level.setTile(x, y, Tiles.get("grass"));
+			level.dropItem(x * 16 + 8, y * 16 + 8, 1, 3, Items.get("Wood"));
+			level.dropItem(x * 16 + 8, y * 16 + 8, 0, 2, Items.get("Acorn"));
+			level.setTile(x, y, Tiles.get("Grass"));
 		} else {
 			level.setData(x, y, damage);
 		}
