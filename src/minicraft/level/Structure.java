@@ -73,7 +73,9 @@ public class Structure {
         }
 
         static class TilePoint {
-                int x, y;
+                int x;
+                int y;
+                
                 Tile t;
 
                 public TilePoint(int x, int y, Tile tile) {

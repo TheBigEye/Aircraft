@@ -88,7 +88,8 @@ public class RemotePlayer extends Player implements ClientTickable {
 	}
 	
 	public boolean move(int xa, int ya) {
-		int oldxt = x >> 4, oldyt = y >> 4;
+		int oldxt = x >> 4;
+		int oldyt = y >> 4;
 		
 		boolean moved = super.move(xa, ya);
 		

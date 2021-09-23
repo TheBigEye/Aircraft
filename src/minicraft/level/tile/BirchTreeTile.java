@@ -24,6 +24,7 @@ public class BirchTreeTile extends Tile {
 		connectsToGrass = true;
 	}
 
+	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		Tiles.get("grass").render(screen, level, x, y);
 
@@ -58,6 +59,7 @@ public class BirchTreeTile extends Tile {
 		}
 	}
 
+	@Override
 	public boolean tick(Level level, int xt, int yt) {
 		int damage = level.getData(xt, yt);
 		if (damage > 0) {
@@ -67,6 +69,7 @@ public class BirchTreeTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public boolean mayPass(Level level, int x, int y, Entity e) {
 		return false;
 	}
@@ -93,6 +96,7 @@ public class BirchTreeTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public void hurt(Level level, int x, int y, int dmg) {
 		if (random.nextInt(100) == 0)
 			level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Apple"));

@@ -75,7 +75,7 @@ public class TitleDisplay extends Display {
 
         if (random.nextInt(2) == 0) {
             Sound.Intro.play();
-            
+
         }
         if (random.nextInt(2) == 1) {
             Sound.Intro2.play();
@@ -174,7 +174,7 @@ public class TitleDisplay extends Display {
 
         for (int y = 0; y < hh; y++) {
             for (int x = 0; x < ww; x++) {
-                screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x - 8 , y , 0, 5));
+                screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x - 8, y, 0, 5));
             }
         }
 
@@ -223,7 +223,7 @@ public class TitleDisplay extends Display {
          */
         Font.draw("Mod by TheBigEye", screen, 300, 280, Color.GRAY);
     }
-    
+
     private static final String[] splashes = {
         "Happy birthday Minicraft!",
         "Happy XMAS!",
@@ -242,11 +242,11 @@ public class TitleDisplay extends Display {
         "Also play MiniCrate!",
         "Also play MiniCraft Mob Overload!",
         "Also play Minitale!, oh right :(",
-        
+
         "Playing " + Game.BUILD + ", nice!",
         "Based in Minicraft+, nice!",
         "Updates always!, nice?",
-        
+
         // Now with...
         "Now with better fishing!",
         "Now with better Weapons!",
@@ -255,8 +255,8 @@ public class TitleDisplay extends Display {
         "Now with better dungeons!",
         "Now with better sounds!",
         "Air Wizard now with phases!",
-        
-        
+
+
         "Only on PlayMinicraft.com!",
         "Playminicraft.com is the bomb!",
         "@MinicraftPlus on Twitter",
@@ -265,7 +265,6 @@ public class TitleDisplay extends Display {
         "The Wiki is weak! Help it!",
         "Great little community!",
 
-        
         "Notch is Awesome!",
         "Dillyg10 is cool as Ice!",
         "Shylor is the man!",
@@ -274,7 +273,7 @@ public class TitleDisplay extends Display {
         "The eye and Cake rain!",
         "ASCII",
 
-        "Nobody should read this! #404",     
+        "Nobody should read this! #404",
         "You should read Antidious Venomi!",
         "Oh Hi Mark",
         "Use the force!",
@@ -283,7 +282,6 @@ public class TitleDisplay extends Display {
         "Forty-Two!",
         "A hostile paradise",
 
-        
         // kill
         "Kill Creeper, get Gunpowder!",
         "Kill Cow, get Beef!",
@@ -305,11 +303,11 @@ public class TitleDisplay extends Display {
         "Test == InDev!",
         "Story? yes!",
         "Mod on phase B",
-        
-		"Axes: good against plants!",
-		"Picks: good against rocks!",
-		"Shovels: good against dirt!",
-		"Swords: good against mobs!",
+
+        "Axes: good against plants!",
+        "Picks: good against rocks!",
+        "Shovels: good against dirt!",
+        "Swords: good against mobs!",
 
         // What's that?
         "Infinite terrain? What's that?",
@@ -357,7 +355,7 @@ public class TitleDisplay extends Display {
         //"Nether Now Included?",
 
         "Shhh!,secret dimension!",
-        
+
         // Worlds
         "Bigger Worlds!",
         "World types!",
@@ -375,14 +373,14 @@ public class TitleDisplay extends Display {
         "Cakes is an idea!",
 
         "Texture packs!",
-        
+
         "Creeper, aw man",
         "So we back in the mine,",
         "pickaxe swinging from side to side",
         "In search of Gems!",
         "Life itself suspended by a thread",
         "saying ay-oh, that creeper's KO'd!",
-        
+
         "Gimmie a bucket!",
         "Farming with water!",
         "Press \"R\"!",
@@ -390,20 +388,20 @@ public class TitleDisplay extends Display {
         "I see a dreamer!",
         "Potions ftw!",
         "Beds ftw!",
-        
+
         "Defeat the Air Wizard!",
         "Defeat the Eye queen!",
         "Defeat the Keeper!",
         "Defeat me...",
-        
+
         "Conquer the Dungeon!",
         "One down, one to go...",
         "Loom + Wool = String!",
         "String + Wood = Rod!",
         "Sand + Gunpowder = TNT!",
-        
+
         "Try Eyenglish!",
-        
+
         "Sleep at Night!",
         "Farm at Day!",
         "Explanation Mark!",
@@ -436,10 +434,10 @@ public class TitleDisplay extends Display {
         "001100010011000000110001!",
         "011010000110110101101101?",
         "...zzz...",
-        
+
         // Tributes
         "Rick May, 1940 - 2020",
-        
+
         "Something cool is coming ;)",
     };
 }

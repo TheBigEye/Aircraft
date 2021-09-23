@@ -24,12 +24,14 @@ public class SaplingTile extends Tile {
 		maySpawn = true;
 	}
 
+	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		onType.render(screen, level, x, y);
 
 		sprite.render(screen, x * 16, y * 16);
 	}
 
+	@Override
 	public boolean tick(Level level, int x, int y) {
 		int age = level.getData(x, y) + 1;
 		if (age > 100) {
@@ -40,6 +42,7 @@ public class SaplingTile extends Tile {
 		return true;
 	}
 
+	@Override
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		level.setTile(x, y, onType);
 		Sound.Tile_generic_hurt.play();

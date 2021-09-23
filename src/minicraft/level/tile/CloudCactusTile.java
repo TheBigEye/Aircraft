@@ -25,15 +25,18 @@ public class CloudCactusTile extends Tile {
 		super(name, sprite);
 	}
 
+	@Override
 	public boolean mayPass(Level level, int x, int y, Entity e) {
 		return e instanceof AirWizard;
 	}
 
+	@Override
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		hurt(level, x, y, 0);
 		return true;
 	}
 
+	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (Game.isMode("creative"))
 			return false; // go directly to hurt method
@@ -49,6 +52,7 @@ public class CloudCactusTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public void hurt(Level level, int x, int y, int dmg) {
 		int damage = level.getData(x, y) + dmg;
 		int health = 10;
@@ -71,6 +75,7 @@ public class CloudCactusTile extends Tile {
 		sprite.render(screen, x << 4, y << 4);
 	}
 
+	@Override
 	public void bumpedInto(Level level, int x, int y, Entity entity) {
 		if (entity instanceof AirWizard)
 			return;

@@ -35,20 +35,24 @@ public class RockTile extends Tile {
 		csprite = sprite;
 	}
 
+	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		sprite.sparse.color = DirtTile.dCol(level.depth);
 		sprite.render(screen, level, x, y);
 	}
 
+	@Override
 	public boolean mayPass(Level level, int x, int y, Entity e) {
 		return false;
 	}
 
+	@Override
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		hurt(level, x, y, dmg);
 		return true;
 	}
 
+	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		
 		// creative mode can just act like survival here
@@ -65,6 +69,7 @@ public class RockTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public void hurt(Level level, int x, int y, int dmg) {
 		damage = level.getData(x, y) + dmg;
 		
@@ -102,6 +107,7 @@ public class RockTile extends Tile {
 		}
 	}
 
+	@Override
 	public boolean tick(Level level, int xt, int yt) {
 		damage = level.getData(xt, yt);
 		if (damage > 0) {

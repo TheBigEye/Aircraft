@@ -16,7 +16,10 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class SandTile extends Tile {
-	static Sprite steppedOn, normal = new Sprite(9, 6, 2, 2, 1);
+	
+	static Sprite steppedOn;
+	static Sprite normal = new Sprite(9, 6, 2, 2, 1);
+	
 	static {
 		Sprite.Px[][] pixels = new Sprite.Px[2][2];
 		pixels[0][0] = new Sprite.Px(9, 8, 0, 1);
@@ -27,11 +30,14 @@ public class SandTile extends Tile {
 	}
 
 	private ConnectorSprite sprite = new ConnectorSprite(SandTile.class, new Sprite(6, 6, 3, 3, 1, 3), normal) {
+		
+		@Override
 		public boolean connectsTo(Tile tile, boolean isSide) {
 			if (!isSide)
 				return true;
 			return tile.connectsToSand;
 		}
+		
 	};
 
 	protected SandTile(String name) {
@@ -52,6 +58,7 @@ public class SandTile extends Tile {
 		}
 	}
 	
+	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		boolean steppedOn = level.getData(x, y) > 0;
 
@@ -65,6 +72,7 @@ public class SandTile extends Tile {
 		csprite.render(screen, level, x, y);
 	}
 
+	@Override
 	public boolean tick(Level level, int x, int y) {
 		int damage = level.getData(x, y);
 		if (damage > 0) {
@@ -74,12 +82,14 @@ public class SandTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public void steppedOn(Level level, int x, int y, Entity entity) {
 		if (entity instanceof Mob) {
 			level.setData(x, y, 10);
 		}
 	}
 
+	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;

@@ -51,11 +51,13 @@ public class TorchTile extends Tile {
 		this.connectsToFluid = onType.connectsToFluid;
 	}
 
+    @Override
 	public void render(Screen screen, Level level, int x, int y) {
 		onType.render(screen, level, x, y);
 		sprite.render(screen, x * 16 + 4, y * 16 + 4);
 	}
 
+    @Override
 	public boolean tick(Level level, int x, int y) {
 
 		if (random.nextInt(5) == 1) {
@@ -71,10 +73,12 @@ public class TorchTile extends Tile {
 
 	}
 
+    @Override
 	public int getLightRadius(Level level, int x, int y) {
 		return LIGHT;
 	}
 
+    @Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (item instanceof PowerGloveItem) {
 			level.setTile(xt, yt, this.onType);

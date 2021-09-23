@@ -52,6 +52,7 @@ public class Spark3 extends Entity {
 	}
 	
 	/** Can this entity block you? Nope. */
+	@Override
 	public boolean isSolid() {
 		return false;
 	}

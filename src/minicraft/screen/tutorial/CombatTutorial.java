@@ -38,7 +38,7 @@ public class CombatTutorial extends Display {
 		);
 	}
 
-
+	@Override
 	public void render(Screen screen) {
 		super.render(screen);	
 		

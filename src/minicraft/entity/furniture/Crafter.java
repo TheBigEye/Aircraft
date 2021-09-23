@@ -25,7 +25,8 @@ public class Crafter extends Furniture {
 
         public ArrayList < Recipe > recipes;
         protected Sprite sprite;
-        protected int xr, yr;
+        protected int xr;
+        protected int yr;
         protected boolean melt;
 
         Type(Sprite sprite, int xr, int yr, ArrayList < Recipe > list, boolean melt) {
@@ -51,6 +52,7 @@ public class Crafter extends Furniture {
         this.type = type;
     }
 
+    @Override
     public boolean use(Player player) {
         if (type.melt) {
             Game.setMenu(new MeltingDisplay(type, player));

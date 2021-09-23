@@ -413,7 +413,8 @@ public class Menu {
 		private float padding = 1;
 		
 		@NotNull private RelPos titlePos = RelPos.TOP;
-		private boolean fullTitleColor = false, setTitleColor = false;
+		private boolean fullTitleColor = false;
+		private boolean setTitleColor = false;
 		private int titleCol = Color.YELLOW;
 		
 		@NotNull private Point anchor = center;

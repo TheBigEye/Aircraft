@@ -29,7 +29,7 @@ public class TileItem extends StackableItem {
 		items.add(new TileItem("Dirt", (new Sprite(0, 0, 0)), "dirt", "hole", "water", "lava"));
 		items.add(new TileItem("Sky dirt", (new Sprite(0, 44, 0)), "Sky dirt", "Cloud"));
 		items.add(new TileItem("Natural Rock", (new Sprite(2, 0, 0)), "rock", "hole", "dirt", "sand", "path", "grass"));
-		items.add(new TileItem("Natural Hard Rock", (new Sprite(2, 0, 0)), "Hard rock", "hole", "dirt", "sand", "path", "grass"));
+		// items.add(new TileItem("Natural Hard Rock", (new Sprite(2, 0, 0)), "Hard rock", "hole", "dirt", "sand", "path", "grass"));
 
 		items.add(new TileItem("Plank", (new Sprite(0, 5, 0)), "Wood Planks", "hole", "water", "cloud", "lava"));
 		items.add(new TileItem("Plank Wall", (new Sprite(1, 5, 0)), "Wood Wall", "Wood Planks"));
@@ -84,8 +84,6 @@ public class TileItem extends StackableItem {
 		items.add(new TileItem("Bone", (new Sprite(3, 3, 0)), "tree", "tree Sapling"));
 		items.add(new TileItem("Bone powder", (new Sprite(0, 22, 0)), "lawn", "grass"));
 		items.add(new TileItem("Cloud", (new Sprite(4, 3, 0)), "cloud", "Infinite Fall", "hole"));
-		
-
 
 		return items;
 	}

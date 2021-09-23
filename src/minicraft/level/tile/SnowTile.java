@@ -15,7 +15,10 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class SnowTile extends Tile {
-	static Sprite steppedOn, normal = new Sprite(3, 10, 2, 2, 1);
+	
+	static Sprite steppedOn;
+	static Sprite normal = new Sprite(3, 10, 2, 2, 1);
+	
 	static {
 		Sprite.Px[][] pixels = new Sprite.Px[2][2];
 		pixels[0][0] = new Sprite.Px(3, 12, 0, 1); // steps in snow
@@ -26,11 +29,14 @@ public class SnowTile extends Tile {
 	}
 
 	private ConnectorSprite sprite = new ConnectorSprite(SnowTile.class, new Sprite(0, 10, 3, 3, 1, 3), normal) {
+		
+	    @Override
 		public boolean connectsTo(Tile tile, boolean isSide) {
 			if (!isSide)
 				return true;
 			return tile.connectsToSnow;
 		}
+		
 	};
 
 	protected SnowTile(String name) {
@@ -40,6 +46,7 @@ public class SnowTile extends Tile {
 		maySpawn = true;
 	}
 
+    @Override
 	public void render(Screen screen, Level level, int x, int y) {
 		boolean steppedOn = level.getData(x, y) > 0;
 
@@ -54,6 +61,7 @@ public class SnowTile extends Tile {
 
 	}
 
+    @Override
 	public boolean tick(Level level, int x, int y) {
 		int damage = level.getData(x, y);
 		if (damage > 0) {
@@ -63,6 +71,7 @@ public class SnowTile extends Tile {
 		return false;
 	}
 
+    @Override
 	public void steppedOn(Level level, int x, int y, Entity entity) {
 		if (entity instanceof Mob) {
 			level.setData(x, y, 10);
@@ -83,6 +92,7 @@ public class SnowTile extends Tile {
 		}
 	}
 
+    @Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;

@@ -47,6 +47,7 @@ public class FloorTile extends Tile {
 		super.sprite = sprite;
 	}
 	
+	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
@@ -81,6 +82,7 @@ public class FloorTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public boolean mayPass(Level level, int x, int y, Entity e) {
 		return true;
 	}

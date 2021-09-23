@@ -90,13 +90,14 @@ public class Level {
 	
 	private static final int MOB_SPAWN_FACTOR = 100; // the chance of a mob actually trying to spawn when trySpawn is called equals: mobCount / maxMobCount * MOB_SPAWN_FACTOR. so, it basically equals the chance, 1/number, of a mob spawning when the mob cap is reached. I hope that makes sense...
 	
-	public int w, h; // Width and height of the level
+	public int w;
+	public int h;
 	private long seed; // The used seed that was used to generate the world
 	
 	public byte[] tiles; // An array of all the tiles in the world.
 	public byte[] data; // An array of the data of the tiles in the world. // ?
 	
-	private int Random_Music;
+	private int randomMusic;
 	
 	public final int depth; // Depth level of the level
 	public int monsterDensity = 8; // Affects the number of monsters that are on the level, bigger the number the less monsters spawn.
@@ -433,10 +434,10 @@ public class Level {
 		// this play random music in game
 		if (Settings.get("ambient").equals("Nice")) {
 			
-	        Random_Music++;
+	        randomMusic++;
 	        
-	        if (Random_Music >= 16000) {
-	        	Random_Music = 0;
+	        if (randomMusic >= 16000) {
+	        	randomMusic = 0;
 	        
 				// Surface
 				if (random.nextInt(3) == 0 && depth == 0) { // Surface only
@@ -492,8 +493,9 @@ public class Level {
 		}
 
 		if (Settings.get("ambient").equals("Normal")) {
+			/*
 			if (random.nextInt(256000) == 1) {
-			}
+			}*/
 		}
 
 		if (Settings.get("ambient").equals("Scary")) {
@@ -639,9 +641,14 @@ public class Level {
 	}
 
 	public ItemEntity dropItem(int x, int y, Item i) {
-		if (Game.isValidClient())
+		
+		if (Game.isValidClient()) {
 			System.err.println("dropping item on client: " + i);
-		int ranx, rany;
+		}
+		
+		int ranx;
+		int rany;
+		
 		do {
 			ranx = x + random.nextInt(11) - 5;
 			rany = y + random.nextInt(11) - 5;
@@ -807,7 +814,10 @@ public class Level {
 
 		boolean spawned = false;
 		for (int i = 0; i < 30 && !spawned; i++) {
-			int minLevel = 1, maxLevel = 1;
+			
+			int minLevel = 1;
+			int maxLevel = 1;
+			
 			if (depth < 0) {
 				maxLevel = (-depth) + ((Math.random() > 0.75 && -depth != 4) ? 1 : 0);
 			}
@@ -817,19 +827,21 @@ public class Level {
 
 			int lvl = random.nextInt(maxLevel - minLevel + 1) + minLevel;
 			int rnd = random.nextInt(100);
-			int nx = random.nextInt(w) * 16 + 8, ny = random.nextInt(h) * 16 + 8;
+			int nx = random.nextInt(w) * 16 + 8;
+			int ny = random.nextInt(h) * 16 + 8;
 			
 			//System.out.println("trySpawn on level " + depth + " of lvl " + lvl + " mob w/ rand " + rnd + " at tile " + nx + "," + ny);
 			
 			// spawns the enemy mobs; first part prevents enemy mob spawn on surface on first day, more or less.
-			if (Settings.get("diff").equals("Peaceful") == false) {
+			if (!Settings.get("diff").equals("Peaceful")) {
 			if ((Updater.getTime() == Updater.Time.Night || depth != 0) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
-				if(depth != -4) { // normal mobs
+				if (depth != -4) { // normal mobs
 					if (rnd <= 40) add((new Slime(lvl)), nx, ny);
 					else if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
 					else if (rnd >= 85) add((new OldGolem(lvl)), nx, ny);
 					else if (rnd >= 85) add((new Skeleton(lvl)), nx, ny);
 					else add((new Creeper(lvl)), nx, ny);
+					
 				} else { // special dungeon mobs
 					if (rnd <= 40) add((new Snake(lvl)), nx, ny);
 					else if (rnd <= 75) add((new Knight(lvl)), nx, ny);
@@ -840,67 +852,108 @@ public class Level {
 				spawned = true;
 				
 			}
-			}else {
+			} else {
 				spawned = false;
 			}
 			
-			if(depth == 0 && PassiveMob.checkStartPos(this, nx, ny)) {
-				// spawns the friendly mobs.
-				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new Cow()), nx, ny);
-				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new Chicken()), nx, ny);
-				else if (rnd >= 68) add((new Pig()), nx, ny);
-				else add((new Sheep()), nx, ny);
+			if (depth == 0 && PassiveMob.checkStartPos(this, nx, ny)) {
+				// Spawns the friendly mobs.
+				if (rnd <= (Updater.getTime() == Updater.Time.Night?22:33)) {
+					add((new Cow()), nx, ny);
+				}
+				if (rnd <= (Updater.getTime() == Updater.Time.Night?22:33)) {
+					add((new Chicken()), nx, ny);
+					
+				} else if (rnd >= 68) {
+					add((new Pig()), nx, ny);
+					
+				} else {
+					add((new Sheep()), nx, ny);
+				}
 				
 				spawned = true;
 			}
 			
-			if(depth == 0 && VillagerMob.checkStartPos(this, nx, ny)) {
-				// spawns the villagers.
-				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new Librarian()), nx, ny);
-				else if (rnd >= 68) add((new Librarian()), nx, ny);
-				else add((new Librarian()), nx, ny);
-				if (rnd <= 75) add((new Librarian()), nx, ny);
-				
-				spawned = true;
-			}
-			if(depth == 0 && VillagerMob.checkStartPos(this, nx, ny)) {
-				// spawns the villagers.
-				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new Cleric()), nx, ny);
-				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new Cleric()), nx, ny);
-				else if (rnd >= 34) add((new Cleric()), nx, ny);
-				else add((new Cleric()), nx, ny);
-				
-				spawned = true;
-			
-			}
-			
-			
-			if(depth == 0 && DefenderMob.checkStartPos(this, nx, ny)) {
-				// spawns the villagers.
-				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new Golem()), nx, ny);
-				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new Golem()), nx, ny);
-				else if (rnd >= 34) add((new Golem()), nx, ny);
-				else add((new Golem()), nx, ny);
-				
-				spawned = true;
-			
-			}
-			
-			
-			if(depth == 0 && FrostMob.checkStartPos(this, nx, ny)) {
-				// spawns the villagers.
-				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new GuiMan()), nx, ny);
-				else add((new GuiMan()), nx, ny);
-				if (rnd <= 75) add((new Goat()), nx, ny);
+			if (depth == 0 && VillagerMob.checkStartPos(this, nx, ny)) {
+				// Spawns the villagers.
+				if (rnd <= (Updater.getTime() == Updater.Time.Night?22:33)) {
+					add((new Librarian()), nx, ny);
+					
+				} else if (rnd >= 68) {
+					add((new Librarian()), nx, ny);
+					
+				} else {
+					add((new Librarian()), nx, ny);
+				}
+				if (rnd <= 75) {
+					add((new Librarian()), nx, ny);
+				}
 				
 				spawned = true;
 			}
 			
-			if(depth == 1 && SkyMob.checkStartPos(this, nx, ny)) {
-				// spawns the villagers.
-				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) add((new Phyg()), nx, ny);
-				else add((new Sheepuff()), nx, ny);
-				if (rnd <= 75) add((new Phyg()), nx, ny);
+			if (depth == 0 && VillagerMob.checkStartPos(this, nx, ny)) {
+				// Spawns the villagers.
+				if (rnd <= (Updater.getTime() == Updater.Time.Night?22:33)) {
+					add((new Cleric()), nx, ny);
+				}
+				if (rnd <= (Updater.getTime() == Updater.Time.Night?22:33)) {
+					add((new Cleric()), nx, ny);
+					
+				} else if (rnd >= 34) {
+					add((new Cleric()), nx, ny);
+					
+				} else {
+					add((new Cleric()), nx, ny);
+				}
+				
+				spawned = true;
+			
+			}
+					
+			if (depth == 0 && DefenderMob.checkStartPos(this, nx, ny)) {
+				// Spawns the golems.
+				if (rnd <= (Updater.getTime() == Updater.Time.Night?22:33)) {
+					add((new Golem()), nx, ny);
+				}
+				if (rnd <= (Updater.getTime() == Updater.Time.Night?22:33)) {
+					add((new Golem()), nx, ny);
+					
+				} else if (rnd >= 34) {
+					add((new Golem()), nx, ny);
+					
+				} else {
+					add((new Golem()), nx, ny);
+				}
+				
+				spawned = true;
+			
+			}
+			
+			if (depth == 0 && FrostMob.checkStartPos(this, nx, ny)) {
+				// Spawns the villagers.
+				if (rnd <= (Updater.getTime() == Updater.Time.Night?22:33)) {
+					add((new GuiMan()), nx, ny);
+				} else {
+					add((new GuiMan()), nx, ny);
+				}
+				if (rnd <= 75) {
+					add((new Goat()), nx, ny);
+				}
+				
+				spawned = true;
+			}
+			
+			if (depth == 1 && SkyMob.checkStartPos(this, nx, ny)) {
+				// Spawns the villagers.
+				if (rnd <= (Updater.getTime()==Updater.Time.Night?22:33)) {
+					add((new Phyg()), nx, ny);
+				} else {
+					add((new Sheepuff()), nx, ny);
+				}
+				if (rnd <= 75) {
+					add((new Phyg()), nx, ny);
+				}
 				
 				spawned = true;
 			}

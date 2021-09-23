@@ -22,8 +22,9 @@ public class SkyLawnTile extends Tile {
 		maySpawn = true;
 	}
 
+	@Override
 	public boolean tick(Level level, int xt, int yt) {
-		// TODO revise this method.
+		
 		if (random.nextInt(30) != 0) return false;
 
 		int xn = xt;
@@ -38,6 +39,7 @@ public class SkyLawnTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		Tiles.get("sky grass").render(screen, level, x, y);
 
@@ -51,6 +53,7 @@ public class SkyLawnTile extends Tile {
 		LawnSprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
 	}
 
+	@Override
 	public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
@@ -70,6 +73,7 @@ public class SkyLawnTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		if (random.nextInt(12) == 1) { // 20% chance to drop sky seeds
 		level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));

@@ -50,12 +50,14 @@ public class DoorTile extends Tile {
 		sprite = closedSprite;
 	}
 
+	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		boolean closed = level.getData(x, y) == 0;
 		Sprite curSprite = closed ? closedSprite : openSprite;
 		curSprite.render(screen, x * 16, y * 16);
 	}
 
+	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
@@ -71,6 +73,7 @@ public class DoorTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		if (source instanceof Player) {
 			boolean closed = level.getData(x, y) == 0;
@@ -79,6 +82,7 @@ public class DoorTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public boolean mayPass(Level level, int x, int y, Entity e) {
 		boolean closed = level.getData(x, y) == 0;
 		return !closed;

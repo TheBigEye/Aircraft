@@ -22,8 +22,9 @@ public class FlowerTile extends Tile {
 		maySpawn = true;
 	}
 
+	@Override
 	public boolean tick(Level level, int xt, int yt) {
-		// TODO revise this method.
+		
 		if (random.nextInt(30) != 0) return false;
 
 		int xn = xt;
@@ -38,6 +39,7 @@ public class FlowerTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		Tiles.get("grass").render(screen, level, x, y);
 
@@ -51,6 +53,7 @@ public class FlowerTile extends Tile {
 		flowerSprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
 	}
 
+	@Override
 	public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
@@ -67,6 +70,7 @@ public class FlowerTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Flower"));
 		level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Rose"));

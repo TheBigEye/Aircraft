@@ -47,10 +47,12 @@ public class DirtTile extends Tile {
 		}
 	}
 
+	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		levelSprite[dIdx(level.depth)].render(screen, x * 16, y * 16, 0);
 	}
 
+	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;

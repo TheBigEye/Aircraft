@@ -1,7 +1,5 @@
-// Package declaration
 package minicraft.core;
 
-// Default Java Libraries
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -12,10 +10,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 
-// Graphics Java Libraries
 import javax.imageio.ImageIO;
 
-// Game imports
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Color;
@@ -36,26 +32,12 @@ import minicraft.screen.InfoDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.RelPos;
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------
-
-/*
- * The graphical functions of the game are represented here
- * 
- *  - Sprite sheets
- *  - Graphic representation
- *  - GUI
- *  - Debugging GUI
- *  - Hotbar
- *  - Screen effects
- *  - illumination
- */
-
 public class Renderer extends Game {
 	private Renderer() {}
 
-	public static final int HEIGHT = 288; // This is the hight of the game * scale
+	public static final int HEIGHT = 288; // This is the height of the game * scale
 	public static final int WIDTH = 432; // This is the width of the game * scale
-	static float SCALE = 3; // scales the window
+	static float SCALE = 3; // Scales the window
 	
 	private static String levelName = ""; // Used to store the names of the levels in the debug GUI
 
@@ -97,8 +79,9 @@ public class Renderer extends Game {
 	}
 
 	static void initScreen() {
-		if (!HAS_GUI)
+		if (!HAS_GUI) {
 			return;
+		}
 
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
@@ -116,8 +99,6 @@ public class Renderer extends Game {
 			canvas.requestFocus();
 		}
 	}
-	
-
 
 	/** Renders the current screen. Called in game loop, a bit after tick(). */
 	public static void render() {
@@ -207,7 +188,7 @@ public class Renderer extends Game {
 	private static void renderGui() {
 		// This draws the black square where the selected item would be if you were holding it
 		if (!isMode("creative") || player.activeItem != null) {
-			for (int x = 20; x<36; x++) {
+			for (int x = 20; x < 36; x++) {
 				screen.render(x * 8, Screen.h - 8, 31 + 30 * 32, 0, 3);
 			}
 		}
@@ -221,27 +202,62 @@ public class Renderer extends Game {
 		if (player.activeItem instanceof ToolItem) {
 			if (((ToolItem) player.activeItem).type == ToolType.Bow) {
 				int ac = player.getInventory().count(Items.arrowItem);
+				
 				// "^" is an infinite symbol.
+		        int xx = (Screen.w ) / 2 - 32 - player.activeItem.arrAdjusted ; // the width of the box
+		        int yy = (Screen.h - 8) - 13; // the height of the box
+		        int w = 3; // length of message in characters.
+		        int h = 1;
+
+		        int x = 170;
+		        int y = 25;
+		        
+		        // renders the four corners of the box
+		        screen.render(xx - 8, yy - 8, 0 + 21 * 32, 0, 3);
+		        screen.render(xx + w * 8, yy - 8, 0 + 21 * 32, 1, 3);
+		        screen.render(xx - 8, yy + 8, 0 + 21 * 32, 2, 3);
+		        screen.render(xx + w * 8, yy + 8, 0 + 21 * 32, 3, 3);
+
+		        // renders each part of the box...
+		        for (x = 0; x < w; x++) {
+		            screen.render(xx + x * 8, yy - 8, 1 + 21 * 32, 0, 3); // ...top part
+		            screen.render(xx + x * 8, yy + 8, 1 + 21 * 32, 2, 3); // ...bottom part
+		        }
+		        for (y = 0; y < h; y++) {
+		            screen.render(xx - 8, yy + y * 8, 2 + 21 * 32, 0, 3); // ...left part
+		            screen.render(xx + w * 8, yy + y * 8, 2 + 21 * 32, 1, 3); // ...right part
+		        }
+
+		        // the middle
+		        for (x = 0; x < w; x++) {
+		            screen.render(xx + x * 8, yy, 3 + 21 * 32, 0, 3);
+		        }
+				
 				if (isMode("creative") || ac >= 10000)
-					Font.drawBackground("	x" + "^", screen, 162, Screen.h - 17);
+					Font.drawBackground("	x" + "^", screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
 				else
-					Font.drawBackground("	x" + ac, screen, 162, Screen.h - 17);
+					Font.drawBackground("	x" + ac, screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
+				
 				// Displays the arrow icon
-				screen.render(20 * 8 + 1, Screen.h - 17, 5 + 3 * 32, 0, 3);
+				screen.render(20 * 8 + 20 - player.activeItem.arrAdjusted, Screen.h - 24, 5 + 3 * 32, 0, 3);
 			}
 		}
 
 		renderDebugInfo();
 
 		ArrayList<String> permStatus = new ArrayList<>();
+		
 		if (Updater.saving) permStatus.add("Saving... " + Math.round(LoadingDisplay.getPercentage()) + "%");
 		if (Bed.sleeping()) permStatus.add("Sleeping...");
+		
 		else if (!Game.isValidServer() && Bed.getPlayersAwake() > 0) {
 			int numAwake = Bed.getPlayersAwake();
+			
 			if (Bed.inBed(Game.player)) {
 				permStatus.add(MyUtils.plural(numAwake, "player") + " still awake");
 				permStatus.add(" ");
 				permStatus.add("Press " + input.getMapping("exit") + " to cancel");
+				
 			} else if (Game.isValidClient()) {
 				// draw it in a corner
 				int total = Game.client.getPlayerCount();
@@ -250,6 +266,7 @@ public class Renderer extends Game {
 					new FontStyle(Color.WHITE).setRelTextPos(RelPos.BOTTOM_LEFT).setAnchor(Screen.w, 0)
 					.draw(sleepCount + "/" + total + " players sleeping", screen);
 			}
+			
 		}
 
 		if (permStatus.size() > 0) {
@@ -263,11 +280,11 @@ public class Renderer extends Game {
 		/// NOTIFICATIONS
 		if (permStatus.size() == 0 && notifications.size() > 0) {
 			Updater.notetick++;
-			if (notifications.size() > 3) { //only show 3 notifs max at one time; erase old notifs.
+			if (notifications.size() > 3) { // Only show 3 notifs max at one time; erase old notifs.
 				notifications = notifications.subList(notifications.size() - 3, notifications.size());
 			}
 
-			if (Updater.notetick > 120) { //display time per notification.
+			if (Updater.notetick > 120) { // Display time per notification.
 				notifications.remove(0);
 				Updater.notetick = 0;
 			}
@@ -309,7 +326,37 @@ public class Renderer extends Game {
 			ToolItem tool = (ToolItem) player.activeItem;
 			int dura = tool.dur * 100 / (tool.type.durability * (tool.level + 1));
 			int green = (int)(dura * 2.55f);
-			Font.drawBackground(dura + "%", screen, 250, Screen.h - 17, Color.get(1, 255 - green, green, 0));
+			
+	        int xx = (Screen.w ) / 2 + 8 + player.activeItem.durAdjusted; // the width of the box
+	        int yy = (Screen.h - 8) - 13; // the height of the box
+	        int w = 3; // length of message in characters.
+	        int h = 1;
+
+	        int x = 250;
+	        int y = 25;
+	        
+	        // renders the four corners of the box
+	        screen.render(xx - 8, yy - 8, 0 + 21 * 32, 0, 3);
+	        screen.render(xx + w * 8, yy - 8, 0 + 21 * 32, 1, 3);
+	        screen.render(xx - 8, yy + 8, 0 + 21 * 32, 2, 3);
+	        screen.render(xx + w * 8, yy + 8, 0 + 21 * 32, 3, 3);
+
+	        // renders each part of the box...
+	        for (x = 0; x < w; x++) {
+	            screen.render(xx + x * 8, yy - 8, 1 + 21 * 32, 0, 3); // ...top part
+	            screen.render(xx + x * 8, yy + 8, 1 + 21 * 32, 2, 3); // ...bottom part
+	        }
+	        for (y = 0; y < h; y++) {
+	            screen.render(xx - 8, yy + y * 8, 2 + 21 * 32, 0, 3); // ...left part
+	            screen.render(xx + w * 8, yy + y * 8, 2 + 21 * 32, 1, 3); // ...right part
+	        }
+
+	        // the middle
+	        for (x = 0; x < w; x++) {
+	            screen.render(xx + x * 8, yy, 3 + 21 * 32, 0, 3);
+	        }
+			
+			Font.drawBackground(dura + "%", screen, 220 + player.activeItem.durAdjusted, Screen.h - 24, Color.get(1, 255 - green, green, 0));
 		}
 
 		/// This renders the potions overlay
@@ -319,24 +366,24 @@ public class Renderer extends Game {
 			for (int i = 0; i<effects.length; i++) {
 				PotionType pType = effects[i].getKey();
 				int pTime = effects[i].getValue() / Updater.normSpeed;
+				
 				Font.drawBackground("(" + input.getMapping("potionEffects") + " to hide!)", screen, 300, 9);
-				Font.drawBackground(pType + " (" + (pTime / 60) + ":" + (pTime % 60) + ")", screen, 300,
-					17 + i * Font.textHeight(), pType.dispColor);
+				Font.drawBackground(pType + " (" + (pTime / 60) + ":" + (pTime % 60) + ")", screen, 300, 17 + i * Font.textHeight(), pType.dispColor);
 			}
 		}
 
 		// This is the status icons, like health hearts, stamina bolts, and hunger "burger".
 		if (!isMode("creative")) {
-			for (int i = 0; i<Player.maxStat; i++) {
+			for (int i = 0; i < Player.maxStat; i++) {
 
 				// renders armor
 				int armor = player.armor * Player.maxStat / Player.maxArmor;
-				if (i<= armor && player.curArmor != null) {
+				if (i <= armor && player.curArmor != null) {
 					screen.render(i * 8, Screen.h - 24, (player.curArmor.level - 1) + 9 * 32, 0, 0);
 				}
 
 				// renders your current red hearts, or black hearts for damaged health.
-				if (i<player.health) {
+				if ( i < player.health) {
 					screen.render(i * 8, Screen.h - 16, 0 + 2 * 32, 0, 3);
 				} else {
 					screen.render(i * 8, Screen.h - 16, 0 + 3 * 32, 0, 3);
@@ -351,7 +398,7 @@ public class Renderer extends Game {
 					}
 				} else {
 					// renders your current stamina, and uncharged gray stamina.
-					if (i<player.stamina) {
+					if (i < player.stamina) {
 						screen.render(i * 8, Screen.h - 8, 1 + 2 * 32, 0, 3);
 					} else {
 						screen.render(i * 8, Screen.h - 8, 1 + 3 * 32, 0, 3);
@@ -359,7 +406,7 @@ public class Renderer extends Game {
 				}
 
 				// renders hunger
-				if (i<player.hunger) {
+				if (i < player.hunger) {
 					screen.render(i * 8 + (Screen.w - 80), Screen.h - 16, 2 + 2 * 32, 0, 3);
 				} else {
 					screen.render(i * 8 + (Screen.w - 80), Screen.h - 16, 2 + 3 * 32, 0, 3);
@@ -368,13 +415,13 @@ public class Renderer extends Game {
 		}
 
 		/// CURRENT ITEM
-		if (player.activeItem != null) // shows active item sprite and name in bottom toolbar, if one exists.
+		if (player.activeItem != null) { // shows active item sprite and name in bottom toolbar, if one exists.
 			player.activeItem.renderHUD(screen, 20 * 8, Screen.h - 9, Color.WHITE);
+		}
 	}
 
 	private static LocalDateTime time = LocalDateTime.now();
 
-	@SuppressWarnings("static-access")
 	private static void renderDebugInfo() { // renders show debug info on the screen.
 
 		int textcol = Color.WHITE;
@@ -390,7 +437,7 @@ public class Renderer extends Game {
 			info.add("Engine: " + "Minicraft Plus" + "                  " + "Java:" + GameInfo.Java_Version);
 			info.add("" + time.toLocalDate() + "                              " + "Java arch:x" + GameInfo.Java_Arch);
 			info.add(Initializer.fra + " fps" + "                                  " + "Max mem:" + GameInfo.max_Memory);
-			info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")                  " + "Total mem:" + GameInfo.total_Memory);
+			info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")                 " + "Total mem:" + GameInfo.total_Memory);
 			info.add((Updater.normSpeed * Updater.gamespeed) + " tps                                " + "Free mem: " + GameInfo.free_Memory);
 			if (!isValidServer()) {
 
@@ -440,10 +487,11 @@ public class Renderer extends Game {
 					levelName = "Hell";
 				}
 
-				if (!isValidClient())
+				if (!isValidClient()) {
 					info.add("Mob Cnt " + levels[currentLevel].mobCount + "/" + levels[currentLevel].maxMobCount);
-				else
+				} else {
 					info.add("Mob Load Cnt " + levels[currentLevel].mobCount);
+				}
 			}
 
 			/// Displays number of chests left, if on dungeon level.
@@ -472,7 +520,7 @@ public class Renderer extends Game {
 				style.setYPos(Screen.h).setRelTextPos(RelPos.TOP_RIGHT, true);
 				for (int i = 1; i<info.size(); i++) // reverse order
 					info.add(0, info.remove(i));
-			} else
+			} else 
 				style.setYPos(2);
 			Font.drawParagraph(info, screen, style, 2);
 		}
@@ -510,15 +558,15 @@ public class Renderer extends Game {
 		}
 
 		// renders the focus nagger text with a flash effect...
-		if ((Updater.tickCount / 20) % 2 == 0) // ...medium yellow color
+		if ((Updater.tickCount / 20) % 2 == 0) { // ...medium yellow color
 			Font.draw(msg, screen, xx, yy, Color.get(1, 153));
-		else // ...bright yellow color
+		} else { // ...bright yellow color
 			Font.draw(msg, screen, xx, yy, Color.get(5, 255));
+		}
 	}
 
 	@SuppressWarnings("deprecation")
-	public
-	static java.awt.Dimension getWindowSize() {
+	public static java.awt.Dimension getWindowSize() {
 		return new java.awt.Dimension(new Float(WIDTH * SCALE).intValue(), new Float(HEIGHT * SCALE).intValue());
 	}
 }

@@ -36,8 +36,15 @@ public abstract class Entity implements Tickable {
 	/// entity coordinates are per pixel, not per tile; each tile is 16x16 entity
 	/// pixels.
 	protected final Random random = new Random();
-	public int x, y; // x, y entity coordinates on the map
-	private int xr, yr; // x, y radius of entity
+	
+	// x, y entity coordinates on the map
+	public int x;
+	public int y;
+	
+	// x, y radius of entity
+	private int xr;
+	private int yr; 
+	
 	private boolean removed; // Determines if the entity is removed from it's level; checked in Level.java
 	public Level level; // the level that the entity is on
 	public int col; // current color.
@@ -203,7 +210,8 @@ public abstract class Entity implements Tickable {
 		// These lists are named as if the entity has already moved-- it hasn't, though.
 		List<Entity> wasInside = level.getEntitiesInRect(getBounds()); // Gets all of the entities that are inside this entity (aka: colliding) before moving.
 		
-		int xr = this.xr, yr = this.yr;
+		int xr = this.xr;
+		int yr = this.yr;
 		if (Game.isValidClient() && this instanceof Player) {
 			xr++;
 			yr++;

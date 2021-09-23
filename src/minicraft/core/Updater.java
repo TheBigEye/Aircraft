@@ -13,12 +13,10 @@ import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 import minicraft.saveload.Save;
 import minicraft.screen.EndGameDisplay;
-import minicraft.screen.InfoDisplay;
 import minicraft.screen.LevelTransitionDisplay;
 import minicraft.screen.PauseDisplay;
 import minicraft.screen.PlayerDeathDisplay;
 import minicraft.screen.WorldSelectDisplay;
-import tk.jidgu.util.Utils;
 
 public class Updater extends Game {
     private Updater() {}
@@ -30,17 +28,15 @@ public class Updater extends Game {
 
     public static int tickCount = 0; // The number of ticks since the beginning of the game day.
     static int time = 0; // Facilities time of day / sunlight.
-    
+
     public static final int dayLength = 64800; // This value determines how long one game day is.
     public static final int sleepEndTime = dayLength / 8; // This value determines when the player "wakes up" in the morning.
     public static final int sleepStartTime = dayLength / 2 + dayLength / 8; // This value determines when the player allowed to sleep.
     // public static int noon = 32400; // This value determines when the sky switches from getting lighter to getting  darker.
-    
+
     public static int gameTime = 0; // This stores the total time (number of ticks) you've been playing your
     public static boolean pastDay1 = true; // Used to prevent mob spawn on surface on day 1.
     public static int scoreTime; // Uime remaining for score mode
-
-
 
     /**
      * Indicates if FullScreen Mode has been toggled.
@@ -70,8 +66,8 @@ public class Updater extends Game {
         Initializer.frame.dispose();
 
         GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
-        
-        
+
+
         if (Updater.FULLSCREEN) {
             Initializer.frame.setUndecorated(true);
             device.setFullScreenWindow(Initializer.frame);
@@ -82,7 +78,7 @@ public class Updater extends Game {
 
         // Show frame again
         Initializer.frame.setVisible(true);
-        
+
         // When fullscreen is enabled, focus is lost
         Renderer.canvas.requestFocus();
     }
@@ -91,9 +87,9 @@ public class Updater extends Game {
     // In the end, calls menu.tick() if there's a menu, or level.tick() if no menu.
     @SuppressWarnings("static-access")
     public static void tick() {
-    	
-    	GameInfo.getInfo();
-   
+
+        GameInfo.getInfo();
+
 
         if (Updater.HAS_GUI && input.getKey("FULLSCREEN").clicked) {
             Updater.FULLSCREEN = !Updater.FULLSCREEN;

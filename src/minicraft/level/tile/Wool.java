@@ -17,6 +17,7 @@ public class Wool extends Tile {
         super(name, woolType.sprite);
     }
 
+    @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
@@ -32,12 +33,13 @@ public class Wool extends Tile {
         return false;
     }
 
+    @Override
     public boolean mayPass(Level level, int x, int y, Entity e) {
         return e.canWool();
     }
 
     public enum WoolType {
-            NORMAL(new Sprite(26, 30, 2, 2, 1)),
+        	NORMAL(new Sprite(26, 30, 2, 2, 1)),
             LIGHT_GRAY(new Sprite(16, 28, 2, 2, 1)),
             GRAY(new Sprite(22, 28, 2, 2, 1)),
             BLACK(new Sprite(30, 30, 2, 2, 1)),

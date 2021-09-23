@@ -17,28 +17,31 @@ import minicraft.level.Level;
 public class CloudTile extends Tile {
 	private static ConnectorSprite sprite = new ConnectorSprite(CloudTile.class, new Sprite(0, 22, 3, 3, 1, 3),
 			new Sprite(3, 24, 2, 2, 1, 3), new Sprite(3, 22, 2, 2, 1)) {
+		
+		@Override
 		public boolean connectsTo(Tile tile, boolean isSide) {
 			return tile != Tiles.get("Infinite fall") && tile != Tiles.get("Ferrosite");
 		}
+		
 	};
 
 	protected CloudTile(String name) {
 		super(name, sprite);
 	}
 
+	@Override
 	public boolean mayPass(Level level, int x, int y, Entity e) {
 		return true;
 	}
 
-	
-
-    //REMINDER: Do not touch this until version 0.6
+    // REMINDER: Do not touch this until version 0.6
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		Tiles.get("Ferrosite").render(screen, level, x, y);
 		sprite.render(screen, level, x, y);
 	}
 	
+	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		// we don't want the tile to break when attacked with just anything, even in
 		// creative mode

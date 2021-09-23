@@ -74,6 +74,7 @@ public class Arrow extends Entity implements ClientTickable {
 		}
 	}
 
+	@Override
 	public boolean isSolid() {
 		return false;
 	}

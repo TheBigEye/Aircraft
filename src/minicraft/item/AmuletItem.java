@@ -2,7 +2,6 @@ package minicraft.item;
 
 import java.util.Random;
 
-import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
@@ -27,25 +26,18 @@ public class AmuletItem extends Item {
 	}
 
 	@Override
-	public boolean interact(Player player, Entity entity, Direction attackDir) {
-		if (!Game.isValidServer()) {
-		}
-		return false;
-	}
-
-	@Override
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 
-		//Game.setMenu(new LevelTransitionDisplay(-4));
-		
+		// Game.setMenu(new LevelTransitionDisplay(-4));
+
 		if (random.nextInt(3) == 0) {
 			Sound.Amulet_locked.play();
 		}
-		
+
 		if (random.nextInt(3) == 1) {
 			Sound.Amulet_locked2.play();
 		}
-		
+
 		if (random.nextInt(3) == 2) {
 			Sound.Amulet_sucess.play();
 			level.add(new EyeQueen(1), player.x, player.y);

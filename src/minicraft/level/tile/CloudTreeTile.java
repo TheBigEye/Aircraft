@@ -25,6 +25,7 @@ public class CloudTreeTile extends Tile {
 		connectsToSkyGrass = true;
 	}
 
+	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		Tiles.get("Sky Grass").render(screen, level, x, y);
 
@@ -59,6 +60,7 @@ public class CloudTreeTile extends Tile {
 		}
 	}
 
+	@Override
 	public boolean tick(Level level, int xt, int yt) {
 		int damage = level.getData(xt, yt);
 		if (damage > 0) {
@@ -68,6 +70,7 @@ public class CloudTreeTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public boolean mayPass(Level level, int x, int y, Entity e) {
 		return e instanceof AirWizard;
 	}
@@ -94,6 +97,7 @@ public class CloudTreeTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public void hurt(Level level, int x, int y, int dmg) {
 		if (random.nextInt(100) == 0)
 			level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Apple"));

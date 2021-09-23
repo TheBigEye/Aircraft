@@ -99,9 +99,9 @@ public class LoadingDisplay extends Display {
 		}
 
 		Font.drawCentered(((progressType.length() > 0) ? (" " + Localization.getLocalized(progressType)) : ""), screen, Screen.h - 30, Color.get(1, 51));
-		{
+		
 			Sound.Intro.stop();
 			Sound.Intro2.stop();
-		}
+		
 	}
 }

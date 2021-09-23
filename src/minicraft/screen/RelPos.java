@@ -9,7 +9,8 @@ import minicraft.gfx.Rectangle;
 public enum RelPos {
 	TOP_LEFT, TOP, TOP_RIGHT, LEFT, CENTER, RIGHT, BOTTOM_LEFT, BOTTOM, BOTTOM_RIGHT;
 
-	public int xIndex, yIndex;
+	public int xIndex;
+	public int yIndex;
 
 	// I think this way, the enums will all be constructed before this gets called,
 	// so there won't be any mishaps with number of values.

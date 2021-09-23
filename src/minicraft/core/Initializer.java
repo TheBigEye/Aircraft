@@ -19,65 +19,65 @@ import minicraft.screen.WorldSelectDisplay;
 public class Initializer extends Game {
     private Initializer() {}
 
-	/**
-	 * Reference to actual frame, also it may be null.
-	 *
-	 * @see Renderer#HAS_GUI
-	 */
-	static JFrame frame;
-	static int fra, tik; // These store the number of frames and ticks in the previous second, used for fps, at least.
+    /**
+     * Reference to actual frame, also it may be null.
+     *
+     * @see Renderer#HAS_GUI
+     */
+    static JFrame frame;
+    static int fra, tik; // These store the number of frames and ticks in the previous second, used for fps, at least.
 
     public static int getCurFps() {
         return fra;
     }
 
-	static void parseArgs(String[] args) {
-		boolean debug = false;
-		boolean packetdebug = false;
-		boolean autoclient = false;
-		boolean autoserver = false;
+    static void parseArgs(String[] args) {
+        boolean debug = false;
+        boolean packetdebug = false;
+        boolean autoclient = false;
+        boolean autoserver = false;
 
-		// parses command line arguments
-		String saveDir = FileHandler.systemGameDir;
-		for (int i = 0; i < args.length; i++) {
-			if (args[i].equals("--debug")) {
-				debug = true;
-			} else if (args[i].equals("--packetdebug")) {
-				packetdebug = true;
-			} else if (args[i].equals("--savedir") && i + 1 < args.length) {
-				i++;
-				saveDir = args[i];
-			} else if (args[i].equals("--localclient")) {
-				autoclient = true;
-			} else if (args[i].equals("--server")) {
-				autoserver = true;
-				if (i + 1 < args.length) {
-					i++;
-					WorldSelectDisplay.setWorldName(args[i], true);
-				} else {
-					System.err.println("A world name is required.");
-					System.exit(1);
-				}
-			} else if (args[i].equals("--port")) {
-				int customPort = MinicraftProtocol.PORT;
+        // parses command line arguments
+        String saveDir = FileHandler.systemGameDir;
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("--debug")) {
+                debug = true;
+            } else if (args[i].equals("--packetdebug")) {
+                packetdebug = true;
+            } else if (args[i].equals("--savedir") && i + 1 < args.length) {
+                i++;
+                saveDir = args[i];
+            } else if (args[i].equals("--localclient")) {
+                autoclient = true;
+            } else if (args[i].equals("--server")) {
+                autoserver = true;
+                if (i + 1 < args.length) {
+                    i++;
+                    WorldSelectDisplay.setWorldName(args[i], true);
+                } else {
+                    System.err.println("A world name is required.");
+                    System.exit(1);
+                }
+            } else if (args[i].equals("--port")) {
+                int customPort = MinicraftProtocol.PORT;
 
-				if (i + 1 < args.length) {
-					String portString = args[++i];
-					try {
-						customPort = Integer.parseInt(portString);
-					} catch (NumberFormatException exception) {
-						System.err.println("Port wasn't a number! Using the default port: " + portString);
-					}
-				} else {
-					System.err.println("Missing new port! Using the default port " + MinicraftProtocol.PORT);
-				}
+                if (i + 1 < args.length) {
+                    String portString = args[++i];
+                    try {
+                        customPort = Integer.parseInt(portString);
+                    } catch (NumberFormatException exception) {
+                        System.err.println("Port wasn't a number! Using the default port: " + portString);
+                    }
+                } else {
+                    System.err.println("Missing new port! Using the default port " + MinicraftProtocol.PORT);
+                }
 
-				Game.CUSTOM_PORT = customPort;
-			} else if (args[i].equals("--fullscreen")) {
-				// Initializes fullscreen
-				Updater.FULLSCREEN = true;
-			}
-		}
+                Game.CUSTOM_PORT = customPort;
+            } else if (args[i].equals("--fullscreen")) {
+                // Initializes fullscreen
+                Updater.FULLSCREEN = true;
+            }
+        }
 
         Game.debug = debug;
         Game.packet_debug = packetdebug;
@@ -145,11 +145,12 @@ public class Initializer extends Game {
     }
 
 
-    
+
     /// Creates and displays the JFrame window that the game appears in.
     static void createAndDisplayFrame() {
-        if (!HAS_GUI)
+        if (!HAS_GUI) {
             return;
+        }
 
         Renderer.canvas.setMinimumSize(new java.awt.Dimension(1, 1));
         Renderer.canvas.setPreferredSize(Renderer.getWindowSize());

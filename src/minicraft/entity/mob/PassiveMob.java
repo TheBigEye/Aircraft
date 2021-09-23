@@ -1,10 +1,17 @@
 package minicraft.entity.mob;
 
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
+import minicraft.entity.Direction;
+import minicraft.entity.particle.FireParticle;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
+import minicraft.item.Item;
+import minicraft.item.ToolItem;
+import minicraft.item.ToolType;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
@@ -34,6 +41,64 @@ public class PassiveMob extends MobAi {
 	@Override
 	public void render(Screen screen) {
 		super.render(screen);
+	}
+	
+	// Burn
+	public boolean isBurn = false;
+    private int burnTime = 0;
+	
+	public void tick() {
+		super.tick();
+		
+		if (isBurn == true) {
+	        burnTime++;
+	        if (burnTime >= 128) {
+	        	burnTime = 0;
+	        	isBurn = false;
+	        }		
+	        
+	        if (burnTime >= 1) {
+	        	if (random.nextInt(4) == 2) {
+	        		int randX = random.nextInt(10);
+	        		int randY = random.nextInt(9);
+	        		
+	        		level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
+	        	
+	        		this.hurt(this, 1);
+	        	}	
+	        }
+	        
+		} else {
+			burnTime = 0; // Check
+		}
+		
+	}
+	
+	@Override
+	public int getLightRadius() {
+		
+		int lightRadius = 0;
+		
+        if (isBurn == true) {
+        	lightRadius = 2;
+        } else {
+        	lightRadius = 0;
+        }
+		
+		return lightRadius;
+	}
+	
+	public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
+		if (isBurn) return false;
+
+		if (item instanceof ToolItem) {			
+			if (((ToolItem) item).type == ToolType.Igniter) {
+				isBurn = true;
+				((ToolItem) item).payDurability();
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	@Override

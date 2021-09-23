@@ -63,8 +63,6 @@ public class SkyPlant extends SkyFarmTile {
 	  if (entity instanceof ItemEntity) return;  
         int age = level.getData(x, y);
 
-        //level.dropItem(x * 16 + 8, y * 16 + 8, 1, Items.get(name + " Seeds"));
-
         int count = 0;
         if (age >= maxAge) {
             count = random.nextInt(3) + 2;

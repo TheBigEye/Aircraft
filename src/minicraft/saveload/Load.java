@@ -16,7 +16,6 @@ import javax.imageio.ImageIO;
 import org.jetbrains.annotations.Nullable;
 
 import minicraft.core.Game;
-import minicraft.core.GameInfo;
 import minicraft.core.Network;
 import minicraft.core.Updater;
 import minicraft.core.World;
@@ -105,9 +104,6 @@ public class Load {
 	
 	private Version worldVer;
 	private boolean hasGlobalPrefs = false;
-	
-	
-	
 	
 	{
 		worldVer = null;
@@ -747,7 +743,7 @@ public class Load {
 			Class c = null;
 
 
-if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is more or equal to 2.0.7-dev1
+			if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is more or equal to 2.0.7-dev1
 				if (newEntity instanceof Sheep) {
 					Sheep sheep = ((Sheep) mob);
 					if (info.get(3).equalsIgnoreCase("true")) {

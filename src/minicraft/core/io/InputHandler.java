@@ -159,10 +159,12 @@ public class InputHandler implements KeyListener {
 	public class Key {
 		// presses = how many times the Key has been pressed.
 		// absorbs = how many key presses have been processed.
-		private int presses, absorbs;
+		private int presses;
+		private int absorbs;
 		// down = if the key is currently physically being held down.
 		// clicked = if the key is still being processed at the current tick.
-		public boolean down, clicked;
+		public boolean down;
+		public boolean clicked;
 		// sticky = true if presses reaches 3, and the key continues to be held down.
 		private boolean sticky;
 
@@ -308,7 +310,10 @@ public class InputHandler implements KeyListener {
 		if (keytext.equals("SHIFT") || keytext.equals("CTRL") || keytext.equals("ALT"))
 			return key; // nothing more must be done with modifier keys.
 
-		boolean foundS = false, foundC = false, foundA = false;
+		boolean foundS = false;
+		boolean foundC = false;
+		boolean foundA = false;
+		
 		if (keytext.contains("-")) {
 			for (String keyname : keytext.split("-")) {
 				if (keyname.equals("SHIFT"))

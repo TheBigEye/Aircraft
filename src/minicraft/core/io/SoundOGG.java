@@ -8,7 +8,7 @@ public class SoundOGG {
 	// Ogg support! ;)
 
 	// Player
-	public static final SoundOGG Theme_Surface = new SoundOGG("/resources/sound/Background/Surface.wav");
+	public static final SoundOGG Theme_Surface = new SoundOGG("/resources/sound/Background/Surface.OGG");
 
 	OggClip ogg;
 

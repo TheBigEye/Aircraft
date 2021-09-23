@@ -2,7 +2,8 @@ package minicraft.gfx;
 
 public class Point {
 
-	public int x, y;
+	public int x;
+	public int y;
 
 	public Point() {
 		this(0, 0);

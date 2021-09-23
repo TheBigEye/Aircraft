@@ -26,7 +26,8 @@ public class FontStyle {
 	private RelPos relLinePos = RelPos.CENTER; // when setup for a paragraph with multiple lines, this determines the alignment of each line within the bounds of the paragraph.
 	private String[] configuredPara;
 	private Rectangle paraBounds;
-	private int padX = 0, padY = 0;
+	private int padX = 0;
+	private int padY = 0;
 	
 	public FontStyle() { this(Color.WHITE); }
 	public FontStyle(int mainColor) {

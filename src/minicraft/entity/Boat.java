@@ -78,20 +78,12 @@ public class Boat extends Entity {
 
 			if (Game.input.getKey("move-up").down)
 				ya -= 1;
-			if (Game.input.getKey("move-up").down) {
-			}
 			if (Game.input.getKey("move-down").down)
 				ya += 1;
-			if (Game.input.getKey("move-down").down) {
-			}
 			if (Game.input.getKey("move-left").down)
 				xa -= 1;
-			if (Game.input.getKey("move-left").down) {
-			}
 			if (Game.input.getKey("move-right").down)
 				xa += 1;
-			if (Game.input.getKey("move-right").down) {
-			}
 
 			int randX = rnd.nextInt(10);
 			int randY = rnd.nextInt(9);
@@ -194,7 +186,8 @@ public class Boat extends Entity {
 		List<Entity> wasInside = level.getEntitiesInRect(getBounds()); // gets all of the entities that are inside this
 																		// entity (aka: colliding) before moving.
 
-		int xr = 1, yr = 1;
+		int xr = 1;
+		int yr = 1;
 		List<Entity> isInside = level.getEntitiesInRect(new Rectangle(x + (int) xa, y + (int) ya, xr * 2, yr * 2, Rectangle.CENTER_DIMS)); // gets the entities that this entity will touch once moved.
 		for (int i = 0; interact && i < isInside.size(); i++) {
 			/// cycles through entities about to be touched, and calls touchedBy(this) for each of them.

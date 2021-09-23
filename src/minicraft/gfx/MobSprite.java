@@ -12,7 +12,8 @@ public class MobSprite extends Sprite {
 		/// should be flipped in position according to their mirroring.
 		super(new Pixel[h][w]);
 
-		boolean flipX = (0x01 & mirror) > 0, flipY = (0x02 & mirror) > 0;
+		boolean flipX = (0x01 & mirror) > 0;
+		boolean flipY = (0x02 & mirror) > 0;
 
 		for (int r = 0; r < spritePixels.length; r++) { // loop down through each row
 			for (int c = 0; c < spritePixels[r].length; c++) { // loop across through each column

@@ -2,7 +2,8 @@ package minicraft.gfx;
 
 public class Dimension {
 
-	public int width, height;
+	public int width;
+	public int height;
 
 	public Dimension() {
 		this(0, 0);

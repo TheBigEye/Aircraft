@@ -21,7 +21,10 @@ import minicraft.item.PowerGloveItem;
 
 public class Furniture extends Entity {
 
-    protected int pushTime = 0, multiPushTime = 0; // time for each push; multi is for multiplayer, to make it so not so many updates are sent.
+	// time for each push; multi is for multiplayer, to make it so not so many updates are sent.
+    protected int pushTime = 0;
+    protected int multiPushTime = 0; 
+    
     private Direction pushDir = Direction.NONE; // the direction to push the furniture
     public Sprite sprite;
     public String name;

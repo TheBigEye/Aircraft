@@ -46,6 +46,7 @@ public class MobsTutorial extends Display {
         }
     }
 
+    @Override
     public void render(Screen screen) {
 		super.render(screen);
 

@@ -18,7 +18,7 @@ public class PlayerDeathDisplay extends Display {
 	// this is an IMPORTANT bool, determines if the user should respawn or not. :)
 	public static boolean shouldRespawn = true;
 	private static Random random = new Random();
-	private static String TITLE = "";
+	private static String TITLE;
 
 	String[] array = { "You died! Aww!", "how humiliating!", "Luck for the next!", "That had to hurt!", "What a pity!",
 			"In the end?!", "Don't mistake my silence!", "There are things we forget ...", "great, you died!",
@@ -39,7 +39,7 @@ public class PlayerDeathDisplay extends Display {
 			}));
 		}
 
-		PlayerDeathDisplay.TITLE = array[random.nextInt(9)];
+		TITLE = array[random.nextInt(9)];
 
 		if (Settings.get("mode").equals("hardcore") || !Game.isValidClient())
 			entries.add(new SelectEntry("Quit", () -> Game.setMenu(new TitleDisplay())));

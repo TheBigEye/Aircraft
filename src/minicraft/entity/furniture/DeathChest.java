@@ -77,6 +77,7 @@ public class DeathChest extends Chest {
 		}
 	}
 
+	@Override
 	public void render(Screen screen) {
 		super.render(screen);
 		String timeString = (time / Updater.normSpeed) + "S";
@@ -84,6 +85,7 @@ public class DeathChest extends Chest {
 				y - Font.textHeight() - getBounds().getHeight() / 2, Color.WHITE);
 	}
 
+	@Override
 	public boolean use(Player player) {
 		return false;
 	} // can't open it, just walk into it.
@@ -105,6 +107,7 @@ public class DeathChest extends Chest {
 		}
 	}
 
+	@Override
 	protected String getUpdateString() {
 		String updates = super.getUpdateString() + ";";
 		updates += "time," + time;

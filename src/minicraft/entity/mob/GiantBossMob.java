@@ -70,7 +70,7 @@ public class GiantBossMob extends MobAi {
 		super.tick();
 		
 		Player player = getClosestPlayer();
-		if (player != null && player != null) { // checks if player is on zombies level and if there is no time left on randonimity timer
+		if (player != null) { // checks if player is on zombies level and if there is no time left on randonimity timer
 			int xd = player.x - x;
 			int yd = player.y - y;
 				/// if player is less than 6.25 tiles away, then set move dir towards player

@@ -13,13 +13,15 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class SkyGrassTile extends Tile {
-	private static ConnectorSprite sprite = new ConnectorSprite(SkyGrassTile.class, new Sprite(44, 6, 3, 3, 1, 3),
-			new Sprite(47, 6, 2, 2, 1)) {
+	private static ConnectorSprite sprite = new ConnectorSprite(SkyGrassTile.class, new Sprite(44, 6, 3, 3, 1, 3), new Sprite(47, 6, 2, 2, 1)) {
+		
+		@Override
 		public boolean connectsTo(Tile tile, boolean isSide) {
 			if (!isSide)
 				return true;
 			return tile.connectsToSkyGrass;
 		}
+		
 	};
 
 	protected SkyGrassTile(String name) {
@@ -30,8 +32,9 @@ public class SkyGrassTile extends Tile {
 		maySpawn = true;
 	}
 
+	@Override
 	public boolean tick(Level level, int xt, int yt) {
-		// TODO revise this method.
+
 		if (random.nextInt(40) != 0) return false;
 		
 		int xn = xt;
@@ -56,6 +59,7 @@ public class SkyGrassTile extends Tile {
 		sprite.render(screen, level, x, y);
 	}
 
+	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;

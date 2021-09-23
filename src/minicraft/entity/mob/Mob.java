@@ -1,13 +1,11 @@
 package minicraft.entity.mob;
 
 import java.util.List;
-import java.util.Random;
 
 import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.furniture.Tnt;
-import minicraft.entity.particle.FireParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
 import minicraft.gfx.MobSprite;
@@ -17,19 +15,17 @@ import minicraft.level.tile.Tiles;
 
 public abstract class Mob extends Entity {
 	
-    private Random rnd = new Random();
-	
 	protected MobSprite[][] sprites; // This contains all the mob's sprites, sorted first by direction (index corresponding to the dir variable), and then by walk animation state.
 	public int walkDist = 0; // How far we've walked currently, incremented after each movement. This is used to change the sprite; "(walkDist >> 3) & 1" switches between a value of 0 and 1 every 8 increments of walkDist.
 	
 	public Direction dir = Direction.DOWN; // The direction the mob is facing, used in attacking and rendering. 0 is down, 1 is up, 2 is left, 3 is right
-	int hurtTime = 0; // A delay after being hurt, that temporarily prevents further damage for a short time
+	public int hurtTime = 0; // A delay after being hurt, that temporarily prevents further damage for a short time
 	private int xKnockback, yKnockback; // The amount of vertical/horizontal knockback that needs to be inflicted, if it's not 0, it will be moved one pixel at a time.
 	public int health;
 	protected final int maxHealth; // The amount of health we currently have, and the maximum.
 	protected int walkTime;
 	public int speed;
-	int tickTime = 0; // Incremented whenever tick() is called, is effectively the age in ticks
+	public int tickTime = 0; // Incremented whenever tick() is called, is effectively the age in ticks
 	
 	/**
 	 * Default constructor for a mob.

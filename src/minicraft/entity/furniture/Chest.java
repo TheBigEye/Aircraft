@@ -35,6 +35,7 @@ public class Chest extends Furniture implements ItemHolder {
 	}
 
 	/** This is what occurs when the player uses the "Menu" command near this */
+	@Override
 	public boolean use(Player player) {
 		Game.setMenu(new ContainerDisplay(player, this));
 		return true;

@@ -81,7 +81,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	private static final int mtm = 300; // time given to increase multiplier before it goes back to 1.
 	public static final int MAX_MULTIPLIER = 50; // maximum score multiplier.
 
-	public static double moveSpeed = 1; // the number of coordinate squares to move; each tile is 16x16.
+    public double moveSpeed = 1; // The number of coordinate squares to move; each tile is 16x16.
 
 	// Score variables
 	private int score; // the player's score
@@ -98,7 +98,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 	// The maximum stats that the player can have.
 	public static final int maxStat = 10;
-	public static final int maxHealth = maxStat, maxStamina = maxStat, maxHunger = maxStat;
+	public static final int maxHealth = maxStat;
+	public static final int maxStamina = maxStat;
+	public static final int maxHunger = maxStat;
 	public static final int maxArmor = 100;
 
 	// Player sprite variables
@@ -303,17 +305,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			int randX = rnd.nextInt(10);
 			int randY = rnd.nextInt(9);
 
-			if (random.nextInt(18) == 1) {
-				level.add(new PotionParticle(x - 9 + randX, y - 21 + randY));
-			}
-			if (random.nextInt(18) == 4) {
-
-			}
-			if (random.nextInt(18) == 6) {
-				level.add(new PotionParticle(x - 9 + randX, y - 21 + randY));
-			}
-			if (random.nextInt(18) == 8) {
-
+			if (random.nextInt(18) == 9) {
+				level.add(new PotionParticle(x - 1 , y - 23 + randY));
 			}
 			
 			for (PotionType potionType : potioneffects.keySet().toArray(new PotionType[0])) {
@@ -340,7 +333,17 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				level.add(new FerrositeParticle(x - 9 + randX, y - 8 + randY));
 			}
 			
+			moveSpeed = 3;
+				
+		} else {
+		    
+		    if (moveSpeed > 1) {
+		        moveSpeed = 1;
+		    } else if (potioneffects.containsKey(PotionType.Speed) || potioneffects.containsKey(PotionType.xSpeed)) {
+		        moveSpeed = 2;   
+		    }
 		}
+		    
 		if (level.getTile(x / 16, y / 16) == Tiles.get("Cloud")) {
 			
 			int randX = rnd.nextInt(10);
@@ -398,12 +401,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			if (random.nextInt(6) == 5) {
 				Updater.notifyAll("Watch out so you won't slip and fall!");
 			} 
-			if (random.nextInt(50) == 1 && onFallDelay <= 0) {
-				
-				//if (Game.player.getPotionEffects().containsKey(PotionType.Speed) && random.nextInt(16) == 1) {
-					//Player.moveSpeed = 1;
-				//}
-					
+			if (random.nextInt(50) == 1 && onFallDelay <= 0) {			
 				World.scheduleLevelChange(-1);
 				onFallDelay = 40;
 				
@@ -456,9 +454,11 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 					stamHungerTicks -= diffIdx; // Further penalty if at full hunger
 			}
 
-			if (Updater.tickCount % Player.hungerTickCount[diffIdx] == 0)
-				if (!(Settings.get("diff") == "Peaceful"))
+			if (Updater.tickCount % Player.hungerTickCount[diffIdx] == 0) {
+				if (!Settings.get("diff").equals("Peaceful")) {
 					stamHungerTicks--; // hunger due to time.
+				}
+			}
 
 			if (stepCount >= Player.hungerStepCount[diffIdx]) {
 				stamHungerTicks--; // hunger due to exercise.
@@ -528,7 +528,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			
 			// Executes if not saving; and... essentially halves speed if out of stamina.
 			if ((vec.x != 0 || vec.y != 0) && (staminaRechargeDelay % 2 == 0 || isSwimming()) && !Updater.saving) {
-				double spd = moveSpeed * (potioneffects.containsKey(PotionType.Speed) ? 1.5D : 1);
+			    double spd = moveSpeed * (potioneffects.containsKey(PotionType.Speed) ? 1.5D : 1);
 				
 				int xd = (int) (vec.x * spd);
 				int yd = (int) (vec.y * spd);
@@ -783,7 +783,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	}
 	
 	private Rectangle getInteractionBox(int range) {
-		int x = this.x, y = this.y - 2;
+		int x = this.x;
+		int y = this.y - 2;
 		
 		// noinspection UnnecessaryLocalVariable
 		int paraClose = 4, paraFar = range;
@@ -799,10 +800,11 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	}
 	
 	private Point getInteractionTile() {
-		int x = this.x, y = this.y - 2;
+		int x = this.x;
+		int y = this.y - 2;
 		
-		x += dir.getX()*INTERACT_DIST;
-		y += dir.getY()*INTERACT_DIST;
+		x += dir.getX() * INTERACT_DIST;
+		y += dir.getY() * INTERACT_DIST;
 		
 		return new Point(x >> 4, y >> 4);
 	}
@@ -920,7 +922,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	
 
 	@Override
-	@SuppressWarnings("incomplete-switch")
 	public void render(Screen screen) {
 		
 		// Skin events
@@ -1297,7 +1298,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		
 		boolean fullPlayer = !(Game.isValidClient() && this != Game.player);
 		
-		int healthDam = 0, armorDam = 0;
+		int healthDam = 0; 
+		int armorDam = 0;
 		if (fullPlayer) {
 			Sound.Mob_player_hurt.play();
 			if (curArmor == null) { // No armor
@@ -1344,44 +1346,22 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		super.remove();
 	}
 	
-	// Activate when Ferrosite problem has solved
-	/*protected String getUpdateString() {
+    protected String getUpdateString() {
         String updates = super.getUpdateString() + ";";
-        updates += "skinon,"+skinon+
-        ";shirtColor,"+shirtColor+
-        ";armor,"+armor+
-        ";stamina,"+stamina+
-        ";health,"+health+
-        ";hunger,"+hunger+
-        ";attackTime,"+attackTime+
-        ";attackDir,"+attackDir.ordinal()+
-        ";activeItem,"+(activeItem==null?"null": activeItem.getData())+
-        ";isFishing,"+(isFishing==true?"1": "0")+
-        ";moveSpeed,"+moveSpeed;
-        
-        return updates;
-    }*/
-	
-	
-	protected String getUpdateString() {
-		String updates = super.getUpdateString() + ";";
-		updates += "skinon,"+skinon+
-		";shirtColor,"+shirtColor+
-		";armor,"+armor+
-		";stamina,"+stamina+
-		";health,"+health+
-		";hunger,"+hunger+
-		";attackTime,"+attackTime+
-		";attackDir,"+attackDir.ordinal()+
-		";activeItem,"+(activeItem==null?"null": activeItem.getData())+
-		";isFishing,"+(isFishing==true?"1": "0")+
-        ";moveSpeed,"+moveSpeed;
+        updates += "skinon," + skinon +
+        ";shirtColor," + shirtColor +
+        ";armor," + armor +
+        ";stamina," + stamina +
+        ";health," + health +
+        ";hunger," + hunger +
+        ";attackTime," + attackTime +
+        ";attackDir," + attackDir.ordinal() +
+        ";activeItem," + (activeItem == null ? "null" : activeItem.getData()) +
+        ";isFishing," + (isFishing ? "1" : "0");
 
-		return updates;
-	}
-	
-	/*
-	// Activate when Ferrosite problem has solved
+        return updates;
+    }
+
     @Override
     protected boolean updateField(String field, String val) {
         if (super.updateField(field, val)) return true;
@@ -1396,56 +1376,22 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             case "mult": multiplier = Integer.parseInt(val); return true;
             case "attackTime": attackTime = Integer.parseInt(val); return true;
             case "attackDir": attackDir = Direction.values[Integer.parseInt(val)]; return true;
-            case "activeItem": 
+            case "activeItem":
                 activeItem = Items.get(val, true);
                 attackItem = activeItem != null && activeItem.canAttack() ? activeItem : null;
                 return true;
             case "isFishing": isFishing = Integer.parseInt(val) == 1; return true;
             case "potioneffects":
                 potioneffects.clear();
-                for(String potion: val.split(":")) {
+                for (String potion: val.split(":")) {
                     String[] parts = potion.split("_");
                     potioneffects.put(PotionType.values[Integer.parseInt(parts[0])], Integer.parseInt(parts[1]));
                 }
                 return true;
-            case "moveSpeed": moveSpeed = Double.parseDouble(val); return true;
         }
-        
-        return false;
-    }*/
-	
-	
-	@Override
-	protected boolean updateField(String field, String val) {
-		if (super.updateField(field, val)) return true;
-		switch (field) {
-			case "skinon": skinon = Boolean.parseBoolean(val); return true;
-			case "shirtColor": shirtColor = Integer.parseInt(val); return true;
-			case "armor": armor = Integer.parseInt(val); return true;
-			case "stamina": stamina = Integer.parseInt(val); return true;
-			case "health": health = Integer.parseInt(val); return true;
-			case "hunger": hunger = Integer.parseInt(val); return true;
-			case "score": score = Integer.parseInt(val); return true;
-			case "mult": multiplier = Integer.parseInt(val); return true;
-			case "attackTime": attackTime = Integer.parseInt(val); return true;
-			case "attackDir": attackDir = Direction.values[Integer.parseInt(val)]; return true;
-			case "activeItem": 
-				activeItem = Items.get(val, true);
-				attackItem = activeItem != null && activeItem.canAttack() ? activeItem : null;
-				return true;
-			case "isFishing": isFishing = Integer.parseInt(val) == 1; return true;
-			case "potioneffects":
-				potioneffects.clear();
-				for(String potion: val.split(":")) {
-					String[] parts = potion.split("_");
-					potioneffects.put(PotionType.values[Integer.parseInt(parts[0])], Integer.parseInt(parts[1]));
-				}
-				return true;
-            case "moveSpeed": moveSpeed = Double.parseDouble(val); return true;
-		}
 
-		return false;
-	}
+        return false;
+    }
 	
 	public final String getPlayerData() {
 		List<String> datalist = new ArrayList<>();

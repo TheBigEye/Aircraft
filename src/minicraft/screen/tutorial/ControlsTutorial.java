@@ -34,6 +34,7 @@ public class ControlsTutorial extends Display {
 		);
 	}
 	
+	@Override
 	public void render(Screen screen) {
 		super.render(screen);
 		

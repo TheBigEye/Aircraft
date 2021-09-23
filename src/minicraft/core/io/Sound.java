@@ -37,7 +37,7 @@ public class Sound { // Creates sounds from their respective files
 
     // Generic mob
     public static final Sound Mob_generic_hurt = new Sound(MOB_SOUNDS_DIR + "monsterhurt.wav");
-    
+
     // Air Wizard
     public static final Sound Mob_wizard_death = new Sound(MOB_SOUNDS_DIR + "AirWizard/bossdeath.wav");
     public static final Sound Mob_wizard_changePhase = new Sound(MOB_SOUNDS_DIR + "AirWizard/changephase.wav");
@@ -53,9 +53,9 @@ public class Sound { // Creates sounds from their respective files
     public static final Sound Mob_creeper_explode_2 = new Sound(MOB_SOUNDS_DIR + "Creeper/explode 2.wav");
     public static final Sound Mob_creeper_explode_3 = new Sound(MOB_SOUNDS_DIR + "Creeper/explode 3.wav");
     public static final Sound Mob_creeper_explode_4 = new Sound(MOB_SOUNDS_DIR + "Creeper/explode 4.wav");
-    
+
     // Particles sounds =============================================================================================================
-    
+
     // Sparks
     public static final Sound Particle_spark_spawn = new Sound(PARTICLE_SOUNDS_DIR + "Spark/Spawn.wav");
 
@@ -134,16 +134,16 @@ public class Sound { // Creates sounds from their respective files
 
                 System.out.println("Supported audio formats:");
                 System.out.println("-source:");
-                
+
                 Line.Info[] sinfo = AudioSystem.getSourceLineInfo(info);
                 Line.Info[] tinfo = AudioSystem.getTargetLineInfo(info);
-                
+
                 for (int i = 0; i < sinfo.length; i++) {
                     if (sinfo[i] instanceof DataLine.Info) {
-                    	
+
                         DataLine.Info dataLineInfo = (DataLine.Info) sinfo[i];
                         AudioFormat[] supportedFormats = dataLineInfo.getFormats();
-                        
+
                         for (AudioFormat af: supportedFormats) {
                             System.out.println(af);
                         }
@@ -152,10 +152,10 @@ public class Sound { // Creates sounds from their respective files
                 System.out.println("-target:");
                 for (int i = 0; i < tinfo.length; i++) {
                     if (tinfo[i] instanceof DataLine.Info) {
-                    	
+
                         DataLine.Info dataLineInfo = (DataLine.Info) tinfo[i];
                         AudioFormat[] supportedFormats = dataLineInfo.getFormats();
-                        
+
                         for (AudioFormat af: supportedFormats) {
                             System.out.println(af);
                         }
@@ -189,7 +189,7 @@ public class Sound { // Creates sounds from their respective files
             return;
         }
         if (clip.isRunning() || clip.isActive()) {
-            clip.stop(); 
+            clip.stop();
         }
         clip.start();
     }
@@ -197,12 +197,12 @@ public class Sound { // Creates sounds from their respective files
 
     public void loop(boolean start) { // This repeats the same clip over and over again,
         if (!(boolean) Settings.get("sound") || clip == null) {
-            return;  
+            return;
         }
         if (start) {
-            clip.loop(Clip.LOOP_CONTINUOUSLY); 
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
         } else {
-            clip.stop();  
+            clip.stop();
         }
     }
 

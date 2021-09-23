@@ -27,8 +27,9 @@ public class SkyFernTile extends Tile {
 		maySpawn = true;
 	}
 
+	@Override
 	public boolean tick(Level level, int xt, int yt) {
-		// TODO revise this method.
+
 		if (random.nextInt(30) != 0) return false;
 
 		int xn = xt;
@@ -51,6 +52,7 @@ public class SkyFernTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		Tiles.get("sky high grass").render(screen, level, x, y);     
 		
@@ -85,6 +87,7 @@ public class SkyFernTile extends Tile {
 		SkyFernSprite.render(screen, x * 16, y * 16);
 	}
 	
+	@Override
 	public void steppedOn(Level level, int x, int y, Entity entity) {	
 		if (entity instanceof Player) {
 			
@@ -112,6 +115,7 @@ public class SkyFernTile extends Tile {
 		}
 	}
 
+	@Override
 	public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
@@ -131,9 +135,10 @@ public class SkyFernTile extends Tile {
 		return false;
 	}
 
+	@Override
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		if (random.nextInt(12) == 1) { // 20% chance to drop sky seeds
-		level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));
+			level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));
 		}
 		level.setTile(x, y, Tiles.get("sky high grass"));
 		return true;

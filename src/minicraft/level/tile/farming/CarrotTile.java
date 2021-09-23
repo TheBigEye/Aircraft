@@ -34,6 +34,7 @@ public class CarrotTile extends Plant {
 		screen.render(x * 16 + 8, y * 16 + 8, 13 + 1 * 32 + icon, 1, 1);
 	}
 
+	@Override
 	public boolean IfWater(Level level, int xs, int ys) {
 		Tile[] areaTiles = level.getAreaTiles(xs, ys, 2);
 		for (Tile t : areaTiles)
@@ -43,6 +44,7 @@ public class CarrotTile extends Plant {
 		return false;
 	}
 
+	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
@@ -57,6 +59,7 @@ public class CarrotTile extends Plant {
 		return false;
 	}
 
+	@Override
 	public void steppedOn(Level level, int xt, int yt, Entity entity) {
 		if (random.nextInt(60) != 0)
 			return;
@@ -71,7 +74,8 @@ public class CarrotTile extends Plant {
 		return true;
 	}
 
-	 protected void harvest(Level level, int x, int y, Entity entity) {
+	@Override
+	protected void harvest(Level level, int x, int y, Entity entity) {
 		int age = level.getData(x, y);
 
 		//level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Carrot"));

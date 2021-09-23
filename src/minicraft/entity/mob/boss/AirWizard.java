@@ -14,7 +14,9 @@ import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
 
 public class AirWizard extends EnemyMob {
+	
     private static MobSprite[][][] sprites;
+    
     static {
         sprites = new MobSprite[2][4][2];
         for (int i = 0; i < 2; i++) {
@@ -120,8 +122,8 @@ public class AirWizard extends EnemyMob {
             } else if (xd * xd + yd * yd > 16 * 16 * 15 * 15) { // 15 squares away
                 /// drags the airwizard to the player, maintaining relative position.
                 double hypot = Math.sqrt(xd * xd + yd * yd);
-                int newxd = (int)(xd * Math.sqrt(16 * 16 * 15 * 15) / hypot);
-                int newyd = (int)(yd * Math.sqrt(16 * 16 * 15 * 15) / hypot);
+                int newxd = (int) (xd * Math.sqrt(16 * 16 * 15 * 15) / hypot);
+                int newyd = (int) (yd * Math.sqrt(16 * 16 * 15 * 15) / hypot);
                 x = player.x - newxd;
                 y = player.y - newyd;
             }
@@ -210,14 +212,14 @@ public class AirWizard extends EnemyMob {
 
         if (!secondform) {
             level.add(new AirWizardPhase2(1), x, y);
-            Updater.notifyAll("You have awakened the Fury!!");
-            if (!beaten) Updater.notifyAll("", 200);
+            Updater.notifyAll("Phase II");
+            if (!beaten) Updater.notifyAll("Phase II", 200);
             beaten = false;
 
         } else {
 
             level.add(new AirWizardPhase2(true), x, y);
-            Updater.notifyAll("You have revived the Fury!!");
+            Updater.notifyAll("Phase II");
         }
 
         super.die(); // calls the die() method in EnemyMob.java

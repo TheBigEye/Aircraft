@@ -49,6 +49,7 @@ public class DungeonChest extends Chest {
 		return new DungeonChest(false, !this.isLocked);
 	}
 
+	@Override
 	public boolean use(Player player) {
 		if (isLocked) {
 			boolean activeKey = player.activeItem != null && player.activeItem.equals(Items.get("Key"));

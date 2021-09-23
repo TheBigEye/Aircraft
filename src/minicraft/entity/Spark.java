@@ -3,7 +3,6 @@ package minicraft.entity;
 import java.util.List;
 
 import minicraft.core.Game;
-import minicraft.core.io.Sound;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.boss.AirWizard;
@@ -100,6 +99,7 @@ public class Spark extends Entity {
 	}
 	
 	/** Can this entity block you? Nope. */
+    @Override
 	public boolean isSolid() {
 		return false;
 	}

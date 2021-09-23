@@ -28,6 +28,7 @@ public class PotatoTile extends Plant {
 		screen.render(x * 16 + 8, y * 16 + 8, 13 + 2 * 32 + icon, 1, 1);
 	}
 
+	@Override
 	protected boolean IfWater(Level level, int xs, int ys) {
 		Tile[] areaTiles = level.getAreaTiles(xs, ys, 1);
 		for (Tile t : areaTiles)

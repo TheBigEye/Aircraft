@@ -12,7 +12,8 @@ public class Lantern extends Furniture {
 		IRON("Iron Lantern", 12, 2),
 		GOLD("Gold Lantern", 15, 4);
 
-		protected int light, offset;
+		protected int light;
+		protected int offset;
 		protected String title;
 
 		Type(String title, int light, int offset) {
@@ -36,26 +37,21 @@ public class Lantern extends Furniture {
 		this.type = type;
 	}
 
+    @Override
 	public void tick() {
 		super.tick();
 
 		int randX = rnd.nextInt(10);
 		int randY = rnd.nextInt(9);
 
-		if (random.nextInt(12) == 1) {
-			level.add(new BrightParticle(x - 9 + randX, y - 12 + randY));
-		}
-		if (random.nextInt(12) == 4) {
-
+		if (random.nextInt(12) == 0) {
+			level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
 		}
 		if (random.nextInt(12) == 6) {
-			level.add(new BrightParticle(x - 9 + randX, y - 12 + randY));
-		}
-		if (random.nextInt(12) == 8) {
-
+			level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
 		}
 		if (random.nextInt(12) == 12) {
-			level.add(new BrightParticle(x - 9 + randX, y - 12 + randY));
+			level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
 		}
 	}
 		

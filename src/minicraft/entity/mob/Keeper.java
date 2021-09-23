@@ -1,6 +1,5 @@
 package minicraft.entity.mob;
 
-import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.gfx.Color;
 import minicraft.gfx.Font;
@@ -91,7 +90,8 @@ public class Keeper extends EnemyMob {
     
 	@SuppressWarnings("unused")
 	public void die() {
-		int min = 0, max = 0;
+		int min = 0;
+		int max = 0;
 		if (Settings.get("diff").equals("Peaceful")) {min = 1; max = 3;}
 		if (Settings.get("diff").equals("Easy")) {min = 1; max = 3;}
 		if (Settings.get("diff").equals("Normal")) {min = 1; max = 2;}

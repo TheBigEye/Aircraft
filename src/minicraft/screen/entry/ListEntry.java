@@ -12,7 +12,8 @@ public abstract class ListEntry {
 	public static final int COL_UNSLCT = Color.GRAY;
 	public static final int COL_SLCT = Color.WHITE;
 
-	private boolean selectable = true, visible = true;
+	private boolean selectable = true;
+	private boolean visible = true;
 
 	/**
 	 * Ticks the entry. Used to handle input from the InputHandler

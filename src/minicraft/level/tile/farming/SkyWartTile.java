@@ -28,6 +28,7 @@ public class SkyWartTile extends SkyPlant {
 		screen.render(x * 16 + 8, y * 16 + 8, 13 + 3 * 32 + icon, 1, 1);
 	}
 
+	@Override
 	protected boolean IfCloud(Level level, int xs, int ys) {
 		Tile[] areaTiles = level.getAreaTiles(xs, ys, 3);
 		for (Tile t : areaTiles)

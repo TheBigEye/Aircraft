@@ -64,7 +64,7 @@ public class ToolItem extends Item {
 	
 	/** You can attack mobs with tools. */
 	public boolean canAttack() {
-		return type != ToolType.Shear && type != ToolType.Flintnsteel;
+		return type != ToolType.Shear && type != ToolType.Igniter;
 	}
 	
 	public boolean payDurability() {

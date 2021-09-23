@@ -9,7 +9,8 @@ import javax.swing.JOptionPane;
 public class NoiseMap {
 	private static final Random random = new Random();
 	public double[] values;
-	private int w, h;
+	private int w;
+	private int h;
 
 	public NoiseMap(int w, int h, int featureSize) {
 		this.w = w;

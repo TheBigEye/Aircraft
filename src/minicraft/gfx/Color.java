@@ -205,7 +205,9 @@ public class Color {
 
 	/// this is for color testing.
 	public static void main(String[] args) {
-		int r, g, b;
+		int r; // red
+		int g; // green
+		int b; // blue
 
 		r = new Integer(args[0]);
 		g = new Integer(args[1]);
