@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import minicraft.core.FileHandler;
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
+import minicraft.core.io.Sound;
 import minicraft.gfx.Color;
 import minicraft.gfx.Font;
 import minicraft.gfx.Screen;
@@ -100,7 +101,7 @@ public class TexturePackDisplay extends Display {
 
     @Override
     public void tick(InputHandler input) {
-        if (input.getKey("menu").clicked || input.getKey("exit").clicked) {
+        if (input.getKey("exit").clicked) {
             Game.exitMenu();
             return;
         }
@@ -116,13 +117,14 @@ public class TexturePackDisplay extends Display {
 
         if (input.getKey("SELECT").clicked) {
             shouldUpdate = true;
+            Sound.GUI_confirm.play();
         }
     }
 
 
     // In case the name is too big ...
     private static String shortNameIfLong(String name) {
-        return name.length() > 22 ? name.substring(0, 16) + "..." : name;
+        return name.length() > 24 ? name.substring(0, 16) + "..." : name;
     }
 
     @Override
@@ -160,17 +162,7 @@ public class TexturePackDisplay extends Display {
                 screen.render(xo + x * 8, yo + y * 8, x + y * 32, 0, 3); // Texture pack logo
             }
         }
-
-        /* Unnecessary for now...
-         * This part is used to test the change of textures
-         * in some future it may be useful
-         *
-         *screen.render(24, 48, 134, Color.get(-1, 110, 330, 550), 0);
-         *screen.render(48, 48, 136, Color.get(-1, 110, 330, 550), 0);
-         *screen.render(72, 48, 164, Color.get(-1, 100, 321, 45), 0);
-         *screen.render(96, 48, 384, Color.get(0, 200, 500, 533), 0);
-         *screen.render(120, 48, 135, Color.get(-1, 100, 320, 430), 0);
-         */
+        
+        
     }
-
 }

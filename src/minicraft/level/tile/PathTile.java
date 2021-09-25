@@ -18,7 +18,7 @@ public class PathTile extends Tile {
 		connectsToGrass = false;
 		maySpawn = true;
 	}
-
+	
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
