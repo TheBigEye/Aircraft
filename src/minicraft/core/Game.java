@@ -59,7 +59,7 @@ public class Game {
 
     public static final String NAME = "Aircraft"; // This is the name on the application window
     public static final String BUILD = "0.4"; // Aircraft version
-    public static final Version VERSION = new Version("2.0.7"); // Minicraft plus mod base version
+    public static final Version VERSION = new Version("2.1.0-dev1"); // Minicraft plus mod base version
 
     public static InputHandler input; // Input used in Game, Player, and just about all the *Menu classes.
     public static Player player;
