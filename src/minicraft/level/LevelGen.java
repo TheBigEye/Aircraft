@@ -55,22 +55,22 @@ public class LevelGen {
                       double d = sample(x + stepSize, y + stepSize); // fetches the value one down, one right.
 
                       /*
-                     * This could probably use some explaining... Note: the number values are probably only good the first time around...
-                     * 
-                     * This starts with taking the average of the four numbers from before (they form a little square in adjacent tiles), each of which holds a value from -1 to 1. Then, it basically adds a 5th number, generated the same way as before. However, this 5th number is multiplied by a few things first...
-                     * ...by stepSize, aka featureSize, and scale, which is 2/size the first time. featureSize is 16 or 32, which is a multiple of the common level size, 128. Precisely, it is 128 / 8, or 128 / 4, respectively with 16 and 32. So, the equation becomes size / const * 2 / size, or, simplified, 2 / const.
-                     * For a feature size of 32, stepSize * scale = 2 / 4 = 1/2. featureSize of 16, it's 2 / 8 = 1/4. Later on, this gets closer to 4 / 4 = 1, so... the 5th value may not change much at all in later iterations for a feature size of 32, which means it has an effect of 1, which is actually quite
-                     * significant to the value that is set. So, it tends to decrease the 5th -1 or 1 number, sometimes making it of equal value to the other 4 numbers, sort of. It will usually change the end result by 0.5 to 0.25, perhaps; at max.
-                     */
+                      * This could probably use some explaining... Note: the number values are probably only good the first time around...
+                      * 
+                      * This starts with taking the average of the four numbers from before (they form a little square in adjacent tiles), each of which holds a value from -1 to 1. Then, it basically adds a 5th number, generated the same way as before. However, this 5th number is multiplied by a few things first...
+                      * ...by stepSize, aka featureSize, and scale, which is 2/size the first time. featureSize is 16 or 32, which is a multiple of the common level size, 128. Precisely, it is 128 / 8, or 128 / 4, respectively with 16 and 32. So, the equation becomes size / const * 2 / size, or, simplified, 2 / const.
+                      * For a feature size of 32, stepSize * scale = 2 / 4 = 1/2. featureSize of 16, it's 2 / 8 = 1/4. Later on, this gets closer to 4 / 4 = 1, so... the 5th value may not change much at all in later iterations for a feature size of 32, which means it has an effect of 1, which is actually quite
+                      * significant to the value that is set. So, it tends to decrease the 5th -1 or 1 number, sometimes making it of equal value to the other 4 numbers, sort of. It will usually change the end result by 0.5 to 0.25, perhaps; at max.
+                      */
 
                       double e = (a + b + c + d) / 4.0 + (random.nextFloat() * 2 - 1) * stepSize * scale;
 
                       /*
-                     * This sets the value that is right in the middle of the
-                     * other 4 to an average of the four, plus a 5th number,
-                     * which makes it slightly off, differing by about 0.25
-                     * or so on average, the first time around.
-                     */
+                      * This sets the value that is right in the middle of the
+                      * other 4 to an average of the four, plus a 5th number,
+                      * which makes it slightly off, differing by about 0.25
+                      * or so on average, the first time around.
+                      */
 
                       setSample(x + halfStep, y + halfStep, e);
                  }
@@ -80,6 +80,7 @@ public class LevelGen {
             // Steps we set in the last loop.
             for (int y = 0; y < h; y += stepSize) {
                  for (int x = 0; x < w; x += stepSize) {
+                     
                       double a = sample(x, y); // middle (current) tile
                       double b = sample(x + stepSize, y); // right tile
                       double c = sample(x, y + stepSize); // bottom tile
@@ -106,6 +107,7 @@ public class LevelGen {
             stepSize /= 2;
             scale *= (scaleMod + 0.8);
             scaleMod *= 0.4;
+            
         } while ( stepSize > 1 ); // This stops when the stepsize is < 1, aka 0 b/c it's an int. At this point
         // There are no more mid values.
     }
@@ -135,7 +137,7 @@ public class LevelGen {
         if (level == 0) return createAndValidateTopMap(w, h);
         if (level == -4) return createAndValidateDungeon(w, h);
 
-        if (level > -4 && level < 0) return createAndValidateUndergroundMap(w, h, -level);
+        if ((level > -4) && (level < 0)) return createAndValidateUndergroundMap(w, h, -level);
 
         System.err.println("LevelGen ERROR: level index is not valid. Could not generate a level.");
 
@@ -613,158 +615,168 @@ public class LevelGen {
             }
         }
 
-    if (!Settings.get("Theme").equals("Snow")) {
-      for (int i = 0; i < w * h / 200; i++) {
-        int x = random.nextInt(w);
-        int y = random.nextInt(h);
-        for (int j = 0; j < 50; j++) {
-          int xx = x + random.nextInt(15) - random.nextInt(15);
-          int yy = y + random.nextInt(15) - random.nextInt(15);
-          if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-            if (map[xx + yy * w] == Tiles.get("snow").id) {
-              map[xx + yy * w] = Tiles.get("pine tree").id;
+        if (!Settings.get("Theme").equals("Snow")) {
+            for (int i = 0; i < w * h / 200; i++) {
+                 int x = random.nextInt(w);
+                 int y = random.nextInt(h);
+                 for (int j = 0; j < 50; j++) {
+                      int xx = x + random.nextInt(15) - random.nextInt(15);
+                      int yy = y + random.nextInt(15) - random.nextInt(15);
+                      if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+                          if (map[xx + yy * w] == Tiles.get("snow").id) {
+                              map[xx + yy * w] = Tiles.get("pine tree").id;
+                          }
+                      }
+                 }
             }
-          }
         }
-      }
-    }
 
-    // Add flower and plants to biomes
-    for (int i = 0; i < w * h / 400; i++) {
-      int x = random.nextInt(w);
-      int y = random.nextInt(h);
-      int col = random.nextInt(4);
-      for (int j = 0; j < 30; j++) {
-        int xx = x + random.nextInt(5) - random.nextInt(5);
-        int yy = y + random.nextInt(5) - random.nextInt(5);
-        if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-          if (map[xx + yy * w] == Tiles.get("grass").id) {
-            map[xx + yy * w] = Tiles.get("flower").id;
-            data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16); // data determines which way the flower faces
-          }
+        // Add flower and plants to biomes
+        for (int i = 0; i < w * h / 400; i++) {
+             int x = random.nextInt(w);
+             int y = random.nextInt(h);
+             int col = random.nextInt(4);
+             for (int j = 0; j < 30; j++) {
+                  int xx = x + random.nextInt(5) - random.nextInt(5);
+                  int yy = y + random.nextInt(5) - random.nextInt(5);
+                  if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+                      if (map[xx + yy * w] == Tiles.get("grass").id) {
+                          map[xx + yy * w] = Tiles.get("flower").id;
+                          data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16); // data determines which way the flower faces
+                      }
+                  }
+             }
         }
-      }
-    }
-    for (int i = 0; i < w * h / 400; i++) {
-      int x = random.nextInt(w);
-      int y = random.nextInt(h);
-      int col = random.nextInt(4);
-      for (int j = 0; j < 100; j++) {
-        int xx = x + random.nextInt(5) - random.nextInt(5);
-        int yy = y + random.nextInt(5) - random.nextInt(5);
-        if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-          if (map[xx + yy * w] == Tiles.get("grass").id) {
-            map[xx + yy * w] = Tiles.get("lawn").id;
-            data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16);
-          }
+        
+        // Add lawn to grass
+        for (int i = 0; i < w * h / 400; i++) {
+             int x = random.nextInt(w);
+             int y = random.nextInt(h);
+             int col = random.nextInt(4);
+             for (int j = 0; j < 100; j++) {
+                  int xx = x + random.nextInt(5) - random.nextInt(5);
+                  int yy = y + random.nextInt(5) - random.nextInt(5);
+                  if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+                      if (map[xx + yy * w] == Tiles.get("grass").id) {
+                          map[xx + yy * w] = Tiles.get("lawn").id;
+                              data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16);
+                      }
+                  }
+             }
         }
-      }
-    }
 
-    for (int i = 0; i < w * h / 100; i++) {
-      int x = random.nextInt(w);
-      int y = random.nextInt(h);
-      int col = random.nextInt(4);
-      for (int j = 0; j < 20; j++) {
-        int xx = x + random.nextInt(4) - random.nextInt(4);
-        int yy = y + random.nextInt(4) - random.nextInt(4);
-        if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-          if (map[xx + yy * w] == Tiles.get("grass").id) {
-            map[xx + yy * w] = Tiles.get("orange tulip").id;
-            data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16);
-          }
+        // add orange tulip to grass
+        for (int i = 0; i < w * h / 100; i++) {
+             int x = random.nextInt(w);
+             int y = random.nextInt(h);
+             int col = random.nextInt(4);
+             for (int j = 0; j < 20; j++) {
+                  int xx = x + random.nextInt(4) - random.nextInt(4);
+                  int yy = y + random.nextInt(4) - random.nextInt(4);
+                  if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+                      if (map[xx + yy * w] == Tiles.get("grass").id) {
+                          map[xx + yy * w] = Tiles.get("orange tulip").id;
+                          data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16);
+                      }
+                  }
+             }
         }
-      }
-    }
 
-    for (int i = 0; i < w * h / 150; i++) {
-      int xx = random.nextInt(w);
-      int yy = random.nextInt(h);
-      if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-        if (map[xx + yy * w] == Tiles.get("sand").id) {
-          map[xx + yy * w] = Tiles.get("cactus").id;
+        // add cactus to sand
+        for (int i = 0; i < w * h / 150; i++) {
+             int xx = random.nextInt(w);
+             int yy = random.nextInt(h);
+             if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+                 if (map[xx + yy * w] == Tiles.get("sand").id) {
+                     map[xx + yy * w] = Tiles.get("cactus").id;
+                 }
+             }
         }
-      }
-    }
 
-    for (int i = 0; i < w * h / 100; i++) {
-      int xx = random.nextInt(w);
-      int yy = random.nextInt(h);
-      if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-        if (map[xx + yy * w] == Tiles.get("snow").id) {
-          map[xx + yy * w] = Tiles.get("ice spike").id;
+        // add ice spikes to snow
+        for (int i = 0; i < w * h / 100; i++) {
+             int xx = random.nextInt(w);
+             int yy = random.nextInt(h);
+             if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+                 if (map[xx + yy * w] == Tiles.get("snow").id) {
+                     map[xx + yy * w] = Tiles.get("ice spike").id;
+                 }
+             }
         }
-      }
-    }
-
-    for (int i = 0; i < w * h / 100; i++) {
-      int x = random.nextInt(w);
-      int y = random.nextInt(h);
-      for (int j = 0; j < 20; j++) {
-        int xx = x + random.nextInt(2) - random.nextInt(2);
-        int yy = y + random.nextInt(2) - random.nextInt(2);
-        if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-          if (map[xx + yy * w] == Tiles.get("snow").id) {
-            map[xx + yy * w] = Tiles.get("ice spike").id;
-          }
+        
+        //  same...
+        for (int i = 0; i < w * h / 100; i++) {
+             int x = random.nextInt(w);
+             int y = random.nextInt(h);
+             for (int j = 0; j < 20; j++) {
+                  int xx = x + random.nextInt(2) - random.nextInt(2);
+                  int yy = y + random.nextInt(2) - random.nextInt(2);
+                  if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+                      if (map[xx + yy * w] == Tiles.get("snow").id) {
+                          map[xx + yy * w] = Tiles.get("ice spike").id;
+                      }
+                  }
+             }
         }
-      }
-    }
 
-    /*for (int i = 0; i < w * h / 400; i++) {
-        	int x = random.nextInt(w);
-        	int y = random.nextInt(h);
-        	for (int j = 0; j < 80; j++) {
-        		int xx = x + random.nextInt(6) - random.nextInt(3);
-        		int yy = y + random.nextInt(6) - random.nextInt(3);
-        		if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-        			if (map[xx + yy * w] == Tiles.get("sand").id) {
-        				map[xx + yy * w] = Tiles.get("sand rock").id;
+        /*for (int i = 0; i < w * h / 400; i++) {
+        	    int x = random.nextInt(w);
+        	    int y = random.nextInt(h);
+        	    for (int j = 0; j < 80; j++) {
+        		     int xx = x + random.nextInt(6) - random.nextInt(3);
+        		     int yy = y + random.nextInt(6) - random.nextInt(3);
+        		     if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+        			     if (map[xx + yy * w] == Tiles.get("sand").id) {
+        				     map[xx + yy * w] = Tiles.get("sand rock").id;
 
-        			}
-        		}
-        	}
-        }*/
+        			    }
+        		    }
+        	    }
+            }*/
 
     // Generate the stairs inside the rock
-    int count = 0;
+        int count = 0;
 
-    if (Game.debug) System.out.println("Generating stairs for surface level...");
+        if (Game.debug) {
+            System.out.println("Generating stairs for surface level...");
+        }
 
-    stairsLoop: for (int i = 0; i < w * h / 100; i++) { // loops a certain number of times, more for bigger world
+        stairsLoop: for (int i = 0; i < w * h / 100; i++) { // loops a certain number of times, more for bigger world
 
-      // sizes.
-      int x = random.nextInt(w - 2) + 1;
-      int y = random.nextInt(h - 2) + 1;
+            // sizes.
+            int x = random.nextInt(w - 2) + 1;
+            int y = random.nextInt(h - 2) + 1;
 
-      // the first loop, which checks to make sure that a new stairs tile will be
-      // completely surrounded by rock.
-      for (int yy = y - 1; yy <= y + 1; yy++)
-      for (int xx = x - 1; xx <= x + 1; xx++)
-      if (map[xx + yy * w] != Tiles.get("rock").id) continue stairsLoop;
+            // the first loop, which checks to make sure that a new stairs tile will be
+            // completely surrounded by rock.
+            for (int yy = y - 1; yy <= y + 1; yy++)
+                 for (int xx = x - 1; xx <= x + 1; xx++)
+                      if (map[xx + yy * w] != Tiles.get("rock").id) continue stairsLoop;
 
-      // this should prevent any stairsDown tile from being within 30 tiles of any
-      // other stairsDown tile.
-      for (int yy = Math.max(0, y - stairRadius); yy <= Math.min(h - 1, y + stairRadius); yy++)
-      for (int xx = Math.max(0, x - stairRadius); xx <= Math.min(w - 1, x + stairRadius); xx++)
-      if (map[xx + yy * w] == Tiles.get("Stairs Down").id) continue stairsLoop;
+            // this should prevent any stairsDown tile from being within 30 tiles of any
+            // other stairsDown tile.
+            for (int yy = Math.max(0, y - stairRadius); yy <= Math.min(h - 1, y + stairRadius); yy++)
+                 for (int xx = Math.max(0, x - stairRadius); xx <= Math.min(w - 1, x + stairRadius); xx++)
+                      if (map[xx + yy * w] == Tiles.get("Stairs Down").id) continue stairsLoop;
 
-      map[x + y * w] = Tiles.get("Stairs Down").id;
+            map[x + y * w] = Tiles.get("Stairs Down").id;
 
-      count++;
-      if (count >= w / 21) break;
+            count++;
+            if (count >= w / 21) {
+                break;
+            }
+        }
+
+        // System.out.println("min="+min);
+        // System.out.println("max="+max);
+        // average /= w*h;
+        // System.out.println(average);
+
+        return new byte[][] {
+            map,
+            data
+        };
     }
-
-    // System.out.println("min="+min);
-    // System.out.println("max="+max);
-    // average /= w*h;
-    // System.out.println(average);
-
-    return new byte[][] {
-      map,
-      data
-    };
-  }
 
   // Dungeons generation code
   private static byte[][] createDungeon(int w, int h) {
@@ -1235,7 +1247,7 @@ public class LevelGen {
            }
       }
       
-      
+  
     } 
     
     if ((w == 128) && (h == 128)) { // for 128x worlds
@@ -1411,7 +1423,9 @@ public class LevelGen {
 
       map[x + y * w] = Tiles.get("Stairs Down").id;
       count++;
-      if (count >= w / 64) break;
+      if (count >= w / 64) {
+          break;
+      }
     }
 
     return new byte[][] {
@@ -1490,7 +1504,7 @@ public class LevelGen {
               for (int x = 0; x < w; x++) {
                    int i = x + y * w;
 
-                   // Map colors
+                   // Surface tiles
                    if (map[i] == Tiles.get("water").id) pixels[i] = 0x1a2c89;
                    if (map[i] == Tiles.get("lava").id) pixels[i] = 0xff2020;
                    if (map[i] == Tiles.get("iron Ore").id) pixels[i] = 0x000080;
