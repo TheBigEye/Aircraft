@@ -1,8 +1,8 @@
-![title](https://user-images.githubusercontent.com/63316583/113479425-732f0080-9465-11eb-86d9-ffcf2c865f84.png)
+![title](https://user-images.githubusercontent.com/63316583/135155859-86015a31-3b22-4283-922f-7d9497741e1f.png)
 
 A Modified version of Minicraft + that adds more features. 
 
-All the [releases](https://github.com/TheBigEye/Aircraft-Mod/releases).
+Watch all the [releases](https://github.com/TheBigEye/Aircraft-Mod/releases).
 
 ## Main features
 Graphics:
