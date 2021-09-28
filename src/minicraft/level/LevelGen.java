@@ -25,7 +25,7 @@ public class LevelGen {
     private int h;
 
     private static final int stairRadius = 15;
-
+    
     /** This creates noise to create random values for level generation */
     private LevelGen(int w, int h, int featureSize) {
         this.w = w;
@@ -105,8 +105,8 @@ public class LevelGen {
              * increases a bit, maybe to 4 / w at tops. This results in the 5th random value being more significant than the first 4 ones in later iterations.
              */
             stepSize /= 2;
-            scale *= (scaleMod + 0.8);
-            scaleMod *= 0.4;
+            scale *= (scaleMod + 0.8D);
+            scaleMod *= 0.4D;
             
         } while ( stepSize > 1 ); // This stops when the stepsize is < 1, aka 0 b/c it's an int. At this point
         // There are no more mid values.
@@ -337,7 +337,7 @@ public class LevelGen {
                          break;
 
                      default:
-                         // default clause should be the last one
+                         // meh
                      break;
                  }
             }
@@ -453,8 +453,8 @@ public class LevelGen {
                  int x = random.nextInt(w);
                  int y = random.nextInt(h);
                  for (int j = 0; j < 200; j++) {
-                      int xx = x + random.nextInt(15) - random.nextInt(15);
-                      int yy = y + random.nextInt(15) - random.nextInt(15);
+                      int xx = x + random.nextInt(15) - random.nextInt(14);
+                      int yy = y + random.nextInt(15) - random.nextInt(14);
                       if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                           if (map[xx + yy * w] == Tiles.get("grass").id) {
                               map[xx + yy * w] = Tiles.get("tree").id;
@@ -470,8 +470,8 @@ public class LevelGen {
                  int x = random.nextInt(w);
                  int y = random.nextInt(h);
                  for (int j = 0; j < 200; j++) {
-                      int xx = x + random.nextInt(15) - random.nextInt(15);
-                      int yy = y + random.nextInt(15) - random.nextInt(15);
+                      int xx = x + random.nextInt(15) - random.nextInt(14);
+                      int yy = y + random.nextInt(15) - random.nextInt(14);
                       if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                           if (map[xx + yy * w] == Tiles.get("grass").id) {
                               map[xx + yy * w] = Tiles.get("tree").id;
@@ -487,8 +487,8 @@ public class LevelGen {
                  int x = random.nextInt(w);
                  int y = random.nextInt(h);
                  for (int j = 0; j < 60; j++) {
-                      int xx = x + random.nextInt(15) - random.nextInt(15);
-                      int yy = y + random.nextInt(15) - random.nextInt(15);
+                      int xx = x + random.nextInt(15) - random.nextInt(12);
+                      int yy = y + random.nextInt(15) - random.nextInt(12);
                       if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                           if (map[xx + yy * w] == Tiles.get("snow").id) {
                               map[xx + yy * w] = Tiles.get("fir tree").id;
@@ -504,8 +504,8 @@ public class LevelGen {
                 int x = random.nextInt(w);
                 int y = random.nextInt(h);
                 for (int j = 0; j < 60; j++) {
-                     int xx = x + random.nextInt(15) - random.nextInt(15);
-                     int yy = y + random.nextInt(15) - random.nextInt(15);
+                     int xx = x + random.nextInt(15) - random.nextInt(14);
+                     int yy = y + random.nextInt(15) - random.nextInt(14);
                      if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                          if (map[xx + yy * w] == Tiles.get("snow").id) {
                              map[xx + yy * w] = Tiles.get("pine tree").id;
@@ -521,8 +521,8 @@ public class LevelGen {
                  int x = random.nextInt(w);
                  int y = random.nextInt(h);
                  for (int j = 0; j < 200; j++) {
-                      int xx = x + random.nextInt(15) - random.nextInt(15) + random.nextInt(5);
-                      int yy = y + random.nextInt(15) - random.nextInt(15) + random.nextInt(5);
+                      int xx = x + random.nextInt(15) - random.nextInt(12) + random.nextInt(4);
+                      int yy = y + random.nextInt(15) - random.nextInt(12) + random.nextInt(4);
                       if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                           if (map[xx + yy * w] == Tiles.get("grass").id) {
                               map[xx + yy * w] = Tiles.get("tree").id;
@@ -538,8 +538,8 @@ public class LevelGen {
                  int x = random.nextInt(w);
                  int y = random.nextInt(h);
                  for (int j = 0; j < 50; j++) {
-                      int xx = x + random.nextInt(15) - random.nextInt(15) + random.nextInt(5);
-                      int yy = y + random.nextInt(15) - random.nextInt(15) + random.nextInt(5);
+                      int xx = x + random.nextInt(15) - random.nextInt(12) + random.nextInt(4);
+                      int yy = y + random.nextInt(15) - random.nextInt(12) + random.nextInt(4);
                       if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                           if (map[xx + yy * w] == Tiles.get("snow").id) {
                               map[xx + yy * w] = Tiles.get("fir tree").id;
@@ -555,8 +555,8 @@ public class LevelGen {
                  int x = random.nextInt(w);
                  int y = random.nextInt(h);
                  for (int j = 0; j < 50; j++) {
-                      int xx = x + random.nextInt(15) - random.nextInt(15) + random.nextInt(5);
-                      int yy = y + random.nextInt(15) - random.nextInt(15) + random.nextInt(5);
+                      int xx = x + random.nextInt(15) - random.nextInt(14) + random.nextInt(5);
+                      int yy = y + random.nextInt(15) - random.nextInt(14) + random.nextInt(5);
                       if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                           if (map[xx + yy * w] == Tiles.get("snow").id) {
                               map[xx + yy * w] = Tiles.get("pine tree").id;
@@ -571,8 +571,8 @@ public class LevelGen {
                  int x = random.nextInt(w);
                  int y = random.nextInt(h);
                  for (int j = 0; j < 200; j++) {
-                      int xx = x + random.nextInt(15) - random.nextInt(15) + random.nextInt(5) - random.nextInt(2);
-                      int yy = y + random.nextInt(15) - random.nextInt(15) + random.nextInt(5) - random.nextInt(2);
+                      int xx = x + random.nextInt(15) - random.nextInt(12) + random.nextInt(5) - random.nextInt(2);
+                      int yy = y + random.nextInt(15) - random.nextInt(12) + random.nextInt(5) - random.nextInt(2);
                       if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                           if (map[xx + yy * w] == Tiles.get("grass").id) {
                               map[xx + yy * w] = Tiles.get("tree").id;
@@ -588,8 +588,8 @@ public class LevelGen {
                  int x = random.nextInt(w);
                  int y = random.nextInt(h);
                  for (int j = 0; j < 60; j++) {
-                      int xx = x + random.nextInt(15) - random.nextInt(15);
-                      int yy = y + random.nextInt(15) - random.nextInt(15);
+                      int xx = x + random.nextInt(15) - random.nextInt(14);
+                      int yy = y + random.nextInt(15) - random.nextInt(14);
                       if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                           if (map[xx + yy * w] == Tiles.get("grass").id) {
                               map[xx + yy * w] = Tiles.get("birch tree").id;
@@ -604,8 +604,8 @@ public class LevelGen {
                  int x = random.nextInt(w);
                  int y = random.nextInt(h);
                  for (int j = 0; j < 50; j++) {
-                      int xx = x + random.nextInt(15) - random.nextInt(15);
-                      int yy = y + random.nextInt(15) - random.nextInt(15);
+                      int xx = x + random.nextInt(15) - random.nextInt(12);
+                      int yy = y + random.nextInt(15) - random.nextInt(12);
                       if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                           if (map[xx + yy * w] == Tiles.get("snow").id) {
                               map[xx + yy * w] = Tiles.get("fir tree").id;
@@ -620,8 +620,8 @@ public class LevelGen {
                  int x = random.nextInt(w);
                  int y = random.nextInt(h);
                  for (int j = 0; j < 50; j++) {
-                      int xx = x + random.nextInt(15) - random.nextInt(15);
-                      int yy = y + random.nextInt(15) - random.nextInt(15);
+                      int xx = x + random.nextInt(15) - random.nextInt(14);
+                      int yy = y + random.nextInt(15) - random.nextInt(14);
                       if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                           if (map[xx + yy * w] == Tiles.get("snow").id) {
                               map[xx + yy * w] = Tiles.get("pine tree").id;
@@ -683,7 +683,7 @@ public class LevelGen {
         }
 
         // add cactus to sand
-        for (int i = 0; i < w * h / 150; i++) {
+        for (int i = 0; i < w * h / 148; i++) {
              int xx = random.nextInt(w);
              int yy = random.nextInt(h);
              if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
@@ -849,11 +849,11 @@ public class LevelGen {
   private static byte[][] createUndergroundMap(int w, int h, int depth) {
 
     LevelGen mnoise1 = new LevelGen(w, h, 16);
-    LevelGen mnoise2 = new LevelGen(w, h, 16);
+    LevelGen mnoise2 = new LevelGen(w, h, 8);
     LevelGen mnoise3 = new LevelGen(w, h, 16);
 
     LevelGen nnoise1 = new LevelGen(w, h, 16);
-    LevelGen nnoise2 = new LevelGen(w, h, 16);
+    LevelGen nnoise2 = new LevelGen(w, h, 8);
     LevelGen nnoise3 = new LevelGen(w, h, 16);
 
     LevelGen wnoise1 = new LevelGen(w, h, 16);
@@ -1167,9 +1167,9 @@ public class LevelGen {
       for (int i = 0; i < w * h / 400; i++) {
            int x = random.nextInt(w);
            int y = random.nextInt(h);
-           for (int j = 0; j < 100; j++) {
-                int xx = x + random.nextInt(5) - random.nextInt(5);
-                int yy = y + random.nextInt(5) - random.nextInt(5);
+           for (int j = 0; j < 75; j++) {
+                int xx = x + random.nextInt(3) - random.nextInt(3);
+                int yy = y + random.nextInt(3) - random.nextInt(3);
                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                     if (map[xx + yy * w] == Tiles.get("sky high grass").id) {
                         map[xx + yy * w] = Tiles.get("sky fern").id;
@@ -1182,9 +1182,9 @@ public class LevelGen {
       for (int i = 0; i < w * h / 400; i++) {
            int x = random.nextInt(w);
            int y = random.nextInt(h);
-           for (int j = 0; j < 100; j++) {
-                int xx = x + random.nextInt(16) - random.nextInt(16) + random.nextInt(5);
-                int yy = y + random.nextInt(16) - random.nextInt(16) + random.nextInt(5);
+           for (int j = 0; j < 75; j++) {
+                int xx = x + random.nextInt(14) - random.nextInt(12) + random.nextInt(4);
+                int yy = y + random.nextInt(14) - random.nextInt(12) + random.nextInt(4);
                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                     if (map[xx + yy * w] == Tiles.get("Sky grass").id) {
                         map[xx + yy * w] = Tiles.get("Cloud tree").id;
@@ -1197,9 +1197,9 @@ public class LevelGen {
       for (int i = 0; i < w * h / 200; i++) {
            int x = random.nextInt(w);
            int y = random.nextInt(h);
-           for (int j = 0; j < 100; j++) {
-                int xx = x + random.nextInt(16) - random.nextInt(16) + random.nextInt(5);
-                int yy = y + random.nextInt(16) - random.nextInt(16) + random.nextInt(5);
+           for (int j = 0; j < 75; j++) {
+                int xx = x + random.nextInt(14) - random.nextInt(12) + random.nextInt(4);
+                int yy = y + random.nextInt(14) - random.nextInt(12) + random.nextInt(4);
                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                     if (map[xx + yy * w] == Tiles.get("Sky grass").id) {
                         map[xx + yy * w] = Tiles.get("Blue cloud tree").id;
@@ -1212,9 +1212,9 @@ public class LevelGen {
       for (int i = 0; i < w * h / 400; i++) {
            int x = random.nextInt(w);
            int y = random.nextInt(h);
-           for (int j = 0; j < 100; j++) {
-                int xx = x + random.nextInt(14) - random.nextInt(12) + random.nextInt(5);
-                int yy = y + random.nextInt(14) - random.nextInt(12) + random.nextInt(5);
+           for (int j = 0; j < 75; j++) {
+                int xx = x + random.nextInt(14) - random.nextInt(12);
+                int yy = y + random.nextInt(14) - random.nextInt(12);
                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                     if (map[xx + yy * w] == Tiles.get("Sky high grass").id) {
                         map[xx + yy * w] = Tiles.get("Golden cloud tree").id;
@@ -1226,9 +1226,9 @@ public class LevelGen {
       for (int i = 0; i < w * h / 800; i++) {
            int x = random.nextInt(w);
            int y = random.nextInt(h);
-           for (int j = 0; j < 100; j++) {
-                int xx = x + random.nextInt(12) + random.nextInt(6);
-                int yy = y + random.nextInt(12) + random.nextInt(6);
+           for (int j = 0; j < 200; j++) {
+                int xx = x + random.nextInt(4) - random.nextInt(3);
+                int yy = y + random.nextInt(4) - random.nextInt(3);
                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                     if (map[xx + yy * w] == Tiles.get("Sky high grass").id) {
                         map[xx + yy * w] = Tiles.get("Holy rock").id;
@@ -1394,8 +1394,8 @@ public class LevelGen {
            int x = random.nextInt(w);
            int y = random.nextInt(h);
            for (int j = 0; j < 100; j++) {
-                int xx = x + random.nextInt(6) + random.nextInt(4);
-                int yy = y + random.nextInt(6) + random.nextInt(4);
+                int xx = x + random.nextInt(6);
+                int yy = y + random.nextInt(6);
                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                     if (map[xx + yy * w] == Tiles.get("Ferrosite").id) {
                         map[xx + yy * w] = Tiles.get("Holy rock").id;
@@ -1436,7 +1436,6 @@ public class LevelGen {
   }
 
   public static void main(String[] args) {
-
     /*
      * This is used to see seeds without having to run the game
      * I mean, this is a world viewer that uses the same method 
@@ -1479,17 +1478,29 @@ public class LevelGen {
       maplvls[0] = 0;
     }
 
-    // Execute it for 16 times
-    for (int j = 0; j < 16; j++) {
+    // Execute it forever
+    //noinspection InfiniteLoopStatement
+    while (true) {
+        
+        long startTime = System.nanoTime();
+        
          int w = 256;
          int h = 256;
-
-         int lvl = maplvls[idx++%maplvls.length];
-         if ((lvl > 1) || (lvl < -4)) {
-             continue;
+         
+         int mapScale = 0;
+         
+         if ((w == 128) && (h == 128)) {            
+             mapScale = 3;            
+         } else if ((w == 256) && (h == 256)) {           
+             mapScale = 2;            
+         } else if ((w == 512) && (h == 512)) {       
+             mapScale = 1;
          }
 
-         byte[][] fullmap = LevelGen.createAndValidateMap(w, h, 1);
+         int lvl = maplvls[idx++ % maplvls.length];
+         if (lvl > 1 || lvl < -4) continue;
+         
+         byte[][] fullmap = LevelGen.createAndValidateMap(w, h, lvl);
 
          if (fullmap == null) {
              continue;
@@ -1555,18 +1566,30 @@ public class LevelGen {
                    if (map[i] == Tiles.get("Blue cloud tree").id) pixels[i] = 0x00769E;
                    if (map[i] == Tiles.get("Ferrosite").id) pixels[i] = 0xcbc579;
                    if (map[i] == Tiles.get("Sky grass").id) pixels[i] = 0x5aab8a;
+                   if (map[i] == Tiles.get("Sky fern").id) pixels[i] = 0x5aab8a;
                    if (map[i] == Tiles.get("Sky lawn").id) pixels[i] = 0x56a383;
                    if (map[i] == Tiles.get("Sky high grass").id) pixels[i] = 0x4f9678;
                    if (map[i] == Tiles.get("Holy rock").id) pixels[i] = 0x7a7a7a;
 
               }
          }
+         
+         
+         long endTime = System.nanoTime();
+         long timeMillis = endTime - startTime ;
+         long timeElapsed = timeMillis / 1000000000;
 
-         // Print the seed, the generator version and the game version
-         System.out.println("Seed: " + worldSeed + " Gen-Version " + Game.BUILD);
+         String finalGenTime = "Time: " + timeElapsed + "s";
+         
+         if (timeElapsed > 60) {       
+             finalGenTime = "Time: " + timeElapsed + "s" + " | " + "WARNING: Slow gen!";
+         }
 
+        // Print the seed, the generator version, the elapsed time
+         System.out.println("[LevelGen]" + " | " + "Seed: " + worldSeed + " | " + "Gen-Version: " + Game.BUILD + " | " + finalGenTime);
+        
          img.setRGB(0, 0, w, h, pixels, 0, w);
-         JOptionPane.showMessageDialog(null, null, "Another Map", JOptionPane.PLAIN_MESSAGE, new ImageIcon(img.getScaledInstance(w * 2, h * 2, Image.SCALE_AREA_AVERAGING)));
+         JOptionPane.showMessageDialog(null, null, "Another Map", JOptionPane.PLAIN_MESSAGE, new ImageIcon(img.getScaledInstance(w * mapScale, h * mapScale, Image.SCALE_AREA_AVERAGING)));
          
          if (LevelGen.worldSeed == 0x100) {
              LevelGen.worldSeed = 0xAAFF20;

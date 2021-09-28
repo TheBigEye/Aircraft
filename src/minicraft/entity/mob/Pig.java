@@ -1,6 +1,7 @@
 package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
+import minicraft.entity.XpOrb;
 import minicraft.gfx.MobSprite;
 import minicraft.item.Items;
 
@@ -59,6 +60,8 @@ public class Pig extends PassiveMob {
             max = 2;
         }
 
+        level.add(new XpOrb(random.nextInt(17) , x , y), x, y);
+        
         if (isBurn) dropItem(min, max, Items.get("Cooked pork")); // if isBurn.. drop Cooked food
         if (!isBurn) dropItem(min, max, Items.get("raw pork")); // else, drop normal food
 

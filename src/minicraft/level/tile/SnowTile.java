@@ -80,13 +80,13 @@ public class SnowTile extends Tile {
 			level.setData(x, y, 10);
 
 			if (random.nextInt(30) == 1) {
-				Sound.Snow.play();
+				Sound.Tile_snow.play();
 			}
 			if (random.nextInt(30) == 15) {
-				Sound.Snow.play();
+				Sound.Tile_snow.play();
 			}
 			if (random.nextInt(30) == 30) {
-				Sound.Snow.play();
+				Sound.Tile_snow.play();
 			}
 
 		}
@@ -99,7 +99,7 @@ public class SnowTile extends Tile {
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("dirt"));
-					Sound.Snow.play();
+					Sound.Tile_snow.play();
 					level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 2, Items.get("Snow Ball"));
 					return true;
 				}

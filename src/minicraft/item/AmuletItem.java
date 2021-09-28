@@ -30,12 +30,13 @@ public class AmuletItem extends Item {
 
 		// Game.setMenu(new LevelTransitionDisplay(-4));
 
+	    
 		if (random.nextInt(3) == 0) {
 			Sound.Amulet_locked.play();
 		}
 
 		if (random.nextInt(3) == 1) {
-			Sound.Amulet_locked2.play();
+			Sound.Amulet_locked_2.play();
 		}
 
 		if (random.nextInt(3) == 2) {
@@ -44,8 +45,11 @@ public class AmuletItem extends Item {
 			Updater.notifyAll("The eye queen has awakened!");
 			Updater.setTime(600000);
 		}
+	    
+	    //new XpOrb(player, player.x, player.y);
+	    //level.add(new XpOrb(random.nextInt(17) , xt + 8 , yt + 8), player.x, player.y);
 
-		return this.interact(player, (Entity) null, attackDir);
+		return interact(player, (Entity) null, attackDir);
 	}
 
 	@Override

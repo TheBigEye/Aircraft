@@ -389,6 +389,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			if (onStairDelay <= 0) { // When the delay time has passed...
 				World.scheduleLevelChange((onTile == Tiles.get("Stairs Up")) ? 1 : -1); // Decide whether to go up or down.
 				onStairDelay = 10; // Resets delay, since the level has now been changed.
+				
+	            Sound.Mob_player_changelevel.play();
+				
 				return; // SKIPS the rest of the tick() method.
 			}
 			

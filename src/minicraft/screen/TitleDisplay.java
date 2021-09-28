@@ -272,6 +272,7 @@ public class TitleDisplay extends Display {
         "AntVenom loves cows! Honest!",
         "The eye and Cake rain!",
         "ASCII",
+        "32.872 lines of code!",
 
         "Nobody should read this! #404",
         "You should read Antidious Venomi!",
@@ -302,7 +303,7 @@ public class TitleDisplay extends Display {
 
         "Test == InDev!",
         "Story? yes!",
-        "Mod on phase B",
+        "Mod on phase B-eta",
 
         "Axes: good against plants!",
         "Picks: good against rocks!",
@@ -317,7 +318,7 @@ public class TitleDisplay extends Display {
         "Windows? I prefer Doors!",
         "2.5D FTW!",
         "Grab your friends!",
-        "Sky?, better Aether",
+        "Sky?, better Aether!",
 
         // Not Included
         "Null not included",
@@ -327,9 +328,10 @@ public class TitleDisplay extends Display {
         "No spiders included!",
         "No Endermen included!",
         "3rd dimension not included!",
-        "Orange box not included",
+        "Orange box not included!",
         "Alpha version not included!",
-        "Cthulhu sold separately",
+        "Cthulhu sold separately!",
+        "Skins not included!",
 
         // Included
         "Villagers included!",
@@ -355,6 +357,7 @@ public class TitleDisplay extends Display {
         //"Nether Now Included?",
 
         "Shhh!,secret dimension!",
+        "A nice cup of coffee!",
 
         // Worlds
         "Bigger Worlds!",
@@ -371,6 +374,7 @@ public class TitleDisplay extends Display {
         "Sugarcane is a Idea!",
         "Milk is an idea!",
         "Cakes is an idea!",
+        "Coffee is another idea!",
 
         "Texture packs!",
 
@@ -404,6 +408,7 @@ public class TitleDisplay extends Display {
 
         "Sleep at Night!",
         "Farm at Day!",
+        
         "Explanation Mark!",
         "!sdrawkcab si sihT",
         "This is forwards!",

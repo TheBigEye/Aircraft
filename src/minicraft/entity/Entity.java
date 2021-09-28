@@ -250,7 +250,7 @@ public abstract class Entity implements Tickable {
 	/** Removes the entity from the level. */
 	public void remove() {
 		if (removed && !(this instanceof ItemEntity)) // Apparently this happens fairly often with item entities.
-			System.out.println("Note: remove() called on removed entity: " + this);
+			//System.out.println("Note: remove() called on removed entity: " + this);
 		
 		removed = true;
 		

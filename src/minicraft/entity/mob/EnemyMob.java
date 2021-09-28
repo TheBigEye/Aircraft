@@ -174,6 +174,9 @@ public class EnemyMob extends MobAi {
     }
 
     public void die() {
+        
+
+        
         super.die(50 * lvl, 1);
     }
 

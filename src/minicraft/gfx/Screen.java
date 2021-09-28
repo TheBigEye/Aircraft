@@ -413,15 +413,15 @@ public class Screen {
 			for (int xx = x0; xx < x1; xx++) { // loop though each x pos
 				int xd = xx - x; // get x delta
 				int dist = xd * xd + yd; // square x delta, then add the y delta, to get total distance.
-
+             			
 				if (dist <= r * r) {
 					// if the distance from the center (x,y) is less or equal to the radius...
-					int br = 255 - dist * 255 / (r * r); // area where light will be rendered. // r*r is becuase dist is
-															// still x*x+y*y, of pythag theorem.
+					int br = 255 - dist * 255 / (r * r); // area where light will be rendered. // r*r is becuase dist is still x*x+y*y, of pythag theorem.
 					// br = brightness... literally. from 0 to 255.
-					if (pixels[xx + yy * w] < br)
-						pixels[xx + yy * w] = br; // pixel cannot be smaller than br; in other words, the pixel color
-													// (brightness) cannot be less than br.
+					
+					if (pixels[xx + yy * w] < br) {
+						pixels[xx + yy * w] = br; // pixel cannot be smaller than br; in other words, the pixel color (brightness) cannot be less than br.
+					}
 				}
 			}
 		}

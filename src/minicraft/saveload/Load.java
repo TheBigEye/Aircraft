@@ -971,6 +971,8 @@ public class Load {
 			case "Lantern": return new Lantern(Lantern.Type.NORM);				
 			case "Arrow": return new Arrow(new Skeleton(0), 0, 0, Direction.NONE, 0);
 			case "Fireball": return new Fireball(new Skeleton(0), 0, 0, Direction.NONE, 0);
+			
+			case "XpOrb": return new SmokeParticle(0, 0);
 			case "ItemEntity": return new ItemEntity(Items.get("unknown"), 0, 0);
 			
 			//Load Particles

@@ -75,6 +75,7 @@ public class Game {
     private static String[] Splash = {
         "Who has put TNT?",
         "An error has occurred again??",
+        "A nice cup of coffee?",
         "Unexpected error again??",
         "Oh. That hurts :(",
         "Sorry for the crash :(",
