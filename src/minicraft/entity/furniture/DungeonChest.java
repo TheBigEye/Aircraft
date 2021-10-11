@@ -21,126 +21,129 @@ import minicraft.item.Items;
 import minicraft.item.StackableItem;
 
 public class DungeonChest extends Chest {
-	private static final Sprite openSprite = new Sprite(6, 20, 2, 2, 2);
-	private static final Sprite lockSprite = new Sprite(4, 20, 2, 2, 2);
-	
-	public Random random = new Random();
-	private boolean isLocked;
+    private static final Sprite openSprite = new Sprite(6, 20, 2, 2, 2);
+    private static final Sprite lockSprite = new Sprite(4, 20, 2, 2, 2);
 
-	/**
-	 * Creates a custom chest with the name Dungeon Chest.
-	 * @param populateInv
-	 */
-	public DungeonChest(boolean populateInv) {
-		this(populateInv, false);
-	}
+    public Random random = new Random();
+    private boolean isLocked;
 
-	public DungeonChest(boolean populateInv, boolean unlocked) {
-		super("Dungeon Chest");
-		if (populateInv) {
-			populateInv();
-		}
+    /**
+     * Creates a custom chest with the name Dungeon Chest.
+     * 
+     * @param populateInv
+     */
+    public DungeonChest(boolean populateInv) {
+        this(populateInv, false);
+    }
 
-		setLocked(!unlocked);
-	}
+    public DungeonChest(boolean populateInv, boolean unlocked) {
+        super("Dungeon Chest");
+        if (populateInv) {
+            populateInv();
+        }
 
-	@Override
-	public Furniture clone() {
-		return new DungeonChest(false, !this.isLocked);
-	}
+        setLocked(!unlocked);
+    }
 
-	@Override
-	public boolean use(Player player) {
-		if (isLocked) {
-			boolean activeKey = player.activeItem != null && player.activeItem.equals(Items.get("Key"));
-			boolean invKey = player.getInventory().count(Items.get("key")) > 0;
-			if(activeKey || invKey) { // if the player has a key...
-				if (!Game.isMode("creative")) { // remove the key unless on creative mode.
-					if (activeKey) { // remove activeItem
-						StackableItem key = (StackableItem)player.activeItem;
-						key.count--;
-					} else { // remove from inv
-						player.getInventory().removeItem(Items.get("key"));
-					}
-				}
+    @Override
+    public Furniture clone() {
+        return new DungeonChest(false, !this.isLocked);
+    }
 
-				isLocked = false;
-				this.sprite = openSprite; // set to the unlocked color
+    @Override
+    public boolean use(Player player) {
+        if (isLocked) {
+            boolean activeKey = player.activeItem != null && player.activeItem.equals(Items.get("Key"));
+            boolean invKey = player.getInventory().count(Items.get("key")) > 0;
+            if (activeKey || invKey) { // if the player has a key...
+                if (!Game.isMode("creative")) { // remove the key unless on creative mode.
+                    if (activeKey) { // remove activeItem
+                        StackableItem key = (StackableItem) player.activeItem;
+                        key.count--;
+                    } else { // remove from inv
+                        player.getInventory().removeItem(Items.get("key"));
+                    }
+                }
 
-				level.add(new SmashParticle(x * 16, y * 16));
-				level.add(new TextParticle("-1 key", x, y, Color.RED));
-				level.chestCount--;
-				if(level.chestCount == 0) { // if this was the last chest...
-					level.dropItem(x, y, 5, Items.get("Gold Apple"));
+                isLocked = false;
+                this.sprite = openSprite; // set to the unlocked color
 
-					Updater.notifyAll("You hear a noise from the surface!", -100); // notify the player of the developments
-					// add a level 2 airwizard to the middle surface level.
-					AirWizard wizard = new AirWizard(true);
-					wizard.x = World.levels[World.lvlIdx(0)].w / 2;
-					wizard.y = World.levels[World.lvlIdx(0)].h / 2;
-					World.levels[World.lvlIdx(0)].add(wizard);
-				}
+                level.add(new SmashParticle(x * 16, y * 16));
+                level.add(new TextParticle("-1 key", x, y, Color.RED));
+                level.chestCount--;
+                if (level.chestCount == 0) { // if this was the last chest...
+                    level.dropItem(x, y, 5, Items.get("Gold Apple"));
 
-				return super.use(player); // the player unlocked the chest.
-			}
+                    Updater.notifyAll("You hear a noise from the surface!", -100); // notify the player of the
+                                                                                   // developments
+                    // add a level 2 airwizard to the middle surface level.
+                    AirWizard wizard = new AirWizard(true);
+                    wizard.x = World.levels[World.lvlIdx(0)].w / 2;
+                    wizard.y = World.levels[World.lvlIdx(0)].h / 2;
+                    World.levels[World.lvlIdx(0)].add(wizard);
+                }
 
-			return false; // the chest is locked, and the player has no key.
-		}
-		else return super.use(player); // the chest was already unlocked.
-	}
+                return super.use(player); // the player unlocked the chest.
+            }
 
-	/**
-	 * Populate the inventory of the DungeonChest using the loot table system
-	 */
-	private void populateInv() {
-		Inventory inv = getInventory(); // Yes, I'm that lazy. ;P
-		inv.clearInv(); // clear the inventory.
+            return false; // the chest is locked, and the player has no key.
+        } else
+            return super.use(player); // the chest was already unlocked.
+    }
 
-		populateInvRandom("dungeonchest", 0);
-	}
+    /**
+     * Populate the inventory of the DungeonChest using the loot table system
+     */
+    private void populateInv() {
+        Inventory inv = getInventory(); // Yes, I'm that lazy. ;P
+        inv.clearInv(); // clear the inventory.
 
-	public boolean isLocked() {
-		return isLocked;
-	}
+        populateInvRandom("dungeonchest", 0);
+    }
 
-	public void setLocked(boolean locked) {
-		this.isLocked = locked;
+    public boolean isLocked() {
+        return isLocked;
+    }
 
-		// auto update sprite
-		sprite = locked ? DungeonChest.lockSprite : DungeonChest.openSprite;
-	}
+    public void setLocked(boolean locked) {
+        this.isLocked = locked;
 
-	/** what happens if the player tries to push a Dungeon Chest. */
-	@Override
-	protected void touchedBy(Entity entity) {
-		if(!isLocked) // can only be pushed if unlocked.
-			super.touchedBy(entity);
-	}
+        // auto update sprite
+        sprite = locked ? DungeonChest.lockSprite : DungeonChest.openSprite;
+    }
 
-	@Override
-	public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
-		if(!isLocked)
-			return super.interact(player, item, attackDir);
-		return false;
-	}
-	
-	@Override
-	protected String getUpdateString() {
-		String updates = super.getUpdateString() + ";";
-		updates += "isLocked,"+isLocked;
-		
-		return updates;
-	}
-	
-	@Override
-	protected boolean updateField(String field, String val) {
-		if(super.updateField(field, val)) return true;
-		switch(field) {
-			case "isLocked":
-				isLocked = Boolean.parseBoolean(val);
-				return true;
-		}
-		
-		return false;
-	}
+    /** what happens if the player tries to push a Dungeon Chest. */
+    @Override
+    protected void touchedBy(Entity entity) {
+        if (!isLocked) // can only be pushed if unlocked.
+            super.touchedBy(entity);
+    }
+
+    @Override
+    public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
+        if (!isLocked)
+            return super.interact(player, item, attackDir);
+        return false;
+    }
+
+    @Override
+    protected String getUpdateString() {
+        String updates = super.getUpdateString() + ";";
+        updates += "isLocked," + isLocked;
+
+        return updates;
+    }
+
+    @Override
+    protected boolean updateField(String field, String val) {
+        if (super.updateField(field, val))
+            return true;
+        switch (field) {
+        case "isLocked":
+            isLocked = Boolean.parseBoolean(val);
+            return true;
+        }
+
+        return false;
+    }
 }

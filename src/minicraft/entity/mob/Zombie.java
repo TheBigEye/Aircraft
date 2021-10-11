@@ -18,6 +18,7 @@ public class Zombie extends EnemyMob {
 
     /**
      * Creates a zombie of the given level.
+     * 
      * @param lvl Zombie's level.
      */
     public Zombie(int lvl) {
@@ -41,10 +42,14 @@ public class Zombie extends EnemyMob {
     }
 
     public void die() {
-        if (Settings.get("diff").equals("Peaceful")) dropItem(2, 4, Items.get("cloth"));
-        if (Settings.get("diff").equals("Easy")) dropItem(2, 4, Items.get("cloth"));
-        if (Settings.get("diff").equals("Normal")) dropItem(1, 3, Items.get("cloth"));
-        if (Settings.get("diff").equals("Hard")) dropItem(1, 2, Items.get("cloth"));
+        if (Settings.get("diff").equals("Peaceful"))
+            dropItem(2, 4, Items.get("cloth"));
+        if (Settings.get("diff").equals("Easy"))
+            dropItem(2, 4, Items.get("cloth"));
+        if (Settings.get("diff").equals("Normal"))
+            dropItem(1, 3, Items.get("cloth"));
+        if (Settings.get("diff").equals("Hard"))
+            dropItem(1, 2, Items.get("cloth"));
 
         if (random.nextInt(60) == 2) {
             level.dropItem(x, y, Items.get("iron"));

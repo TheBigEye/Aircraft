@@ -22,27 +22,26 @@ public class FishingRodItem extends Item {
 
         return items;
     }
+
     private int uses = 0; // the more uses, the higher the chance of breaking
     public int level; // the higher the level the lower the chance of breaking
 
     private Random random = new Random();
 
-    /* these numbers are a bit confusing, so here's an explanation
-    * if you want to know the percent chance of a category (let's say tool, which is third)
-    * you have to subtract 1 + the "tool" number from the number before it (for the first number subtract from 100)*/
-    private static final int[][] LEVEL_CHANCES = {
-            {44, 14, 9, 4}, // they're in the order "fish", "junk", "tools", "rare"
-            {24, 14, 9, 4}, // iron has very high chance of fish
-            {59, 49, 9, 4}, // gold has very high chance of tools
-            {79, 69, 59, 4} // gem has very high chance of rare items
+    /*
+     * these numbers are a bit confusing, so here's an explanation if you want to
+     * know the percent chance of a category (let's say tool, which is third) you
+     * have to subtract 1 + the "tool" number from the number before it (for the
+     * first number subtract from 100)
+     */
+    private static final int[][] LEVEL_CHANCES = { { 44, 14, 9, 4 }, // they're in the order "fish", "junk", "tools",
+                                                                     // "rare"
+            { 24, 14, 9, 4 }, // iron has very high chance of fish
+            { 59, 49, 9, 4 }, // gold has very high chance of tools
+            { 79, 69, 59, 4 } // gem has very high chance of rare items
     };
 
-    private static final String[] LEVEL_NAMES = {
-            "Wood",
-            "Iron",
-            "Gold",
-            "Gem"
-    };
+    private static final String[] LEVEL_NAMES = { "Wood", "Iron", "Gold", "Gem" };
 
     public FishingRodItem(int level) {
         super(LEVEL_NAMES[level] + " Fishing rod", new Sprite(level, 11, 0));
@@ -66,17 +65,22 @@ public class FishingRodItem extends Item {
     }
 
     @Override
-    public boolean canAttack() { return false; }
+    public boolean canAttack() {
+        return false;
+    }
 
     @Override
     public boolean isDepleted() {
-        if (random.nextInt(100) > 120 - uses + level * 6) { // breaking is random, the lower the level, and the more times you use it, the higher the chance
+        if (random.nextInt(100) > 120 - uses + level * 6) { // breaking is random, the lower the level, and the more
+                                                            // times you use it, the higher the chance
             Game.notifications.add("Your Fishing rod broke.");
-            
+
             if (random.nextInt(1000) == 16) {
-            	Game.notifications.add("065 108 105 099 101 044 032 116 101 032 097 109 111 046 046 046"); // Bug check (Not touch!)
+                Game.notifications.add("065 108 105 099 101 044 032 116 101 032 097 109 111 046 046 046"); // Bug check
+                                                                                                           // (Not
+                                                                                                           // touch!)
             }
-            
+
             return true;
         }
         return false;

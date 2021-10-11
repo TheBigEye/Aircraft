@@ -24,248 +24,260 @@ import minicraft.item.ToolType;
 
 public class Spawner extends Furniture {
 
-	private Random rnd = new Random();
+    private Random rnd = new Random();
 
-	private static final int ACTIVE_RADIUS = 8 * 16;
-	private static final int minSpawnInterval = 200;
-	private static final int maxSpawnInterval = 400;
-	private static final int minMobSpawnChance = 10; // 1 in minMobSpawnChance chance of calling trySpawn every interval.
-	
-	public MobAi mob;
-	private int health;
-	private int lvl;
-	private int maxMobLevel;
-	private int spawnTick;
+    private static final int ACTIVE_RADIUS = 8 * 16;
+    private static final int minSpawnInterval = 200;
+    private static final int maxSpawnInterval = 400;
+    private static final int minMobSpawnChance = 10; // 1 in minMobSpawnChance chance of calling trySpawn every
+                                                     // interval.
 
-	/**
-	 * Initializes the spawners variables to the corresponding values from the mob.
-	 * 
-	 * @param m The mob which this spawner will spawn.
-	 */
-	private void initMob(MobAi m) {
-		mob = m;
-		sprite.color = col = mob.col;
+    public MobAi mob;
+    private int health;
+    private int lvl;
+    private int maxMobLevel;
+    private int spawnTick;
 
-		if (m instanceof EnemyMob) {
-			lvl = ((EnemyMob) mob).lvl;
-			maxMobLevel = mob.getMaxLevel();
-		} else {
-			lvl = 1;
-			maxMobLevel = 1;
-		}
+    /**
+     * Initializes the spawners variables to the corresponding values from the mob.
+     * 
+     * @param m The mob which this spawner will spawn.
+     */
+    private void initMob(MobAi m) {
+        mob = m;
+        sprite.color = col = mob.col;
 
-		if (lvl > maxMobLevel) {
-			lvl = maxMobLevel;
-		}
-	}
+        if (m instanceof EnemyMob) {
+            lvl = ((EnemyMob) mob).lvl;
+            maxMobLevel = mob.getMaxLevel();
+        } else {
+            lvl = 1;
+            maxMobLevel = 1;
+        }
 
-	/**
-	 * Creates a new spawner for the mob m.
-	 * 
-	 * @param m Mob which will be spawned.
-	 */
-	public Spawner(MobAi m) {
-		super(getClassName(m.getClass()) + " Spawner", new Sprite(8, 26, 2, 2, 2), 7, 2);
-		health = 100;
-		initMob(m);
-		resetSpawnInterval();
-	}
+        if (lvl > maxMobLevel) {
+            lvl = maxMobLevel;
+        }
+    }
 
-	/**
-	 * Returns the classname of a class.
-	 * 
-	 * @param c The class.
-	 * @return String representation of the classname.
-	 */
-	@SuppressWarnings("rawtypes")
-	private static String getClassName(Class c) {
-		String fullName = c.getCanonicalName();
-		return fullName.substring(fullName.lastIndexOf(".") + 1);
-	}
+    /**
+     * Creates a new spawner for the mob m.
+     * 
+     * @param m Mob which will be spawned.
+     */
+    public Spawner(MobAi m) {
+        super(getClassName(m.getClass()) + " Spawner", new Sprite(8, 26, 2, 2, 2), 7, 2);
+        health = 100;
+        initMob(m);
+        resetSpawnInterval();
+    }
 
-	@Override
-	public void tick() {
-		super.tick();
+    /**
+     * Returns the classname of a class.
+     * 
+     * @param c The class.
+     * @return String representation of the classname.
+     */
+    @SuppressWarnings("rawtypes")
+    private static String getClassName(Class c) {
+        String fullName = c.getCanonicalName();
+        return fullName.substring(fullName.lastIndexOf(".") + 1);
+    }
 
-		spawnTick--;
-		if (spawnTick <= 0) {
-			int chance = (int) (minMobSpawnChance * Math.pow(level.mobCount, 2) / Math.pow(level.maxMobCount, 2)); // this forms a quadratic function that determines the mob spawn chance.
-			if (chance <= 0 || random.nextInt(chance) == 0)
-				trySpawn();
-			resetSpawnInterval();
-		}
+    @Override
+    public void tick() {
+        super.tick();
 
-		if (Settings.get("diff").equals("Peaceful")) {
-			resetSpawnInterval();
-		}
-	}
+        spawnTick--;
+        if (spawnTick <= 0) {
+            int chance = (int) (minMobSpawnChance * Math.pow(level.mobCount, 2) / Math.pow(level.maxMobCount, 2)); // this
+                                                                                                                   // forms
+                                                                                                                   // a
+                                                                                                                   // quadratic
+                                                                                                                   // function
+                                                                                                                   // that
+                                                                                                                   // determines
+                                                                                                                   // the
+                                                                                                                   // mob
+                                                                                                                   // spawn
+                                                                                                                   // chance.
+            if (chance <= 0 || random.nextInt(chance) == 0)
+                trySpawn();
+            resetSpawnInterval();
+        }
 
-	/**
-	 * Resets the spawner so it can spawn another mob.
-	 */
-	private void resetSpawnInterval() {
-		spawnTick = rnd.nextInt(maxSpawnInterval - minSpawnInterval + 1) + minSpawnInterval;
-	}
+        if (Settings.get("diff").equals("Peaceful")) {
+            resetSpawnInterval();
+        }
+    }
 
-	/**
-	 * Tries to spawn a new mob.
-	 */
-	private void trySpawn() {
-		if (level == null || Game.isValidClient())
-			return;
-		if (level.mobCount >= level.maxMobCount)
-			return; // can't spawn more entities
+    /**
+     * Resets the spawner so it can spawn another mob.
+     */
+    private void resetSpawnInterval() {
+        spawnTick = rnd.nextInt(maxSpawnInterval - minSpawnInterval + 1) + minSpawnInterval;
+    }
 
-		Player player = getClosestPlayer();
-		if (player == null)
-			return;
-		int xd = player.x - x;
-		int yd = player.y - y;
+    /**
+     * Tries to spawn a new mob.
+     */
+    private void trySpawn() {
+        if (level == null || Game.isValidClient())
+            return;
+        if (level.mobCount >= level.maxMobCount)
+            return; // can't spawn more entities
 
-		if (xd * xd + yd * yd > ACTIVE_RADIUS * ACTIVE_RADIUS)
-			return;
+        Player player = getClosestPlayer();
+        if (player == null)
+            return;
+        int xd = player.x - x;
+        int yd = player.y - y;
 
-		MobAi newmob;
-		try {
-			if (mob instanceof EnemyMob)
-				// noinspection JavaReflectionMemberAccess
-				newmob = mob.getClass().getConstructor(int.class).newInstance(lvl);
-			else
-				newmob = mob.getClass().newInstance();
-		} catch (Exception ex) {
-			System.err.println("Spawner ERROR: could not spawn mob; error initializing mob instance:");
-			ex.printStackTrace();
-			return;
-		}
+        if (xd * xd + yd * yd > ACTIVE_RADIUS * ACTIVE_RADIUS)
+            return;
 
-		Point pos = new Point(x >> 4, y >> 4);
-		Point[] areaPositions = level.getAreaTilePositions(pos.x, pos.y, 1);
-		ArrayList<Point> validPositions = new ArrayList<>();
-		for (Point p : areaPositions)
-			if (!(!level.getTile(p.x, p.y).mayPass(level, p.x, p.y, newmob)
-					|| mob instanceof EnemyMob && level.getTile(p.x, p.y).getLightRadius(level, p.x, p.y) > 0))
-				validPositions.add(p);
+        MobAi newmob;
+        try {
+            if (mob instanceof EnemyMob)
+                // noinspection JavaReflectionMemberAccess
+                newmob = mob.getClass().getConstructor(int.class).newInstance(lvl);
+            else
+                newmob = mob.getClass().newInstance();
+        } catch (Exception ex) {
+            System.err.println("Spawner ERROR: could not spawn mob; error initializing mob instance:");
+            ex.printStackTrace();
+            return;
+        }
 
-		if (validPositions.size() == 0)
-			return; // cannot spawn mob.
+        Point pos = new Point(x >> 4, y >> 4);
+        Point[] areaPositions = level.getAreaTilePositions(pos.x, pos.y, 1);
+        ArrayList<Point> validPositions = new ArrayList<>();
+        for (Point p : areaPositions)
+            if (!(!level.getTile(p.x, p.y).mayPass(level, p.x, p.y, newmob)
+                    || mob instanceof EnemyMob && level.getTile(p.x, p.y).getLightRadius(level, p.x, p.y) > 0))
+                validPositions.add(p);
 
-		Point spawnPos = validPositions.get(random.nextInt(validPositions.size()));
+        if (validPositions.size() == 0)
+            return; // cannot spawn mob.
 
-		newmob.x = spawnPos.x << 4;
-		newmob.y = spawnPos.y << 4;
-		// if (Game.debug) level.printLevelLoc("spawning new " + mob, (newmob.x>>4), (newmob.y>>4), "...");
+        Point spawnPos = validPositions.get(random.nextInt(validPositions.size()));
 
-		level.add(newmob);
-		Sound.Furniture_spawner_spawn.play();
-		for (int i = 0; i < 6; i++) {
-			int randX = rnd.nextInt(16);
-			int randY = rnd.nextInt(12);
-			level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
-		}
-	}
+        newmob.x = spawnPos.x << 4;
+        newmob.y = spawnPos.y << 4;
+        // if (Game.debug) level.printLevelLoc("spawning new " + mob, (newmob.x>>4),
+        // (newmob.y>>4), "...");
 
-	@Override
-	public boolean interact(Player player, Item item, Direction attackDir) {
-		if (item instanceof ToolItem) {
-			ToolItem tool = (ToolItem) item;
+        level.add(newmob);
+        Sound.Furniture_spawner_spawn.play();
+        for (int i = 0; i < 6; i++) {
+            int randX = rnd.nextInt(16);
+            int randY = rnd.nextInt(12);
+            level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
+        }
+    }
 
-			Sound.Furniture_spawner_hurt.play();
+    @Override
+    public boolean interact(Player player, Item item, Direction attackDir) {
+        if (item instanceof ToolItem) {
+            ToolItem tool = (ToolItem) item;
 
-			int dmg;
-			if (Game.isMode("creative"))
-				dmg = health;
-			else {
-				dmg = tool.level + random.nextInt(2);
+            Sound.Furniture_spawner_hurt.play();
 
-				if (tool.type == ToolType.Pickaxe)
-					dmg += random.nextInt(5) + 2;
+            int dmg;
+            if (Game.isMode("creative"))
+                dmg = health;
+            else {
+                dmg = tool.level + random.nextInt(2);
 
-				if (player.potioneffects.containsKey(PotionType.Haste))
-					dmg *= 2;
-			}
+                if (tool.type == ToolType.Pickaxe)
+                    dmg += random.nextInt(5) + 2;
 
-			health -= dmg;
-			level.add(new TextParticle("" + dmg, x, y, Color.get(-1, 200, 300, 400)));
-			if (health <= 0) {
-				level.remove(this);
+                if (player.potioneffects.containsKey(PotionType.Haste))
+                    dmg *= 2;
+            }
 
-				if (random.nextInt(4) == 0) {
-					Sound.Furniture_spawner_hurt.play();
-				}
-				if (random.nextInt(4) == 1) {
-					Sound.Furniture_spawner_destroy.play();
-				}
-				if (random.nextInt(4) == 2) {
-					Sound.Furniture_spawner_destroy_2.play();
-				}
-				if (random.nextInt(4) == 3) {
-					Sound.Furniture_spawner_destroy_3.play();
-				}
+            health -= dmg;
+            level.add(new TextParticle("" + dmg, x, y, Color.get(-1, 200, 300, 400)));
+            if (health <= 0) {
+                level.remove(this);
 
-				// Sound.playerDeath.play();
-				player.addScore(500);
-			}
+                if (random.nextInt(4) == 0) {
+                    Sound.Furniture_spawner_hurt.play();
+                }
+                if (random.nextInt(4) == 1) {
+                    Sound.Furniture_spawner_destroy.play();
+                }
+                if (random.nextInt(4) == 2) {
+                    Sound.Furniture_spawner_destroy_2.play();
+                }
+                if (random.nextInt(4) == 3) {
+                    Sound.Furniture_spawner_destroy_3.play();
+                }
 
-			return true;
-		}
+                // Sound.playerDeath.play();
+                player.addScore(500);
+            }
 
-		if (item instanceof PowerGloveItem && Game.isMode("creative")) {
-			level.remove(this);
-			if (!(player.activeItem instanceof PowerGloveItem))
-				player.getInventory().add(0, player.activeItem);
-			player.activeItem = new FurnitureItem(this);
-			return true;
-		}
+            return true;
+        }
 
-		if (item == null)
-			return use(player);
+        if (item instanceof PowerGloveItem && Game.isMode("creative")) {
+            level.remove(this);
+            if (!(player.activeItem instanceof PowerGloveItem))
+                player.getInventory().add(0, player.activeItem);
+            player.activeItem = new FurnitureItem(this);
+            return true;
+        }
 
-		return false;
-	}
+        if (item == null)
+            return use(player);
 
-	@Override
-	public boolean use(Player player) {
-		if (Game.isMode("creative") && mob instanceof EnemyMob) {
-			lvl++;
-			if (lvl > maxMobLevel)
-				lvl = 1;
-			try {
-				EnemyMob newmob = (EnemyMob) mob.getClass().getConstructor(int.class).newInstance(lvl);
-				initMob(newmob);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-			return true;
-		}
+        return false;
+    }
 
-		return false;
-	}
+    @Override
+    public boolean use(Player player) {
+        if (Game.isMode("creative") && mob instanceof EnemyMob) {
+            lvl++;
+            if (lvl > maxMobLevel)
+                lvl = 1;
+            try {
+                EnemyMob newmob = (EnemyMob) mob.getClass().getConstructor(int.class).newInstance(lvl);
+                initMob(newmob);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return true;
+        }
 
-	public Furniture clone() {
-		return new Spawner(mob);
-	}
+        return false;
+    }
 
-	@Override
-	protected String getUpdateString() {
-		String updates = super.getUpdateString() + ";";
-		updates += "health," + health + ";lvl," + lvl;
+    public Furniture clone() {
+        return new Spawner(mob);
+    }
 
-		return updates;
-	}
+    @Override
+    protected String getUpdateString() {
+        String updates = super.getUpdateString() + ";";
+        updates += "health," + health + ";lvl," + lvl;
 
-	@Override
-	protected boolean updateField(String field, String val) {
-		if (super.updateField(field, val))
-			return true;
-		switch (field) {
-		case "health":
-			health = Integer.parseInt(val);
-			return true;
-		case "lvl":
-			lvl = Integer.parseInt(val);
-			return true;
-		}
+        return updates;
+    }
 
-		return false;
-	}
+    @Override
+    protected boolean updateField(String field, String val) {
+        if (super.updateField(field, val))
+            return true;
+        switch (field) {
+        case "health":
+            health = Integer.parseInt(val);
+            return true;
+        case "lvl":
+            lvl = Integer.parseInt(val);
+            return true;
+        }
+
+        return false;
+    }
 }

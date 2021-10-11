@@ -4,18 +4,19 @@ import minicraft.entity.furniture.Furniture;
 import minicraft.gfx.Sprite;
 
 public class ZombieStatue extends Furniture {
-	
-	public ZombieStatue() {
-		super("ZombieStatue", new Sprite(12, 28, 2, 2, 2), 3, 2);
-	}
-	
-	@Override
-	public int getLightRadius() {
-		return 6;
-	}
-	@Override
-	public Furniture clone() {
-		return new ZombieStatue();
-	}
+
+    public ZombieStatue() {
+        super("ZombieStatue", new Sprite(12, 28, 2, 2, 2), 3, 2);
+    }
+
+    @Override
+    public int getLightRadius() {
+        return 6;
+    }
+
+    @Override
+    public Furniture clone() {
+        return new ZombieStatue();
+    }
 
 }

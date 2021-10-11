@@ -24,9 +24,11 @@ public class TreeTile extends Tile {
         connectsToGrass = true;
     }
 
+    private final String baseTile = "Grass";
+
     @Override
     public void render(Screen screen, Level level, int x, int y) {
-        Tiles.get("grass").render(screen, level, x, y);
+        Tiles.get("Grass").render(screen, level, x, y);
 
         boolean u = level.getTile(x, y - 1) == this;
         boolean l = level.getTile(x - 1, y) == this;
@@ -103,7 +105,7 @@ public class TreeTile extends Tile {
 
         int damage = level.getData(x, y) + dmg;
         int treeHealth = 20;
-        if (Game.isMode("creative"))
+        if (Game.isMode("Creative"))
             dmg = damage = treeHealth;
 
         level.add(new SmashParticle(x * 16, y * 16));

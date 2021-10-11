@@ -6,67 +6,64 @@ import minicraft.entity.particle.BrightParticle;
 import minicraft.gfx.Sprite;
 
 public class Lantern extends Furniture {
-	public enum Type {
-		
-		NORM("Lantern", 9, 0),
-		IRON("Iron Lantern", 12, 2),
-		GOLD("Gold Lantern", 15, 4);
+    public enum Type {
 
-		protected int light;
-		protected int offset;
-		protected String title;
+        NORM("Lantern", 9, 0), IRON("Iron Lantern", 12, 2), GOLD("Gold Lantern", 15, 4);
 
-		Type(String title, int light, int offset) {
-			this.title = title;
-			this.offset = offset;
-			this.light = light;
-		}
-	}
+        protected int light;
+        protected int offset;
+        protected String title;
 
-	public Lantern.Type type;
-	
-	private Random rnd = new Random();
+        Type(String title, int light, int offset) {
+            this.title = title;
+            this.offset = offset;
+            this.light = light;
+        }
+    }
 
-	/**
-	 * Creates a lantern of a given type.
-	 * 
-	 * @param type Type of lantern.
-	 */
-	public Lantern(Lantern.Type type) {
-		super(type.title, new Sprite(18 + type.offset, 24, 2, 2, 2), 3, 2);
-		this.type = type;
-	}
+    public Lantern.Type type;
+
+    private Random rnd = new Random();
+
+    /**
+     * Creates a lantern of a given type.
+     * 
+     * @param type Type of lantern.
+     */
+    public Lantern(Lantern.Type type) {
+        super(type.title, new Sprite(18 + type.offset, 24, 2, 2, 2), 3, 2);
+        this.type = type;
+    }
 
     @Override
-	public void tick() {
-		super.tick();
+    public void tick() {
+        super.tick();
 
-		int randX = rnd.nextInt(10);
-		int randY = rnd.nextInt(9);
+        int randX = rnd.nextInt(10);
+        int randY = rnd.nextInt(9);
 
-		if (random.nextInt(12) == 0) {
-			level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
-		}
-		if (random.nextInt(12) == 6) {
-			level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
-		}
-		if (random.nextInt(12) == 12) {
-			level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
-		}
-	}
-		
-	
-	@Override
-	public Furniture clone() {
-		return new Lantern(type);
-	}
+        if (random.nextInt(12) == 0) {
+            level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
+        }
+        if (random.nextInt(12) == 6) {
+            level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
+        }
+        if (random.nextInt(12) == 12) {
+            level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
+        }
+    }
 
-	/**
-	 * Gets the size of the radius for light underground (Bigger number, larger
-	 * light)
-	 */
-	@Override
-	public int getLightRadius() {
-		return type.light;
-	}
+    @Override
+    public Furniture clone() {
+        return new Lantern(type);
+    }
+
+    /**
+     * Gets the size of the radius for light underground (Bigger number, larger
+     * light)
+     */
+    @Override
+    public int getLightRadius() {
+        return type.light;
+    }
 }

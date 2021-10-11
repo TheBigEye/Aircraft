@@ -25,21 +25,19 @@ import minicraft.core.Game;
 
 public class Localization {
 
-    private static final HashSet < String > knownUnlocalizedStrings = new HashSet < > ();
+    private static final HashSet<String> knownUnlocalizedStrings = new HashSet<>();
 
-    private static final HashMap < String, String > localization = new HashMap < > ();
+    private static final HashMap<String, String> localization = new HashMap<>();
     private static String selectedLanguage = "english";
 
-    private static final HashMap < String, Locale > locales = new HashMap < > ();
-    private static final HashMap < String, String > localizationFiles = new HashMap < > ();
+    private static final HashMap<String, Locale> locales = new HashMap<>();
+    private static final HashMap<String, String> localizationFiles = new HashMap<>();
 
     private static String[] loadedLanguages = getLanguagesFromDirectory();
 
     static {
         if (loadedLanguages == null) {
-            loadedLanguages = new String[] {
-                selectedLanguage
-            };
+            loadedLanguages = new String[] { selectedLanguage };
         }
 
         loadSelectedLanguageFile();
@@ -56,7 +54,8 @@ public class Localization {
             double num = Double.parseDouble(key);
             return key; // this is a number; don't try to localize it
 
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) {
+        }
 
         String localString = localization.get(key);
 
@@ -91,11 +90,13 @@ public class Localization {
 
         String currentKey = "";
 
-        for (String line: fileText.split("\r\n|\n|\r")) {
+        for (String line : fileText.split("\r\n|\n|\r")) {
 
             // # at the start of a line means the line is a comment.
-            if (line.startsWith("#")) continue;
-            if (line.matches("^[ ]*$")) continue;
+            if (line.startsWith("#"))
+                continue;
+            if (line.matches("^[ ]*$"))
+                continue;
 
             if (currentKey.equals("")) {
                 currentKey = line;
@@ -108,7 +109,10 @@ public class Localization {
 
     @NotNull
     private static String getFileAsString() {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(Game.class.getResourceAsStream(localizationFiles.getOrDefault(selectedLanguage, "/resources/localization/english_en-us.mcpl")), StandardCharsets.UTF_8));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                Game.class.getResourceAsStream(
+                        localizationFiles.getOrDefault(selectedLanguage, "/resources/localization/english_en-us.mcpl")),
+                StandardCharsets.UTF_8));
 
         return String.join("\n", reader.lines().toArray(String[]::new));
         // Using getResourceAsStream since we're publishing this as a jar file.
@@ -119,12 +123,13 @@ public class Localization {
         return loadedLanguages;
     }
 
-    // Couldn't find a good way to find all the files in a directory when the program is
+    // Couldn't find a good way to find all the files in a directory when the
+    // program is
     // exported as a jar file so I copied this. Thanks!
     // https://stackoverflow.com/questions/1429172/how-do-i-list-the-files-inside-a-jar-file/1429275#1429275
     @Nullable
     private static String[] getLanguagesFromDirectory() {
-        ArrayList < String > languages = new ArrayList < > ();
+        ArrayList<String> languages = new ArrayList<>();
 
         try {
             CodeSource src = Game.class.getProtectionDomain().getCodeSource();
@@ -140,7 +145,8 @@ public class Localization {
                     // e is either null if there are no entries left, or if
                     // we're running this from an ide (at least for eclipse)
                     if (e == null) {
-                        if (reads > 0) break;
+                        if (reads > 0)
+                            break;
                         else {
                             return getLanguagesFromDirectoryUsingIDE();
                         }
@@ -173,13 +179,13 @@ public class Localization {
     @java.lang.Deprecated
     @Nullable
     private static String[] getLanguagesFromDirectoryUsingIDE() {
-        ArrayList < String > languages = new ArrayList < > ();
+        ArrayList<String> languages = new ArrayList<>();
 
         try {
             URL fUrl = Game.class.getResource("/resources/localization/");
             Path folderPath = Paths.get(fUrl.toURI());
-            DirectoryStream < Path > dir = Files.newDirectoryStream(folderPath);
-            for (Path p: dir) {
+            DirectoryStream<Path> dir = Files.newDirectoryStream(folderPath);
+            for (Path p : dir) {
                 String filename = p.getFileName().toString();
                 languages.add(filename.replace(".mcpl", ""));
             }

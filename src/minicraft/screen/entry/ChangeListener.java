@@ -2,5 +2,5 @@ package minicraft.screen.entry;
 
 @FunctionalInterface
 public interface ChangeListener {
-	void onChange(Object newValue);
+    void onChange(Object newValue);
 }

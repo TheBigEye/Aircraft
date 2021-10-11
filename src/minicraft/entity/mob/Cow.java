@@ -23,7 +23,11 @@ public class Cow extends PassiveMob {
         super.tick();
 
         Player player = getClosestPlayer();
-        if (player != null && player.activeItem != null && player.activeItem.name.equals("Wheat")) { // This function will make the entity follow the player directly
+        if (player != null && player.activeItem != null && player.activeItem.name.equals("Wheat")) { // This function
+                                                                                                     // will make the
+                                                                                                     // entity follow
+                                                                                                     // the player
+                                                                                                     // directly
 
             // Render heart particles
             int randX = rnd.nextInt(10);
@@ -40,7 +44,8 @@ public class Cow extends PassiveMob {
             int yd = player.y - y;
 
             /// if player is less than 6.25 tiles away, then set move dir towards player
-            int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
+            int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and
+                          // down.
             xa = ya = 0;
             if (xd < sig0)
                 xa = -1;
@@ -60,7 +65,7 @@ public class Cow extends PassiveMob {
     public void die() {
         int min = 0;
         int max = 0;
-        
+
         if (Settings.get("diff").equals("Peaceful")) {
             min = 1;
             max = 3;
@@ -78,8 +83,10 @@ public class Cow extends PassiveMob {
             max = 1;
         }
 
-        if (isBurn) dropItem(min, max, Items.get("Steak"));
-        if (!isBurn) dropItem(min, max, Items.get("leather"), Items.get("raw beef"));
+        if (isBurn)
+            dropItem(min, max, Items.get("Steak"));
+        if (!isBurn)
+            dropItem(min, max, Items.get("leather"), Items.get("raw beef"));
 
         super.die();
     }

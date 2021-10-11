@@ -14,9 +14,9 @@ public class Knight extends EnemyMob {
         }
     }
 
-
     /**
      * Creates a knight of a given level.
+     * 
      * @param lvl The knights level.
      */
     public Knight(int lvl) {

@@ -6,25 +6,25 @@ import minicraft.gfx.SpriteSheet;
 
 public class BlankEntry extends ListEntry {
 
-	public BlankEntry() {
-		setSelectable(false);
-	}
+    public BlankEntry() {
+        setSelectable(false);
+    }
 
-	@Override
-	public void tick(InputHandler input) {
-	}
+    @Override
+    public void tick(InputHandler input) {
+    }
 
-	@Override
-	public void render(Screen screen, int x, int y, boolean isSelected) {
-	}
+    @Override
+    public void render(Screen screen, int x, int y, boolean isSelected) {
+    }
 
-	@Override
-	public int getWidth() {
-		return SpriteSheet.boxWidth;
-	}
+    @Override
+    public int getWidth() {
+        return SpriteSheet.boxWidth;
+    }
 
-	@Override
-	public String toString() {
-		return " ";
-	}
+    @Override
+    public String toString() {
+        return " ";
+    }
 }

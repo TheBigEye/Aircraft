@@ -28,27 +28,32 @@ public class EyeQueen extends EnemyMob {
         super.tick();
 
         // This is a disabled function, DO NOT DELETE
-        /**if (random.nextInt(2000)==1) {
-        	getLevel().add(new Slime(0), x, y + 5);
-        	getLevel().add(new Slime(0), x, y - 5);
-        	getLevel().add(new Slime(0), x + 5, y);
-        	getLevel().add(new Slime(0), x - 5, y);
-        }**/
+        /**
+         * if (random.nextInt(2000)==1) { getLevel().add(new Slime(0), x, y + 5);
+         * getLevel().add(new Slime(0), x, y - 5); getLevel().add(new Slime(0), x + 5,
+         * y); getLevel().add(new Slime(0), x - 5, y); }
+         **/
 
         Player player = getClosestPlayer();
-        if (player != null) { // checks if player is on zombies level and if there is no time left on randonimity timer
+        if (player != null) { // checks if player is on zombies level and if there is no time left on
+                              // randonimity timer
             int xd = player.x - x;
             int yd = player.y - y;
             // if player is less than 6.25 tiles away, then set move dir towards player
-            int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
+            int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and
+                          // down.
             xa = ya = 0;
 
-            if (xd < sig0) xa = -1;
-            if (xd > sig0) xa = +1;
-            if (yd < sig0) ya = -1;
-            if (yd > sig0) ya = +1;
+            if (xd < sig0)
+                xa = -1;
+            if (xd > sig0)
+                xa = +1;
+            if (yd < sig0)
+                ya = -1;
+            if (yd > sig0)
+                ya = +1;
 
-            // texture phases				
+            // texture phases
             if (yd > sig0) { // up
                 sprites[0][0][0] = new MobSprite(58, 0, 6, 6, 0);
             }
@@ -63,29 +68,25 @@ public class EyeQueen extends EnemyMob {
                 sprites[0][0][0] = new MobSprite(58, 18, 6, 6, 0);
             }
 
-
         } else {
             // if the enemy was following the player, but has now lost it, it stops moving.
-            //*that would be nice, but I'll just make it move randomly instead.
+            // *that would be nice, but I'll just make it move randomly instead.
             randomizeWalkDir(false);
         }
 
-
     }
-
 
     @Override
     public void render(Screen screen) {
         sprites[0][0][0].render(screen, x - 25, y - 34);
 
-        /*	int textcol = Color.get(-1, Color.rgb(255, 0, 0));
-		int textcol2 = Color.get(-1, Color.rgb(200, 0, 0));
-		String h = health + "/" + maxHealth;
-		
-    	int textwidth = Font.textWidth(h);
-    	Font.draw(h, screen, (x - textwidth/2) + 1, y -40, textcol2);
-    	Font.draw(h, screen, (x - textwidth/2), y -41, textcol);
-    	*/
+        /*
+         * int textcol = Color.get(-1, Color.rgb(255, 0, 0)); int textcol2 =
+         * Color.get(-1, Color.rgb(200, 0, 0)); String h = health + "/" + maxHealth;
+         * 
+         * int textwidth = Font.textWidth(h); Font.draw(h, screen, (x - textwidth/2) +
+         * 1, y -40, textcol2); Font.draw(h, screen, (x - textwidth/2), y -41, textcol);
+         */
     }
 
     public boolean canSwim() {
@@ -96,7 +97,7 @@ public class EyeQueen extends EnemyMob {
     public void die() {
         int min = 0;
         int max = 0;
-        
+
         if (Settings.get("diff").equals("Peaceful")) {
             min = 1;
             max = 3;

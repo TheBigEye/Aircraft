@@ -8,13 +8,13 @@ import minicraft.level.Level;
 
 public class WaterTile extends Tile {
     private ConnectorSprite sprite = new ConnectorSprite(WaterTile.class, new Sprite(12, 6, 3, 3, 1, 3),
-        Sprite.dots( /* Color.get(005, 105, 115, 115) */ 0)) {
-    	
-    	@Override
+            Sprite.dots( /* Color.get(005, 105, 115, 115) */ 0)) {
+
+        @Override
         public boolean connectsTo(Tile tile, boolean isSide) {
             return tile.connectsToFluid;
         }
-        
+
     };
 
     protected WaterTile(String name) {
@@ -41,13 +41,15 @@ public class WaterTile extends Tile {
         int xn = xt;
         int yn = yt;
 
-        if (random.nextBoolean()) xn += random.nextInt(2) * 2 - 1;
-        else yn += random.nextInt(2) * 2 - 1;
+        if (random.nextBoolean())
+            xn += random.nextInt(2) * 2 - 1;
+        else
+            yn += random.nextInt(2) * 2 - 1;
 
-        if (level.getTile(xn, yn) == Tiles.get("hole")) {
+        if (level.getTile(xn, yn) == Tiles.get("Hole")) {
             level.setTile(xn, yn, this);
         }
-        
+
         // these set only the non-diagonally adjacent lava tiles to hard obsidian
         for (int x = -1; x < 2; x++) {
             if (level.getTile(xt + x, yt) == Tiles.get("lava"))

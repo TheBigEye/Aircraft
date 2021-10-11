@@ -17,7 +17,8 @@ import minicraft.network.MinicraftProtocol;
 import minicraft.screen.WorldSelectDisplay;
 
 public class Initializer extends Game {
-    private Initializer() {}
+    private Initializer() {
+    }
 
     /**
      * Reference to actual frame, also it may be null.
@@ -85,7 +86,8 @@ public class Initializer extends Game {
 
         FileHandler.determineGameDir(saveDir);
 
-        Network.autoclient = autoclient; // this will make the game automatically jump to the MultiplayerMenu, and attempt to connect to localhost.
+        Network.autoclient = autoclient; // this will make the game automatically jump to the MultiplayerMenu, and
+                                         // attempt to connect to localhost.
     }
 
     /**
@@ -107,7 +109,8 @@ public class Initializer extends Game {
 
         while (running) {
             long now = System.nanoTime();
-            double nsPerTick = 1E9D / Updater.normSpeed; // nanosecs per sec divided by ticks per sec = nanosecs per tick
+            double nsPerTick = 1E9D / Updater.normSpeed; // nanosecs per sec divided by ticks per sec = nanosecs per
+                                                         // tick
 
             if (menu == null)
                 nsPerTick /= Updater.gamespeed;
@@ -116,7 +119,8 @@ public class Initializer extends Game {
 
             while (unprocessed >= 1) { // If there is unprocessed time, then tick.
                 ticks++;
-                Updater.tick(); // calls the tick method (in which it calls the other tick methods throughout the code.
+                Updater.tick(); // calls the tick method (in which it calls the other tick methods throughout
+                                // the code.
 
                 unprocessed--;
             }
@@ -144,8 +148,6 @@ public class Initializer extends Game {
         }
     }
 
-
-
     /// Creates and displays the JFrame window that the game appears in.
     static void createAndDisplayFrame() {
         if (!HAS_GUI) {
@@ -157,7 +159,8 @@ public class Initializer extends Game {
         JFrame frame = Initializer.frame = new JFrame(NAME);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout()); // sets the layout of the window
-        frame.add(Renderer.canvas, BorderLayout.CENTER); // Adds the game (which is a canvas) to the center of the screen.
+        frame.add(Renderer.canvas, BorderLayout.CENTER); // Adds the game (which is a canvas) to the center of the
+                                                         // screen.
 
         frame.pack(); // squishes everything into the preferredSize.
 
@@ -179,15 +182,20 @@ public class Initializer extends Game {
         });
 
         frame.addWindowListener(new WindowListener() {
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
 
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
 
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
 
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
 
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
 
             public void windowClosed(WindowEvent e) {
                 System.out.println("Window closed");
@@ -212,7 +220,7 @@ public class Initializer extends Game {
      * is extracted via PrintStream.
      *
      * @param throwable Throwable/Exception from which stack trace is to be
-     * extracted.
+     *                  extracted.
      * @return String with provided Throwable's stack trace.
      */
     public static String getExceptionTrace(final Throwable throwable) {

@@ -12,32 +12,32 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class LavaBrickTile extends Tile {
-	private static Sprite sprite = new Sprite(19, 2, 2, 2, 1);
+    private static Sprite sprite = new Sprite(19, 2, 2, 2, 1);
 
-	protected LavaBrickTile(String name) {
-		super(name, sprite);
-	}
+    protected LavaBrickTile(String name) {
+        super(name, sprite);
+    }
 
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-		if (item instanceof ToolItem) {
-			ToolItem tool = (ToolItem) item;
-			if (tool.type == ToolType.Pickaxe) {
-				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					level.setTile(xt, yt, Tiles.get("lava"));
-					Sound.Tile_generic_hurt.play();
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
+        if (item instanceof ToolItem) {
+            ToolItem tool = (ToolItem) item;
+            if (tool.type == ToolType.Pickaxe) {
+                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                    level.setTile(xt, yt, Tiles.get("lava"));
+                    Sound.Tile_generic_hurt.play();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	public void bumpedInto(Level level, int x, int y, Entity entity) {
-		if (entity instanceof Mob)
-			((Mob) entity).hurt(this, x, y, 3);
-	}
+    public void bumpedInto(Level level, int x, int y, Entity entity) {
+        if (entity instanceof Mob)
+            ((Mob) entity).hurt(this, x, y, 3);
+    }
 
-	public boolean mayPass(Level level, int x, int y, Entity e) {
-		return e.canWool();
-	}
+    public boolean mayPass(Level level, int x, int y, Entity e) {
+        return e.canWool();
+    }
 }

@@ -13,7 +13,7 @@ import minicraft.level.Level;
 public class Bed extends Furniture {
 
     private static int playersAwake = 1;
-    private static final HashMap < Player, Bed > sleepingPlayers = new HashMap < > ();
+    private static final HashMap<Player, Bed> sleepingPlayers = new HashMap<>();
 
     /**
      * Creates a new furniture with the name Bed and the bed sprite and color.
@@ -71,10 +71,19 @@ public class Bed extends Furniture {
         if (inBed(player))
             return false;
 
-        if (!(Updater.tickCount >= Updater.sleepStartTime ||
-                Updater.tickCount < Updater.sleepEndTime && Updater.pastDay1)) {
+        if (!(Updater.tickCount >= Updater.sleepStartTime
+                || Updater.tickCount < Updater.sleepEndTime && Updater.pastDay1)) {
             // it is too early to sleep; display how much time is remaining.
-            int sec = (int) Math.ceil((Updater.sleepStartTime - Updater.tickCount) * 1.0 / Updater.normSpeed); // gets the seconds until sleeping is allowed. normSpeed is in tiks/sec.
+            int sec = (int) Math.ceil((Updater.sleepStartTime - Updater.tickCount) * 1.0 / Updater.normSpeed); // gets
+                                                                                                               // the
+                                                                                                               // seconds
+                                                                                                               // until
+                                                                                                               // sleeping
+                                                                                                               // is
+                                                                                                               // allowed.
+                                                                                                               // normSpeed
+                                                                                                               // is in
+                                                                                                               // tiks/sec.
             String note = "Can't sleep! " + (sec / 60) + "Min " + (sec % 60) + " Sec left!";
             if (!Game.isValidServer())
                 Game.notifications.add(note); // add the notification displaying the time remaining in minutes and
@@ -82,7 +91,9 @@ public class Bed extends Furniture {
             else if (player instanceof RemotePlayer)
                 Game.server.getAssociatedThread((RemotePlayer) player).sendNotification(note, 0);
             else
-                System.out.println("WARNING: regular player found trying to get into bed on server; not a RemotePlayer: " + player);
+                System.out
+                        .println("WARNING: regular player found trying to get into bed on server; not a RemotePlayer: "
+                                + player);
 
             return false;
         }
@@ -134,10 +145,10 @@ public class Bed extends Furniture {
 
     // client should not call this.
     public static void restorePlayers() {
-        for (Player p: sleepingPlayers.keySet()) {
+        for (Player p : sleepingPlayers.keySet()) {
             Bed bed = sleepingPlayers.get(p);
-            if (p instanceof RemotePlayer && Game.isValidServer() &&
-                !Game.server.getAssociatedThread((RemotePlayer) p).isConnected())
+            if (p instanceof RemotePlayer && Game.isValidServer()
+                    && !Game.server.getAssociatedThread((RemotePlayer) p).isConnected())
                 continue; // forget about it, don't add it to the level
             bed.getLevel().add(p);
         }

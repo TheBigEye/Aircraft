@@ -20,6 +20,7 @@ public class Skeleton extends EnemyMob {
 
     /**
      * Creates a skeleton of a given level.
+     * 
      * @param lvl The skeleton's level.
      */
     public Skeleton(int lvl) {
@@ -33,7 +34,8 @@ public class Skeleton extends EnemyMob {
     public void tick() {
         super.tick();
 
-        if (skipTick()) return;
+        if (skipTick())
+            return;
 
         Player player = getClosestPlayer();
         if (player != null && randomWalkTime == 0) {
@@ -51,16 +53,8 @@ public class Skeleton extends EnemyMob {
     }
 
     public void die() {
-        int[] diffrands = {
-            20,
-            20,
-            30
-        };
-        int[] diffvals = {
-            13,
-            18,
-            28
-        };
+        int[] diffrands = { 20, 20, 30 };
+        int[] diffvals = { 13, 18, 28 };
         int diff = Settings.getIdx("diff");
 
         int count = random.nextInt(3 - diff) + 1;

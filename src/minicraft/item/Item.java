@@ -42,7 +42,7 @@ public abstract class Item {
     /// TODO this method (and Menu.renderItemList) is actually slowly getting
     /// depricated; I just haven't gotten around to updating all the menus yet.
     /// legacy; for compatibility
-    
+
     /** Renders an item (sprite & name) in an inventory */
     public void renderInventory(Screen screen, int x, int y, boolean ininv) {
         String dispName = getDisplayName();
@@ -58,66 +58,66 @@ public abstract class Item {
     public void renderHUD(Screen screen, int x, int y, int fontColor) {
 
         String dispName = getDisplayName();
-        
+
         if (dispName.length() == 6) {
-        	durAdjusted = 0;
-        	
-        } 
+            durAdjusted = 0;
+
+        }
         if (dispName.length() == 7) {
-        	durAdjusted = 4;
-        	
+            durAdjusted = 4;
+
         }
         if (dispName.length() == 8) {
-        	durAdjusted = 8;
-        	arrAdjusted = 0;
-        	
+            durAdjusted = 8;
+            arrAdjusted = 0;
+
         }
         if (dispName.length() == 9) {
-        	durAdjusted = 12;
-        	arrAdjusted = 4;
-        	
+            durAdjusted = 12;
+            arrAdjusted = 4;
+
         }
         if (dispName.length() == 10) {
-        	durAdjusted = 16;
-        	arrAdjusted = 8;
-        	
+            durAdjusted = 16;
+            arrAdjusted = 8;
+
         }
         if (dispName.length() == 11) {
-        	durAdjusted = 20;
-        	arrAdjusted = 12;
-        	
+            durAdjusted = 20;
+            arrAdjusted = 12;
+
         }
         if (dispName.length() == 12) {
-        	durAdjusted = 24;
-        	arrAdjusted = 16;
-        	
+            durAdjusted = 24;
+            arrAdjusted = 16;
+
         }
         if (dispName.length() == 13) {
-        	durAdjusted = 28;
-        	arrAdjusted = 20;
-        	
+            durAdjusted = 28;
+            arrAdjusted = 20;
+
         }
         if (dispName.length() == 14) {
-        	durAdjusted = 32;
-        	arrAdjusted = 24;
-        	
+            durAdjusted = 32;
+            arrAdjusted = 24;
+
         }
         if (dispName.length() == 15) {
-        	durAdjusted = 36;
-        	arrAdjusted = 28;
-        	
+            durAdjusted = 36;
+            arrAdjusted = 28;
+
         }
         if (dispName.length() == 16) {
-        	durAdjusted = 40;
-        	arrAdjusted = 32;
-        	
+            durAdjusted = 40;
+            arrAdjusted = 32;
+
         }
-        
+
         int xx = (Screen.w - Font.textWidth(dispName)) / 2; // the width of the box
         int yy = (Screen.h - 8) - 1; // the height of the box
         int w = dispName.length() + 1; // length of message in characters.
         int h = 1;
-        
+
         // renders the four corners of the box
         screen.render(xx - 8, yy - 8, 0 + 21 * 32, 0, 3);
         screen.render(xx + w * 8, yy - 8, 0 + 21 * 32, 1, 3);
@@ -202,7 +202,8 @@ public abstract class Item {
         return name;
     }
 
-    // returns the String that should be used to display this item in a menu or list.
+    // returns the String that should be used to display this item in a menu or
+    // list.
     public String getDisplayName() {
         return " " + Localization.getLocalized(getName());
     }

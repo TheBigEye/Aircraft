@@ -14,71 +14,74 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class SkyLawnTile extends Tile {
-	private static final Sprite LawnSprite = new Sprite(48, 8, 1);
+    private static Sprite sprite = new Sprite(48, 8, 1);
 
-	protected SkyLawnTile(String name) {
-		super(name, (ConnectorSprite) null);
-		connectsToSkyGrass = true;
-		maySpawn = true;
-	}
+    protected SkyLawnTile(String name) {
+        super(name, (ConnectorSprite) null);
+        connectsToSkyGrass = true;
+        maySpawn = true;
+    }
 
-	@Override
-	public boolean tick(Level level, int xt, int yt) {
-		
-		if (random.nextInt(30) != 0) return false;
+    @Override
+    public boolean tick(Level level, int xt, int yt) {
 
-		int xn = xt;
-		int yn = yt;
+        if (random.nextInt(30) != 0)
+            return false;
 
-		if (random.nextBoolean()) xn += random.nextInt(2) * 2 - 1;
-		else yn += random.nextInt(2) * 2 - 1;
+        int xn = xt;
+        int yn = yt;
 
-		if (level.getTile(xn, yn) == Tiles.get("dirt")) {
-			level.setTile(xn, yn, Tiles.get("sky grass"));
-		}
-		return false;
-	}
+        if (random.nextBoolean())
+            xn += random.nextInt(2) * 2 - 1;
+        else
+            yn += random.nextInt(2) * 2 - 1;
 
-	@Override
-	public void render(Screen screen, Level level, int x, int y) {
-		Tiles.get("sky grass").render(screen, level, x, y);
+        if (level.getTile(xn, yn) == Tiles.get("Sky grass")) {
+            level.setTile(xn, yn, this);
+        }
+        return false;
+    }
 
-		int data = level.getData(x, y);
-		int shape = (data / 16) % 2;
+    @Override
+    public void render(Screen screen, Level level, int x, int y) {
+        Tiles.get("Sky grass").render(screen, level, x, y);
 
-		x = x << 4;
-		y = y << 4;
+        int data = level.getData(x, y);
+        int shape = (data / 16) % 2;
 
-		LawnSprite.render(screen, x + 8 * shape, y);
-		LawnSprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
-	}
+        x = x << 4;
+        y = y << 4;
 
-	@Override
-	public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
-		if (item instanceof ToolItem) {
-			ToolItem tool = (ToolItem) item;
-			if (tool.type == ToolType.Shovel) {
-				if (player.payStamina(2 - tool.level) && tool.payDurability()) {
-					level.setTile(x, y, Tiles.get("sky grass"));
-					Sound.Tile_generic_hurt.play();
-					
-					if (random.nextInt(20) == 1) { // 20% chance to drop sky seeds
-					level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));
-					}
-					
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+        sprite.render(screen, x + 8 * shape, y);
+        sprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
+    }
 
-	@Override
-	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-		if (random.nextInt(12) == 1) { // 20% chance to drop sky seeds
-		level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));
-		}
-		level.setTile(x, y, Tiles.get("sky grass"));
-		return true;
-	}
+    @Override
+    public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
+        if (item instanceof ToolItem) {
+            ToolItem tool = (ToolItem) item;
+            if (tool.type == ToolType.Shovel) {
+                if (player.payStamina(2 - tool.level) && tool.payDurability()) {
+                    level.setTile(x, y, Tiles.get("Sky grass"));
+                    Sound.Tile_generic_hurt.play();
+
+                    if (random.nextInt(20) == 1) { // 20% chance to drop sky seeds
+                        level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));
+                    }
+
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+        if (random.nextInt(12) == 1) { // 20% chance to drop sky seeds
+            level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));
+        }
+        level.setTile(x, y, Tiles.get("Sky grass"));
+        return true;
+    }
 }

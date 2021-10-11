@@ -16,132 +16,132 @@ import minicraft.screen.LoadingDisplay;
 import minicraft.screen.WorldSelectDisplay;
 
 public class Network extends Game {
-	private Network() {
-	}
+    private Network() {
+    }
 
-	private static final Random random = new Random();
+    private static final Random random = new Random();
 
-	static boolean autoclient = false; // Used in the initScreen method; jumps to multiplayer menu as client
+    static boolean autoclient = false; // Used in the initScreen method; jumps to multiplayer menu as client
 
-	private static VersionInfo latestVersion = null;
+    private static VersionInfo latestVersion = null;
 
-	// obviously, this can be null.
-	public static VersionInfo getLatestVersion() {
-		return latestVersion;
-	}
+    // obviously, this can be null.
+    public static VersionInfo getLatestVersion() {
+        return latestVersion;
+    }
 
-	@Nullable
-	public static Entity getEntity(int eid) {
-		for (Level level : levels) {
-			if (level == null)
-				continue;
-			for (Entity e : level.getEntityArray())
-				if (e.eid == eid)
-					return e;
-		}
+    @Nullable
+    public static Entity getEntity(int eid) {
+        for (Level level : levels) {
+            if (level == null)
+                continue;
+            for (Entity e : level.getEntityArray())
+                if (e.eid == eid)
+                    return e;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public static int generateUniqueEntityId() {
-		int eid;
-		int tries = 0; // just in case it gets out of hand.
-		do {
-			tries++;
-			if (tries == 1000)
-				System.out.println("Note: Trying 1000th time to find valid entity id...(Will continue)");
+    public static int generateUniqueEntityId() {
+        int eid;
+        int tries = 0; // just in case it gets out of hand.
+        do {
+            tries++;
+            if (tries == 1000)
+                System.out.println("Note: Trying 1000th time to find valid entity id...(Will continue)");
 
-			eid = random.nextInt();
-		} while (!idIsAvailable(eid));
+            eid = random.nextInt();
+        } while (!idIsAvailable(eid));
 
-		return eid;
-	}
+        return eid;
+    }
 
-	public static boolean idIsAvailable(int eid) {
-		if (eid == 0)
-			return false; // this is reserved for the main player... kind of...
-		if (eid < 0)
-			return false; // id's must be positive numbers.
+    public static boolean idIsAvailable(int eid) {
+        if (eid == 0)
+            return false; // this is reserved for the main player... kind of...
+        if (eid < 0)
+            return false; // id's must be positive numbers.
 
-		for (Level level : levels) {
-			if (level == null)
-				continue;
-			for (Entity e : level.getEntityArray()) {
-				if (e.eid == eid)
-					return false;
-			}
-		}
+        for (Level level : levels) {
+            if (level == null)
+                continue;
+            for (Entity e : level.getEntityArray()) {
+                if (e.eid == eid)
+                    return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public static String onlinePrefix() {
-		if (!ISONLINE)
-			return "";
-		String prefix = "From ";
-		if (isValidServer())
-			prefix += "Server";
-		else if (isValidClient())
-			prefix += "Client";
-		else
-			prefix += "nobody";
+    public static String onlinePrefix() {
+        if (!ISONLINE)
+            return "";
+        String prefix = "From ";
+        if (isValidServer())
+            prefix += "Server";
+        else if (isValidClient())
+            prefix += "Client";
+        else
+            prefix += "nobody";
 
-		prefix += ": ";
-		return prefix;
-	}
+        prefix += ": ";
+        return prefix;
+    }
 
-	@SuppressWarnings("unused")
-	public static void startMultiplayerServer() {
-		System.out.println("Sorry, the Multiplayer is being remodeled, it will not be available in this version.");
-		if(true) return;
-		
-		if (debug)
-			System.out.println("Starting multiplayer server...");
+    @SuppressWarnings("unused")
+    public static void startMultiplayerServer() {
+        System.out.println("Sorry, the Multiplayer is being remodeled, it will not be available in this version.");
+        if (true)
+            return;
 
-		if (HAS_GUI) {
-			// here is where we need to start the new client.
-			String jarFilePath = "";
-			try {
-				java.net.URI uri = Game.class.getProtectionDomain().getCodeSource().getLocation().toURI();
-				// if (debug) System.out.println("jar path: " + uri.getPath());
-				// if (debug) System.out.println("jar string: " + uri.toString());
-				jarFilePath = uri.getPath();
-				if (FileHandler.OS.contains("windows") && jarFilePath.startsWith("/"))
-					jarFilePath = jarFilePath.substring(1);
-			} catch (URISyntaxException ex) {
-				System.err.println("Problem with jar file URI syntax.");
-				ex.printStackTrace();
-			}
-			List<String> arguments = new ArrayList<>();
-			arguments.add("java");
-			arguments.add("-jar");
-			arguments.add(jarFilePath);
+        if (debug)
+            System.out.println("Starting multiplayer server...");
 
-			if (debug)
-				arguments.add("--debug");
+        if (HAS_GUI) {
+            // here is where we need to start the new client.
+            String jarFilePath = "";
+            try {
+                java.net.URI uri = Game.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+                // if (debug) System.out.println("jar path: " + uri.getPath());
+                // if (debug) System.out.println("jar string: " + uri.toString());
+                jarFilePath = uri.getPath();
+                if (FileHandler.OS.contains("windows") && jarFilePath.startsWith("/"))
+                    jarFilePath = jarFilePath.substring(1);
+            } catch (URISyntaxException ex) {
+                System.err.println("Problem with jar file URI syntax.");
+                ex.printStackTrace();
+            }
+            List<String> arguments = new ArrayList<>();
+            arguments.add("java");
+            arguments.add("-jar");
+            arguments.add(jarFilePath);
 
-			// this will just always be added.
-			arguments.add("--savedir");
-			arguments.add(FileHandler.systemGameDir);
+            if (debug)
+                arguments.add("--debug");
 
-			arguments.add("--localclient");
+            // this will just always be added.
+            arguments.add("--savedir");
+            arguments.add(FileHandler.systemGameDir);
 
-			/// this *should* start a new JVM from the running jar file...
-			try {
-				new ProcessBuilder(arguments).inheritIO().start();
-			} catch (IOException ex) {
-				System.err.println("Problem starting new jar file process:");
-				ex.printStackTrace();
-			}
-		} else
-			setMenu(new LoadingDisplay()); // gets things going to load up a (server) world
+            arguments.add("--localclient");
 
-		// now that that's done, let's turn *this* running JVM into a server:
-		server = new MinicraftServer(Game.CUSTOM_PORT);
+            /// this *should* start a new JVM from the running jar file...
+            try {
+                new ProcessBuilder(arguments).inheritIO().start();
+            } catch (IOException ex) {
+                System.err.println("Problem starting new jar file process:");
+                ex.printStackTrace();
+            }
+        } else
+            setMenu(new LoadingDisplay()); // gets things going to load up a (server) world
 
-		new Load(WorldSelectDisplay.getWorldName(), server); // load server config
+        // now that that's done, let's turn *this* running JVM into a server:
+        server = new MinicraftServer(Game.CUSTOM_PORT);
 
+        new Load(WorldSelectDisplay.getWorldName(), server); // load server config
 
-	}
+    }
 
 }

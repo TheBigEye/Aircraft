@@ -22,6 +22,8 @@ public class CactusTile extends Tile {
         connectsToSand = true;
     }
 
+    private final String baseTile = "Sand";
+
     @Override
     public boolean mayPass(Level level, int x, int y, Entity e) {
         return false;
@@ -38,7 +40,7 @@ public class CactusTile extends Tile {
 
         if (damage >= cHealth) {
             // int count = random.nextInt(2) + 2;
-            level.setTile(x, y, Tiles.get("sand"));
+            level.setTile(x, y, Tiles.get(baseTile));
             Sound.Tile_generic_hurt.play();
             level.dropItem(x * 16 + 8, y * 16 + 8, 2, 4, Items.get("Cactus"));
         } else {
@@ -49,7 +51,7 @@ public class CactusTile extends Tile {
 
     @Override
     public void render(Screen screen, Level level, int x, int y) {
-        Tiles.get("Sand").render(screen, level, x, y);
+        Tiles.get(baseTile).render(screen, level, x, y);
 
         sprite.render(screen, x << 4, y << 4);
     }
@@ -60,7 +62,7 @@ public class CactusTile extends Tile {
             return;
         Mob m = (Mob) entity;
         if (Settings.get("diff").equals("Peaceful")) {
-            m.hurt(this, x, y, 1);
+            m.hurt(this, x, y, 0);
         }
         if (Settings.get("diff").equals("Easy")) {
             m.hurt(this, x, y, 1);

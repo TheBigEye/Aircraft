@@ -27,323 +27,309 @@ import minicraft.saveload.Version;
 
 public class MinicraftServerThread extends MinicraftConnection {
 
-	private static final String autoPing = "ping";
-	private static final String manualPing = "manual";
+    private static final String autoPing = "ping";
+    private static final String manualPing = "manual";
 
-	private static final int MISSED_PING_THRESHOLD = 5;
-	private static final int PING_INTERVAL = 1_000; // measured in milliseconds
+    private static final int MISSED_PING_THRESHOLD = 5;
+    private static final int PING_INTERVAL = 1_000; // measured in milliseconds
 
-	private MinicraftServer serverInstance;
-	private RemotePlayer client;
+    private MinicraftServer serverInstance;
+    private RemotePlayer client;
 
-	/// PING
+    /// PING
 
-	private Timer pingTimer;
-	private boolean receivedPing = true; // after first pause, it will act as if the ping was successful, since it didn't even send one in the first place and was just buying time for everything to get settled before pinging.
-	private int missedPings = 0;
+    private Timer pingTimer;
+    private boolean receivedPing = true; // after first pause, it will act as if the ping was successful, since it
+                                         // didn't even send one in the first place and was just buying time for
+                                         // everything to get settled before pinging.
+    private int missedPings = 0;
 
-	private long manualPingTimestamp;
+    private long manualPingTimestamp;
 
-	private List<InputType> packetTypesToKeep = new ArrayList<>();
-	private List<InputType> packetTypesToCache = new ArrayList<>();
-	private List<String> cachedPackets = new ArrayList<>();
+    private List<InputType> packetTypesToKeep = new ArrayList<>();
+    private List<InputType> packetTypesToCache = new ArrayList<>();
+    private List<String> cachedPackets = new ArrayList<>();
 
-	private final boolean valid;
+    private final boolean valid;
 
-	MinicraftServerThread(Socket socket, MinicraftServer serverInstance) {
-		super("MinicraftServerThread", socket);
-		valid = true;
+    MinicraftServerThread(Socket socket, MinicraftServer serverInstance) {
+        super("MinicraftServerThread", socket);
+        valid = true;
 
-		this.serverInstance = serverInstance;
-		if (serverInstance.isFull()) {
-			sendError("server at max capacity.");
-			super.endConnection();
-			return;
-		}
+        this.serverInstance = serverInstance;
+        if (serverInstance.isFull()) {
+            sendError("server at max capacity.");
+            super.endConnection();
+            return;
+        }
 
-		client = new RemotePlayer(null, false, socket.getInetAddress(), socket.getPort());
+        client = new RemotePlayer(null, false, socket.getInetAddress(), socket.getPort());
 
-		// username is set later
+        // username is set later
 
-		packetTypesToKeep.addAll(InputType.tileUpdates);
-		packetTypesToKeep.addAll(InputType.entityUpdates);
+        packetTypesToKeep.addAll(InputType.tileUpdates);
+        packetTypesToKeep.addAll(InputType.entityUpdates);
 
-		pingTimer = new Timer(PING_INTERVAL, e -> {
-			if (!isConnected()) {
-				pingTimer.stop();
-				return;
-			}
+        pingTimer = new Timer(PING_INTERVAL, e -> {
+            if (!isConnected()) {
+                pingTimer.stop();
+                return;
+            }
 
-			// if(Game.debug) System.out.println("received ping from "+this+": "+receivedPing+". Previously missed "+missedPings+" pings.");
+            // if(Game.debug) System.out.println("received ping from "+this+":
+            // "+receivedPing+". Previously missed "+missedPings+" pings.");
 
-			if (!receivedPing) {
-				missedPings++;
-				if (missedPings >= MISSED_PING_THRESHOLD) {
-					// disconnect from the client; they are taking too long to respond and probably don't exist at this point.
-					pingTimer.stop();
-					sendError("client ping too slow, server timed out");
-					endConnection();
-				}
-			} else {
-				missedPings = 0;
-				receivedPing = false;
-			}
+            if (!receivedPing) {
+                missedPings++;
+                if (missedPings >= MISSED_PING_THRESHOLD) {
+                    // disconnect from the client; they are taking too long to respond and probably
+                    // don't exist at this point.
+                    pingTimer.stop();
+                    sendError("client ping too slow, server timed out");
+                    endConnection();
+                }
+            } else {
+                missedPings = 0;
+                receivedPing = false;
+            }
 
-			sendData(InputType.PING, autoPing);
-		});
-		pingTimer.setRepeats(true);
-		pingTimer.setCoalesce(true); // don't try to make up for lost pings.
-		pingTimer.start();
+            sendData(InputType.PING, autoPing);
+        });
+        pingTimer.setRepeats(true);
+        pingTimer.setCoalesce(true); // don't try to make up for lost pings.
+        pingTimer.start();
 
-		start();
-	}
+        start();
+    }
 
-	// this is to be a dummy thread.
-	MinicraftServerThread(RemotePlayer player, MinicraftServer server) {
-		super("MinicraftServerThread", null);
-		valid = false;
-		this.client = player;
-		this.serverInstance = server;
-	}
+    // this is to be a dummy thread.
+    MinicraftServerThread(RemotePlayer player, MinicraftServer server) {
+        super("MinicraftServerThread", null);
+        valid = false;
+        this.client = player;
+        this.serverInstance = server;
+    }
 
-	public boolean isValid() {
-		return valid;
-	}
+    public boolean isValid() {
+        return valid;
+    }
 
-	public RemotePlayer getClient() {
-		return client;
-	}
+    public RemotePlayer getClient() {
+        return client;
+    }
 
-	protected boolean parsePacket(InputType inType, String data) {
-		if (inType == InputType.PING) {
-			// if (Game.debug) System.out.println(this+" received ping");
-			receivedPing = true;
-			if (data.equals(manualPing)) {
-				long nsPingDelay = System.nanoTime() - manualPingTimestamp;
-				double pingDelay = Math.round(nsPingDelay * 1.0 / 1E6) * 1.0 / 1E3;
-				System.out.println("received ping from " + client.getUsername() + "; delay = " + pingDelay + " seconds.");
-			}
+    protected boolean parsePacket(InputType inType, String data) {
+        if (inType == InputType.PING) {
+            // if (Game.debug) System.out.println(this+" received ping");
+            receivedPing = true;
+            if (data.equals(manualPing)) {
+                long nsPingDelay = System.nanoTime() - manualPingTimestamp;
+                double pingDelay = Math.round(nsPingDelay * 1.0 / 1E6) * 1.0 / 1E3;
+                System.out
+                        .println("received ping from " + client.getUsername() + "; delay = " + pingDelay + " seconds.");
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		return serverInstance.parsePacket(this, inType, data);
-	}
+        return serverInstance.parsePacket(this, inType, data);
+    }
 
-	void doPing() {
-		sendData(InputType.PING, manualPing);
-		manualPingTimestamp = System.nanoTime();
-	}
+    void doPing() {
+        sendData(InputType.PING, manualPing);
+        manualPingTimestamp = System.nanoTime();
+    }
 
-	void sendError(String message) {
-		if (Game.debug)
-			System.out.println("SERVER: sending error to " + client + ": \"" + message + "\"");
-		sendData(InputType.INVALID, message);
-	}
+    void sendError(String message) {
+        if (Game.debug)
+            System.out.println("SERVER: sending error to " + client + ": \"" + message + "\"");
+        sendData(InputType.INVALID, message);
+    }
 
-	void cachePacketTypes(List<InputType> packetTypes) {
-		packetTypesToCache.addAll(packetTypes);
-		packetTypesToKeep.removeAll(packetTypes);
-	}
+    void cachePacketTypes(List<InputType> packetTypes) {
+        packetTypesToCache.addAll(packetTypes);
+        packetTypesToKeep.removeAll(packetTypes);
+    }
 
-	void sendCachedPackets() {
-		packetTypesToCache.clear();
+    void sendCachedPackets() {
+        packetTypesToCache.clear();
 
-		for (String packet : cachedPackets) {
-			InputType inType = InputType.values[Integer.parseInt(packet.substring(0, packet.indexOf(":")))];
-			packet = packet.substring(packet.indexOf(":") + 1);
-			sendData(inType, packet);
-		}
+        for (String packet : cachedPackets) {
+            InputType inType = InputType.values[Integer.parseInt(packet.substring(0, packet.indexOf(":")))];
+            packet = packet.substring(packet.indexOf(":") + 1);
+            sendData(inType, packet);
+        }
 
-		cachedPackets.clear();
-	}
+        cachedPackets.clear();
+    }
 
-	protected void sendData(InputType inType, String data) {
-		if (packetTypesToCache.contains(inType))
-			cachedPackets.add(inType.ordinal() + ":" + data);
-		else if (!packetTypesToKeep.contains(inType))
-			super.sendData(inType, data);
-	}
+    protected void sendData(InputType inType, String data) {
+        if (packetTypesToCache.contains(inType))
+            cachedPackets.add(inType.ordinal() + ":" + data);
+        else if (!packetTypesToKeep.contains(inType))
+            super.sendData(inType, data);
+    }
 
-	public void sendTileUpdate(Level level, int x, int y) {
-		sendTileUpdate(level.depth, x, y);
-	}
+    public void sendTileUpdate(Level level, int x, int y) {
+        sendTileUpdate(level.depth, x, y);
+    }
 
-	public void sendTileUpdate(int depth, int x, int y) {
-		String data = Tile.getData(depth, x, y);
-		if (data.length() > 0)
-			sendData(InputType.TILE, data);
-	}
+    public void sendTileUpdate(int depth, int x, int y) {
+        String data = Tile.getData(depth, x, y);
+        if (data.length() > 0)
+            sendData(InputType.TILE, data);
+    }
 
-	
-	
-	public void sendEntityUpdate(Entity e, String updateString) {
-		if (updateString.length() > 0) {
-			// if (Game.debug && e instanceof Player) System.out.println("SERVER sending player update to " + client + ": " + e + "; data = " + updateString);
-			sendData(InputType.ENTITY, e.eid + ";" + updateString);
-		} // else
-			// if(Game.debug) System.out.println("SERVER: skipping entity update b/c no new fields: " + e);
-	}
+    public void sendEntityUpdate(Entity e, String updateString) {
+        if (updateString.length() > 0) {
+            // if (Game.debug && e instanceof Player) System.out.println("SERVER sending
+            // player update to " + client + ": " + e + "; data = " + updateString);
+            sendData(InputType.ENTITY, e.eid + ";" + updateString);
+        } // else
+          // if(Game.debug) System.out.println("SERVER: skipping entity update b/c no new
+          // fields: " + e);
+    }
 
-	
-	
-	public void sendEntityAddition(Entity e) {
-		if (Game.debug && e instanceof Player)
-			System.out.println("SERVER: sending addition of player " + e + " to client through " + this);
-		if (Game.debug && e.eid == client.eid)
-			System.out.println("SERVER: sending addition of player to itself");
-		String edata = Save.writeEntity(e, false);
-		if (edata.length() == 0)
-			System.out.println("entity not worth adding to client level: " + e + "; not sending to " + client);
-		else
-			sendData(InputType.ADD, edata);
-	}
+    public void sendEntityAddition(Entity e) {
+        if (Game.debug && e instanceof Player)
+            System.out.println("SERVER: sending addition of player " + e + " to client through " + this);
+        if (Game.debug && e.eid == client.eid)
+            System.out.println("SERVER: sending addition of player to itself");
+        String edata = Save.writeEntity(e, false);
+        if (edata.length() == 0)
+            System.out.println("entity not worth adding to client level: " + e + "; not sending to " + client);
+        else
+            sendData(InputType.ADD, edata);
+    }
 
-	
-	
-	public void sendEntityRemoval(int eid, int levelDepth) {
-		sendData(InputType.REMOVE, String.valueOf(eid) + ";" + String.valueOf(levelDepth));
-	}
+    public void sendEntityRemoval(int eid, int levelDepth) {
+        sendData(InputType.REMOVE, String.valueOf(eid) + ";" + String.valueOf(levelDepth));
+    }
 
-	public void sendEntityRemoval(int eid) { // remove regardless of current level
-		sendData(InputType.REMOVE, String.valueOf(eid));
-	}
+    public void sendEntityRemoval(int eid) { // remove regardless of current level
+        sendData(InputType.REMOVE, String.valueOf(eid));
+    }
 
-	public void sendNotification(String note, int notetime) {
-		sendData(InputType.NOTIFY, notetime + ";" + note);
-	}
+    public void sendNotification(String note, int notetime) {
+        sendData(InputType.NOTIFY, notetime + ";" + note);
+    }
 
-	public void sendPlayerHurt(int eid, int damage, Direction attackDir) {
-		sendData(InputType.HURT, eid + ";" + damage + ";" + attackDir.ordinal());
-	}
+    public void sendPlayerHurt(int eid, int damage, Direction attackDir) {
+        sendData(InputType.HURT, eid + ";" + damage + ";" + attackDir.ordinal());
+    }
 
-	public void sendStopFishing(int eid) {
-		sendData(InputType.STOPFISHING, "" + eid);
-	}
+    public void sendStopFishing(int eid) {
+        sendData(InputType.STOPFISHING, "" + eid);
+    }
 
-	public void sendStaminaChange(int amt) {
-		sendData(InputType.STAMINA, amt + "");
-	}
+    public void sendStaminaChange(int amt) {
+        sendData(InputType.STAMINA, amt + "");
+    }
 
-	
-	
-	public void updatePlayerActiveItem(Item heldItem) {
-		if (client.activeItem != null && !(client.activeItem instanceof PowerGloveItem))
-			sendData(InputType.CHESTOUT, client.activeItem.getData());
-		client.activeItem = heldItem;
+    public void updatePlayerActiveItem(Item heldItem) {
+        if (client.activeItem != null && !(client.activeItem instanceof PowerGloveItem))
+            sendData(InputType.CHESTOUT, client.activeItem.getData());
+        client.activeItem = heldItem;
 
-		sendData(InputType.INTERACT, (client.activeItem == null ? "null" : client.activeItem.getData()));
-	}
+        sendData(InputType.INTERACT, (client.activeItem == null ? "null" : client.activeItem.getData()));
+    }
 
-	
-	
-	public void sendItems(String itemData) {
-		sendData(InputType.ADDITEMS, itemData);
-	}
+    public void sendItems(String itemData) {
+        sendData(InputType.ADDITEMS, itemData);
+    }
 
-	
-	
-	protected void respawnPlayer() {
-		client.remove(); // hopefully removes it from any level it might still be on
-		client = new RemotePlayer(false, client);
-		client.respawn(World.levels[World.lvlIdx(0)]); // get the spawn loc. of the client
-		sendData(InputType.PLAYER, client.getPlayerData()); // send spawn loc.
-	}
+    protected void respawnPlayer() {
+        client.remove(); // hopefully removes it from any level it might still be on
+        client = new RemotePlayer(false, client);
+        client.respawn(World.levels[World.lvlIdx(0)]); // get the spawn loc. of the client
+        sendData(InputType.PLAYER, client.getPlayerData()); // send spawn loc.
+    }
 
-	
-	
-	@SuppressWarnings("resource")
-	private File getRemotePlayerFile() {
-		File[] clientFiles = serverInstance.getRemotePlayerFiles();
+    @SuppressWarnings("resource")
+    private File getRemotePlayerFile() {
+        File[] clientFiles = serverInstance.getRemotePlayerFiles();
 
-		for (File file : clientFiles) {
-			String username = "";
-			try {
-				BufferedReader br = new BufferedReader(new FileReader(file));
-				try {
-					username = br.readLine().trim();
-				} catch (IOException ex) {
-					System.err.println("failed to read line from file.");
-					ex.printStackTrace();
-				}
-			} catch (FileNotFoundException ex) {
-				System.err.println("couldn't find remote player file: " + file);
-				ex.printStackTrace();
-			}
+        for (File file : clientFiles) {
+            String username = "";
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                try {
+                    username = br.readLine().trim();
+                } catch (IOException ex) {
+                    System.err.println("failed to read line from file.");
+                    ex.printStackTrace();
+                }
+            } catch (FileNotFoundException ex) {
+                System.err.println("couldn't find remote player file: " + file);
+                ex.printStackTrace();
+            }
 
-			if (username.equals(client.getUsername())) {
-				/// this player has been here before.
-				if (Game.debug)
-					System.out.println("remote player file found; returning file " + file.getName());
-				return file;
-			}
-		}
+            if (username.equals(client.getUsername())) {
+                /// this player has been here before.
+                if (Game.debug)
+                    System.out.println("remote player file found; returning file " + file.getName());
+                return file;
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	
-	
-	protected String getRemotePlayerFileData() {
-		File rpFile = getRemotePlayerFile();
+    protected String getRemotePlayerFileData() {
+        File rpFile = getRemotePlayerFile();
 
-		String playerdata = "";
-		if (rpFile != null && rpFile.exists()) {
-			try {
-				String content = Load.loadFromFile(rpFile.getPath(), false);
-				playerdata = content.substring(content.indexOf("\n") + 1); // cut off username
-				// assume the data version is dev6 if it isn't written (it isn't before dev7).
-				if (!Version.isValid(playerdata.substring(0, playerdata.indexOf("\n"))))
-					playerdata = "2.0.4-dev6\n" + playerdata;
-			} catch (IOException ex) {
-				System.err.println("failed to read remote player file: " + rpFile);
-				ex.printStackTrace();
-				return "";
-			}
-		}
+        String playerdata = "";
+        if (rpFile != null && rpFile.exists()) {
+            try {
+                String content = Load.loadFromFile(rpFile.getPath(), false);
+                playerdata = content.substring(content.indexOf("\n") + 1); // cut off username
+                // assume the data version is dev6 if it isn't written (it isn't before dev7).
+                if (!Version.isValid(playerdata.substring(0, playerdata.indexOf("\n"))))
+                    playerdata = "2.0.4-dev6\n" + playerdata;
+            } catch (IOException ex) {
+                System.err.println("failed to read remote player file: " + rpFile);
+                ex.printStackTrace();
+                return "";
+            }
+        }
 
-		return playerdata;
-	}
+        return playerdata;
+    }
 
-	
-	
-	protected void writeClientSave(String playerdata) {
-		String filename; // this will hold the path to the file that will be saved to.
+    protected void writeClientSave(String playerdata) {
+        String filename; // this will hold the path to the file that will be saved to.
 
-		File rpFile = getRemotePlayerFile();
-		if (rpFile != null && rpFile.exists()) // check if this remote player already has a file.
-			filename = rpFile.getName();
-		else {
-			File[] clientSaves = serverInstance.getRemotePlayerFiles();
-			int numFiles = clientSaves.length;
-			filename = "RemotePlayer" + numFiles + Save.extension;
-		}
+        File rpFile = getRemotePlayerFile();
+        if (rpFile != null && rpFile.exists()) // check if this remote player already has a file.
+            filename = rpFile.getName();
+        else {
+            File[] clientSaves = serverInstance.getRemotePlayerFiles();
+            int numFiles = clientSaves.length;
+            filename = "RemotePlayer" + numFiles + Save.extension;
+        }
 
-		String filedata = String.join("\n", client.getUsername(), playerdata);
+        String filedata = String.join("\n", client.getUsername(), playerdata);
 
-		String filepath = serverInstance.getWorldPath() + "/" + filename;
-		try {
-			Save.writeToFile(filepath, filedata.split("\\n"), false);
-		} catch (IOException ex) {
-			System.err.println("problem writing remote player to file: " + filepath);
-			ex.printStackTrace();
-		}
-		// the above will hopefully write the data to file.
-	}
+        String filepath = serverInstance.getWorldPath() + "/" + filename;
+        try {
+            Save.writeToFile(filepath, filedata.split("\\n"), false);
+        } catch (IOException ex) {
+            System.err.println("problem writing remote player to file: " + filepath);
+            ex.printStackTrace();
+        }
+        // the above will hopefully write the data to file.
+    }
 
-	
-	
-	public void endConnection() {
-		pingTimer.stop();
-		super.endConnection();
+    public void endConnection() {
+        pingTimer.stop();
+        super.endConnection();
 
-		client.remove();
+        client.remove();
 
-		serverInstance.onThreadDisconnect(this);
-	}
+        serverInstance.onThreadDisconnect(this);
+    }
 
-	
-	public String toString() {
-		return "ServerThread for " + (client == null ? "null" : client.getUsername());
-	}
+    public String toString() {
+        return "ServerThread for " + (client == null ? "null" : client.getUsername());
+    }
 }

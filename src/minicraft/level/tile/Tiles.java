@@ -10,16 +10,15 @@ import minicraft.level.tile.farming.SkyFarmTile;
 import minicraft.level.tile.farming.SkyWartTile;
 import minicraft.level.tile.farming.WheatTile;
 
-
 public final class Tiles {
     /// idea: to save tile names while saving space, I could encode the names in
     /// base 64 in the save file...^M
     /// then, maybe, I would just replace the id numbers with id names, make them
     /// all private, and then make a get(String) method, parameter is tile name.
 
-    public static ArrayList < String > oldids = new ArrayList < > ();
+    public static ArrayList<String> oldids = new ArrayList<>();
 
-    private static ArrayList < Tile > tiles = new ArrayList < > ();
+    private static ArrayList<Tile> tiles = new ArrayList<>();
 
     public static void initTileList() {
         if (Game.debug)
@@ -132,9 +131,7 @@ public final class Tiles {
         tiles.set(84, new BlueCloudTreeTile("Blue Cloud Tree"));
         tiles.set(85, new SkyFernTile("Sky Fern"));
 
-
-        //tiles.set(?, new SandRockTile("Sand rock"));
-
+        // tiles.set(?, new SandRockTile("Sand rock"));
 
         // WARNING: don't use this tile for anything!
         tiles.set(255, new ConnectTile());
@@ -222,7 +219,6 @@ public final class Tiles {
         oldids.set(159, "birch door");
         oldids.set(160, "hard obsidian");
 
-
         // light/torch versions, for compatibility with before 1.9.4-dev3. (were removed
         // in making dev3)
         oldids.set(100, "grass");
@@ -274,7 +270,6 @@ public final class Tiles {
         oldids.set(180, "birch door");
         oldids.set(181, "birch door");
         oldids.set(182, "hard obsidian");
-
 
         oldids.set(44, "torch grass");
         oldids.set(40, "torch sand");
@@ -333,7 +328,7 @@ public final class Tiles {
             name = name.substring(0, name.indexOf("_"));
         }
 
-        for (Tile t: tiles) {
+        for (Tile t : tiles) {
             if (t == null)
                 continue;
             if (t.name.equals(name)) {

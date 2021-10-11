@@ -46,7 +46,6 @@ public class Sheep extends PassiveMob {
         }
     }
 
-
     public void tick() {
         super.tick();
 
@@ -55,12 +54,17 @@ public class Sheep extends PassiveMob {
         }
 
         Player player = getClosestPlayer();
-        if (player != null && player.activeItem != null && player.activeItem.name.equals("Wheat")) { // This function will make the entity follow the player directly
+        if (player != null && player.activeItem != null && player.activeItem.name.equals("Wheat")) { // This function
+                                                                                                     // will make the
+                                                                                                     // entity follow
+                                                                                                     // the player
+                                                                                                     // directly
             int xd = player.x - x;
             int yd = player.y - y;
 
             /// if player is less than 6.25 tiles away, then set move dir towards player
-            int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
+            int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and
+                          // down.
             xa = ya = 0;
             if (xd < sig0)
                 xa = -1;
@@ -86,8 +90,10 @@ public class Sheep extends PassiveMob {
     }
 
     public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
-        if (isCut) return false;
-        if (isBurn) return false;
+        if (isCut)
+            return false;
+        if (isBurn)
+            return false;
 
         if (item instanceof ToolItem) {
             if (((ToolItem) item).type == ToolType.Shear) {
@@ -109,7 +115,6 @@ public class Sheep extends PassiveMob {
         return false;
     }
 
-
     public void die() {
         int min = 0, max = 0;
         if (Settings.get("diff").equals("Peaceful")) {
@@ -129,9 +134,12 @@ public class Sheep extends PassiveMob {
             max = 2;
         }
 
-        if (!isCut) dropItem(min, max, Items.get("Wool"));
-        if (isBurn) dropItem(min, max, Items.get("Steak"));
-        if (!isBurn) dropItem(min, max, Items.get("Raw Beef"));
+        if (!isCut)
+            dropItem(min, max, Items.get("Wool"));
+        if (isBurn)
+            dropItem(min, max, Items.get("Steak"));
+        if (!isBurn)
+            dropItem(min, max, Items.get("Raw Beef"));
 
         super.die();
     }

@@ -21,16 +21,18 @@ import minicraft.item.PowerGloveItem;
 
 public class Furniture extends Entity {
 
-	// time for each push; multi is for multiplayer, to make it so not so many updates are sent.
+    // time for each push; multi is for multiplayer, to make it so not so many
+    // updates are sent.
     protected int pushTime = 0;
-    protected int multiPushTime = 0; 
-    
+    protected int multiPushTime = 0;
+
     private Direction pushDir = Direction.NONE; // the direction to push the furniture
     public Sprite sprite;
     public String name;
 
     /**
      * Constructor for the furniture entity. Size will be set to 3.
+     * 
      * @param name   Name of the furniture.
      * @param sprite Furniture sprite.
      */
@@ -41,6 +43,7 @@ public class Furniture extends Entity {
     /**
      * Constructor for the furniture entity. Radius is only used for collision
      * detection.
+     * 
      * @param name   Name of the furniture.
      * @param sprite Furniture sprite.
      * @param xr     Horizontal radius.
@@ -96,31 +99,34 @@ public class Furniture extends Entity {
         if (entity instanceof Player)
             tryPush((Player) entity);
     }
-    
 
-	/**
-	 * Used in PowerGloveItem.java to let the user pick up furniture.
-	 * @param player The player picking up the furniture.
-	 */
-	@Override
-	public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
-		if (item instanceof PowerGloveItem) {
-			Sound.Mob_generic_hurt.play();
-			if (!Game.ISONLINE) {
-				remove();
-				if (!Game.isMode("creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem))
-					player.getInventory().add(0, player.activeItem); // put whatever item the player is holding into their inventory
-				player.activeItem = new FurnitureItem(this); // make this the player's current item.
-				return true;
-			} else if (Game.isValidServer() && player instanceof RemotePlayer) {
-				remove();
-				Game.server.getAssociatedThread((RemotePlayer) player).updatePlayerActiveItem(new FurnitureItem(this));
-				return true;
-			} else
-				System.out.println("WARNING: undefined behavior; online game was not server and ticked furniture: " + this + "; and/or player in online game found that isn't a RemotePlayer: " + player);
-		}
-		return false;
-	}
+    /**
+     * Used in PowerGloveItem.java to let the user pick up furniture.
+     * 
+     * @param player The player picking up the furniture.
+     */
+    @Override
+    public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
+        if (item instanceof PowerGloveItem) {
+            Sound.Mob_generic_hurt.play();
+            if (!Game.ISONLINE) {
+                remove();
+                if (!Game.isMode("creative") && player.activeItem != null
+                        && !(player.activeItem instanceof PowerGloveItem))
+                    player.getInventory().add(0, player.activeItem); // put whatever item the player is holding into
+                                                                     // their inventory
+                player.activeItem = new FurnitureItem(this); // make this the player's current item.
+                return true;
+            } else if (Game.isValidServer() && player instanceof RemotePlayer) {
+                remove();
+                Game.server.getAssociatedThread((RemotePlayer) player).updatePlayerActiveItem(new FurnitureItem(this));
+                return true;
+            } else
+                System.out.println("WARNING: undefined behavior; online game was not server and ticked furniture: "
+                        + this + "; and/or player in online game found that isn't a RemotePlayer: " + player);
+        }
+        return false;
+    }
 
     /**
      * Tries to let the player push this furniture.
@@ -153,9 +159,9 @@ public class Furniture extends Entity {
             return true;
 
         switch (field) {
-            case "pushTime":
-                pushTime = Integer.parseInt(val);
-                return true;
+        case "pushTime":
+            pushTime = Integer.parseInt(val);
+            return true;
         }
 
         return false;

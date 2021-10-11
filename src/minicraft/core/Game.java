@@ -41,159 +41,151 @@ import minicraft.screen.TitleDisplay;
  */
 
 public class Game {
-    
-    Game() {} // Can't instantiate the Game class.
 
-    private static Random random = new Random();
+	Game() {
+	} // Can't instantiate the Game class.
 
-    public static boolean debug = false;
-    public static boolean packet_debug = false;
-    public static boolean HAS_GUI = true; 
-    
-    public static boolean in_dev = false;
-    
-    // Game events (Shhhh is seeeecret)
-    public static boolean IS_Christmas = false; 
-    public static boolean IS_Halloween = false; 
-    public static boolean IS_April_fools = false; 
+	private static Random random = new Random();
 
-    public static final String NAME = "Aircraft"; // This is the name on the application window
-    public static final String BUILD = "0.4"; // Aircraft version
-    public static final Version VERSION = new Version("2.1.0-dev1"); // Minicraft plus mod base version
+	public static boolean debug = false;
+	public static boolean packet_debug = false;
+	public static boolean HAS_GUI = true;
 
-    public static InputHandler input; // Input used in Game, Player, and just about all the *Menu classes.
-    public static Player player;
+	public static boolean in_dev = false;
 
-    // The directory in which all the game files are stored
-    public static String gameDir; 
-    public static List<String> notifications = new ArrayList<>();
+	// Game events (Shhhh is seeeecret)
+	public static boolean IS_Christmas = false;
+	public static boolean IS_Halloween = false;
+	public static boolean IS_April_fools = false;
 
-    public static int MAX_FPS = (int) Settings.get("fps");
-    public static Level level;
-    
-    // Crash window titles
-    private static String[] Splash = {
-        "Who has put TNT?",
-        "An error has occurred again??",
-        "A nice cup of coffee?",
-        "Unexpected error again??",
-        "Oh. That hurts :(",
-        "Sorry for the crash :(",
-        "You can play our brother game, Minitale",
-        "F, crash again??" 
-    };
-    
+	public static final String NAME = "Aircraft"; // This is the name on the application window
+	public static final String BUILD = "0.4"; // Aircraft version
+	public static final Version VERSION = new Version("2.1.0-dev1"); // Minicraft plus mod base version
+
+	public static InputHandler input; // Input used in Game, Player, and just about all the *Menu classes.
+	public static Player player;
+
+	// The directory in which all the game files are stored
+	public static String gameDir;
+	public static List<String> notifications = new ArrayList<>();
+
+	public static int MAX_FPS = (int) Settings.get("fps");
+	public static Level level;
+
+	// Crash window titles
+	private static String[] Splash = { "Who has put TNT?", "An error has occurred again??", "A nice cup of coffee?",
+			"Unexpected error again??", "Oh. That hurts :(", "Sorry for the crash :(",
+			"You can play our brother game, Minitale", "F, crash again??" };
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
-    
-    /**
-     * This specifies a custom port instead of default to server-side using
-     * --port parameter if something goes wrong in setting the new port
-     * it'll use the default one {@link MinicraftProtocol#PORT}
-     */
-    public static int CUSTOM_PORT = MinicraftProtocol.PORT;
+	/**
+	 * This specifies a custom port instead of default to server-side using --port
+	 * parameter if something goes wrong in setting the new port it'll use the
+	 * default one {@link MinicraftProtocol#PORT}
+	 */
+	public static int CUSTOM_PORT = MinicraftProtocol.PORT;
 
-    static Display menu = null; // The current menu you are on.
-    static Display newMenu = null; 
+	static Display menu = null; // The current menu you are on.
+	static Display newMenu = null;
 
-    // Sets the current menu.
-    public static void setMenu(@Nullable Display display) {
-        newMenu = display;
-    }
+	// Sets the current menu.
+	public static void setMenu(@Nullable Display display) {
+		newMenu = display;
+	}
 
-    public static void exitMenu() {
+	public static void exitMenu() {
 
-        if (menu == null) {
-            if (debug) {
-                System.out.println("Game.exitMenu(): No menu found, returning!");  
-            }
-            return; // No action required; cannot exit from no menu
-        }
+		if (menu == null) {
+			if (debug) {
+				System.out.println("Game.exitMenu(): No menu found, returning!");
+			}
+			return; // No action required; cannot exit from no menu
+		}
 
-        Sound.GUI_back.play();
-        newMenu = menu.getParent();
-    }
+		Sound.Menu_back.play();
+		newMenu = menu.getParent();
+	}
 
-    public static Display getMenu() {
-        return newMenu;
-    }
+	public static Display getMenu() {
+		return newMenu;
+	}
 
-    public static boolean isMode(String mode) {
-        return ((String) Settings.get("mode")).equalsIgnoreCase(mode);
-    }
+	public static boolean isMode(String mode) {
+		return ((String) Settings.get("mode")).equalsIgnoreCase(mode);
+	}
 
-    // MULTIPLAYER
-    public static boolean ISONLINE = false;
-    public static boolean ISHOST = false;
+	// MULTIPLAYER
+	public static boolean ISONLINE = false;
+	public static boolean ISHOST = false;
 
-    public static MinicraftClient client = null;
+	public static MinicraftClient client = null;
 
-    public static boolean isValidClient() {
-        return ISONLINE && client != null;
-    }
+	public static boolean isValidClient() {
+		return ISONLINE && client != null;
+	}
 
-    public static boolean isConnectedClient() {
-        return isValidClient() && client.isConnected();
-    }
+	public static boolean isConnectedClient() {
+		return isValidClient() && client.isConnected();
+	}
 
-    public static MinicraftServer server = null;
+	public static MinicraftServer server = null;
 
+	/** Checks if you are a host and the game is a server */
+	public static boolean isValidServer() {
+		return ISONLINE && ISHOST && server != null;
+	}
 
-    /** Checks if you are a host and the game is a server */
-    public static boolean isValidServer() {
-        return ISONLINE && ISHOST && server != null;
-    }
+	public static boolean hasConnectedClients() {
+		return isValidServer() && server.hasClients();
+	}
 
-    public static boolean hasConnectedClients() {
-        return isValidServer() && server.hasClients();
-    }
+	// LEVEL
+	public static Level[] levels = new Level[6]; // This array stores the different levels.
+	public static int currentLevel = 3; // This is the level the player is on. It defaults to 3, the surface.
 
-    // LEVEL
-    public static Level[] levels = new Level[6]; // This array stores the different levels.
-    public static int currentLevel = 3; // This is the level the player is on. It defaults to 3, the surface.
+	static boolean gameOver = false; // If the player wins this is set to true.
 
-    static boolean gameOver = false; // If the player wins this is set to true.
+	static boolean running = true;
 
-    static boolean running = true;
+	// Quit function
+	public static void quit() {
+		if (isConnectedClient()) {
+			client.endConnection();
+		}
+		if (isValidServer()) {
+			server.endConnection();
+		}
+		running = false;
+	}
 
-    // Quit function
-    public static void quit() {
-        if (isConnectedClient()) {
-            client.endConnection();      
-        }
-        if (isValidServer()) {
-            server.endConnection();
-        }
-        running = false;
-    }
-
-    // Main functions
-    public static void main(String[] args) {
+	// Main functions
+	public static void main(String[] args) {
 
 // Crash window log ------------------------------------------------------------------------------------------------------------------------------
-        
-        // Load the splashes 
-        String errorSplash = Splash[random.nextInt(Splash.length)]; 
 
-        // Load the time vars
-        LocalDateTime time = LocalDateTime.now();
-    
-        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
-            throwable.printStackTrace();
+		// Load the splashes
+		String errorSplash = Splash[random.nextInt(Splash.length)];
 
-            StringWriter string = new StringWriter();
-            PrintWriter printer = new PrintWriter(string);
-            throwable.printStackTrace(printer);
-            
-            if (GraphicsEnvironment.isHeadless()) {
-                return;
-            }
+		// Load the time vars
+		LocalDateTime time = LocalDateTime.now();
 
-            // Crash log Structure
-            JTextArea crashDisplay = new JTextArea();
+		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+			throwable.printStackTrace();
 
-            crashDisplay.setForeground(Color.BLACK);
-            crashDisplay.setBackground(Color.WHITE);
+			StringWriter string = new StringWriter();
+			PrintWriter printer = new PrintWriter(string);
+			throwable.printStackTrace(printer);
+
+			if (GraphicsEnvironment.isHeadless()) {
+				return;
+			}
+
+			// Crash log Structure
+			JTextArea crashDisplay = new JTextArea();
+
+			crashDisplay.setForeground(Color.BLACK);
+			crashDisplay.setBackground(Color.WHITE);
 
             // Crash message
             crashDisplay.setText(
@@ -220,100 +212,96 @@ public class Game {
                 "--- END ERROR REPORT ---------"
             );
             
-             // Not editable
-            crashDisplay.setEditable(false);
-            
-            // Font
-            crashDisplay.setFont(new Font("Consolas", Font.PLAIN, 12));
-            
-            // Create the scroll control and the window size
-            JScrollPane errorPane = new JScrollPane(crashDisplay);
-            errorPane.setSize(600, 400);
+			// Not editable
+			crashDisplay.setEditable(false);
 
-            // all white, is better
-            UIManager.put("OptionPane.background", Color.white);
-            UIManager.put("Panel.background", Color.white);  
+			// Font
+			crashDisplay.setFont(new Font("Consolas", Font.PLAIN, 12));
 
-            // Display the window
-            JOptionPane.showOptionDialog(null, errorPane, "Aircraft has crashed!", JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, args, thread);
-        });
+			// Create the scroll control and the window size
+			JScrollPane errorPane = new JScrollPane(crashDisplay);
+			errorPane.setSize(600, 400);
 
+			// all white, is better
+			UIManager.put("OptionPane.background", Color.white);
+			UIManager.put("Panel.background", Color.white);
 
-
+			// Display the window
+			JOptionPane.showOptionDialog(null, errorPane, "Aircraft has crashed!", JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, args, thread);
+		});
 
 // Start events ------------------------------------------------------------------------------------------------------------------------------------
 
-        Initializer.parseArgs(args);
+		Initializer.parseArgs(args);
 
-        // Initialize game events
-        
-        // Christmas   
-        if ((time.getMonth() == Month.DECEMBER) && (time.getDayOfMonth() == 24)) {
-            IS_Christmas = true;
-        } else {
-            IS_Christmas = false;
-        }
+		// Initialize game events
 
-        // Halloween
-        if ((time.getMonth() == Month.OCTOBER) && (time.getDayOfMonth() == 31)) {
-            IS_Halloween = true;
-        } else {
-            IS_Halloween = false;
-        }
+		// Christmas
+		if ((time.getMonth() == Month.DECEMBER) && (time.getDayOfMonth() == 24)) {
+			IS_Christmas = true;
+		} else {
+			IS_Christmas = false;
+		}
 
-        // April Fools  
-        if ((time.getMonth() == Month.APRIL) && (time.getDayOfMonth() == 1)) {   
-            IS_April_fools = true;
-        } else {
-            IS_April_fools = false;
-        }
-        
-        
-        // Initialize input handler
-        input = new InputHandler(Renderer.canvas);
+		// Halloween
+		if ((time.getMonth() == Month.OCTOBER) && (time.getDayOfMonth() == 31)) {
+			IS_Halloween = true;
+		} else {
+			IS_Halloween = false;
+		}
 
-        // Load events
-        Tiles.initTileList();
-        Sound.init();
-        Settings.init();
-    
-        World.resetGame(); // "half"-starts a new game, to set up initial variables
-        player.eid = 0;
-        new Load(true); // This loads any saved preferences.
+		// April Fools
+		if ((time.getMonth() == Month.APRIL) && (time.getDayOfMonth() == 1)) {
+			IS_April_fools = true;
+		} else {
+			IS_April_fools = false;
+		}
 
-        if (Network.autoclient) {
-            setMenu(new MultiplayerDisplay("localhost"));
-            
-        } else if (!HAS_GUI) {
-            Network.startMultiplayerServer();
-            
-        } else {
-            setMenu(new TitleDisplay()); // Sets menu to the title screen.
-        }
+		// Initialize input handler
+		input = new InputHandler(Renderer.canvas);
+
+		// Load events
+		Tiles.initTileList();
+		Sound.init();
+		Settings.init();
+
+		World.resetGame(); // "half"-starts a new game, to set up initial variables
+		player.eid = 0;
+		new Load(true); // This loads any saved preferences.
+
+		if (Network.autoclient) {
+			setMenu(new MultiplayerDisplay("localhost"));
+
+		} else if (!HAS_GUI) {
+			Network.startMultiplayerServer();
+
+		} else {
+			setMenu(new TitleDisplay()); // Sets menu to the title screen.
+		}
 
 // Window events ----------------------------------------------------------------------------------------------------------------------------------
 
-        // Create a game window
-        Initializer.createAndDisplayFrame();
+		// Create a game window
+		Initializer.createAndDisplayFrame();
 
-        // Display objects in the screen
-        Renderer.initScreen();
-        
-        // Update fullscreen frame if Updater.FULLSCREEN was updated previously
-        if (Updater.FULLSCREEN) {
-            Updater.updateFullscreen();
-        }
+		// Display objects in the screen
+		Renderer.initScreen();
 
-        // Start tick() count
-        Initializer.run();
+		// Update fullscreen frame if Updater.FULLSCREEN was updated previously
+		if (Updater.FULLSCREEN) {
+			Updater.updateFullscreen();
+		}
+
+		// Start tick() count
+		Initializer.run();
 
 // Exit events -------------------------------------------------------------------------------------------------------------------------------------
-        
-        if (debug) {
-            System.out.println("Main game loop ended; Terminating application...");
-        }
 
-        System.exit(0);
-    }
+		if (debug) {
+			System.out.println("Main game loop ended; Terminating application...");
+		}
+
+		System.exit(0);
+	}
 
 }

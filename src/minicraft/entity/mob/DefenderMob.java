@@ -14,8 +14,8 @@ public class DefenderMob extends MobAi {
     protected int color;
 
     /**
-     * Constructor for a non-hostile (passive) mob.
-     * healthFactor = 3.
+     * Constructor for a non-hostile (passive) mob. healthFactor = 3.
+     * 
      * @param sprites The mob's sprites.
      */
     public DefenderMob(MobSprite[][] sprites) {
@@ -24,9 +24,10 @@ public class DefenderMob extends MobAi {
 
     /**
      * Constructor for a non-hostile (passive) mob.
-     * @param sprites The mob's sprites.
-     * @param healthFactor Determines the mobs health. Will be multiplied by the difficulty
-     * and then added with 5.
+     * 
+     * @param sprites      The mob's sprites.
+     * @param healthFactor Determines the mobs health. Will be multiplied by the
+     *                     difficulty and then added with 5.
      */
     public DefenderMob(MobSprite[][] sprites, int healthFactor) {
         super(sprites, 5 + healthFactor * Settings.getIdx("diff"), 5 * 60 * Updater.normSpeed, 45, 40);
@@ -40,7 +41,8 @@ public class DefenderMob extends MobAi {
     @Override
     protected void touchedBy(Entity entity) {
 
-        if (Settings.get("diff").equals("Peaceful")) return;
+        if (Settings.get("diff").equals("Peaceful"))
+            return;
 
         super.touchedBy(entity);
         if (entity instanceof Zombie) {
@@ -71,25 +73,27 @@ public class DefenderMob extends MobAi {
     /**
      * Checks a given position in a given level to see if the mob can spawn there.
      * Passive mobs can only spawn on grass or flower tiles.
+     * 
      * @param level The level which the mob wants to spawn in.
-     * @param x X map spawn coordinate.
-     * @param y Y map spawn coordinate.
+     * @param x     X map spawn coordinate.
+     * @param y     Y map spawn coordinate.
      * @return true if the mob can spawn here, false if not.
      */
     public static boolean checkStartPos(Level level, int x, int y) {
 
-        int r = (Game.isMode("score") ? 22 : 15) + (Updater.getTime() == Updater.Time.Night ? 0 : 10); // get no-mob radius by
+        int r = (Game.isMode("score") ? 22 : 15) + (Updater.getTime() == Updater.Time.Night ? 0 : 10); // get no-mob
+                                                                                                       // radius by
 
         if (!MobAi.checkStartPos(level, x, y, 16, r))
             return false;
 
         Tile tile = level.getTile(x >> 4, y >> 4);
-        if (tile != Tiles.get("Wood Planks") && tile != Tiles.get("wood planks") && tile != Tiles.get("Path") &&
-            tile != Tiles.get("path")) {
+        if (tile != Tiles.get("Wood Planks") && tile != Tiles.get("wood planks") && tile != Tiles.get("Path")
+                && tile != Tiles.get("path")) {
             return false;
-        } else if (tile != Tiles.get("Grass") && tile != Tiles.get("Sand") && tile != Tiles.get("Snow") &&
-            tile != Tiles.get("birch tree") && tile != Tiles.get("tree") && tile != Tiles.get("flower") &&
-            tile != Tiles.get("water") && tile != Tiles.get("wheat") && tile != Tiles.get("farmland")) {
+        } else if (tile != Tiles.get("Grass") && tile != Tiles.get("Sand") && tile != Tiles.get("Snow")
+                && tile != Tiles.get("birch tree") && tile != Tiles.get("tree") && tile != Tiles.get("flower")
+                && tile != Tiles.get("water") && tile != Tiles.get("wheat") && tile != Tiles.get("farmland")) {
             return true;
         } else
             return false;

@@ -14,9 +14,9 @@ import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
 
 public class AirWizard extends EnemyMob {
-	
+
     private static MobSprite[][][] sprites;
-    
+
     static {
         sprites = new MobSprite[2][4][2];
         for (int i = 0; i < 2; i++) {
@@ -34,6 +34,7 @@ public class AirWizard extends EnemyMob {
 
     /**
      * Constructor for the AirWizard. Will spawn as secondary form if lvl>1.
+     * 
      * @param lvl The AirWizard level.
      */
     public AirWizard(int lvl) {
@@ -42,14 +43,17 @@ public class AirWizard extends EnemyMob {
 
     /**
      * Constructor for the AirWizard.
+     * 
      * @param secondform determines if the wizard should be level 2 or 1.
      */
     public AirWizard(boolean secondform) {
         super(secondform ? 2 : 1, sprites, secondform ? 6000 : 3500, false, 16 * 8, -1, 10, 50);
 
         this.secondform = secondform;
-        if (secondform) speed = 3;
-        else speed = 2;
+        if (secondform)
+            speed = 3;
+        else
+            speed = 2;
         walkTime = 2;
     }
 
@@ -65,7 +69,8 @@ public class AirWizard extends EnemyMob {
     public void tick() {
         super.tick();
 
-        if (Game.isMode("Creative")) return; // Should not attack if player is in creative
+        if (Game.isMode("Creative"))
+            return; // Should not attack if player is in creative
 
         if (attackDelay > 0) {
             xa = ya = 0;
@@ -78,17 +83,22 @@ public class AirWizard extends EnemyMob {
 
             attackDelay--;
             if (attackDelay == 0) {
-                //attackType = 0; // attack type is set to 0, as the default.
-                if (health < maxHealth / 2) attackType = 1; // if at 1000 health (50%) or lower, attackType = 1
-                if (health < maxHealth / 10) attackType = 2; // if at 200 health (10%) or lower, attackType = 2
+                // attackType = 0; // attack type is set to 0, as the default.
+                if (health < maxHealth / 2)
+                    attackType = 1; // if at 1000 health (50%) or lower, attackType = 1
+                if (health < maxHealth / 10)
+                    attackType = 2; // if at 200 health (10%) or lower, attackType = 2
                 if (random.nextInt(2) == 0) {
-                    attackTime = 80 * (secondform ? 3 : 2); //attackTime set to 120 or 180 (2 or 3 seconds, at default 60 ticks/sec)
+                    attackTime = 80 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default
+                                                            // 60 ticks/sec)
                 }
                 if (random.nextInt(3) == 1) {
-                    attackTime = 50 * (secondform ? 3 : 2); //attackTime set to 120 or 180 (2 or 3 seconds, at default 60 ticks/sec)
+                    attackTime = 50 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default
+                                                            // 60 ticks/sec)
                 }
                 if (random.nextInt(3) == 2) {
-                    attackTime = 30 * (secondform ? 3 : 2); //attackTime set to 120 or 180 (2 or 3 seconds, at default 60 ticks/sec)
+                    attackTime = 30 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default
+                                                            // 60 ticks/sec)
                 }
             }
             return; // skips the rest of the code (attackDelay must have been > 0)
@@ -96,10 +106,14 @@ public class AirWizard extends EnemyMob {
 
         if (attackTime > 0) {
             xa = ya = 0;
-			attackTime *= 0.92; // attackTime will decrease by 7% every time.
-            double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1); //assigns a local direction variable from the attack time.
-            double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2; // speed is dependent on the attackType. (higher attackType, faster speeds)
-            level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed)); // adds a spark entity with the cosine and sine of dir times speed.
+            attackTime *= 0.92; // attackTime will decrease by 7% every time.
+            double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1); // assigns a local direction variable from the
+                                                                       // attack time.
+            double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2; // speed is dependent on the attackType. (higher
+                                                                        // attackType, faster speeds)
+            level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed)); // adds a spark entity with the
+                                                                                      // cosine and sine of dir times
+                                                                                      // speed.
             Sound.Particle_spark_spawn.play();
             return; // skips the rest of the code (attackTime was > 0; ie we're attacking.)
         }
@@ -112,13 +126,18 @@ public class AirWizard extends EnemyMob {
             if (xd * xd + yd * yd < 16 * 16 * 2 * 2) {
                 /// Move away from the player if less than 2 blocks away
 
-                xa = 0; //accelerations
+                xa = 0; // accelerations
                 ya = 0;
-                // these four statements basically just find which direction is away from the player:
-                if (xd < 0) xa = +1;
-                if (xd > 0) xa = -1;
-                if (yd < 0) ya = +1;
-                if (yd > 0) ya = -1;
+                // these four statements basically just find which direction is away from the
+                // player:
+                if (xd < 0)
+                    xa = +1;
+                if (xd > 0)
+                    xa = -1;
+                if (yd < 0)
+                    ya = +1;
+                if (yd > 0)
+                    ya = -1;
             } else if (xd * xd + yd * yd > 16 * 16 * 15 * 15) { // 15 squares away
                 /// drags the airwizard to the player, maintaining relative position.
                 double hypot = Math.sqrt(xd * xd + yd * yd);
@@ -132,7 +151,27 @@ public class AirWizard extends EnemyMob {
         if (player != null && randomWalkTime == 0) {
             int xd = player.x - x; // x dist to player
             int yd = player.y - y; // y dist to player
-            if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) { // if a random number, 0-3, equals 0, and the player is less than 50 blocks away, and attackDelay and attackTime equal 0...
+            if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) { // if a
+                                                                                                                // random
+                                                                                                                // number,
+                                                                                                                // 0-3,
+                                                                                                                // equals
+                                                                                                                // 0,
+                                                                                                                // and
+                                                                                                                // the
+                                                                                                                // player
+                                                                                                                // is
+                                                                                                                // less
+                                                                                                                // than
+                                                                                                                // 50
+                                                                                                                // blocks
+                                                                                                                // away,
+                                                                                                                // and
+                                                                                                                // attackDelay
+                                                                                                                // and
+                                                                                                                // attackTime
+                                                                                                                // equal
+                                                                                                                // 0...
                 attackDelay = 60 * 4; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
             }
         }
@@ -148,28 +187,27 @@ public class AirWizard extends EnemyMob {
 
     @Override
     public void render(Screen screen) {
-        /*int xo = x - 8; // the horizontal location to start drawing the sprite
-        int yo = y - 11; // the vertical location to start drawing the sprite
-        
-        int col1 = secondform ? Color.get(-1, 0, 2, 46) : Color.get(-1, 100, 500, 555); // top half color
-        int col2 = secondform ? Color.get(-1, 0, 2, 46) : Color.get(-1, 100, 500, 532); // bottom half color
-        
-        if (attackType == 1 && tickTime / 5 % 4 == 0 || attackType == 2 && tickTime / 3 % 2 == 0) {
-        		// change colors.
-        		col1 = secondform ? Color.get(-1, 2, 0, 46) : Color.get(-1, 500, 100, 555);
-        		col2 = secondform ? Color.get(-1, 2, 0, 46) : Color.get(-1, 500, 100, 532);
-        }
-        
-        if (hurtTime > 0) { //if the air wizards hurt time is above 0... (hurtTime value in Mob.java)
-        	// turn the sprite white, momentarily.
-        	col1 = Color.WHITE;
-        	col2 = Color.WHITE;
-        }
-        
-        //MobSprite curSprite = sprites[dir.getDir()][(walkDist >> 3) & 1];
-        //curSprite.renderRow(0, screen, xo, yo, col1);
-        //curSprite.renderRow(1, screen, xo, yo+8, col2);
-        */
+        /*
+         * int xo = x - 8; // the horizontal location to start drawing the sprite int yo
+         * = y - 11; // the vertical location to start drawing the sprite
+         * 
+         * int col1 = secondform ? Color.get(-1, 0, 2, 46) : Color.get(-1, 100, 500,
+         * 555); // top half color int col2 = secondform ? Color.get(-1, 0, 2, 46) :
+         * Color.get(-1, 100, 500, 532); // bottom half color
+         * 
+         * if (attackType == 1 && tickTime / 5 % 4 == 0 || attackType == 2 && tickTime /
+         * 3 % 2 == 0) { // change colors. col1 = secondform ? Color.get(-1, 2, 0, 46) :
+         * Color.get(-1, 500, 100, 555); col2 = secondform ? Color.get(-1, 2, 0, 46) :
+         * Color.get(-1, 500, 100, 532); }
+         * 
+         * if (hurtTime > 0) { //if the air wizards hurt time is above 0... (hurtTime
+         * value in Mob.java) // turn the sprite white, momentarily. col1 = Color.WHITE;
+         * col2 = Color.WHITE; }
+         * 
+         * //MobSprite curSprite = sprites[dir.getDir()][(walkDist >> 3) & 1];
+         * //curSprite.renderRow(0, screen, xo, yo, col1); //curSprite.renderRow(1,
+         * screen, xo, yo+8, col2);
+         */
         super.render(screen);
 
         int textcol = Color.get(1, 0, 204, 0);
@@ -177,7 +215,8 @@ public class AirWizard extends EnemyMob {
         int percent = health / (maxHealth / 100);
         String h = percent + "%";
 
-        if (percent < 1) h = "1%";
+        if (percent < 1)
+            h = "1%";
 
         if (percent < 16) {
             textcol = Color.get(1, 204, 0, 0);
@@ -203,17 +242,18 @@ public class AirWizard extends EnemyMob {
     public void die() {
         Player[] players = level.getPlayers();
         if (players.length > 0) { // if the player is still here
-            for (Player p: players)
+            for (Player p : players)
                 p.addScore((secondform ? 500000 : 100000)); // give the player 100K or 500K points.
         }
 
-        //Sound.bossDeath.play(); // play boss-death sound.
+        // Sound.bossDeath.play(); // play boss-death sound.
         Sound.Mob_wizard_changePhase.play();
 
         if (!secondform) {
             level.add(new AirWizardPhase2(1), x, y);
             Updater.notifyAll("Phase II");
-            if (!beaten) Updater.notifyAll("Phase II", 200);
+            if (!beaten)
+                Updater.notifyAll("Phase II", 200);
             beaten = false;
 
         } else {

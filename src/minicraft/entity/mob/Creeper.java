@@ -39,7 +39,8 @@ public class Creeper extends EnemyMob {
     public boolean move(int xa, int ya) {
         boolean result = super.move(xa, ya);
         dir = Direction.DOWN;
-        if (xa == 0 && ya == 0) walkDist = 0;
+        if (xa == 0 && ya == 0)
+            walkDist = 0;
         return result;
     }
 
@@ -47,18 +48,20 @@ public class Creeper extends EnemyMob {
     public void tick() {
         super.tick();
 
-        if (Settings.get("diff").equals("Peaceful")) return; // Creeper should not explode if player is in passive mode
+        if (Settings.get("diff").equals("Peaceful"))
+            return; // Creeper should not explode if player is in passive mode
 
         if (fuseTime > 0) {
             fuseTime--; // fuse getting shorter...
             xa = ya = 0;
-        } else if (fuseLit) { // fuseLit is set to true when fuseTime is set to max, so this happens after fuseTime hits zero, while fuse is lit.
+        } else if (fuseLit) { // fuseLit is set to true when fuseTime is set to max, so this happens after
+                              // fuseTime hits zero, while fuse is lit.
             xa = ya = 0;
 
             boolean playerInRange = false; // tells if any players are within the blast
 
             // Find if the player is in range and store it in playerInRange.
-            for (Entity e: level.getEntitiesOfClass(Mob.class)) {
+            for (Entity e : level.getEntitiesOfClass(Mob.class)) {
                 Mob mob = (Mob) e;
                 int pdx = Math.abs(mob.x - x);
                 int pdy = Math.abs(mob.y - y);
@@ -69,10 +72,10 @@ public class Creeper extends EnemyMob {
                 }
             }
 
-            // basically, if there aren't any players it "defuses" itself and doesn't blow up
+            // basically, if there aren't any players it "defuses" itself and doesn't blow
+            // up
             if (playerInRange) {
                 // blow up
-
 
                 if (random.nextInt(3) == 0) {
                     Sound.Mob_creeper_explode.play();
@@ -87,7 +90,6 @@ public class Creeper extends EnemyMob {
                     Sound.Mob_creeper_explode_4.play();
                 }
 
-
                 // figure out which tile the mob died on
                 int xt = x >> 4;
                 int yt = (y - 2) >> 4;
@@ -98,25 +100,25 @@ public class Creeper extends EnemyMob {
                 int lvlDamage = BLAST_DAMAGE * lvl;
 
                 // hurt all the entities
-                List < Entity > entitiesInRange = level.getEntitiesInTiles(xt, yt, radius);
-                List < Entity > spawners = new ArrayList < > ();
+                List<Entity> entitiesInRange = level.getEntitiesInTiles(xt, yt, radius);
+                List<Entity> spawners = new ArrayList<>();
 
-                for (Entity entity: entitiesInRange) {
+                for (Entity entity : entitiesInRange) {
                     if (entity instanceof Mob) {
                         Mob mob = (Mob) entity;
                         int distx = Math.abs(mob.x - x);
                         int disty = Math.abs(mob.y - y);
                         float distDiag = (float) Math.sqrt(distx ^ 2 + disty ^ 2);
-                        mob.hurt(this, (int)(lvlDamage * (1 / (distDiag + 1)) + Settings.getIdx("diff")));
+                        mob.hurt(this, (int) (lvlDamage * (1 / (distDiag + 1)) + Settings.getIdx("diff")));
                     } else if (entity instanceof Spawner) {
                         spawners.add(entity);
                     }
                 }
 
                 Point[] tilePositions = level.getAreaTilePositions(xt, yt, radius);
-                for (Point tilePosition: tilePositions) {
+                for (Point tilePosition : tilePositions) {
                     boolean hasSpawner = false;
-                    for (Entity spawner: spawners) {
+                    for (Entity spawner : spawners) {
                         if (spawner.x >> 4 == tilePosition.x && spawner.y >> 4 == tilePosition.y) {
                             hasSpawner = true;
                             break;
@@ -132,11 +134,14 @@ public class Creeper extends EnemyMob {
                     }
                 }
 
-                for (Entity entity: entitiesInRange) { // This is repeated because of tilePositions need to be calculated
-                    if (entity == this) continue;
+                for (Entity entity : entitiesInRange) { // This is repeated because of tilePositions need to be
+                                                        // calculated
+                    if (entity == this)
+                        continue;
                     Point ePos = new Point(entity.x >> 4, entity.y >> 4);
-                    for (Point p: tilePositions) {
-                        if (!p.equals(ePos)) continue;
+                    for (Point p : tilePositions) {
+                        if (!p.equals(ePos))
+                            continue;
                         if (!level.getTile(p.x, p.y).mayPass(level, p.x, p.y, entity))
                             entity.die();
                     }
@@ -152,13 +157,12 @@ public class Creeper extends EnemyMob {
 
     @Override
     public void render(Screen screen) {
-        /*if (fuseLit && fuseTime % 6 == 0) {
-        	super.lvlcols[lvl-1] = Color.get(-1, 252);
-        }
-        else
-        	super.lvlcols[lvl-1] = Creeper.lvlcols[lvl-1];
-
-        sprites[0] = walkDist == 0 ? standing : walking;*/
+        /*
+         * if (fuseLit && fuseTime % 6 == 0) { super.lvlcols[lvl-1] = Color.get(-1,
+         * 252); } else super.lvlcols[lvl-1] = Creeper.lvlcols[lvl-1];
+         * 
+         * sprites[0] = walkDist == 0 ? standing : walking;
+         */
 
         super.render(screen);
     }
@@ -166,7 +170,8 @@ public class Creeper extends EnemyMob {
     @Override
     protected void touchedBy(Entity entity) {
 
-        if (Settings.get("diff").equals("Peaceful")) return;
+        if (Settings.get("diff").equals("Peaceful"))
+            return;
 
         if (entity instanceof Player) {
             if (fuseTime == 0 && !fuseLit) {
@@ -184,32 +189,33 @@ public class Creeper extends EnemyMob {
 
     public void die() {
         // Only drop items if the creeper has not exploded
-        if (!fuseLit) dropItem(1, 4 - Settings.getIdx("diff"), Items.get("Gunpowder"));
+        if (!fuseLit)
+            dropItem(1, 4 - Settings.getIdx("diff"), Items.get("Gunpowder"));
         super.die();
     }
 
     @Override
     protected String getUpdateString() {
         String updates = super.getUpdateString() + ";";
-        updates += "fuseTime," + fuseTime +
-            ";fuseLit," + fuseLit;
+        updates += "fuseTime," + fuseTime + ";fuseLit," + fuseLit;
 
         return updates;
     }
 
     @Override
     protected boolean updateField(String field, String val) {
-        if (super.updateField(field, val)) return true;
+        if (super.updateField(field, val))
+            return true;
         switch (field) {
-            case "fuseTime":
-                fuseTime = Integer.parseInt(val);
-                return true;
+        case "fuseTime":
+            fuseTime = Integer.parseInt(val);
+            return true;
 
-            case "fuseLit":
-                boolean wasLit = fuseLit;
-                fuseLit = Boolean.parseBoolean(val);
-                if (fuseLit && !wasLit)
-                    Sound.Mob_creeper_fuse.play();
+        case "fuseLit":
+            boolean wasLit = fuseLit;
+            fuseLit = Boolean.parseBoolean(val);
+            if (fuseLit && !wasLit)
+                Sound.Mob_creeper_fuse.play();
         }
 
         return false;

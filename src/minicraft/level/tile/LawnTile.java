@@ -14,69 +14,72 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class LawnTile extends Tile {
-	private static final Sprite lawnSprite = new Sprite(4, 8, 1);
+    private static Sprite sprite = new Sprite(4, 8, 1);
 
-	protected LawnTile(String name) {
-		super(name, (ConnectorSprite) null);
-		connectsToGrass = true;
-		maySpawn = true;
-	}
+    protected LawnTile(String name) {
+        super(name, (ConnectorSprite) null);
+        connectsToGrass = true;
+        maySpawn = true;
+    }
 
-	public boolean tick(Level level, int xt, int yt) {
-		// TODO revise this method.
-		if (random.nextInt(30) != 0) return false;
+    public boolean tick(Level level, int xt, int yt) {
+        // TODO revise this method.
+        if (random.nextInt(30) != 0)
+            return false;
 
-		int xn = xt;
-		int yn = yt;
+        int xn = xt;
+        int yn = yt;
 
-		if (random.nextBoolean()) xn += random.nextInt(2) * 2 - 1;
-		else yn += random.nextInt(2) * 2 - 1;
+        if (random.nextBoolean())
+            xn += random.nextInt(2) * 2 - 1;
+        else
+            yn += random.nextInt(2) * 2 - 1;
 
-		if (level.getTile(xn, yn) == Tiles.get("dirt")) {
-			level.setTile(xn, yn, Tiles.get("grass"));
-		}
-		return false;
-	}
+        if (level.getTile(xn, yn) == Tiles.get("dirt")) {
+            level.setTile(xn, yn, Tiles.get("grass"));
+        }
+        return false;
+    }
 
-	public void render(Screen screen, Level level, int x, int y) {
-		Tiles.get("grass").render(screen, level, x, y);
+    public void render(Screen screen, Level level, int x, int y) {
+        Tiles.get("grass").render(screen, level, x, y);
 
-		int data = level.getData(x, y);
-		int shape = (data / 16) % 2;
+        int data = level.getData(x, y);
+        int shape = (data / 16) % 2;
 
-		x = x << 4;
-		y = y << 4;
+        x = x << 4;
+        y = y << 4;
 
-		lawnSprite.render(screen, x + 8 * shape, y);
-		lawnSprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
-	}
+        sprite.render(screen, x + 8 * shape, y);
+        sprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
+    }
 
-	public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
-		if (item instanceof ToolItem) {
-			ToolItem tool = (ToolItem) item;
-			if (tool.type == ToolType.Shovel) {
-				if (player.payStamina(2 - tool.level) && tool.payDurability()) {
-					level.setTile(x, y, Tiles.get("grass"));
-					Sound.Tile_generic_hurt.play();
-					
-					if (random.nextInt(3) == 1) { // 28% chance to drop Seeds
-						level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Seeds"));
-					}
-					
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
+        if (item instanceof ToolItem) {
+            ToolItem tool = (ToolItem) item;
+            if (tool.type == ToolType.Shovel) {
+                if (player.payStamina(2 - tool.level) && tool.payDurability()) {
+                    level.setTile(x, y, Tiles.get("grass"));
+                    Sound.Tile_generic_hurt.play();
 
-	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-		
-		if (random.nextInt(6) == 1) { // 20% chance to drop sky seeds
-			level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Seeds"));
-		}
-		
-		level.setTile(x, y, Tiles.get("grass"));
-		return true;
-	}
+                    if (random.nextInt(3) == 1) { // 28% chance to drop Seeds
+                        level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Seeds"));
+                    }
+
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+
+        if (random.nextInt(6) == 1) { // 20% chance to drop sky seeds
+            level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Seeds"));
+        }
+
+        level.setTile(x, y, Tiles.get("grass"));
+        return true;
+    }
 }

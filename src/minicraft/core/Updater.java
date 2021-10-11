@@ -19,7 +19,8 @@ import minicraft.screen.PlayerDeathDisplay;
 import minicraft.screen.WorldSelectDisplay;
 
 public class Updater extends Game {
-    private Updater() {}
+    private Updater() {
+    }
 
     /// TIME AND TICKS
     public static final int normSpeed = 60; // Measured in ticks / second.
@@ -30,9 +31,12 @@ public class Updater extends Game {
     static int time = 0; // Facilities time of day / sunlight.
 
     public static final int dayLength = 64800; // This value determines how long one game day is.
-    public static final int sleepEndTime = dayLength / 8; // This value determines when the player "wakes up" in the morning.
-    public static final int sleepStartTime = dayLength / 2 + dayLength / 8; // This value determines when the player allowed to sleep.
-    // public static int noon = 32400; // This value determines when the sky switches from getting lighter to getting  darker.
+    public static final int sleepEndTime = dayLength / 8; // This value determines when the player "wakes up" in the
+                                                          // morning.
+    public static final int sleepStartTime = dayLength / 2 + dayLength / 8; // This value determines when the player
+                                                                            // allowed to sleep.
+    // public static int noon = 32400; // This value determines when the sky
+    // switches from getting lighter to getting darker.
 
     public static int gameTime = 0; // This stores the total time (number of ticks) you've been playing your
     public static boolean pastDay1 = true; // Used to prevent mob spawn on surface on day 1.
@@ -67,7 +71,6 @@ public class Updater extends Game {
 
         GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 
-
         if (Updater.FULLSCREEN) {
             Initializer.frame.setUndecorated(true);
             device.setFullScreenWindow(Initializer.frame);
@@ -89,7 +92,6 @@ public class Updater extends Game {
     public static void tick() {
 
         GameInfo.getInfo();
-
 
         if (Updater.HAS_GUI && input.getKey("FULLSCREEN").clicked) {
             Updater.FULLSCREEN = !Updater.FULLSCREEN;
@@ -184,7 +186,7 @@ public class Updater extends Game {
             /// this is to keep the game going while online, even with an unfocused window.
             input.tick();
 
-            for (Level floor: levels) {
+            for (Level floor : levels) {
                 if (floor == null) {
                     continue;
                 }
@@ -216,7 +218,8 @@ public class Updater extends Game {
             if (menu != null) {
                 // a menu is active.
                 if (player != null)
-                    player.tick(); // it is CRUCIAL that the player is ticked HERE, before the menu is ticked. I'm not quite sure why... the menus break otherwise, though.
+                    player.tick(); // it is CRUCIAL that the player is ticked HERE, before the menu is ticked. I'm
+                                   // not quite sure why... the menus break otherwise, though.
                 menu.tick(input);
                 paused = true;
             } else {
