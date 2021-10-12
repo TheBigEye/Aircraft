@@ -1,8 +1,6 @@
 ![title](https://user-images.githubusercontent.com/63316583/135155859-86015a31-3b22-4283-922f-7d9497741e1f.png)
 
-A Modified version of [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived) that adds more features. 
-
-You can watch all the [releases](https://github.com/TheBigEye/Aircraft-Mod/releases).
+Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived) that adds the following features.
 
 ## Main features
 Graphics:
@@ -40,15 +38,14 @@ Technical side :
 * More durability in tools
 * Enchanted Tools and Enchantment Books
 
-## About
-* Aircraft is a mod that is totally based on [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived).
-* The mod has compatibility with Minicraft plus 2.0.6 and 2.0.7. (Older versions before 1.3 are compatible with 2.0.3 to 2.0.4).
-* The mod is in Beta phase, it is continuously updated to clean most of the bugs, make maintenance and add features.
-
-
 ## Installation
 1. Download and install [Java](https://java.com/en/download/).
-2. Then download the file with the extension .jar of the game.
+2. Then download the file with the extension .jar of the game [here](https://github.com/TheBigEye/Aircraft-Mod/reeleases).
 3. If you are on Windows, double click on the file or right click > open with "Java platform SE binary", If you are on Linux, open your terminal, go to the path where the .jar was downloaded and write the following, `java -jar Aircraft.jar`, you will have to open the game, if you get any problem when running the game on Windows (like a black screen that appears and disappears, open CMD or Powershell, go to the path where the .jar is and type the same command for linux)
+
+## About
+* Aircraft is a mod that is totally based on Minicraft Plus.
+* The mod has compatibility with Minicraft plus 2.0.6 and 2.0.7. (Older versions before 1.3 are compatible with 2.0.3 to 2.0.4).
+* The mod is in Beta phase, it is continuously updated to clean most of the bugs, make maintenance and add features.
 
 
