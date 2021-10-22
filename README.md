@@ -1,4 +1,5 @@
-![title](https://user-images.githubusercontent.com/63316583/135155859-86015a31-3b22-4283-922f-7d9497741e1f.png)
+# Aircraft
+![Aircraft](https://user-images.githubusercontent.com/63316583/135155859-86015a31-3b22-4283-922f-7d9497741e1f.png)
 
 Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived) that adds the following features:
 
