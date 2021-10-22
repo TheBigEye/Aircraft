@@ -7,7 +7,7 @@ Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chri
 Graphics:
 * More detailed and renewed graphics and textures (based on Rcraft texture pack for Minicraft+ made by RiverOaken).
 * Semi-transparent GUI (Without those annoying black boxes behind the letters), and more centered.
-* Improved status bar.
+* Improved status bar (Hotbar).
 * Debug screen (F3 screen) expanded with detailed information regarding the game.
 * Higher screen resolution.
 * Full screen when pressing F11.
