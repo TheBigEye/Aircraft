@@ -17,7 +17,7 @@ Graphics:
 * Villagers, with whom you can trade items in exchange for emeralds or other mineral or item, appear in the villages along with the golems.
 * Golems, they are mobs made and iron, they take care of the villages (for now they do not do much to protect the villagers, their A.I is somewhat basic), the old Golems are     the hostile variant of the normal golems, they are generally rusted and found in caves.
 * Penguins and chickens, with this you get feathers, chickens spawn in the plains and forest biome, penguins spawn in the tundra biome.
-* Kepper, the guardian of the underground, has 2 phases, summons slimes and drops a lot of slime and sticky essence when defeated (Don't hit the slimes too often, they may get   revenge :) ).
+* Keeper, the guardian of the underground, has 2 phases, summons slimes and drops a lot of slime and sticky essence when defeated (Don't hit the slimes too often, they may get   revenge :) ).
 * Eye queen, the final boss, with 3 phases, throws fireballs (a big change is coming soon :) ).
 * AirWizard, now has 3 phases, you know where to find it.
 
