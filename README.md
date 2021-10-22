@@ -1,7 +1,7 @@
 # Aircraft
 ![Aircraft](https://user-images.githubusercontent.com/63316583/135155859-86015a31-3b22-4283-922f-7d9497741e1f.png)
 
-Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived) that adds the following features:
+Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived) (Another mod, based on the original Minciraft made by Markus persson for the Lodum dare 22 competition), Aircraft adds the following features:
 
 # Main features
 Graphics:
