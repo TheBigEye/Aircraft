@@ -96,9 +96,9 @@ public class Sound { // Creates sounds from their respective files
     public static final Sound Intro = new Sound("/resources/sounds/music/title/Intro.wav");
     public static final Sound Intro2 = new Sound("/resources/sounds/music/title/Intro 2.wav");
 
-    public static final Sound Amulet_locked = new Sound("/resources/sounds/Music/Amulet/Amulet locked.wav");
-    public static final Sound Amulet_locked_2 = new Sound("/resources/sounds/Music/Amulet/Amulet locked 2.wav");
-    public static final Sound Amulet_sucess = new Sound("/resources/sounds/Music/Amulet/Amulet sucess.wav");
+    public static final Sound Amulet_locked = new Sound("/resources/sounds/music/amulet/Amulet locked.wav");
+    public static final Sound Amulet_locked_2 = new Sound("/resources/sounds/music/amulet/Amulet locked 2.wav");
+    public static final Sound Amulet_sucess = new Sound("/resources/sounds/music/amulet/Amulet sucess.wav");
 
     // Cave and ambience sounds
     public static final Sound Ambience1 = new Sound("/resources/sounds/ambient/Ambience1.wav");

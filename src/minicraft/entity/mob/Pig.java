@@ -1,7 +1,6 @@
 package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
-import minicraft.entity.XpOrb;
 import minicraft.gfx.MobSprite;
 import minicraft.item.Items;
 
@@ -19,11 +18,7 @@ public class Pig extends PassiveMob {
         super.tick();
 
         Player player = getClosestPlayer();
-        if (player != null && player.activeItem != null && player.activeItem.name.equals("Carrot")) { // This function
-                                                                                                      // will make the
-                                                                                                      // entity follow
-                                                                                                      // the player
-                                                                                                      // directly
+        if (player != null && player.activeItem != null && player.activeItem.name.equals("Carrot")) { // This function will make the entity follow the player directly
             int xd = player.x - x;
             int yd = player.y - y;
 
@@ -67,7 +62,7 @@ public class Pig extends PassiveMob {
             max = 2;
         }
 
-        level.add(new XpOrb(random.nextInt(17), x, y), x, y);
+        // level.add(new XpOrb(random.nextInt(17), x, y), x, y);
 
         if (isBurn)
             dropItem(min, max, Items.get("Cooked pork")); // if isBurn.. drop Cooked food

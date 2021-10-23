@@ -18,20 +18,26 @@ public class World extends Game {
     private World() {
     }
 
-    public static final int[] idxToDepth = { -3, -2, -1, 0, 1, -4 }; /// This is to map the level depths to each level's
-                                                                     /// index in Game's levels array. This must ALWAYS
-                                                                     /// be the same length as the levels array, of
-                                                                     /// course.
+    /// This is to map the level depths to each level's
+    /// index in Game's levels array. This must ALWAYS
+    /// be the same length as the levels array, of
+    /// course.
+    public static final int[] idxToDepth = { -3, -2, -1, 0, 1, -4 };
+    
     public static final int minLevelDepth, maxLevelDepth;
     static {
         int min, max;
         min = max = idxToDepth[0];
+        
         for (int depth : idxToDepth) {
-            if (depth < min)
+            if (depth < min) {
                 min = depth;
-            if (depth > max)
+            }
+            if (depth > max) {
                 max = depth;
+            }
         }
+        
         minLevelDepth = min;
         maxLevelDepth = max;
     }
@@ -51,9 +57,9 @@ public class World extends Game {
 
     static int playerDeadTime; // the time after you die before the dead menu shows up.
     static int pendingLevelChange; // used to determine if the player should change levels or not.
+    
     @Nullable
-    public static Action onChangeAction; // allows action to be stored during a change schedule that should only occur
-                                         // once the screen is blacked out.
+    public static Action onChangeAction; // allows action to be stored during a change schedule that should only occur once the screen is blacked out.
 
     /// SCORE MODE
 
@@ -182,8 +188,9 @@ public class World extends Game {
                     LoadingDisplay.progress(loadingInc);
                 }
 
-                if (debug)
+                if (debug) { 
                     System.out.println("Level loading complete.");
+                }
 
                 Level level = levels[currentLevel]; // sets level to the current level (3; surface)
                 Updater.pastDay1 = false;
@@ -199,8 +206,9 @@ public class World extends Game {
 
         PlayerDeathDisplay.shouldRespawn = true;
 
-        if (debug)
+        if (debug) {
             System.out.println("World initialized.");
+        }
     }
 
     /**
@@ -235,17 +243,20 @@ public class World extends Game {
             onChangeAction = null;
         }
 
-        if (isConnectedClient())
-            levels[currentLevel].clearEntities(); // clear all the entities from the last level, so that no artifacts
-                                                  // remain. They're loaded dynamically, anyway.
-        else
+        if (isConnectedClient()) {
+            levels[currentLevel].clearEntities(); // clear all the entities from the last level, so that no artifacts remain. They're loaded dynamically, anyway.
+        } else {
             levels[currentLevel].remove(player); // removes the player from the current level.
+        }
 
         int nextLevel = currentLevel + dir;
-        if (nextLevel <= -1)
+        if (nextLevel <= -1) {
             nextLevel = levels.length - 1; // fix accidental level underflow
-        if (nextLevel >= levels.length)
+        }
+        if (nextLevel >= levels.length) {
             nextLevel = 0; // fix accidental level overflow
+        }
+        
         // level = levels[currentLevel]; // sets the level to the current level
         if (Game.debug)
             System.out.println(Network.onlinePrefix() + "setting level from " + currentLevel + " to " + nextLevel);
@@ -257,7 +268,8 @@ public class World extends Game {
         if (isConnectedClient() /* && levels[currentLevel] == null */ ) {
             Renderer.readyToRenderGameplay = false;
             client.requestLevel(currentLevel);
-        } else
+        } else {
             levels[currentLevel].add(player); // adds the player to the level.
+        }
     }
 }

@@ -222,11 +222,13 @@ public class Boat extends Entity {
         for (int i = 0; i < isInside.size(); i++) {
             Entity e = isInside.get(i);
 
-            if (e == this)
+            if (e == this) {
                 continue; // can't interact with yourself
+            }
 
-            if (e.blocks(this))
+            if (e.blocks(this)) {
                 return false; // if the entity prevents this one from movement, don't move.
+            }
         }
 
         // finally, the entity moves!

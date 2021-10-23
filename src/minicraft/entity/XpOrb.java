@@ -11,7 +11,7 @@ import minicraft.level.tile.Tiles;
 
 public class XpOrb extends Entity {
 
-    private static Sprite Sprites = new Sprite(5, 14, 3);
+    private static Sprite Sprites = new Sprite(5, 14, 2);
 
     private int animFrame = 0;
 
@@ -122,73 +122,73 @@ public class XpOrb extends Entity {
         if (xp < 8) {
 
             if (animFrame == 0) {
-                Sprites = new Sprite(5, 14, 3);
+                Sprites = new Sprite(5, 14, 2);
             }
             if (animFrame == 2) {
-                Sprites = new Sprite(6, 14, 3);
+                Sprites = new Sprite(6, 14, 2);
             }
             if (animFrame == 4) {
-                Sprites = new Sprite(7, 14, 3);
+                Sprites = new Sprite(7, 14, 2);
             }
             if (animFrame == 6) {
-                Sprites = new Sprite(8, 14, 3);
+                Sprites = new Sprite(8, 14, 2);
             }
             if (animFrame == 8) {
-                Sprites = new Sprite(7, 14, 3);
+                Sprites = new Sprite(7, 14, 2);
             }
             if (animFrame == 10) {
-                Sprites = new Sprite(6, 14, 3);
+                Sprites = new Sprite(6, 14, 2);
             }
             if (animFrame == 12) {
-                Sprites = new Sprite(5, 14, 3);
+                Sprites = new Sprite(5, 14, 2);
             }
 
         } else if (xp < 12) {
 
             if (animFrame == 0) {
-                Sprites = new Sprite(5, 15, 3);
+                Sprites = new Sprite(5, 15, 2);
             }
             if (animFrame == 2) {
-                Sprites = new Sprite(6, 15, 3);
+                Sprites = new Sprite(6, 15, 2);
             }
             if (animFrame == 4) {
-                Sprites = new Sprite(7, 15, 3);
+                Sprites = new Sprite(7, 15, 2);
             }
             if (animFrame == 6) {
-                Sprites = new Sprite(8, 15, 3);
+                Sprites = new Sprite(8, 15, 2);
             }
             if (animFrame == 8) {
-                Sprites = new Sprite(7, 15, 3);
+                Sprites = new Sprite(7, 15, 2);
             }
             if (animFrame == 10) {
-                Sprites = new Sprite(6, 15, 3);
+                Sprites = new Sprite(6, 15, 2);
             }
             if (animFrame == 12) {
-                Sprites = new Sprite(5, 15, 3);
+                Sprites = new Sprite(5, 15, 2);
             }
 
         } else if (xp == 16) {
 
             if (animFrame == 0) {
-                Sprites = new Sprite(5, 16, 3);
+                Sprites = new Sprite(5, 16, 2);
             }
             if (animFrame == 2) {
-                Sprites = new Sprite(6, 16, 3);
+                Sprites = new Sprite(6, 16, 2);
             }
             if (animFrame == 4) {
-                Sprites = new Sprite(7, 16, 3);
+                Sprites = new Sprite(7, 16, 2);
             }
             if (animFrame == 6) {
-                Sprites = new Sprite(8, 16, 3);
+                Sprites = new Sprite(8, 16, 2);
             }
             if (animFrame == 8) {
-                Sprites = new Sprite(7, 16, 3);
+                Sprites = new Sprite(7, 16, 2);
             }
             if (animFrame == 10) {
-                Sprites = new Sprite(6, 16, 3);
+                Sprites = new Sprite(6, 16, 2);
             }
             if (animFrame == 12) {
-                Sprites = new Sprite(5, 16, 3);
+                Sprites = new Sprite(5, 16, 2);
             }
         }
 

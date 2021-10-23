@@ -85,7 +85,15 @@ import minicraft.level.tile.TorchTile;
 public class Level {
     private Random random = new Random();
 
-    private static final String[] levelNames = { "Heaven", "Surface", "Iron", "Gold", "Lava", "Dungeon", "Hell" };
+    private static final String[] levelNames = {
+        "Heaven",
+        "Surface",
+        "Iron",
+        "Gold",
+        "Lava",
+        "Dungeon",
+        "Hell"
+    };
 
     public static String getLevelName(int depth) {
         return levelNames[-1 * depth + 1];
@@ -96,9 +104,9 @@ public class Level {
     }
 
     private static final int MOB_SPAWN_FACTOR = 100; // the chance of a mob actually trying to spawn when trySpawn is
-                                                     // called equals: mobCount / maxMobCount * MOB_SPAWN_FACTOR. so, it
-                                                     // basically equals the chance, 1/number, of a mob spawning when
-                                                     // the mob cap is reached. I hope that makes sense...
+    // called equals: mobCount / maxMobCount * MOB_SPAWN_FACTOR. so, it
+    // basically equals the chance, 1/number, of a mob spawning when
+    // the mob cap is reached. I hope that makes sense...
 
     public int w;
     public int h;
@@ -107,11 +115,10 @@ public class Level {
     public byte[] tiles; // An array of all the tiles in the world.
     public byte[] data; // An array of the data of the tiles in the world. // ?
 
-    private int randomMusic;
+    private int randomMusic; // used for the Random music system in the current level
 
     public final int depth; // Depth level of the level
-    public int monsterDensity = 8; // Affects the number of monsters that are on the level, bigger the number the
-                                   // less monsters spawn.
+    public int monsterDensity = 8; // Affects the number of monsters that are on the level, bigger the number the less monsters spawn.
     public int maxMobCount;
     public int chestCount;
     public int mobCount = 0;
@@ -121,25 +128,16 @@ public class Level {
      * sparks set
      */
     private final Object entityLock = new Object();
-    private Set<Entity> entities = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the entities
-                                                                                           // in the world
-    private Set<Spark> sparks = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the sparks in
-                                                                                        // the world
-    private Set<Spark2> sparks2 = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the sparks2
-                                                                                          // in the world
-    private Set<Spark3> sparks3 = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the sparks3
-                                                                                          // in the world
-    private Set<Player> players = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the players
-                                                                                          // in the world
-    private List<Entity> entitiesToAdd = new ArrayList<>(); /// entities that will be added to the level on next tick
-                                                            /// are stored here. This is for the sake of multithreading
-                                                            /// optimization. (hopefully)
-    private List<Entity> entitiesToRemove = new ArrayList<>(); /// entities that will be removed from the level on next
-                                                               /// tick are stored here. This is for the sake of
-                                                               /// multithreading optimization. (hopefully)
+    private Set < Entity > entities = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the entities in the world
+    private Set < Spark > sparks = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks in the world
+    private Set < Spark2 > sparks2 = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks2 in the world
+    private Set < Spark3 > sparks3 = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks3 in the world
+    private Set < Player > players = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the players in the world
+    private List < Entity > entitiesToAdd = new ArrayList < > (); // entities that will be added to the level on next tick, are stored here. This is for the sake of multithreading, optimization. (hopefully)
+    private List < Entity > entitiesToRemove = new ArrayList < > (); // entities that will be removed from the level on next tick are stored here. This is for the sake of multithreading optimization. (hopefully)
 
     // creates a sorter for all the entities to be rendered.
-    private static Comparator<Entity> spriteSorter = Comparator.comparingInt(new ToIntFunction<Entity>() {
+    private static Comparator < Entity > spriteSorter = Comparator.comparingInt(new ToIntFunction < Entity > () {
         @Override
         public int applyAsInt(Entity e) {
             return e.y;
@@ -147,8 +145,7 @@ public class Level {
     });
 
     public Entity[] getEntitiesToSave() {
-        Entity[] allEntities = new Entity[entities.size() + sparks.size() + sparks2.size() + sparks3.size()
-                + entitiesToAdd.size()];
+        Entity[] allEntities = new Entity[entities.size() + sparks.size() + sparks2.size() + sparks3.size() + entitiesToAdd.size()];
         Entity[] toAdd = entitiesToAdd.toArray(new Entity[entitiesToAdd.size()]);
         Entity[] current = getEntityArray();
         System.arraycopy(current, 0, allEntities, 0, current.length);
@@ -157,11 +154,10 @@ public class Level {
         return allEntities;
     }
 
-    /// This is a solely debug method I made, to make printing repetitive stuff
-    /// easier.
-    // Should be changed to accept prepend and entity, or a tile (as an Object). It
-    /// will get the coordinates and class name from the object, and will divide
-    /// coords by 16 if passed an entity.
+    // This is a solely debug method I made, to make printing repetitive stuff easier,
+    // Should be changed to accept prepend and entity, or a tile (as an Object),
+    // It will get the coordinates and class name from the object, and will divide coords
+    // by 16 if passed an entity.
     public void printLevelLoc(String prefix, int x, int y) {
         printLevelLoc(prefix, x, y, "");
     }
@@ -179,7 +175,7 @@ public class Level {
                     printLevelLoc(t.name, x, y);
     }
 
-    public void printEntityLocs(Class<? extends Entity> c) {
+    public void printEntityLocs(Class < ? extends Entity> c) {
         int numfound = 0;
         for (Entity entity : getEntityArray()) {
             if (c.isAssignableFrom(entity.getClass())) {
@@ -240,7 +236,7 @@ public class Level {
             for (int y = 0; y < h; y++) { // Loop through height
                 for (int x = 0; x < w; x++) { // Loop through width
                     if (parentLevel.getTile(x, y) == Tiles.get("Stairs Down")) { // If the tile in the level above the
-                                                                                 // current one is a stairs down then...
+                        // current one is a stairs down then...
                         if (level == -4) /// Make the obsidian wall formation around the stair in the dungeon level
                             Structure.dungeonGate.draw(this, x, y);
 
@@ -252,7 +248,7 @@ public class Level {
                             setAreaTiles(x, y, 1, Tiles.get("dirt"), 0);
 
                         setTile(x, y, Tiles.get("Stairs Up")); // Set a stairs up tile in the same position on the
-                                                               // current level
+                        // current level
                     }
                 }
             }
@@ -264,10 +260,10 @@ public class Level {
                 int y = random.nextInt(this.h - 5);
 
                 // Generate the sky dungeon (always in Sky grass tile)
-                if (this.getTile(x - 3, y - 2) == Tiles.get("Sky grass")
-                        && this.getTile(x + 3, y - 2) == Tiles.get("Sky grass")) {
-                    if (this.getTile(x - 3, y + 2) == Tiles.get("Sky grass")
-                            && this.getTile(x + 3, y + 2) == Tiles.get("Sky grass")) {
+                if (this.getTile(x - 3, y - 2) == Tiles.get("Sky grass") &&
+                    this.getTile(x + 3, y - 2) == Tiles.get("Sky grass")) {
+                    if (this.getTile(x - 3, y + 2) == Tiles.get("Sky grass") &&
+                        this.getTile(x + 3, y + 2) == Tiles.get("Sky grass")) {
                         Structure.skyDungeon.draw(this, x, y);
                         placedSkyDungeon = true;
                     }
@@ -305,10 +301,10 @@ public class Level {
 
             boolean found = false;
             if (check) {
-                for (Entity e : entitiesToAdd)
+                for (Entity e: entitiesToAdd)
                     if (e instanceof AirWizard)
                         found = true;
-                for (Entity e : entities)
+                for (Entity e: entities)
                     if (e instanceof AirWizard)
                         found = true;
             }
@@ -332,10 +328,10 @@ public class Level {
         int numChests = 0;
 
         if (check) {
-            for (Entity e : entitiesToAdd)
+            for (Entity e: entitiesToAdd)
                 if (e instanceof DungeonChest)
                     numChests++;
-            for (Entity e : entities)
+            for (Entity e: entities)
                 if (e instanceof DungeonChest)
                     numChests++;
             if (Game.debug)
@@ -397,7 +393,7 @@ public class Level {
             // there is no need to track this.
             if (Game.debug)
                 System.out.println(
-                        "SERVER warning: Found particle in entity list: " + entity + ". Removing from level " + this);
+                    "SERVER warning: Found particle in entity list: " + entity + ". Removing from level " + this);
             entity.remove();
         }
 
@@ -424,7 +420,7 @@ public class Level {
 
     public void tick(boolean fullTick) {
         int count = 0;
-        Iterator<Entity> entityAdderIt = entitiesToAdd.iterator();
+        Iterator < Entity > entityAdderIt = entitiesToAdd.iterator();
         while (entityAdderIt.hasNext()) {
             Entity entity = entityAdderIt.next();
             boolean inLevel = entities.contains(entity);
@@ -437,7 +433,7 @@ public class Level {
                     // if (Game.debug) printEntityStatus("Adding ", entity,
                     // "furniture.DungeonChest", "mob.AirWizard", "mob.Player");
 
-                    synchronized (entityLock) {
+                    synchronized(entityLock) {
                         if (entity instanceof Spark) {
                             sparks.add((Spark) entity);
                         } else {
@@ -570,7 +566,7 @@ public class Level {
 
             // entity loop
 
-            for (Entity e : entities) {
+            for (Entity e: entities) {
                 tickEntity(e);
                 if (e instanceof Mob)
                     count++;
@@ -586,7 +582,7 @@ public class Level {
             if (removeThis instanceof MobAi) {
                 // make sure there aren't any close players
                 boolean playerClose = false;
-                for (Player player : players) {
+                for (Player player: players) {
                     if (Math.abs(player.x - removeThis.x) < 128 && Math.abs(player.y - removeThis.x) < 76) {
                         playerClose = true;
                         break;
@@ -656,17 +652,17 @@ public class Level {
      * catch(ClassNotFoundException ex) { ex.printStackTrace(); } } }
      */
 
-    public void dropItem(int x, int y, int mincount, int maxcount, Item... items) {
+    public void dropItem(int x, int y, int mincount, int maxcount, Item...items) {
         dropItem(x, y, mincount + random.nextInt(maxcount - mincount + 1), items);
     }
 
-    public void dropItem(int x, int y, int count, Item... items) {
+    public void dropItem(int x, int y, int count, Item...items) {
         for (int i = 0; i < count; i++)
             dropItem(x, y, items);
     }
 
-    public void dropItem(int x, int y, Item... items) {
-        for (Item i : items)
+    public void dropItem(int x, int y, Item...items) {
+        for (Item i: items)
             dropItem(x, y, i);
     }
 
@@ -723,8 +719,8 @@ public class Level {
         screen.setOffset(xScroll, yScroll);
         int r = 4;
 
-        List<Entity> entities = getEntitiesInTiles(xo - r, yo - r, w + xo + r, h + yo + r);
-        for (Entity e : entities) {
+        List < Entity > entities = getEntitiesInTiles(xo - r, yo - r, w + xo + r, h + yo + r);
+        for (Entity e: entities) {
             int lr = e.getLightRadius();
             if (lr > 0)
                 screen.renderLight(e.x - 1, e.y - 4, lr * brightness);
@@ -743,7 +739,7 @@ public class Level {
         screen.setOffset(0, 0);
     }
 
-    private void sortAndRender(Screen screen, List<Entity> list) {
+    private void sortAndRender(Screen screen, List < Entity > list) {
         list.sort(spriteSorter);
         for (int i = 0; i < list.size(); i++) {
             Entity e = list.get(i);
@@ -757,7 +753,7 @@ public class Level {
     public Tile getTile(int x, int y) {
         // if (x < 0 || y < 0 || x >= w || y >= h/* || (x + y * w) >= tiles.length*/)
         // return Tiles.get("rock");
-        if (x < 0 || y < 0 || x >= w || y >= h/* || (x + y * w) >= tiles.length */)
+        if (x < 0 || y < 0 || x >= w || y >= h /* || (x + y * w) >= tiles.length */ )
             return Tiles.get("connector tile");
         int id = tiles[x + y * w];
         if (id < 0)
@@ -839,7 +835,7 @@ public class Level {
     }
 
     private void trySpawn() {
-        int spawnSkipChance = (int) (MOB_SPAWN_FACTOR * Math.pow(mobCount, 2) / Math.pow(maxMobCount, 2));
+        int spawnSkipChance = (int)(MOB_SPAWN_FACTOR * Math.pow(mobCount, 2) / Math.pow(maxMobCount, 2));
         if (spawnSkipChance > 0 && random.nextInt(spawnSkipChance) != 0)
             return; // hopefully will make mobs spawn a lot slower.
 
@@ -986,7 +982,7 @@ public class Level {
                 spawned = true;
             }
 
-            
+
             // This generates mobs from the sky, if the Air Wizard is not defeated
             // they will spawn hostile mobs, if instead, it is defeated they will
             // spawn peaceful mobs
@@ -994,7 +990,7 @@ public class Level {
                 if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33) && AirWizardPhase3.beaten == true) { // Spawns passive sky mobs.
                     add((new Phyg()), nx, ny);
                     add((new Sheepuff()), nx, ny);
-                    
+
                 } else { // Spawns hostile sky mobs.
                     if (rnd <= 40)
                         add((new Slime(lvl)), nx, ny);
@@ -1015,7 +1011,7 @@ public class Level {
     }
 
     public void removeAllEnemies() {
-        for (Entity e : getEntityArray()) {
+        for (Entity e: getEntityArray()) {
             if (e instanceof EnemyMob)
                 if (!(e instanceof AirWizard) || Game.isMode("creative")) // don't remove the airwizard bosses! Unless in creative, since you can spawn more.
                     e.remove();
@@ -1026,7 +1022,7 @@ public class Level {
         if (!Game.ISONLINE)
             entities.clear();
         else
-            for (Entity e : getEntityArray())
+            for (Entity e: getEntityArray())
                 e.remove();
     }
 
@@ -1034,31 +1030,31 @@ public class Level {
         Entity[] entityArray = new Entity[entities.size() + sparks.size() + sparks2.size() + sparks3.size()];
         int index = 0;
 
-        for (Entity entity : entities) {
+        for (Entity entity: entities) {
             entityArray[index++] = entity;
         }
-        for (Spark spark : sparks) {
+        for (Spark spark: sparks) {
             entityArray[index++] = spark;
         }
 
-        for (Spark2 spark2 : sparks2) {
+        for (Spark2 spark2: sparks2) {
             entityArray[index++] = spark2;
         }
 
-        for (Spark3 spark3 : sparks3) {
+        for (Spark3 spark3: sparks3) {
             entityArray[index++] = spark3;
         }
 
         return entityArray;
     }
 
-    public List<Entity> getEntitiesInTiles(int xt, int yt, int radius) {
+    public List < Entity > getEntitiesInTiles(int xt, int yt, int radius) {
         return getEntitiesInTiles(xt, yt, radius, false);
     }
-
+    
     @SafeVarargs
     public final List<Entity> getEntitiesInTiles(int xt, int yt, int radius, boolean includeGiven,
-            Class<? extends Entity>... entityClasses) {
+            Class < ? extends Entity>... entityClasses) {
         return getEntitiesInTiles(xt - radius, yt - radius, xt + radius, yt + radius, includeGiven, entityClasses);
     }
 
@@ -1070,7 +1066,7 @@ public class Level {
      * @param xt1 Right
      * @param yt1 Bottom
      */
-    public List<Entity> getEntitiesInTiles(int xt0, int yt0, int xt1, int yt1) {
+    public List < Entity > getEntitiesInTiles(int xt0, int yt0, int xt1, int yt1) {
         return getEntitiesInTiles(xt0, yt0, xt1, yt1, false);
     }
 
@@ -1088,10 +1084,10 @@ public class Level {
      * @return A list of entities in the area.
      */
     @SafeVarargs
-    public final List<Entity> getEntitiesInTiles(int xt0, int yt0, int xt1, int yt1, boolean includeGiven,
-            Class<? extends Entity>... entityClasses) {
-        List<Entity> contained = new ArrayList<>();
-        for (Entity e : getEntityArray()) {
+    public final List < Entity > getEntitiesInTiles(int xt0, int yt0, int xt1, int yt1, boolean includeGiven,
+        Class < ? extends Entity > ...entityClasses) {
+        List < Entity > contained = new ArrayList < > ();
+        for (Entity e: getEntityArray()) {
             int xt = e.x >> 4;
             int yt = e.y >> 4;
             if (xt >= xt0 && xt <= xt1 && yt >= yt0 && yt <= yt1) {
@@ -1113,18 +1109,18 @@ public class Level {
         return contained;
     }
 
-    public List<Entity> getEntitiesInRect(Rectangle area) {
-        List<Entity> result = new ArrayList<>();
-        for (Entity e : getEntityArray()) {
+    public List < Entity > getEntitiesInRect(Rectangle area) {
+        List < Entity > result = new ArrayList < > ();
+        for (Entity e: getEntityArray()) {
             if (e.isTouching(area))
                 result.add(e);
         }
         return result;
     }
 
-    public List<Entity> getEntitiesInRect(Predicate<Entity> filter, Rectangle area) {
-        List<Entity> result = new LinkedList<>();
-        for (Entity entity : entities) {
+    public List < Entity > getEntitiesInRect(Predicate < Entity > filter, Rectangle area) {
+        List < Entity > result = new LinkedList < > ();
+        for (Entity entity: entities) {
             if (filter.test(entity) && entity.isTouching(area)) {
                 result.add(entity);
             }
@@ -1133,9 +1129,9 @@ public class Level {
     }
 
     /// finds all entities that are an instance of the given entity.
-    public Entity[] getEntitiesOfClass(Class<? extends Entity> targetClass) {
-        ArrayList<Entity> matches = new ArrayList<>();
-        for (Entity e : getEntityArray()) {
+    public Entity[] getEntitiesOfClass(Class < ? extends Entity > targetClass) {
+        ArrayList < Entity > matches = new ArrayList < > ();
+        for (Entity e: getEntityArray()) {
             if (targetClass.isAssignableFrom(e.getClass()))
                 matches.add(e);
         }
@@ -1173,7 +1169,7 @@ public class Level {
     }
 
     public Point[] getAreaTilePositions(int x, int y, int rx, int ry) {
-        ArrayList<Point> local = new ArrayList<>();
+        ArrayList < Point > local = new ArrayList < > ();
         for (int yp = y - ry; yp <= y + ry; yp++)
             for (int xp = x - rx; xp <= x + rx; xp++)
                 if (xp >= 0 && xp < w && yp >= 0 && yp < h)
@@ -1186,9 +1182,9 @@ public class Level {
     }
 
     public Tile[] getAreaTiles(int x, int y, int rx, int ry) {
-        ArrayList<Tile> local = new ArrayList<>();
+        ArrayList < Tile > local = new ArrayList < > ();
 
-        for (Point p : getAreaTilePositions(x, y, rx, ry))
+        for (Point p: getAreaTilePositions(x, y, rx, ry))
             local.add(getTile(p.x, p.y));
 
         return local.toArray(new Tile[local.size()]);
@@ -1221,21 +1217,21 @@ public class Level {
         boolean check(Tile t, int x, int y);
     }
 
-    public List<Point> getMatchingTiles(Tile search) {
+    public List < Point > getMatchingTiles(Tile search) {
         return getMatchingTiles((t, x, y) -> t.equals(search));
     }
 
-    public List<Point> getMatchingTiles(Tile... search) {
+    public List < Point > getMatchingTiles(Tile...search) {
         return getMatchingTiles((t, x, y) -> {
-            for (Tile poss : search)
+            for (Tile poss: search)
                 if (t.equals(poss))
                     return true;
             return false;
         });
     }
 
-    public List<Point> getMatchingTiles(TileCheck condition) {
-        List<Point> matches = new ArrayList<>();
+    public List < Point > getMatchingTiles(TileCheck condition) {
+        List < Point > matches = new ArrayList < > ();
         for (int y = 0; y < h; y++)
             for (int x = 0; x < w; x++)
                 if (condition.check(getTile(x, y), x, y))
@@ -1245,7 +1241,7 @@ public class Level {
     }
 
     public boolean isLight(int x, int y) {
-        for (Tile t : getAreaTiles(x, y, 3))
+        for (Tile t: getAreaTiles(x, y, 3))
             if (t instanceof TorchTile)
                 return true;
 
@@ -1387,8 +1383,8 @@ public class Level {
                 int y = random.nextInt(h);
 
                 // makes sure the village isn't to close to the previous village
-                if (getTile(x, y) == Tiles.get("grass")
-                        && (Math.abs(x - lastVillageX) > 28 && Math.abs(y - lastVillageY) > 28)) {
+                if (getTile(x, y) == Tiles.get("grass") &&
+                    (Math.abs(x - lastVillageX) > 28 && Math.abs(y - lastVillageY) > 28)) {
                     lastVillageX = x;
                     lastVillageY = y;
 

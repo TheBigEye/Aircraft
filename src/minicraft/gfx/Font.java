@@ -74,7 +74,7 @@ public class Font {
             int ix = chars.indexOf(msg.charAt(i));
             if (ix >= 0) {
                 // render the black background
-                screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, 31 + 30 * 32, 0, 3);
+                screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, 30 + 30 * 32, 0, 3);
 
                 screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, ix + 28 * 32, 0, 3, whiteTint);
             }
@@ -91,7 +91,7 @@ public class Font {
         for (int i = 0; i < msg.length(); i++) {
             int ix = chars.indexOf(msg.charAt(i));
             // render the black background
-            screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, 30 + 30 * 32, 0, 3);
+            screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, 31 + 30 * 32, 0, 3);
             if (ix >= 0) {
                 screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, ix + 28 * 32, 0, 3, whiteTint);
             }

@@ -31,19 +31,19 @@ public class EnemyMob extends MobAi {
      * determines if the mob's health should be affected by the level and the
      * difficulty.
      * 
-     * @param lvl        The mob's level.
-     * @param lvlSprites The mob's sprites (ordered by level, then direction, then
-     *                   animation frame).
-     * @param health     How much health the mob has.
-     * @param isFactor   false if maxHealth=health, true if
-     *                   maxHealth=health*level*level*difficulty
-     * @param detectDist The distance where the mob will detect the player and start
-     *                   moving towards him/her.
-     * @param lifetime   How many ticks this mob will live.
-     * @param rwTime     How long the mob will walk in a random direction. (random
-     *                   walk duration)
-     * @param rwChance   The chance of this mob will walk in a random direction
-     *                   (random walk chance)
+     * @param lvl         The mob's level.
+     * @param lvlSprites  The mob's sprites (ordered by level, then direction, then
+     *                    animation frame).
+     * @param health      How much health the mob has.
+     * @param isFactor    false if maxHealth=health, true if
+     *                    maxHealth=health*level*level*difficulty
+     * @param detectDist  The distance where the mob will detect the player and start
+     *                    moving towards him/her.
+     * @param lifetime    How many ticks this mob will live.
+     * @param rwTime      How long the mob will walk in a random direction. (random
+     *                    walk duration)
+     * @param rwChance    The chance of this mob will walk in a random direction
+     *                    (random walk chance)
      */
     public EnemyMob(int lvl, MobSprite[][][] lvlSprites, int health, boolean isFactor, int detectDist, int lifetime,
             int rwTime, int rwChance) {

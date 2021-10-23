@@ -175,9 +175,11 @@ public class Screen {
 
         xTile %= currentSheet.width; // to avoid out of bounds
         yTile %= currentSheet.height; // ^
-        int toffs = xTile * 8 + yTile * 8 * currentSheet.width; // Gets the offset of the sprite into the spritesheet
-                                                                // pixel array, the 8's represent the size of the box.
-                                                                // (8 by 8 pixel sprite boxes)
+        
+        // Gets the offset of the sprite into the spritesheet
+        // pixel array, the 8's represent the size of the box.
+        // (8 by 8 pixel sprite boxes)
+        int toffs = xTile * 8 + yTile * 8 * currentSheet.width; 
 
         /// THIS LOOPS FOR EVERY LITTLE PIXEL
         for (int y = 0; y < 8; y++) { // Loops 8 times (because of the height of the tile)
