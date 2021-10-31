@@ -115,7 +115,7 @@ public class Level {
     public byte[] tiles; // An array of all the tiles in the world.
     public byte[] data; // An array of the data of the tiles in the world. // ?
 
-    private int randomMusic; // used for the Random music system in the current level
+    public static int randomMusic; // used for the Random music system in the current level
 
     public final int depth; // Depth level of the level
     public int monsterDensity = 8; // Affects the number of monsters that are on the level, bigger the number the less monsters spawn.

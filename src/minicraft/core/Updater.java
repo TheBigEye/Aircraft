@@ -17,6 +17,7 @@ import minicraft.screen.LevelTransitionDisplay;
 import minicraft.screen.PauseDisplay;
 import minicraft.screen.PlayerDeathDisplay;
 import minicraft.screen.WorldSelectDisplay;
+import minicraft.util.Info;
 
 public class Updater extends Game {
     private Updater() {
@@ -91,7 +92,7 @@ public class Updater extends Game {
     @SuppressWarnings("static-access")
     public static void tick() {
 
-        GameInfo.getInfo();
+        Info.getInfo();
 
         if (Updater.HAS_GUI && input.getKey("FULLSCREEN").clicked) {
             Updater.FULLSCREEN = !Updater.FULLSCREEN;

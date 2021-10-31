@@ -69,20 +69,34 @@ public class Tnt extends Furniture implements ActionListener {
                     }
                 }
 
-                // Sound.explode.play();
+                // Random explode sound 
+				switch (random.nextInt(4)) {
 
-                if (random.nextInt(4) == 1) {
-                    Sound.Furniture_tnt_explode.play();
-                }
-                if (random.nextInt(4) == 2) {
-                    Sound.Furniture_tnt_explode_2.play();
-                }
-                if (random.nextInt(4) == 3) {
-                    Sound.Furniture_tnt_explode_3.play();
-                }
-                if (random.nextInt(4) == 4) {
-                    Sound.Furniture_tnt_explode_4.play();
-                }
+				case 0:
+					Sound.Furniture_tnt_explode_4.play();
+					break;
+				
+				case 1:
+					Sound.Furniture_tnt_explode.play();
+					break;
+
+				case 2:
+					Sound.Furniture_tnt_explode_2.play();
+					break;
+
+				case 3:
+					Sound.Furniture_tnt_explode_3.play();
+					break;
+
+				case 4:
+					Sound.Furniture_tnt_explode_4.play();
+					break;
+
+				default:
+					Sound.Furniture_tnt_explode.play();
+					break;
+
+				}
 
                 int xt = x >> 4;
                 int yt = (y - 2) >> 4;

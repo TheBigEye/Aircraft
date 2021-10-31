@@ -32,6 +32,7 @@ import minicraft.saveload.Version;
 import minicraft.screen.Display;
 import minicraft.screen.MultiplayerDisplay;
 import minicraft.screen.TitleDisplay;
+import minicraft.util.Info;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -86,10 +87,10 @@ public class Game {
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
-     * This specifies a custom port instead of default to server-side using --port
-     * parameter if something goes wrong in setting the new port it'll use the
-     * default one {@link MinicraftProtocol#PORT}
-     */
+	 * This specifies a custom port instead of default to server-side using
+	 * --port parameter if something goes wrong in setting the new port
+	 * it'll use the default one {@link MinicraftProtocol#PORT}
+	 */
     public static int CUSTOM_PORT = MinicraftProtocol.PORT;
 
     static Display menu = null; // The current menu you are on.
@@ -206,10 +207,10 @@ public class Game {
                 "Details: " + "\n" +
                 "        Aircraft mod Version: " + Game.BUILD + "\n" +
                 "        Minicraft plus base Version: " + Game.VERSION + "\n" +
-                "        Operting System: " + GameInfo.OS_Name + " (" + GameInfo.OS_Arch + ") " + GameInfo.OS_Version + "\n" +
-                "        Java Version: " + GameInfo.Java_Version + ", " + GameInfo.Java_Vendor + "\n" +
-                "        Java VM Version: " + GameInfo.JVM_Name + " (" + GameInfo.JVM_Info + "), " + GameInfo.JVM_Vendor + "\n" +
-                "        Memory: " + GameInfo.Memory_info + "\n\n" +
+                "        Operting System: " + Info.OS_Name + " (" + Info.OS_Arch + ") " + Info.OS_Version + "\n" +
+                "        Java Version: " + Info.Java_Version + ", " + Info.Java_Vendor + "\n" +
+                "        Java VM Version: " + Info.JVM_Name + " (" + Info.JVM_Info + "), " + Info.JVM_Vendor + "\n" +
+                "        Memory: " + Info.Memory_info + "\n\n" +
                     
                 "~~ERROR~~ " + "\n" +
                     

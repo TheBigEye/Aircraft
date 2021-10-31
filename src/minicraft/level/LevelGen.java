@@ -17,7 +17,7 @@ import minicraft.screen.WorldGenDisplay;
 public class LevelGen {
 
     private static long worldSeed = 0; // Always is 0
-    private static final Random random = new Random(worldSeed);
+    private static final Random random = new Random(worldSeed); // Initializes the random class
     private double[] values; // An array of doubles, used to help making noise for the map
 
     // width and height of the map
@@ -28,16 +28,17 @@ public class LevelGen {
 
     /** This creates noise to create random values for level generation */
     private LevelGen(int w, int h, int featureSize) {
-        this.w = w;
-        this.h = h;
+        this.w = w; // assigns the width of the map
+        this.h = h; // assigns the height of the map
 
-        values = new double[w * h];
+        values = new double[w * h]; // Creates the size of the value array (width * height)
 
         /// to be 16 or 32, in the code below.
         for (int y = 0; y < w; y += featureSize) {
             for (int x = 0; x < w; x += featureSize) {
-                setSample(x, y, random.nextFloat() * 2 - 1); // this method sets the random value from -1 to 1 at the
-                                                             // given coordinate.
+            	
+            	// This method sets the random value from -1 to 1 at the given coordinate.
+                setSample(x, y, random.nextFloat() * 2 - 1); 
             }
         }
 
@@ -1536,7 +1537,9 @@ public class LevelGen {
 
         // Execute it forever
         // noinspection InfiniteLoopStatement
-        while (true) {
+        
+        boolean hasquit = false;
+        while (!hasquit) { // stop the loop and close the program.) 
 
             long startTime = System.nanoTime();
 
@@ -1565,112 +1568,76 @@ public class LevelGen {
             byte[] map = fullmap[0];
 
             // Create the map image
-            BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-            int[] pixels = new int[w * h];
+            BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB); // Creates an image
+            int[] pixels = new int[w * h]; // The pixels in the image. (an integer array, the size is Width * height)
 
-            for (int y = 0; y < h; y++) {
-                for (int x = 0; x < w; x++) {
-                    int i = x + y * w;
+            for (int y = 0; y < h; y++) { // Loops through the height of the map
+                for (int x = 0; x < w; x++) { // (inner-loop)Loops through the entire width of the map
+                    int i = x + y * w; // Current tile of the map.
+                    
+					/*The colors used in the pixels are hexadecimal (0xRRGGBB). 
+				      0xff0000 would be fully red
+					  0x00ff00 would be fully blue
+					  0x0000ff would be fully green
+					  0x000000 would be black
+					  and 0xffffff would be white etc. 
+					*/
 
                     // Surface tiles
-                    if (map[i] == Tiles.get("water").id)
-                        pixels[i] = 0x1a2c89;
-                    if (map[i] == Tiles.get("lava").id)
-                        pixels[i] = 0xff2020;
-                    if (map[i] == Tiles.get("iron Ore").id)
-                        pixels[i] = 0x000080;
-                    if (map[i] == Tiles.get("gold Ore").id)
-                        pixels[i] = 0x000080;
-                    if (map[i] == Tiles.get("gem Ore").id)
-                        pixels[i] = 0x000080;
-                    if (map[i] == Tiles.get("grass").id)
-                        pixels[i] = 0x54a854;
-                    if (map[i] == Tiles.get("flower").id)
-                        pixels[i] = 0x54a854;
-                    if (map[i] == Tiles.get("rock").id)
-                        pixels[i] = 0x7a7a7a;
-                    if (map[i] == Tiles.get("dirt").id)
-                        pixels[i] = 0x836c6c;
-                    if (map[i] == Tiles.get("sand").id)
-                        pixels[i] = 0xe2e26f;
-                    if (map[i] == Tiles.get("cactus").id)
-                        pixels[i] = 0xe8e86d;
-                    if (map[i] == Tiles.get("snow").id)
-                        pixels[i] = 0xf0f0f0;
-                    if (map[i] == Tiles.get("ice spike").id)
-                        pixels[i] = 0xe6e6e6;
-                    if (map[i] == Tiles.get("Stone Bricks").id)
-                        pixels[i] = 0xa0a040;
-                    if (map[i] == Tiles.get("tree").id)
-                        pixels[i] = 0x255325;
-                    if (map[i] == Tiles.get("birch tree").id)
-                        pixels[i] = 0x0c750c;
-                    if (map[i] == Tiles.get("fir tree").id)
-                        pixels[i] = 0x138b62;
-                    if (map[i] == Tiles.get("pine tree").id)
-                        pixels[i] = 0x117f59;
-                    if (map[i] == Tiles.get("lawn").id)
-                        pixels[i] = 0x60a560;
-                    if (map[i] == Tiles.get("orange tulip").id)
-                        pixels[i] = 0x60a560;
+                    if (map[i] == Tiles.get("water").id) pixels[i] = 0x1a2c89;
+                    if (map[i] == Tiles.get("lava").id) pixels[i] = 0xff2020;
+                    if (map[i] == Tiles.get("iron Ore").id) pixels[i] = 0x000080;
+                    if (map[i] == Tiles.get("gold Ore").id) pixels[i] = 0x000080;
+                    if (map[i] == Tiles.get("gem Ore").id) pixels[i] = 0x000080;
+                    if (map[i] == Tiles.get("grass").id) pixels[i] = 0x54a854;
+                    if (map[i] == Tiles.get("flower").id) pixels[i] = 0x54a854;
+                    if (map[i] == Tiles.get("rock").id) pixels[i] = 0x7a7a7a;
+                    if (map[i] == Tiles.get("dirt").id) pixels[i] = 0x836c6c;
+                    if (map[i] == Tiles.get("sand").id) pixels[i] = 0xe2e26f;
+                    if (map[i] == Tiles.get("cactus").id) pixels[i] = 0xe8e86d;
+                    if (map[i] == Tiles.get("snow").id) pixels[i] = 0xf0f0f0;
+                    if (map[i] == Tiles.get("ice spike").id) pixels[i] = 0xe6e6e6;
+                    if (map[i] == Tiles.get("Stone Bricks").id) pixels[i] = 0xa0a040;
+                    if (map[i] == Tiles.get("tree").id) pixels[i] = 0x255325;
+                    if (map[i] == Tiles.get("birch tree").id) pixels[i] = 0x0c750c;
+                    if (map[i] == Tiles.get("fir tree").id) pixels[i] = 0x138b62;
+                    if (map[i] == Tiles.get("pine tree").id) pixels[i] = 0x117f59;
+                    if (map[i] == Tiles.get("lawn").id) pixels[i] = 0x60a560;
+                    if (map[i] == Tiles.get("orange tulip").id) pixels[i] = 0x60a560;
 
                     // Village
-                    if (map[i] == Tiles.get("Wood Planks").id)
-                        pixels[i] = 0x914f0e;
-                    if (map[i] == Tiles.get("Wood Wall").id)
-                        pixels[i] = 0x7a430c;
-                    if (map[i] == Tiles.get("Wood Door").id)
-                        pixels[i] = 0x7a4817;
+                    if (map[i] == Tiles.get("Wood Planks").id) pixels[i] = 0x914f0e;
+                    if (map[i] == Tiles.get("Wood Wall").id) pixels[i] = 0x7a430c;
+                    if (map[i] == Tiles.get("Wood Door").id) pixels[i] = 0x7a4817;
 
                     // Ores tiles
-                    if (map[i] == Tiles.get("Iron Ore").id)
-                        pixels[i] = 0xC4B1AA;
-                    if (map[i] == Tiles.get("Lapis").id)
-                        pixels[i] = 0x2D2D92;
-                    if (map[i] == Tiles.get("Gold Ore").id)
-                        pixels[i] = 0xCE9612;
-                    if (map[i] == Tiles.get("Gem Ore").id)
-                        pixels[i] = 0xD25BD2;
+                    if (map[i] == Tiles.get("Iron Ore").id) pixels[i] = 0xC4B1AA;
+                    if (map[i] == Tiles.get("Lapis").id) pixels[i] = 0x2D2D92;
+                    if (map[i] == Tiles.get("Gold Ore").id) pixels[i] = 0xCE9612;
+                    if (map[i] == Tiles.get("Gem Ore").id) pixels[i] = 0xD25BD2;
 
                     // Dungeon tiles
-                    if (map[i] == Tiles.get("Obsidian Wall").id)
-                        pixels[i] = 0x480887;
-                    if (map[i] == Tiles.get("Hard obsidian").id)
-                        pixels[i] = 0x5f0aa0;
-                    if (map[i] == Tiles.get("Obsidian").id)
-                        pixels[i] = 0x660aa0;
+                    if (map[i] == Tiles.get("Obsidian Wall").id) pixels[i] = 0x480887;
+                    if (map[i] == Tiles.get("Hard obsidian").id) pixels[i] = 0x5f0aa0;
+                    if (map[i] == Tiles.get("Obsidian").id) pixels[i] = 0x660aa0;
 
                     // Stairs
-                    if (map[i] == Tiles.get("Stairs Down").id)
-                        pixels[i] = 0xffffff;
-                    if (map[i] == Tiles.get("Stairs Up").id)
-                        pixels[i] = 0xffffff;
+                    if (map[i] == Tiles.get("Stairs Down").id) pixels[i] = 0xffffff;
+                    if (map[i] == Tiles.get("Stairs Up").id) pixels[i] = 0xffffff;
 
                     // Sky tiles
-                    if (map[i] == Tiles.get("Infinite Fall").id)
-                        pixels[i] = 0x010101;
-                    if (map[i] == Tiles.get("cloud").id)
-                        pixels[i] = 0xf7f7f7;
-                    if (map[i] == Tiles.get("Cloud Cactus").id)
-                        pixels[i] = 0xfafafa;
-                    if (map[i] == Tiles.get("Cloud tree").id)
-                        pixels[i] = 0x477044;
-                    if (map[i] == Tiles.get("Golden cloud tree").id)
-                        pixels[i] = 0xBBA14F;
-                    if (map[i] == Tiles.get("Blue cloud tree").id)
-                        pixels[i] = 0x00769E;
-                    if (map[i] == Tiles.get("Ferrosite").id)
-                        pixels[i] = 0xcbc579;
-                    if (map[i] == Tiles.get("Sky grass").id)
-                        pixels[i] = 0x5aab8a;
-                    if (map[i] == Tiles.get("Sky fern").id)
-                        pixels[i] = 0x5aab8a;
-                    if (map[i] == Tiles.get("Sky lawn").id)
-                        pixels[i] = 0x56a383;
-                    if (map[i] == Tiles.get("Sky high grass").id)
-                        pixels[i] = 0x4f9678;
-                    if (map[i] == Tiles.get("Holy rock").id)
-                        pixels[i] = 0x7a7a7a;
+                    if (map[i] == Tiles.get("Infinite Fall").id) pixels[i] = 0x010101;
+                    if (map[i] == Tiles.get("cloud").id) pixels[i] = 0xf7f7f7;
+                    if (map[i] == Tiles.get("Cloud Cactus").id) pixels[i] = 0xfafafa;
+                    if (map[i] == Tiles.get("Cloud tree").id) pixels[i] = 0x477044;
+                    if (map[i] == Tiles.get("Golden cloud tree").id) pixels[i] = 0xBBA14F;
+                    if (map[i] == Tiles.get("Blue cloud tree").id) pixels[i] = 0x00769E;
+                    if (map[i] == Tiles.get("Ferrosite").id) pixels[i] = 0xcbc579;
+                    if (map[i] == Tiles.get("Sky grass").id) pixels[i] = 0x5aab8a;
+                    if (map[i] == Tiles.get("Sky fern").id) pixels[i] = 0x5aab8a;
+                    if (map[i] == Tiles.get("Sky lawn").id) pixels[i] = 0x56a383;
+                    if (map[i] == Tiles.get("Sky high grass").id) pixels[i] = 0x4f9678;
+                    if (map[i] == Tiles.get("Holy rock").id) pixels[i] = 0x7a7a7a;
 
                 }
             }
@@ -1686,18 +1653,27 @@ public class LevelGen {
             }
 
             // Print the seed, the generator version, the elapsed time
-            System.out.println("[LevelGen]" + " | " + "Seed: " + worldSeed + " | " + "Gen-Version: " + Game.BUILD
-                    + " | " + finalGenTime);
+            System.out.println("[LevelGen]" + " | " + "Seed: " + worldSeed + " | " + "Gen-Version: " + Game.BUILD + " | " + finalGenTime);
 
-            img.setRGB(0, 0, w, h, pixels, 0, w);
-            JOptionPane.showMessageDialog(null, null, "Another Map", JOptionPane.PLAIN_MESSAGE,
-                    new ImageIcon(img.getScaledInstance(w * mapScale, h * mapScale, Image.SCALE_AREA_AVERAGING)));
+            img.setRGB(0, 0, w, h, pixels, 0, w); // Sets the pixels into the image
+            
+            String[] options = {"Another", "Quit"}; // Name of the buttons used for the window.
+            
+            int Generator = JOptionPane.showOptionDialog(null, null, "Map Generator", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon(img.getScaledInstance(w * mapScale, h * mapScale, Image.SCALE_AREA_AVERAGING)), options, null);
 
             if (LevelGen.worldSeed == 0x100) {
                 LevelGen.worldSeed = 0xAAFF20;
             } else {
                 LevelGen.worldSeed = 0x100;
             }
+            
+			/* Now you noticed that we made the dialog an integer. This is because when you click a button it will return a number.
+		       Since we passed in 'options', the window will return 0 if you press "Another" and it will return 1 when you press "Quit".
+			   If you press the red "x" close mark, the window will return -1 
+			*/
+            
+            // If the dialog returns -1 (red "x" button) or 1 ("Quit" button) then...
+            if (Generator == -1 || Generator == 1) hasquit = true; // Stop the loop and close the program.
         }
     }
 }

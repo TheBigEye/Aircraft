@@ -1,6 +1,6 @@
-package minicraft.core;
+package minicraft.util;
 
-public class GameInfo {
+public class Info {
 
     // RAM used
     public static long max_Memory_bytes; // This store the max JVM memory in bytes

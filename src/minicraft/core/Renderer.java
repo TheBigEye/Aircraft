@@ -31,6 +31,7 @@ import minicraft.saveload.Load;
 import minicraft.screen.InfoDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.RelPos;
+import minicraft.util.Info;
 
 public class Renderer extends Game {
     private Renderer() {}
@@ -457,10 +458,10 @@ public class Renderer extends Game {
 
             info.add("Version: " + Game.BUILD + " (" + Game.VERSION + ")                " + "Time:" + InfoDisplay.getTimeString());
             info.add("Engine: " + "Minicraft Plus Legacy" + "           " + "Java:" + Info.Java_Version);
-            info.add("" + time.toLocalDate() + "                              " + "Java arch:x" + GameInfo.Java_Arch);
-            info.add(Initializer.fra + " fps" + "                                  " + "Max mem:" + GameInfo.max_Memory);
-            info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")                 " + "Total mem:" + GameInfo.total_Memory);
-            info.add((Updater.normSpeed * Updater.gamespeed) + " tps                                " + "Free mem: " + GameInfo.free_Memory);
+            info.add("" + time.toLocalDate() + "                              " + "Java arch:x" + Info.Java_Arch);
+            info.add(Initializer.fra + " fps" + "                                  " + "Max mem:" + Info.max_Memory);
+            info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")                 " + "Total mem:" + Info.total_Memory);
+            info.add((Updater.normSpeed * Updater.gamespeed) + " tps                                " + "Free mem: " + Info.free_Memory);
             if (!isValidServer()) {
 
                 // player info
@@ -511,7 +512,7 @@ public class Renderer extends Game {
                     case -5:
                         levelName = "Hell";
                         break;
-
+                        
                     default:
                         levelName = "Secret dimension";
                         break;
@@ -544,6 +545,7 @@ public class Renderer extends Game {
             if (levels[currentLevel] != null) {
                 info.add("");
                 info.add("Seed: " + levels[currentLevel].getSeed());
+                info.add("Music factor: " + Level.randomMusic + "/16000");
             }
 
             FontStyle style = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(1);

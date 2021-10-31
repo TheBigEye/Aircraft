@@ -29,8 +29,7 @@ public class Spawner extends Furniture {
     private static final int ACTIVE_RADIUS = 8 * 16;
     private static final int minSpawnInterval = 200;
     private static final int maxSpawnInterval = 400;
-    private static final int minMobSpawnChance = 10; // 1 in minMobSpawnChance chance of calling trySpawn every
-                                                     // interval.
+    private static final int minMobSpawnChance = 10; // 1 in minMobSpawnChance chance of calling trySpawn every interval.
 
     public MobAi mob;
     private int health;
@@ -90,17 +89,7 @@ public class Spawner extends Furniture {
 
         spawnTick--;
         if (spawnTick <= 0) {
-            int chance = (int) (minMobSpawnChance * Math.pow(level.mobCount, 2) / Math.pow(level.maxMobCount, 2)); // this
-                                                                                                                   // forms
-                                                                                                                   // a
-                                                                                                                   // quadratic
-                                                                                                                   // function
-                                                                                                                   // that
-                                                                                                                   // determines
-                                                                                                                   // the
-                                                                                                                   // mob
-                                                                                                                   // spawn
-                                                                                                                   // chance.
+            int chance = (int) (minMobSpawnChance * Math.pow(level.mobCount, 2) / Math.pow(level.maxMobCount, 2)); // this forms a quadratic function that determines the mob spawn chance.
             if (chance <= 0 || random.nextInt(chance) == 0)
                 trySpawn();
             resetSpawnInterval();
@@ -200,19 +189,35 @@ public class Spawner extends Furniture {
             level.add(new TextParticle("" + dmg, x, y, Color.get(-1, 200, 300, 400)));
             if (health <= 0) {
                 level.remove(this);
+                
+                // Random spawner sound 
+				switch (random.nextInt(4)) {
 
-                if (random.nextInt(4) == 0) {
+				case 0:
                     Sound.Furniture_spawner_hurt.play();
-                }
-                if (random.nextInt(4) == 1) {
+					break;
+				
+				case 1:
                     Sound.Furniture_spawner_destroy.play();
-                }
-                if (random.nextInt(4) == 2) {
+					break;
+
+				case 2:
                     Sound.Furniture_spawner_destroy_2.play();
-                }
-                if (random.nextInt(4) == 3) {
+					break;
+
+				case 3:
                     Sound.Furniture_spawner_destroy_3.play();
-                }
+					break;
+
+				case 4:
+                    Sound.Furniture_spawner_destroy_3.play();
+					break;
+
+				default:
+                    Sound.Furniture_spawner_hurt.play();
+					break;
+
+				}
 
                 // Sound.playerDeath.play();
                 player.addScore(500);
@@ -239,8 +244,10 @@ public class Spawner extends Furniture {
     public boolean use(Player player) {
         if (Game.isMode("creative") && mob instanceof EnemyMob) {
             lvl++;
-            if (lvl > maxMobLevel)
+            
+            if (lvl > maxMobLevel) {
                 lvl = 1;
+            }
             try {
                 EnemyMob newmob = (EnemyMob) mob.getClass().getConstructor(int.class).newInstance(lvl);
                 initMob(newmob);
@@ -267,8 +274,9 @@ public class Spawner extends Furniture {
 
     @Override
     protected boolean updateField(String field, String val) {
-        if (super.updateField(field, val))
+        if (super.updateField(field, val)) {
             return true;
+        }
         switch (field) {
         case "health":
             health = Integer.parseInt(val);
