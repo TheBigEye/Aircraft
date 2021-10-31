@@ -456,7 +456,7 @@ public class Renderer extends Game {
             ArrayList < String > info = new ArrayList < > ();
 
             info.add("Version: " + Game.BUILD + " (" + Game.VERSION + ")                " + "Time:" + InfoDisplay.getTimeString());
-            info.add("Engine: " + "Minicraft Plus" + "                  " + "Java:" + GameInfo.Java_Version);
+            info.add("Engine: " + "Minicraft Plus Legacy" + "           " + "Java:" + Info.Java_Version);
             info.add("" + time.toLocalDate() + "                              " + "Java arch:x" + GameInfo.Java_Arch);
             info.add(Initializer.fra + " fps" + "                                  " + "Max mem:" + GameInfo.max_Memory);
             info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")                 " + "Total mem:" + GameInfo.total_Memory);
