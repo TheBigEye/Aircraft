@@ -33,6 +33,7 @@ public class Initializer extends Game {
 
     static void parseArgs(String[] args) {
         boolean debug = false;
+        boolean dev = false;
         boolean packetdebug = false;
         boolean autoclient = false;
         boolean autoserver = false;
@@ -42,6 +43,8 @@ public class Initializer extends Game {
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("--debug")) {
                 debug = true;
+            } else if (args[i].equals("--dev")) {
+                dev = true;
             } else if (args[i].equals("--packetdebug")) {
                 packetdebug = true;
             } else if (args[i].equals("--savedir") && i + 1 < args.length) {
@@ -80,6 +83,7 @@ public class Initializer extends Game {
         }
 
         Game.debug = debug;
+        Game.dev = dev;
         Game.packet_debug = packetdebug;
         HAS_GUI = !autoserver;
 

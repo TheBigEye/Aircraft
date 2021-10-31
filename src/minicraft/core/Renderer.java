@@ -447,21 +447,29 @@ public class Renderer extends Game {
 
     private static void renderDebugInfo() { // Renders show debug info on the screen.
 
-        int textcol = Color.WHITE;
+        int textcol;
+        String separator = "                                        ";
 
         if (debug) {
-            textcol = Color.GREEN;
+            textcol = Color.GRAY;
+            
+        } else if (dev) {
+            textcol = Color.DARK_GRAY;
+            
+        } else {
+        	textcol = Color.WHITE;
         }
 
         if (showinfo) {
             ArrayList < String > info = new ArrayList < > ();
+            ArrayList < String > subinfo = new ArrayList < > ();
 
-            info.add("Version: " + Game.BUILD + " (" + Game.VERSION + ")                " + "Time:" + InfoDisplay.getTimeString());
-            info.add("Engine: " + "Minicraft Plus Legacy" + "           " + "Java:" + Info.Java_Version);
-            info.add("" + time.toLocalDate() + "                              " + "Java arch:x" + Info.Java_Arch);
-            info.add(Initializer.fra + " fps" + "                                  " + "Max mem:" + Info.max_Memory);
-            info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")                 " + "Total mem:" + Info.total_Memory);
-            info.add((Updater.normSpeed * Updater.gamespeed) + " tps                                " + "Free mem: " + Info.free_Memory);
+            info.add("Version: " + Game.BUILD + " (" + Game.VERSION + ")");               subinfo.add(separator + "Time:" + InfoDisplay.getTimeString());
+            info.add("Engine: " + "Minicraft Plus Legacy");                               subinfo.add(separator + "Java:" + Info.Java_Version);
+            info.add("" + time.toLocalDate());                                            subinfo.add(separator + "Java arch:x" + Info.Java_Arch);
+            info.add(Initializer.fra + " fps");                                           subinfo.add(separator + "Max mem:" + Info.max_Memory);
+            info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")");   subinfo.add(separator + "Total mem:" + Info.total_Memory);
+            info.add((Updater.normSpeed * Updater.gamespeed) + " tps ");                  subinfo.add(separator + "Free mem: " + Info.free_Memory);
             if (!isValidServer()) {
 
                 // player info
@@ -549,14 +557,21 @@ public class Renderer extends Game {
             }
 
             FontStyle style = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(1);
+            FontStyle substyle = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(1);
             if (Game.isValidServer()) {
                 style.setYPos(Screen.h).setRelTextPos(RelPos.TOP_RIGHT, true);
+                substyle.setYPos(Screen.h).setRelTextPos(RelPos.TOP_LEFT, true);
                 for (int i = 1; i < info.size(); i++) { // Reverse order
                     info.add(0, info.remove(i));
                 }
+                for (int i = 1; i < subinfo.size(); i++) { // Reverse order
+                    subinfo.add(0, subinfo.remove(i));
+                }
             } else
                 style.setYPos(2);
+                substyle.setYPos(2);
             Font.drawParagraph(info, screen, style, 2);
+            Font.drawParagraph(subinfo, screen, substyle, 2);
         }
     }
 
