@@ -24,20 +24,20 @@ Graphics:
 ### World generation and biomes:
 * More types of villages.
 * Sky dungeon in the Sky dimension.
-* Expanded sky dimension (spoiler)
+* Expanded sky dimension (spoiler).
 * More vegetation (Lawn and flowers).
 * Added tundra biome (Soon it will be divided into 3 sub-biomes when the infinite worlds are possible).
 * More types of trees were added with their respective types of wood and their variants in doors, walls and floors, (Birch and fir, more trees will be added soon).
-* Better terrain generation
+* Better terrain generation.
 * The Generation of the world may take a while due to the process that the game takes to generate them is less optimized, but it works perfectly if you have patience.
 
 ### Technical side :
 * An in-game game mode editor.
 * Multi-texture packs support.
 * Crash screen more detailed in information
-* More durability in tools
-* Enchanted Tools and Enchantment Books
-* --dev label when running the game in terminal
+* More durability in tools.
+* Enchanted Tools and Enchantment Books.
+* --dev label when running the game in terminal.
 
 # Installation
 1. Download and install [Java](https://java.com/en/download/), 
