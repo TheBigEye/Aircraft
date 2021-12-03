@@ -45,7 +45,7 @@ Graphics:
 3. If you are on Windows:
       Double click on the file or right click > open with "Java platform SE binary".
    If you are on Linux:
-      open your terminal, go to the path where the .jar was downloaded and write the following, `java -jar Aircraft.jar`, you will have to open the game. 
+      Open your terminal, go to the path where the .jar was downloaded and write the following, `java -jar Aircraft.jar`, you will have to open the game. 
    If you get any problem when running the game on Windows (like a black screen that appears and disappears, open CMD or Powershell, go to the path where the .jar is and type      the same command for linux)
 
 # About
