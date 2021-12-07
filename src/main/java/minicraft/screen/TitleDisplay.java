@@ -70,10 +70,9 @@ public class TitleDisplay extends Display {
         if (random.nextInt(2) == 0) {
             Sound.Intro.play();
 
-        }
-        if (random.nextInt(2) == 1) {
+        } else {
+        	
             Sound.Intro2.play();
-
         }
 
         /// This is useful to just ensure that everything is really reset as it should

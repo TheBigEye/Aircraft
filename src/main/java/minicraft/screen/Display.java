@@ -74,9 +74,7 @@ public class Display {
 
         boolean changedSelection = false;
 
-        if (menus.length > 1 && menus[selection].isSelectable()) { // if menu set is unselectable, it must have been
-                                                                   // intentional, so prevent the user from setting it
-                                                                   // back.
+        if (menus.length > 1 && menus[selection].isSelectable()) { // if menu set is unselectable, it must have been intentional, so prevent the user from setting it back.
             int prevSel = selection;
 
             String shift = menus[selection].getCurEntry() instanceof ArrayEntry ? "shift-" : "";

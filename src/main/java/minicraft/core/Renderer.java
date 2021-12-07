@@ -240,9 +240,9 @@ public class Renderer extends Game {
                 }
 
                 if (isMode("creative") || ac >= 10000) {
-                    Font.drawCompleteBackground("    x" + "∞", screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
+                    Font.drawTransparentBackground(" x" + "∞", screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
                 } else {
-                    Font.drawCompleteBackground("    x" + ac, screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
+                    Font.drawTransparentBackground(" x" + ac, screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
                 }
 
                 // Displays the arrow icon
@@ -286,7 +286,7 @@ public class Renderer extends Game {
                 screen.render(xx + x * 8, yy, 3 + 21 * 32, 0, 3);
             }
 
-            Font.drawCompleteBackground(dura + "%", screen, 220 + player.activeItem.durAdjusted, Screen.h - 24, Color.get(1, 255 - green, green, 0));
+            Font.drawTransparentBackground(dura + "%", screen, 220 + player.activeItem.durAdjusted, Screen.h - 24, Color.get(1, 255 - green, green, 0));
         }
         
         // This draws the black square where the selected item would be if you were holding it

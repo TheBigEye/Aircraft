@@ -217,9 +217,14 @@ public abstract class Mob extends Entity {
             doHurt(damage, attackDir); // Call the method that actually performs damage, and use our provided attackDir
     }
 
-    public void hurt(Tnt tnt, int dmg) {
-        doHurt(dmg, getAttackDir(tnt, this));
-    }
+	/**
+	 * Executed when a TNT bomb explodes near this mob.
+	 * @param tnt The TNT exploding.
+	 * @param dmg The amount of damage the explosion does.
+	 */
+	public void onExploded(Tnt tnt, int dmg) {
+		doHurt(dmg, getAttackDir(tnt, this));
+	}
 
     protected void doHurt(int damage, Direction attackDir) { // Actually hurt the mob, based on only damage and a
                                                              // direction

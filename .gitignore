@@ -13,6 +13,9 @@
 # Gradle
 .gradle/
 
+# Eclipse settings
+.settings/
+
 # build folder
 build/
 bin/
