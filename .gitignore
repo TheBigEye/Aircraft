@@ -4,9 +4,6 @@
 # Backup file
 *.java~
 
-# Text files in the root folder
-/*.txt
-
 # hidden files
 /.*
 
@@ -32,7 +29,6 @@ classes/
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 *.zip
