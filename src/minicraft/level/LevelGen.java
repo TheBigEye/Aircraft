@@ -36,9 +36,9 @@ public class LevelGen {
         /// to be 16 or 32, in the code below.
         for (int y = 0; y < w; y += featureSize) {
             for (int x = 0; x < w; x += featureSize) {
-            	
-            	// This method sets the random value from -1 to 1 at the given coordinate.
-                setSample(x, y, random.nextFloat() * 2 - 1); 
+
+                // This method sets the random value from -1 to 1 at the given coordinate.
+                setSample(x, y, random.nextFloat() * 2 - 1);
             }
         }
 
@@ -52,12 +52,12 @@ public class LevelGen {
                 for (int x = 0; x < w; x += stepSize) { // this loops through the values again, by a given increment...
 
                     double a = sample(x, y); // fetches the value at the coordinate set previously (it fetches the exact
-                                             // same ones that were just set above)
+                    // same ones that were just set above)
                     double b = sample(x + stepSize, y); // fetches the value at the next coordinate over. This could
-                                                        // possibly loop over at the end, and fetch the first value in
-                                                        // the row instead.
+                    // possibly loop over at the end, and fetch the first value in
+                    // the row instead.
                     double c = sample(x, y + stepSize); // fetches the next value down, possibly looping back to the top
-                                                        // of the column.
+                    // of the column.
                     double d = sample(x + stepSize, y + stepSize); // fetches the value one down, one right.
 
                     /*
@@ -110,19 +110,19 @@ public class LevelGen {
                     // surrounding mids.
 
                     double H = (a + b + d + e) / 4.0 + (random.nextFloat() * 2 - 1) * stepSize * scale * 0.5; // adds
-                                                                                                              // middle,
-                                                                                                              // right,
-                                                                                                              // mr-mb,
-                                                                                                              // mr-mt,
-                                                                                                              // and
-                                                                                                              // random.
+                    // middle,
+                    // right,
+                    // mr-mb,
+                    // mr-mt,
+                    // and
+                    // random.
                     double g = (a + c + d + f) / 4.0 + (random.nextFloat() * 2 - 1) * stepSize * scale * 0.5; // adds
-                                                                                                              // middle,
-                                                                                                              // bottom,
-                                                                                                              // mr-mb,
-                                                                                                              // ml-mb,
-                                                                                                              // and
-                                                                                                              // random.
+                    // middle,
+                    // bottom,
+                    // mr-mb,
+                    // ml-mb,
+                    // and
+                    // random.
 
                     setSample(x + halfStep, y, H); // Sets the H to the mid-right
                     setSample(x, y + halfStep, g); // Sets the g to the mid-bottom
@@ -178,7 +178,6 @@ public class LevelGen {
             return createAndValidateTopMap(w, h);
         if (level == -4)
             return createAndValidateDungeon(w, h);
-
         if ((level > -4) && (level < 0))
             return createAndValidateUndergroundMap(w, h, -level);
 
@@ -199,18 +198,12 @@ public class LevelGen {
                 count[result[0][i] & 0xff]++;
             }
 
-            if (count[Tiles.get("rock").id & 0xff] < 100)
-                continue;
-            if (count[Tiles.get("sand").id & 0xff] < 100)
-                continue;
-            if (count[Tiles.get("grass").id & 0xff] < 100)
-                continue;
-            if (count[Tiles.get("tree").id & 0xff] < 100)
-                continue;
-            if (count[Tiles.get("flower").id & 0xff] < 100)
-                continue;
-            if (count[Tiles.get("Stairs Down").id & 0xff] < w / 21)
-                continue; // size 128 = 6 stairs min
+            if (count[Tiles.get("rock").id & 0xff] < 100) continue;
+            if (count[Tiles.get("sand").id & 0xff] < 100) continue;
+            if (count[Tiles.get("grass").id & 0xff] < 100) continue;
+            if (count[Tiles.get("tree").id & 0xff] < 100) continue;
+            if (count[Tiles.get("flower").id & 0xff] < 100) continue;
+            if (count[Tiles.get("Stairs Down").id & 0xff] < w / 21) continue; // size 128 = 6 stairs min
 
             return result;
 
@@ -229,15 +222,11 @@ public class LevelGen {
                 count[result[0][i] & 0xff]++;
             }
 
-            if (count[Tiles.get("rock").id & 0xff] < 100)
-                continue;
-            if (count[Tiles.get("dirt").id & 0xff] < 100)
-                continue;
-            if (count[(Tiles.get("iron Ore").id & 0xff) + depth - 1] < 20)
-                continue;
+            if (count[Tiles.get("rock").id & 0xff] < 100) continue;
+            if (count[Tiles.get("dirt").id & 0xff] < 100) continue;
+            if (count[(Tiles.get("iron Ore").id & 0xff) + depth - 1] < 20) continue;
 
-            if (depth < 3 && count[Tiles.get("Stairs Down").id & 0xff] < w / 32)
-                continue; // size 128 = 4 stairs min
+            if (depth < 3 && count[Tiles.get("Stairs Down").id & 0xff] < w / 32) continue; // size 128 = 4 stairs min
 
             return result;
 
@@ -256,12 +245,9 @@ public class LevelGen {
                 count[result[0][i] & 0xff]++;
             }
 
-            if (count[Tiles.get("Obsidian").id & 0xff] < 100)
-                continue;
-            if (count[Tiles.get("Obsidian Wall").id & 0xff] < 100)
-                continue;
-            if (count[Tiles.get("Hard obsidian").id & 0xff] < 100)
-                continue;
+            if (count[Tiles.get("Obsidian").id & 0xff] < 100) continue;
+            if (count[Tiles.get("Obsidian Wall").id & 0xff] < 100) continue;
+            if (count[Tiles.get("Hard obsidian").id & 0xff] < 100) continue;
 
             return result;
 
@@ -280,10 +266,8 @@ public class LevelGen {
                 count[result[0][i] & 0xff]++;
             }
 
-            if (count[Tiles.get("cloud").id & 0xff] < 2000)
-                continue;
-            if (count[Tiles.get("Stairs Down").id & 0xff] < w / 64)
-                continue; // size 128 = 2 stairs min
+            if (count[Tiles.get("cloud").id & 0xff] < 2000) continue;
+            if (count[Tiles.get("Stairs Down").id & 0xff] < w / 64) continue; // size 128 = 2 stairs min
 
             return result;
 
@@ -331,72 +315,87 @@ public class LevelGen {
 
                 // Code of the type of terrain, this according to the user's option
                 switch ((String) Settings.get("Type")) {
-                case "Island":
-                    if (val < -0.5) {
-                        if (Settings.get("Theme").equals("Hell")) {
-                            map[i] = Tiles.get("lava").id;
+                    case "Island":
+
+                        if (val < -0.5) {
+                            if (Settings.get("Theme").equals("Hell")) {
+                                map[i] = Tiles.get("lava").id;
+                            } else {
+                                map[i] = Tiles.get("water").id;
+                            }
+
+                        } else if (val > 0.5 && mval < -1.5) {
+
+                            map[i] = Tiles.get("up rock").id;
+
+                        } else if (val > 0.1 && mval < -1.1) {
+
+                            map[i] = Tiles.get("rock").id;
+
                         } else {
-                            map[i] = Tiles.get("water").id;
+                            map[i] = Tiles.get("grass").id;
+
                         }
 
-                    } else if (val > 0.5 && mval < -1.5) {
-                        map[i] = Tiles.get("rock").id;
-                    } else {
-                        map[i] = Tiles.get("grass").id;
-                    }
+                        break;
+                    case "Box":
 
-                    break;
-                case "Box":
+                        if (val < -1.5) {
+                            if (Settings.get("Theme").equals("Hell")) {
+                                map[i] = Tiles.get("lava").id;
+                            } else {
+                                map[i] = Tiles.get("water").id;
+                            }
 
-                    if (val < -1.5) {
-                        if (Settings.get("Theme").equals("Hell")) {
-                            map[i] = Tiles.get("lava").id;
+                        } else if (val > 0.5 && mval < -1.5) {
+
+                            map[i] = Tiles.get("up rock").id;
+
+                        } else if (val > 0.1 && mval < -1.1) {
+
+                            map[i] = Tiles.get("rock").id;
+
                         } else {
-                            map[i] = Tiles.get("water").id;
+                            map[i] = Tiles.get("grass").id;
+
                         }
 
-                    } else if (val > 0.5 && mval < -1.5) {
-                        map[i] = Tiles.get("rock").id;
-                    } else {
-                        map[i] = Tiles.get("grass").id;
-                    }
+                        break;
+                    case "Mountain":
 
-                    break;
-                case "Mountain":
-
-                    if (val < -0.4) {
-                        map[i] = Tiles.get("grass").id;
-                    } else if (val > 0.5 && mval < -1.5) {
-                        if (Settings.get("Theme").equals("Hell")) {
-                            map[i] = Tiles.get("lava").id;
+                        if (val < -0.4) {
+                            map[i] = Tiles.get("grass").id;
+                        } else if (val > 0.5 && mval < -1.5) {
+                            if (Settings.get("Theme").equals("Hell")) {
+                                map[i] = Tiles.get("lava").id;
+                            } else {
+                                map[i] = Tiles.get("water").id;
+                            }
                         } else {
-                            map[i] = Tiles.get("water").id;
-                        }
-                    } else {
-                        map[i] = Tiles.get("rock").id;
-                    }
-
-                    break;
-                case "Irregular":
-
-                    if (val < -0.5 && mval < -0.5) {
-                        if (Settings.get("Theme").equals("Hell")) {
-                            map[i] = Tiles.get("lava").id;
-                        }
-                        if (!Settings.get("Theme").equals("Hell")) {
-                            map[i] = Tiles.get("water").id;
+                            map[i] = Tiles.get("rock").id;
                         }
 
-                    } else if (val > 0.5 && mval < -1.5) {
-                        map[i] = Tiles.get("rock").id;
-                    } else {
-                        map[i] = Tiles.get("grass").id;
-                    }
-                    break;
+                        break;
+                    case "Irregular":
 
-                default:
-                    // meh
-                    break;
+                        if (val < -0.5 && mval < -0.5) {
+                            if (Settings.get("Theme").equals("Hell")) {
+                                map[i] = Tiles.get("lava").id;
+                            }
+                            if (!Settings.get("Theme").equals("Hell")) {
+                                map[i] = Tiles.get("water").id;
+                            }
+
+                        } else if (val > 0.5 && mval < -1.5) {
+                            map[i] = Tiles.get("rock").id;
+                        } else {
+                            map[i] = Tiles.get("grass").id;
+                        }
+                        break;
+
+                    default:
+                        // meh
+                        break;
                 }
             }
         }
@@ -408,7 +407,7 @@ public class LevelGen {
             for (int i = 0; i < w * h / 800; i++) {
                 int xs = random.nextInt(w);
                 int ys = random.nextInt(h);
-                for (int k = 0; k < 10; k++) {
+                for (int k = 0; k < 16; k++) {
                     int x = xs + random.nextInt(29) - 10 + random.nextInt(5);
                     int y = ys + random.nextInt(29) - 10 + random.nextInt(5);
                     for (int j = 0; j < 100; j++) {
@@ -502,6 +501,7 @@ public class LevelGen {
                 }
             }
         }
+
 
         // Add trees to biomes
 
@@ -700,12 +700,13 @@ public class LevelGen {
                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                     if (map[xx + yy * w] == Tiles.get("grass").id) {
                         map[xx + yy * w] = Tiles.get("flower").id;
-                        data[xx + yy * w] = (byte) (col + random.nextInt(4) * 16); // data determines which way the
-                                                                                   // flower faces
+                        data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16); // data determines which way the
+                        // flower faces
                     }
                 }
             }
         }
+
 
         // Add lawn to grass
         for (int i = 0; i < w * h / 400; i++) {
@@ -718,7 +719,7 @@ public class LevelGen {
                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                     if (map[xx + yy * w] == Tiles.get("grass").id) {
                         map[xx + yy * w] = Tiles.get("lawn").id;
-                        data[xx + yy * w] = (byte) (col + random.nextInt(4) * 16);
+                        data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16);
                     }
                 }
             }
@@ -735,7 +736,7 @@ public class LevelGen {
                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                     if (map[xx + yy * w] == Tiles.get("grass").id) {
                         map[xx + yy * w] = Tiles.get("orange tulip").id;
-                        data[xx + yy * w] = (byte) (col + random.nextInt(4) * 16);
+                        data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16);
                     }
                 }
             }
@@ -824,12 +825,17 @@ public class LevelGen {
             }
         }
 
+
+
         // System.out.println("min="+min);
         // System.out.println("max="+max);
         // average /= w*h;
         // System.out.println(average);
 
-        return new byte[][] { map, data };
+        return new byte[][] {
+            map,
+            data
+        };
     }
 
     // Dungeons generation code
@@ -896,7 +902,10 @@ public class LevelGen {
             }
         }
 
-        return new byte[][] { map, data };
+        return new byte[][] {
+            map,
+            data
+        };
     }
 
     // Generate cave system
@@ -979,7 +988,7 @@ public class LevelGen {
                     int yy = y + random.nextInt(5) - random.nextInt(5);
                     if (xx >= r && yy >= r && xx < w - r && yy < h - r) {
                         if (map[xx + yy * w] == Tiles.get("rock").id) {
-                            map[xx + yy * w] = (byte) ((Tiles.get("iron Ore").id & 0xff) + depth - 1);
+                            map[xx + yy * w] = (byte)((Tiles.get("iron Ore").id & 0xff) + depth - 1);
                         }
                     }
                 }
@@ -990,7 +999,7 @@ public class LevelGen {
                     int yy = y + random.nextInt(3) - random.nextInt(2);
                     if (xx >= r && yy >= r && xx < w - r && yy < h - r) {
                         if (map[xx + yy * w] == Tiles.get("rock").id) {
-                            map[xx + yy * w] = (byte) (Tiles.get("Lapis").id & 0xff);
+                            map[xx + yy * w] = (byte)(Tiles.get("Lapis").id & 0xff);
                         }
                     }
                 }
@@ -1010,7 +1019,7 @@ public class LevelGen {
                         /// basically prevents negative values... except... this doesn't do anything if
                         /// you flip it back to a byte again...
 
-                        map[xx + yy * w] = (byte) (Tiles.get("Stairs Down").id & 0xff);
+                        map[xx + yy * w] = (byte)(Tiles.get("Stairs Down").id & 0xff);
                     }
                 }
             }
@@ -1041,7 +1050,10 @@ public class LevelGen {
             }
         }
 
-        return new byte[][] { map, data };
+        return new byte[][] {
+            map,
+            data
+        };
     }
 
     // Sky dimension generation
@@ -1217,7 +1229,7 @@ public class LevelGen {
                     if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                         if (map[xx + yy * w] == Tiles.get("sky grass").id) {
                             map[xx + yy * w] = Tiles.get("sky lawn").id;
-                            data[xx + yy * w] = (byte) (col + random.nextInt(4) * 16);
+                            data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16);
                         }
                     }
                 }
@@ -1398,7 +1410,7 @@ public class LevelGen {
                     if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                         if (map[xx + yy * w] == Tiles.get("sky grass").id) {
                             map[xx + yy * w] = Tiles.get("sky lawn").id;
-                            data[xx + yy * w] = (byte) (col + random.nextInt(4) * 16);
+                            data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16);
                         }
                     }
                 }
@@ -1489,7 +1501,10 @@ public class LevelGen {
             }
         }
 
-        return new byte[][] { map, data };
+        return new byte[][] {
+            map,
+            data
+        };
 
     }
 
@@ -1537,7 +1552,7 @@ public class LevelGen {
 
         // Execute it forever
         // noinspection InfiniteLoopStatement
-        
+
         boolean hasquit = false;
         while (!hasquit) { // stop the loop and close the program.) 
 
@@ -1574,14 +1589,14 @@ public class LevelGen {
             for (int y = 0; y < h; y++) { // Loops through the height of the map
                 for (int x = 0; x < w; x++) { // (inner-loop)Loops through the entire width of the map
                     int i = x + y * w; // Current tile of the map.
-                    
-					/*The colors used in the pixels are hexadecimal (0xRRGGBB). 
-				      0xff0000 would be fully red
-					  0x00ff00 would be fully blue
-					  0x0000ff would be fully green
-					  0x000000 would be black
-					  and 0xffffff would be white etc. 
-					*/
+
+                    /*The colors used in the pixels are hexadecimal (0xRRGGBB). 
+                      0xff0000 would be fully red
+                      0x00ff00 would be fully blue
+                      0x0000ff would be fully green
+                      0x000000 would be black
+                      and 0xffffff would be white etc. 
+                    */
 
                     // Surface tiles
                     if (map[i] == Tiles.get("water").id) pixels[i] = 0x1a2c89;
@@ -1638,6 +1653,7 @@ public class LevelGen {
                     if (map[i] == Tiles.get("Sky lawn").id) pixels[i] = 0x56a383;
                     if (map[i] == Tiles.get("Sky high grass").id) pixels[i] = 0x4f9678;
                     if (map[i] == Tiles.get("Holy rock").id) pixels[i] = 0x7a7a7a;
+                    if (map[i] == Tiles.get("Up rock").id) pixels[i] = 0x939393;
 
                 }
             }
@@ -1656,9 +1672,13 @@ public class LevelGen {
             System.out.println("[LevelGen]" + " | " + "Seed: " + worldSeed + " | " + "Gen-Version: " + Game.BUILD + " | " + finalGenTime);
 
             img.setRGB(0, 0, w, h, pixels, 0, w); // Sets the pixels into the image
-            
-            String[] options = {"Another", "Quit"}; // Name of the buttons used for the window.
-            
+
+            String[] options = {
+                "Another",
+                "Quit"
+            }; // Name of the buttons used for the window.
+
+
             int Generator = JOptionPane.showOptionDialog(null, null, "Map Generator", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon(img.getScaledInstance(w * mapScale, h * mapScale, Image.SCALE_AREA_AVERAGING)), options, null);
 
             if (LevelGen.worldSeed == 0x100) {
@@ -1666,14 +1686,16 @@ public class LevelGen {
             } else {
                 LevelGen.worldSeed = 0x100;
             }
-            
-			/* Now you noticed that we made the dialog an integer. This is because when you click a button it will return a number.
-		       Since we passed in 'options', the window will return 0 if you press "Another" and it will return 1 when you press "Quit".
-			   If you press the red "x" close mark, the window will return -1 
-			*/
-            
+
+            /* Now you noticed that we made the dialog an integer. This is because when you click a button it will return a number.
+               Since we passed in 'options', the window will return 0 if you press "Another" and it will return 1 when you press "Quit".
+               If you press the red "x" close mark, the window will return -1 
+            */
+
             // If the dialog returns -1 (red "x" button) or 1 ("Quit" button) then...
-            if (Generator == -1 || Generator == 1) hasquit = true; // Stop the loop and close the program.
+            if (Generator == -1 || Generator == 1) {
+                hasquit = true; // Stop the loop and close the program.
+            }
         }
     }
 }

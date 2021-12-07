@@ -128,20 +128,19 @@ public class Furniture extends Entity {
         return false;
     }
 
-    /**
-     * Tries to let the player push this furniture.
-     * 
-     * @param player The player doing the pushing.
-     */
-    public void tryPush(Player player) {
-        if (pushTime == 0) {
-            pushDir = player.dir; // set pushDir to the player's dir.
-            pushTime = multiPushTime = 10; // set pushTime to 10.
-
-            if (Game.isConnectedClient())
-                Game.client.pushFurniture(this, pushDir);
-        }
-    }
+	/**
+	 * Tries to let the player push this furniture.
+	 * @param player The player doing the pushing.
+	 */
+	public void tryPush(Player player) {
+		if (pushTime == 0) {
+			pushDir = player.dir; // Set pushDir to the player's dir.
+			pushTime = multiPushTime = 10; // Set pushTime to 10.
+			
+			if (Game.isConnectedClient())
+				Game.client.pushFurniture(this);
+		}
+	}
 
     @Override
     public boolean canWool() {

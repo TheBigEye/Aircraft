@@ -11,8 +11,8 @@ import minicraft.screen.entry.ItemEntry;
 
 class InventoryMenu extends ItemListMenu {
 
-    private Inventory inv;
-    private Entity holder;
+	private final Inventory inv;
+	private final Entity holder;
 
     InventoryMenu(Entity holder, Inventory inv, String title) {
         super(InventoryMenu.getBuilder(), ItemEntry.useItems(inv.getItems()), title);

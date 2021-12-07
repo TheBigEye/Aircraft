@@ -123,7 +123,7 @@ public class TexturePackDisplay extends Display {
 
     // In case the name is too big ...
     private static String shortNameIfLong(String name) {
-        return name.length() > 24 ? name.substring(0, 16) + "..." : name;
+        return name.length() > 32 ? name.substring(0, 16) + "..." : name;
     }
 
     @Override

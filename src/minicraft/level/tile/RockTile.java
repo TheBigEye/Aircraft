@@ -23,7 +23,24 @@ import minicraft.level.Level;
 
 public class RockTile extends Tile {
     private ConnectorSprite sprite = new ConnectorSprite(RockTile.class, new Sprite(18, 6, 3, 3, 1, 3),
-            new Sprite(21, 8, 2, 2, 1, 3), new Sprite(21, 6, 2, 2, 1, 3));
+            new Sprite(21, 8, 2, 2, 1, 3), new Sprite(21, 6, 2, 2, 1, 3)) {
+ 	   
+        
+        public boolean connectsTo(Tile tile, boolean isSide) {
+            return tile != Tiles.get("dirt") && tile != Tiles.get("grass") && 
+            	   tile != Tiles.get("sand") && tile != Tiles.get("Orange tulip") &&
+            	   tile != Tiles.get("tree") && tile != Tiles.get("birch tree") &&
+            	   tile != Tiles.get("Stairs Down") && tile != Tiles.get("Stairs up") &&
+            	   tile != Tiles.get("lava") && tile != Tiles.get("water") && 
+            	   tile != Tiles.get("cactus") && tile != Tiles.get("flower") &&
+            	   tile != Tiles.get("Hole") && tile != Tiles.get("Snow") &&
+            	   tile != Tiles.get("Lawn") && tile != Tiles.get("path") && 
+            	   tile != Tiles.get("Birch tree") && tile != Tiles.get("Fir tree") && 
+            	   tile != Tiles.get("Wood wall") && tile != Tiles.get("path") && 
+            	   tile != Tiles.get("ice spike") && tile != Tiles.get("Carrot") && 
+            	   tile != Tiles.get("pine tree");
+        }
+ 	   };
 
     private boolean dropCoal = false;
     private final int maxHealth = 50;

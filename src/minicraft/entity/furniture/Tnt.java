@@ -17,6 +17,7 @@ import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
 import minicraft.level.Level;
+import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class Tnt extends Furniture implements ActionListener {
@@ -29,7 +30,7 @@ public class Tnt extends Furniture implements ActionListener {
     private Timer explodeTimer;
     private Level levelSave;
 
-    private String[] explosionBlacklist = new String[] { "hard rock", "obsidian wall", "hard obsidian" };
+    private final String[] explosionBlacklist = new String[] { "hard rock", "obsidian wall", "hard obsidian", "stairs up", "stairs down" };
 
     /**
      * Creates a new tnt furniture.
@@ -58,7 +59,9 @@ public class Tnt extends Furniture implements ActionListener {
                     float dist = (float) Math.hypot(e.x - x, e.y - y);
                     int dmg = (int) (BLAST_DAMAGE * (1 - (dist / BLAST_RADIUS))) + 1;
                     if (e instanceof Mob)
-                        ((Mob) e).hurt(this, dmg);
+						((Mob)e).onExploded(this, dmg);
+
+					// Ignite other bombs in range.
                     if (e instanceof Tnt) {
                         Tnt tnt = (Tnt) e;
                         if (!tnt.fuseLit) {
@@ -69,6 +72,18 @@ public class Tnt extends Furniture implements ActionListener {
                     }
                 }
 
+                int xt = x >> 4;
+                int yt = (y - 2) >> 4;
+                
+                // Get the tiles that have been exploded.
+				Tile[] affectedTiles = level.getAreaTiles(xt, yt, 1);
+
+				// Call the onExplode() event.
+				for (int i = 0; i < affectedTiles.length; i++) {
+					// This assumes that range is 1.
+					affectedTiles[i].onExplode(level, xt + i % 3 - 1, yt + i / 3 - 1);
+				}
+				
                 // Random explode sound 
 				switch (random.nextInt(4)) {
 
@@ -97,9 +112,6 @@ public class Tnt extends Furniture implements ActionListener {
 					break;
 
 				}
-
-                int xt = x >> 4;
-                int yt = (y - 2) >> 4;
 
                 level.setAreaTiles(xt, yt, 1, Tiles.get("explode"), 0, explosionBlacklist);
 

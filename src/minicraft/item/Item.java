@@ -150,7 +150,7 @@ public abstract class Item {
         sprite.render(screen, xx, yy);
 
         // Item name
-        Font.drawCompleteBackground(dispName, screen, xx + 8, yy, fontColor);
+        Font.drawTransparentBackground(dispName, screen, xx + 8, yy, fontColor);
 
     }
 

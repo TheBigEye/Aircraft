@@ -81,11 +81,11 @@ public class Font {
         }
     }
 
-    public static void drawCompleteBackground(String msg, Screen screen, int x, int y) {
-        drawCompleteBackground(msg, screen, x, y, -1);
+    public static void drawTransparentBackground(String msg, Screen screen, int x, int y) {
+        drawTransparentBackground(msg, screen, x, y, -1);
     }
 
-    public static void drawCompleteBackground(String msg, Screen screen, int x, int y, int whiteTint) {
+    public static void drawTransparentBackground(String msg, Screen screen, int x, int y, int whiteTint) {
         msg = msg.toUpperCase(Localization.getSelectedLocale());
 
         for (int i = 0; i < msg.length(); i++) {

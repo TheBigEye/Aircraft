@@ -130,6 +130,7 @@ public final class Tiles {
         tiles.set(83, new GoldenCloudTreeTile("Golden Cloud Tree"));
         tiles.set(84, new BlueCloudTreeTile("Blue Cloud Tree"));
         tiles.set(85, new SkyFernTile("Sky Fern"));
+        tiles.set(86, new UpRockTile("Up rock"));
 
         // tiles.set(?, new SandRockTile("Sand rock"));
 

@@ -27,6 +27,8 @@ public class DirtTile extends Tile {
 
     protected static int dCol(int depth) {
         switch (depth) {
+		case 1: 
+			return Color.get(1, 194, 194, 194); // Sky.
         case 0:
             return Color.get(1, 129, 105, 83); // surface.
         case -4:

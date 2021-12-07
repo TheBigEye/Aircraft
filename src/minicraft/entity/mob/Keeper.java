@@ -85,7 +85,7 @@ public class Keeper extends EnemyMob {
 
         String txt = "";
         int w = Font.textWidth(txt) / 2;
-        Font.drawCompleteBackground(txt, screen, x - w, y - 45 - Font.textHeight());
+        Font.drawTransparentBackground(txt, screen, x - w, y - 45 - Font.textHeight());
     }
 
     public boolean canSwim() {

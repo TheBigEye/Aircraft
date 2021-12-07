@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
 
 // Game imports
 import minicraft.core.Game;
@@ -128,21 +127,16 @@ public class Level {
      * sparks set
      */
     private final Object entityLock = new Object();
-    private Set < Entity > entities = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the entities in the world
-    private Set < Spark > sparks = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks in the world
-    private Set < Spark2 > sparks2 = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks2 in the world
-    private Set < Spark3 > sparks3 = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks3 in the world
-    private Set < Player > players = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the players in the world
-    private List < Entity > entitiesToAdd = new ArrayList < > (); // entities that will be added to the level on next tick, are stored here. This is for the sake of multithreading, optimization. (hopefully)
-    private List < Entity > entitiesToRemove = new ArrayList < > (); // entities that will be removed from the level on next tick are stored here. This is for the sake of multithreading optimization. (hopefully)
+    private final Set < Entity > entities = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the entities in the world
+    private final Set < Spark > sparks = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks in the world
+    private final Set < Spark2 > sparks2 = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks2 in the world
+    private final Set < Spark3 > sparks3 = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks3 in the world
+    private final Set < Player > players = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the players in the world
+    private final List < Entity > entitiesToAdd = new ArrayList < > (); // entities that will be added to the level on next tick, are stored here. This is for the sake of multithreading, optimization. (hopefully)
+    private final List < Entity > entitiesToRemove = new ArrayList < > (); // entities that will be removed from the level on next tick are stored here. This is for the sake of multithreading optimization. (hopefully)
 
     // creates a sorter for all the entities to be rendered.
-    private static Comparator < Entity > spriteSorter = Comparator.comparingInt(new ToIntFunction < Entity > () {
-        @Override
-        public int applyAsInt(Entity e) {
-            return e.y;
-        }
-    });
+	private static Comparator<Entity> spriteSorter = Comparator.comparingInt(e -> e.y);
 
     public Entity[] getEntitiesToSave() {
         Entity[] allEntities = new Entity[entities.size() + sparks.size() + sparks2.size() + sparks3.size() + entitiesToAdd.size()];
@@ -175,9 +169,9 @@ public class Level {
                     printLevelLoc(t.name, x, y);
     }
 
-    public void printEntityLocs(Class < ? extends Entity> c) {
+    public void printEntityLocs(Class < ? extends Entity > c) {
         int numfound = 0;
-        for (Entity entity : getEntityArray()) {
+        for (Entity entity: getEntityArray()) {
             if (c.isAssignableFrom(entity.getClass())) {
                 printLevelLoc(entity.toString(), entity.x >> 4, entity.y >> 4);
                 numfound++;
@@ -581,13 +575,7 @@ public class Level {
             Entity removeThis = (Entity) entities.toArray()[(random.nextInt(entities.size()))];
             if (removeThis instanceof MobAi) {
                 // make sure there aren't any close players
-                boolean playerClose = false;
-                for (Player player: players) {
-                    if (Math.abs(player.x - removeThis.x) < 128 && Math.abs(player.y - removeThis.x) < 76) {
-                        playerClose = true;
-                        break;
-                    }
-                }
+				boolean playerClose = entityNearPlayer(removeThis);
 
                 if (!playerClose) {
                     remove(removeThis);
@@ -638,6 +626,16 @@ public class Level {
             trySpawn();
 
     }
+    
+
+	public boolean entityNearPlayer(Entity entity) {
+		for (Player player : players) {
+			if (Math.abs(player.x - entity.x) < 128 && Math.abs(player.y - entity.y) < 76) {
+				return true;
+			}
+		}
+		return false;
+	}
 
     /*
      * public void printEntityStatus(String entityMessage, Entity entity, String...
@@ -1051,10 +1049,9 @@ public class Level {
     public List < Entity > getEntitiesInTiles(int xt, int yt, int radius) {
         return getEntitiesInTiles(xt, yt, radius, false);
     }
-    
+
     @SafeVarargs
-    public final List<Entity> getEntitiesInTiles(int xt, int yt, int radius, boolean includeGiven,
-            Class < ? extends Entity>... entityClasses) {
+    public final List < Entity > getEntitiesInTiles(int xt, int yt, int radius, boolean includeGiven, Class < ? extends Entity > ...entityClasses) {
         return getEntitiesInTiles(xt - radius, yt - radius, xt + radius, yt + radius, includeGiven, entityClasses);
     }
 

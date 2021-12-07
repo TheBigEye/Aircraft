@@ -92,7 +92,7 @@ public enum MapData {
     WATER(Tiles.get("Water").id, Color.get(1, 26, 44, 137)), LAVA(Tiles.get("Lava").id, Color.RED),
 
     ROCK(Tiles.get("Rock").id, Color.get(1, 122, 122, 122)),
-    // SAND_ROCK(Tiles.get("Sand Rock").id, Color.get(1, 214, 214, 77)),
+    UP_ROCK(Tiles.get("Up Rock").id, Color.get(1, 147, 147, 147)),
     HARD_ROCK(Tiles.get("Hard Rock").id, Color.get(1, 127, 126, 107)),
 
     CACTUS(Tiles.get("Cactus").id, Color.get(1, 183, 183, 91)),

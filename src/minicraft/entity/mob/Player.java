@@ -1280,22 +1280,39 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         this.y = spawnPos.y * 16 + 8;
     }
 
-    /**
-     * Finds a location where the player can respawn in a given level.
-     * 
-     * @param level The level.
-     * @return true
-     */
-    public boolean respawn(Level level) {
-        if (!level.getTile(spawnx, spawny).maySpawn())
-            findStartPos(level); // If there's no bed to spawn from, and the stored coordinates don't point to a
-                                 // grass tile, then find a new point.
+	/**
+	 * Finds a location where the player can respawn in a given level.
+	 * 
+	 * @param level The level.
+	 * @return true
+	 */
+	public void respawn(Level level) {
+		if (!level.getTile(spawnx, spawny).maySpawn()) {
+			findStartPos(level); // If there's no bed to spawn from, and the stored coordinates don't point to a grass tile, then find a new point.
+			
+			int x = spawnx;
+			int y = spawny;
+			
+			x = (Math.random() > .5) ? -80 : 80;
+			y = (Math.random() > .5) ? -80 : 80;
+			
+			for (int i = 0; i < 20; i++) // Iterate through diagonal line for possible random spawn.
+			{
+				if (!level.getTile(spawnx, spawny).maySpawn()) {
+					x += 4 * (x / -x);
+					y += 4 * (-y / y);
+				} else {
+					spawnx = x;
+					spawny = y;
+					break;
+				}
+			}
 
-        // Move the player to the spawnpoint
-        this.x = spawnx * 16 + 8;
-        this.y = spawny * 16 + 8;
-        return true; // Again, why the "return true"'s for methods that never return false?
-    }
+		}
+		// Move the player to the spawnpoint
+		this.x = spawnx * 16 + 8;
+		this.y = spawny * 16 + 8;
+	}
 
     /**
      * Uses an amount of stamina to do an action.
@@ -1366,8 +1383,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     }
 
     @Override
-    public void hurt(Tnt tnt, int dmg) {
-        super.hurt(tnt, dmg);
+	public void onExploded(Tnt tnt, int dmg) {
+		super.onExploded(tnt, dmg);
         payStamina(dmg * 2);
     }
 
