@@ -41,7 +41,7 @@ Graphics:
 
 # Installation
 1. Download and install [Java](https://java.com/en/download/), 
-2. Then download the file with the extension .jar of the game [here](https://github.com/TheBigEye/Aircraft-Mod/reeleases).
+2. Then download the file with the extension .jar of the game [here](https://github.com/TheBigEye/Aircraft-Mod/releases).
 3. If you are on Windows:
       Double click on the file or right click > open with "Java platform SE binary".
    If you are on Linux:
