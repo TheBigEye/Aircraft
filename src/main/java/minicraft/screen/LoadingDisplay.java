@@ -24,8 +24,7 @@ public class LoadingDisplay extends Display {
 
     private static String Build = "";
 
-    String[] BuildString = { "Generating", "Calculating", "Pre Calculating", "Building", "Melting", "Eroding",
-            "Planting", "Populating", "Molding", "Raising", };
+    String[] BuildString = { "Generating", "Calculating", "Pre Calculating", "Building", "Melting", "Eroding", "Planting", "Populating", "Molding", "Raising" };
 
     private static Random random = new Random();
 
@@ -48,10 +47,13 @@ public class LoadingDisplay extends Display {
         super.init(parent);
         percentage = 0;
         progressType = "World";
-        if (WorldSelectDisplay.loadedWorld())
+        
+        if (WorldSelectDisplay.loadedWorld()) {
             msg = Localization.getLocalized("Loading");
-        else
-            LoadingDisplay.Build = Localization.getLocalized(BuildString[random.nextInt(9)]);
+        } else {
+            LoadingDisplay.Build = Localization.getLocalized(BuildString[random.nextInt(BuildString.length)]);
+        }
+        
         msg = Build;
         t.start();
 
@@ -61,12 +63,14 @@ public class LoadingDisplay extends Display {
     public void onExit() {
         percentage = 0;
         if (!WorldSelectDisplay.loadedWorld()) {
-            LoadingDisplay.Build = BuildString[random.nextInt(9)];
-            msg = Localization.getLocalized(Build);
             progressType = "World";
+            msg = Localization.getLocalized("Rendering");
             new Save(WorldSelectDisplay.getWorldName());
             Game.notifications.clear();
         }
+        
+        Sound.Mob_player_changelevel.play();
+        
     }
 
     public static void setPercentage(float percent) {
@@ -93,14 +97,11 @@ public class LoadingDisplay extends Display {
                 Localization.getLocalized(msg) + ellipsis.updateAndGet(), percent + "%");
 
         if (!WorldSelectDisplay.loadedWorld()) {
-            Font.drawParagraph(screen, new FontStyle(Color.YELLOW), 0,
-                    Localization.getLocalized(msg) + ellipsis.updateAndGet(), percent + "%");
-            Font.drawCentered(Localization.getLocalized("May take a while, be patient"), screen, Screen.h - 12,
-                    Color.get(1, 51));
+            Font.drawParagraph(screen, new FontStyle(Color.YELLOW), 0, Localization.getLocalized(msg) + ellipsis.updateAndGet(), percent + "%");
+            Font.drawCentered(Localization.getLocalized("May take a while, be patient"), screen, Screen.h - 12, Color.get(1, 51));
         }
 
-        Font.drawCentered(((progressType.length() > 0) ? (" " + Localization.getLocalized(progressType)) : ""), screen,
-                Screen.h - 30, Color.get(1, 51));
+        Font.drawCentered(((progressType.length() > 0) ? (" " + Localization.getLocalized(progressType)) : ""), screen, Screen.h - 30, Color.get(1, 51));
 
         Sound.Intro.stop();
         Sound.Intro2.stop();

@@ -156,8 +156,7 @@ public class ItemEntity extends Entity implements ClientTickable {
                     pickedUp = true;
                     pickupTimestamp = System.nanoTime();
                 }
-            } else if (!pickedUp && !Game.ISONLINE) {// don't register if we are online and a player touches it; the
-                                                     // client will register that.
+            } else if (!pickedUp && !Game.ISONLINE) {// don't register if we are online and a player touches it; the client will register that.
                 pickedUp = true;
                 ((Player) entity).pickupItem(this);
                 pickedUp = isRemoved();

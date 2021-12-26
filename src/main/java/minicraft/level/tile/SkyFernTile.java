@@ -62,30 +62,30 @@ public class SkyFernTile extends Tile {
         if (stepped >= 8) {
 
             if (random.nextInt(12) == 9) {
-                sprite = new Sprite(27, 22, 2, 2, 1);
+                this.sprite = new Sprite(27, 22, 2, 2, 1);
             }
             if (random.nextInt(12) == 1) {
-                sprite = new Sprite(29, 22, 2, 2, 1);
+            	this.sprite = new Sprite(29, 22, 2, 2, 1);
             }
             if (random.nextInt(12) == 10) {
-                sprite = new Sprite(31, 22, 2, 2, 1);
+            	this.sprite = new Sprite(31, 22, 2, 2, 1);
             }
             if (random.nextInt(12) == 3) {
-                sprite = new Sprite(33, 22, 2, 2, 1);
+            	this.sprite = new Sprite(33, 22, 2, 2, 1);
             }
             if (random.nextInt(12) == 11) {
-                sprite = new Sprite(31, 22, 2, 2, 1);
+            	this.sprite = new Sprite(31, 22, 2, 2, 1);
             }
             if (random.nextInt(12) == 5) {
-                sprite = new Sprite(29, 22, 2, 2, 1);
+            	this.sprite = new Sprite(29, 22, 2, 2, 1);
             }
             if (random.nextInt(12) == 12) {
 
-                sprite = new Sprite(27, 22, 2, 2, 1);
+            	this.sprite = new Sprite(27, 22, 2, 2, 1);
             }
         }
 
-        sprite.render(screen, x * 16, y * 16);
+        this.sprite.render(screen, x * 16, y * 16);
     }
 
     @Override

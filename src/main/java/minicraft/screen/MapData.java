@@ -82,14 +82,17 @@ public enum MapData {
      * SKY_GRASS(Tiles.get("Sky Grass").id, Color.get(1, 90, 171, 138));
      */
 
-    GRASS(Tiles.get("Grass").id, Color.get(1, 84, 168, 84)), LAWN(Tiles.get("Lawn").id, Color.get(1, 96, 165, 96)),
+    GRASS(Tiles.get("Grass").id, Color.get(1, 84, 168, 84)),
+    LAWN(Tiles.get("Lawn").id, Color.get(1, 96, 165, 96)),
     ORANGE_TULIP(Tiles.get("Orange tulip").id, Color.get(1, 96, 165, 96)),
     // PATH(Tiles.get("Path").id, Color.get(1, 217, 160, 102)),
 
-    DIRT(Tiles.get("Dirt").id, Color.get(1, 131, 108, 108)), FLOWER(Tiles.get("Flower").id, Color.get(1, 96, 165, 96)),
+    DIRT(Tiles.get("Dirt").id, Color.get(1, 131, 108, 108)),
+    FLOWER(Tiles.get("Flower").id, Color.get(1, 96, 165, 96)),
     HOLE(Tiles.get("Hole").id, Color.get(1, 61, 47, 8)),
 
-    WATER(Tiles.get("Water").id, Color.get(1, 26, 44, 137)), LAVA(Tiles.get("Lava").id, Color.RED),
+    WATER(Tiles.get("Water").id, Color.get(1, 26, 44, 137)),
+    LAVA(Tiles.get("Lava").id, Color.get(1, 200, 32, 32)),
 
     ROCK(Tiles.get("Rock").id, Color.get(1, 122, 122, 122)),
     UP_ROCK(Tiles.get("Up Rock").id, Color.get(1, 147, 147, 147)),
@@ -102,11 +105,13 @@ public enum MapData {
     FIR_TREE(Tiles.get("Fir Tree").id, Color.get(1, 19, 139, 98)),
     PINE_TREE(Tiles.get("Pine Tree").id, Color.get(1, 17, 127, 89)),
 
-    SAND(Tiles.get("Sand").id, Color.get(1, 226, 226, 111)), SNOW(Tiles.get("Snow").id, Color.get(1, 240, 240, 240)),
+    SAND(Tiles.get("Sand").id, Color.get(1, 226, 226, 111)),
+    SNOW(Tiles.get("Snow").id, Color.get(1, 240, 240, 240)),
 
     ICE_SPIKE(Tiles.get("Ice Spike").id, Color.get(1, 240, 240, 240)),
 
-    STAIRS_UP(Tiles.get("Stairs Up").id, 0xffffff), STAIRS_DOWN(Tiles.get("Stairs Down").id, 0xffffff),
+    STAIRS_UP(Tiles.get("Stairs Up").id, 0xffffff),
+    STAIRS_DOWN(Tiles.get("Stairs Down").id, 0xffffff),
     WOOD_FLOOR(Tiles.get("Wood Planks").id, Color.get(1, 145, 79, 14)),
     WOOD_WALL(Tiles.get("Wood Wall").id, Color.get(1, 122, 67, 12)),
     WOOD_DOOR(Tiles.get("Wood Door").id, Color.get(1, 122, 72, 23)),

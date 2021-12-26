@@ -52,7 +52,7 @@ public class TexturePackDisplay extends Display {
         this.textureList.add(TexturePackDisplay.LEGACY_TEXTURE_PACK);
 
         // Generate texture packs folder
-        this.location = new File(FileHandler.getSystemGameDir() + "/" + FileHandler.getLocalGameDir() + "/Texture Packs");
+        this.location = new File(FileHandler.getSystemGameDir() + "/" + FileHandler.getLocalGameDir() + "/texture Packs");
         this.location.mkdirs();
 
         // Read and add the .zip file to the texture pack list
@@ -66,7 +66,7 @@ public class TexturePackDisplay extends Display {
     private void updateSpriteSheet(Screen screen) throws IOException {
         SpriteSheet[] sheets = new SpriteSheet[TexturePackDisplay.ENTRY_NAMES.length];
 
-        if (selected == 1) { // Legacy textures
+        if (selected == 1) { // If Legacy is selected, it will load those textures
             sheets[0] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/items_legacy.png")));
             sheets[1] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/tiles_legacy.png")));
             sheets[2] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/entities_legacy.png")));
@@ -74,15 +74,15 @@ public class TexturePackDisplay extends Display {
             sheets[4] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/icons_legacy.png")));
             sheets[5] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/background_legacy.png")));
 
-        } else if (selected == 0) { // Default textures
-            sheets[0] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/items.png")));
-            sheets[1] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/tiles.png")));
-            sheets[2] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/entities.png")));
-            sheets[3] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/gui.png")));
-            sheets[4] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/icons.png")));
-            sheets[5] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/background.png")));
+        } else if (selected == 0) { // if not, it will load the default textures,
+            sheets[0] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/default/items.png")));
+            sheets[1] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/default/tiles.png")));
+            sheets[2] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/default/entities.png")));
+            sheets[3] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/default/gui.png")));
+            sheets[4] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/default/icons.png")));
+            sheets[5] = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/default/background.png")));
 
-        } else {
+        } else if (selected != 0 && selected != 1) { // if they are not selected it will look for textures in the texture packs folder
             try (ZipFile zipFile = new ZipFile(new File(location, textureList.get(selected)))) {
                 for (int i = 0; i < TexturePackDisplay.ENTRY_NAMES.length; i++) {
                     ZipEntry entry = zipFile.getEntry(TexturePackDisplay.ENTRY_NAMES[i]);
@@ -93,6 +93,8 @@ public class TexturePackDisplay extends Display {
                     }
                 }
             }
+        } else { // if not, it will mark an error
+        	System.out.println("ERROR: Textures not working...");
         }
 
         // Set texture pack

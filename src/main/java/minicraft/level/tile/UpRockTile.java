@@ -35,9 +35,10 @@ public class UpRockTile extends Tile {
             	   tile != Tiles.get("Lawn") && tile != Tiles.get("path") && 
             	   tile != Tiles.get("Birch tree") && tile != Tiles.get("Fir tree") && 
             	   tile != Tiles.get("Wood wall") && tile != Tiles.get("path") && 
-            	   tile != Tiles.get("ice spike") && tile != Tiles.get("Carrot") ;
+            	   tile != Tiles.get("ice spike") && tile != Tiles.get("Carrot");
        }
-	   };
+    };
+	 
 
 	    private boolean dropCoal = false;
 	    private final int maxHealth = 50;

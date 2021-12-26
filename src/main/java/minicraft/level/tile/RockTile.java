@@ -38,7 +38,11 @@ public class RockTile extends Tile {
             	   tile != Tiles.get("Birch tree") && tile != Tiles.get("Fir tree") && 
             	   tile != Tiles.get("Wood wall") && tile != Tiles.get("path") && 
             	   tile != Tiles.get("ice spike") && tile != Tiles.get("Carrot") && 
-            	   tile != Tiles.get("pine tree");
+            	   tile != Tiles.get("pine tree") &&
+            	   tile != Tiles.get(13) && tile != Tiles.get(14) && tile != Tiles.get(15) && tile != Tiles.get(16) && tile != Tiles.get(26) &&
+            	   tile != Tiles.get(27) && tile != Tiles.get(28) && tile != Tiles.get(29) && tile != Tiles.get(30) && tile != Tiles.get(31) && 
+            	   tile != Tiles.get(32) && tile != Tiles.get(33) && tile != Tiles.get(34) && tile != Tiles.get(35) && tile != Tiles.get(36) &&
+            	   tile != Tiles.get(37) && tile != Tiles.get(38) && tile != Tiles.get(39) && tile != Tiles.get(40) && tile != Tiles.get(41);
         }
  	   };
 

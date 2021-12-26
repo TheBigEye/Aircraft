@@ -44,7 +44,7 @@ public class LevelGen {
 
         int stepSize = featureSize;
         double scale = 1.3 / w;
-        double scaleMod = 1;
+        double scaleMod = 1.0;
 
         do {
             int halfStep = stepSize / 2;
@@ -109,34 +109,23 @@ public class LevelGen {
                     // The H is for the right and surrounding mids, and g is the bottom and
                     // surrounding mids.
 
-                    double H = (a + b + d + e) / 4.0 + (random.nextFloat() * 2 - 1) * stepSize * scale * 0.5; // adds
-                    // middle,
-                    // right,
-                    // mr-mb,
-                    // mr-mt,
-                    // and
-                    // random.
-                    double g = (a + c + d + f) / 4.0 + (random.nextFloat() * 2 - 1) * stepSize * scale * 0.5; // adds
-                    // middle,
-                    // bottom,
-                    // mr-mb,
-                    // ml-mb,
-                    // and
-                    // random.
+                    double H = (a + b + d + e) / 4.0 + (random.nextFloat() * 2 - 1) * stepSize * scale * 0.5; // adds middle, right, mr-mb, mr-mt, and random.
+                    double g = (a + c + d + f) / 4.0 + (random.nextFloat() * 2 - 1) * stepSize * scale * 0.5; // adds middle, bottom, mr-mb, ml-mb, and random.
 
                     setSample(x + halfStep, y, H); // Sets the H to the mid-right
                     setSample(x, y + halfStep, g); // Sets the g to the mid-bottom
                 }
             }
 
-            /**
-             * THEN... this stuff is set to repeat the system all over again! The
-             * featureSize is halved, allowing access to further unset mids, and the scale
-             * changes... The scale increases the first time, x1.8, but the second time it's
-             * x1.1, and after that probably a little less than 1. So, it generally
-             * increases a bit, maybe to 4 / w at tops. This results in the 5th random value
-             * being more significant than the first 4 ones in later iterations.
-             */
+           /**
+            * THEN... this stuff is set to repeat the system all over again! The
+            * featureSize is halved, allowing access to further unset mids, and the scale
+            * changes... The scale increases the first time, x1.8, but the second time it's
+            * x1.1, and after that probably a little less than 1. So, it generally
+            * increases a bit, maybe to 4 / w at tops. This results in the 5th random value
+            * being more significant than the first 4 ones in later iterations.
+            */
+            
             stepSize /= 2;
             scale *= (scaleMod + 0.8D);
             scaleMod *= 0.4D;
@@ -172,14 +161,18 @@ public class LevelGen {
     static byte[][] createAndValidateMap(int w, int h, int level) {
         worldSeed = WorldGenDisplay.getSeed();
 
-        if (level == 1)
+        if (level == 1) {
             return createAndValidateSkyMap(w, h);
-        if (level == 0)
+        }
+        if (level == 0) {
             return createAndValidateTopMap(w, h);
-        if (level == -4)
+        }
+        if (level == -4) {
             return createAndValidateDungeon(w, h);
-        if ((level > -4) && (level < 0))
+        }
+        if ((level > -4) && (level < 0)) {
             return createAndValidateUndergroundMap(w, h, -level);
+        }
 
         System.err.println("LevelGen ERROR: level index is not valid. Could not generate a level.");
 
@@ -285,7 +278,13 @@ public class LevelGen {
         // ...and some with larger size..
         LevelGen noise1 = new LevelGen(w, h, 32);
         LevelGen noise2 = new LevelGen(w, h, 32);
+        
+        
+		LevelGen jnoise1 = new LevelGen(w, h, 8);
+		LevelGen jnoise2 = new LevelGen(w, h, 4);
+		LevelGen jnoise3 = new LevelGen(w, h, 8);
 
+        
         byte[] map = new byte[w * h];
         byte[] data = new byte[w * h];
 
@@ -296,6 +295,8 @@ public class LevelGen {
                 double val = Math.abs(noise1.values[i] - noise2.values[i]) * 3 - 2;
                 double mval = Math.abs(mnoise1.values[i] - mnoise2.values[i]);
                 mval = Math.abs(mval - mnoise3.values[i]) * 3 - 2;
+                
+                double jval = Math.abs(jnoise1.values[i] - jnoise2.values[i]) * 3 - 2;
 
                 // this calculates a sort of distance based on the current coordinate.
                 double xd = x / (w - 1.0) * 2 - 1;
@@ -315,27 +316,32 @@ public class LevelGen {
 
                 // Code of the type of terrain, this according to the user's option
                 switch ((String) Settings.get("Type")) {
-                    case "Island":
+                case "Island":
 
-                        if (val < -0.5) {
-                            if (Settings.get("Theme").equals("Hell")) {
-                                map[i] = Tiles.get("lava").id;
-                            } else {
-                                map[i] = Tiles.get("water").id;
-                            }
-
-                        } else if (val > 0.5 && mval < -1.5) {
-
-                            map[i] = Tiles.get("up rock").id;
-
-                        } else if (val > 0.1 && mval < -1.1) {
-
-                            map[i] = Tiles.get("rock").id;
-
+                    if (val < -0.5) {
+                        if (Settings.get("Theme").equals("Hell")) {
+                            map[i] = Tiles.get("lava").id;
                         } else {
-                            map[i] = Tiles.get("grass").id;
-
+                            map[i] = Tiles.get("water").id;
                         }
+
+                    } else if (val > 0.5 && mval < -1.5) {
+
+                        map[i] = Tiles.get("up rock").id;
+
+                    } else if (val > 0.1 && mval < -1.1) {
+
+                        map[i] = Tiles.get("rock").id;
+                        
+                    //} else if (val > 0.5 && mval < 0.75 && jval < -1 ) {
+                    	
+						//map[i] = Tiles.get("jungle grass").id;
+
+							
+                    } else {
+                        map[i] = Tiles.get("grass").id;
+
+                    }
 
                         break;
                     case "Box":
@@ -408,11 +414,11 @@ public class LevelGen {
                 int xs = random.nextInt(w);
                 int ys = random.nextInt(h);
                 for (int k = 0; k < 16; k++) {
-                    int x = xs + random.nextInt(29) - 10 + random.nextInt(5);
-                    int y = ys + random.nextInt(29) - 10 + random.nextInt(5);
+                    int x = xs + random.nextInt(28) - 10 + random.nextInt(5);
+                    int y = ys + random.nextInt(28) - 10 + random.nextInt(5);
                     for (int j = 0; j < 100; j++) {
-                        int xo = x + random.nextInt(6) - random.nextInt(5) + random.nextInt(3);
-                        int yo = y + random.nextInt(6) - random.nextInt(5) + random.nextInt(3);
+                        int xo = x + random.nextInt(6) - random.nextInt(4) + random.nextInt(2);
+                        int yo = y + random.nextInt(6) - random.nextInt(4) + random.nextInt(2);
                         for (int yy = yo - 1; yy <= yo + 1; yy++) {
                             for (int xx = xo - 1; xx <= xo + 1; xx++) {
                                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
@@ -451,6 +457,7 @@ public class LevelGen {
                 }
             }
         }
+      
 
         // Desert (Medium) biome
         if (!Settings.get("Theme").equals("Desert")) {
@@ -458,11 +465,11 @@ public class LevelGen {
                 int xs = random.nextInt(w);
                 int ys = random.nextInt(h);
                 for (int k = 0; k < 10; k++) {
-                    int x = xs + random.nextInt(21) - 10 + random.nextInt(5);
-                    int y = ys + random.nextInt(21) - 10 + random.nextInt(5);
+                    int x = xs + random.nextInt(21) - 8 + random.nextInt(5);
+                    int y = ys + random.nextInt(21) - 8 + random.nextInt(5);
                     for (int j = 0; j < 100; j++) {
-                        int xo = x + random.nextInt(5) - random.nextInt(5) + random.nextInt(3);
-                        int yo = y + random.nextInt(5) - random.nextInt(5) + random.nextInt(3);
+                        int xo = x + random.nextInt(5) - random.nextInt(4) + random.nextInt(3);
+                        int yo = y + random.nextInt(5) - random.nextInt(4) + random.nextInt(3);
                         for (int yy = yo - 1; yy <= yo + 1; yy++) {
                             for (int xx = xo - 1; xx <= xo + 1; xx++) {
                                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
@@ -1599,15 +1606,21 @@ public class LevelGen {
                     */
 
                     // Surface tiles
-                    if (map[i] == Tiles.get("water").id) pixels[i] = 0x1a2c89;
-                    if (map[i] == Tiles.get("lava").id) pixels[i] = 0xff2020;
-                    if (map[i] == Tiles.get("iron Ore").id) pixels[i] = 0x000080;
-                    if (map[i] == Tiles.get("gold Ore").id) pixels[i] = 0x000080;
-                    if (map[i] == Tiles.get("gem Ore").id) pixels[i] = 0x000080;
                     if (map[i] == Tiles.get("grass").id) pixels[i] = 0x54a854;
-                    if (map[i] == Tiles.get("flower").id) pixels[i] = 0x54a854;
-                    if (map[i] == Tiles.get("rock").id) pixels[i] = 0x7a7a7a;
+                    if (map[i] == Tiles.get("lawn").id) pixels[i] = 0x60a560;
+                    if (map[i] == Tiles.get("orange tulip").id) pixels[i] = 0x60a560;
                     if (map[i] == Tiles.get("dirt").id) pixels[i] = 0x836c6c;
+                    if (map[i] == Tiles.get("flower").id) pixels[i] = 0x60A560;
+                    if (map[i] == Tiles.get("water").id) pixels[i] = 0x1A2C89;
+                    if (map[i] == Tiles.get("lava").id) pixels[i] = 0xC82020;
+                    if (map[i] == Tiles.get("rock").id) pixels[i] = 0x7a7a7a;
+                    if (map[i] == Tiles.get("Up rock").id) pixels[i] = 0x939393;
+    
+                    if (map[i] == Tiles.get("iron Ore").id) pixels[i] = 0x452728;
+                    if (map[i] == Tiles.get("gold Ore").id) pixels[i] = 0x948028;
+                    if (map[i] == Tiles.get("gem Ore").id) pixels[i] = 0x821DB6;
+                    
+
                     if (map[i] == Tiles.get("sand").id) pixels[i] = 0xe2e26f;
                     if (map[i] == Tiles.get("cactus").id) pixels[i] = 0xe8e86d;
                     if (map[i] == Tiles.get("snow").id) pixels[i] = 0xf0f0f0;
@@ -1617,8 +1630,6 @@ public class LevelGen {
                     if (map[i] == Tiles.get("birch tree").id) pixels[i] = 0x0c750c;
                     if (map[i] == Tiles.get("fir tree").id) pixels[i] = 0x138b62;
                     if (map[i] == Tiles.get("pine tree").id) pixels[i] = 0x117f59;
-                    if (map[i] == Tiles.get("lawn").id) pixels[i] = 0x60a560;
-                    if (map[i] == Tiles.get("orange tulip").id) pixels[i] = 0x60a560;
 
                     // Village
                     if (map[i] == Tiles.get("Wood Planks").id) pixels[i] = 0x914f0e;
@@ -1653,7 +1664,9 @@ public class LevelGen {
                     if (map[i] == Tiles.get("Sky lawn").id) pixels[i] = 0x56a383;
                     if (map[i] == Tiles.get("Sky high grass").id) pixels[i] = 0x4f9678;
                     if (map[i] == Tiles.get("Holy rock").id) pixels[i] = 0x7a7a7a;
-                    if (map[i] == Tiles.get("Up rock").id) pixels[i] = 0x939393;
+                    
+                    if (map[i] == Tiles.get("jungle grass").id) pixels[i] = 0x55CE23;
+
 
                 }
             }
@@ -1679,7 +1692,16 @@ public class LevelGen {
             }; // Name of the buttons used for the window.
 
 
-            int Generator = JOptionPane.showOptionDialog(null, null, "Map Generator", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon(img.getScaledInstance(w * mapScale, h * mapScale, Image.SCALE_AREA_AVERAGING)), options, null);
+            int Generator = JOptionPane.showOptionDialog(
+            		null,
+            		null,
+            		"Map Generator",
+            		JOptionPane.YES_NO_OPTION,
+            		JOptionPane.QUESTION_MESSAGE,
+            		new ImageIcon(img.getScaledInstance(w * mapScale, h * mapScale, Image.SCALE_AREA_AVERAGING)),
+            		options,
+            		null
+            );
 
             if (LevelGen.worldSeed == 0x100) {
                 LevelGen.worldSeed = 0xAAFF20;

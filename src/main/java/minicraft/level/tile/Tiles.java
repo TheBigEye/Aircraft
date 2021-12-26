@@ -20,13 +20,17 @@ public final class Tiles {
 
     private static ArrayList<Tile> tiles = new ArrayList<>();
 
+    
     public static void initTileList() {
-        if (Game.debug)
+    	
+        if (Game.debug) {
             System.out.println("Initializing tile list...");
+        }
 
         // A total of 256 types of tiles are read
-        for (int i = 0; i < 256; i++)
+        for (int i = 0; i < 256; i++) {
             tiles.add(null);
+        }
 
         tiles.set(0, new GrassTile("Grass"));
         tiles.set(1, new DirtTile("Dirt"));
@@ -131,6 +135,8 @@ public final class Tiles {
         tiles.set(84, new BlueCloudTreeTile("Blue Cloud Tree"));
         tiles.set(85, new SkyFernTile("Sky Fern"));
         tiles.set(86, new UpRockTile("Up rock"));
+        
+        tiles.set(87, new JungleGrassTile("Jungle Grass"));
 
         // tiles.set(?, new SandRockTile("Sand rock"));
 
@@ -379,4 +385,17 @@ public final class Tiles {
         data = Integer.parseInt(parts[1]);
         return get(descriptName).getName(data);
     }
+    
+    public static Tile getAll() {
+    	
+    	Tile t = null;
+    	
+        for (Tile ti : tiles) {
+            t = ti;
+        }
+    	
+		return t;
+    	
+    }
+    
 }

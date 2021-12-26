@@ -59,6 +59,8 @@ public abstract class Tile {
     public boolean connectsToSkyHighGrass = false;
     public boolean connectsToFerrosite = false;
     public boolean connectsToDirt = false;
+    
+    public boolean connectsToJungleGrass = false;
 
     {
         light = 1;

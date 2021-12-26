@@ -9,8 +9,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
+
+import org.tinylog.Logger;
 
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
@@ -27,7 +30,6 @@ import minicraft.item.PotionType;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
-import minicraft.saveload.Load;
 import minicraft.screen.InfoDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.RelPos;
@@ -36,9 +38,13 @@ import minicraft.util.Info;
 public class Renderer extends Game {
     private Renderer() {}
 
+    //public static final int HEIGHT = 270; // This is the height of the game * scale
+    //public static final int WIDTH = 405; // This is the width of the game * scale
+    
     public static final int HEIGHT = 288; // This is the height of the game * scale
     public static final int WIDTH = 432; // This is the width of the game * scale
-    static float SCALE = 3; // Scales the window
+    
+    static float SCALE = 2; // Scales the window
 
     private static String levelName; // Used to store the names of the levels in the debug GUI
 
@@ -54,30 +60,34 @@ public class Renderer extends Game {
 
     private static Ellipsis ellipsis = new SmoothEllipsis(new TickUpdater());
 
-    // Load spritesheets
-    @SuppressWarnings("unused")
-    private static void initSpriteSheets() throws IOException {
-        BufferedImage[] sheets = Load.loadSpriteSheets();
-
-        // These actually set the sprites to be used
-        SpriteSheet itemSheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/items.png")));
-        SpriteSheet tileSheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/tiles.png")));
-        SpriteSheet entitySheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/entities.png")));
-        SpriteSheet guiSheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/gui.png")));
-        SpriteSheet iconsSheet = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/icons.png")));
-        SpriteSheet background = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/background.png")));
-
-        // Custom texture pack
-        SpriteSheet itemSheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/items_legacy.png")));
-        SpriteSheet tileSheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/tiles_legacy.png")));
-        SpriteSheet entitySheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/entities_legacy.png")));
-        SpriteSheet guiSheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/gui_legacy.png")));
-        SpriteSheet iconsSheetCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/icons_legacy.png")));
-        SpriteSheet backgroundCustom = new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/resources/textures/legacy/background_legacy.png")));
-
-        screen = new Screen(itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background, itemSheetCustom, tileSheetCustom, entitySheetCustom, guiSheetCustom, iconsSheetCustom, backgroundCustom);
-        lightScreen = new Screen(itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background, itemSheetCustom, tileSheetCustom, entitySheetCustom, guiSheetCustom, iconsSheetCustom, backgroundCustom);
-    }
+	public static SpriteSheet[] loadDefaultSpriteSheets() {
+		SpriteSheet itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background;
+		try {
+			// These set the sprites to be used.
+			itemSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/default/items.png"))));
+			tileSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/default/tiles.png"))));
+			entitySheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/default/entities.png"))));
+			guiSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/default/gui.png"))));
+			iconsSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/default/icons.png"))));
+			background = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/default/background.png"))));
+			
+		} catch (NullPointerException e) {
+			// If a provided InputStream has no name. (in practice meaning it cannot be found.)
+			e.printStackTrace();
+			Logger.error("A sprite sheet was not found.");
+			System.exit(-1);
+			return null;
+			
+		} catch (IOException | IllegalArgumentException e) {
+			// If there is an error reading the file.
+			e.printStackTrace();
+			Logger.error("Could not load a sprite sheet.");
+			System.exit(-1);
+			return null;
+		}
+		
+		return new SpriteSheet[] { itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background };
+	}
 
     static void initScreen() {
         if (!HAS_GUI) {
@@ -87,12 +97,10 @@ public class Renderer extends Game {
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
-        try {
-            // This sets up the screens, and loads the different spritesheets.
-            initSpriteSheets();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		SpriteSheet[] sheets = loadDefaultSpriteSheets();
+		screen = new Screen(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
+		lightScreen = new Screen(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
+		
         screen.pixels = pixels;
 
         if (HAS_GUI) {
@@ -392,9 +400,12 @@ public class Renderer extends Game {
             for (int i = 0; i < effects.length; i++) {
                 PotionType pType = effects[i].getKey();
                 int pTime = effects[i].getValue() / Updater.normSpeed;
+                
+				int minutes = pTime / 60;
+				int seconds = pTime % 60;
 
-                Font.drawBackground("(" + input.getMapping("potionEffects") + " to hide!)", screen, 300, 9);
-                Font.drawBackground(pType + " (" + (pTime / 60) + ":" + (pTime % 60) + ")", screen, 300, 17 + i * Font.textHeight(), pType.dispColor);
+                Font.drawTransparentBackground("(" + input.getMapping("potionEffects") + " to hide!)", screen, 300, 9);
+                Font.drawTransparentBackground(pType + " (" + minutes + ":" + (seconds < 10? "0" + seconds:seconds) + ")", screen, 300, 17 + i * Font.textHeight(), pType.dispColor);
             }
         }
 
@@ -617,6 +628,6 @@ public class Renderer extends Game {
 
     @SuppressWarnings("deprecation")
     public static java.awt.Dimension getWindowSize() {
-        return new java.awt.Dimension(new Float(WIDTH * SCALE).intValue(), new Float(HEIGHT * SCALE).intValue());
+    	return new java.awt.Dimension((int) (WIDTH * SCALE), (int) (HEIGHT * SCALE));
     }
 }

@@ -2,7 +2,6 @@ package minicraft.gfx;
 
 import minicraft.core.Renderer;
 import minicraft.core.Updater;
-import minicraft.core.io.Settings;
 
 public class Screen {
 
@@ -56,31 +55,19 @@ public class Screen {
     // and 3072 the start of the gui sheet
 
     private SpriteSheet[] sheets;
-    private SpriteSheet[] sheetsCustom;
 
     public Screen(SpriteSheet sheet) {
         this(sheet, sheet, sheet, sheet, sheet, sheet);
         this.sheet = sheet;
     }
 
-    public Screen(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet,
-            SpriteSheet iconsSheet, SpriteSheet background) {
+    public Screen(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet, SpriteSheet iconsSheet, SpriteSheet background) {
 
         sheets = new SpriteSheet[] { itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background };
 
         /// screen width and height are determined by the actual game window size,
         /// meaning the screen is only as big as the window.
         pixels = new int[Screen.w * Screen.h]; // makes new integer array for all the pixels on the screen.
-    }
-
-    public Screen(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet,
-            SpriteSheet iconsSheet, SpriteSheet background, SpriteSheet itemSheetCustom, SpriteSheet tileSheetCustom,
-            SpriteSheet entitySheetCustom, SpriteSheet guiSheetCustom, SpriteSheet iconsSheetCustom,
-            SpriteSheet backgroundCustom) {
-        this(itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background);
-
-        sheetsCustom = new SpriteSheet[] { itemSheetCustom, tileSheetCustom, entitySheetCustom, guiSheetCustom,
-                iconsSheetCustom, backgroundCustom };
     }
 
     public Screen(Screen model) {
@@ -166,13 +153,8 @@ public class Screen {
         boolean mirrorY = (bits & BIT_MIRROR_Y) > 0; // vertically.
 
         SpriteSheet currentSheet;
-        if (Settings.get("textures").equals("Custom")) {
-            // make it custom unless the custom sheet isn't working
-            currentSheet = sheetsCustom[sheet] != null ? sheetsCustom[sheet] : sheets[sheet];
-        } else {
-            currentSheet = sheets[sheet];
-        }
-
+        currentSheet = sheets[sheet];
+        
         xTile %= currentSheet.width; // to avoid out of bounds
         yTile %= currentSheet.height; // ^
         

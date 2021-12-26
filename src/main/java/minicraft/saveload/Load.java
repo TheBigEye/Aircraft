@@ -1,6 +1,5 @@
 package minicraft.saveload;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -10,8 +9,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
@@ -223,47 +220,46 @@ public class Load {
         return worldVer;
     }
 
-    public static ArrayList<String> loadFile(String filename) throws IOException {
-        ArrayList<String> lines = new ArrayList<>();
+	public static ArrayList<String> loadFile(String filename) throws IOException {
+		ArrayList<String> lines = new ArrayList<>();
+		
+		InputStream fileStream = Load.class.getResourceAsStream(filename);
+		
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(fileStream))) {
+			
+			String line;
+			while ((line = br.readLine()) != null)
+				lines.add(line);
+			
+		}
+		
+		return lines;
+	}
 
-        InputStream fileStream = Load.class.getResourceAsStream(filename);
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(fileStream))) {
-
-            String line;
-            while ((line = br.readLine()) != null)
-                lines.add(line);
-
-        }
-
-        return lines;
-    }
-
-    private void loadFromFile(String filename) {
-        data.clear();
-        extradata.clear();
-
-        String total;
-        try {
-            total = loadFromFile(filename, true);
-            if (total.length() > 0)
-                data.addAll(Arrays.asList(total.split(",")));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        if (filename.contains("Level")) {
-            try {
-                total = Load.loadFromFile(filename.substring(0, filename.lastIndexOf("/") + 7) + "data" + extension,
-                        true);
-                extradata.addAll(Arrays.asList(total.split(",")));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        LoadingDisplay.progress(percentInc);
-    }
+	private void loadFromFile(String filename) {
+		data.clear();
+		extradata.clear();
+		
+		String total;
+		try {
+			total = loadFromFile(filename, true);
+			if (total.length() > 0)
+				data.addAll(Arrays.asList(total.split(",")));
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
+		if (filename.contains("Level")) {
+			try {
+				total = Load.loadFromFile(filename.substring(0, filename.lastIndexOf("/") + 7) + "data" + extension, true);
+				extradata.addAll(Arrays.asList(total.split(",")));
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		
+		LoadingDisplay.progress(percentInc);
+	}
 
     public static String loadFromFile(String filename, boolean isWorldSave) throws IOException {
         StringBuilder total = new StringBuilder();
@@ -300,28 +296,6 @@ public class Load {
         Settings.setIdx("diff", diffIdx);
 
         AirWizard.beaten = Boolean.parseBoolean(data.remove(0));
-    }
-
-    public static BufferedImage[] loadSpriteSheets() throws IOException {
-        BufferedImage[] images = new BufferedImage[] { null, null, null, null };
-
-        File itemFile = new File(Game.gameDir + "/resources/items.png");
-        if (itemFile.exists()) {
-            images[0] = ImageIO.read(itemFile);
-        }
-        File tileFile = new File(Game.gameDir + "/resources/tiles.png");
-        if (tileFile.exists()) {
-            images[1] = ImageIO.read(tileFile);
-        }
-        File entityFile = new File(Game.gameDir + "/resources/entities.png");
-        if (entityFile.exists()) {
-            images[2] = ImageIO.read(entityFile);
-        }
-        File guiFile = new File(Game.gameDir + "/resources/gui.png");
-        if (guiFile.exists()) {
-            images[3] = ImageIO.read(guiFile);
-        }
-        return images;
     }
 
     private void loadMode(String modedata) {
@@ -754,16 +728,7 @@ public class Load {
         if (entityData.length() == 0)
             return null;
 
-        String[] stuff = entityData.substring(entityData.indexOf("[") + 1, entityData.indexOf("]")).split(":"); // This
-                                                                                                                // gets
-                                                                                                                // everything
-                                                                                                                // inside
-                                                                                                                // the
-                                                                                                                // "[...]"
-                                                                                                                // after
-                                                                                                                // the
-                                                                                                                // entity
-                                                                                                                // name.
+        String[] stuff = entityData.substring(entityData.indexOf("[") + 1, entityData.indexOf("]")).split(":");
         List<String> info = new ArrayList<>(Arrays.asList(stuff));
 
         String entityName = entityData.substring(0, entityData.indexOf("[")); // This gets the text before "[", which is

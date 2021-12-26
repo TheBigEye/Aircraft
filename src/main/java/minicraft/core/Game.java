@@ -60,7 +60,7 @@ public class Game {
     public static boolean IS_April_fools = false;
 
     public static final String NAME = "Aircraft"; // This is the name on the application window
-    public static final String BUILD = "0.4"; // Aircraft version
+    public static final String BUILD = "0.5"; // Aircraft version
     public static final Version VERSION = new Version("2.1.0-dev1"); // Minicraft plus mod base version
 
     public static InputHandler input; // Input used in Game, Player, and just about all the *Menu classes*.
@@ -272,7 +272,7 @@ public class Game {
         Tiles.initTileList();
         Sound.init();
         Settings.init();
-
+        
         World.resetGame(); // "half"-starts a new game, to set up initial variables
         player.eid = 0;
         new Load(true); // This loads any saved preferences.
