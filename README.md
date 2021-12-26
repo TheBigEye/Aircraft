@@ -3,7 +3,7 @@
 
 Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived) (Another mod, based on the original Minicraft made by Markus persson "Notch" for the Lodum dare 22 competition), Aircraft adds the following features:
 
-# Main features
+## Main features
 ### Graphics:
 * More detailed and renewed graphics and textures (based on Rcraft texture pack for Minicraft+ made by RiverOaken).
 * Semi-transparent GUI (Without those annoying black boxes behind the letters), and more centered.
@@ -39,7 +39,7 @@ Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chri
 * Enchanted Tools and Enchantment Books
 * --dev label when running the game in terminal
 
-# Installation
+## Installation
 1. Download and install [Java](https://java.com/en/download/), 
 2. Then download the file with the extension .jar of the game [here](https://github.com/TheBigEye/Aircraft-Mod/reeleases).
 3. If you are on Windows:
@@ -48,6 +48,6 @@ Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chri
       open your terminal, go to the path where the .jar was downloaded and write the following, `java -jar Aircraft.jar`, you will have to open the game. 
    If you get any problem when running the game on Windows (like a black screen that appears and disappears, open CMD or Powershell, go to the path where the .jar is and type      the same command for linux)
 
-# About
+## About
 Aircraft is a mod that is totally based on Minicraft Plus. has compatibility with Minicraft plus 2.0.6 and 2.0.7. (Older versions before 1.3 are compatible with 2.0.3 to 2.0.4). Is in Beta phase, it is continuously updated to clean most of the bugs, make maintenance and add features.
 
