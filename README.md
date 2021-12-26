@@ -4,7 +4,7 @@
 Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived) (Another mod, based on the original Minicraft made by Markus persson "Notch" for the Lodum dare 22 competition), Aircraft adds the following features:
 
 # Main features
-Graphics:
+### Graphics:
 * More detailed and renewed graphics and textures (based on Rcraft texture pack for Minicraft+ made by RiverOaken).
 * Semi-transparent GUI (Without those annoying black boxes behind the letters), and more centered.
 * Improved status bar (Hotbar).
