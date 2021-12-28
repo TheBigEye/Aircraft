@@ -24,7 +24,7 @@ Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chri
 ### World generation and biomes:
 * More types of villages.
 * Sky dungeon in the Sky dimension.
-* Expanded sky dimension (spoiler).
+* Expanded sky dimension.
 * More vegetation (Lawn and flowers).
 * Added tundra biome (Soon it will be divided into 3 sub-biomes when the infinite worlds are possible).
 * More types of trees were added with their respective types of wood and their variants in doors, walls and floors, (Birch and fir, more trees will be added soon).
