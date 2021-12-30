@@ -93,6 +93,15 @@ public class Updater extends Game {
     public static void tick() {
 
         Info.getInfo();
+        
+        // move the player -1 level for testing...
+        if (isMode("creative") && input.getKey("MOVE-DOWN").clicked && input.getKey("F3").clicked ) {
+        	Game.setMenu(new LevelTransitionDisplay(-1));
+        	
+        } else if (isMode("creative") && input.getKey("MOVE-UP").clicked && input.getKey("F3").clicked ){
+        	Game.setMenu(new LevelTransitionDisplay(1));
+        	
+        }
 
         if (Updater.HAS_GUI && input.getKey("FULLSCREEN").clicked) {
             Updater.FULLSCREEN = !Updater.FULLSCREEN;

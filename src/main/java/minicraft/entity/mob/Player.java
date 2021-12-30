@@ -88,8 +88,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     private int multipliertime = mtm; // Time left on the current multiplier.
     private int multiplier = 1; // Score multiplier
 
-    // These 2 ints are ints saved from the first spawn - this way the spawn pos is
-    // always saved.
+    // These 2 ints are ints saved from the first spawn - this way the spawn pos is always saved.
     public int spawnx = 0, spawny = 0; // these are stored as tile coordinates, not entity coordinates.
     // public boolean bedSpawn = false;
 

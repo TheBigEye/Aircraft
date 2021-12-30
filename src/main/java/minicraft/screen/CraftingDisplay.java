@@ -17,96 +17,97 @@ import minicraft.screen.entry.ItemListing;
 
 public class CraftingDisplay extends Display {
 
-    private Player player;
-    private Recipe[] recipes;
+	private Player player;
+	private Recipe[] recipes;
 
-    private RecipeMenu recipeMenu;
-    private Menu.Builder itemCountMenu, costsMenu;
+	private RecipeMenu recipeMenu;
+	private Menu.Builder itemCountMenu, costsMenu;
 
-    private boolean isPersonalCrafter;
+	private boolean isPersonalCrafter;
 
-    public CraftingDisplay(List<Recipe> recipes, String title, Player player) {
-        this(recipes, title, player, false);
-    }
+	public CraftingDisplay(List<Recipe> recipes, String title, Player player) {
+		this(recipes, title, player, false);
+	}
 
-    public CraftingDisplay(List<Recipe> recipes, String title, Player player, boolean isPersonal) {
-        for (Recipe recipe : recipes)
-            recipe.checkCanCraft(player);
+	public CraftingDisplay(List<Recipe> recipes, String title, Player player, boolean isPersonal) {
+		for (Recipe recipe : recipes)
+			recipe.checkCanCraft(player);
 
-        this.isPersonalCrafter = isPersonal;
+		this.isPersonalCrafter = isPersonal;
 
-        if (!isPersonal)
-            recipeMenu = new RecipeMenu(recipes, title, player);
-        else
-            recipeMenu = new RecipeMenu(recipes, title, player);
+		if (!isPersonal) {
+			recipeMenu = new RecipeMenu(recipes, title, player);
+		} else {
+			recipeMenu = new RecipeMenu(recipes, title, player);
+		}
 
-        this.player = player;
-        this.recipes = recipes.toArray(new Recipe[recipes.size()]);
+		this.player = player;
+		this.recipes = recipes.toArray(new Recipe[recipes.size()]);
 
-        itemCountMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Have:").setTitlePos(RelPos.TOP_LEFT)
-                .setPositioning(new Point(recipeMenu.getBounds().getRight() + SpriteSheet.boxWidth,
-                        recipeMenu.getBounds().getTop()), RelPos.BOTTOM_RIGHT);
+		itemCountMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Have:").setTitlePos(RelPos.TOP_LEFT).setPositioning(
+				new Point(recipeMenu.getBounds().getRight() + SpriteSheet.boxWidth, recipeMenu.getBounds().getTop()),
+				RelPos.BOTTOM_RIGHT);
 
-        costsMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Cost:").setTitlePos(RelPos.TOP_LEFT)
-                .setPositioning(
-                        new Point(itemCountMenu.createMenu().getBounds().getLeft(), recipeMenu.getBounds().getBottom()),
-                        RelPos.TOP_RIGHT);
+		costsMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Cost:").setTitlePos(RelPos.TOP_LEFT).setPositioning(
+				new Point(itemCountMenu.createMenu().getBounds().getLeft(), recipeMenu.getBounds().getBottom()),
+				RelPos.TOP_RIGHT);
 
-        menus = new Menu[] { recipeMenu, itemCountMenu.createMenu(), costsMenu.createMenu() };
+		menus = new Menu[] { recipeMenu, itemCountMenu.createMenu(), costsMenu.createMenu() };
 
-        refreshData();
-    }
+		refreshData();
+	}
 
-    private void refreshData() {
-        Menu prev = menus[2];
-        menus[2] = costsMenu.setEntries(getCurItemCosts()).createMenu();
-        menus[2].setColors(prev);
+	private void refreshData() {
+		Menu prev = menus[2];
+		menus[2] = costsMenu.setEntries(getCurItemCosts()).createMenu();
+		menus[2].setColors(prev);
 
-        menus[1] = itemCountMenu.setEntries(
-                new ItemListing(recipes[recipeMenu.getSelection()].getProduct(), String.valueOf(getCurItemCount())))
-                .createMenu();
-        menus[1].setColors(prev);
-    }
+		menus[1] = itemCountMenu.setEntries(new ItemListing(recipes[recipeMenu.getSelection()].getProduct(), String.valueOf(getCurItemCount()))).createMenu();
+		menus[1].setColors(prev);
+	}
 
-    private int getCurItemCount() {
-        return player.getInventory().count(recipes[recipeMenu.getSelection()].getProduct());
-    }
+	private int getCurItemCount() {
+		return player.getInventory().count(recipes[recipeMenu.getSelection()].getProduct());
+	}
 
-    private ItemListing[] getCurItemCosts() {
-        ArrayList<ItemListing> costList = new ArrayList<>();
-        HashMap<String, Integer> costMap = recipes[recipeMenu.getSelection()].getCosts();
-        for (String itemName : costMap.keySet()) {
-            Item cost = Items.get(itemName);
-            costList.add(new ItemListing(cost, player.getInventory().count(cost) + "/" + costMap.get(itemName)));
-        }
+	private ItemListing[] getCurItemCosts() {
+		ArrayList<ItemListing> costList = new ArrayList<>();
+		HashMap<String, Integer> costMap = recipes[recipeMenu.getSelection()].getCosts();
+		for (String itemName : costMap.keySet()) {
+			Item cost = Items.get(itemName);
+			costList.add(new ItemListing(cost, player.getInventory().count(cost) + "/" + costMap.get(itemName)));
+		}
 
-        return costList.toArray(new ItemListing[costList.size()]);
-    }
+		return costList.toArray(new ItemListing[costList.size()]);
+	}
 
-    @Override
-    public void tick(InputHandler input) {
-        if (input.getKey("menu").clicked || (isPersonalCrafter && input.getKey("craft").clicked)) {
-            Game.exitMenu();
-            return;
-        }
+	@Override
+	public void tick(InputHandler input) {
+		if (input.getKey("menu").clicked || (isPersonalCrafter && input.getKey("craft").clicked)) {
+			Game.exitMenu();
+			return;
+		}
 
-        int prevSel = recipeMenu.getSelection();
-        super.tick(input);
-        if (prevSel != recipeMenu.getSelection())
-            refreshData();
+		int prevSel = recipeMenu.getSelection();
+		super.tick(input);
+		if (prevSel != recipeMenu.getSelection()) {
+			refreshData();
+		}
 
-        if ((input.getKey("select").clicked || input.getKey("attack").clicked) && recipeMenu.getSelection() >= 0) {
-            // check the selected recipe
-            Recipe r = recipes[recipeMenu.getSelection()];
-            if (r.getCanCraft()) {
-                r.craft(player);
+		if ((input.getKey("select").clicked || input.getKey("attack").clicked) && recipeMenu.getSelection() >= 0) {
+			// check the selected recipe
+			Recipe r = recipes[recipeMenu.getSelection()];
+			if (r.getCanCraft()) {
+				r.craft(player);
 
-                Sound.Mob_player_craft.play();
+				Sound.Mob_player_craft.play();
 
-                refreshData();
-                for (Recipe recipe : recipes)
-                    recipe.checkCanCraft(player);
-            }
-        }
-    }
+				refreshData();
+				for (Recipe recipe : recipes) {
+					recipe.checkCanCraft(player);
+					
+				}
+			}
+		}
+	}
 }

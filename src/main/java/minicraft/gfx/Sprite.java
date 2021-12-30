@@ -17,7 +17,7 @@ public class Sprite {
     static Random ran = new Random();
 
     public static Sprite missingTexture(int w, int h) {
-        return new Sprite(10, 2, w, h, 1);
+        return new Sprite(6, 44, w, h, 1);
     }
 
     public static Sprite blank(int w, int h, int col) {

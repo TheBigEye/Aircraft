@@ -12,153 +12,153 @@ import java.nio.file.attribute.BasicFileAttributes;
 import minicraft.saveload.Save;
 
 public class FileHandler extends Game {
-    private FileHandler() {}
+	private FileHandler() {
+	}
 
-    public static final int REPLACE_EXISTING = 0;
-    public static final int RENAME_COPY = 1;
-    public static final int SKIP = 2;
+	public static final int REPLACE_EXISTING = 0;
+	public static final int RENAME_COPY = 1;
+	public static final int SKIP = 2;
 
-    static final String OS;
-    private static final String localGameDir;
-    static final String systemGameDir;
+	static final String OS;
+	private static final String localGameDir;
+	static final String systemGameDir;
 
-    static {
-        OS = System.getProperty("os.name").toLowerCase();
-        String local = "playminicraft/mods/Aircraft";
+	static {
+		OS = System.getProperty("os.name").toLowerCase();
+		String local = "playminicraft/mods/Aircraft";
 
-        if (OS.contains("windows")) { // Windows filesystem
-            systemGameDir = System.getenv("APPDATA");
+		if (OS.contains("windows")) { // Windows filesystem
+			systemGameDir = System.getenv("APPDATA");
 
-        } else {
-            systemGameDir = System.getProperty("user.home");
-            if (!OS.contains("mac")) { // Linux and Mac filesystem
-                local = "." + local;
-            }
-        }
+		} else {
+			systemGameDir = System.getProperty("user.home");
+			if (!OS.contains("mac")) { // Linux and Mac filesystem
+				local = "." + local;
+			}
+		}
 
-        localGameDir = "/" + local;
+		localGameDir = "/" + local;
 
-        if (Game.debug) {
-            System.out.println("OS name: \"" + OS + "\"");
-        }
-        if (Game.debug) {
-            System.out.println("System game dir: " + systemGameDir);
-        }
+		if (Game.debug) {
+			System.out.println("OS name: \"" + OS + "\"");
+		}
+		if (Game.debug) {
+			System.out.println("System game dir: " + systemGameDir);
+		}
 
-    }
+	}
 
-    public static String getSystemGameDir() {
-        return systemGameDir;
-    }
+	public static String getSystemGameDir() {
+		return systemGameDir;
+	}
 
-    public static String getLocalGameDir() {
-        return localGameDir;
-    }
+	public static String getLocalGameDir() {
+		return localGameDir;
+	}
 
-    static void determineGameDir(String saveDir) {
-        gameDir = saveDir + localGameDir;
+	static void determineGameDir(String saveDir) {
+		gameDir = saveDir + localGameDir;
 
-        if (debug) {
-            System.out.println("Determined gameDir: " + gameDir);
-        }
+		if (debug) {
+			System.out.println("Determined gameDir: " + gameDir);
+		}
 
-        File testFile = new File(gameDir);
-        testFile.mkdirs();
+		File testFile = new File(gameDir);
+		testFile.mkdirs();
 
-        File oldFolder = new File(saveDir + "/.playminicraft/mods/Aircraft");
-        if (oldFolder.exists() && !oldFolder.equals(testFile)) {
-            try {
-                copyFolderContents(oldFolder.toPath(), testFile.toPath(), RENAME_COPY, true);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+		File oldFolder = new File(saveDir + "/.playminicraft/mods/Aircraft");
+		if (oldFolder.exists() && !oldFolder.equals(testFile)) {
+			try {
+				copyFolderContents(oldFolder.toPath(), testFile.toPath(), RENAME_COPY, true);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
-        if (OS.contains("mac")) {
-            oldFolder = new File(saveDir + "/.playminicraft");
-            if (oldFolder.exists()) {
-                try {
-                    copyFolderContents(oldFolder.toPath(), testFile.toPath(), RENAME_COPY, true);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+		if (OS.contains("mac")) {
+			oldFolder = new File(saveDir + "/.playminicraft");
+			if (oldFolder.exists()) {
+				try {
+					copyFolderContents(oldFolder.toPath(), testFile.toPath(), RENAME_COPY, true);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
-    private static void deleteFolder(File top) {
-        if (top == null) {
-            return;
-        }
-        if (top.isDirectory()) {
-            File[] subfiles = top.listFiles();
+	private static void deleteFolder(File top) {
+		if (top == null) {
+			return;
+		}
+		if (top.isDirectory()) {
+			File[] subfiles = top.listFiles();
 
-            if (subfiles != null) {
-                for (File subfile: subfiles) {
-                    deleteFolder(subfile);
-                }
-            }
-        }
-        // noinspection ResultOfMethodCallIgnored
-        top.delete();
-    }
+			if (subfiles != null) {
+				for (File subfile : subfiles) {
+					deleteFolder(subfile);
+				}
+			}
+		}
+		// noinspection ResultOfMethodCallIgnored
+		top.delete();
+	}
 
-    public static void copyFolderContents(Path origFolder, Path newFolder, int ifExisting, boolean deleteOriginal)
-    throws IOException {
-        
-        // I can determine the local folder structure with origFolder.relativize(file),
-        // then use newFolder.resolve(relative).
-        // if (Game.debug) System.out.println("Copying contents of folder " + origFolder
-        // + " to new folder " + newFolder);
+	public static void copyFolderContents(Path origFolder, Path newFolder, int ifExisting, boolean deleteOriginal) throws IOException {
 
-        Files.walkFileTree(origFolder, new FileVisitor < Path > () {
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
+		// I can determine the local folder structure with origFolder.relativize(file),
+		// then use newFolder.resolve(relative).
+		// if (Game.debug) System.out.println("Copying contents of folder " + origFolder
+		// + " to new folder " + newFolder);
 
-                String newFilename = newFolder.resolve(origFolder.relativize(file)).toString();
+		Files.walkFileTree(origFolder, new FileVisitor<Path>() {
+			public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
 
-                if (new File(newFilename).exists()) {
-                    if (ifExisting == SKIP) {
-                        return FileVisitResult.CONTINUE;
+				String newFilename = newFolder.resolve(origFolder.relativize(file)).toString();
 
-                    } else if (ifExisting == RENAME_COPY) {
-                        newFilename = newFilename.substring(0, newFilename.lastIndexOf("."));
-                        do {
-                            newFilename += "(Old)";
-                        } while (new File(newFilename).exists());
-                        newFilename += Save.extension;
-                    }
-                }
+				if (new File(newFilename).exists()) {
+					if (ifExisting == SKIP) {
+						return FileVisitResult.CONTINUE;
 
-                Path newFile = new File(newFilename).toPath();
+					} else if (ifExisting == RENAME_COPY) {
+						newFilename = newFilename.substring(0, newFilename.lastIndexOf("."));
+						do {
+							newFilename += "(Old)";
+						} while (new File(newFilename).exists());
+						newFilename += Save.extension;
+					}
+				}
 
-                if (Game.debug) {
-                    System.out.println("Visiting file " + file + "; translating to " + newFile);
-                }
+				Path newFile = new File(newFilename).toPath();
 
-                try {
-                    Files.copy(file, newFile, StandardCopyOption.REPLACE_EXISTING);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                return FileVisitResult.CONTINUE;
-            }
+				if (Game.debug) {
+					System.out.println("Visiting file " + file + "; translating to " + newFile);
+				}
 
-            public FileVisitResult preVisitDirectory(Path p, BasicFileAttributes bfa) {
-                return FileVisitResult.CONTINUE;
-            }
+				try {
+					Files.copy(file, newFile, StandardCopyOption.REPLACE_EXISTING);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				return FileVisitResult.CONTINUE;
+			}
 
-            public FileVisitResult postVisitDirectory(Path p, IOException ex) {
-                return FileVisitResult.CONTINUE;
-            }
+			public FileVisitResult preVisitDirectory(Path p, BasicFileAttributes bfa) {
+				return FileVisitResult.CONTINUE;
+			}
 
-            public FileVisitResult visitFileFailed(Path p, IOException ex) {
-                return FileVisitResult.CONTINUE;
-            }
-        });
+			public FileVisitResult postVisitDirectory(Path p, IOException ex) {
+				return FileVisitResult.CONTINUE;
+			}
 
-        if (deleteOriginal) {
-            deleteFolder(origFolder.toFile());
-        }
-    }
+			public FileVisitResult visitFileFailed(Path p, IOException ex) {
+				return FileVisitResult.CONTINUE;
+			}
+		});
+
+		if (deleteOriginal) {
+			deleteFolder(origFolder.toFile());
+		}
+	}
 
 }

@@ -35,6 +35,10 @@ public class StringEntry extends ListEntry {
         this.text = text;
         this.color = color;
     }
+    
+	public void setText(String text) {
+		this.text = text;
+	}
 
     @Override
     public void tick(InputHandler input) {

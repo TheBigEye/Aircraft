@@ -37,9 +37,6 @@ import minicraft.util.Info;
 
 public class Renderer extends Game {
     private Renderer() {}
-
-    //public static final int HEIGHT = 270; // This is the height of the game * scale
-    //public static final int WIDTH = 405; // This is the width of the game * scale
     
     public static final int HEIGHT = 288; // This is the height of the game * scale
     public static final int WIDTH = 432; // This is the width of the game * scale
@@ -248,7 +245,7 @@ public class Renderer extends Game {
                 }
 
                 if (isMode("creative") || ac >= 10000) {
-                    Font.drawTransparentBackground(" x" + "∞", screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
+                    Font.drawTransparentBackground(" x" + "Ω", screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
                 } else {
                     Font.drawTransparentBackground(" x" + ac, screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
                 }
@@ -626,7 +623,6 @@ public class Renderer extends Game {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public static java.awt.Dimension getWindowSize() {
     	return new java.awt.Dimension((int) (WIDTH * SCALE), (int) (HEIGHT * SCALE));
     }

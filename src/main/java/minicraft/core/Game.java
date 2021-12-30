@@ -181,8 +181,8 @@ public class Game {
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
             throwable.printStackTrace();
 
-            StringWriter string = new StringWriter();
-            PrintWriter printer = new PrintWriter(string);
+            StringWriter crash = new StringWriter();
+            PrintWriter printer = new PrintWriter(crash);
             throwable.printStackTrace(printer);
 
             if (GraphicsEnvironment.isHeadless()) {
@@ -215,7 +215,7 @@ public class Game {
                     
                 "~~ERROR~~ " + "\n" +
                     
-                 string.toString() + "\n" +
+                 crash.toString() + "\n" +
                     
                 "--- END ERROR REPORT ---------"
             );

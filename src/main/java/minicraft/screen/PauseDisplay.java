@@ -22,18 +22,14 @@ public class PauseDisplay extends Display {
         String selectString = Game.input.getMapping("select") + Localization.getLocalized(": Choose");
 
         ArrayList<ListEntry> entries = new ArrayList<>();
-        entries.addAll(Arrays.asList(new BlankEntry(), new SelectEntry("Return to Game", () -> Game.setMenu(null)),
-                new SelectEntry("Options", () -> Game.setMenu(new OptionsDisplay()))
-        // new SelectEntry("World", () -> Game.setMenu(new WorldInfoDisplay()))
+        entries.addAll(Arrays.asList(
+        		new BlankEntry(), new SelectEntry("Return to Game", () -> Game.setMenu(null)),
+                new SelectEntry("Options", () -> Game.setMenu(new OptionsDisplay())),
+                new SelectEntry("Advancements", () -> Game.setMenu(new AdvancementsDisplay()))
         ));
 
-        /*
-         * if(!Game.ISONLINE) { entries.add(new SelectEntry("Make World Multiplayer", ()
-         * -> { Game.setMenu(null); Network.startMultiplayerServer(); })); }
-         */
-
         if (!Game.isValidClient()) {
-            entries.add(new SelectEntry("World", () -> Game.setMenu(new WorldInfoDisplay())));
+            entries.add(new SelectEntry("World options", () -> Game.setMenu(new WorldInfoDisplay())));
             entries.add(new SelectEntry("Save Game", () -> {
                 Game.setMenu(null);
                 if (!Game.isValidServer())

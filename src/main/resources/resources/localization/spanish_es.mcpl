@@ -1,3 +1,155 @@
+### Advancements
+
+# Advancements
+
+minicraft.advancement.woodcutter
+Leñador
+
+minicraft.advancement.woodcutter.desc
+Obtene madera.
+
+
+minicraft.advancement.benchmarking
+Hora de craftear
+
+minicraft.advancement.benchmarking.desc
+Crea una mesa de trabajo.
+
+
+minicraft.advancement.mine_stone
+Edad de piedra!
+
+minicraft.advancement.mine_stone.desc
+Extrae piedra con tu nuevo pico.
+
+
+minicraft.advancement.smelt_iron
+Edad de hierro!
+
+minicraft.advancement.smelt_iron.desc
+Extrae hierro y derritelo.
+
+
+minicraft.advancement.upgrade
+Actualizacion!
+
+minicraft.advancement.upgrade.desc
+Consiga una herramienta con un material más resistente que la madera.
+
+
+minicraft.advancement.iron_tools
+Que pesado!
+
+minicraft.advancement.iron_tools.desc
+Consiga una herramienta con un material más resistente que la piedra.
+
+
+minicraft.advancement.monsters
+Que es eso?!
+
+minicraft.advancement.monsters.desc
+Mata a un mob hostil.
+
+
+minicraft.advancement.fish
+A pescar!
+
+minicraft.advancement.fish.desc
+Pesca un pez
+
+
+minicraft.advancement.doors
+!TOC toc!
+
+minicraft.advancement.doors.desc
+Coloque todos los tipos de puertas.
+
+
+minicraft.advancement.planks
+¡Camina por los tablones!
+
+minicraft.advancement.planks.desc
+Coloque todos los tipos de tablones.
+
+
+minicraft.advancement.clothes
+¡Que tengas un día colorido!
+
+minicraft.advancement.clothes.desc
+Craftea toda las ropas de colores.
+
+
+minicraft.advancement.demolition
+Boom
+
+minicraft.advancement.demolition.desc
+Utilice TNT.
+
+minicraft.advancement.explosive_ending
+Un final explosivo
+
+minicraft.advancement.explosive_ending.desc
+"Accidentalmente" hazte explotar.
+
+minicraft.advancement.survive_darkness
+¿Miedo a la oscuridad?
+
+minicraft.advancement.survive_darkness.desc
+Sobrevive 5 minutos en total oscuridad.
+
+minicraft.advancement.lava
+Asunto caliente
+
+minicraft.advancement.lava.desc
+Usa una pocion de lava para nadar en lava.
+
+minicraft.advancement.find_gem
+Mira como brilla!
+
+minicraft.advancement.find_gem.desc
+Encuentra gemas y minalas.
+
+minicraft.advancement.lowest_caves
+Oscuridad detrás de la luz
+
+minicraft.advancement.lowest_caves.desc
+Llega a las cuevas más bajas.
+
+minicraft.advancement.obsidian_dungeon
+Hace calor aqui abajo!
+
+minicraft.advancement.obsidian_dungeon.desc
+Llega a la mazmorra de obsidiana.
+
+minicraft.advancement.airwizard
+Esto apenas comienza?
+
+minicraft.advancement.airwizard.desc
+Mata al primer Mago de Aire!
+
+minicraft.advancement.second_airwizard
+Ultratumba!
+
+minicraft.advancement.second_airwizard.desc
+Mata al segundo Mago de Aire.
+
+minicraft.advancement.eat_all_food
+A dieta
+
+minicraft.advancement.eat_all_food.desc
+Come todo lo sea comestible.
+
+
+# AdvancementsDisplay.java
+Earned!
+Ganado!
+
+Not Earned
+No Ganado
+
+Advancement Score:
+Puntaje:
+
 ### entity
 
 ## entity.particle
@@ -1228,8 +1380,11 @@ Informacion
 Make World Multiplayer
 Hacer Mundo Multijugador
 
-World
-Mundo
+Advancements
+Avances
+
+World options
+Opciones de mundo
 
 Save Game
 Guardar Juego
@@ -1348,6 +1503,15 @@ Crear Mundo
 
 World Gen Options
 Opciones de Generador de Mundo
+
+
+# WorldSelectMenu.java
+
+Name:
+Nombre:
+
+Seed:
+Semilla:
 
 # WorldSelectMenu.java
 

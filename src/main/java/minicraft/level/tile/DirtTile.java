@@ -17,7 +17,7 @@ public class DirtTile extends Tile {
     static {
         levelSprite[0] = new Sprite(8, 0, 2, 2, 1);
         levelSprite[1] = new Sprite(10, 0, 2, 2, 1);
-        levelSprite[2] = new Sprite(8, 2, 2, 2, 1);
+        levelSprite[2] = new Sprite(10, 2, 2, 2, 1);
     }
 
     protected DirtTile(String name) {
@@ -32,7 +32,7 @@ public class DirtTile extends Tile {
         case 0:
             return Color.get(1, 129, 105, 83); // surface.
         case -4:
-            return Color.get(1, 76, 30, 100); // dungeons.
+            return Color.get(1, 44, 21, 67); // dungeons.
         default:
             return Color.get(1, 102); // caves.
         }

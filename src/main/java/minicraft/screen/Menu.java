@@ -25,10 +25,10 @@ import minicraft.screen.entry.ListEntry;
 
 public class Menu {
 
-    private static final int LIMIT_TYPING_SEARCHER = 22;
+    private static final int LIMIT_TYPING_SEARCHER = 21;
 
     @NotNull
-    private ArrayList<ListEntry> entries = new ArrayList<>();
+    private final ArrayList<ListEntry> entries = new ArrayList<>();
 
     private int spacing = 0;
     private Rectangle bounds = null;
@@ -148,9 +148,11 @@ public class Menu {
         return dispSelection;
     }
 
-    ListEntry[] getEntries() {
-        return entries.toArray(new ListEntry[entries.size()]);
-    }
+	ListEntry[] getEntries() { return entries.toArray(new ListEntry[0]); }
+	void setEntries(ListEntry[] entries) {
+		this.entries.clear();
+		this.entries.addAll(0, Arrays.asList(entries));
+	}
 
     @Nullable
     ListEntry getCurEntry() {

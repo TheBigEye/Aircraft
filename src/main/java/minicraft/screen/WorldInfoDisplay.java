@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 import minicraft.core.Game;
+import minicraft.core.io.Localization;
 import minicraft.core.io.Settings;
 import minicraft.gfx.Color;
 import minicraft.gfx.Font;
@@ -35,12 +36,11 @@ public class WorldInfoDisplay extends Display {
 
     public void render(Screen screen) {
         super.render(screen);
-        Font.drawCentered("Name: " + WorldSelectDisplay.getWorldName() + "", screen, Screen.h - 212, Color.YELLOW);
+        Font.drawCentered(Localization.getLocalized("Name:") + " " + WorldSelectDisplay.getWorldName() + "", screen, Screen.h - 212, Color.YELLOW);
 
-        Font.drawCentered("Seed: " + Game.levels[selection].getSeed(), screen, Screen.h - 150, Color.GRAY);
+        Font.drawCentered(Localization.getLocalized("Seed:") + " " + Game.levels[selection].getSeed(), screen, Screen.h - 150, Color.GRAY);
 
-        // Font.drawCentered(Settings.getEntry("mode")+"", screen, Screen.h - 190,
-        // Color.GRAY);
+ 
         Font.drawCentered(Settings.getEntry("size") + "", screen, Screen.h - 190, Color.GRAY);
         Font.drawCentered(Settings.getEntry("theme") + "", screen, Screen.h - 180, Color.GRAY);
         Font.drawCentered(Settings.getEntry("type") + "", screen, Screen.h - 170, Color.GRAY);

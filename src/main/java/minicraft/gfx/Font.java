@@ -7,11 +7,10 @@ import java.util.List;
 import minicraft.core.io.Localization;
 
 public class Font {
-    // These are all the characters that will be translated to the screen. (The
-    // spaces are important)
+    // These are all the characters that will be translated to the screen. (The spaces are important)
     private static String chars =
     		"ABCDEFGHIJKLMNOPQRSTUVWXYZ012345" +
-    		"6789.,!?'\"-+=/\\%()<>:;∞@ÁÉÍÓÚÑ¿¡" + 
+    		"6789.,!?'\"-+=/\\%()<>:;Ω@ÁÉÍÓÚÑ¿¡" + 
     		"ÃÊÇÔÕĞÇÜİÖŞÆØÅŰŐ[]#|{}_&^~$*";
     /*
      * The order of the letters in the chars string is represented in the order that

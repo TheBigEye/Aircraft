@@ -3,6 +3,8 @@ package minicraft.level.tile;
 import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
+import minicraft.entity.Entity;
+import minicraft.entity.furniture.Furniture;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
@@ -18,6 +20,10 @@ public class StairsTile extends Tile {
         super(name, leadsUp ? up_sprite : down_sprite);
         maySpawn = false;
     }
+    
+	public boolean mayPass(Level level, int x, int y, Entity e) {
+		return !(e instanceof Furniture);
+	}
 
     @Override
     public void render(Screen screen, Level level, int x, int y) {
