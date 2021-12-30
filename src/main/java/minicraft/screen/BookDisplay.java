@@ -16,8 +16,7 @@ import minicraft.screen.entry.StringEntry;
 public class BookDisplay extends Display {
 
     // null characters "\0" denote page breaks.
-    private static final String defaultBook = " \n \0" + "There is nothing of use here." + "\0 \0"
-            + "Still nothing... :P";
+    private static final String defaultBook = " \n \0" + "There is nothing of use here." + "\0 \0" + "Still nothing... :P";
 
     private static final int spacing = 3;
     private static final int minX = 15, maxX = 15 + 8 * 32, minY = 8 * 5, maxY = 8 * 5 + 8 * 16;
@@ -33,9 +32,7 @@ public class BookDisplay extends Display {
         this(book, false);
     }
 
-    public BookDisplay(String book, boolean hasTitle) {// this(book, hasTitle, !hasTitle); }
-        // public BookDisplay(String book, boolean hasTitle, boolean hideCountIfOnePage)
-        // {
+    public BookDisplay(String book, boolean hasTitle) {
         page = 0;
         if (book == null) {
             book = defaultBook;
@@ -50,8 +47,7 @@ public class BookDisplay extends Display {
             String[] remainder = { content };
             while (remainder[remainder.length - 1].length() > 0) {
                 remainder = Font.getLines(remainder[remainder.length - 1], maxX - minX, maxY - minY, spacing, true);
-                pages.add(Arrays.copyOf(remainder, remainder.length - 1)); // removes the last element of remainder,
-                                                                           // which is the leftover.
+                pages.add(Arrays.copyOf(remainder, remainder.length - 1)); // removes the last element of remainder, which is the leftover.
             }
         }
 
@@ -72,8 +68,9 @@ public class BookDisplay extends Display {
                 .setShouldRender(false);
 
         menus = new Menu[lines.length + pageOffset];
-        if (showPageCount)
+        if (showPageCount) {
             menus[0] = pageCount;
+        }
         for (int i = 0; i < lines.length; i++) {
             menus[i + pageOffset] = builder.setEntries(StringEntry.useLines(Color.WHITE, lines[i])).createMenu();
         }
@@ -85,28 +82,26 @@ public class BookDisplay extends Display {
         if (page + dir >= 0 && page + dir < lines.length) {
             menus[page + pageOffset].shouldRender = false;
             page += dir;
-            if (showPageCount)
-                menus[0].updateSelectedEntry(new StringEntry(
-                        page == 0 && hasTitle ? "Title" : (page + 1) + "/" + lines.length, Color.BLACK));
+            if (showPageCount) {
+                menus[0].updateSelectedEntry(new StringEntry(page == 0 && hasTitle ? "Title" : (page + 1) + "/" + lines.length, Color.BLACK));
+            }
             menus[page + pageOffset].shouldRender = true;
         }
     }
 
     @Override
     public void tick(InputHandler input) {
-        if (input.getKey("menu").clicked || input.getKey("exit").clicked)
-            Game.exitMenu(); // this is what closes the book; TODO if books were editable, I would probably
-                             // remake the book here with the edited pages.
-
-        if (input.getKey("cursor-left").clicked)
+        if (input.getKey("menu").clicked || input.getKey("exit").clicked) {
+            Game.exitMenu(); // this is what closes the book; TODO if books were editable, I would probably remake the book here with the edited pages.
+        }
+        
+        if (input.getKey("cursor-left").clicked) {
             turnPage(-1); // this is what turns the page back
-        // if (input.getKey("cursor-left").clicked)
-        // Sound.GUI_PageUp.play();
+        }
 
-        if (input.getKey("cursor-right").clicked)
+        if (input.getKey("cursor-right").clicked) {
             turnPage(1); // this is what turns the page forward
-        // if (input.getKey("cursor-right").clicked)
-        // Sound.GUI_PageUp.play();
+        }
 
     }
 }
