@@ -10,123 +10,133 @@ import minicraft.screen.entry.ArrayEntry;
 
 public class Display {
 
-    private Display parent = null;
+	private Display parent = null;
 
-    protected Menu[] menus;
-    int selection;
+	protected Menu[] menus;
+	int selection;
 
-    private final boolean canExit;
-    private final boolean clearScreen;
+	private final boolean canExit;
+	private final boolean clearScreen;
 
-    public Display() {
-        this(new Menu[0]);
-    }
+	public Display() {
+		this(new Menu[0]);
+	}
 
-    public Display(Menu... menus) {
-        this(false, true, menus);
-    }
+	public Display(Menu... menus) {
+		this(false, true, menus);
+	}
 
-    public Display(boolean clearScreen) {
-        this(clearScreen, true, new Menu[0]);
-    }
+	public Display(boolean clearScreen) {
+		this(clearScreen, true, new Menu[0]);
+	}
 
-    public Display(boolean clearScreen, Menu... menus) {
-        this(clearScreen, true, menus);
-    }
+	public Display(boolean clearScreen, Menu... menus) {
+		this(clearScreen, true, menus);
+	}
 
-    public Display(boolean clearScreen, boolean canExit) {
-        this(clearScreen, canExit, new Menu[0]);
-    }
+	public Display(boolean clearScreen, boolean canExit) {
+		this(clearScreen, canExit, new Menu[0]);
+	}
 
-    public Display(boolean clearScreen, boolean canExit, Menu... menus) {
-        this.menus = menus;
-        this.canExit = canExit;
-        this.clearScreen = clearScreen;
-        selection = 0;
-    }
+	public Display(boolean clearScreen, boolean canExit, Menu... menus) {
+		this.menus = menus;
+		this.canExit = canExit;
+		this.clearScreen = clearScreen;
+		selection = 0;
+	}
 
-    private boolean setParent = false;
+	private boolean setParent = false;
 
-    // called during setMenu()
-    public void init(@Nullable Display parent) {
-        if (!setParent) {
-            setParent = true;
-            this.parent = parent;
-        }
-    }
+	// called during setMenu()
+	public void init(@Nullable Display parent) {
+		if (!setParent) {
+			setParent = true;
+			this.parent = parent;
+		}
+	}
 
-    public void onExit() {
-    }
+	public void onExit() {
+	}
 
-    public Display getParent() {
-        return parent;
-    }
+	public Display getParent() {
+		return parent;
+	}
 
-    public void tick(InputHandler input) {
+	public void tick(InputHandler input) {
 
-        if (canExit && input.getKey("exit").clicked) {
-            Game.exitMenu();
-            return;
-        }
+		if (canExit && input.getKey("exit").clicked) {
+			Game.exitMenu();
+			return;
+		}
 
-        if (menus.length == 0)
-            return;
+		if (menus.length == 0) {
+			return;
+		}
 
-        boolean changedSelection = false;
+		boolean changedSelection = false;
 
-        if (menus.length > 1 && menus[selection].isSelectable()) { // if menu set is unselectable, it must have been intentional, so prevent the user from setting it back.
-            int prevSel = selection;
+		// if menu set is unselectable, it must have been intentional, so prevent the user from setting it back.
+		if (menus.length > 1 && menus[selection].isSelectable()) { 
+			int prevSel = selection;
 
-            String shift = menus[selection].getCurEntry() instanceof ArrayEntry ? "shift-" : "";
-            if (input.getKey(shift + "left").clicked)
-                selection--;
-            if (input.getKey(shift + "right").clicked)
-                selection++;
+			String shift = menus[selection].getCurEntry() instanceof ArrayEntry ? "shift-" : "";
+			
+			if (input.getKey(shift + "left").clicked) {
+				selection--;
+			}
+			if (input.getKey(shift + "right").clicked) {
+				selection++;
+			}
 
-            if (prevSel != selection) {
-                Sound.Menu_select.play();
+			if (prevSel != selection) {
+				Sound.Menu_select.play();
 
-                int delta = selection - prevSel;
-                selection = prevSel;
-                do {
-                    selection += delta;
-                    if (selection < 0)
-                        selection = menus.length - 1;
-                    selection = selection % menus.length;
-                } while (!menus[selection].isSelectable() && selection != prevSel);
+				int delta = selection - prevSel;
+				selection = prevSel;
+				do {
+					selection += delta;
+					if (selection < 0)
+						selection = menus.length - 1;
+					selection = selection % menus.length;
+				} while (!menus[selection].isSelectable() && selection != prevSel);
 
-                changedSelection = prevSel != selection;
-            }
+				changedSelection = prevSel != selection;
+			}
 
-            if (changedSelection)
-                onSelectionChange(prevSel, selection);
-        }
+			if (changedSelection) {
+				onSelectionChange(prevSel, selection);
+			}
+		}
 
-        if (!changedSelection)
-            menus[selection].tick(input);
-    }
+		if (!changedSelection) {
+			menus[selection].tick(input);
+		}
+	}
 
-    protected void onSelectionChange(int oldSel, int newSel) {
-        selection = newSel;
-    }
+	protected void onSelectionChange(int oldSel, int newSel) {
+		selection = newSel;
+	}
 
-    /// sub-classes can do extra rendering here; this renders each menu that should
-    /// be rendered, in the order of the array, such that the currently selected
-    /// menu is rendered last, so it appears on top (if they even overlap in the
-    /// first place).
-    public void render(Screen screen) {
-        if (clearScreen)
-            screen.clear(0);
+	/// sub-classes can do extra rendering here; this renders each menu that should
+	/// be rendered, in the order of the array, such that the currently selected
+	/// menu is rendered last, so it appears on top (if they even overlap in the
+	/// first place).
+	public void render(Screen screen) {
+		if (clearScreen) {
+			screen.clear(0);
+		}
 
-        if (menus.length == 0)
-            return;
+		if (menus.length == 0) {
+			return;
+		}
 
-        int idx = selection;
-        do {
-            idx++;
-            idx = idx % menus.length;
-            if (menus[idx].shouldRender())
-                menus[idx].render(screen);
-        } while (idx != selection);
-    }
+		int idx = selection;
+		do {
+			idx++;
+			idx = idx % menus.length;
+			if (menus[idx].shouldRender()) {
+				menus[idx].render(screen);
+			}
+		} while (idx != selection);
+	}
 }
