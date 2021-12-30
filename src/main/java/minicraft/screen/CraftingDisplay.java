@@ -30,8 +30,9 @@ public class CraftingDisplay extends Display {
 	}
 
 	public CraftingDisplay(List<Recipe> recipes, String title, Player player, boolean isPersonal) {
-		for (Recipe recipe : recipes)
+		for (Recipe recipe : recipes) {
 			recipe.checkCanCraft(player);
+		}
 
 		this.isPersonalCrafter = isPersonal;
 
@@ -44,13 +45,11 @@ public class CraftingDisplay extends Display {
 		this.player = player;
 		this.recipes = recipes.toArray(new Recipe[recipes.size()]);
 
-		itemCountMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Have:").setTitlePos(RelPos.TOP_LEFT).setPositioning(
-				new Point(recipeMenu.getBounds().getRight() + SpriteSheet.boxWidth, recipeMenu.getBounds().getTop()),
-				RelPos.BOTTOM_RIGHT);
+		itemCountMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Have:").setTitlePos(RelPos.TOP_LEFT)
+				.setPositioning(new Point(recipeMenu.getBounds().getRight() + SpriteSheet.boxWidth, recipeMenu.getBounds().getTop()), RelPos.BOTTOM_RIGHT);
 
-		costsMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Cost:").setTitlePos(RelPos.TOP_LEFT).setPositioning(
-				new Point(itemCountMenu.createMenu().getBounds().getLeft(), recipeMenu.getBounds().getBottom()),
-				RelPos.TOP_RIGHT);
+		costsMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Cost:").setTitlePos(RelPos.TOP_LEFT)
+				.setPositioning(new Point(itemCountMenu.createMenu().getBounds().getLeft(), recipeMenu.getBounds().getBottom()), RelPos.TOP_RIGHT);
 
 		menus = new Menu[] { recipeMenu, itemCountMenu.createMenu(), costsMenu.createMenu() };
 
@@ -105,7 +104,7 @@ public class CraftingDisplay extends Display {
 				refreshData();
 				for (Recipe recipe : recipes) {
 					recipe.checkCanCraft(player);
-					
+
 				}
 			}
 		}
