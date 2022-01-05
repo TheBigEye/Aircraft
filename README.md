@@ -49,5 +49,5 @@ Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chri
    If you get any problem when running the game on Windows (like a black screen that appears and disappears, open CMD or Powershell, go to the path where the .jar is and type      the same command for linux).
 
 ## About
-Aircraft is a mod that is totally based on Minicraft Plus. has compatibility with Minicraft plus 2.0.6 and 2.0.7. (Older versions before 1.3 are compatible with 2.0.3 to 2.0.4). Is in Beta phase, it is continuously updated to clean most of the bugs, make maintenance and add features.
+Aircraft is a mod that is totally based on Minicraft Plus. has compatibility with Minicraft plus 2.0.6 and 2.0.7, (Older versions before 1.3 are compatible with 2.0.3 to 2.0.4). Is in Beta phase, it is continuously updated to clean most of the bugs, make maintenance and add features.
 
