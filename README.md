@@ -37,7 +37,7 @@ Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chri
 * Crash screen more detailed in information
 * More durability in tools.
 * Enchanted Tools and Enchantment Books.
-* --dev label when running the game in terminal.
+* --dev (developer mode) argumment when running the game in terminal.
 
 ## Installation
 1. Download and install [Java](https://java.com/en/download/), 
