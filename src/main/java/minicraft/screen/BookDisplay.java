@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
-import minicraft.core.io.Localization;
 import minicraft.gfx.Color;
 import minicraft.gfx.Font;
 import minicraft.gfx.Point;
@@ -38,7 +37,6 @@ public class BookDisplay extends Display {
             book = defaultBook;
             hasTitle = false;
         }
-        book = Localization.getLocalized(book);
         this.hasTitle = hasTitle;
 
         ArrayList<String[]> pages = new ArrayList<>();

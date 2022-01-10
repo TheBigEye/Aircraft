@@ -54,17 +54,12 @@ public class Sheep extends PassiveMob {
         }
 
         Player player = getClosestPlayer();
-        if (player != null && player.activeItem != null && player.activeItem.name.equals("Wheat")) { // This function
-                                                                                                     // will make the
-                                                                                                     // entity follow
-                                                                                                     // the player
-                                                                                                     // directly
+        if (player != null && player.activeItem != null && player.activeItem.name.equals("Wheat")) {
             int xd = player.x - x;
             int yd = player.y - y;
 
             /// if player is less than 6.25 tiles away, then set move dir towards player
-            int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and
-                          // down.
+            int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
             xa = ya = 0;
             if (xd < sig0)
                 xa = -1;
@@ -96,7 +91,7 @@ public class Sheep extends PassiveMob {
             return false;
 
         if (item instanceof ToolItem) {
-            if (((ToolItem) item).type == ToolType.Shear) {
+            if (((ToolItem) item).type == ToolType.Shears) {
                 isCut = true;
                 dropItem(1, 3, Items.get("Wool"));
                 ((ToolItem) item).payDurability();

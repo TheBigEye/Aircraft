@@ -1,153 +1,148 @@
-### Advancements
+### Achievement
 
-# Advancements
+# achievement
 
-minicraft.advancement.woodcutter
+minicraft.achievement.woodcutter
 Woodcutter
 
-minicraft.advancement.woodcutter.desc
+minicraft.achievement.woodcutter.desc
 Get wood.
 
-minicraft.advancement.benchmarking
+minicraft.achievement.benchmarking
 Crafting time
 
-minicraft.advancement.benchmarking.desc
+minicraft.achievement.benchmarking.desc
 Craft a workbench.
 
-minicraft.advancement.mine_stone
+minicraft.achievement.mine_stone
 Stone age!
 
-minicraft.advancement.mine_stone.desc
+minicraft.achievement.mine_stone.desc
 Mine stone with your new pickaxe.
 
-
-minicraft.advancement.smelt_iron
+minicraft.achievement.smelt_iron
 Iron age!!
 
-minicraft.advancement.smelt_iron.desc
+minicraft.achievement.smelt_iron.desc
 Mine iron and melt it.
 
-
-minicraft.advancement.upgrade
+minicraft.achievement.upgrade
 Upgrade!
 
-minicraft.advancement.upgrade.desc
+minicraft.achievement.upgrade.desc
 Get a tool made of a material that is stronger than wood.
 
-
-minicraft.advancement.iron_tools
+minicraft.achievement.iron_tools
 How heavy!
 
-minicraft.advancement.iron_tools.desc
+minicraft.achievement.iron_tools.desc
 Get a tool made of a material that is stronger than stone.
 
-
-minicraft.advancement.monsters
+minicraft.achievement.monsters
 What's that?!
 
-minicraft.advancement.monsters.desc
+minicraft.achievement.monsters.desc
 Kill a hostile mob.
 
-
-minicraft.advancement.fish
+minicraft.achievement.fish
 To fish!
 
-minicraft.advancement.fish.desc
+minicraft.achievement.fish.desc
 Get a fish.
 
-
-minicraft.advancement.doors
+minicraft.achievement.doors
 ¡TOC Toc!
 
-minicraft.advancement.doors.desc
+minicraft.achievement.doors.desc
 Place all types of doors.
 
-
-minicraft.advancement.planks
+minicraft.achievement.planks
 Walk the planks!
 
-minicraft.advancement.planks.desc
+minicraft.achievement.planks.desc
 Place all types of planks.
 
-
-minicraft.advancement.clothes
+minicraft.achievement.clothes
 Have a colorful day!
 
-minicraft.advancement.clothes.desc
+minicraft.achievement.clothes.desc
 Craft all the colorful clothes.
 
+minicraft.achievement.demolition
+Boom!
 
-minicraft.advancement.demolition
-Boom
-
-minicraft.advancement.demolition.desc
+minicraft.achievement.demolition.desc
 Use TNT.
 
-minicraft.advancement.explosive_ending
-Un final explosivo
+minicraft.achievement.explosive_ending
+An explosive eding
 
-minicraft.advancement.explosive_ending.desc
+minicraft.achievement.explosive_ending.desc
 "Accidentally" blow yourself up.
 
-minicraft.advancement.survive_darkness
+minicraft.achievement.survive_darkness
 Afraid of the dark?
 
-minicraft.advancement.survive_darkness.desc
+minicraft.achievement.survive_darkness.desc
 Survive 5 minutes in total darkness.
 
-minicraft.advancement.lava
+minicraft.achievement.lava
 Hot Affairs
 
-minicraft.advancement.lava.desc
+minicraft.achievement.lava.desc
 Use a lava potion to swim in lava.
 
-minicraft.advancement.find_gem
+minicraft.achievement.find_gem
 Look how it shines!
 
-minicraft.advancement.find_gem.desc
+minicraft.achievement.find_gem.desc
 Find gems and mine them.
 
-minicraft.advancement.lowest_caves
+minicraft.achievement.lowest_caves
 Darkness behind the light
 
-minicraft.advancement.lowest_caves.desc
+minicraft.achievement.lowest_caves.desc
 Get to the lower caves.
 
-minicraft.advancement.obsidian_dungeon
+minicraft.achievement.obsidian_dungeon
 It's hot down here!
 
-minicraft.advancement.obsidian_dungeon.desc
+minicraft.achievement.obsidian_dungeon.desc
 Get to the Obsidian Dungeon.
 
-minicraft.advancement.airwizard
+minicraft.achievement.airwizard
 Is this just beginning?
 
-minicraft.advancement.airwizard.desc
+minicraft.achievement.airwizard.desc
 Kill the first Air Wizard!
 
-minicraft.advancement.second_airwizard
+minicraft.achievement.second_airwizard
 Afterlife!
 
-minicraft.advancement.second_airwizard.desc
+minicraft.achievement.second_airwizard.desc
 Kill the second Air Mage.
 
-minicraft.advancement.eat_all_food
+minicraft.achievement.eat_all_food
 On a diet
 
-minicraft.advancement.eat_all_food.desc
+minicraft.achievement.eat_all_food.desc
 Eat whatever is eatable.
 
-# AdvancementsDisplay.java
+
+# AchievementDisplay.java
 Earned!
 Earned!
 
 Not Earned
 Not Earned
 
-Advancement Score:
-Advancement Score:
+Achievement Score:
+Achievement Score:
 
 ### entity
+
+## entity.particle
+## entity.particle end
 
 # Entity.java
 Entities
@@ -602,6 +597,9 @@ egg
 Stone
 Stone
 
+Holy stone
+Holy stone
+
 Andesite
 Andesite
 
@@ -620,14 +618,26 @@ Basalt
 Quartzite
 Quartzite
 
+Light gray dye
+Light gray dye
+
+Gray dye
+Gray dye
+
 Ink sac
 Ink sac
+
+Lime dye
+Lime dye
 
 Yellow dye
 Yellow dye
 
 Green dye
 Green dye
+
+Brown dye
+Brown dye
 
 Red dye
 Red dye
@@ -638,11 +648,23 @@ Purple dye
 Pink dye
 Pink dye
 
+Magenta dye
+Magenta dye
+
 Dark green dye
 Dark green dye
 
 Orange dye
 Orange dye
+
+Blue dye
+Blue dye
+
+Cyan dye
+Cyan dye
+
+Light blue dye
+Light blue dye
 
 Coal
 Coal
@@ -805,6 +827,15 @@ Stone Wall
 Stone Door
 Stone Door
 
+Holy Brick
+Holy Brick
+
+Holy Wall
+Holy Wall
+
+Holy Door
+Holy Door
+
 Obsidian Brick
 Obsidian Brick
 
@@ -885,6 +916,9 @@ Potato
 
 Sky wart
 Sky wart
+
+Sky Seeds
+Sky Seeds
 
 Grass Seeds
 Grass Seeds
@@ -971,6 +1005,9 @@ Shear
 
 Shear
 Shear
+
+Igniter
+Encendedor
 
 # TorchItem.java
 
@@ -1387,8 +1424,8 @@ Make World Multiplayer
 World options
 World options
 
-Advancements
-Advancements
+achievement
+achievement
 
 Save Game
 Save Game

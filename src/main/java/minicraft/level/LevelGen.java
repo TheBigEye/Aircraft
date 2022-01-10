@@ -240,7 +240,7 @@ public class LevelGen {
 
             if (count[Tiles.get("Obsidian").id & 0xff] < 100) continue;
             if (count[Tiles.get("Obsidian Wall").id & 0xff] < 100) continue;
-            if (count[Tiles.get("Hard obsidian").id & 0xff] < 100) continue;
+            if (count[Tiles.get("Raw obsidian").id & 0xff] < 100) continue;
 
             return result;
 
@@ -315,96 +315,105 @@ public class LevelGen {
                 val += 1 - dist * 20;
 
                 // Code of the type of terrain, this according to the user's option
-                switch ((String) Settings.get("Type")) {
-                case "Island":
+				switch ((String) Settings.get("Type")) {
+					case "Island":
 
-                    if (val < -0.5) {
-                        if (Settings.get("Theme").equals("Hell")) {
-                            map[i] = Tiles.get("lava").id;
+						if (val < -0.5) {
+							if (Settings.get("Theme").equals("Hell")) {
+								map[i] = Tiles.get("lava").id;
+							} else {
+								map[i] = Tiles.get("water").id;
+							}
+
+						} else if (val > 0.5 && mval < -1.5) {
+
+							map[i] = Tiles.get("up rock").id;
+
+						} else if (val > 0.1 && mval < -1.1) {
+
+							map[i] = Tiles.get("rock").id;
+
+                    /*} else if (val > 0.1 && mval < -0.3 && jval < -0.4) { // 0.4 offsset, 0.3 sspesor
+
+                        // If there is sand nearby, the generation is cut
+                        if (x > 0 && y > 0 && x < w - 1 && y < h - 1) {
+                            if (map[i - 1] == Tiles.get("sand").id || map[i + 1] == Tiles.get("sand").id || map[i - w] == Tiles.get("sand").id || map[i + w] == Tiles.get("sand").id) {
+                                map[i] = Tiles.get("grass").id;
+                            } else {
+                                map[i] = Tiles.get("jungle grass").id;
+                            }
                         } else {
-                            map[i] = Tiles.get("water").id;
-                        }
-
-                    } else if (val > 0.5 && mval < -1.5) {
-
-                        map[i] = Tiles.get("up rock").id;
-
-                    } else if (val > 0.1 && mval < -1.1) {
-
-                        map[i] = Tiles.get("rock").id;
-                        
-                    //} else if (val > 0.5 && mval < 0.75 && jval < -1 ) {
-                    	
-						//map[i] = Tiles.get("jungle grass").id;
+                            map[i] = Tiles.get("jungle grass").id;
+                        }*/
 
 							
-                    } else {
-                        map[i] = Tiles.get("grass").id;
+				} else {
+					map[i] = Tiles.get("grass").id;
 
-                    }
+				}
 
-                        break;
-                    case "Box":
+				break;
+			case "Box":
 
-                        if (val < -1.5) {
-                            if (Settings.get("Theme").equals("Hell")) {
-                                map[i] = Tiles.get("lava").id;
-                            } else {
-                                map[i] = Tiles.get("water").id;
-                            }
+				if (val < -1.5) {
+					if (Settings.get("Theme").equals("Hell")) {
+						map[i] = Tiles.get("lava").id;
+					} else {
+						map[i] = Tiles.get("water").id;
+					}
 
-                        } else if (val > 0.5 && mval < -1.5) {
+				} else if (val > 0.5 && mval < -1.5) {
 
-                            map[i] = Tiles.get("up rock").id;
+					map[i] = Tiles.get("up rock").id;
 
-                        } else if (val > 0.1 && mval < -1.1) {
+				} else if (val > 0.1 && mval < -1.1) {
 
-                            map[i] = Tiles.get("rock").id;
+					map[i] = Tiles.get("rock").id;
 
-                        } else {
-                            map[i] = Tiles.get("grass").id;
+				} else {
+					map[i] = Tiles.get("grass").id;
 
-                        }
+				}
 
-                        break;
-                    case "Mountain":
+				break;
+			case "Mountain":
 
-                        if (val < -0.4) {
-                            map[i] = Tiles.get("grass").id;
-                        } else if (val > 0.5 && mval < -1.5) {
-                            if (Settings.get("Theme").equals("Hell")) {
-                                map[i] = Tiles.get("lava").id;
-                            } else {
-                                map[i] = Tiles.get("water").id;
-                            }
-                        } else {
-                            map[i] = Tiles.get("rock").id;
-                        }
+				if (val < -0.4) {
+					map[i] = Tiles.get("grass").id;
+				} else if (val > 0.5 && mval < -1.5) {
+					if (Settings.get("Theme").equals("Hell")) {
+						map[i] = Tiles.get("lava").id;
+					} else {
+						map[i] = Tiles.get("water").id;
+					}
+				} else {
+					map[i] = Tiles.get("rock").id;
+				}
 
-                        break;
-                    case "Irregular":
+				break;
+			case "Irregular":
 
-                        if (val < -0.5 && mval < -0.5) {
-                            if (Settings.get("Theme").equals("Hell")) {
-                                map[i] = Tiles.get("lava").id;
-                            }
-                            if (!Settings.get("Theme").equals("Hell")) {
-                                map[i] = Tiles.get("water").id;
-                            }
+				if (val < -0.5 && mval < -0.5) {
+					if (Settings.get("Theme").equals("Hell")) {
+						map[i] = Tiles.get("lava").id;
+					}
+					if (!Settings.get("Theme").equals("Hell")) {
+						map[i] = Tiles.get("water").id;
+					}
 
-                        } else if (val > 0.5 && mval < -1.5) {
-                            map[i] = Tiles.get("rock").id;
-                        } else {
-                            map[i] = Tiles.get("grass").id;
-                        }
-                        break;
+				} else if (val > 0.5 && mval < -1.5) {
+					map[i] = Tiles.get("rock").id;
+				} else {
+					map[i] = Tiles.get("grass").id;
+				}
+				break;
 
-                    default:
-                        // meh
-                        break;
-                }
-            }
-        }
+			default:
+				// meh
+				break;
+		}
+	}
+}
 
         // These biomes are established :
 
@@ -902,7 +911,7 @@ public class LevelGen {
                 int yy = y + random.nextInt(3) - random.nextInt(3);
                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                     if (map[xx + yy * w] == Tiles.get("Obsidian").id) {
-                        map[xx + yy * w] = Tiles.get("Hard obsidian").id;
+                        map[xx + yy * w] = Tiles.get("Raw obsidian").id;
                     }
 
                 }
@@ -956,7 +965,7 @@ public class LevelGen {
                 nval = Math.abs(nval - nnoise3.values[i]) * 3 - 2;
 
                 double wval = Math.abs(wnoise1.values[i] - wnoise2.values[i]);
-                wval = Math.abs(nval - wnoise3.values[i]) * 3 - 2;
+                wval = Math.abs(wval - wnoise3.values[i]) * 3 - 2;
 
                 double xd = x / (w - 1.0) * 2 - 1;
                 double yd = y / (h - 1.0) * 2 - 1;
@@ -1582,7 +1591,7 @@ public class LevelGen {
             if (lvl > 1 || lvl < -4)
                 continue;
 
-            byte[][] fullmap = LevelGen.createAndValidateMap(w, h, lvl);
+            byte[][] fullmap = LevelGen.createAndValidateMap(w, h, -1);
 
             if (fullmap == null) {
                 continue;
@@ -1619,7 +1628,6 @@ public class LevelGen {
                     if (map[i] == Tiles.get("iron Ore").id) pixels[i] = 0x452728;
                     if (map[i] == Tiles.get("gold Ore").id) pixels[i] = 0x948028;
                     if (map[i] == Tiles.get("gem Ore").id) pixels[i] = 0x821DB6;
-                    
 
                     if (map[i] == Tiles.get("sand").id) pixels[i] = 0xe2e26f;
                     if (map[i] == Tiles.get("cactus").id) pixels[i] = 0xe8e86d;
@@ -1665,7 +1673,7 @@ public class LevelGen {
                     if (map[i] == Tiles.get("Sky high grass").id) pixels[i] = 0x4f9678;
                     if (map[i] == Tiles.get("Holy rock").id) pixels[i] = 0x7a7a7a;
                     
-                    if (map[i] == Tiles.get("jungle grass").id) pixels[i] = 0x55CE23;
+                    if (map[i] == Tiles.get("jungle grass").id) pixels[i] = 0x8AB33F;
 
 
                 }

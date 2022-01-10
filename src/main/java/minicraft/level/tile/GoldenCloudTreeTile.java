@@ -17,6 +17,7 @@ import minicraft.item.Items;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
+import minicraft.screen.AchievementsDisplay;
 
 public class GoldenCloudTreeTile extends Tile {
 
@@ -130,6 +131,9 @@ public class GoldenCloudTreeTile extends Tile {
         if (damage >= treeHealth) {
             level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Wood"));
             level.setTile(x, y, Tiles.get("Sky High Grass"));
+            
+            AchievementsDisplay.setAchievement("minicraft.achievement.woodcutter", true);
+            
         } else {
             level.setData(x, y, damage);
         }

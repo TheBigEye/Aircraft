@@ -16,6 +16,7 @@ import minicraft.item.Items;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
+import minicraft.screen.AchievementsDisplay;
 
 public class BirchTreeTile extends Tile {
 
@@ -115,6 +116,9 @@ public class BirchTreeTile extends Tile {
             level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Leaf"));
             level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Birch cone"));
             level.setTile(x, y, Tiles.get("Grass"));
+            
+            AchievementsDisplay.setAchievement("minicraft.achievement.woodcutter", true);
+            
         } else {
             level.setData(x, y, damage);
         }

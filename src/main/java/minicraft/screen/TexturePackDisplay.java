@@ -52,7 +52,7 @@ public class TexturePackDisplay extends Display {
         this.textureList.add(TexturePackDisplay.LEGACY_TEXTURE_PACK);
 
         // Generate texture packs folder
-        this.location = new File(FileHandler.getSystemGameDir() + "/" + FileHandler.getLocalGameDir() + "/texture Packs");
+        this.location = new File(FileHandler.getSystemGameDir() + "/" + FileHandler.getLocalGameDir() + "/texture packs");
         this.location.mkdirs();
 
         // Read and add the .zip file to the texture pack list
@@ -149,11 +149,9 @@ public class TexturePackDisplay extends Display {
 
         // Render the menu
         Font.drawCentered("Texture Packs", screen, Screen.h - 280, Color.get(0, 555, 555, 555)); // Title
-        // Font.drawCentered(TexturePackDisplay.shortNameIfLong(selectedUpUp), screen, Screen.h - 100, Color.GRAY); // First unselected space
         Font.drawCentered(TexturePackDisplay.shortNameIfLong(selectedDown), screen, Screen.h - 110, Color.GRAY); // Unselected space
         Font.drawCentered(TexturePackDisplay.shortNameIfLong(textureList.get(selected)), screen, Screen.h - 120, Color.GREEN); // Selection
         Font.drawCentered(TexturePackDisplay.shortNameIfLong(selectedUp), screen, Screen.h - 130, Color.GRAY); // Other unselected space
-        // Font.drawCentered(TexturePackDisplay.shortNameIfLong(selectedDownDown), screen, Screen.h - 140, Color.GRAY); // Fourth space
         Font.drawCentered("Use " + Game.input.getMapping("MOVE-DOWN") + ", " + Game.input.getMapping("MOVE-UP") + ", " + Game.input.getMapping("SELECT"), screen, Screen.h - 11, Color.get(0, 111, 111, 111)); // Controls
 
         int h = 2;

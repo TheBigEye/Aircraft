@@ -34,6 +34,7 @@ import minicraft.screen.InfoDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.RelPos;
 import minicraft.util.Info;
+import minicraft.util.MyUtils;
 
 public class Renderer extends Game {
     private Renderer() {}
@@ -51,7 +52,7 @@ public class Renderer extends Game {
 
     private static BufferedImage image; // Creates an image to be displayed on the screen.
     private static int[] pixels; // The array of pixels that will be displayed on the screen.
-    private static Screen lightScreen; // Creates a front screen to render the darkness in caves (Fog of war).
+    public static Screen lightScreen; // Creates a front screen to render the darkness in caves (Fog of war).
     public static boolean readyToRenderGameplay = false;
     public static boolean showinfo = false;
 
@@ -181,7 +182,7 @@ public class Renderer extends Game {
         level.renderSprites(screen, xScroll, yScroll); // Renders level sprites on screen
 
         // this creates the darkness in the caves
-        if ((currentLevel != 3 || Updater.tickCount < Updater.dayLength / 4 || Updater.tickCount > Updater.dayLength / 2) && !isMode("creative")) {
+        if ((currentLevel != 3 || Updater.tickCount < Updater.dayLength / 4 || Updater.tickCount > Updater.dayLength / 2)) {
             
             // This doesn't mean that the pixel will be black; it means that the pixel will
             // be DARK, by default; lightScreen is about light vs. dark, not necessarily a
@@ -197,7 +198,7 @@ public class Renderer extends Game {
             level.renderLight(lightScreen, xScroll, yScroll, brightnessMultiplier); // Finds (and renders) all the light from objects (like the player, lanterns, and lava).
             screen.overlay(lightScreen, currentLevel, xScroll, yScroll); // Overlays the light screen over the main screen.
 
-            if (player != null && player.activeItem != null && player.activeItem.name.equals("AlAzif")) {
+            if (player != null && player.potioneffects.containsKey(PotionType.Blindness) && currentLevel == 3 || currentLevel == 4) {
                 screen.Blind(lightScreen, currentLevel, xScroll, yScroll);
             }
         }
@@ -575,9 +576,11 @@ public class Renderer extends Game {
                 for (int i = 1; i < subinfo.size(); i++) { // Reverse order
                     subinfo.add(0, subinfo.remove(i));
                 }
-            } else
+            } else {
                 style.setYPos(2);
                 substyle.setYPos(2);
+            }
+                
             Font.drawParagraph(info, screen, style, 2);
             Font.drawParagraph(subinfo, screen, substyle, 2);
         }

@@ -1,153 +1,142 @@
-### Advancements
+### Achievement
 
-# Advancements
+# achievement
 
-minicraft.advancement.woodcutter
+minicraft.achievement.woodcutter
 Leñador
 
-minicraft.advancement.woodcutter.desc
-Obtene madera.
+minicraft.achievement.woodcutter.desc
+Corta madera.
 
+minicraft.achievement.benchmarking
+¡Crafteando ando!
 
-minicraft.advancement.benchmarking
-Hora de craftear
+minicraft.achievement.benchmarking.desc
+Haz una mesa de crafteo.
 
-minicraft.advancement.benchmarking.desc
-Crea una mesa de trabajo.
-
-
-minicraft.advancement.mine_stone
+minicraft.achievement.mine_stone
 Edad de piedra!
 
-minicraft.advancement.mine_stone.desc
+minicraft.achievement.mine_stone.desc
 Extrae piedra con tu nuevo pico.
 
-
-minicraft.advancement.smelt_iron
+minicraft.achievement.smelt_iron
 Edad de hierro!
 
-minicraft.advancement.smelt_iron.desc
+minicraft.achievement.smelt_iron.desc
 Extrae hierro y derritelo.
 
-
-minicraft.advancement.upgrade
+minicraft.achievement.upgrade
 Actualizacion!
 
-minicraft.advancement.upgrade.desc
+minicraft.achievement.upgrade.desc
 Consiga una herramienta con un material más resistente que la madera.
 
-
-minicraft.advancement.iron_tools
+minicraft.achievement.iron_tools
 Que pesado!
 
-minicraft.advancement.iron_tools.desc
+minicraft.achievement.iron_tools.desc
 Consiga una herramienta con un material más resistente que la piedra.
 
-
-minicraft.advancement.monsters
+minicraft.achievement.monsters
 Que es eso?!
 
-minicraft.advancement.monsters.desc
+minicraft.achievement.monsters.desc
 Mata a un mob hostil.
 
-
-minicraft.advancement.fish
+minicraft.achievement.fish
 A pescar!
 
-minicraft.advancement.fish.desc
+minicraft.achievement.fish.desc
 Pesca un pez
 
-
-minicraft.advancement.doors
+minicraft.achievement.doors
 !TOC toc!
 
-minicraft.advancement.doors.desc
+minicraft.achievement.doors.desc
 Coloque todos los tipos de puertas.
 
-
-minicraft.advancement.planks
+minicraft.achievement.planks
 ¡Camina por los tablones!
 
-minicraft.advancement.planks.desc
+minicraft.achievement.planks.desc
 Coloque todos los tipos de tablones.
 
-
-minicraft.advancement.clothes
+minicraft.achievement.clothes
 ¡Que tengas un día colorido!
 
-minicraft.advancement.clothes.desc
+minicraft.achievement.clothes.desc
 Craftea toda las ropas de colores.
 
+minicraft.achievement.demolition
+Boom!
 
-minicraft.advancement.demolition
-Boom
-
-minicraft.advancement.demolition.desc
+minicraft.achievement.demolition.desc
 Utilice TNT.
 
-minicraft.advancement.explosive_ending
+minicraft.achievement.explosive_ending
 Un final explosivo
 
-minicraft.advancement.explosive_ending.desc
+minicraft.achievement.explosive_ending.desc
 "Accidentalmente" hazte explotar.
 
-minicraft.advancement.survive_darkness
+minicraft.achievement.survive_darkness
 ¿Miedo a la oscuridad?
 
-minicraft.advancement.survive_darkness.desc
+minicraft.achievement.survive_darkness.desc
 Sobrevive 5 minutos en total oscuridad.
 
-minicraft.advancement.lava
-Asunto caliente
+minicraft.achievement.lava
+Asuntos candentes
 
-minicraft.advancement.lava.desc
+minicraft.achievement.lava.desc
 Usa una pocion de lava para nadar en lava.
 
-minicraft.advancement.find_gem
-Mira como brilla!
+minicraft.achievement.find_gem
+¡Oooh Brillante!
 
-minicraft.advancement.find_gem.desc
+minicraft.achievement.find_gem.desc
 Encuentra gemas y minalas.
 
-minicraft.advancement.lowest_caves
+minicraft.achievement.lowest_caves
 Oscuridad detrás de la luz
 
-minicraft.advancement.lowest_caves.desc
+minicraft.achievement.lowest_caves.desc
 Llega a las cuevas más bajas.
 
-minicraft.advancement.obsidian_dungeon
+minicraft.achievement.obsidian_dungeon
 Hace calor aqui abajo!
 
-minicraft.advancement.obsidian_dungeon.desc
+minicraft.achievement.obsidian_dungeon.desc
 Llega a la mazmorra de obsidiana.
 
-minicraft.advancement.airwizard
+minicraft.achievement.airwizard
 Esto apenas comienza?
 
-minicraft.advancement.airwizard.desc
-Mata al primer Mago de Aire!
+minicraft.achievement.airwizard.desc
+¡Derrota al primer Mago del Aire!
 
-minicraft.advancement.second_airwizard
+minicraft.achievement.second_airwizard
 Ultratumba!
 
-minicraft.advancement.second_airwizard.desc
-Mata al segundo Mago de Aire.
+minicraft.achievement.second_airwizard.desc
+¡Derrota al segundo Mago del Aire!
 
-minicraft.advancement.eat_all_food
+minicraft.achievement.eat_all_food
 A dieta
 
-minicraft.advancement.eat_all_food.desc
+minicraft.achievement.eat_all_food.desc
 Come todo lo sea comestible.
 
 
-# AdvancementsDisplay.java
+# AchievementsDisplay.java
 Earned!
 Ganado!
 
 Not Earned
 No Ganado
 
-Advancement Score:
+Achievement Score:
 Puntaje:
 
 ### entity
@@ -155,12 +144,16 @@ Puntaje:
 ## entity.particle
 ## entity.particle end
 
+# Entity.java
+Entities
+Entidades
+
 # AirWizard.java
 Air Wizard: Defeated!
 Mago de Aire: Derrotado!
 
 The Dungeon is now open!
-El calabozo esta abierto ahora
+El calabozo esta abierto ahora!
 
 A costume lies on the ground...
 Un disfraz descansa en el suelo...
@@ -173,7 +166,7 @@ Min
 Min 
 	
  Sec left!
- Segundo restante!
+ Seg restante!
 
 # DungeonChest.java
 You hear a noise from the surface!
@@ -184,6 +177,9 @@ Death Chest
 Cofre de la Muerte
 
 # Player.java
+
+Player
+Jugador
 
 Crafting
 Elaborando
@@ -341,67 +337,67 @@ Zanahoria Dorada
 # FurnitureItem.java
 
 KingZombie Spawner
-Generador de Rey Zombie
+Generador de Reyes Zombies
 
 Cow Spawner
-Generador de Vaca
+Generador de Vacas
 
 Pig Spawner
-Generador de Cerdo
+Generador de Cerdos
 
 Sheep Spawner
-Generador de Oveja
+Generador de Ovejas
 
 Goat Spawner
-Generador de Cabra
+Generador de Cabras
 
 Chicken Spawner
-Generador de Pollo
+Generador de Pollos
 
 Cleric Spawner
-Generador de Clerigo
+Generador de Clerigos
 
 Librarian Spawner
-Generador de Bibliotecario
+Generador de Bibliotecarios
 
 GuiMan Spawner
-Generador de Pinguino
+Generador de Pinguinos
 
 Cat Spawner
 Generador de Gatos
 
 Golem Spawner
-Generador de Golem
+Generador de Golems
 
 Slime Spawner
-Generador de Slime
+Generador de Slimes
 
 Zombie Spawner
-Generador de Zombie
+Generador de Zombies
 
 Mooshroom Spawner
-Generador de Vacahongo
+Generador de Vacahongos
 
 Creeper Spawner
-Generador de Creeper
+Generador de Creepers
 
 Skeleton Spawner
-Generador de Esqueleto
+Generador de Esqueletos
 
 Snake Spawner
-Generador de Serpiente
+Generador de Serpientes
 
 Knight Spawner
-Generador de Caballero
+Generador de Caballeros
 
 OldGolem Spawner
-Generador de Golem viejo
+Generador de Golems viejos
 
 AirWizard Spawner
-Generador de MagoAire
+Generador de Magos de Aire
 
 EyeQueen Spawner
-Generador de ReinaOjo
+Generador de Reinas Ojo
 
 Cthulhu Spawner
 Generador de Cthulhu
@@ -601,6 +597,9 @@ Huevo
 Stone
 Piedra
 
+Holy stone
+Piedra sagrada
+
 Andesite
 Andesita
 
@@ -619,14 +618,26 @@ Basalto
 Quartzite
 Cuarcita
 
+Light gray dye
+Tinte gris claro
+
+Gray dye
+Tinte gris
+
 Ink sac
 Saco de tinta
+
+Lime dye
+Tinte lima
 
 Yellow dye
 Tinte amarillo
 
 Green dye
 Tinte verde
+
+Brown dye
+Tinte marron
 
 Red dye
 Tinte rojo
@@ -637,11 +648,23 @@ Tinte Morado
 Pink dye
 Tinte rosa
 
+Magenta dye
+Tinte magenta
+
 Dark green dye
 Tinte verde oscuro
 
 Orange dye
 Tinte naranja
+
+Blue dye
+Tinte azul
+
+Cyan dye
+Tinte cian
+
+Light blue dye
+Tinte celeste
 
 Coal
 Carbon
@@ -804,6 +827,15 @@ Muro de Piedra
 Stone Door
 Puerta de Piedra
 
+Holy Brick
+Ladrillo Sagrado
+
+Holy Wall
+Muro Sagrado
+
+Holy Door
+Puerta Sagrada
+
 Obsidian Brick
 Ladrillo de Obsidiana
 
@@ -884,6 +916,9 @@ Patata
 
 Sky wart
 Verruga del Cielo
+
+Sky Seeds
+Semillas del Cielo
 
 Grass Seeds
 Semillas de Pasto
@@ -968,6 +1003,9 @@ Casa antigua
 
 Shear
 Tijera
+
+Igniter
+Encendedor
 
 # ShearItem.java
 
@@ -1276,7 +1314,7 @@ World
 Mundo
 
 May take a while, be patient
-Puede tardar un tiempo, tenga paciencia
+Puede tardar un poco, tenga paciencia
 
 # MultiplayerMenu.java
 

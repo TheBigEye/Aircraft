@@ -8,48 +8,43 @@ import minicraft.gfx.Screen;
 import minicraft.util.ClipboardSystem;
 
 public class InputEntry extends ListEntry {
+	
+	private String prompt;
+	private String regex;
+	private int maxLength;
+	
+	private String userInput;
+	
+	private ChangeListener listener;
 
-    private String prompt;
-    private String regex;
-    private int maxLength;
-
-    private String userInput;
-
-    private ChangeListener listener;
-    private ClipboardSystem clipboardSystem;
-
-    public InputEntry(String prompt) {
-        this(prompt, null, 0);
-    }
-
-    public InputEntry(String prompt, String regex, int maxLen) {
-        this(prompt, regex, maxLen, "");
-    }
-
-    public InputEntry(String prompt, String regex, int maxLen, String initValue) {
-        this.prompt = prompt;
-        this.regex = regex;
-        this.maxLength = maxLen;
-
-        userInput = initValue;
-    }
-
-    @Override
-    public void tick(InputHandler input) {
-        String prev = userInput;
-        userInput = input.addKeyTyped(userInput, regex);
-        if (!prev.equals(userInput) && listener != null) {
-            listener.onChange(userInput);
-        }
-
-        if (maxLength > 0 && userInput.length() > maxLength) {
-            userInput = userInput.substring(0, maxLength); // truncates extra
-        }
-        
+	private ClipboardSystem clipboardSystem = new ClipboardSystem();
+	
+	public InputEntry(String prompt) {
+		this(prompt, null, 0);
+	}
+	public InputEntry(String prompt, String regex, int maxLen) {
+		this(prompt, regex, maxLen, "");
+	}
+	public InputEntry(String prompt, String regex, int maxLen, String initValue) {
+		this.prompt = prompt;
+		this.regex = regex;
+		this.maxLength = maxLen;
+		
+		userInput = initValue;
+	}
+	
+	@Override
+	public void tick(InputHandler input) {
+		String prev = userInput;
+		userInput = input.addKeyTyped(userInput, regex);
+		if (!prev.equals(userInput) && listener != null)
+			listener.onChange(userInput);
+		
+		if (maxLength > 0 && userInput.length() > maxLength)
+			userInput = userInput.substring(0, maxLength); // truncates extra
 		if (input.getKey("CTRL-V").clicked) {
 			userInput = userInput + clipboardSystem.getClipboardContents();
 		}
-		
 		if (!userInput.equals("")) {
 			if (input.getKey("CTRL-C").clicked) {
 				clipboardSystem.setClipboardContents(userInput);
@@ -60,25 +55,22 @@ public class InputEntry extends ListEntry {
 			}
 		}
 	}
-    
-
-    public String getUserInput() {
-        return userInput;
-    }
-
-    public String toString() {
-        return Localization.getLocalized(prompt) + (prompt.length() == 0 ? "" : ": ") + userInput;
-    }
-
-    public void render(Screen screen, int x, int y, boolean isSelected) {
-        Font.draw(toString(), screen, x, y, isValid() ? isSelected ? Color.GREEN : COL_UNSLCT : Color.RED);
-    }
-
-    public boolean isValid() {
-        return userInput.matches(regex);
-    }
-
-    public void setChangeListener(ChangeListener l) {
-        listener = l;
-    }
+	
+	public String getUserInput() { return userInput; }
+	
+	public String toString() {
+		return Localization.getLocalized(prompt) + (prompt.length() == 0 ? "" : ": ") + userInput;
+	}
+	
+	public void render(Screen screen, int x, int y, boolean isSelected) {
+		Font.draw(toString(), screen, x, y, isValid() ? isSelected ? Color.GREEN : COL_UNSLCT : Color.RED);
+	}
+	
+	public boolean isValid() {
+		return userInput.matches(regex);
+	}
+	
+	public void setChangeListener(ChangeListener l) {
+		listener = l;
+	}
 }

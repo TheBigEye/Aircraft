@@ -28,9 +28,7 @@ public class ToolItem extends Item {
 
     private Random random = new Random();
 
-    public static final String[] LEVEL_NAMES = { "Wood", "Rock", "Iron", "Gold", "Gem" }; // The names of the different
-                                                                                          // levels. A later level means
-                                                                                          // a stronger tool.
+    public static final String[] LEVEL_NAMES = { "Wood", "Rock", "Iron", "Gold", "Gem" }; // The names of the different levels. A later level means a stronger tool.
 
     public ToolType type; // Type of tool (Sword, hoe, axe, pickaxe, shovel)
     public int level; // Level of said tool
@@ -59,11 +57,11 @@ public class ToolItem extends Item {
     /** Gets the name of this tool (and it's type) as a display string. */
     @Override
     public String getDisplayName() {
-        if (!type.noLevel)
-            return " " + Localization.getLocalized(LEVEL_NAMES[level]) + " "
-                    + Localization.getLocalized(type.toString());
-        else
+        if (!type.noLevel) {
+            return " " + Localization.getLocalized(LEVEL_NAMES[level]) + " " + Localization.getLocalized(type.toString());
+        } else {
             return " " + Localization.getLocalized(type.toString());
+        }
     }
 
     public boolean isDepleted() {
@@ -72,7 +70,7 @@ public class ToolItem extends Item {
 
     /** You can attack mobs with tools. */
     public boolean canAttack() {
-        return type != ToolType.Shear && type != ToolType.Igniter;
+        return type != ToolType.Shears && type != ToolType.Igniter;
     }
 
     public boolean payDurability() {

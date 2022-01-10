@@ -26,7 +26,7 @@ public class EndGameDisplay extends Display {
 
 	private static final String[] scoredItems = { "Wood", "Cloth", "Slime", "Bone", "Arrow", "Gunpowder", "Antidious" };
 
-	String[] Titles = { "Game Over?", "Win?", "Win??", "Win???", "The End?" };
+	String[] Titles = { "Game Over", "Win?", "Win!!", "Nice!", "The End!" };
 
 	private static final int maxLen;
 	static {

@@ -11,9 +11,9 @@ import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
 
-public class Wool extends Tile {
+public class WoolTile extends Tile {
 
-    public Wool(String name, WoolType woolType) {
+    public WoolTile(String name, WoolType woolType) {
         super(name, woolType.sprite);
     }
 
@@ -21,7 +21,7 @@ public class Wool extends Tile {
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
-            if (tool.type == ToolType.Shear) {
+            if (tool.type == ToolType.Shears) {
                 if (player.payStamina(3 - tool.level) && tool.payDurability()) {
                     level.setTile(xt, yt, Tiles.get("hole"));
                     Sound.Tile_generic_hurt.play();

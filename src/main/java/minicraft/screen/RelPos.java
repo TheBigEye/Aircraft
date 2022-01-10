@@ -1,9 +1,9 @@
 package minicraft.screen;
 
-import minicraft.core.MyUtils;
 import minicraft.gfx.Dimension;
 import minicraft.gfx.Point;
 import minicraft.gfx.Rectangle;
+import minicraft.util.MyUtils;
 
 // stands for "Relative Position"
 public enum RelPos {

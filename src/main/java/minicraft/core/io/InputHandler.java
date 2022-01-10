@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -142,7 +143,7 @@ public class InputHandler implements KeyListener {
         keymap.put("DROP-STACK", "SHIFT-Q"); // drops the item in your hand, or selected in your inventory, entirely; even if it's a stack.
 
         // toggle inventory searcher bar
-        keymap.put("SEARCHER-BAR", "F");
+        keymap.put("SEARCHER-BAR", "SHIFT-F");
 
         // seek for next/previous match in inventory searcher bar
         keymap.put("PAGE-UP", "PAGE_UP");
@@ -158,6 +159,7 @@ public class InputHandler implements KeyListener {
         keymap.put("INFO", "SHIFT-I"); // toggle player stats display
 
         keymap.put("FULLSCREEN", "F11");
+        
     }
 
     public void resetKeyBindings() {
@@ -385,13 +387,15 @@ public class InputHandler implements KeyListener {
      */
 
     public ArrayList<String> getAllPressedKeys() {
-        ArrayList<String> keys = new ArrayList<>();
-        for (String keyname : keyboard.keySet().toArray(new String[0]))
-            if (keyboard.get(keyname).down) {
-                keys.add(keyname);
-            }
+        ArrayList<String> keyList = new ArrayList<>(keyboard.size());
 
-        return keys;
+        for (Entry<String, Key> entry : keyboard.entrySet()) {
+            if (entry.getValue().down) {
+                keyList.add(entry.getKey());
+            }
+        }
+
+        return keyList;
     }
 
     /// this gets a key from key text, w/o adding to the key list.

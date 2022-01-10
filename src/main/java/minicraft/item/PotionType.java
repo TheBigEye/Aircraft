@@ -47,6 +47,10 @@ public enum PotionType {
     Time(Color.get(1, 102), 1800), Lava(Color.get(1, 129, 37, 37), 7200), xLava(Color.get(1, 204, 59, 59), 14200),
     Shield(Color.get(1, 65, 65, 157), 5400), xShield(Color.get(1, 65, 65, 157), 10400),
     Haste(Color.get(1, 106, 37, 106), 4800),
+    
+    Blindness(Color.get(1, 48, 48, 128), 24000),
+    
+
 
     Escape(Color.get(1, 85, 62, 62), 0) {
         public boolean toggleEffect(Player player, boolean addEffect) {

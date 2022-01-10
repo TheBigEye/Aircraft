@@ -34,7 +34,9 @@ public class WorldSelectDisplay extends Display {
     }
 
     enum Action {
-        Copy("C", Color.get(1, 0, 0, 255)), Rename("R", Color.get(1, 0, 255, 0)), Delete("D", Color.get(1, 255, 0, 0));
+		Copy("C", Color.BLUE),
+		Rename("R", Color.GREEN),
+		Delete("D", Color.RED);
 
         public final String key;
         public final int color;
@@ -111,7 +113,14 @@ public class WorldSelectDisplay extends Display {
 
     @Override
     public void init(Display parent) {
-        super.init(parent instanceof TitleDisplay ? parent : new TitleDisplay());
+    	
+		if (parent instanceof WorldEditDisplay && parent.getParent() != null) {
+			// this should get original parent when World Select Display changed to World Edit Display
+			super.init(parent.getParent().getParent());
+		} else {
+			super.init(parent);
+		}
+		
         worldName = "";
         loadedWorld = true;
 

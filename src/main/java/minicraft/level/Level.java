@@ -308,6 +308,7 @@ public class Level {
                 add(aw, w / 2, h / 2, true);
             }
         }
+        
     }
 
     public void checkChestCount() {
@@ -1105,7 +1106,27 @@ public class Level {
 
         return contained;
     }
+    
+    
+	/**
+	 * Check if there is an entity on the specified tile.
+	 * @param x The x position of the tile.
+	 * @param y The y position of the tile
+	 * @return True if there is an entity on the tile.
+	 */
+	public final boolean isEntityOnTile(int x, int y) {
+		for (Entity e: getEntityArray()) {
+			int xt = e.x >> 4;
+			int yt = e.y >> 4;
 
+			if (xt == x && yt == y) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	
     public List < Entity > getEntitiesInRect(Rectangle area) {
         List < Entity > result = new ArrayList < > ();
         for (Entity e: getEntityArray()) {

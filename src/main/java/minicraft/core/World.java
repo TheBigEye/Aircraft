@@ -23,6 +23,7 @@ public class World extends Game {
     /// be the same length as the levels array, of
     /// course.
     public static final int[] idxToDepth = { -3, -2, -1, 0, 1, -4 };
+    									   // 0   1   2  3  4  5
     
     public static final int minLevelDepth, maxLevelDepth;
     static {

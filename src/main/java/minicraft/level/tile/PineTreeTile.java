@@ -16,6 +16,7 @@ import minicraft.item.Items;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
+import minicraft.screen.AchievementsDisplay;
 
 public class PineTreeTile extends Tile {
 
@@ -114,6 +115,9 @@ public class PineTreeTile extends Tile {
             level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Spruce wood"));
             level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Pine Cone"));
             level.setTile(x, y, Tiles.get("Snow"));
+            
+            AchievementsDisplay.setAchievement("minicraft.achievement.woodcutter", true);
+            
         } else {
             level.setData(x, y, damage);
         }

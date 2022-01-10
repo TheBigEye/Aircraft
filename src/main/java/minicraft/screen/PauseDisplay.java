@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import minicraft.core.Game;
-import minicraft.core.MyUtils;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.gfx.Color;
@@ -13,6 +12,7 @@ import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
+import minicraft.util.MyUtils;
 
 public class PauseDisplay extends Display {
 
@@ -25,7 +25,7 @@ public class PauseDisplay extends Display {
         entries.addAll(Arrays.asList(
         		new BlankEntry(), new SelectEntry("Return to Game", () -> Game.setMenu(null)),
                 new SelectEntry("Options", () -> Game.setMenu(new OptionsDisplay())),
-                new SelectEntry("Advancements", () -> Game.setMenu(new AdvancementsDisplay()))
+                new SelectEntry("Achievements", () -> Game.setMenu(new AchievementsDisplay()))
         ));
 
         if (!Game.isValidClient()) {

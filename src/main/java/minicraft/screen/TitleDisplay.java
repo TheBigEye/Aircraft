@@ -248,8 +248,8 @@ public class TitleDisplay extends Display {
 			// "Bye ben :(",
 
 			// Also play
-			"Also play Minicraft Plus!", "Also play InfinityTale!", "Also play Minicraft Deluxe!", "Also play Alecraft!",
-			"Also play Hackcraft!", "Also play MiniCrate!", "Also play MiniCraft Mob Overload!",
+			"Also play Minicraft Plus!", "Also play InfinityTale!", "Also play Minicraft Delux!", "Also play Alecraft!",
+			"Also play Hackcraft!", "Also play Minicrate!", "Also play Minicraft Mob Overload!",
 			"Also play Minitale!, oh right :(",
 
 			"Playing " + Game.BUILD + ", nice!", "Based in Minicraft+, nice!", "Updates always!, nice?",
@@ -330,7 +330,7 @@ public class TitleDisplay extends Display {
 			"011010000110110101101101?", "...zzz...",
 
 			// Tributes
-			"Rick May, 1940 - 2020",
+			"Rick May, 1940 - 2020", "The Constant",
 
 			"Something cool is coming ;)",
 

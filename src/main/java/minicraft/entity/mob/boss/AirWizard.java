@@ -254,7 +254,7 @@ public class AirWizard extends EnemyMob {
             Updater.notifyAll("Phase II");
             if (!beaten)
                 Updater.notifyAll("Phase II", 200);
-            beaten = false;
+            beaten = true;
 
         } else {
 

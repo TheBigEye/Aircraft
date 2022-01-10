@@ -244,7 +244,7 @@ public class Screen {
     private static final int[] dither = new int[] { 0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5 };
 
     /** Overlays the screen with pixels */
-    public void overlay(Screen screen2, int currentLevel, int xa, int ya) {
+    public void overlay(Screen screen, int currentLevel, int xa, int ya) {
         double tintFactor = 0;
         if (currentLevel >= 3 && currentLevel < 5) {
             int transTime = Updater.dayLength / 4;
@@ -270,7 +270,7 @@ public class Screen {
         } else if (currentLevel >= 5)
             tintFactor = -MAXDARK;
 
-        int[] oPixels = screen2.pixels; // The Integer array of pixels to overlay the screen with.
+        int[] oPixels = screen.pixels; // The Integer array of pixels to overlay the screen with.
         int i = 0; // current pixel on the screen
         for (int y = 0; y < h; y++) { // loop through height of screen
             for (int x = 0; x < w; x++) { // loop through width of screen
@@ -295,53 +295,83 @@ public class Screen {
         }
     }
 
-    @SuppressWarnings("static-access")
-    public void Blind(Screen screen2, int currentLevel, int xa, int ya) {
-        int[] oPixels = screen2.pixels;
+    public void Blind(Screen screen, int currentLevel, int xa, int ya) {
+    	
+        double tintFactor = 0;
+        if (currentLevel >= 3  && currentLevel < 5) {
+            int transTime = Updater.dayLength / 4;
+            double relTime = (Updater.tickCount % transTime) * 1.0 / transTime;
+
+            switch (Updater.getTime()) {
+            case Morning:
+                tintFactor = Updater.pastDay1 ? (1 - relTime) * MAXDARK : 0;
+                break;
+            case Day:
+                tintFactor = 0;
+                break;
+            case Evening:
+                tintFactor = relTime * MAXDARK;
+                break;
+            case Night:
+                tintFactor = MAXDARK;
+                break;
+            }
+            if (currentLevel > 3)
+                tintFactor -= (tintFactor < 10 ? tintFactor : 10);
+            tintFactor *= -1; // all previous operations were assuming this was a darkening factor.
+        } else if (currentLevel >= 5) {
+            //tintFactor = -MAXDARK;
+        }
+    	
+    	
+    	
+        int[] oPixels = screen.pixels;
         int i = 0;
-        for (int y = 0; y < this.h; y++) {
-            for (int x = 0; x < this.w; x++) {
-                if (oPixels[i] > 0 || yOffset != 0) {
-                    int intens2 = (255 - oPixels[i]) / 50;
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                if (oPixels[i] / 256 <= dither[((x + xa) & 3) + ((y + ya) & 3) * 4]) {
+                    int intens2 = (128 - oPixels[i]) / 128;
+                    
+                    if (currentLevel < 3) { // if in caves...
+
+                    	//pixels[i] = Color.createShadowCol(pixels[i], Math.min(intens2, 1), 0, Math.min(intens2, 1));
+
+                    } else {
+                        /// outside the caves, not being lit simply means being darker.
+                        pixels[i] = Color.tintColor(pixels[i], (int) tintFactor); // darkens the color one shade.
+                    }
+                
                     if (intens2 != 0) {
                         switch (intens2) {
                         case 1:
-                            this.pixels[i] = Color.createShadowCol(this.pixels[i], 0, Math.min(intens2, 1),
-                                    Math.min(intens2, 1));
+                            pixels[i] = Color.createShadowCol(pixels[i], Math.min(intens2, 1), 0, Math.min(intens2, 1));
                             break;
                         case 2:
-                            this.pixels[i] = Color.createShadowCol(this.pixels[i], 0, Math.min(intens2, 2),
-                                    Math.min(intens2, 2));
+                        	pixels[i] = Color.createShadowCol(pixels[i], Math.min(intens2, 1), 0, Math.min(intens2, 1));
                             break;
                         case 3:
-                            this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 1),
-                                    Math.min(intens2, 3), Math.min(intens2, 3));
+                        	pixels[i] = Color.createShadowCol(pixels[i], Math.min(intens2, 1), 0, Math.min(intens2, 1));
                             break;
                         case -4:
-                            this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 3),
-                                    Math.min(intens2, 3), Math.min(intens2, 3));
+                        	pixels[i] = Color.createShadowCol(pixels[i], Math.min(intens2, 1), 0, Math.min(intens2, 1));
                             break;
                         case -3:
-                            this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 3),
-                                    Math.min(intens2, 3), Math.min(intens2, 1));
+                        	pixels[i] = Color.createShadowCol(pixels[i], Math.min(intens2, 1), 0, Math.min(intens2, 1));
                             break;
                         case -2:
-                            this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 2),
-                                    Math.min(intens2, 2), 0);
+                        	pixels[i] = Color.createShadowCol(pixels[i], Math.min(intens2, 1), 0, Math.min(intens2, 1));
                             break;
                         case -1:
-                            this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.min(intens2, 1),
-                                    Math.min(intens2, 1), 0);
+                        	pixels[i] = Color.createShadowCol(pixels[i], Math.min(intens2, 1), 0, Math.min(intens2, 1));
                             break;
                         }
-                    } else {
-                        this.pixels[i] = Color.createShadowCol(this.pixels[i], Math.max(intens2 - 1, 0),
-                                Math.max(intens2, 0), Math.max(intens2, 0));
                     }
-                } else {
-                    this.pixels[i] = 0;
                 }
-                i++;
+                
+                // increase the tinting of all colors by 20.
+                pixels[i] = Color.tintColor(pixels[i], 20);
+                i++; // moves to the next pixel.
+                
             }
         }
     }

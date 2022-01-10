@@ -95,10 +95,10 @@ public class Updater extends Game {
         Info.getInfo();
         
         // move the player -1 level for testing...
-        if (isMode("creative") && input.getKey("MOVE-DOWN").clicked && input.getKey("F3").clicked ) {
+        if (isMode("creative") && input.getKey("SHIFT-S").clicked ) {
         	Game.setMenu(new LevelTransitionDisplay(-1));
         	
-        } else if (isMode("creative") && input.getKey("MOVE-UP").clicked && input.getKey("F3").clicked ){
+        } else if (isMode("creative") && input.getKey("SHIFT-W").clicked ){
         	Game.setMenu(new LevelTransitionDisplay(1));
         	
         }

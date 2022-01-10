@@ -225,12 +225,14 @@ public class AirWizardPhase2 extends EnemyMob {
 
         Sound.Mob_wizard_changePhase.play();
 
+        
+        
         if (!secondform) {
             level.add(new AirWizardPhase3(1), x, y);
             Updater.notifyAll("Phase III");
             if (!beaten)
                 Updater.notifyAll("Phase III", 200);
-            beaten = false;
+            beaten = true;
 
         } else {
             level.add(new AirWizardPhase3(true), x, y);

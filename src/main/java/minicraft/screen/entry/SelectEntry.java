@@ -37,6 +37,11 @@ public class SelectEntry extends ListEntry {
     void setText(String text) {
         this.text = text;
     }
+    
+
+	public String getText() {
+		return text; 
+	}
 
     @Override
     public void tick(InputHandler input) {
