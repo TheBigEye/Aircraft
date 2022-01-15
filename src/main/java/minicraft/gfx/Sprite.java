@@ -119,6 +119,14 @@ public class Sprite {
             renderRow(row, screen, x, y + row * 8, mirror, whiteTint);
         }
     }
+    
+    
+    public void render(Screen screen, int x, int y, int mirror, int whiteTint, int blackTint) {
+
+        for (int row = 0; row < spritePixels.length; row++) {
+            renderRow(row, screen, x, y + row * 8, mirror, whiteTint, blackTint);
+        }
+    }
 
     public void renderRow(int r, Screen screen, int x, int y) {
         Pixel[] row = spritePixels[r];
@@ -142,6 +150,13 @@ public class Sprite {
             } else {
                 screen.render(x + c * 8, y, row[c], whiteTint);
             }
+        }
+    }
+    
+    public void renderRow(int r, Screen screen, int x, int y, int mirror, int whiteTint, int blackTint) {
+        Pixel[] row = spritePixels[r];
+        for (int c = 0; c < row.length; c++) {
+                screen.render(x + c * 8, y, row[c], mirror, whiteTint, false, blackTint);
         }
     }
 

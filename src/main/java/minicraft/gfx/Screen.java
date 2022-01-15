@@ -119,7 +119,11 @@ public class Screen {
     }
 
     public void render(int xp, int yp, int tile, int bits, int sheet, int whiteTint, boolean fullbright) {
-        render(xp, yp, tile % 32, tile / 32, bits, sheet, whiteTint, fullbright);
+        render(xp, yp, tile % 32, tile / 32, bits, sheet, whiteTint, fullbright, -1);
+    }
+    
+    public void render(int xp, int yp, int tile, int bits, int sheet, int whiteTint, boolean fullbright, int blackTint) {
+        render(xp, yp, tile % 32, tile / 32, bits, sheet, -1, false, blackTint);
     }
 
     public void render(int xp, int yp, Pixel pixel) {
@@ -131,11 +135,19 @@ public class Screen {
     }
 
     public void render(int xp, int yp, Pixel pixel, int whiteTint, boolean fullbright) {
-        render(xp, yp, pixel.getX(), pixel.getY(), pixel.getMirror(), pixel.getIndex(), whiteTint, fullbright);
+        render(xp, yp, pixel.getX(), pixel.getY(), pixel.getMirror(), pixel.getIndex(), whiteTint, fullbright, -1);
+    }
+    
+    public void render(int xp, int yp, Pixel pixel, int whiteTint, boolean fullbright, int blackTint) {
+        render(xp, yp, pixel.getX(), pixel.getY(), pixel.getMirror(), pixel.getIndex(), whiteTint, fullbright, blackTint);
     }
 
     public void render(int xp, int yp, Pixel pixel, int bits, int whiteTint, boolean fullbright) {
-        render(xp, yp, pixel.getX(), pixel.getY(), bits, pixel.getIndex(), whiteTint, fullbright);
+        render(xp, yp, pixel.getX(), pixel.getY(), bits, pixel.getIndex(), whiteTint, fullbright, -1);
+    }
+    
+    public void render(int xp, int yp, Pixel pixel, int bits, int whiteTint, boolean fullbright, int blackTint) {
+        render(xp, yp, pixel.getX(), pixel.getY(), bits, pixel.getIndex(), whiteTint, fullbright, blackTint);
     }
 
     /**
@@ -143,7 +155,7 @@ public class Screen {
      * (SpriteSheet location), colors, and bits (for mirroring). I believe that xp
      * and yp refer to the desired position of the upper-left-most pixel.
      */
-    private void render(int xp, int yp, int xTile, int yTile, int bits, int sheet, int whiteTint, boolean fullbright) {
+    private void render(int xp, int yp, int xTile, int yTile, int bits, int sheet, int whiteTint, boolean fullbright, int blackTint) {
         // xp and yp are originally in level coordinates, but offset turns them to
         // screen coordinates.
         xp -= xOffset; // account for screen offset
@@ -194,9 +206,14 @@ public class Screen {
                         // Inserts the colors into the image
                         if (fullbright) {
                             pixels[position] = Color.WHITE; // mob color when hit
-                        } else {
-                            pixels[position] = Color.upgrade(col);
-                        }
+						} else {
+							if (blackTint != -1) {
+								
+								pixels[position] = Color.BLACK;
+							} else {
+								pixels[position] = Color.upgrade(col);
+							}
+						}
                     }
                 }
             }

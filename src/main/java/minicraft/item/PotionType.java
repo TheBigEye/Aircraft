@@ -10,7 +10,6 @@ public enum PotionType {
     None(Color.get(1, 22, 22, 137), 0),
 
     Speed(Color.get(1, 23, 46, 23), 4200) {
-        @SuppressWarnings("static-access")
         public boolean toggleEffect(Player player, boolean addEffect) {
             player.moveSpeed += (double) (addEffect ? 1 : (player.moveSpeed > 1 ? -1 : 0));
             return true;
@@ -18,7 +17,6 @@ public enum PotionType {
     },
 
     xSpeed(Color.get(1, 48, 68, 34), 6200) {
-        @SuppressWarnings("static-access")
         public boolean toggleEffect(Player player, boolean addEffect) {
             player.moveSpeed += (double) (addEffect ? 1 : (player.moveSpeed > 1 ? -1 : 0));
             return true;
@@ -44,14 +42,15 @@ public enum PotionType {
         }
     },
 
-    Time(Color.get(1, 102), 1800), Lava(Color.get(1, 129, 37, 37), 7200), xLava(Color.get(1, 204, 59, 59), 14200),
-    Shield(Color.get(1, 65, 65, 157), 5400), xShield(Color.get(1, 65, 65, 157), 10400),
+    Time(Color.get(1, 102), 1800),
+    Lava(Color.get(1, 129, 37, 37), 7200),
+    xLava(Color.get(1, 204, 59, 59), 14200),
+    Shield(Color.get(1, 65, 65, 157), 5400),
+    xShield(Color.get(1, 65, 65, 157), 10400),
     Haste(Color.get(1, 106, 37, 106), 4800),
     
-    Blindness(Color.get(1, 48, 48, 128), 24000),
+    Blindness(Color.get(1, 48, 48, 128), 22000),
     
-
-
     Escape(Color.get(1, 85, 62, 62), 0) {
         public boolean toggleEffect(Player player, boolean addEffect) {
             if (addEffect) {
@@ -70,9 +69,9 @@ public enum PotionType {
 
                 World.scheduleLevelChange(depthDiff, () -> {
                     Level plevel = World.levels[World.lvlIdx(playerDepth + depthDiff)];
-                    if (plevel != null && !plevel.getTile(player.x >> 4, player.y >> 4).mayPass(plevel, player.x >> 4,
-                            player.y >> 4, player))
+                    if (plevel != null && !plevel.getTile(player.x >> 4, player.y >> 4).mayPass(plevel, player.x >> 4, player.y >> 4, player)) {
                         player.findStartPos(plevel, false);
+                    }
                 });
             }
             return true;

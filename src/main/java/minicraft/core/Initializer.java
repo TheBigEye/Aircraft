@@ -127,12 +127,12 @@ public class Initializer extends Game {
 
                 unprocessed--;
             }
-
-            try {
-                Thread.sleep(2); // makes a small pause for 2 milliseconds
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            
+			try {
+				Thread.sleep(2); // Makes a small pause for 2 milliseconds
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 
             if ((now - lastRender) / 1.0E9 > 1.0 / MAX_FPS) {
                 frames++;

@@ -40,9 +40,9 @@ public class LevelTransitionDisplay extends Display {
                 int dd = (y + x % 2 * 2 + x / 3) - time * 2; // Used as part of the positioning.
                 if (dd < 0 && dd > -140) {
                     if (dir > 0) {
-                        screen.render(x * 8, y * 8, 30 + 30 * 32, 0, 3); // If the direction is upwards then render the squares going up
+                        screen.render(x * 8, y * 8, 12 + 24 * 32, 0, 3); // If the direction is upwards then render the squares going up
                     } else {
-                        screen.render(x * 8, Screen.h - y * 8 - 8, 30 + 30 * 32, 0, 3); // If the direction is negative, then the squares will go down.
+                        screen.render(x * 8, Screen.h - y * 8 - 8, 12 + 24 * 32, 0, 3); // If the direction is negative, then the squares will go down.
                     }
                 }
             }

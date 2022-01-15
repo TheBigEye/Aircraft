@@ -198,7 +198,7 @@ public class Renderer extends Game {
             level.renderLight(lightScreen, xScroll, yScroll, brightnessMultiplier); // Finds (and renders) all the light from objects (like the player, lanterns, and lava).
             screen.overlay(lightScreen, currentLevel, xScroll, yScroll); // Overlays the light screen over the main screen.
 
-            if (player != null && player.potioneffects.containsKey(PotionType.Blindness) && currentLevel == 3 || currentLevel == 4) {
+            if (player != null && player.potioneffects.containsKey(PotionType.Blindness) && currentLevel == 3 || player != null && player.potioneffects.containsKey(PotionType.Blindness) && currentLevel == 4) {
                 screen.Blind(lightScreen, currentLevel, xScroll, yScroll);
             }
         }

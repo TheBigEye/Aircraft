@@ -125,15 +125,16 @@ public class ItemEntity extends Entity implements ClientTickable {
         return false; // mobs cannot block this
     }
 
-    @Override
-    public void render(Screen screen) {
-        /* this first part is for the blinking effect */
-        if (time >= lifeTime - 6 * 20) {
-            if (time / 6 % 2 == 0)
-                return;
-        }
-        item.sprite.render(screen, x - 4, y - 4 - (int) (zz));
-    }
+	@Override
+	public void render(Screen screen) {
+		/* This first part is for the blinking effect */
+		if (time >= lifeTime - 6 * 20) {
+			if (time / 6 % 2 == 0) return;
+		}
+		
+		item.sprite.render(screen, x-4, y - 4, 4, -1, 0); // item shadow uses blackTint
+		item.sprite.render(screen, x - 4, y - 4 - (int)(zz));
+	}
 
     @Override
     protected void touchedBy(Entity entity) {

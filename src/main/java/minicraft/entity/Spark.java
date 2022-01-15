@@ -123,7 +123,8 @@ public class Spark extends Entity {
             randmirror = random.nextInt(4);
 
         }
-
+        
+		screen.render(x - 4, y - 4 + 2, 0 + 20 * 32, randmirror, 2, -1, false, 0); // renders the shadow on the ground
         screen.render(x - 4, y - 4 - 2, 0 + 20 * 32, randmirror, 2); // renders the spark
     }
 

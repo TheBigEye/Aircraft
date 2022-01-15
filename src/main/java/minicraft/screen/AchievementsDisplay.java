@@ -116,10 +116,12 @@ public class AchievementsDisplay extends Display {
         a.setUnlocked(unlocked);
 
         // Add or subtract from score
-        if (unlocked)
+        if (unlocked) {
             achievementScore += a.score;
-        else
+            
+        } else {
             achievementScore -= a.score;
+        }
 
         // Save the new list of achievements stored in memory.
         if (save) new Save();
