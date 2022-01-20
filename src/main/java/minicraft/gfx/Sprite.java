@@ -121,10 +121,10 @@ public class Sprite {
     }
     
     
-    public void render(Screen screen, int x, int y, int mirror, int whiteTint, int blackTint) {
+    public void render(Screen screen, int x, int y, int mirror, int whiteTint, int color) {
 
         for (int row = 0; row < spritePixels.length; row++) {
-            renderRow(row, screen, x, y + row * 8, mirror, whiteTint, blackTint);
+            renderRow(row, screen, x, y + row * 8, mirror, whiteTint, color);
         }
     }
 
@@ -153,10 +153,10 @@ public class Sprite {
         }
     }
     
-    public void renderRow(int r, Screen screen, int x, int y, int mirror, int whiteTint, int blackTint) {
+    public void renderRow(int r, Screen screen, int x, int y, int mirror, int whiteTint, int color) {
         Pixel[] row = spritePixels[r];
         for (int c = 0; c < row.length; c++) {
-                screen.render(x + c * 8, y, row[c], mirror, whiteTint, false, blackTint);
+                screen.render(x + c * 8, y, row[c], mirror, whiteTint, false, color);
         }
     }
 

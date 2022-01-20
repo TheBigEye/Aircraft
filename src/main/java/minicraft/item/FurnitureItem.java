@@ -51,30 +51,30 @@ public class FurnitureItem extends Item {
         // items.add(new FurnitureItem(new CommandBlock()));
 
         // items.add(new FurnitureItem(new Spawner(new KingZombie(1))));
-        items.add(new FurnitureItem(new Spawner(new Cow())));
-        items.add(new FurnitureItem(new Spawner(new Pig())));
-        items.add(new FurnitureItem(new Spawner(new Sheep())));
-        items.add(new FurnitureItem(new Spawner(new Goat())));
-        items.add(new FurnitureItem(new Spawner(new Chicken())));
-        items.add(new FurnitureItem(new Spawner(new GuiMan())));
-        items.add(new FurnitureItem(new Spawner(new Cat())));
-        items.add(new FurnitureItem(new Spawner(new Cleric())));
-        items.add(new FurnitureItem(new Spawner(new Librarian())));
-        items.add(new FurnitureItem(new Spawner(new Golem())));
-        items.add(new FurnitureItem(new Spawner(new Slime(1))));
-        items.add(new FurnitureItem(new Spawner(new Zombie(1))));
-        items.add(new FurnitureItem(new Spawner(new Creeper(1))));
-        items.add(new FurnitureItem(new Spawner(new Skeleton(1))));
-        items.add(new FurnitureItem(new Spawner(new Snake(1))));
-        items.add(new FurnitureItem(new Spawner(new Knight(1))));
-        items.add(new FurnitureItem(new Spawner(new OldGolem(1))));
+        items.add(new FurnitureItem(new Spawner(new Cow()), 1, 27));
+        items.add(new FurnitureItem(new Spawner(new Pig()), 2, 27));
+        items.add(new FurnitureItem(new Spawner(new Sheep()), 3, 27));
+        items.add(new FurnitureItem(new Spawner(new Goat()), 4, 27));
+        items.add(new FurnitureItem(new Spawner(new Chicken()), 5, 27));
+        items.add(new FurnitureItem(new Spawner(new GuiMan()), 6, 27));
+        items.add(new FurnitureItem(new Spawner(new Cat()), 7, 27));
+        items.add(new FurnitureItem(new Spawner(new Cleric()), 8, 27));
+        items.add(new FurnitureItem(new Spawner(new Librarian()), 9, 27));
+        items.add(new FurnitureItem(new Spawner(new Golem()), 10, 27));
+        items.add(new FurnitureItem(new Spawner(new Slime(1)), 11, 27));
+        items.add(new FurnitureItem(new Spawner(new Zombie(1)), 12, 27));
+        items.add(new FurnitureItem(new Spawner(new Creeper(1)), 13, 27));
+        items.add(new FurnitureItem(new Spawner(new Skeleton(1)), 14, 27));
+        items.add(new FurnitureItem(new Spawner(new Snake(1)), 15, 27));
+        items.add(new FurnitureItem(new Spawner(new Knight(1)), 16, 27));
+        items.add(new FurnitureItem(new Spawner(new OldGolem(1)), 17, 27));
 
         // Air Bosses
-        items.add(new FurnitureItem(new Spawner(new AirWizard(false))));
+        items.add(new FurnitureItem(new Spawner(new AirWizard(false)), 18, 27));
 
         // Principal Bosses
-        items.add(new FurnitureItem(new Spawner(new EyeQueen(1))));
-        items.add(new FurnitureItem(new Spawner(new Keeper(1))));
+        items.add(new FurnitureItem(new Spawner(new EyeQueen(1)), 19, 27));
+        items.add(new FurnitureItem(new Spawner(new Keeper(1)), 20, 27));
 
         items.add(new FurnitureItem(new Chest()));
         items.add(new FurnitureItem(new DungeonChest(false, true)));
@@ -101,6 +101,7 @@ public class FurnitureItem extends Item {
 
     public Furniture furniture; // the furniture of this item
     public boolean placed; // value if the furniture has been placed or not.
+	private int sx, sy; // Sprite position.
 
     private static int getSpritePos(int fpos) {
         int x = fpos % 32;
@@ -113,6 +114,14 @@ public class FurnitureItem extends Item {
         this.furniture = furniture; // Assigns the furniture to the item
         placed = false;
     }
+    
+	public FurnitureItem(Furniture furniture, int sx , int sy) {
+		super(furniture.name, new Sprite(sx, sy, 1, 1, 0)); // get the sprite directly
+		this.sx = sx;
+		this.sy = sy;
+		this.furniture = furniture;
+		placed = false;
+	}
 
     /** Determines if you can attack enemies with furniture (you can't) */
     public boolean canAttack() {
@@ -145,7 +154,13 @@ public class FurnitureItem extends Item {
         return placed;
     }
 
-    public FurnitureItem clone() {
-        return new FurnitureItem(furniture.clone());
-    }
+	public FurnitureItem clone() {
+		// in case the item is a spawner, it will use the sprite position (sx, sy)
+		// instead if it is not, the constructor will obtain said sprite
+		if (furniture.name.contains("Spawner")) {
+			return new FurnitureItem(furniture.clone(), sx, sy);
+		} else {
+			return new FurnitureItem(furniture.clone());
+		}
+	}
 }

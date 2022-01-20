@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
-import minicraft.core.io.Settings;
 import minicraft.gfx.Color;
 import minicraft.gfx.Font;
 import minicraft.gfx.Screen;
@@ -181,12 +180,6 @@ public class WorldSelectDisplay extends Display {
         super.render(screen);
 
         int sel = menus[0].getSelection();
-
-        Settings.getEntry("size");
-        Settings.getEntry("mode");
-        Settings.getEntry("theme");
-        Settings.getEntry("type");
-        WorldSelectDisplay.getWorldName();
 
         if (sel >= 0 && sel < worldVersions.size()) {
             Version version = worldVersions.get(sel);

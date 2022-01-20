@@ -119,11 +119,11 @@ public class Screen {
     }
 
     public void render(int xp, int yp, int tile, int bits, int sheet, int whiteTint, boolean fullbright) {
-        render(xp, yp, tile % 32, tile / 32, bits, sheet, whiteTint, fullbright, -1);
+        render(xp, yp, tile % 32, tile / 32, bits, sheet, whiteTint, fullbright, 0);
     }
     
-    public void render(int xp, int yp, int tile, int bits, int sheet, int whiteTint, boolean fullbright, int blackTint) {
-        render(xp, yp, tile % 32, tile / 32, bits, sheet, -1, false, blackTint);
+    public void render(int xp, int yp, int tile, int bits, int sheet, int whiteTint, boolean fullbright, int color) {
+        render(xp, yp, tile % 32, tile / 32, bits, sheet, -1, false, color);
     }
 
     public void render(int xp, int yp, Pixel pixel) {
@@ -135,19 +135,19 @@ public class Screen {
     }
 
     public void render(int xp, int yp, Pixel pixel, int whiteTint, boolean fullbright) {
-        render(xp, yp, pixel.getX(), pixel.getY(), pixel.getMirror(), pixel.getIndex(), whiteTint, fullbright, -1);
+        render(xp, yp, pixel.getX(), pixel.getY(), pixel.getMirror(), pixel.getIndex(), whiteTint, fullbright, 0);
     }
     
-    public void render(int xp, int yp, Pixel pixel, int whiteTint, boolean fullbright, int blackTint) {
-        render(xp, yp, pixel.getX(), pixel.getY(), pixel.getMirror(), pixel.getIndex(), whiteTint, fullbright, blackTint);
+    public void render(int xp, int yp, Pixel pixel, int whiteTint, boolean fullbright, int color) {
+        render(xp, yp, pixel.getX(), pixel.getY(), pixel.getMirror(), pixel.getIndex(), whiteTint, fullbright, color);
     }
 
     public void render(int xp, int yp, Pixel pixel, int bits, int whiteTint, boolean fullbright) {
-        render(xp, yp, pixel.getX(), pixel.getY(), bits, pixel.getIndex(), whiteTint, fullbright, -1);
+        render(xp, yp, pixel.getX(), pixel.getY(), bits, pixel.getIndex(), whiteTint, fullbright, 0);
     }
     
-    public void render(int xp, int yp, Pixel pixel, int bits, int whiteTint, boolean fullbright, int blackTint) {
-        render(xp, yp, pixel.getX(), pixel.getY(), bits, pixel.getIndex(), whiteTint, fullbright, blackTint);
+    public void render(int xp, int yp, Pixel pixel, int bits, int whiteTint, boolean fullbright, int color) {
+        render(xp, yp, pixel.getX(), pixel.getY(), bits, pixel.getIndex(), whiteTint, fullbright, color);
     }
 
     /**
@@ -155,7 +155,7 @@ public class Screen {
      * (SpriteSheet location), colors, and bits (for mirroring). I believe that xp
      * and yp refer to the desired position of the upper-left-most pixel.
      */
-    private void render(int xp, int yp, int xTile, int yTile, int bits, int sheet, int whiteTint, boolean fullbright, int blackTint) {
+    private void render(int xp, int yp, int xTile, int yTile, int bits, int sheet, int whiteTint, boolean fullbright, int color) {
         // xp and yp are originally in level coordinates, but offset turns them to
         // screen coordinates.
         xp -= xOffset; // account for screen offset
@@ -190,9 +190,8 @@ public class Screen {
                 if (mirrorX)
                     xs = 7 - x; // Reverses the pixel for a mirroring effect
 
-                int col = currentSheet.pixels[toffs + xs + ys * currentSheet.width]; // Gets the color of the current
-                                                                                     // pixel from the value stored in
-                                                                                     // the sheet.
+                // Gets the color of the current pixel from the value stored in the sheet.
+                int col = currentSheet.pixels[toffs + xs + ys * currentSheet.width];
 
                 boolean isTransparent = (col >> 24 == 0);
 
@@ -207,9 +206,8 @@ public class Screen {
                         if (fullbright) {
                             pixels[position] = Color.WHITE; // mob color when hit
 						} else {
-							if (blackTint != -1) {
-								
-								pixels[position] = Color.BLACK;
+							if (color != 0) {
+								pixels[position] = color;
 							} else {
 								pixels[position] = Color.upgrade(col);
 							}

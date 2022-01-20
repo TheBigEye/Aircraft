@@ -1053,8 +1053,15 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             yo += 4; // y offset is moved up by 4
 
             if (level.getTile(x / 16, y / 16) == Tiles.get("water")) {
-                screen.render(xo + 0, yo + 3, 5 + 2 * 32, 0, 3); // Render the water graphic
-                screen.render(xo + 8, yo + 3, 5 + 2 * 32, 1, 3); // Render the mirrored water graphic to the right.
+            	
+				// animation effect
+			    if (tickTime / 8 % 2 == 0) {
+			    	screen.render(xo + 0, yo + 3, 5 + 2 * 32, 0, 3); // Render the water graphic
+			    	screen.render(xo + 8, yo + 3, 5 + 2 * 32, 1, 3); // Render the mirrored water graphic to the right.
+			    } else {
+			    	screen.render(xo + 0, yo + 3, 13 + 2 * 32, 0, 3);
+			    	screen.render(xo + 8, yo + 3, 13 + 2 * 32, 1, 3);
+			    }
 
                 int randX = rnd.nextInt(10);
                 int randY = rnd.nextInt(9);
@@ -1062,8 +1069,14 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                 level.add(new SplashParticle(x - 8 + randX, y - 8 + randY)); // Add water particles
 
             } else if (level.getTile(x / 16, y / 16) == Tiles.get("lava")) {
-                screen.render(xo + 0, yo + 3, 6 + 2 * 32, 1, 3); // Render the water graphic
-                screen.render(xo + 8, yo + 3, 6 + 2 * 32, 0, 3); // Render the mirrored lava graphic to the right.
+            	
+			    if (tickTime / 8 % 2 == 0) {
+			    	screen.render(xo + 0, yo + 3, 6 + 2 * 32, 1, 3); // Render the water graphic
+			    	screen.render(xo + 8, yo + 3, 6 + 2 * 32, 0, 3); // Render the mirrored lava graphic to the right.
+			    } else {
+			    	screen.render(xo + 0, yo + 3, 14 + 2 * 32, 1, 3); // Render the water graphic
+			    	screen.render(xo + 8, yo + 3, 14 + 2 * 32, 0, 3); // Render the mirrored lava graphic to the right.
+			    }
 
                 int randX = rnd.nextInt(10);
                 int randY = rnd.nextInt(9);

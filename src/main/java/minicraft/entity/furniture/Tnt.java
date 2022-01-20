@@ -19,6 +19,7 @@ import minicraft.item.Item;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
+import minicraft.screen.AchievementsDisplay;
 
 public class Tnt extends Furniture implements ActionListener {
 	private static int FUSE_TIME = 90;
@@ -98,6 +99,8 @@ public class Tnt extends Furniture implements ActionListener {
 				levelSave = level;
 				explodeTimer.start();
 				super.remove();
+				
+				AchievementsDisplay.setAchievement("minicraft.achievement.demolition", true);
 			}
 		}
 	}

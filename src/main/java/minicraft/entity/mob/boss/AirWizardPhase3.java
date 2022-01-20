@@ -15,6 +15,7 @@ import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
 import minicraft.item.Items;
 import minicraft.saveload.Save;
+import minicraft.screen.AchievementsDisplay;
 
 public class AirWizardPhase3 extends EnemyMob {
     private static MobSprite[][][] sprites;
@@ -225,12 +226,18 @@ public class AirWizardPhase3 extends EnemyMob {
 
         if (!secondform) {
             Updater.notifyAll("Well played!");
+            
+			// Achievement:
+			AchievementsDisplay.setAchievement("minicraft.achievement.airwizard", true);
             if (!beaten)
                 Updater.notifyAll("Well played!", 200);
             beaten = true;
 
         } else {
             Updater.notifyAll("Well played!, again");
+
+			// Second Achievement:
+			AchievementsDisplay.setAchievement("minicraft.achievement.second_airwizard", true);
             if (!(boolean) Settings.get("unlockedskin"))
                 Updater.notifyAll("A costume lies on the ground...", -200);
             Settings.set("unlockedskin", true);

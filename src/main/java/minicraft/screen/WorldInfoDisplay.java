@@ -21,8 +21,7 @@ public class WorldInfoDisplay extends Display {
                         new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(),
                         new BlankEntry(), Settings.getEntry("mode"), new SelectEntry("Open World Folder", () -> {
                             try {
-                                Desktop.getDesktop()
-                                        .open(new File(Game.gameDir + "/saves/" + WorldSelectDisplay.getWorldName()));
+                                Desktop.getDesktop().open(new File(Game.gameDir + "/saves/" + WorldSelectDisplay.getWorldName()));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
