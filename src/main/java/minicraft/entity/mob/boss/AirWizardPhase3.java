@@ -6,7 +6,7 @@ import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
-import minicraft.entity.Spark3;
+import minicraft.entity.Spark;
 import minicraft.entity.mob.EnemyMob;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Color;
@@ -100,13 +100,9 @@ public class AirWizardPhase3 extends EnemyMob {
         if (attackTime > 0) {
             xa = ya = 0;
             attackTime--; // attackTime will decrease by 7% every time.
-            double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1); // Assigns a local direction variable from the
-                                                                       // attack time.
-            double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2; // Speed is dependent on the attackType. (higher
-                                                                        // attackType, faster speeds)
-            level.add(new Spark3(this, Math.cos(dir) * speed, Math.sin(dir) * speed)); // Adds a spark entity with the
-                                                                                       // cosine and sine of dir times
-                                                                                       // speed.
+            double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1); // Assigns a local direction variable from the attack time.
+            double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2; // Speed is dependent on the attackType. (higher attackType, faster speeds)
+            level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 3)); // Adds a spark entity with the cosine and sine of dir times speed.
             return; // Skips the rest of the code (attackTime was > 0; ie we're attacking.)
         }
 
@@ -121,16 +117,12 @@ public class AirWizardPhase3 extends EnemyMob {
                 xa = 0; // X Aceleration
                 ya = 0; // Y Aceleration
 
-                // These four statements basically just find which direction is away from the
-                // player:
-                if (xd < 0)
-                    xa = +1;
-                if (xd > 0)
-                    xa = -1;
-                if (yd < 0)
-                    ya = +1;
-                if (yd > 0)
-                    ya = -1;
+                // These four statements basically just find which direction is away from the player:
+                if (xd < 0) xa = +1;
+                if (xd > 0) xa = -1;
+                if (yd < 0) ya = +1;
+                if (yd > 0) ya = -1;
+                
             } else if (xd * xd + yd * yd > 16 * 16 * 15 * 15) { // 15 squares away
 
                 /// Drags the airwizard to the player, maintaining relative position.
@@ -145,27 +137,7 @@ public class AirWizardPhase3 extends EnemyMob {
         if (player != null && randomWalkTime == 0) {
             int xd = player.x - x; // x dist to player
             int yd = player.y - y; // y dist to player
-            if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) { // If a
-                                                                                                                // random
-                                                                                                                // number,
-                                                                                                                // 0-3,
-                                                                                                                // equals
-                                                                                                                // 0,
-                                                                                                                // and
-                                                                                                                // the
-                                                                                                                // player
-                                                                                                                // is
-                                                                                                                // less
-                                                                                                                // than
-                                                                                                                // 50
-                                                                                                                // blocks
-                                                                                                                // away,
-                                                                                                                // and
-                                                                                                                // attackDelay
-                                                                                                                // and
-                                                                                                                // attackTime
-                                                                                                                // equal
-                                                                                                                // 0...
+            if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) {
                 attackDelay = 60 * 2; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
             }
         }

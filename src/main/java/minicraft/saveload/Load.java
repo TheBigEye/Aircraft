@@ -28,8 +28,6 @@ import minicraft.entity.Entity;
 import minicraft.entity.Fireball;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.Spark;
-import minicraft.entity.Spark2;
-import minicraft.entity.Spark3;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.furniture.Chest;
 import minicraft.entity.furniture.Crafter;
@@ -879,31 +877,18 @@ public class Load {
 		} else if (entityName.equals("Spark") && !isLocalSave) {
 			int awID = Integer.parseInt(info.get(2));
 			Entity sparkOwner = Network.getEntity(awID);
+			
 			if (sparkOwner instanceof AirWizard) {
-				newEntity = new Spark((AirWizard) sparkOwner, x, y);
+				newEntity = new Spark((AirWizard) sparkOwner, x, y, 1);
+			
+			} else if  (sparkOwner instanceof AirWizardPhase2) {
+				newEntity = new Spark((AirWizardPhase2) sparkOwner, x, y, 2);
+				
+			} else if (sparkOwner instanceof AirWizardPhase3) {
+				newEntity = new Spark((AirWizardPhase3) sparkOwner, x, y, 3);
+				
 			} else {
 				System.err.println("failed to load spark; owner id doesn't point to a correct entity");
-				return null;
-			}
-
-		} else if (entityName.equals("Spark2") && !isLocalSave) {
-			int awID = Integer.parseInt(info.get(2));
-			Entity sparkOwner = Network.getEntity(awID);
-			if (sparkOwner instanceof AirWizardPhase2) {
-				newEntity = new Spark2((AirWizardPhase2) sparkOwner, x, y);
-			} else {
-				System.err.println("failed to load spark type 2; owner id doesn't point to a correct entity");
-				return null;
-			}
-
-		} else if (entityName.equals("Spark3") && !isLocalSave) {
-			int awID = Integer.parseInt(info.get(2));
-			Entity sparkOwner = Network.getEntity(awID);
-			
-			if (sparkOwner instanceof AirWizardPhase3) {
-				newEntity = new Spark3((AirWizardPhase3) sparkOwner, x, y);
-			} else {
-				System.err.println("failed to load spark type 3; owner id doesn't point to a correct entity");
 				return null;
 			}
 

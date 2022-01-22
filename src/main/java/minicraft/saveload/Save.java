@@ -21,8 +21,6 @@ import minicraft.entity.Arrow;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.Spark;
-import minicraft.entity.Spark2;
-import minicraft.entity.Spark3;
 import minicraft.entity.furniture.Chest;
 import minicraft.entity.furniture.Crafter;
 import minicraft.entity.furniture.DeathChest;
@@ -383,7 +381,7 @@ public class Save {
 		// complications.
 
 		// wirte these only when sending a world, not writing
-		if (isLocalSave && (e instanceof ItemEntity || e instanceof Arrow || e instanceof RemotePlayer || e instanceof Spark || e instanceof Spark2 || e instanceof Spark3 || e instanceof Particle)) {
+		if (isLocalSave && (e instanceof ItemEntity || e instanceof Arrow || e instanceof RemotePlayer || e instanceof Spark || e instanceof Particle)) {
 			// it. (RemotePlayers are saved separately, when their
 			// info is received.)
 			return "";
@@ -452,12 +450,6 @@ public class Save {
 			}
 			if (e instanceof Spark) {
 				extradata.append(":").append(((Spark) e).getData());
-			}
-			if (e instanceof Spark2) {
-				extradata.append(":").append(((Spark2) e).getData());
-			}
-			if (e instanceof Spark3) {
-				extradata.append(":").append(((Spark3) e).getData());
 			}
 			if (e instanceof TextParticle) {
 				extradata.append(":").append(((TextParticle) e).getData());

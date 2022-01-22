@@ -84,21 +84,21 @@ public class AirWizard extends EnemyMob {
             attackDelay--;
             if (attackDelay == 0) {
                 // attackType = 0; // attack type is set to 0, as the default.
-                if (health < maxHealth / 2)
+                if (health < maxHealth / 2) {
                     attackType = 1; // if at 1000 health (50%) or lower, attackType = 1
-                if (health < maxHealth / 10)
+                }
+                if (health < maxHealth / 10) {
                     attackType = 2; // if at 200 health (10%) or lower, attackType = 2
+                }
+                
                 if (random.nextInt(2) == 0) {
-                    attackTime = 80 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default
-                                                            // 60 ticks/sec)
+                    attackTime = 80 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default 60 ticks/sec)
                 }
                 if (random.nextInt(3) == 1) {
-                    attackTime = 50 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default
-                                                            // 60 ticks/sec)
+                    attackTime = 50 * (secondform ? 3 : 2); 
                 }
                 if (random.nextInt(3) == 2) {
-                    attackTime = 30 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default
-                                                            // 60 ticks/sec)
+                    attackTime = 30 * (secondform ? 3 : 2);
                 }
             }
             return; // skips the rest of the code (attackDelay must have been > 0)
@@ -107,13 +107,9 @@ public class AirWizard extends EnemyMob {
         if (attackTime > 0) {
             xa = ya = 0;
             attackTime *= 0.92; // attackTime will decrease by 7% every time.
-            double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1); // assigns a local direction variable from the
-                                                                       // attack time.
-            double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2; // speed is dependent on the attackType. (higher
-                                                                        // attackType, faster speeds)
-            level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed)); // adds a spark entity with the
-                                                                                      // cosine and sine of dir times
-                                                                                      // speed.
+            double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1); // assigns a local direction variable from the attack time.
+            double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2; // speed is dependent on the attackType. (higher attackType, faster speeds)
+            level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 1)); // adds a spark entity with the cosine and sine of dir times speed.
             Sound.Particle_spark_spawn.play();
             return; // skips the rest of the code (attackTime was > 0; ie we're attacking.)
         }
@@ -151,27 +147,7 @@ public class AirWizard extends EnemyMob {
         if (player != null && randomWalkTime == 0) {
             int xd = player.x - x; // x dist to player
             int yd = player.y - y; // y dist to player
-            if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) { // if a
-                                                                                                                // random
-                                                                                                                // number,
-                                                                                                                // 0-3,
-                                                                                                                // equals
-                                                                                                                // 0,
-                                                                                                                // and
-                                                                                                                // the
-                                                                                                                // player
-                                                                                                                // is
-                                                                                                                // less
-                                                                                                                // than
-                                                                                                                // 50
-                                                                                                                // blocks
-                                                                                                                // away,
-                                                                                                                // and
-                                                                                                                // attackDelay
-                                                                                                                // and
-                                                                                                                // attackTime
-                                                                                                                // equal
-                                                                                                                // 0...
+            if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) {
                 attackDelay = 60 * 4; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
             }
         }

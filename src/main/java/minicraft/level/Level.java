@@ -22,8 +22,6 @@ import minicraft.entity.ClientTickable;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.Spark;
-import minicraft.entity.Spark2;
-import minicraft.entity.Spark3;
 import minicraft.entity.furniture.Chest;
 import minicraft.entity.furniture.DungeonChest;
 import minicraft.entity.furniture.Spawner;
@@ -129,8 +127,6 @@ public class Level {
     private final Object entityLock = new Object();
     private final Set < Entity > entities = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the entities in the world
     private final Set < Spark > sparks = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks in the world
-    private final Set < Spark2 > sparks2 = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks2 in the world
-    private final Set < Spark3 > sparks3 = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks3 in the world
     private final Set < Player > players = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the players in the world
     private final List < Entity > entitiesToAdd = new ArrayList < > (); // entities that will be added to the level on next tick, are stored here. This is for the sake of multithreading, optimization. (hopefully)
     private final List < Entity > entitiesToRemove = new ArrayList < > (); // entities that will be removed from the level on next tick are stored here. This is for the sake of multithreading optimization. (hopefully)
@@ -139,7 +135,7 @@ public class Level {
 	private static Comparator<Entity> spriteSorter = Comparator.comparingInt(e -> e.y);
 
     public Entity[] getEntitiesToSave() {
-        Entity[] allEntities = new Entity[entities.size() + sparks.size() + sparks2.size() + sparks3.size() + entitiesToAdd.size()];
+        Entity[] allEntities = new Entity[entities.size() + sparks.size() + entitiesToAdd.size()];
         Entity[] toAdd = entitiesToAdd.toArray(new Entity[entitiesToAdd.size()]);
         Entity[] current = getEntityArray();
         System.arraycopy(current, 0, allEntities, 0, current.length);
@@ -437,25 +433,6 @@ public class Level {
                                 players.add((Player) entity);
                             }
                         }
-
-                        if (entity instanceof Spark2) {
-                            sparks2.add((Spark2) entity);
-                        } else {
-                            entities.add(entity);
-                            if (entity instanceof Player) {
-                                players.add((Player) entity);
-                            }
-                        }
-
-                        if (entity instanceof Spark3) {
-                            sparks3.add((Spark3) entity);
-                        } else {
-                            entities.add(entity);
-                            if (entity instanceof Player) {
-                                players.add((Player) entity);
-                            }
-                        }
-
                     }
                 }
             }
@@ -563,13 +540,12 @@ public class Level {
 
             for (Entity e: entities) {
                 tickEntity(e);
-                if (e instanceof Mob)
+                if (e instanceof Mob) {
                     count++;
+                }
             }
 
             sparks.forEach(this::tickEntity);
-            sparks2.forEach(this::tickEntity);
-            sparks3.forEach(this::tickEntity);
         }
 
         while (count > maxMobCount) {
@@ -597,18 +573,6 @@ public class Level {
 
             if (entity instanceof Spark) {
                 sparks.remove(entity);
-            } else {
-                entities.remove(entity);
-            }
-
-            if (entity instanceof Spark2) {
-                sparks2.remove(entity);
-            } else {
-                entities.remove(entity);
-            }
-
-            if (entity instanceof Spark3) {
-                sparks3.remove(entity);
             } else {
                 entities.remove(entity);
             }
@@ -1026,7 +990,7 @@ public class Level {
     }
 
     public Entity[] getEntityArray() {
-        Entity[] entityArray = new Entity[entities.size() + sparks.size() + sparks2.size() + sparks3.size()];
+        Entity[] entityArray = new Entity[entities.size() + sparks.size()];
         int index = 0;
 
         for (Entity entity: entities) {
@@ -1034,14 +998,6 @@ public class Level {
         }
         for (Spark spark: sparks) {
             entityArray[index++] = spark;
-        }
-
-        for (Spark2 spark2: sparks2) {
-            entityArray[index++] = spark2;
-        }
-
-        for (Spark3 spark3: sparks3) {
-            entityArray[index++] = spark3;
         }
 
         return entityArray;

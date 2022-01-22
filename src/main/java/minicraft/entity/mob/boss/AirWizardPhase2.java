@@ -5,7 +5,7 @@ import minicraft.core.Updater;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
-import minicraft.entity.Spark2;
+import minicraft.entity.Spark;
 import minicraft.entity.mob.EnemyMob;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Color;
@@ -109,7 +109,7 @@ public class AirWizardPhase2 extends EnemyMob {
             double dir = attackTime; // assigns a local direction variable from the attack time.
             double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2; // speed is dependent on the attackType. (higher
                                                                         // attackType, faster speeds)
-            level.add(new Spark2(this, Math.cos(dir) * speed, Math.sin(dir) * speed)); // adds a spark entity with the
+            level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 2)); // adds a spark entity with the
                                                                                        // cosine and sine of dir times
                                                                                        // speed.
             return; // skips the rest of the code (attackTime was > 0; ie we're attacking.)
