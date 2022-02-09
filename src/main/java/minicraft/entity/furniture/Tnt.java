@@ -26,6 +26,8 @@ public class Tnt extends Furniture implements ActionListener {
 	private static int BLAST_RADIUS = 32;
 	private static int BLAST_DAMAGE = 30;
 
+	private int damage = 0;
+	private int light;
 	private int ftik = 0;
 	private boolean fuseLit = false;
 	private Timer explodeTimer;
@@ -50,6 +52,8 @@ public class Tnt extends Furniture implements ActionListener {
 
 		if (fuseLit) {
 			ftik++;
+			
+			light = 2;
 
 			if (ftik >= FUSE_TIME) {
 				// blow up
@@ -57,21 +61,25 @@ public class Tnt extends Furniture implements ActionListener {
 
 				for (Entity e : entitiesInRange) {
 					float dist = (float) Math.hypot(e.x - x, e.y - y);
-					int dmg = (int) (BLAST_DAMAGE * (1 - (dist / BLAST_RADIUS))) + 1;
-					if (e instanceof Mob)
-						((Mob) e).onExploded(this, dmg);
+					damage = (int) (BLAST_DAMAGE * (1 - (dist / BLAST_RADIUS))) + 1;
+					
+					if (e instanceof Mob) {
+						((Mob) e).onExploded(this, damage);
+					}
 
 					// Ignite other bombs in range.
 					if (e instanceof Tnt) {
 						Tnt tnt = (Tnt) e;
+						
 						if (!tnt.fuseLit) {
 							tnt.fuseLit = true;
 							Sound.Furniture_tnt_fuse.play();
 							tnt.ftik = FUSE_TIME * 2 / 3;
 						}
+						
 					}
 				}
-
+				
 				int xt = x >> 4;
 				int yt = (y - 2) >> 4;
 
@@ -81,12 +89,14 @@ public class Tnt extends Furniture implements ActionListener {
 				// Call the onExplode() event.
 				for (int i = 0; i < affectedTiles.length; i++) {
 					// This assumes that range is 1.
+					affectedTiles[i].hurt(level, xt, yt, damage);
 					affectedTiles[i].onExplode(level, xt + i % 3 - 1, yt + i / 3 - 1);
+
 				}
 
 				// Random explode sound
 				switch (random.nextInt(4)) {
-					case 0: Sound.Furniture_tnt_explode_4.play(); break;
+					case 0: Sound.Furniture_tnt_explode.play(); break;
 					case 1: Sound.Furniture_tnt_explode.play(); break;
 					case 2: Sound.Furniture_tnt_explode_2.play(); break;
 					case 3: Sound.Furniture_tnt_explode_3.play(); break;
@@ -121,11 +131,14 @@ public class Tnt extends Furniture implements ActionListener {
 		explodeTimer.stop();
 		int xt = x >> 4;
 		int yt = (y - 2) >> 4;
+		
 		if (levelSave.depth != 1) {
 			levelSave.setAreaTiles(xt, yt, 1, Tiles.get("hole"), 0, explosionBlacklist);
+			
 		} else {
 			levelSave.setAreaTiles(xt, yt, 1, Tiles.get("Infinite Fall"), 0, explosionBlacklist);
 		}
+		
 		levelSave = null;
 	}
 
@@ -152,13 +165,15 @@ public class Tnt extends Furniture implements ActionListener {
 			return true;
 		}
 		switch (field) {
-			case "fuseLit":
-				fuseLit = Boolean.parseBoolean(val);
-				return true;
-			case "ftik":
-				ftik = Integer.parseInt(val);
-				return true;
+			case "fuseLit": fuseLit = Boolean.parseBoolean(val); return true;
+			case "ftik": ftik = Integer.parseInt(val); return true;
 		}
 		return false;
 	}
+	
+	@Override
+	public int getLightRadius() {
+		return light;
+	}
+
 }

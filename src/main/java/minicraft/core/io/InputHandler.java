@@ -138,8 +138,7 @@ public class InputHandler implements KeyListener {
         keymap.put("MENU", "X|E"); // and so on... menu does various things.
         keymap.put("CRAFT", "Z|SHIFT-E"); // open/close personal crafting window.
         keymap.put("PICKUP", "V|P"); // pickup torches / furniture; this replaces the power glove.
-        keymap.put("DROP-ONE", "Q"); // drops the item in your hand, or selected in your inventory, by ones; it won't
-                                     // drop an entire stack
+        keymap.put("DROP-ONE", "Q"); // drops the item in your hand, or selected in your inventory, by ones; it won't drop an entire stack
         keymap.put("DROP-STACK", "SHIFT-Q"); // drops the item in your hand, or selected in your inventory, entirely; even if it's a stack.
 
         // toggle inventory searcher bar

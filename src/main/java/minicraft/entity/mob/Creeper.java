@@ -23,6 +23,8 @@ public class Creeper extends EnemyMob {
             sprites[i][0] = list;
         }
     }
+    
+    private int light;
 
     private static final int MAX_FUSE_TIME = 60;
     private static final int TRIGGER_RADIUS = 64;
@@ -54,9 +56,11 @@ public class Creeper extends EnemyMob {
         if (fuseTime > 0) {
             fuseTime--; // fuse getting shorter...
             xa = ya = 0;
-        } else if (fuseLit) { // fuseLit is set to true when fuseTime is set to max, so this happens after
-                              // fuseTime hits zero, while fuse is lit.
+            light = 2;
+            
+        } else if (fuseLit) { // fuseLit is set to true when fuseTime is set to max, so this happens after fuseTime hits zero, while fuse is lit.
             xa = ya = 0;
+            light = 0;
 
             boolean playerInRange = false; // tells if any players are within the blast
 
@@ -220,4 +224,10 @@ public class Creeper extends EnemyMob {
 
         return false;
     }
+    
+	@Override
+	public int getLightRadius() {
+		return light;
+	}
+    
 }

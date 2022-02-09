@@ -21,7 +21,8 @@ public class OptionsDisplay extends Display {
                         new SelectEntry("Change Key Bindings", () -> Game.setMenu(new KeyInputDisplay())),
                         Settings.getEntry("language"),
                         new SelectEntry("Texture packs", () -> Game.setMenu(new TexturePackDisplay())),
-                        new BlankEntry(), new SelectEntry("Open Game Folder", () -> {
+                        new BlankEntry(),
+                        new SelectEntry("Open Game Folder", () -> {
                             try {
                                 Desktop.getDesktop().open(new File(Game.gameDir));
                             } catch (IOException e) {
@@ -35,7 +36,7 @@ public class OptionsDisplay extends Display {
     @Override
     public void onExit() {
         Localization.changeLanguage((String) Settings.get("language"));
-        new Save();
         Game.MAX_FPS = (int) Settings.get("fps");
+        new Save();
     }
 }

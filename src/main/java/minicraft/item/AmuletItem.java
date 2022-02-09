@@ -28,8 +28,6 @@ public class AmuletItem extends Item {
     @Override
     public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 
-        // Game.setMenu(new LevelTransitionDisplay(-4));
-
         if (random.nextInt(3) == 0) {
             Sound.Amulet_locked.play();
         }
@@ -44,10 +42,6 @@ public class AmuletItem extends Item {
             Updater.notifyAll("The eye queen has awakened!");
             Updater.setTime(600000);
         }
-
-        // new XpOrb(player, player.x, player.y);
-        // level.add(new XpOrb(random.nextInt(17) , xt + 8 , yt + 8), player.x,
-        // player.y);
 
         return interact(player, (Entity) null, attackDir);
     }

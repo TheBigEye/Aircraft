@@ -3,6 +3,7 @@ package minicraft.level.tile;
 import java.util.ArrayList;
 
 import minicraft.core.Game;
+import minicraft.level.tile.TreeTile.TreeType;
 import minicraft.level.tile.WoolTile.WoolType;
 import minicraft.level.tile.farming.CarrotTile;
 import minicraft.level.tile.farming.FarmTile;
@@ -43,7 +44,7 @@ public final class Tiles {
 		tiles.set(17, new LavaTile("Lava"));
 
 		tiles.set(7, new RockTile("Rock"));
-		tiles.set(8, new TreeTile("Tree"));
+		tiles.set(8, new TreeTile("Tree", TreeType.TREE));
 		tiles.set(9, new SaplingTile("Tree Sapling", Tiles.get("Grass"), Tiles.get("Tree")));
 		tiles.set(10, new SandTile("Sand"));
 		tiles.set(11, new CactusTile("Cactus"));
@@ -109,13 +110,13 @@ public final class Tiles {
 
 		tiles.set(66, new SnowTile("Snow"));
 
-		tiles.set(67, new BirchTreeTile("Birch Tree"));
+		tiles.set(67, new TreeTile("Birch Tree", TreeType.BIRCH));
 		tiles.set(68, new SaplingTile("Birch Sapling", Tiles.get("Grass"), Tiles.get("Birch tree")));
 
-		tiles.set(69, new FirTreeTile("Fir Tree"));
+		tiles.set(69, new TreeTile("Fir Tree", TreeType.FIR));
 		tiles.set(70, new SaplingTile("Fir Sapling", Tiles.get("Snow"), Tiles.get("Fir tree")));
 
-		tiles.set(71, new PineTreeTile("Pine Tree"));
+		tiles.set(71, new TreeTile("Pine Tree", TreeType.PINE));
 		tiles.set(72, new SaplingTile("Pine Sapling", Tiles.get("Snow"), Tiles.get("Pine tree")));
 
 		tiles.set(73, new CloudTreeTile("Cloud Tree"));

@@ -12,8 +12,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import minicraft.saveload.Save;
 
 public class FileHandler extends Game {
-	private FileHandler() {
-	}
+	private FileHandler() {}
 
 	public static final int REPLACE_EXISTING = 0;
 	public static final int RENAME_COPY = 1;

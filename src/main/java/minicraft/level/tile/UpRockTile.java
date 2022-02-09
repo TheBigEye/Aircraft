@@ -25,23 +25,12 @@ public class UpRockTile extends Tile {
 	   
        
        public boolean connectsTo(Tile tile, boolean isSide) {
-           return tile != Tiles.get("rock") && tile  != Tiles.get("dirt") && tile != Tiles.get("grass") && 
-            	   tile != Tiles.get("sand") && tile != Tiles.get("Orange tulip") &&
-            	   tile != Tiles.get("tree") && tile != Tiles.get("birch tree") &&
-            	   tile != Tiles.get("Stairs Down") && tile != Tiles.get("Stairs up") &&
-            	   tile != Tiles.get("lava") && tile != Tiles.get("water") && 
-            	   tile != Tiles.get("cactus") && tile != Tiles.get("flower") &&
-            	   tile != Tiles.get("Hole") && tile != Tiles.get("Snow") &&
-            	   tile != Tiles.get("Lawn") && tile != Tiles.get("path") && 
-            	   tile != Tiles.get("Birch tree") && tile != Tiles.get("Fir tree") && 
-            	   tile != Tiles.get("Wood wall") && tile != Tiles.get("path") && 
-            	   tile != Tiles.get("ice spike") && tile != Tiles.get("Carrot");
+           return tile != Tiles.get("rock") && tile == Tiles.get("up rock");
        }
     };
 	 
-
 	    private boolean dropCoal = false;
-	    private final int maxHealth = 50;
+	    private final int maxHealth = 100;
 
 	    private int damage;
 
@@ -115,7 +104,7 @@ public class UpRockTile extends Tile {
 
 	            }
 
-	            level.setTile(x, y, Tiles.get("Rock"));
+	            level.setTile(x, y, Tiles.get("Dirt"));
 
 	        } else {
 	            level.setData(x, y, damage);

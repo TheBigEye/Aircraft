@@ -44,24 +44,24 @@ public class GoldenCloudTreeTile extends Tile {
         boolean dr = level.getTile(x + 1, y + 1) == this;
 
         if (u && ul && l) {
-            screen.render(x * 16 + 0, y * 16 + 0, 3 + 33 * 32, 0, 1);//
+            screen.render(x * 16 + 0, y * 16 + 0, 3 + 33 * 32, 0, 1);// x2
         } else {
-            screen.render(x * 16 + 0, y * 16 + 0, 2 + 32 * 32, 0, 1);//
+            screen.render(x * 16 + 0, y * 16 + 0, 2 + 32 * 32, 0, 1);// x1
         }
         if (u && ur && r) {
-            screen.render(x * 16 + 8, y * 16 + 0, 3 + 34 * 32, 0, 1); //
+            screen.render(x * 16 + 8, y * 16 + 0, 3 + 34 * 32, 0, 1); // x2
         } else {
-            screen.render(x * 16 + 8, y * 16 + 0, 3 + 32 * 32, 0, 1);//
+            screen.render(x * 16 + 8, y * 16 + 0, 3 + 32 * 32, 0, 1);// x2
         }
         if (d && dl && l) {
-            screen.render(x * 16 + 0, y * 16 + 8, 3 + 34 * 32, 0, 1); //
+            screen.render(x * 16 + 0, y * 16 + 8, 3 + 34 * 32, 0, 1); // x2
         } else {
-            screen.render(x * 16 + 0, y * 16 + 8, 2 + 33 * 32, 0, 1);//
+            screen.render(x * 16 + 0, y * 16 + 8, 2 + 33 * 32, 0, 1);// x1
         }
         if (d && dr && r) {
-            screen.render(x * 16 + 8, y * 16 + 8, 3 + 33 * 32, 0, 1);//
+            screen.render(x * 16 + 8, y * 16 + 8, 3 + 33 * 32, 0, 1);// x2
         } else {
-            screen.render(x * 16 + 8, y * 16 + 8, 3 + 35 * 32, 0, 1); //
+            screen.render(x * 16 + 8, y * 16 + 8, 3 + 35 * 32, 0, 1); // x2
         }
     }
 
@@ -78,9 +78,9 @@ public class GoldenCloudTreeTile extends Tile {
         if (tickc >= 16) {
 
             if (random.nextInt(5) == 5) {
-                LIGHT = 5;
+                LIGHT = 6;
             } else
-                LIGHT = 4;
+                LIGHT = 5;
 
             tickc = 0;
         }

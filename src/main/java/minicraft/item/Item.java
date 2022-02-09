@@ -61,63 +61,25 @@ public abstract class Item {
     public void renderHUD(Screen screen, int x, int y, int fontColor) {
 
         String dispName = getDisplayName();
-
+        
         switch (dispName.length()) {
-            case 6:
-                durAdjusted = 0;
-                break;
-
-            case 7:
-                durAdjusted = 4;
-                break;
-
-            case 8:
-                durAdjusted = 8;
-                arrAdjusted = 0;
-                break;
-
-            case 9:
-                durAdjusted = 12;
-                arrAdjusted = 4;
-                break;
-
-            case 10:
-                durAdjusted = 16;
-                arrAdjusted = 8;
-                break;
-
-            case 11:
-                durAdjusted = 20;
-                arrAdjusted = 12;
-                break;
-
-            case 12:
-                durAdjusted = 24;
-                arrAdjusted = 16;
-                break;
-
-            case 13:
-                durAdjusted = 28;
-                arrAdjusted = 20;
-                break;
-
-            case 14:
-                durAdjusted = 32;
-                arrAdjusted = 24;
-                break;
-
-            case 15:
-                durAdjusted = 36;
-                arrAdjusted = 28;
-                break;
-
-            case 16:
-                durAdjusted = 40;
-                arrAdjusted = 32;
-                break;
-
-            default: // Nothing
-                break;
+            case 6: durAdjusted = 0; break;
+            case 7: durAdjusted = 4; break;
+            case 8: durAdjusted = 8; arrAdjusted = 0; break;
+            case 9: durAdjusted = 12; arrAdjusted = 4; break;
+            case 10: durAdjusted = 16; arrAdjusted = 8; break;
+            case 11: durAdjusted = 20; arrAdjusted = 12; break;
+            case 12: durAdjusted = 24; arrAdjusted = 16; break;
+            case 13: durAdjusted = 28; arrAdjusted = 20;break;
+            case 14: durAdjusted = 32; arrAdjusted = 24; break;
+            case 15: durAdjusted = 36; arrAdjusted = 28; break;
+            case 16: durAdjusted = 40; arrAdjusted = 32; break;
+            case 17: durAdjusted = 44; arrAdjusted = 36;break;
+            case 18: durAdjusted = 48; arrAdjusted = 40; break;
+            case 19: durAdjusted = 52; arrAdjusted = 44; break;
+            case 20: durAdjusted = 56; arrAdjusted = 48; break;
+            case 21: durAdjusted = 60; arrAdjusted = 52; break;
+            case 22: durAdjusted = 64; arrAdjusted = 56; break;
         }
 
         int xx = (Screen.w - Font.textWidth(dispName)) / 2; // The width of the box

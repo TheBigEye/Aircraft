@@ -16,6 +16,7 @@ import minicraft.item.Items;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
+import minicraft.screen.AchievementsDisplay;
 
 /// this is all the spikey stuff (except "cloud cactus")
 public class OreTile extends Tile {
@@ -23,7 +24,9 @@ public class OreTile extends Tile {
     private OreType type;
 
     public enum OreType {
-        Iron(Items.get("Iron Ore"), 0), Lapis(Items.get("Lapis"), 2), Gold(Items.get("Gold Ore"), 4),
+        Iron(Items.get("Iron Ore"), 0),
+        Lapis(Items.get("Lapis"), 2),
+        Gold(Items.get("Gold Ore"), 4),
         Gem(Items.get("Gem"), 6);
 
         private Item drop;
@@ -60,8 +63,9 @@ public class OreTile extends Tile {
     }
 
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (Game.isMode("creative"))
+        if (Game.isMode("creative")) {
             return false; // go directly to hurt method
+        }
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Pickaxe) {
@@ -95,7 +99,10 @@ public class OreTile extends Tile {
                 count += 2;
             } else {
                 level.setData(x, y, damage);
-            }
+            }			
+            if (type.drop.equals(Items.get("gem"))){
+				AchievementsDisplay.setAchievement("minicraft.achievement.find_gem", true);
+			}
             level.dropItem(x * 16 + 8, y * 16 + 8, count, type.getOre());
         }
     }

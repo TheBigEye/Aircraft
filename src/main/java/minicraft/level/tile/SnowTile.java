@@ -32,8 +32,9 @@ public class SnowTile extends Tile {
 
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) {
-            if (!isSide)
+            if (!isSide) {
                 return true;
+            }
             return tile.connectsToSnow;
         }
 
@@ -50,15 +51,14 @@ public class SnowTile extends Tile {
     public void render(Screen screen, Level level, int x, int y) {
         boolean steppedOn = level.getData(x, y) > 0;
 
-        if (steppedOn)
+        if (steppedOn) {
             csprite.full = SnowTile.steppedOn_sprite;
-        else
+        } else {
             csprite.full = SnowTile.normal_sprite;
+        }
 
         csprite.sparse.color = DirtTile.dCol(level.depth);
-
         csprite.render(screen, level, x, y);
-
     }
 
     @Override
@@ -76,19 +76,21 @@ public class SnowTile extends Tile {
         if (entity instanceof Mob) {
             level.setData(x, y, 10);
         }
+        
         if (entity instanceof Player) {
             level.setData(x, y, 10);
-
-            if (random.nextInt(30) == 0) {
-                Sound.Tile_snow.play();
+            
+            if (random.nextInt(16) == 0) {
+            	// Random snow walking sound
+            	switch (random.nextInt(4)) {
+            		case 0: Sound.Tile_snow.play(); break;
+            		case 1: Sound.Tile_snow.play(); break;
+            		case 2: Sound.Tile_snow_2.play(); break;
+            		case 3: Sound.Tile_snow_3.play(); break;
+            		case 4: Sound.Tile_snow_4.play(); break;
+            		default: Sound.Tile_snow_4.play(); break;
+            	}    
             }
-            if (random.nextInt(30) == 14) {
-                Sound.Tile_snow_2.play();
-            }
-            if (random.nextInt(30) == 28) {
-                Sound.Tile_snow_3.play();
-            }
-
         }
     }
 

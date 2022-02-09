@@ -36,8 +36,7 @@ public class TileItem extends StackableItem {
         items.add(new TileItem("Plank Wall", (new Sprite(1, 5, 0)), "Wood Wall", "Wood Planks"));
         items.add(new TileItem("Wood Door", (new Sprite(2, 5, 0)), "Wood Door", "Wood Planks"));
 
-        items.add(
-                new TileItem("Spruce Plank", (new Sprite(9, 5, 0)), "Spruce Planks", "hole", "water", "cloud", "lava"));
+        items.add(new TileItem("Spruce Plank", (new Sprite(9, 5, 0)), "Spruce Planks", "hole", "water", "cloud", "lava"));
         items.add(new TileItem("Spruce Wall", (new Sprite(10, 5, 0)), "Spruce Wall", "Spruce Planks"));
         items.add(new TileItem("Spruce Door", (new Sprite(11, 5, 0)), "Spruce Door", "Spruce Planks"));
 

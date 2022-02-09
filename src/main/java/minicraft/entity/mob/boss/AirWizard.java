@@ -24,6 +24,8 @@ public class AirWizard extends EnemyMob {
             sprites[i] = list;
         }
     }
+    
+    
 
     public static boolean beaten = false;
 
@@ -31,6 +33,7 @@ public class AirWizard extends EnemyMob {
     private int attackDelay = 0;
     private int attackTime = 0;
     private int attackType = 0;
+    public static int length;
 
     /**
      * Constructor for the AirWizard. Will spawn as secondary form if lvl>1.
@@ -68,6 +71,8 @@ public class AirWizard extends EnemyMob {
     @Override
     public void tick() {
         super.tick();
+        
+        length = health / (maxHealth / 100) / 3;
 
         if (Game.isMode("Creative"))
             return; // Should not attack if player is in creative
@@ -91,15 +96,13 @@ public class AirWizard extends EnemyMob {
                     attackType = 2; // if at 200 health (10%) or lower, attackType = 2
                 }
                 
-                if (random.nextInt(2) == 0) {
-                    attackTime = 80 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default 60 ticks/sec)
+                switch (random.nextInt(2)) {
+                	case 0: attackTime = 80 * (secondform ? 3 : 2); break;
+                	case 1: attackTime = 50 * (secondform ? 3 : 2); break;
+                	case 2: attackTime = 30 * (secondform ? 3 : 2); break;
+                	default: attackTime = 80 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default 60 ticks/sec)
                 }
-                if (random.nextInt(3) == 1) {
-                    attackTime = 50 * (secondform ? 3 : 2); 
-                }
-                if (random.nextInt(3) == 2) {
-                    attackTime = 30 * (secondform ? 3 : 2);
-                }
+                
             }
             return; // skips the rest of the code (attackDelay must have been > 0)
         }
@@ -117,23 +120,21 @@ public class AirWizard extends EnemyMob {
         Player player = getClosestPlayer();
 
         if (player != null && randomWalkTime == 0) { // if there is a player around, and the walking is not random
+        	
             int xd = player.x - x; // the horizontal distance between the player and the air wizard.
             int yd = player.y - y; // the vertical distance between the player and the air wizard.
+            
             if (xd * xd + yd * yd < 16 * 16 * 2 * 2) {
                 /// Move away from the player if less than 2 blocks away
-
                 xa = 0; // accelerations
                 ya = 0;
-                // these four statements basically just find which direction is away from the
-                // player:
-                if (xd < 0)
-                    xa = +1;
-                if (xd > 0)
-                    xa = -1;
-                if (yd < 0)
-                    ya = +1;
-                if (yd > 0)
-                    ya = -1;
+                
+                // these four statements basically just find which direction is away from the player:
+                if (xd < 0) xa = +1;
+                if (xd > 0) xa = -1;
+                if (yd < 0) ya = +1;
+                if (yd > 0) ya = -1;
+                
             } else if (xd * xd + yd * yd > 16 * 16 * 15 * 15) { // 15 squares away
                 /// drags the airwizard to the player, maintaining relative position.
                 double hypot = Math.sqrt(xd * xd + yd * yd);
@@ -184,6 +185,7 @@ public class AirWizard extends EnemyMob {
          * //curSprite.renderRow(0, screen, xo, yo, col1); //curSprite.renderRow(1,
          * screen, xo, yo+8, col2);
          */
+    	
         super.render(screen);
 
         int textcol = Color.get(1, 0, 204, 0);
@@ -191,16 +193,20 @@ public class AirWizard extends EnemyMob {
         int percent = health / (maxHealth / 100);
         String h = percent + "%";
 
-        if (percent < 1)
+        if (percent < 1) {
             h = "1%";
+        }
 
         if (percent < 16) {
             textcol = Color.get(1, 204, 0, 0);
             textcol2 = Color.get(1, 51, 0, 0);
+            
         } else if (percent < 51) {
             textcol = Color.get(1, 204, 204, 9);
             textcol2 = Color.get(1, 51, 51, 0);
         }
+        
+        
         int textwidth = Font.textWidth(h);
         Font.draw(h, screen, (x - textwidth / 2) + 1, y - 17, textcol2);
         Font.draw(h, screen, (x - textwidth / 2), y - 18, textcol);

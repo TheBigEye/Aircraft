@@ -17,12 +17,23 @@ public class ExplodedTile extends Tile {
         }
 
     };
-
-    protected ExplodedTile(String name) {
-        super(name, sprite);
-        connectsToSand = true;
-        connectsToFluid = true;
-    }
+    
+	private boolean light = true;
+	private int r;
+	
+	protected ExplodedTile(String name) {
+		super(name, sprite);
+		connectsToSand = true;
+		connectsToFluid = true;
+	}
+	
+	public boolean tick(Level level, int xt, int yt) {
+		if (light) {
+			r = 3;
+			return true;
+		}
+		return false;
+	}
 
     @Override
     public void steppedOn(Level level, int x, int y, Entity entity) {
@@ -33,5 +44,10 @@ public class ExplodedTile extends Tile {
     @Override
     public boolean mayPass(Level level, int x, int y, Entity e) {
         return true;
+    }
+    
+    @Override
+    public int getLightRadius(Level level, int x, int y) {
+        return r;
     }
 }

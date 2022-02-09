@@ -406,12 +406,15 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                 return; // SKIPS the rest of the tick() method.
             }
 
-            onStairDelay = 10; // Resets the delay, if on a stairs tile, but the delay is greater than 0. In
-                               // other words, this prevents you from ever activating a level change on a stair
-                               // tile, UNTIL you get off the tile for 10+ ticks.
-        } else if (onStairDelay > 0)
-            onStairDelay--; // Decrements stairDelay if it's > 0, but not on stair tile... does the player
-                            // get removed from the tile beforehand, or something?
+            // Resets the delay, if on a stairs tile, but the delay is greater than 0.
+            // In other words, this prevents you from ever activating a level change on a stair tile,
+            // UNTIL you get off the tile for 10+ ticks.
+            onStairDelay = 10; 
+            
+        } else if (onStairDelay > 0) {
+        	// Decrements stairDelay if it's > 0, but not on stair tile... does the player get removed from the tile beforehand, or something?
+            onStairDelay--; 
+        }
 
         if (onTile == Tiles.get("Infinite Fall") && !Game.isMode("creative")) {
 
@@ -425,8 +428,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                 return;
             }
 
-        } else if (onFallDelay > 0)
+        } else if (onFallDelay > 0) {
             onFallDelay--;
+        }
 
         if (Game.isMode("creative")) {
             // Prevent stamina/hunger decay in creative mode.
@@ -434,49 +438,52 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             hunger = maxHunger;
         }
 
-        // Remember: staminaRechargeDelay is a penalty delay for when the player uses up
-        // all their stamina.
-        // staminaRecharge is the rate of stamina recharge, in some sort of unknown
-        // units.
+        // Remember: staminaRechargeDelay is a penalty delay for when the player uses up all their stamina.
+        // staminaRecharge is the rate of stamina recharge, in some sort of unknown units.
         if (stamina <= 0 && staminaRechargeDelay == 0 && staminaRecharge == 0) {
             staminaRechargeDelay = 40; // Delay before resuming adding to stamina.
         }
 
-        if (staminaRechargeDelay > 0 && stamina < maxStamina)
+        if (staminaRechargeDelay > 0 && stamina < maxStamina) {
             staminaRechargeDelay--;
+        }
 
         if (staminaRechargeDelay == 0) {
             staminaRecharge++; // Ticks since last recharge, accounting for the time potion effect.
 
-            if (isSwimming() && !potioneffects.containsKey(PotionType.Swim))
+            if (isSwimming() && !potioneffects.containsKey(PotionType.Swim)) {
                 staminaRecharge = 0; // Don't recharge stamina while swimming.
+            }
 
             // Recharge a bolt for each multiple of maxStaminaRecharge.
             while (staminaRecharge > maxStaminaRecharge) {
                 staminaRecharge -= maxStaminaRecharge;
-                if (stamina < maxStamina)
+                if (stamina < maxStamina) {
                     stamina++; // Recharge one stamina bolt per "charge".
+                }
             }
         }
 
         int diffIdx = Settings.getIdx("diff");
 
-        if (hunger < 0)
+        if (hunger < 0) {
             hunger = 0; // Error correction
+        }
 
         if (stamina < maxStamina) {
-            stamHungerTicks -= diffIdx; // Affect hunger if not at full stamina; this is 2 levels away from a hunger
-                                        // "burger".
-            if (stamina == 0)
+            stamHungerTicks -= diffIdx; // Affect hunger if not at full stamina; this is 2 levels away from a hunger "burger".
+            if (stamina == 0) {
                 stamHungerTicks -= diffIdx; // Double effect if no stamina at all.
+            }
         }
 
         /// This if statement encapsulates the hunger system
         if (!Bed.inBed(this)) {
             if (hungerChargeDelay > 0) { // if the hunger is recharging health...
                 stamHungerTicks -= 2 + diffIdx; // Penalize the hunger
-                if (hunger == 0)
+                if (hunger == 0) {
                     stamHungerTicks -= diffIdx; // Further penalty if at full hunger
+                }
             }
 
             if (Updater.tickCount % Player.hungerTickCount[diffIdx] == 0) {
@@ -507,16 +514,18 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                     health++;
                     hungerChargeDelay = 0;
                 }
-            } else
+            } else {
                 hungerChargeDelay = 0;
+            }
 
             if (hungerStarveDelay == 0) {
                 hungerStarveDelay = 120;
             }
 
             if (hunger == 0 && health > minStarveHealth[diffIdx]) {
-                if (hungerStarveDelay > 0)
+                if (hungerStarveDelay > 0) {
                     hungerStarveDelay--;
+                }
                 if (hungerStarveDelay == 0) {
                     hurt(this, 1, Direction.NONE); // Do 1 damage to the player
                 }
@@ -544,14 +553,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
             // Move while we are not falling.
             if (onFallDelay <= 0) {
-                if (input.getKey("move-up").down)
-                    vec.y--;
-                if (input.getKey("move-down").down)
-                    vec.y++;
-                if (input.getKey("move-left").down)
-                    vec.x--;
-                if (input.getKey("move-right").down)
-                    vec.x++;
+                if (input.getKey("move-up").down) vec.y--;
+                if (input.getKey("move-down").down) vec.y++;
+                if (input.getKey("move-left").down) vec.x--;
+                if (input.getKey("move-right").down) vec.x++;
             }
 
             // Executes if not saving; and... essentially halves speed if out of stamina.
@@ -562,8 +567,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                 int yd = (int) (vec.y * spd);
 
                 Direction newDir = Direction.getDirection(xd, yd);
-                if (newDir == Direction.NONE)
+                if (newDir == Direction.NONE) {
                     newDir = dir;
+                }
 
                 // On multiplayer move the local player.
                 if ((xd != 0 || yd != 0 || newDir != dir) && Game.isConnectedClient() && this == Game.player)
@@ -575,19 +581,18 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                     stepCount++;
             }
 
-            if (isSwimming() && tickTime % 60 == 0 && !potioneffects.containsKey(PotionType.Swim)) { // if drowning...
-                                                                                                     // :P
-                if (stamina > 0)
+            if (isSwimming() && tickTime % 60 == 0 && !potioneffects.containsKey(PotionType.Swim)) { // if drowning... :P
+                if (stamina > 0) {
                     stamina--; // Take away stamina
-                else
+                } else {
                     hurt(this, 1, Direction.NONE); // if no stamina, take damage.
+                }
             }
 
             if (activeItem != null && (input.getKey("drop-one").clicked || input.getKey("drop-stack").clicked)) {
                 Item drop = activeItem.clone();
 
-                if (input.getKey("drop-one").clicked && drop instanceof StackableItem
-                        && ((StackableItem) drop).count > 1) {
+                if (input.getKey("drop-one").clicked && drop instanceof StackableItem && ((StackableItem) drop).count > 1) {
                     // Drop one from stack
                     ((StackableItem) activeItem).count--;
                     ((StackableItem) drop).count = 1;
@@ -938,15 +943,11 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         List<Entity> entities = level.getEntitiesInRect(area); // Gets the entities within the 4 points
         for (Entity e : entities) {
 
-            if (e instanceof Furniture && ((Furniture) e).use(this))
-                return true; // If the entity is not the player, then call it's use method, and return the
-                             // result. Only
-            else if (e instanceof Boat && ((Boat) e).use(this))
-                return true;
-            else if (e instanceof Cleric && ((Cleric) e).use(this))
-                return true;
-            else if (e instanceof Librarian && ((Librarian) e).use(this))
-                return true;
+        	// If the entity is not the player, then call it's use method, and return the result. Only
+            if (e instanceof Furniture && ((Furniture) e).use(this)) return true; 
+            else if (e instanceof Boat && ((Boat) e).use(this)) return true;
+            else if (e instanceof Cleric && ((Cleric) e).use(this)) return true;
+            else if (e instanceof Librarian && ((Librarian) e).use(this)) return true;
         }
         return false;
     }
@@ -1044,6 +1045,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         } else {
             spriteSet = skinon ? suitSprites : sprites;
         }
+        
 
         /* Offset locations to start drawing the sprite relative to our position */
         int xo = x - 8; // Horizontal
@@ -1199,37 +1201,30 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
     /** What happens when the player interacts with a itemEntity */
     public void pickupItem(ItemEntity itemEntity) {
-
-        if (random.nextInt(4) == 1) {
-            Sound.Mob_player_pickup.play();
-        }
-        if (random.nextInt(4) == 2) {
-            Sound.Mob_player_pickup_3.play();
-        }
-        if (random.nextInt(4) == 3) {
-            Sound.Mob_player_pickup_4.play();
-        }
-        if (random.nextInt(4) == 4) {
-            Sound.Mob_player_pickup_4.play();
-        }
+        
+		// Random pickup sound
+		switch (random.nextInt(4)) {
+			case 0: Sound.Mob_player_pickup.play(); break;
+			case 1: Sound.Mob_player_pickup.play(); break;
+			case 2: Sound.Mob_player_pickup_2.play(); break;
+			case 3: Sound.Mob_player_pickup_3.play(); break;
+			case 4: Sound.Mob_player_pickup_4.play(); break;
+			default: Sound.Mob_player_pickup_4.play(); break;
+		}
 
         itemEntity.remove();
         addScore(1);
-        if (Game.isMode("creative"))
+        
+        if (Game.isMode("creative")) {
             return; // We shall not bother the inventory on creative mode.
-
-        if (itemEntity.item instanceof StackableItem && ((StackableItem) itemEntity.item).stacksWith(activeItem)) // Picked
-                                                                                                                  // up
-                                                                                                                  // item
-                                                                                                                  // equals
-                                                                                                                  // the
-                                                                                                                  // one
-                                                                                                                  // in
-                                                                                                                  // your
-                                                                                                                  // hand
+        }
+        
+        // Picked up item equals the one in your hand
+        if (itemEntity.item instanceof StackableItem && ((StackableItem) itemEntity.item).stacksWith(activeItem)) {
             ((StackableItem) activeItem).count += ((StackableItem) itemEntity.item).count;
-        else
+        } else {
             inventory.add(itemEntity.item); // Add item to inventory
+        }
     }
 
     // The player can swim.
@@ -1245,7 +1240,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     /**
      * Finds a starting position for the player.
      * 
-     * @param level     Level which the player wants to start in.
+     * @param level Level which the player wants to start in.
      * @param spawnSeed Spawnseed.
      */
     public void findStartPos(Level level, long spawnSeed) {
@@ -1267,17 +1262,18 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
         List<Point> spawnTilePositions = level.getMatchingTiles(Tiles.get("grass"));
 
-        if (spawnTilePositions.size() == 0)
+        if (spawnTilePositions.size() == 0) {
             spawnTilePositions.addAll(level.getMatchingTiles((t, x, y) -> t.maySpawn()));
+        }
 
-        if (spawnTilePositions.size() == 0)
+        if (spawnTilePositions.size() == 0) {
             spawnTilePositions.addAll(level.getMatchingTiles((t, x, y) -> t.mayPass(level, x, y, Player.this)));
+        }
 
         // There are no tiles in the entire map which the player is allowed to stand on.
         // Not likely.
         if (spawnTilePositions.size() == 0) {
-            spawnPos = new Point(random.nextInt(level.w / 4) + level.w * 3 / 8,
-                    random.nextInt(level.h / 4) + level.h * 3 / 8);
+            spawnPos = new Point(random.nextInt(level.w / 4) + level.w * 3 / 8, random.nextInt(level.h / 4) + level.h * 3 / 8);
             level.setTile(spawnPos.x, spawnPos.y, Tiles.get("grass"));
         } else // Gets random valid spawn tile position.
             spawnPos = spawnTilePositions.get(random.nextInt(spawnTilePositions.size()));

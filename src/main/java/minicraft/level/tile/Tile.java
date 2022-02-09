@@ -109,6 +109,10 @@ public abstract class Tile {
     public int getLightRadius(Level level, int x, int y) {
         return 0;
     }
+    
+    public int getLightRadius(Level level, int x, int y, int light) {
+        return light;
+    }
 
     /**
      * Hurt the tile with a specified amount of damage.

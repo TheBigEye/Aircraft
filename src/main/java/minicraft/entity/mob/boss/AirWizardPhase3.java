@@ -33,6 +33,7 @@ public class AirWizardPhase3 extends EnemyMob {
     private int attackDelay = 0;
     private int attackTime = 0;
     private int attackType = 0;
+    public static int length;
 
     /**
      * Constructor for the AirWizard. Will spawn as secondary form if lvl > 1.
@@ -70,6 +71,8 @@ public class AirWizardPhase3 extends EnemyMob {
     @Override
     public void tick() {
         super.tick();
+        
+        length = health / (maxHealth / 100) / 3;
 
         if (Game.isMode("Creative"))
             return; // Should not attack if player is in creative

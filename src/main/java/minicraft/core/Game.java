@@ -45,45 +45,45 @@ public class Game {
 
 	Game() {} // Can't instantiate the Game class.
 
-    private static Random random = new Random();
+	private static Random random = new Random();
 
-    public static boolean debug = false;
-    public static boolean dev = false;
-    public static boolean packet_debug = false;
-    public static boolean HAS_GUI = true;
+	public static boolean debug = false;
+	public static boolean dev = false;
+	public static boolean packet_debug = false;
+	public static boolean HAS_GUI = true;
 
-    public static boolean in_dev = false;
+	public static boolean in_dev = false;
 
-    // Game events (Shhhh is seeeecret)
-    public static boolean IS_Christmas = false;
-    public static boolean IS_Halloween = false;
-    public static boolean IS_April_fools = false;
+	// Game events (Shhhh is seeeecret)
+	public static boolean IS_Christmas = false;
+	public static boolean IS_Halloween = false;
+	public static boolean IS_April_fools = false;
 
-    public static final String NAME = "Aircraft"; // This is the name on the application window
-    public static final String BUILD = "0.5"; // Aircraft version
-    public static final Version VERSION = new Version("2.1.0-dev2"); // Minicraft plus mod base version
+	public static final String NAME = "Aircraft"; // This is the name on the application window
+	public static final String BUILD = "0.5"; // Aircraft version
+	public static final Version VERSION = new Version("2.1.0-dev2"); // Minicraft plus mod base version
 
-    public static InputHandler input; // Input used in Game, Player, and just about all the *Menu classes*.
-    public static Player player;
+	public static InputHandler input; // Input used in Game, Player, and just about all the *Menu classes*.
+	public static Player player;
 
-    // The directory in which all the game files are stored
-    public static String gameDir;
-    public static List<String> notifications = new ArrayList<>();
+	// The directory in which all the game files are stored
+	public static String gameDir;
+	public static List<String> notifications = new ArrayList<>();
 
-    public static int MAX_FPS = (int) Settings.get("fps");
-    public static Level level;
+	public static int MAX_FPS = (int) Settings.get("fps");
+	public static Level level;
 
-    // Crash splashes
-    private static String[] Splash = {
-            "Who has put TNT?",
-            "An error has occurred again??",
-            "A nice cup of coffee?",
-            "Unexpected error again??",
-            "Oh. That hurts :(",
-            "Sorry for the crash :(",
-            "You can play our brother game, Minitale",
-            "F, crash again??" 
-    };
+	// Crash splashes
+	private static String[] Splash = {
+			"Who has put TNT?",
+			"An error has occurred again??",
+			"A nice cup of coffee?",
+			"Unexpected error again??",
+			"Oh. That hurts :(",
+			"Sorry for the crash :(",
+			"You can play our brother game, Minitale",
+			"F, crash again??" 
+	};
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -92,80 +92,84 @@ public class Game {
 	 * --port parameter if something goes wrong in setting the new port
 	 * it'll use the default one {@link MinicraftProtocol#PORT}
 	 */
-    public static int CUSTOM_PORT = MinicraftProtocol.PORT;
+	public static int CUSTOM_PORT = MinicraftProtocol.PORT;
 
-    static Display menu = null; // The current menu you are on.
-    static Display newMenu = null;
+	static Display menu = null; // The current menu you are on.
+	static Display newMenu = null;
 
-    // Sets the current menu.
-    public static void setMenu(@Nullable Display display) {
-        newMenu = display;
-    }
+	// Sets the current menu.
+	public static void setMenu(@Nullable Display display) {
+		newMenu = display;
+	}
 
-    public static void exitMenu() {
+	public static void exitMenu() {
 
-        if (menu == null) {
-            if (debug) {
-                System.out.println("Game.exitMenu(): No menu found, returning!");
-            }
-            return; // No action required; cannot exit from no menu
-        }
+		if (menu == null) {
+			if (debug) {
+				System.out.println("Game.exitMenu(): No menu found, returning!");
+			}
+			return; // No action required; cannot exit from no menu
+		}
 
-        Sound.Menu_back.play();
-        newMenu = menu.getParent();
-    }
+		Sound.Menu_back.play();
+		newMenu = menu.getParent();
+	}
+	
+	public static void toTitle() {
+		setMenu(new TitleDisplay());
+	}
 
-    public static Display getMenu() {
-        return newMenu;
-    }
+	public static Display getMenu() {
+		return newMenu;
+	}
 
-    public static boolean isMode(String mode) {
-        return ((String) Settings.get("mode")).equalsIgnoreCase(mode);
-    }
+	public static boolean isMode(String mode) {
+		return ((String) Settings.get("mode")).equalsIgnoreCase(mode);
+	}
 
-    // MULTIPLAYER
-    public static boolean ISONLINE = false;
-    public static boolean ISHOST = false;
+	// MULTIPLAYER
+	public static boolean ISONLINE = false;
+	public static boolean ISHOST = false;
 
-    public static MinicraftClient client = null;
+	public static MinicraftClient client = null;
 
-    public static boolean isValidClient() {
-        return ISONLINE && client != null;
-    }
+	public static boolean isValidClient() {
+		return ISONLINE && client != null;
+	}
 
-    public static boolean isConnectedClient() {
-        return isValidClient() && client.isConnected();
-    }
+	public static boolean isConnectedClient() {
+		return isValidClient() && client.isConnected();
+	}
 
-    public static MinicraftServer server = null;
+	public static MinicraftServer server = null;
 
-    /** Checks if you are a host and the game is a server */
-    public static boolean isValidServer() {
-        return ISONLINE && ISHOST && server != null;
-    }
+	/** Checks if you are a host and the game is a server */
+	public static boolean isValidServer() {
+		return ISONLINE && ISHOST && server != null;
+	}
 
-    public static boolean hasConnectedClients() {
-        return isValidServer() && server.hasClients();
-    }
+	public static boolean hasConnectedClients() {
+		return isValidServer() && server.hasClients();
+	}
 
-    // LEVEL
-    public static Level[] levels = new Level[6]; // This array stores the different levels.
-    public static int currentLevel = 3; // This is the level the player is on. It defaults to 3, the surface.
+	// LEVEL
+	public static Level[] levels = new Level[6]; // This array stores the different levels.
+	public static int currentLevel = 3; // This is the level the player is on. It defaults to 3, the surface.
 
-    static boolean gameOver = false; // If the player wins this is set to true.
+	static boolean gameOver = false; // If the player wins this is set to true.
 
-    static boolean running = true;
+	static boolean running = true;
 
-    // Quit function
-    public static void quit() {
-        if (isConnectedClient()) {
-            client.endConnection();
-        }
-        if (isValidServer()) {
-            server.endConnection();
-        }
-        running = false;
-    }
+	// Quit function
+	public static void quit() {
+		if (isConnectedClient()) {
+			client.endConnection();
+		}
+		if (isValidServer()) {
+			server.endConnection();
+		}
+		running = false;
+	}
 
     // Main functions
     public static void main(String[] args) {
@@ -244,48 +248,48 @@ public class Game {
 
         // Initialize game events
 
-        // Christmas
-        if ((time.getMonth() == Month.DECEMBER) && (time.getDayOfMonth() == 24)) {
-            IS_Christmas = true;
-        } else {
-            IS_Christmas = false;
-        }
+		// Christmas
+		if ((time.getMonth() == Month.DECEMBER) && (time.getDayOfMonth() == 24)) {
+			IS_Christmas = true;
+		} else {
+			IS_Christmas = false;
+		}
 
-        // Halloween
-        if ((time.getMonth() == Month.OCTOBER) && (time.getDayOfMonth() == 31)) {
-            IS_Halloween = true;
-        } else {
-            IS_Halloween = false;
-        }
+		// Halloween
+		if ((time.getMonth() == Month.OCTOBER) && (time.getDayOfMonth() == 31)) {
+			IS_Halloween = true;
+		} else {
+			IS_Halloween = false;
+		}
 
-        // April Fools
-        if ((time.getMonth() == Month.APRIL) && (time.getDayOfMonth() == 1)) {
-            IS_April_fools = true;
-        } else {
-            IS_April_fools = false;
-        }
+		// April Fools
+		if ((time.getMonth() == Month.APRIL) && (time.getDayOfMonth() == 1)) {
+			IS_April_fools = true;
+		} else {
+			IS_April_fools = false;
+		}
 
-        // Initialize input handler
-        input = new InputHandler(Renderer.canvas);
+		// Initialize input handler
+		input = new InputHandler(Renderer.canvas);
 
-        // Load events
-        Tiles.initTileList();
-        Sound.init();
-        Settings.init();
-        
-        World.resetGame(); // "half"-starts a new game, to set up initial variables
-        player.eid = 0;
-        new Load(true); // This loads any saved preferences.
+		// Load events
+		Tiles.initTileList();
+		Sound.init();
+		Settings.init();
 
-        if (Network.autoclient) {
-            setMenu(new MultiplayerDisplay("localhost"));
+		World.resetGame(); // "half"-starts a new game, to set up initial variables
+		player.eid = 0;
+		new Load(true); // This loads any saved preferences.
 
-        } else if (!HAS_GUI) {
-            Network.startMultiplayerServer();
+		if (Network.autoclient) {
+			setMenu(new MultiplayerDisplay("localhost"));
 
-        } else {
-            setMenu(new TitleDisplay()); // Sets menu to the title screen.
-        }
+		} else if (!HAS_GUI) {
+			Network.startMultiplayerServer();
+
+		} else {
+			setMenu(new TitleDisplay()); // Sets menu to the title screen.
+		}
 
 // Window events ----------------------------------------------------------------------------------------------------------------------------------
 

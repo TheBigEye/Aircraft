@@ -28,7 +28,7 @@ public abstract class Mob extends Entity {
     private int xKnockback, yKnockback; // The amount of vertical/horizontal knockback that needs to be inflicted, if
                                         // it's not 0, it will be moved one pixel at a time.
     public int health;
-    protected final int maxHealth; // The amount of health we currently have, and the maximum.
+    public final int maxHealth; // The amount of health we currently have, and the maximum.
     protected int walkTime;
     public int speed;
     public int tickTime = 0; // Incremented whenever tick() is called, is effectively the age in ticks

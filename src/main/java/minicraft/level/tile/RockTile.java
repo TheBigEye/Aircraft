@@ -27,22 +27,7 @@ public class RockTile extends Tile {
  	   
         
         public boolean connectsTo(Tile tile, boolean isSide) {
-            return tile != Tiles.get("dirt") && tile != Tiles.get("grass") && 
-            	   tile != Tiles.get("sand") && tile != Tiles.get("Orange tulip") &&
-            	   tile != Tiles.get("tree") && tile != Tiles.get("birch tree") &&
-            	   tile != Tiles.get("Stairs Down") && tile != Tiles.get("Stairs up") &&
-            	   tile != Tiles.get("lava") && tile != Tiles.get("water") && 
-            	   tile != Tiles.get("cactus") && tile != Tiles.get("flower") &&
-            	   tile != Tiles.get("Hole") && tile != Tiles.get("Snow") &&
-            	   tile != Tiles.get("Lawn") && tile != Tiles.get("path") && 
-            	   tile != Tiles.get("Birch tree") && tile != Tiles.get("Fir tree") && 
-            	   tile != Tiles.get("Wood wall") && tile != Tiles.get("path") && 
-            	   tile != Tiles.get("ice spike") && tile != Tiles.get("Carrot") && 
-            	   tile != Tiles.get("pine tree") &&
-            	   tile != Tiles.get(13) && tile != Tiles.get(14) && tile != Tiles.get(15) && tile != Tiles.get(16) && tile != Tiles.get(26) &&
-            	   tile != Tiles.get(27) && tile != Tiles.get(28) && tile != Tiles.get(29) && tile != Tiles.get(30) && tile != Tiles.get(31) && 
-            	   tile != Tiles.get(32) && tile != Tiles.get(33) && tile != Tiles.get(34) && tile != Tiles.get(35) && tile != Tiles.get(36) &&
-            	   tile != Tiles.get(37) && tile != Tiles.get(38) && tile != Tiles.get(39) && tile != Tiles.get(40) && tile != Tiles.get(41);
+            return tile == Tiles.get("rock") || tile == Tiles.get("up rock");
         }
  	   };
 

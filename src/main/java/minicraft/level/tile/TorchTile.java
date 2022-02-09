@@ -15,6 +15,9 @@ import minicraft.level.Level;
 
 public class TorchTile extends Tile {
     private static Sprite sprite = new Sprite(5, 3, 0);
+    
+    private boolean randomLight = true;
+    
     private static int LIGHT = 5;
 
     private Tile onType;
@@ -60,24 +63,15 @@ public class TorchTile extends Tile {
         sprite.render(screen, x * 16 + 4, y * 16 + 4);
     }
 
-    @Override
-    public boolean tick(Level level, int x, int y) {
-
-        if (random.nextInt(5) == 1) {
-
-            if (random.nextInt(2) == 0) {
-                LIGHT = 6;
-            }
-            if (random.nextInt(2) == 1) {
-                LIGHT = 5;
-            }
-
-            level.add(new FireParticle(x - 1 + randX, y - 1 + randY));
-
-        }
-        return false;
-
-    }
+    
+	public boolean tick(Level level, int x, int y) {
+		if (randomLight) {
+			LIGHT = random.nextInt(2) + 4;
+			level.add(new FireParticle(x - 1 + randX, y - 1 + randY));
+			return true;
+		}
+		return false;
+	}
 
     @Override
     public int getLightRadius(Level level, int x, int y) {

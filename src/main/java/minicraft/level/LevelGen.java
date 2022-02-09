@@ -21,8 +21,7 @@ public class LevelGen {
     private double[] values; // An array of doubles, used to help making noise for the map
 
     // width and height of the map
-    private int w;
-    private int h;
+    private int w, h;
 
     private static final int stairRadius = 15;
 
@@ -333,20 +332,21 @@ public class LevelGen {
 
 							map[i] = Tiles.get("rock").id;
 
-                    /*} else if (val > 0.1 && mval < -0.3 && jval < -0.4) { // 0.4 offsset, 0.3 sspesor
-
+                    } else if (val > 0.1 && mval < -0.3 && jval < -0.4) { // 0.4 offsset, 0.3 sspesor
+                       
                         // If there is sand nearby, the generation is cut
-                        if (x > 0 && y > 0 && x < w - 1 && y < h - 1) {
-                            if (map[i - 1] == Tiles.get("sand").id || map[i + 1] == Tiles.get("sand").id || map[i - w] == Tiles.get("sand").id || map[i + w] == Tiles.get("sand").id) {
+                        if (x > 4 && y > 4 && x < w - 2 && y < h - 2) {
+                            if (map[i] == Tiles.get("sand").id) {
                                 map[i] = Tiles.get("grass").id;
                             } else {
-                                map[i] = Tiles.get("jungle grass").id;
+                                map[i] = Tiles.get("grass").id;
                             }
                         } else {
-                            map[i] = Tiles.get("jungle grass").id;
-                        }*/
-
-							
+                        	if (x < 4 && y < 4 && x > w - 2 && y > h - 2) {
+                        		map[i] = Tiles.get("snow").id;
+                        	}
+                        }
+				
 				} else {
 					map[i] = Tiles.get("grass").id;
 
@@ -1591,7 +1591,7 @@ public class LevelGen {
             if (lvl > 1 || lvl < -4)
                 continue;
 
-            byte[][] fullmap = LevelGen.createAndValidateMap(w, h, -1);
+            byte[][] fullmap = LevelGen.createAndValidateMap(w, h, lvl);
 
             if (fullmap == null) {
                 continue;
@@ -1652,7 +1652,7 @@ public class LevelGen {
 
                     // Dungeon tiles
                     if (map[i] == Tiles.get("Obsidian Wall").id) pixels[i] = 0x480887;
-                    if (map[i] == Tiles.get("Hard obsidian").id) pixels[i] = 0x5f0aa0;
+                    if (map[i] == Tiles.get("Raw obsidian").id) pixels[i] = 0x5f0aa0;
                     if (map[i] == Tiles.get("Obsidian").id) pixels[i] = 0x660aa0;
 
                     // Stairs
@@ -1706,7 +1706,7 @@ public class LevelGen {
             		"Map Generator",
             		JOptionPane.YES_NO_OPTION,
             		JOptionPane.QUESTION_MESSAGE,
-            		new ImageIcon(img.getScaledInstance(w * mapScale, h * mapScale, Image.SCALE_AREA_AVERAGING)),
+            		new ImageIcon(img.getScaledInstance(w * mapScale, h * mapScale, Image.SCALE_SMOOTH)),
             		options,
             		null
             );
