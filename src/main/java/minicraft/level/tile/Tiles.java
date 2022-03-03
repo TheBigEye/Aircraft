@@ -28,8 +28,8 @@ public final class Tiles {
 			System.out.println("Initializing tile list...");
 		}
 
-		// A total of 256 types of tiles are read
-		for (int i = 0; i < 256; i++) {
+		// A total of 65536 types of tiles are read
+		for (int i = 0; i < 32768; i++) {
 			tiles.add(null);
 		}
 
@@ -142,7 +142,7 @@ public final class Tiles {
 		// tiles.set(?, new SandRockTile("Sand rock"));
 
 		// WARNING: don't use this tile for anything!
-		tiles.set(255, new ConnectTile());
+		tiles.set(256, new ConnectTile());
 
 		for (int i = 0; i < tiles.size(); i++) {
 			if (tiles.get(i) == null)
@@ -154,12 +154,13 @@ public final class Tiles {
 	protected static void add(int id, Tile tile) {
 		tiles.set(id, tile);
 		System.out.println("Adding " + tile.name + " to tile list with id " + id);
-		tile.id = (byte) id;
+		tile.id = (short) id;
 	}
 
 	static {
-		for (int i = 0; i < 256; i++)
+		for(int i = 0; i < 32768; i++) {
 			oldids.add(null);
+		}
 
 		oldids.set(0, "grass");
 		oldids.set(1, "rock");
@@ -360,13 +361,14 @@ public final class Tiles {
 
 	public static Tile get(int id) {
 		// System.out.println("Requesting tile by id: " + id);
-		if (id < 0)
-			id += 256;
+		if(id < 0) id += 32768;
 
 		if (tiles.get(id) != null) {
 			return tiles.get(id);
-		} else if (id >= 128) {
-			return TorchTile.getTorchTile(get(id - 128));
+			
+		} else if(id >= 32767) {
+			return TorchTile.getTorchTile(get(id - 32767));
+
 		} else {
 			System.out.println("TILES.GET: Unknown tile id requested: " + id);
 			return tiles.get(0);

@@ -109,8 +109,8 @@ public class Level {
     public int h;
     private long seed; // The used seed that was used to generate the world
 
-    public byte[] tiles; // An array of all the tiles in the world.
-    public byte[] data; // An array of the data of the tiles in the world. // ?
+    public short[] tiles; // An array of all the tiles in the world.
+    public short[] data; // An array of the data of the tiles in the world. // ?
 
     public static int randomMusic; // used for the Random music system in the current level
 
@@ -190,7 +190,7 @@ public class Level {
         this.w = w;
         this.h = h;
         this.seed = seed;
-        byte[][] maps; // Multidimensional array (an array within a array), used for the map
+        short[][] maps; // Multidimensional array (an array within a array), used for the map
 
         if (level != -4 && level != 0)
             monsterDensity = 8;
@@ -199,8 +199,8 @@ public class Level {
 
         if (!makeWorld) {
             int arrsize = w * h;
-            tiles = new byte[arrsize];
-            data = new byte[arrsize];
+            tiles = new short[arrsize];
+            data = new short[arrsize];
             return;
         }
 
@@ -748,7 +748,7 @@ public class Level {
             System.out.println("Client requested a tile update for the " + t.name + " tile at " + x + "," + y);
         } else {
             tiles[x + y * w] = t.id;
-            data[x + y * w] = (byte) dataVal;
+            data[x + y * w] = (short) dataVal;
         }
 
         if (Game.isValidServer())
@@ -764,7 +764,7 @@ public class Level {
     public void setData(int x, int y, int val) {
         if (x < 0 || y < 0 || x >= w || y >= h)
             return;
-        data[x + y * w] = (byte) val;
+        data[x + y * w] = (short) val;
     }
 
     public void add(Entity e) {

@@ -89,7 +89,6 @@ public class Updater extends Game {
 
     // VERY IMPORTANT METHOD!! Makes everything keep happening.
     // In the end, calls menu.tick() if there's a menu, or level.tick() if no menu.
-    @SuppressWarnings("static-access")
     public static void tick() {
 
         Info.getInfo();

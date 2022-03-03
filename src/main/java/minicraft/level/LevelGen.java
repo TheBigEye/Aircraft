@@ -19,6 +19,9 @@ public class LevelGen {
     private static long worldSeed = 0; // Always is 0
     private static final Random random = new Random(worldSeed); // Initializes the random class
     private double[] values; // An array of doubles, used to help making noise for the map
+    
+    private static int tundra_desert_separator = 4;
+    private static int beaches_thickness = 1;
 
     // width and height of the map
     private int w, h;
@@ -157,109 +160,101 @@ public class LevelGen {
     }
 
     @Nullable
-    static byte[][] createAndValidateMap(int w, int h, int level) {
+    static short[][] createAndValidateMap(int w, int h, int level) {
         worldSeed = WorldGenDisplay.getSeed();
 
-        if (level == 1) {
-            return createAndValidateSkyMap(w, h);
-        }
-        if (level == 0) {
-            return createAndValidateTopMap(w, h);
-        }
-        if (level == -4) {
-            return createAndValidateDungeon(w, h);
-        }
-        if ((level > -4) && (level < 0)) {
-            return createAndValidateUndergroundMap(w, h, -level);
-        }
-
+        if (level == 1) return createAndValidateSkyMap(w, h);      
+        if (level == 0)  return createAndValidateTopMap(w, h);       
+        if (level == -4) return createAndValidateDungeon(w, h);
+        if ((level > -4) && (level < 0))  return createAndValidateUndergroundMap(w, h, -level);
+        
         System.err.println("LevelGen ERROR: level index is not valid. Could not generate a level.");
 
         return null;
     }
 
-    private static byte[][] createAndValidateTopMap(int w, int h) {
+    private static short[][] createAndValidateTopMap(int w, int h) {
         random.setSeed(worldSeed);
 
         do {
-            byte[][] result = createTopMap(w, h);
+        	short[][] result = createTopMap(w, h);
 
             int[] count = new int[256];
 
             for (int i = 0; i < w * h; i++) {
-                count[result[0][i] & 0xff]++;
+                count[result[0][i] & 0xffff]++;
             }
 
-            if (count[Tiles.get("rock").id & 0xff] < 100) continue;
-            if (count[Tiles.get("sand").id & 0xff] < 100) continue;
-            if (count[Tiles.get("grass").id & 0xff] < 100) continue;
-            if (count[Tiles.get("tree").id & 0xff] < 100) continue;
-            if (count[Tiles.get("flower").id & 0xff] < 100) continue;
-            if (count[Tiles.get("Stairs Down").id & 0xff] < w / 21) continue; // size 128 = 6 stairs min
+            if (count[Tiles.get("rock").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("sand").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("grass").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("tree").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("flower").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("Stairs Down").id & 0xffff] < w / 21) continue; // size 128 = 6 stairs min
 
             return result;
 
         } while (true);
     }
 
-    private static byte[][] createAndValidateUndergroundMap(int w, int h, int depth) {
+    private static @Nullable short[][] createAndValidateUndergroundMap(int w, int h, int depth) {
         random.setSeed(worldSeed);
 
         do {
-            byte[][] result = createUndergroundMap(w, h, depth);
+        	short[][] result = createUndergroundMap(w, h, depth);
 
             int[] count = new int[256];
 
             for (int i = 0; i < w * h; i++) {
-                count[result[0][i] & 0xff]++;
+                count[result[0][i] & 0xffff]++;
             }
 
-            if (count[Tiles.get("rock").id & 0xff] < 100) continue;
-            if (count[Tiles.get("dirt").id & 0xff] < 100) continue;
-            if (count[(Tiles.get("iron Ore").id & 0xff) + depth - 1] < 20) continue;
+            if (count[Tiles.get("rock").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("dirt").id & 0xffff] < 100) continue;
+            if (count[(Tiles.get("iron Ore").id & 0xffff) + depth - 1] < 20) continue;
 
-            if (depth < 3 && count[Tiles.get("Stairs Down").id & 0xff] < w / 32) continue; // size 128 = 4 stairs min
+            if (depth < 3 && count[Tiles.get("Stairs Down").id & 0xffff] < w / 32) continue; // size 128 = 4 stairs min
 
             return result;
 
         } while (true);
     }
 
-    private static byte[][] createAndValidateDungeon(int w, int h) {
+    private static short[][] createAndValidateDungeon(int w, int h) {
         random.setSeed(worldSeed);
 
         do {
-            byte[][] result = createDungeon(w, h);
+        	short[][] result = createDungeon(w, h);
 
             int[] count = new int[256];
 
             for (int i = 0; i < w * h; i++) {
-                count[result[0][i] & 0xff]++;
+                count[result[0][i] & 0xffff]++;
             }
 
-            if (count[Tiles.get("Obsidian").id & 0xff] < 100) continue;
-            if (count[Tiles.get("Obsidian Wall").id & 0xff] < 100) continue;
-            if (count[Tiles.get("Raw obsidian").id & 0xff] < 100) continue;
+            if (count[Tiles.get("Obsidian").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("Obsidian Wall").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("Raw obsidian").id & 0xffff] < 100) continue;
 
             return result;
 
         } while (true);
     }
 
-    private static byte[][] createAndValidateSkyMap(int w, int h) {
+    private static @Nullable short[][] createAndValidateSkyMap(int w, int h) {
         random.setSeed(worldSeed);
 
         do {
-            byte[][] result = createSkyMap(w, h);
+        	short[][] result = createSkyMap(w, h);
 
             int[] count = new int[256];
 
             for (int i = 0; i < w * h; i++) {
-                count[result[0][i] & 0xff]++;
+                count[result[0][i] & 0xffff]++;
             }
 
-            if (count[Tiles.get("cloud").id & 0xff] < 2000) continue;
-            if (count[Tiles.get("Stairs Down").id & 0xff] < w / 64) continue; // size 128 = 2 stairs min
+            if (count[Tiles.get("cloud").id & 0xffff] < 2000) continue;
+            if (count[Tiles.get("Stairs Down").id & 0xffff] < w / 64) continue; // size 128 = 2 stairs min
 
             return result;
 
@@ -267,7 +262,7 @@ public class LevelGen {
     }
 
     // Surface generation code
-    private static byte[][] createTopMap(int w, int h) { // create surface map
+    private static short[][] createTopMap(int w, int h) { // create surface map
 
         // creates a bunch of value maps, some with small size...
         LevelGen mnoise1 = new LevelGen(w, h, 16);
@@ -284,8 +279,8 @@ public class LevelGen {
 		LevelGen jnoise3 = new LevelGen(w, h, 8);
 
         
-        byte[] map = new byte[w * h];
-        byte[] data = new byte[w * h];
+		short[] map = new short[w * h];
+		short[] data = new short[w * h];
 
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
@@ -411,9 +406,9 @@ public class LevelGen {
 			default:
 				// meh
 				break;
-		}
-	}
-}
+				}
+            }
+        }
 
         // These biomes are established :
 
@@ -639,6 +634,28 @@ public class LevelGen {
                 }
             }
         }
+        
+
+		// Makes a separation with the tundra and desert biome adding the plains biome between these
+		for (int j = 0; j < h; j++) {
+			for (int x = 0; x < w; x++) {
+				// tiles SIDE A and SIDE B
+				if (map[x + j * w] != Tiles.get("snow").id && map[x + j * w] == Tiles.get("sand").id) {
+					boolean replace2 = false;
+					int tx;
+					check_biome_a: for (tx = x - tundra_desert_separator; tx <= x + tundra_desert_separator; tx++) {
+						for (int ty = j - tundra_desert_separator; ty <= j + tundra_desert_separator; ty++) {
+							if (tx >= 0 && ty >= 0 && tx <= w && ty <= h && (tx != x || ty != j) && map[tx + ty * w] == Tiles.get("snow").id) { // start in the SIDE A
+								replace2 = true;
+								break check_biome_a;
+							}
+						}
+					}
+					if (replace2)
+						map[x + j * w] = Tiles.get("grass").id; // Add the separation
+				}
+			}
+		}
 
         if (!Settings.get("Theme").equals("Plain")) {
             for (int i = 0; i < w * h / 400; i++) {
@@ -716,8 +733,7 @@ public class LevelGen {
                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                     if (map[xx + yy * w] == Tiles.get("grass").id) {
                         map[xx + yy * w] = Tiles.get("flower").id;
-                        data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16); // data determines which way the
-                        // flower faces
+                        data[xx + yy * w] = (short)(col + random.nextInt(4) * 16); // data determines which way the flower faces
                     }
                 }
             }
@@ -735,7 +751,7 @@ public class LevelGen {
                 if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                     if (map[xx + yy * w] == Tiles.get("grass").id) {
                         map[xx + yy * w] = Tiles.get("lawn").id;
-                        data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16);
+                        data[xx + yy * w] = (short)(col + random.nextInt(4) * 16);
                     }
                 }
             }
@@ -841,27 +857,37 @@ public class LevelGen {
             }
         }
 
+		// generate the beaches
+		for (int j = 0; j < h; j++) {
+			for (int x = 0; x < w; x++) {
+				if (map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("grass").id || map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("tree").id || map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("flower").id || map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("birch tree").id || map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("lawn").id) {
+					boolean replace = false;
+					int tx;
+					check_ocean: for (tx = x - beaches_thickness; tx <= x + beaches_thickness; tx++) {
+						for (int ty = j - beaches_thickness; ty <= j + beaches_thickness; ty++) {
+							if (tx >= 0 && ty >= 0 && tx <= w && ty <= h && (tx != x || ty != j) && map[tx + ty * w] == Tiles.get("water").id) {
+								replace = true;
+								break check_ocean;
+							}
+						}
+					}
+					if (replace)
+						map[x + j * w] = Tiles.get("sand").id;
+				}
+			}
+		}
 
-
-        // System.out.println("min="+min);
-        // System.out.println("max="+max);
-        // average /= w*h;
-        // System.out.println(average);
-
-        return new byte[][] {
-            map,
-            data
-        };
+        return new short[][]{map, data};
     }
 
     // Dungeons generation code
-    private static byte[][] createDungeon(int w, int h) {
+    private static short[][] createDungeon(int w, int h) {
 
         LevelGen noise1 = new LevelGen(w, h, 8);
         LevelGen noise2 = new LevelGen(w, h, 8);
 
-        byte[] map = new byte[w * h];
-        byte[] data = new byte[w * h];
+		short[] map = new short[w * h];
+		short[] data = new short[w * h];
 
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
@@ -918,14 +944,11 @@ public class LevelGen {
             }
         }
 
-        return new byte[][] {
-            map,
-            data
-        };
+        return new short[][]{map, data};
     }
 
     // Generate cave system
-    private static byte[][] createUndergroundMap(int w, int h, int depth) {
+    private static short[][] createUndergroundMap(int w, int h, int depth) {
 
         LevelGen mnoise1 = new LevelGen(w, h, 16);
         LevelGen mnoise2 = new LevelGen(w, h, 8);
@@ -946,8 +969,9 @@ public class LevelGen {
          * This generates the 3 levels of cave, iron, gold and gem
          */
 
-        byte[] map = new byte[w * h];
-        byte[] data = new byte[w * h];
+		short[] map = new short[w * h];
+		short[] data = new short[w * h];
+		
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
                 int i = x + y * w;
@@ -969,10 +993,10 @@ public class LevelGen {
 
                 double xd = x / (w - 1.0) * 2 - 1;
                 double yd = y / (h - 1.0) * 2 - 1;
-                if (xd < 0)
-                    xd = -xd;
-                if (yd < 0)
-                    yd = -yd;
+                
+                if (xd < 0) xd = -xd;
+                if (yd < 0) yd = -yd;
+                
                 double dist = xd >= yd ? xd : yd;
                 dist = Math.pow(dist, 8);
                 val += 1 - dist * 20;
@@ -1004,7 +1028,7 @@ public class LevelGen {
                     int yy = y + random.nextInt(5) - random.nextInt(5);
                     if (xx >= r && yy >= r && xx < w - r && yy < h - r) {
                         if (map[xx + yy * w] == Tiles.get("rock").id) {
-                            map[xx + yy * w] = (byte)((Tiles.get("iron Ore").id & 0xff) + depth - 1);
+                            map[xx + yy * w] = (short)((Tiles.get("iron Ore").id & 0xffff) + depth - 1);
                         }
                     }
                 }
@@ -1015,7 +1039,7 @@ public class LevelGen {
                     int yy = y + random.nextInt(3) - random.nextInt(2);
                     if (xx >= r && yy >= r && xx < w - r && yy < h - r) {
                         if (map[xx + yy * w] == Tiles.get("rock").id) {
-                            map[xx + yy * w] = (byte)(Tiles.get("Lapis").id & 0xff);
+                            map[xx + yy * w] = (short)(Tiles.get("Lapis").id & 0xffff);
                         }
                     }
                 }
@@ -1031,11 +1055,11 @@ public class LevelGen {
                     if (xx < w - r && yy < h - r) {
                         Structure.dungeonLock.draw(map, xx, yy, w);
 
-                        /// The "& 0xff" is a common way to convert a byte to an unsigned int, which
+                        /// The "& 0xff" is a common way to convert a short to an unsigned int, which
                         /// basically prevents negative values... except... this doesn't do anything if
                         /// you flip it back to a byte again...
 
-                        map[xx + yy * w] = (byte)(Tiles.get("Stairs Down").id & 0xff);
+                        map[xx + yy * w] = (short)(Tiles.get("Stairs Down").id & 0xffff);
                     }
                 }
             }
@@ -1061,24 +1085,22 @@ public class LevelGen {
 
                 map[x + y * w] = Tiles.get("Stairs Down").id;
                 count++;
-                if (count >= w / 32)
+                if (count >= w / 32) {
                     break;
+                }
             }
         }
 
-        return new byte[][] {
-            map,
-            data
-        };
+        return new short[][]{map, data};
     }
 
     // Sky dimension generation
-    private static byte[][] createSkyMap(int w, int h) {
+    private static short[][] createSkyMap(int w, int h) {
         LevelGen noise1 = new LevelGen(w, h, 8);
         LevelGen noise2 = new LevelGen(w, h, 8);
 
-        byte[] map = new byte[w * h];
-        byte[] data = new byte[w * h];
+		short[] map = new short[w * h];
+		short[] data = new short[w * h];
 
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
@@ -1245,7 +1267,7 @@ public class LevelGen {
                     if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                         if (map[xx + yy * w] == Tiles.get("sky grass").id) {
                             map[xx + yy * w] = Tiles.get("sky lawn").id;
-                            data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16);
+                            data[xx + yy * w] = (short)(col + random.nextInt(4) * 16);
                         }
                     }
                 }
@@ -1426,7 +1448,7 @@ public class LevelGen {
                     if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
                         if (map[xx + yy * w] == Tiles.get("sky grass").id) {
                             map[xx + yy * w] = Tiles.get("sky lawn").id;
-                            data[xx + yy * w] = (byte)(col + random.nextInt(4) * 16);
+                            data[xx + yy * w] = (short)(col + random.nextInt(4) * 16);
                         }
                     }
                 }
@@ -1517,10 +1539,7 @@ public class LevelGen {
             }
         }
 
-        return new byte[][] {
-            map,
-            data
-        };
+        return new short[][] {map, data};
 
     }
 
@@ -1591,12 +1610,12 @@ public class LevelGen {
             if (lvl > 1 || lvl < -4)
                 continue;
 
-            byte[][] fullmap = LevelGen.createAndValidateMap(w, h, lvl);
+            short[][] fullmap = LevelGen.createAndValidateMap(w, h, lvl);
 
             if (fullmap == null) {
                 continue;
             }
-            byte[] map = fullmap[0];
+            short[] map = fullmap[0];
 
             // Create the map image
             BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB); // Creates an image
@@ -1656,8 +1675,8 @@ public class LevelGen {
                     if (map[i] == Tiles.get("Obsidian").id) pixels[i] = 0x660aa0;
 
                     // Stairs
-                    if (map[i] == Tiles.get("Stairs Down").id) pixels[i] = 0xffffff;
-                    if (map[i] == Tiles.get("Stairs Up").id) pixels[i] = 0xffffff;
+                    if (map[i] == Tiles.get("Stairs Down").id) pixels[i] = 0xffffffff;
+                    if (map[i] == Tiles.get("Stairs Up").id) pixels[i] = 0xffffffff;
 
                     // Sky tiles
                     if (map[i] == Tiles.get("Infinite Fall").id) pixels[i] = 0x010101;

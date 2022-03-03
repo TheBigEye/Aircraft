@@ -28,10 +28,10 @@ public class TorchTile extends Tile {
     private int randY = rnd.nextInt(19);
 
     public static TorchTile getTorchTile(Tile onTile) {
-        int id = onTile.id & 0xFF;
+		int id = onTile.id & 0xFFFF;
         // noinspection ConstantConditions
-        if (id < 128)
-            id += 128;
+        if (id < 16384)
+            id += 16384;
         else
             System.out.println("tried to place torch on torch tile...");
 

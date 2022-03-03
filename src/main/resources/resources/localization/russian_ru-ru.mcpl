@@ -799,14 +799,35 @@ Press
 
 # OptionsMenu.java
 
+Difficulty
+Сложность
+
+Peaceful
+Мирный
+
+Easy
+Легкий
+
+Normal
+Нормально
+
+Hard
+Жесткий
+
+Sound
+Звук
+
 Change Key Bindings
-Изменить привязку клавиш
+Изменить привязки клавиш
 
 Options
 Настройки
 
 Change language
-Изменить язык
+Язык
+
+Language
+Язык
 
 # PauseMenu.java
 
@@ -852,8 +873,8 @@ Inventory
 
 # TitleMenu.java
 
-Play
-Играть
+Singleplayer
+Одиночная игра
 
 Load World
 Загрузить Мир
@@ -861,14 +882,14 @@ Load World
 New World
 Новый мир
 
-Join Online World
-Присоединиться к миру в сети
-
 Options
 Настройки
 
 Help
 Помощь
+
+Credits
+Авторы
 
 Instructions
 Инструкции

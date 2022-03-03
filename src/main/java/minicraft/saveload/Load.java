@@ -419,11 +419,6 @@ public class Load {
 		Settings.set("language", lang);
 		Localization.changeLanguage(lang);
 
-		// Multiplayer stuff
-		MultiplayerDisplay.savedIP = json.getString("savedIP");
-		MultiplayerDisplay.savedUUID = json.getString("savedUUID");
-		MultiplayerDisplay.savedUsername = json.getString("savedUsername");
-
 		// Load keymap
 		JSONArray keyData = json.getJSONArray("keymap");
 		List<Object> subdata = keyData.toList();
@@ -494,8 +489,8 @@ public class Load {
 			long seed = hasSeed ? Long.parseLong(data.get(2)) : 0;
 			Settings.set("size", lvlw);
 
-			byte[] tiles = new byte[lvlw * lvlh];
-			byte[] tdata = new byte[lvlw * lvlh];
+			short[] tiles = new short[lvlw * lvlh];
+			short[] tdata = new short[lvlw * lvlh];
 
 			for (int x = 0; x < lvlw; x++) {
 				for (int y = 0; y < lvlh; y++) {
@@ -521,21 +516,11 @@ public class Load {
 
 					if (tilename.equalsIgnoreCase("WOOL") && worldVer.compareTo(new Version("2.0.6-dev4")) < 0) {
 						switch (Integer.parseInt(extradata.get(tileidx))) {
-							case 1:
-								tilename = "Red Wool";
-								break;
-							case 2:
-								tilename = "Yellow Wool";
-								break;
-							case 3:
-								tilename = "Green Wool";
-								break;
-							case 4:
-								tilename = "Blue Wool";
-								break;
-							case 5:
-								tilename = "Black Wool";
-								break;
+							case 1: tilename = "Red Wool"; break;
+							case 2: tilename = "Yellow Wool"; break;
+							case 3: tilename = "Green Wool"; break;
+							case 4: tilename = "Blue Wool"; break;
+							case 5: tilename = "Black Wool"; break;
 							default:
 								tilename = "Wool";
 						}
@@ -549,7 +534,7 @@ public class Load {
 					}
 
 					tiles[tileArrIdx] = Tiles.get(tilename).id;
-					tdata[tileArrIdx] = Byte.parseByte(extradata.get(tileidx));
+					tdata[tileArrIdx] = Short.parseShort(extradata.get(tileidx));
 				}
 			}
 

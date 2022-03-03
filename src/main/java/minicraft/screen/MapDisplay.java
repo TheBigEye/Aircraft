@@ -67,7 +67,6 @@ public class MapDisplay extends Display {
         }
 
         // Render the marker for the player
-        screen.render(ptx % 128 + menuBounds.getLeft() + 2, pty % 128 + menuBounds.getTop() + 2,
-                MapDisplay.PLAYER_MARKER_SPRITE, MapDisplay.PLAYER_MARKER_COLOR);
+        screen.render(ptx % 128 + menuBounds.getLeft() + 2, pty % 128 + menuBounds.getTop() + 2, MapDisplay.PLAYER_MARKER_SPRITE, MapDisplay.PLAYER_MARKER_COLOR);
     }
 }

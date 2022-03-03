@@ -11,8 +11,8 @@ public class Font {
     private static String chars =
     		"ABCDEFGHIJKLMNOPQRSTUVWXYZ012345" +
     		"6789.,!?'\"-+=/\\%()<>:;Ω@ÁÉÍÓÚÑ¿¡" + 
-    		"ÃÊÇÔÕĞÇÜİÖŞÆØÅŰŐ[]#|{}_&^~$*    " +
-    		"БГДЖИЙЛПУФЦЧШЩЪЬЭЮЯЫАВЕКМНОРСТЗХ";
+    		"ÃÊÇÔÕĞÇÜİÖŞÆØÅŰŐ[]#|{}_&^~$*   А" +
+    		"БВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
     
     /*
      * The order of the letters in the chars string is represented in the order that

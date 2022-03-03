@@ -82,7 +82,8 @@ public class Game {
 			"Oh. That hurts :(",
 			"Sorry for the crash :(",
 			"You can play our brother game, Minitale",
-			"F, crash again??" 
+			"F, crash again??", "Interessting, hmmmmm...",
+			"ok, i messed it up"
 	};
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------

@@ -335,12 +335,6 @@ public class Renderer extends Game {
 			Font.drawTransparentBackground(dura + "%", screen, 221 + player.activeItem.durAdjusted, Screen.h - 24, Color.get(1, 255 - green, green, 0));
 		}
 
-		// This draws the black square where the selected item would be if you were holding it
-		if (!isMode("creative") || player.activeItem != null) {
-			for (int x = 20; x < 36; x++) {
-				screen.render(x * 8, Screen.h - 8, 31 + 30 * 32, 0, 3);
-			}
-		}
 
 		// Shows active item sprite and name in bottom toolbar.
 		if (player.activeItem != null) {

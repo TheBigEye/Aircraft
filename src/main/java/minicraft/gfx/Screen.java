@@ -223,6 +223,8 @@ public class Screen {
      * represented fittingly with their own pattern of lit and not lit. 16 is the
      * minimum pixel lighness required to ensure that the pixel will always remain
      * lit.
+     * 
+     * LOT TEXT
      */
 
     private static final int[] dither = new int[] { 0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5 };
@@ -287,6 +289,8 @@ public class Screen {
             	case Morning: tintFactor = relTime * -MAXDARK / relTime; break;
             	case Evening: tintFactor = relTime * MAXDARK / relTime ; break;
             	case Night: tintFactor = MAXDARK; break;
+				default:
+					break;
             }
             
             if (currentLevel > 3) {
@@ -317,13 +321,13 @@ public class Screen {
                 
                     if (intense != 0) {
                         switch (intense) {
-                        case 1: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
-                        case 2: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
-                        case 3: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
-                        case -4: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
-                        case -3: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
-                        case -2: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
-                        case -1: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
+                        	case 1: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
+                        	case 2: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
+                        	case 3: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
+                        	case -4: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
+                        	case -3: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
+                        	case -2: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
+                        	case -1: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
                         }
                     }
                 }
@@ -340,6 +344,7 @@ public class Screen {
         // applies offsets:
         x -= xOffset;
         y -= yOffset;
+        
         // starting, ending, x, y, positions of the circle (of light)
         int x0 = x - r;
         int x1 = x + r;
@@ -382,5 +387,6 @@ public class Screen {
             pixels[xp + yp * w] = color;
         }
     }
-
+    
+    
 }

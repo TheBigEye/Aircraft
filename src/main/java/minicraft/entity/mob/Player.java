@@ -59,6 +59,7 @@ import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 import minicraft.saveload.Save;
+import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.CraftingDisplay;
 import minicraft.screen.InfoDisplay;
 import minicraft.screen.LoadingDisplay;
@@ -104,13 +105,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     public static final int maxArmor = 100;
 
     // Player sprite variables
-    public static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 16);
-    private static MobSprite[][] carrySprites = MobSprite.compileMobSpriteAnimations(0, 18); // The sprites while
-                                                                                             // carrying something.
-    private static MobSprite[][] suitSprites = MobSprite.compileMobSpriteAnimations(8, 16); // The "airwizard suit"
-                                                                                            // sprites.
-    private static MobSprite[][] carrySuitSprites = MobSprite.compileMobSpriteAnimations(8, 18); // The "airwizard suit"
-                                                                                                 // sprites.
+    public static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 16); // Normal player sprites
+    private static MobSprite[][] carrySprites = MobSprite.compileMobSpriteAnimations(0, 18); // The sprites while carrying something.
+    private static MobSprite[][] suitSprites = MobSprite.compileMobSpriteAnimations(8, 16); // The "airwizard suit" sprites.
+    private static MobSprite[][] carrySuitSprites = MobSprite.compileMobSpriteAnimations(8, 18); // The "airwizard suit" sprites.
 
     private Inventory inventory;
 
@@ -175,11 +173,11 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             @Override
             public void add(int idx, Item item) {
                 if (Game.isMode("creative")) {
-                    if (count(item) > 0)
-                        return;
+                    if (count(item) > 0) return;
+                    
                     item = item.clone();
-                    if (item instanceof StackableItem)
-                        ((StackableItem) item).count = 1;
+                    
+                    if (item instanceof StackableItem) ((StackableItem) item).count = 1;
                 }
                 super.add(idx, item);
             }
@@ -188,8 +186,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             public Item remove(int idx) {
                 if (Game.isMode("creative")) {
                     Item cur = get(idx);
-                    if (cur instanceof StackableItem)
-                        ((StackableItem) cur).count = 1;
+                    if (cur instanceof StackableItem) ((StackableItem) cur).count = 1;
                     if (count(cur) == 1) {
                         super.remove(idx);
                         super.add(0, cur);
@@ -219,8 +216,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         hungerStamCnt = maxHungerStams[Settings.getIdx("diff")];
         stamHungerTicks = maxHungerTicks;
 
-        if (Game.isMode("creative"))
+        if (Game.isMode("creative")) {
             Items.fillCreativeInv(inventory);
+        }
 
         if (previousInstance != null) {
             spawnx = previousInstance.spawnx;
@@ -322,8 +320,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                 if (potioneffects.get(potionType) <= 1) // if time is zero (going to be set to 0 in a moment)...
                     PotionItem.applyPotion(this, potionType, false); // Automatically removes this potion effect.
                 else
-                    potioneffects.put(potionType, potioneffects.get(potionType) - 1); // Otherwise, replace it with one
-                                                                                      // less.
+                    potioneffects.put(potionType, potioneffects.get(potionType) - 1); // Otherwise, replace it with one less.
             }
         }
 
@@ -543,8 +540,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             }
         }
 
-        if (Updater.savecooldown > 0 && !Updater.saving)
+        if (Updater.savecooldown > 0 && !Updater.saving) {
             Updater.savecooldown--;
+        }
 
         // Handle player input. Input is handled by the menu if we are in one.
         if (Game.getMenu() == null && !Bed.inBed(this)) {
@@ -766,94 +764,85 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         attackDir = dir; // Make the attack direction equal the current direction
         attackItem = activeItem; // make attackItem equal activeItem
 
-        if (activeItem instanceof ToolItem && stamina - 1 >= 0) {
-            // The player is holding a tool, and has stamina available.
-            ToolItem tool = (ToolItem) activeItem;
+		// If we are holding an item.
+		if (activeItem != null) {
+			attackTime = 10;
+			boolean done = false;
+			
+			// Fire a bow if we have the stamina and an arrow.
+			if (activeItem instanceof ToolItem && stamina - 1 >= 0) {
+				ToolItem tool = (ToolItem) activeItem;
+				if (tool.type == ToolType.Bow && tool.dur > 0 && inventory.count(Items.arrowItem) > 0) {
+					
+					if (!Game.isMode("creative")) inventory.removeItem(Items.arrowItem);
+					level.add(new Arrow(this, attackDir, tool.level));
+					attackTime = 10;
 
-            // If the player is holding a bow, and has arrows...
-            if (tool.type == ToolType.Bow && tool.dur > 0 && inventory.count(Items.arrowItem) > 0) {
-                if (!Game.isMode("creative"))
-                    inventory.removeItem(Items.arrowItem);
-                level.add(new Arrow(this, attackDir, tool.level));
-                attackTime = 10;
-                if (!Game.isMode("creative"))
-                    tool.dur--;
-                return; // We have attacked!
-            }
-        }
+					if (!Game.isMode("creative")) tool.dur--;
 
-        // If we are simply holding an item...
-        if (activeItem != null) {
-            attackTime = 10; // Attack time will be set to 10.
+					// Bow down to me, achievement
+					AchievementsDisplay.setAchievement("minicraft.achievement.bow",true);
 
-            boolean done = false;
-
-            // If the interaction between you and an entity is successful, then return.
-            if (interact(getInteractionBox(INTERACT_DIST)))
-                return;
-
-            // Otherwise, attempt to interact with the tile.
-            Point t = getInteractionTile();
-            if (t.x >= 0 && t.y >= 0 && t.x < level.w && t.y < level.h) { // if the target coordinates are a valid
-                                                                          // tile...
-                List<Entity> tileEntities = level.getEntitiesInTiles(t.x, t.y, t.x, t.y, false, ItemEntity.class);
-                if (tileEntities.size() == 0 || tileEntities.size() == 1 && tileEntities.get(0) == this) {
-                    Tile tile = level.getTile(t.x, t.y);
-                    if (activeItem.interactOn(tile, level, t.x, t.y, this, attackDir)) { // Returns true if your held
-                                                                                         // item successfully interacts
-                                                                                         // with the target tile.
-                        done = true;
-                    } else { // item can't interact with tile
-                        if (tile.interact(level, t.x, t.y, this, activeItem, attackDir)) { // Returns true if the target
-                                                                                           // tile successfully
-                                                                                           // interacts with the item.
-                            done = true;
-                        }
-                    }
-                }
-
-                if (Game.isValidServer() && this instanceof RemotePlayer) { // Only do this if no interaction was
-                                                                            // actually made; b/c a tile update packet
-                                                                            // will generally happen then anyway.
-                    minicraft.network.MinicraftServerThread thread = Game.server
-                            .getAssociatedThread((RemotePlayer) this);
-                    // if(thread != null)
-                    thread.sendTileUpdate(level, t.x, t.y); /// FIXME this part is as a semi-temporary fix for those odd
-                                                            /// tiles that don't update when they should; instead of
-                                                            /// having to make another system like the entity additions
-                                                            /// and removals (and it wouldn't quite work as well for
-                                                            /// this anyway), this will just update whatever tile the
-                                                            /// player interacts with (and fails, since a successful
-                                                            /// interaction changes the tile and therefore updates it
-                                                            /// anyway).
-                }
-                if (!Game.isMode("creative") && activeItem.isDepleted()) {
-                    // If the activeItem has 0 items left, then "destroy" it.
-                    activeItem = null;
-                }
-            }
-
-            if (done)
-                return; // Skip the rest if interaction was handled
-        }
-
-        if (activeItem == null || activeItem.canAttack()) { // If there is no active item, OR if the item can be used to
-                                                            // attack...
-            attackTime = 5;
-            // Attacks the enemy in the appropriate direction.
-            boolean used = hurt(getInteractionBox(ATTACK_DIST));
-
-            // Attempts to hurt the tile in the appropriate direction.
-            Point t = getInteractionTile();
-            if (t.x >= 0 && t.y >= 0 && t.x < level.w && t.y < level.h) {
-                Tile tile = level.getTile(t.x, t.y);
-                used = tile.hurt(level, t.x, t.y, this, random.nextInt(3) + 1, attackDir) || used;
-            }
-
-            if (used && activeItem instanceof ToolItem)
-                ((ToolItem) activeItem).payDurability();
-        }
-    }
+					return;
+				}
+			}
+			// If the interaction between you and an entity is successful, then return.
+			if (interact(getInteractionBox(INTERACT_DIST))) return;
+			
+			// Attempt to interact with the tile.
+			Point t = getInteractionTile();
+			
+			// If the target coordinates are a valid tile.
+			if (t.x >= 0 && t.y >= 0 && t.x < level.w && t.y < level.h) {
+				
+				// Get any entities (except dropped items) on the tile.
+				List<Entity> tileEntities = level.getEntitiesInTiles(t.x, t.y, t.x, t.y, false, ItemEntity.class);
+				
+				// If there are no other entities than us on the tile.
+				if (tileEntities.size() == 0 || tileEntities.size() == 1 && tileEntities.get(0) == this) {
+					Tile tile = level.getTile(t.x, t.y);
+					
+					// If the item successfully interacts with the target tile.
+					if (activeItem.interactOn(tile, level, t.x, t.y, this, attackDir)) {
+						done = true;
+						
+					// Returns true if the target tile successfully interacts with the item.
+					} else if (tile.interact(level, t.x, t.y, this, activeItem, attackDir)){
+						done = true;
+					}
+				}
+				
+				if (Game.isValidServer() && this instanceof RemotePlayer) { // Only do this if no interaction was actually made; b/c a tile update packet will generally happen then anyway.
+					minicraft.network.MinicraftServerThread thread = Game.server.getAssociatedThread((RemotePlayer)this);
+					thread.sendTileUpdate(level, t.x, t.y); /// FIXME this part is as a semi-temporary fix for those odd tiles that don't update when they should; instead of having to make another system like the entity additions and removals (and it wouldn't quite work as well for this anyway), this will just update whatever tile the player interacts with (and fails, since a successful interaction changes the tile and therefore updates it anyway).
+				}
+				
+				if (!Game.isMode("creative") && activeItem.isDepleted()) {
+					// If the activeItem has 0 items left, then "destroy" it.
+					activeItem = null;
+				}
+			}
+			if (done) return; // Skip the rest if interaction was handled
+		}
+		
+		if (activeItem == null || activeItem.canAttack()) { // If there is no active item, OR if the item can be used to attack...
+			attackTime = 5;
+			// Attacks the enemy in the appropriate direction.
+			boolean used = hurt(getInteractionBox(ATTACK_DIST));
+			
+			// Attempts to hurt the tile in the appropriate direction.
+			Point t = getInteractionTile();
+			
+			// Check if tile is in bounds of the map.
+			if (t.x >= 0 && t.y >= 0 && t.x < level.w && t.y < level.h) {
+				Tile tile = level.getTile(t.x, t.y);
+				used = tile.hurt(level, t.x, t.y, this, random.nextInt(3) + 1, attackDir) || used;
+			}
+			
+			if (used && activeItem instanceof ToolItem)
+				((ToolItem)activeItem).payDurability();
+		}
+	}
 
     private Rectangle getInteractionBox(int range) {
         int x = this.x;
@@ -916,6 +905,12 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                         // For secret messages :=)
                         Game.notifications.add(itemData.substring(1));
                     } else {
+                    	
+                    	// Go Fish achievement
+						if (Items.get(itemData).equals(Items.get("Raw Fish"))) {
+							AchievementsDisplay.setAchievement("minicraft.achievement.fish",true);
+						}
+						
                         level.dropItem(x, y, Items.get(itemData));
                         caught = true;
                         break; // Don't let people catch more than one thing with one use
