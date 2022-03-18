@@ -20,7 +20,7 @@ public class LevelGen {
     private static final Random random = new Random(worldSeed); // Initializes the random class
     private double[] values; // An array of doubles, used to help making noise for the map
     
-    private static int tundra_desert_separator = 4;
+    private static int tundra_desert_separator = 6;
     private static int beaches_thickness = 1;
 
     // width and height of the map
@@ -53,13 +53,9 @@ public class LevelGen {
             for (int y = 0; y < h; y += stepSize) {
                 for (int x = 0; x < w; x += stepSize) { // this loops through the values again, by a given increment...
 
-                    double a = sample(x, y); // fetches the value at the coordinate set previously (it fetches the exact
-                    // same ones that were just set above)
-                    double b = sample(x + stepSize, y); // fetches the value at the next coordinate over. This could
-                    // possibly loop over at the end, and fetch the first value in
-                    // the row instead.
-                    double c = sample(x, y + stepSize); // fetches the next value down, possibly looping back to the top
-                    // of the column.
+                    double a = sample(x, y); // fetches the value at the coordinate set previously (it fetches the exact same ones that were just set above)
+                    double b = sample(x + stepSize, y); // fetches the value at the next coordinate over. This could possibly loop over at the end, and fetch the first value in the row instead.
+                    double c = sample(x, y + stepSize); // fetches the next value down, possibly looping back to the top of the column.
                     double d = sample(x + stepSize, y + stepSize); // fetches the value one down, one right.
 
                     /*
@@ -95,8 +91,7 @@ public class LevelGen {
                 }
             }
 
-            // This loop does the same as before, but it takes into account some of the half
-            // Steps we set in the last loop.
+            // This loop does the same as before, but it takes into account some of the half Steps we set in the last loop.
             for (int y = 0; y < h; y += stepSize) {
                 for (int x = 0; x < w; x += stepSize) {
 
@@ -132,8 +127,7 @@ public class LevelGen {
             scale *= (scaleMod + 0.8D);
             scaleMod *= 0.4D;
 
-        } while (stepSize > 1); // This stops when the stepsize is < 1, aka 0 b/c it's an int. At this point
-        // There are no more mid values.
+        } while (stepSize > 1); // This stops when the stepsize is < 1, aka 0 b/c it's an int. At this point there are no more mid values.
     }
 
     private double sample(int x, int y) {
@@ -897,13 +891,14 @@ public class LevelGen {
 
                 double xd = x / (w - 1.1) * 2 - 1;
                 double yd = y / (h - 1.1) * 2 - 1;
-                if (xd < 0)
-                    xd = -xd;
-                if (yd < 0)
-                    yd = -yd;
+                
+                if (xd < 0) xd = -xd;
+                if (yd < 0) yd = -yd;
+                
                 double dist = xd >= yd ? xd : yd;
                 dist = dist * dist * dist * dist;
                 dist = dist * dist * dist * dist;
+                
                 val = -val * 1 - 2.2;
                 val += 1 - dist * 2;
 

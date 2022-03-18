@@ -66,13 +66,19 @@ public class TitleDisplay extends Display {
 	public void init(Display parent) {
 		super.init(null); // The TitleScreen never has a parent.
 		Renderer.readyToRenderGameplay = false;
-
-		if (random.nextInt(2) == 0) {
-			Sound.Intro.play();
-		} else {
-			Sound.Intro2.play();
+		
+		LocalDateTime time = LocalDateTime.now();
+		if (time.getMonth() != Month.OCTOBER) {
+			switch (random.nextInt(4)) {
+				case 0: Sound.Theme_Cave.play(); break;
+				case 1: Sound.Theme_Surface.play(); break;
+				case 2: Sound.Theme_Fall.play(); break;
+				case 3: Sound.Theme_Peaceful.play(); break;
+				case 4: Sound.Theme_Surface.play(); break;
+				default: Sound.Theme_Fall.play(); break;
+			}  
 		}
-
+		
 		/// This is useful to just ensure that everything is really reset as it should be.
 		if (Game.server != null) {
 			if (Game.debug) {
@@ -90,8 +96,6 @@ public class TitleDisplay extends Display {
 		}
 		Game.ISONLINE = false;
 
-		// Events
-		LocalDateTime time = LocalDateTime.now();
 		if (time.getMonth() == Month.DECEMBER) {
 			if (time.getDayOfMonth() == 19) {
 				rand = 1;
@@ -131,6 +135,15 @@ public class TitleDisplay extends Display {
 			}
 		} else {
 			rand = random.nextInt(splashes.length - 3) + 3;
+		}
+		
+		if (time.getMonth() == Month.OCTOBER) {
+			if (time.getDayOfMonth() == 8) {
+				Sound.Theme_Cavern.play();
+			}
+			if (time.getDayOfMonth() == 16) {
+				Sound.Theme_Cavern_drip.play();
+			}
 		}
 		
 		if (time.getMonth() == Month.AUGUST) {
@@ -211,7 +224,7 @@ public class TitleDisplay extends Display {
 		boolean isGreen = splashes[rand].contains("Green");
 		boolean isRed = splashes[rand].contains("Red");
 		boolean isOrange = splashes[rand].contains("Orange");
-		boolean isYellow = splashes[rand].contains("Yellow");
+		boolean isYellow = splashes[rand].contains("Yellow") || splashes[rand].contains("Java edition") || splashes[rand].contains("The movie");
 
 		/// This isn't as complicated as it looks. It just gets a color based off of count, which oscilates between 0 and 25.
 		int bcol = 5 - count / 5; // this number ends up being between 1 and 5, inclusive.
@@ -227,7 +240,6 @@ public class TitleDisplay extends Display {
 
 		/*
 		 * In case the game has the "in_dev" mode set to true it will show the version as in "Development"
-		 * 
 		 * In case it is false, it will show the numerical version of the game
 		 */
 		if (Game.in_dev == true) {
@@ -262,9 +274,9 @@ public class TitleDisplay extends Display {
 			"MinicraftPlus on Youtube", "Join the Forums!", "The Wiki is weak! Help it!", "Great little community!",
 
 			"Notch is Awesome!", "Dillyg10 is cool as Ice!", "Shylor is the man!", "Chris J is great with portals!",
-			"AntVenom loves cows! Honest!", "The eye and Cake rain!", "ASCII", "32.872 lines of code!",
+			"AntVenom loves cows! Honest!", "The eye and Cake rain!", "ASCII", "34.565 lines of code!",
 
-			"Nobody should read this! #404", "You should read Antidious Venomi!", "Oh Hi Mark", "Use the force!", "Keep calm!",
+			"You should read Antidious Venomi!", "Oh Hi Mark", "Use the force!", "Keep calm!",
 			"Get him, Steve!", "Forty-Two!", "A hostile paradise",
 
 			// kill
@@ -274,11 +286,11 @@ public class TitleDisplay extends Display {
 			"Kill Guiman, get more Feathers!",
 
 			// Mineral levels
-			"Gold > Iron", "Gem > Gold",
+			"Wood > Hands", "Stone > Wood", "Iron > Stone", "Gold > Iron", "Gem > Gold",
 
 			"Test == InDev!", "Story? yes!", "Mod on phase B-eta",
 
-			"Axes: good against plants!", "Picks: good against rocks!", "Shovels: good against dirt!",
+			"Axes: good against plants!", "Picaxes: good against rocks!", "Shovels: good against dirt!",
 			"Swords: good against mobs!",
 
 			// What's that?
@@ -288,7 +300,7 @@ public class TitleDisplay extends Display {
 			// Not Included
 			"Null not included", "Humans not included", "Herobine not included?", "Mouse not included!", "No spiders included!",
 			"No Endermen included!", "3rd dimension not included!", "Orange box not included!", "Alpha version not included!",
-			"Cthulhu sold separately!", "Skins not included!",
+			"Cthulhu sold separately!", "Skins not included!", "Warden not included",
 
 			// Included
 			"Villagers included!", "Creepers included!", "Skeletons included!", "Knights included!", "Snakes included!",
@@ -303,7 +315,7 @@ public class TitleDisplay extends Display {
 			"Snow Biome!", "Better sky", "Slow world gen :(",
 
 			// Ideas
-			"Sugarcane is a Idea!", "Milk is an idea!", "Cakes is an idea!", "Coffee is another idea!",
+			"Sugarcane is a Idea!", "Milk is an idea!", "Cakes is an idea!", "Coffee is another idea!", "Bottled farts.. maybe an idea",
 
 			"Texture packs!",
 
@@ -327,10 +339,11 @@ public class TitleDisplay extends Display {
 			"Punch the Moon!", "This is String qq!", "Why?", "You are null!", "hello down there!",
 			"That guy is such a sly fox!", "Hola senor!", "Sonic Boom!", "Hakuna Matata!", "One truth prevails!", "Awesome!",
 			"Sweet!", "Great!", "Cool!", "Radical!", "011011000110111101101100!", "001100010011000000110001!",
-			"011010000110110101101101?", "...zzz...",
+			"011010000110110101101101?", "...zzz...", "The movie", "hmm yummy", "Doki Doki...", "*Epic music*", "OMG!... wow...",
+			"Java edition",
 
 			// Tributes
-			"Rick May, 1940 - 2020", "The Constant",
+			"Rick May, 1940 - 2020", "The Constant", "Just Monika!",
 
 			"Something cool is coming ;)",
 

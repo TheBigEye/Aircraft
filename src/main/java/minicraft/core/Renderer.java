@@ -76,17 +76,19 @@ public class Renderer extends Game {
 		} catch (NullPointerException e) {
 			// If a provided InputStream has no name. (in practice meaning it cannot be found.)
 			e.printStackTrace();
-			Logger.error("A sprite sheet was not found.");
+			Logger.error("[Default sprites] A sprite sheet was not found.");
 			System.exit(-1);
 			return null;
 
 		} catch (IOException | IllegalArgumentException e) {
 			// If there is an error reading the file.
 			e.printStackTrace();
-			Logger.error("Could not load a sprite sheet.");
+			Logger.error("[Default sprites] Could not load a sprite sheet.");
 			System.exit(-1);
 			return null;
 		}
+		
+		Logger.debug("[Default sprites] Loaded!");
 
 		return new SpriteSheet[] { itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background };
 	}
@@ -94,7 +96,6 @@ public class Renderer extends Game {
 	public static SpriteSheet[] loadLegacySpriteSheets() {
 		SpriteSheet itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background;
 		try {
-			// These set the sprites to be used.
 			itemSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/items.png"))));
 			tileSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/tiles.png"))));
 			entitySheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/entities.png"))));
@@ -103,19 +104,19 @@ public class Renderer extends Game {
 			background = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/background.png"))));
 
 		} catch (NullPointerException e) {
-			// If a provided InputStream has no name. (in practice meaning it cannot be found.)
 			e.printStackTrace();
-			Logger.error("A sprite sheet was not found.");
+			Logger.error("[Legacy sprites] A sprite sheet was not found.");
 			System.exit(-1);
 			return null;
 
 		} catch (IOException | IllegalArgumentException e) {
-			// If there is an error reading the file.
 			e.printStackTrace();
-			Logger.error("Could not load a sprite sheet.");
+			Logger.error("[Legacy sprites] Could not load a sprite sheet.");
 			System.exit(-1);
 			return null;
 		}
+		
+		Logger.debug("[Legacy sprites] Loaded!");
 
 		return new SpriteSheet[] { itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background };
 	}
@@ -222,7 +223,7 @@ public class Renderer extends Game {
 		level.renderSprites(screen, xScroll, yScroll); // Renders level sprites on screen
 
 		// this creates the darkness in the caves
-		if ((currentLevel != 3 || Updater.tickCount < Updater.dayLength / 4 || Updater.tickCount > Updater.dayLength / 2)) {
+		if ((currentLevel != 3 || Updater.tickCount < Updater.dayLength / 4 || Updater.tickCount > Updater.dayLength / 2) && !Game.isMode("Creative")) {
 
 			// This doesn't mean that the pixel will be black; it means that the pixel will
 			// be DARK, by default; lightScreen is about light vs. dark, not necessarily a
@@ -239,7 +240,12 @@ public class Renderer extends Game {
 			screen.overlay(lightScreen, currentLevel, xScroll, yScroll); // Overlays the light screen over the main screen.
 		}
 
-		if (player != null && player.potioneffects.containsKey(PotionType.Blindness) && currentLevel == 3 || player != null && player.potioneffects.containsKey(PotionType.Blindness) && currentLevel == 4) {
+		if (player != null && player.potioneffects.containsKey(PotionType.Blindness) && currentLevel == 3 && !Game.isMode("Creative") || player != null && player.potioneffects.containsKey(PotionType.Blindness) && currentLevel == 4 && !Game.isMode("Creative")) {
+			lightScreen.clear(0); 
+			
+			// Brightens all
+			int brightnessMultiplier = player.potioneffects.containsKey(PotionType.Light) ? 12 : 8; 
+			level.renderLight(lightScreen, xScroll, yScroll, brightnessMultiplier); // Finds (and renders) all the light from objects (like the player, lanterns, and lava).
 			screen.Blind(lightScreen, currentLevel, xScroll, yScroll);
 		}
 	}

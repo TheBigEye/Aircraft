@@ -36,8 +36,9 @@ public enum PotionType {
     },
     xHealth(Color.get(1, 255, 63, 110), 0) {
         public boolean toggleEffect(Player player, boolean addEffect) {
-            if (addEffect)
+            if (addEffect) {
                 player.heal(10);
+            }
             return true;
         }
     },
@@ -49,7 +50,7 @@ public enum PotionType {
     xShield(Color.get(1, 65, 65, 157), 10400),
     Haste(Color.get(1, 106, 37, 106), 4800),
     
-    Blindness(Color.get(1, 48, 48, 128), 22000),
+    Blindness(Color.get(1, 24, 24, 64), 22000),
     
     Escape(Color.get(1, 85, 62, 62), 0) {
         public boolean toggleEffect(Player player, boolean addEffect) {
@@ -84,10 +85,11 @@ public enum PotionType {
     PotionType(int col, int dur) {
         dispColor = col;
         duration = dur;
-        if (this.toString().equals("None"))
+        if (this.toString().equals("None")) {
             name = "Potion";
-        else
+        } else {
             name = this + " Potion";
+        }
     }
 
     public boolean toggleEffect(Player player, boolean addEffect) {

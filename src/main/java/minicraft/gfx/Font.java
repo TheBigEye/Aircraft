@@ -7,7 +7,7 @@ import java.util.List;
 import minicraft.core.io.Localization;
 
 public class Font {
-    // These are all the characters that will be translated to the screen. (The spaces are important)
+    // These are all the characters that will be translated to the screen. (The spaces and the UTF8 incoding are important)
     private static String chars =
     		"ABCDEFGHIJKLMNOPQRSTUVWXYZ012345" +
     		"6789.,!?'\"-+=/\\%()<>:;Ω@ÁÉÍÓÚÑ¿¡" + 
@@ -29,8 +29,7 @@ public class Font {
         for (int i = 0; i < msg.length(); i++) { // Loops through all the characters that you typed
             int ix = chars.indexOf(msg.charAt(i)); // the current letter in the message loop
             if (ix >= 0) {
-                // if that character's position is larger than or equal to 0, then render the
-                // character on the screen.
+                // if that character's position is larger than or equal to 0, then render the character on the screen.
                 screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, ix + 28 * 32, 0, 3, whiteTint);
             }
         }
