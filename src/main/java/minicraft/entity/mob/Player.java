@@ -156,6 +156,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     public int maxFishingTicks = 120;
     public int fishingTicks = maxFishingTicks;
     public int fishingLevel;
+    
+    public boolean playerBurning = false;
+    private boolean fallWarn = false;
+    private int burnTime;
 
     // Note: the player's health & max health are inherited from Mob.java
 
@@ -294,7 +298,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
     @Override
     public void tick() {
-
         if (level == null || isRemoved())
             return;
 
@@ -302,6 +305,28 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             return; // Don't tick player when menu is open
 
         super.tick(); // Ticks Mob.java
+        
+        if (playerBurning  == true) {
+        	if (tickTime / 16 % 4 == 0 && burnTime < 128) {
+
+                    int randX = random.nextInt(10);
+                    int randY = random.nextInt(9);
+
+                    level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
+
+                    this.hurt(this, 1);
+                    burnTime++;
+        	}
+        }
+        
+    	if (level.getTile(x / 16, y / 16) == Tiles.get("water")) {
+        	burnTime = 0;
+        	playerBurning = false;
+    	}
+        if (burnTime > 128) {
+        	burnTime = 0;
+        	playerBurning  = false;
+        }
 
         if (!Game.isValidClient())
             tickMultiplier();
@@ -413,21 +438,28 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             onStairDelay--; 
         }
 
+
         if (onTile == Tiles.get("Infinite Fall") && !Game.isMode("creative")) {
-
-            if (random.nextInt(6) == 5) {
-                Updater.notifyAll("Watch out so you won't slip and fall!");
-            }
-            if (random.nextInt(50) == 1 && onFallDelay <= 0) {
-                World.scheduleLevelChange(-1);
-                onFallDelay = 40;
-
-                return;
+        	
+        	if (fallWarn == false) {
+	            Updater.notifyAll("Watch out so you won't slip and fall!");
+	            fallWarn = true;
+        	}
+            
+            if (tickTime / 4 % 2 == 0 && fallWarn == true) {
+	            if (random.nextInt(48) == 8 && onFallDelay <= 0) {
+	                World.scheduleLevelChange(-1);
+	                onFallDelay = 40;
+	                fallWarn = false;
+	
+	                return;
+	            }
             }
 
         } else if (onFallDelay > 0) {
             onFallDelay--;
         }
+        
 
         if (Game.isMode("creative")) {
             // Prevent stamina/hunger decay in creative mode.
@@ -857,8 +889,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         int xFar = x + dir.getX() * paraFar + dir.getY() * perpFar;
         int yFar = y + dir.getY() * paraFar + dir.getX() * perpFar;
 
-        return new Rectangle(Math.min(xClose, xFar), Math.min(yClose, yFar), Math.max(xClose, xFar),
-                Math.max(yClose, yFar), Rectangle.CORNERS);
+        return new Rectangle(Math.min(xClose, xFar), Math.min(yClose, yFar), Math.max(xClose, xFar), Math.max(yClose, yFar), Rectangle.CORNERS);
     }
 
     private Point getInteractionTile() {
@@ -1051,41 +1082,47 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
             if (level.getTile(x / 16, y / 16) == Tiles.get("water")) {
             	
+                int randX = rnd.nextInt(10);
+                int randY = rnd.nextInt(9);
+            	
 				// animation effect
 			    if (tickTime / 8 % 2 == 0) {
 			    	screen.render(xo + 0, yo + 3, 5 + 2 * 32, 0, 3); // Render the water graphic
 			    	screen.render(xo + 8, yo + 3, 5 + 2 * 32, 1, 3); // Render the mirrored water graphic to the right.
+			    	
+			    	level.add(new SplashParticle(x - 8 + randX, y - 8 + randY)); // Add water particles
 			    } else {
 			    	screen.render(xo + 0, yo + 3, 13 + 2 * 32, 0, 3);
 			    	screen.render(xo + 8, yo + 3, 13 + 2 * 32, 1, 3);
+			    	
+			    	level.add(new SplashParticle(x - 8 + randX, y - 8 + randY));
 			    }
 
+            } else if (level.getTile(x / 16, y / 16) == Tiles.get("lava")) {
+            	
+            	// BURN THE PLAYER
+            	playerBurning = true;
+            	
                 int randX = rnd.nextInt(10);
                 int randY = rnd.nextInt(9);
-
-                level.add(new SplashParticle(x - 8 + randX, y - 8 + randY)); // Add water particles
-
-            } else if (level.getTile(x / 16, y / 16) == Tiles.get("lava")) {
             	
 			    if (tickTime / 8 % 2 == 0) {
 			    	screen.render(xo + 0, yo + 3, 6 + 2 * 32, 1, 3); // Render the water graphic
 			    	screen.render(xo + 8, yo + 3, 6 + 2 * 32, 0, 3); // Render the mirrored lava graphic to the right.
+			    	
+			    	level.add(new FireParticle(x - 8 + randX, y - 8 + randY)); // Add fire particles
 			    } else {
 			    	screen.render(xo + 0, yo + 3, 14 + 2 * 32, 1, 3); // Render the water graphic
 			    	screen.render(xo + 8, yo + 3, 14 + 2 * 32, 0, 3); // Render the mirrored lava graphic to the right.
-			    }
-
-                int randX = rnd.nextInt(10);
-                int randY = rnd.nextInt(9);
-
-                level.add(new FireParticle(x - 8 + randX, y - 8 + randY)); // Add fire particles
+			    	
+			    	level.add(new FireParticle(x - 8 + randX, y - 8 + randY));
+			    }           
             }
         }
 
         // Renders indicator for what tile the item will be placed on
         if (activeItem instanceof TileItem) {
             Point t = getInteractionTile();
-
             screen.render(t.x * 16 + 4, t.y * 16 + 4, 3 + 4 * 32, 0, 3);
         }
 

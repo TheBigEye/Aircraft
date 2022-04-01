@@ -13,11 +13,11 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class ObsidianTile extends Tile {
-    private static ConnectorSprite sprite = new ConnectorSprite(ObsidianTile.class, new Sprite(30, 6, 3, 3, 1, 3),
-            new Sprite(33, 6, 2, 2, 1)) {
+    private static ConnectorSprite sprite = new ConnectorSprite(ObsidianTile.class, new Sprite(30, 6, 3, 3, 1, 3), new Sprite(33, 6, 2, 2, 1)) {
         public boolean connectsTo(Tile tile, boolean isSide) {
-            if (!isSide)
+            if (!isSide) {
                 return true;
+            }
             return tile.connectsToObsidian;
         }
     };
@@ -31,10 +31,10 @@ public class ObsidianTile extends Tile {
 
     public boolean tick(Level level, int xt, int yt) {
         // TODO revise this method.
-        if (random.nextInt(40) != 0)
+        if (random.nextInt(40) != 0) {
             return false;
+        }
         return false;
-
     }
 
     @Override
@@ -58,19 +58,10 @@ public class ObsidianTile extends Tile {
                     return true;
                 }
             }
-            if (tool.type == ToolType.Pickaxe && tool.level == 0) {
+            if (tool.type == ToolType.Pickaxe && tool.level != 4) {
                 Sound.Tile_generic_hurt.play();
             }
-            if (tool.type == ToolType.Pickaxe && tool.level == 1) {
-                Sound.Tile_generic_hurt.play();
-            }
-            if (tool.type == ToolType.Pickaxe && tool.level == 2) {
-                Sound.Tile_generic_hurt.play();
-            }
-            if (tool.type == ToolType.Pickaxe && tool.level == 3) {
-                Sound.Tile_generic_hurt.play();
-            }
-            if (tool.type == ToolType.Pickaxe && tool.level == 4) {
+            else {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
                     level.setTile(xt, yt, Tiles.get("hole"));
                     level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 3, Items.get("Obsidian"));

@@ -36,6 +36,7 @@ public class Spawner extends Furniture {
     private int lvl;
     private int maxMobLevel;
     private int spawnTick;
+    private int tickTime;
 
     /**
      * Initializes the spawners variables to the corresponding values from the mob.
@@ -86,6 +87,8 @@ public class Spawner extends Furniture {
     @Override
     public void tick() {
         super.tick();
+        
+        tickTime++;
 
         spawnTick--;
         if (spawnTick <= 0) {
@@ -93,6 +96,12 @@ public class Spawner extends Furniture {
             if (chance <= 0 || random.nextInt(chance) == 0)
                 trySpawn();
             resetSpawnInterval();
+        }
+        
+        if (tickTime / 64 % 2 == 0) {
+            int randX = rnd.nextInt(14);
+            int randY = rnd.nextInt(14);
+            level.add(new FireParticle(x - 10 + randX, y - 8 + randY));
         }
 
         if (Settings.get("diff").equals("Peaceful")) {
@@ -153,8 +162,8 @@ public class Spawner extends Furniture {
 
         newmob.x = spawnPos.x << 4;
         newmob.y = spawnPos.y << 4;
-        // if (Game.debug) level.printLevelLoc("spawning new " + mob, (newmob.x>>4),
-        // (newmob.y>>4), "...");
+        
+        if (Game.debug) level.printLevelLoc("Spawning new " + mob, (newmob.x>>4), (newmob.y>>4), "...");
 
         level.add(newmob);
         Sound.Furniture_spawner_spawn.play();
@@ -192,31 +201,12 @@ public class Spawner extends Furniture {
                 
                 // Random spawner sound 
 				switch (random.nextInt(4)) {
-
-				case 0:
-                    Sound.Furniture_spawner_hurt.play();
-					break;
-				
-				case 1:
-                    Sound.Furniture_spawner_destroy.play();
-					break;
-
-				case 2:
-                    Sound.Furniture_spawner_destroy_2.play();
-					break;
-
-				case 3:
-                    Sound.Furniture_spawner_destroy_3.play();
-					break;
-
-				case 4:
-                    Sound.Furniture_spawner_destroy_3.play();
-					break;
-
-				default:
-                    Sound.Furniture_spawner_hurt.play();
-					break;
-
+					case 0: Sound.Furniture_spawner_hurt.play(); break;
+					case 1: Sound.Furniture_spawner_destroy.play(); break;
+					case 2: Sound.Furniture_spawner_destroy_2.play(); break;
+				    case 3: Sound.Furniture_spawner_destroy_3.play(); break;
+				    case 4: Sound.Furniture_spawner_destroy_3.play(); break;
+				    default: Sound.Furniture_spawner_hurt.play(); break;
 				}
 
                 // Sound.playerDeath.play();

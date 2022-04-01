@@ -19,8 +19,12 @@ public abstract class Tile {
     protected Random random = new Random();
 
     protected enum Material {
-        Wood(ToolType.Axe), Spruce(ToolType.Axe), Birch(ToolType.Axe), Stone(ToolType.Pickaxe),
-        Obsidian(ToolType.Pickaxe), Holy(ToolType.Pickaxe);
+        Wood(ToolType.Axe),
+        Spruce(ToolType.Axe),
+        Birch(ToolType.Axe),
+        Stone(ToolType.Pickaxe),
+        Obsidian(ToolType.Pickaxe),
+        Holy(ToolType.Pickaxe);
 
         public static final Material[] values = Material.values();
 
@@ -90,10 +94,12 @@ public abstract class Tile {
 
     /** Render method, used in sub-classes */
     public void render(Screen screen, Level level, int x, int y) {
-        if (sprite != null)
+        if (sprite != null) {
             sprite.render(screen, x << 4, y << 4);
-        if (csprite != null)
+        }
+        if (csprite != null) {
             csprite.render(screen, level, x, y);
+        }
     }
 
     public boolean maySpawn() {

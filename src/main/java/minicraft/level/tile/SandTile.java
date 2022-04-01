@@ -49,12 +49,9 @@ public class SandTile extends Tile {
 
     protected static int sCol(int depth) {
         switch (depth) {
-        case 0:
-            return Color.get(1, 237, 190, 82); // surface.
-        case -4:
-            return Color.get(1, 237, 190, 82); // dungeons.
-        default:
-            return Color.get(1, 237, 190, 82); // caves.
+        case 0: return Color.get(1, 237, 190, 82); // surface.
+        case -4: return Color.get(1, 237, 190, 82); // dungeons.
+        default: return Color.get(1, 237, 190, 82); // caves.
         }
     }
 
@@ -62,10 +59,12 @@ public class SandTile extends Tile {
     public void render(Screen screen, Level level, int x, int y) {
         boolean steppedOn = level.getData(x, y) > 0;
 
-        if (steppedOn)
+        if (steppedOn) {
             csprite.full = SandTile.steppedOn_sprite;
-        else
+        }
+        else {
             csprite.full = SandTile.normal_sprite;
+        }
 
         csprite.sparse.color = DirtTile.dCol(level.depth);
 

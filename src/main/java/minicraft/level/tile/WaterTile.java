@@ -7,9 +7,7 @@ import minicraft.gfx.Sprite;
 import minicraft.level.Level;
 
 public class WaterTile extends Tile {
-    private ConnectorSprite sprite = new ConnectorSprite(WaterTile.class, new Sprite(12, 6, 3, 3, 1, 3),
-            Sprite.dots( /* Color.get(005, 105, 115, 115) */ 0)) {
-
+    private ConnectorSprite sprite = new ConnectorSprite(WaterTile.class, new Sprite(12, 6, 3, 3, 1, 3), Sprite.dots( /* Color.get(005, 105, 115, 115) */ 0)) {
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) {
             return tile.connectsToFluid;
@@ -41,10 +39,12 @@ public class WaterTile extends Tile {
         int xn = xt;
         int yn = yt;
 
-        if (random.nextBoolean())
+        if (random.nextBoolean()) {
             xn += random.nextInt(2) * 2 - 1;
-        else
+        }
+        else {
             yn += random.nextInt(2) * 2 - 1;
+        }
 
         if (level.getTile(xn, yn) == Tiles.get("Hole")) {
             level.setTile(xn, yn, this);
@@ -52,12 +52,14 @@ public class WaterTile extends Tile {
 
         // these set only the non-diagonally adjacent lava tiles to raw obsidian
         for (int x = -1; x < 2; x++) {
-            if (level.getTile(xt + x, yt) == Tiles.get("lava"))
+            if (level.getTile(xt + x, yt) == Tiles.get("lava")) {
                 level.setTile(xt + x, yt, Tiles.get("raw obsidian"));
+            }
         }
         for (int y = -1; y < 2; y++) {
-            if (level.getTile(xt, yt + y) == Tiles.get("lava"))
+            if (level.getTile(xt, yt + y) == Tiles.get("lava")) {
                 level.setTile(xt, yt + y, Tiles.get("raw obsidian"));
+            }
         }
         return false;
     }

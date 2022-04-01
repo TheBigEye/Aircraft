@@ -14,14 +14,11 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class FerrositeTile extends Tile {
-    private static ConnectorSprite sprite = new ConnectorSprite(FerrositeTile.class, new Sprite(12, 22, 3, 3, 1, 3),
-        new Sprite(15, 24, 2, 2, 1, 3), new Sprite(15, 22, 2, 2, 1)) {
-
+    private static ConnectorSprite sprite = new ConnectorSprite(FerrositeTile.class, new Sprite(12, 22, 3, 3, 1, 3), new Sprite(15, 24, 2, 2, 1, 3), new Sprite(15, 22, 2, 2, 1)) {
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) {
             return tile != Tiles.get("Infinite fall");
         }
-
     };
 
     protected FerrositeTile(String name) {
@@ -50,7 +47,6 @@ public class FerrositeTile extends Tile {
                 */
                 if (Game.currentLevel == 4) {
                     level.setTile(xt, yt, Tiles.get("Infinite fall"));
-
                 } else {
                     level.setTile(xt, yt, Tiles.get("hole"));
                 }

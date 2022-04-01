@@ -31,10 +31,12 @@ public class FlowerTile extends Tile {
         int xn = xt;
         int yn = yt;
 
-        if (random.nextBoolean())
+        if (random.nextBoolean()) {
             xn += random.nextInt(2) * 2 - 1;
-        else
+        }
+        else {
             yn += random.nextInt(2) * 2 - 1;
+        }
 
         if (level.getTile(xn, yn) == Tiles.get("dirt")) {
             level.setTile(xn, yn, Tiles.get("grass"));

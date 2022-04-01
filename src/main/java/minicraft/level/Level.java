@@ -83,13 +83,7 @@ public class Level {
     private Random random = new Random();
 
     private static final String[] levelNames = {
-        "Heaven",
-        "Surface",
-        "Iron",
-        "Gold",
-        "Lava",
-        "Dungeon",
-        "Hell"
+        "Heaven", "Surface", "Iron", "Gold", "Lava", "Dungeon", "Hell"
     };
 
     public static String getLevelName(int depth) {
@@ -105,8 +99,7 @@ public class Level {
     // basically equals the chance, 1/number, of a mob spawning when
     // the mob cap is reached. I hope that makes sense...
 
-    public int w;
-    public int h;
+    public int w, h;
     private long seed; // The used seed that was used to generate the world
 
     public short[] tiles; // An array of all the tiles in the world.
@@ -125,13 +118,13 @@ public class Level {
      * sparks set
      */
     private final Object entityLock = new Object();
-    private final Set < Entity > entities = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the entities in the world
-    private final Set < Spark > sparks = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks in the world
-    private final Set < Player > players = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the players in the world
-    private final List < Entity > entitiesToAdd = new ArrayList < > (); // entities that will be added to the level on next tick, are stored here. This is for the sake of multithreading, optimization. (hopefully)
-    private final List < Entity > entitiesToRemove = new ArrayList < > (); // entities that will be removed from the level on next tick are stored here. This is for the sake of multithreading optimization. (hopefully)
+    private final Set <Entity> entities = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the entities in the world
+    private final Set <Spark> sparks = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the sparks in the world
+    private final Set <Player> players = java.util.Collections.synchronizedSet(new HashSet < > ()); // A list of all the players in the world
+    private final List <Entity> entitiesToAdd = new ArrayList < > (); // entities that will be added to the level on next tick, are stored here. This is for the sake of multithreading, optimization. (hopefully)
+    private final List <Entity> entitiesToRemove = new ArrayList < > (); // entities that will be removed from the level on next tick are stored here. This is for the sake of multithreading optimization. (hopefully)
 
-    // creates a sorter for all the entities to be rendered.
+    // Creates a sorter for all the entities to be rendered.
 	private static Comparator<Entity> spriteSorter = Comparator.comparingInt(e -> e.y);
 
     public Entity[] getEntitiesToSave() {
@@ -159,10 +152,13 @@ public class Level {
     }
 
     public void printTileLocs(Tile t) {
-        for (int x = 0; x < w; x++)
-            for (int y = 0; y < h; y++)
-                if (getTile(x, y).id == t.id)
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
+                if (getTile(x, y).id == t.id) {
                     printLevelLoc(t.name, x, y);
+                }
+            }
+        }
     }
 
     public void printEntityLocs(Class < ? extends Entity > c) {
@@ -179,10 +175,12 @@ public class Level {
 
     private void updateMobCap() {
         maxMobCount = 150 + 150 * Settings.getIdx("diff");
-        if (depth == 1)
+        if (depth == 1) {
             maxMobCount /= 2;
-        if (depth == 0 || depth == -4)
+        }
+        if (depth == 0 || depth == -4) {
             maxMobCount = maxMobCount * 2 / 3;
+        }
     }
 
     public Level(int w, int h, long seed, int level, Level parentLevel, boolean makeWorld) {
@@ -204,8 +202,7 @@ public class Level {
             return;
         }
 
-        if (Game.debug)
-            System.out.println("Making level " + level + "...");
+        if (Game.debug) System.out.println("Making level " + level + "...");
 
         maps = LevelGen.createAndValidateMap(w, h, level);
         if (maps == null) {
@@ -216,11 +213,13 @@ public class Level {
         tiles = maps[0]; // assigns the tiles in the map
         data = maps[1]; // assigns the data of the tiles
 
-        if (level < 0)
+        if (level < 0) {
             generateSpawnerStructures();
+        }
 
-        if (level == 0)
+        if (level == 0) {
             generateVillages();
+        }
 
         if (parentLevel != null) { // If the level above this one is not null (aka, if this isn't the sky level)
             for (int y = 0; y < h; y++) { // Loop through height
@@ -291,12 +290,16 @@ public class Level {
 
             boolean found = false;
             if (check) {
-                for (Entity e: entitiesToAdd)
-                    if (e instanceof AirWizard)
+                for (Entity e: entitiesToAdd) {
+                    if (e instanceof AirWizard) {
                         found = true;
-                for (Entity e: entities)
-                    if (e instanceof AirWizard)
+                    }
+                }
+                for (Entity e: entities) {
+                    if (e instanceof AirWizard) {
                         found = true;
+                    }
+                }
             }
 
             if (!found) {
@@ -900,10 +903,8 @@ public class Level {
                 }
                 if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33)) {
                     add((new Cleric()), nx, ny);
-
                 } else if (rnd >= 34) {
                     add((new Cleric()), nx, ny);
-
                 } else {
                     add((new Cleric()), nx, ny);
                 }
@@ -919,10 +920,8 @@ public class Level {
                 }
                 if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33)) {
                     add((new Golem()), nx, ny);
-
                 } else if (rnd >= 34) {
                     add((new Golem()), nx, ny);
-
                 } else {
                     add((new Golem()), nx, ny);
                 }
@@ -955,21 +954,21 @@ public class Level {
                     add((new Sheepuff()), nx, ny);
 
                 } else { // Spawns hostile sky mobs.
-                    if (rnd <= 40)
+                    if (rnd <= 40) {
                         add((new Slime(lvl)), nx, ny);
-                    else if (rnd <= 75)
+                    } else if (rnd <= 75) {
                         add((new Zombie(lvl)), nx, ny);
-                    else if (rnd >= 85)
+                    } else if (rnd >= 85) {
                         add((new OldGolem(lvl)), nx, ny);
-                    else if (rnd >= 85)
+                    } else if (rnd >= 85) {
                         add((new Skeleton(lvl)), nx, ny);
-                    else
+                    } else {
                         add((new Creeper(lvl)), nx, ny);
+                    }
                 }
-
                 spawned = true;
             }
-
+            
         }
     }
 
@@ -1038,9 +1037,9 @@ public class Level {
      * @return A list of entities in the area.
      */
     @SafeVarargs
-    public final List < Entity > getEntitiesInTiles(int xt0, int yt0, int xt1, int yt1, boolean includeGiven,
+    public final List <Entity> getEntitiesInTiles(int xt0, int yt0, int xt1, int yt1, boolean includeGiven,
         Class < ? extends Entity > ...entityClasses) {
-        List < Entity > contained = new ArrayList < > ();
+        List <Entity> contained = new ArrayList <> ();
         for (Entity e: getEntityArray()) {
             int xt = e.x >> 4;
             int yt = e.y >> 4;
@@ -1229,8 +1228,7 @@ public class Level {
 
     private void generateSpawnerStructures() {
 
-        if (Game.debug)
-            System.out.println("Trying to generate a spawner dungeon...");
+        if (Game.debug) System.out.println("Trying to generate a spawner dungeon...");
 
         for (int i = 0; i < 18 / -depth * (w / 128); i++) {
 
@@ -1344,9 +1342,6 @@ public class Level {
         new Cleric();
         new Golem();
 
-        if (Game.debug)
-            System.out.println("Trying to generate a village...");
-
         // makes 2-8 villages based on world size
         for (int i = 0; i < w / 128 * 4; i++) {
 
@@ -1361,6 +1356,10 @@ public class Level {
                     (Math.abs(x - lastVillageX) > 28 && Math.abs(y - lastVillageY) > 28)) {
                     lastVillageX = x;
                     lastVillageY = y;
+                    
+                    if (Game.debug) {
+                        System.out.println("Trying to generate a village at (" + x + ", " + y + ") ...");
+                    }
 
                     // a number between 2 and 4
                     int numHouses = 1;
@@ -1370,8 +1369,7 @@ public class Level {
                         boolean hasChest = random.nextBoolean();
                         boolean hasCrops = random.nextBoolean();
 
-                        // basically just gets what offset this house should have from the center of the
-                        // village
+                        // basically just gets what offset this house should have from the center of the village
                         int xo = hs == 0 || hs == 3 ? -8 : 8;
                         int yo = hs < 2 ? -8 : 8;
 
@@ -1387,10 +1385,10 @@ public class Level {
                         }
 
                         // add a chest to some of the houses
-                        if (hasChest) {
+                        if (hasCrops) {
                             Chest c = new Chest();
                             c.populateInvRandom("villagehouse", 1);
-                            add(c, (x + random.nextInt(1) + xo) << 1, (y + random.nextInt(1) + yo) << 1);
+                            add(c, x + xo, y + yo);
                         }
                     }
 
@@ -1399,8 +1397,7 @@ public class Level {
             }
         }
 
-        if (Game.debug)
-            System.out.println("Village generated!");
+        if (Game.debug) System.out.println("Village generated!");
     }
 
     // --------------------------------------------------------------------------------------------------------------------------------------------------

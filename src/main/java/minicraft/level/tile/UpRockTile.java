@@ -20,10 +20,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class UpRockTile extends Tile {
-    private ConnectorSprite sprite = new ConnectorSprite(UpRockTile.class, new Sprite(58, 6, 3, 3, 1, 3),
-            new Sprite(61, 8, 2, 2, 1, 3), new Sprite(61, 6, 2, 2, 1, 3)) {
-	   
-       
+    private ConnectorSprite sprite = new ConnectorSprite(UpRockTile.class, new Sprite(58, 6, 3, 3, 1, 3), new Sprite(61, 8, 2, 2, 1, 3), new Sprite(61, 6, 2, 2, 1, 3)) {
        public boolean connectsTo(Tile tile, boolean isSide) {
            return tile != Tiles.get("rock") && tile == Tiles.get("up rock");
        }

@@ -17,8 +17,7 @@ import minicraft.util.MyUtils;
 public class PauseDisplay extends Display {
 
     public PauseDisplay() {
-        String upString = Game.input.getMapping("cursor-up") + Localization.getLocalized(" and ")
-                + Game.input.getMapping("cursor-down") + Localization.getLocalized(" to Scroll");
+        String upString = Game.input.getMapping("cursor-up") + Localization.getLocalized(" and ") + Game.input.getMapping("cursor-down") + Localization.getLocalized(" to Scroll");
         String selectString = Game.input.getMapping("select") + Localization.getLocalized(": Choose");
 
         ArrayList<ListEntry> entries = new ArrayList<>();

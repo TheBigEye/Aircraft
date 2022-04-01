@@ -72,7 +72,7 @@ public class AirWizardPhase3 extends EnemyMob {
     public void tick() {
         super.tick();
         
-        length = health / (maxHealth / 100) / 3;
+        length = health / (maxHealth / 100);
 
         if (Game.isMode("Creative"))
             return; // Should not attack if player is in creative

@@ -34,30 +34,42 @@ public class WallTile extends Tile {
 
         this.type = type;
         switch (type) {
-        case Wood:
-            sprite = new ConnectorSprite(WallTile.class, new Sprite(0, 14, 3, 3, 1, 3), new Sprite(3, 14, 2, 2, 1, 3),
-                    new Sprite(1, 15, 2, 2, 1, 0, true));
-            break;
-        case Stone:
-            sprite = new ConnectorSprite(WallTile.class, new Sprite(10, 14, 3, 3, 1, 3), new Sprite(13, 14, 2, 2, 1, 3),
-                    new Sprite(11, 15, 2, 2, 1, 0, true));
-            break;
-        case Obsidian:
-            sprite = new ConnectorSprite(WallTile.class, new Sprite(20, 14, 3, 3, 1, 3), new Sprite(23, 14, 2, 2, 1, 3),
-                    new Sprite(21, 15, 2, 2, 1, 0, true));
-            break;
-        case Spruce:
-            sprite = new ConnectorSprite(WallTile.class, new Sprite(30, 14, 3, 3, 1, 3), new Sprite(33, 14, 2, 2, 1, 3),
-                    new Sprite(31, 15, 2, 2, 1, 0, true));
-            break;
-        case Birch:
-            sprite = new ConnectorSprite(WallTile.class, new Sprite(40, 14, 3, 3, 1, 3), new Sprite(43, 14, 2, 2, 1, 3),
-                    new Sprite(41, 15, 2, 2, 1, 0, true));
-            break;
-        case Holy:
-            sprite = new ConnectorSprite(WallTile.class, new Sprite(50, 14, 3, 3, 1, 3), new Sprite(53, 14, 2, 2, 1, 3),
-                    new Sprite(51, 15, 2, 2, 1, 0, true));
-            break;
+	        case Wood:
+	            sprite = new ConnectorSprite(WallTile.class,
+	            		new Sprite(0, 14, 3, 3, 1, 3),
+	            		new Sprite(3, 14, 2, 2, 1, 3),
+	                    new Sprite(1, 15, 2, 2, 1, 0, true));
+	            break;
+	        case Stone:
+	            sprite = new ConnectorSprite(WallTile.class,
+	            		new Sprite(10, 14, 3, 3, 1, 3),
+	            		new Sprite(13, 14, 2, 2, 1, 3),
+	                    new Sprite(11, 15, 2, 2, 1, 0, true));
+	            break;
+	        case Obsidian:
+	            sprite = new ConnectorSprite(WallTile.class,
+	            		new Sprite(20, 14, 3, 3, 1, 3),
+	            		new Sprite(23, 14, 2, 2, 1, 3),
+	                    new Sprite(21, 15, 2, 2, 1, 0, true));
+	            break;
+	        case Spruce:
+	            sprite = new ConnectorSprite(WallTile.class,
+	            		new Sprite(30, 14, 3, 3, 1, 3),
+	            		new Sprite(33, 14, 2, 2, 1, 3),
+	                    new Sprite(31, 15, 2, 2, 1, 0, true));
+	            break;
+	        case Birch:
+	            sprite = new ConnectorSprite(WallTile.class,
+	            		new Sprite(40, 14, 3, 3, 1, 3),
+	            		new Sprite(43, 14, 2, 2, 1, 3),
+	                    new Sprite(41, 15, 2, 2, 1, 0, true));
+	            break;
+	        case Holy:
+	            sprite = new ConnectorSprite(WallTile.class,
+	            		new Sprite(50, 14, 3, 3, 1, 3),
+	            		new Sprite(53, 14, 2, 2, 1, 3),
+	                    new Sprite(51, 15, 2, 2, 1, 0, true));
+	            break;
         }
         csprite = sprite;
     }
@@ -102,8 +114,9 @@ public class WallTile extends Tile {
     public void hurt(Level level, int x, int y, int dmg) {
         int damage = level.getData(x, y) + dmg;
         int sbwHealth = 100;
-        if (Game.isMode("creative"))
+        if (Game.isMode("creative")) {
             dmg = damage = sbwHealth;
+        }
 
         level.add(new SmashParticle(x * 16, y * 16));
         Sound.Tile_generic_hurt.play();

@@ -401,7 +401,7 @@ public class Renderer extends Game {
 
 		// AirWizard bossbar
 		if (currentLevel == 4 && isMode("survival")) {
-			if (!AirWizard.beaten) renderBossbar(AirWizard.length, "Phase I");
+			if (!AirWizard.beaten) renderBossbar(AirWizard.length, "Air wizard");
 			else if (!AirWizardPhase2.beaten) renderBossbar(AirWizardPhase2.length, "Phase II");
 			else if (!AirWizardPhase3.beaten) renderBossbar(AirWizardPhase3.length, "Phase III");
 		}
@@ -546,23 +546,30 @@ public class Renderer extends Game {
 	
 	public static void renderBossbar(int length, String title) {
 		
-		int x = Screen.w / 6 + 10;
-		int y = Screen.h / 8 - 24;
+		int x = Screen.w / 4 + 4;
+		int y = Screen.h / 8 - 28;
 
-		int w = length; // Bossbar size.
-		int h = 1;
+		int max_bar_length = 100;
+		int bar_length = length; // Bossbar size.
+
+		int INACTIVE_BOSSBAR = 24; // sprite x position
+		int ACTIVE_BOSSBAR = 25; // sprite x position
 
 
+		screen.render(x + (max_bar_length * 2) , y , 0 + INACTIVE_BOSSBAR * 32, 1, 3);
+		
 		// The middle
-		for (int bx = 0; bx < 100 / 3; bx++) {
-			for (int by = 0; by < h; by++) {
-				screen.render(x + bx * 8, y + by * 8, 3 + 24 * 32, 0, 3);
+		for (int bx = 0; bx < max_bar_length; bx++) {
+			for (int by = 0; by < 1; by++) {
+				screen.render(x + bx * 2, y + by * 8, 3 + INACTIVE_BOSSBAR * 32, 0, 3);
 			}
 		}  
+		
+		screen.render(x - 5 , y , 0 + ACTIVE_BOSSBAR * 32, 0, 3);
 
-		for (int bx = 0; bx < w; bx++) {
-			for (int by = 0; by < h; by++) {
-				screen.render(x + bx * 8, y + by * 8, 3 + 25 * 32, 0, 3);
+		for (int bx = 0; bx < bar_length; bx++) {
+			for (int by = 0; by < 1; by++) {
+				screen.render(x + bx * 2, y + by * 8, 3 + ACTIVE_BOSSBAR * 32, 0, 3);
 			}
 		}
 
@@ -577,8 +584,8 @@ public class Renderer extends Game {
 		int textcol;
 		String separator = "                                       ";
 
-		if (debug) textcol = Color.GREEN;
-		else if (dev) textcol = Color.RED;
+		if (debug) textcol = Color.YELLOW;
+		else if (dev) textcol = Color.ORANGE;
 		else textcol = Color.WHITE;
 		
 		if (showinfo) {

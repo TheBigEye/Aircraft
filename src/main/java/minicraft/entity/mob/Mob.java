@@ -14,23 +14,32 @@ import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public abstract class Mob extends Entity {
+	
+	/* This contains all the mob's sprites, sorted first by direction (index
+    corresponding to the dir variable), and then by walk animation state. */
+    protected MobSprite[][] sprites; 
+    
+    /* How far we've walked currently, incremented after each movement. This is used
+	to change the sprite; "(walkDist >> 3) & 1" switches between a value of 0 and
+    1 every 8 increments of walkDist. */
+    public int walkDist = 0; 
 
-    protected MobSprite[][] sprites; // This contains all the mob's sprites, sorted first by direction (index
-                                     // corresponding to the dir variable), and then by walk animation state.
-    public int walkDist = 0; // How far we've walked currently, incremented after each movement. This is used
-                             // to change the sprite; "(walkDist >> 3) & 1" switches between a value of 0 and
-                             // 1 every 8 increments of walkDist.
-
-    public Direction dir = Direction.DOWN; // The direction the mob is facing, used in attacking and rendering. 0 is
-                                           // down, 1 is up, 2 is left, 3 is right
-    public int hurtTime = 0; // A delay after being hurt, that temporarily prevents further damage for a
-                             // short time
-    private int xKnockback, yKnockback; // The amount of vertical/horizontal knockback that needs to be inflicted, if
-                                        // it's not 0, it will be moved one pixel at a time.
-    public int health;
+    /* The direction the mob is facing, used in attacking and rendering. 0 is
+    down, 1 is up, 2 is left, 3 is right */
+    public Direction dir = Direction.DOWN; 
+    
+    /* A delay after being hurt, that temporarily prevents further damage for a
+    short time */
+    public int hurtTime = 0; 
+  
+    /* The amount of vertical/horizontal knockback that needs to be inflicted, if
+    it's not 0, it will be moved one pixel at a time. */
+    private int xKnockback, yKnockback; 
+   
+    public int health; // Mob health
     public final int maxHealth; // The amount of health we currently have, and the maximum.
     protected int walkTime;
-    public int speed;
+    public int speed; // Mob walk speed
     public int tickTime = 0; // Incremented whenever tick() is called, is effectively the age in ticks
 
     /**
@@ -54,16 +63,18 @@ public abstract class Mob extends Entity {
     public void tick() {
         tickTime++; // Increment our tick counter
 
-        if (isRemoved())
+        if (isRemoved()) {
             return;
-
-        if (level != null && level.getTile(x >> 4, y >> 4) == Tiles.get("lava")) // If we are trying to swim in lava
-            hurt(Tiles.get("lava"), x, y, 4); // Inflict 4 damage to ourselves, sourced from the lava Tile, with the
-                                              // direction as the opposite of ours.
-        if (health <= 0)
+        }
+        if (level != null && level.getTile(x >> 4, y >> 4) == Tiles.get("lava")) { // If we are trying to swim in lava
+            hurt(Tiles.get("lava"), x, y, 4); // Inflict 4 damage to ourselves, sourced from the lava Tile, with the direction as the opposite of ours.
+        }
+        if (health <= 0) {
             die(); // die if no health
-        if (hurtTime > 0)
+        }
+        if (hurtTime > 0) {
             hurtTime--; // If a timer preventing damage temporarily is set, decrement it's value
+        }
 
         /// The code below checks the direction of the knockback, moves the Mob
         /// accordingly, and brings the knockback closer to 0.
@@ -78,66 +89,71 @@ public abstract class Mob extends Entity {
         }
 
         // if the player moved via knockback, update the server
-        if ((xd != 0 || yd != 0) && Game.isConnectedClient() && this == Game.player)
+        if ((xd != 0 || yd != 0) && Game.isConnectedClient() && this == Game.player) {
             Game.client.move((Player) this, x + xd, y + yd);
+        }
 
         move(xd, yd, false);
     }
 
     @Override
-    public boolean move(int xa, int ya) {
+    public boolean move(int xa, int ya) { // Move the mob, overrides from Entity
         return move(xa, ya, true);
-    } // Move the mob, overrides from Entity
+    } 
 
     private boolean move(int xa, int ya, boolean changeDir) { // knockback shouldn't change mob direction
-        if (level == null)
+        if (level == null) {
             return false; // stopped b/c there's no level to move in!
+        }
 
         int oldxt = x >> 4;
         int oldyt = y >> 4;
 
-        if (!(Game.isValidServer() && this instanceof RemotePlayer)) { // this will be the case when the client has sent
-                                                                       // a move packet to the server. In this case, we
-                                                                       // DO want to always move.
-            // these should return true b/c the mob is still technically moving; these are
-            // just to make it move *slower*.
-            if (tickTime % 2 == 0 && (isSwimming() || (!(this instanceof Player) && isWooling())))
+        // this will be the case when the client has sent a move packet to the server. In this case, we DO want to always move.
+        if (!(Game.isValidServer() && this instanceof RemotePlayer)) { 
+            // these should return true b/c the mob is still technically moving; these are just to make it move *slower*.
+            if (tickTime % 2 == 0 && (isSwimming() || (!(this instanceof Player) && isWooling()))) {
                 return true;
-            if (tickTime % walkTime == 0 && walkTime > 1)
+            }
+            if (tickTime % walkTime == 0 && walkTime > 1) {
                 return true;
+            }
         }
 
         boolean moved = true;
 
-        if (hurtTime == 0 || this instanceof Player) { // If a mobAi has been hurt recently and hasn't yet cooled down,
-                                                       // it won't perform the movement (by not calling super)
+        // If a mobAi has been hurt recently and hasn't yet cooled down, it won't perform the movement (by not calling super)
+        if (hurtTime == 0 || this instanceof Player) { 
             if (xa != 0 || ya != 0) {
                 if (changeDir)
                     dir = Direction.getDirection(xa, ya); // set the mob's direction; NEVER set it to NONE
                 walkDist++;
             }
 
-            // this part makes it so you can't move in a direction that you are currently
-            // being knocked back from.
-            if (xKnockback != 0)
-                xa = Math.copySign(xa, xKnockback) * -1 != xa ? xa : 0; // if xKnockback and xa have different signs, do
-                                                                        // nothing, otherwise, set xa to 0.
-            if (yKnockback != 0)
+            // this part makes it so you can't move in a direction that you are currently being knocked back from.
+            if (xKnockback != 0) {
+                xa = Math.copySign(xa, xKnockback) * -1 != xa ? xa : 0; // if xKnockback and xa have different signs, do nothing, otherwise, set xa to 0.
+            
+            }
+            if (yKnockback != 0) {
                 ya = Math.copySign(ya, yKnockback) * -1 != ya ? ya : 0; // same as above.
+            }
 
             moved = super.move(xa, ya); // Call the move method from Entity
         }
 
-        if (Game.isValidServer() && (xa != 0 || ya != 0))
+        if (Game.isValidServer() && (xa != 0 || ya != 0)) {
             updatePlayers(oldxt, oldyt);
+        }
 
         return moved;
     }
 
     public void updatePlayers(int oldxt, int oldyt) {
-        if (!Game.isValidServer())
+        if (!Game.isValidServer()) {
             return;
-
+        }
+        
         List<RemotePlayer> prevPlayers = Game.server.getPlayersInRange(level, oldxt, oldyt, true);
 
         List<RemotePlayer> activePlayers = Game.server.getPlayersInRange(this, true);
@@ -153,12 +169,13 @@ public abstract class Mob extends Entity {
                 i--;
             }
         }
-        // the lists should now only contain players that are now out of range, and
-        // players that are just now in range.
-        for (RemotePlayer rp : prevPlayers)
+        // the lists should now only contain players that are now out of range, and players that are just now in range.
+        for (RemotePlayer rp : prevPlayers) {
             Game.server.getAssociatedThread(rp).sendEntityRemoval(this.eid);
-        for (RemotePlayer rp : activePlayers)
+        }
+        for (RemotePlayer rp : activePlayers) {
             Game.server.getAssociatedThread(rp).sendEntityAddition(this);
+        }
     }
 
     private boolean isWooling() { // supposed to walk at half speed on wool
@@ -210,7 +227,8 @@ public abstract class Mob extends Entity {
         hurt(mob, damage, getAttackDir(mob, this));
     }
 
-    public void hurt(Mob mob, int damage, Direction attackDir) { // Hurt the mob, when the source is another mob
+    // Hurt the mob, when the source is another mob
+    public void hurt(Mob mob, int damage, Direction attackDir) { 
         if (mob instanceof Player && Game.isMode("creative") && mob != this)
             doHurt(health, attackDir); // kill the mob instantly
         else
@@ -226,13 +244,15 @@ public abstract class Mob extends Entity {
 		doHurt(dmg, getAttackDir(tnt, this));
 	}
 
-    protected void doHurt(int damage, Direction attackDir) { // Actually hurt the mob, based on only damage and a
-                                                             // direction
+	// Actually hurt the mob, based on only damage and a direction
+    protected void doHurt(int damage, Direction attackDir) { 
         // this is overridden in Player.java
-        if (isRemoved() || hurtTime > 0)
+        if (isRemoved() || hurtTime > 0) {
             return; // If the mob has been hurt recently and hasn't cooled down, don't continue
+        }
 
         health -= damage; // Actually change the health
+        
         // add the knockback in the correct direction
         xKnockback = attackDir.getX() * 6;
         yKnockback = attackDir.getY() * 6;
@@ -245,14 +265,16 @@ public abstract class Mob extends Entity {
      * @param heal How much health is restored.
      */
     public void heal(int heal) { // Restore health on the mob
-        if (hurtTime > 0)
+        if (hurtTime > 0) {
             return; // If the mob has been hurt recently and hasn't cooled down, don't continue
+        }
 
         level.add(new TextParticle("" + heal, x, y, Color.GREEN)); // Add a text particle in our level at our position,
                                                                    // that is green and displays the amount healed
         health += heal; // Actually add the amount to heal to our current health
-        if (health > maxHealth)
+        if (health > maxHealth) {
             health = maxHealth; // If our health has exceeded our maximum, lower it back down to said maximum
+        }
     }
 
     protected static Direction getAttackDir(Entity attacker, Entity hurt) {
@@ -269,21 +291,24 @@ public abstract class Mob extends Entity {
 
     @Override
     protected boolean updateField(String field, String val) {
-        if (field.equals("x") || field.equals("y"))
+        if (field.equals("x") || field.equals("y")) {
             walkDist++;
-        if (super.updateField(field, val))
-            return true;
-        switch (field) {
-        case "dir":
-            dir = Direction.values[Integer.parseInt(val)];
-            return true;
-        case "health":
-            health = Integer.parseInt(val);
-            return true;
-        case "hurtTime":
-            hurtTime = Integer.parseInt(val);
+        }
+        if (super.updateField(field, val)) {
             return true;
         }
+        
+        switch (field) {
+	        case "dir":
+	            dir = Direction.values[Integer.parseInt(val)];
+	            return true;
+	        case "health":
+	            health = Integer.parseInt(val);
+	            return true;
+	        case "hurtTime":
+	            hurtTime = Integer.parseInt(val);
+	            return true;
+	    }
 
         return false;
     }

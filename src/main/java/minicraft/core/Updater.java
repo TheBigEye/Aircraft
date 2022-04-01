@@ -301,8 +301,6 @@ public class Updater extends Game {
                             if (!ISONLINE)
                                 Items.fillCreativeInv(player.getInventory(), false);
                         }
-                        if (input.getKey("survival").clicked)
-                            Settings.set("mode", "survival");
                         if (input.getKey("shift-t").clicked)
                             Settings.set("mode", "score");
                         if (!Settings.get("mode").equals(prevMode) && isValidServer())

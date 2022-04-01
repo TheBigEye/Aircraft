@@ -17,27 +17,28 @@ public class TorchTile extends Tile {
     private static Sprite sprite = new Sprite(5, 3, 0);
     
     private boolean randomLight = true;
-    
     private static int LIGHT = 5;
-
     private Tile onType;
 
     private Random rnd = new Random();
 
-    private int randX = rnd.nextInt(20);
-    private int randY = rnd.nextInt(19);
+    private int randX;
+    private int randY;
+    
+    private int torchLightTick;
 
     public static TorchTile getTorchTile(Tile onTile) {
 		int id = onTile.id & 0xFFFF;
-        // noinspection ConstantConditions
-        if (id < 16384)
+		
+        if (id < 16384) {
             id += 16384;
-        else
+        } else {
             System.out.println("tried to place torch on torch tile...");
+        }
 
-        if (Tiles.containsTile(id))
+        if (Tiles.containsTile(id)) {
             return (TorchTile) Tiles.get(id);
-        else {
+        } else {
             TorchTile tile = new TorchTile(onTile);
             Tiles.add(id, tile);
             return tile;
@@ -62,12 +63,19 @@ public class TorchTile extends Tile {
         onType.render(screen, level, x, y);
         sprite.render(screen, x * 16 + 4, y * 16 + 4);
     }
-
     
 	public boolean tick(Level level, int x, int y) {
 		if (randomLight) {
-			LIGHT = random.nextInt(2) + 4;
-			level.add(new FireParticle(x - 1 + randX, y - 1 + randY));
+			torchLightTick++;
+			
+			 if (torchLightTick / 8 % 2 == 0) {
+				LIGHT = random.nextInt(2) + 4;
+				
+				randX = rnd.nextInt(20);
+				randY = rnd.nextInt(18);
+
+				level.add(new FireParticle(x - 8 + randX, y - 8 + randY)); // Add fire particles
+			 }
 			return true;
 		}
 		return false;

@@ -22,30 +22,30 @@ public class DoorTile extends Tile {
         super(type.name() + " Door", (Sprite) null);
         this.type = type;
         switch (type) {
-        case Wood:
-            closedSprite = new Sprite(5, 16, 2, 2, 1);
-            openSprite = new Sprite(3, 16, 2, 2, 1);
-            break;
-        case Stone:
-            closedSprite = new Sprite(15, 16, 2, 2, 1);
-            openSprite = new Sprite(13, 16, 2, 2, 1);
-            break;
-        case Obsidian:
-            closedSprite = new Sprite(25, 16, 2, 2, 1);
-            openSprite = new Sprite(23, 16, 2, 2, 1);
-            break;
-        case Spruce:
-            closedSprite = new Sprite(35, 16, 2, 2, 1);
-            openSprite = new Sprite(33, 16, 2, 2, 1);
-            break;
-        case Birch:
-            closedSprite = new Sprite(45, 16, 2, 2, 1);
-            openSprite = new Sprite(43, 16, 2, 2, 1);
-            break;
-        case Holy:
-            closedSprite = new Sprite(55, 16, 2, 2, 1);
-            openSprite = new Sprite(53, 16, 2, 2, 1);
-            break;
+	        case Wood:
+	            closedSprite = new Sprite(5, 16, 2, 2, 1);
+	            openSprite = new Sprite(3, 16, 2, 2, 1);
+	            break;
+	        case Stone:
+	            closedSprite = new Sprite(15, 16, 2, 2, 1);
+	            openSprite = new Sprite(13, 16, 2, 2, 1);
+	            break;
+	        case Obsidian:
+	            closedSprite = new Sprite(25, 16, 2, 2, 1);
+	            openSprite = new Sprite(23, 16, 2, 2, 1);
+	            break;
+	        case Spruce:
+	            closedSprite = new Sprite(35, 16, 2, 2, 1);
+	            openSprite = new Sprite(33, 16, 2, 2, 1);
+	            break;
+	        case Birch:
+	            closedSprite = new Sprite(45, 16, 2, 2, 1);
+	            openSprite = new Sprite(43, 16, 2, 2, 1);
+	            break;
+	        case Holy:
+	            closedSprite = new Sprite(55, 16, 2, 2, 1);
+	            openSprite = new Sprite(53, 16, 2, 2, 1);
+	            break;
         }
         sprite = closedSprite;
     }

@@ -184,7 +184,7 @@ public class LevelGen {
             if (count[Tiles.get("grass").id & 0xffff] < 100) continue;
             if (count[Tiles.get("tree").id & 0xffff] < 100) continue;
             if (count[Tiles.get("flower").id & 0xffff] < 100) continue;
-            if (count[Tiles.get("Stairs Down").id & 0xffff] < w / 21) continue; // size 128 = 6 stairs min
+            if (count[Tiles.get("Stairs Down").id & 0xffff] == 0) continue; // size 128 = 6 stairs min
 
             return result;
 
@@ -854,7 +854,7 @@ public class LevelGen {
 		// generate the beaches
 		for (int j = 0; j < h; j++) {
 			for (int x = 0; x < w; x++) {
-				if (map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("grass").id || map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("tree").id || map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("flower").id || map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("birch tree").id || map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("lawn").id) {
+				if (map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("grass").id || map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("tree").id || map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("flower").id || map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("birch tree").id || map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("lawn").id || map[x + j * w] != Tiles.get("water").id && map[x + j * w] == Tiles.get("orange tulip").id) {
 					boolean replace = false;
 					int tx;
 					check_ocean: for (tx = x - beaches_thickness; tx <= x + beaches_thickness; tx++) {

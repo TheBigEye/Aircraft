@@ -103,6 +103,7 @@ public class Structure {
     static final Structure dungeonGate;
     static final Structure dungeonLock;
     static final Structure lavaPool;
+    
     // All the "mobDungeon" structures are for the spawner structures
     static final Structure mobDungeonCenter;
     static final Structure mobDungeonNorth;
@@ -130,41 +131,111 @@ public class Structure {
         dungeonGate.addFurniture(-1, -1, new Lantern(Lantern.Type.IRON));
 
         dungeonLock = new Structure();
-        dungeonLock.setData("O:Obsidian,W:Obsidian Wall", "WWWWW\n" + "WOOOW\n" + "WOOOW\n" + "WOOOW\n" + "WWWWW");
+        dungeonLock.setData("O:Obsidian,W:Obsidian Wall",
+        		"WWWWW\n" + 
+                "WOOOW\n" + 
+        		"WOOOW\n" + 
+                "WOOOW\n" + 
+        		"WWWWW"
+        );
 
         lavaPool = new Structure();
-        lavaPool.setData("L:Lava", "LL\n" + "LL");
+        lavaPool.setData("L:Lava",
+        		"LL\n" +
+                "LL"
+        );
 
         mobDungeonCenter = new Structure();
         mobDungeonCenter.setData("B:Stone Bricks,W:Stone Wall",
-                "WWBWW\n" + "WBBBW\n" + "BBBBB\n" + "WBBBW\n" + "WWBWW");
+                "WWBWW\n" + 
+                "WBBBW\n" + 
+                "BBBBB\n" + 
+                "WBBBW\n" + 
+                "WWBWW"
+        );
         mobDungeonNorth = new Structure();
-        mobDungeonNorth.setData("B:Stone Bricks,W:Stone Wall", "WWWWW\n" + "WBBBB\n" + "BBBBB\n" + "WBBBB\n" + "WWWWW");
+        mobDungeonNorth.setData("B:Stone Bricks,W:Stone Wall", 
+        		"WWWWW\n" + 
+                "WBBBB\n" + 
+        		"BBBBB\n" + 
+                "WBBBB\n" + 
+        		"WWWWW"
+        );
+        
         mobDungeonSouth = new Structure();
-        mobDungeonSouth.setData("B:Stone Bricks,W:Stone Wall", "WWWWW\n" + "BBBBW\n" + "BBBBB\n" + "BBBBW\n" + "WWWWW");
+        mobDungeonSouth.setData("B:Stone Bricks,W:Stone Wall", 
+        		"WWWWW\n" + 
+                "BBBBW\n" + 
+                "BBBBB\n" + 
+                "BBBBW\n" + 
+                "WWWWW"
+        );
+        
         mobDungeonEast = new Structure();
-        mobDungeonEast.setData("B:Stone Bricks,W:Stone Wall", "WBBBW\n" + "WBBBW\n" + "WBBBW\n" + "WBBBW\n" + "WWBWW");
+        mobDungeonEast.setData("B:Stone Bricks,W:Stone Wall", 
+        		"WBBBW\n" + 
+                "WBBBW\n" + 
+        		"WBBBW\n" + 
+                "WBBBW\n" + 
+        		"WWBWW"
+        );
+        
         mobDungeonWest = new Structure();
-        mobDungeonWest.setData("B:Stone Bricks,W:Stone Wall", "WWBWW\n" + "WBBBW\n" + "WBBBW\n" + "WBBBW\n" + "WBBBW");
+        mobDungeonWest.setData("B:Stone Bricks,W:Stone Wall", 
+        		"WWBWW\n" + 
+                "WBBBW\n" + 
+                "WBBBW\n" + 
+                "WBBBW\n" + 
+                "WBBBW"
+        );
 
         skyDungeon = new Structure();
         skyDungeon.setData("F:Holy Bricks,W:Holy Wall,D:Holy Door,S:Sky Wart,T:Red Wool",
-                "***********************\n" + "******WWWWWWWWWWW******\n" + "******WFFFFFFFFFW******\n"
-                        + "******WWWWFFFWWWW******\n" + "*********WWDWW*********\n" + "**********WFW**********\n"
-                        + "*WWW******WFW******WWW*\n" + "*WFW******WFW******WFW*\n" + "*WFW****WWWTWWW****WFW*\n"
-                        + "*WFWW***WSSTSSW***WWFW*\n" + "*WFFWWWWWSTTTSWWWWWFFW*\n" + "*WFFDFFFTTTTTTTFFFDFFW*\n"
-                        + "*WFFWWWWWSTTTSWWWWWFFW*\n" + "*WFWW***WSSTSSW***WWFW*\n" + "*WFW****WWWTWWW****WFW*\n"
-                        + "*WFW******WFW******WFW*\n" + "*WWW******WFW******WWW*\n" + "**********WFW**********\n"
-                        + "*********WWDWW*********\n" + "******WWWWFFFWWWW******\n" + "******WFFFFFFFFFW******\n"
-                        + "******WWWWWWWWWWW******\n" + "***********************");
+                "***********************\n" + 
+                "******WWWWWWWWWWW******\n" + 
+                "******WFFFFFFFFFW******\n" + 
+                "******WWWWFFFWWWW******\n" + 
+                "*********WWDWW*********\n" + 
+                "**********WFW**********\n" + 
+                "*WWW******WFW******WWW*\n" + 
+                "*WFW******WFW******WFW*\n" + 
+                "*WFW****WWWTWWW****WFW*\n" + 
+                "*WFWW***WSSTSSW***WWFW*\n" + 
+                "*WFFWWWWWSTTTSWWWWWFFW*\n" + 
+                "*WFFDFFFTTTTTTTFFFDFFW*\n" + 
+                "*WFFWWWWWSTTTSWWWWWFFW*\n" + 
+                "*WFWW***WSSTSSW***WWFW*\n" + 
+                "*WFW****WWWTWWW****WFW*\n" + 
+                "*WFW******WFW******WFW*\n" + 
+                "*WWW******WFW******WWW*\n" + 
+                "**********WFW**********\n" + 
+                "*********WWDWW*********\n" + 
+                "******WWWWFFFWWWW******\n" + 
+                "******WFFFFFFFFFW******\n" + 
+                "******WWWWWWWWWWW******\n" + 
+                "***********************"
+        );
         skyDungeon.addFurniture(0, 0, new Crafter(Crafter.Type.Enchanter));
 
         villageCrops = new Structure();
         villageCrops.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass,O:Path,C:potato,Z:wheat,X:Water",
-                "WWWWW**O**WWWWW\n" + "WFFFW**O**WFFFW\n" + "WFFFDOOOOODFFFW\n" + "WFFFW**O**WFFFW\n"
-                        + "WWWWW**O**WWWWW\n" + "*******O*******\n" + "******OOO******\n" + "OOOOOOOGOOOOOOO\n"
-                        + "******OOO***O**\n" + "*******O****O**\n" + "WWWWW**O**ZZXCC\n" + "WFFFW**O**ZZXCC\n"
-                        + "WFFFDOOO**ZZXCC\n" + "WFFFW**O**ZZXCC\n" + "WWWWW**O**ZZXCC\n" + "***************\n");
+                "WWWWW**O**WWWWW\n" + 
+                "WFFFW**O**WFFFW\n" + 
+                "WFFFDOOOOODFFFW\n" + 
+                "WFFFW**O**WFFFW\n" + 
+                "WWWWW**O**WWWWW\n" + 
+                "*******O*******\n" + 
+                "******OOO******\n" + 
+                "OOOOOOOGOOOOOOO\n" + 
+                "******OOO***O**\n" + 
+                "*******O****O**\n" + 
+                "WWWWW**O**ZZXCC\n" + 
+                "WFFFW**O**ZZXCC\n" + 
+                "WFFFDOOO**ZZXCC\n" + 
+                "WFFFW**O**ZZXCC\n" + 
+                "WWWWW**O**ZZXCC\n" + 
+                "***************\n"
+        );
         villageCrops.addFurniture(0, -1, new ZombieStatue());
 
         villageHouseNormal2 = new Structure();

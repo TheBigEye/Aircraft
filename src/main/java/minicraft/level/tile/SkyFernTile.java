@@ -17,8 +17,10 @@ import minicraft.level.Level;
 public class SkyFernTile extends Tile {
     private static Sprite sprite = new Sprite(27, 22, 2, 2, 1);
 
-    private int stepped;
-    private int damage;
+    private boolean stepped;
+    private int step;
+    
+    private int fernAttackTick;
 
     protected SkyFernTile(String name) {
         super(name, (ConnectorSprite) null);
@@ -36,14 +38,12 @@ public class SkyFernTile extends Tile {
         int xn = xt;
         int yn = yt;
 
-        if (stepped == 0) {
+        if (stepped == false) {
             sprite = new Sprite(29, 22, 2, 2, 1);
         }
-
-        if (random.nextInt(32) == 16) {
-            stepped = 0;
-        }
-
+        
+        fernAttackTick++;
+        
         if (random.nextBoolean())
             xn += random.nextInt(2) * 2 - 1;
         else
@@ -58,33 +58,32 @@ public class SkyFernTile extends Tile {
     @Override
     public void render(Screen screen, Level level, int x, int y) {
         Tiles.get("sky high grass").render(screen, level, x, y);
-
-        if (stepped >= 8) {
-
-            if (random.nextInt(12) == 9) {
-                sprite = new Sprite(27, 22, 2, 2, 1);
+        
+        if (stepped == true) {
+            if (fernAttackTick / 16 % 2 == 0) {
+            	
+            	step+=1;
+            	
+            	if (step > 6) {
+            		step = 0;
+            	}
+            	
+            	switch (step) {
+    	        	case 0: sprite = new Sprite(27, 22, 2, 2, 1); break;
+    	        	case 1: sprite = new Sprite(29, 22, 2, 2, 1); break;
+    	        	case 2: sprite = new Sprite(31, 22, 2, 2, 1); break;
+    	        	case 3: sprite = new Sprite(33, 22, 2, 2, 1); break;
+    	        	case 4: sprite = new Sprite(31, 22, 2, 2, 1); break;
+    	        	case 5: sprite = new Sprite(29, 22, 2, 2, 1); break;
+    	        	case 6: sprite = new Sprite(27, 22, 2, 2, 1); break;
+    	        	default:
+    	        		sprite = new Sprite(27, 22, 2, 2, 1); break;
+            	}
             }
-            if (random.nextInt(12) == 1) {
-            	sprite = new Sprite(29, 22, 2, 2, 1);
-            }
-            if (random.nextInt(12) == 10) {
-            	sprite = new Sprite(31, 22, 2, 2, 1);
-            }
-            if (random.nextInt(12) == 3) {
-            	sprite = new Sprite(33, 22, 2, 2, 1);
-            }
-            if (random.nextInt(12) == 11) {
-            	sprite = new Sprite(31, 22, 2, 2, 1);
-            }
-            if (random.nextInt(12) == 5) {
-            	sprite = new Sprite(29, 22, 2, 2, 1);
-            }
-            if (random.nextInt(12) == 12) {
-
-            	sprite = new Sprite(27, 22, 2, 2, 1);
-            }
+        } else {
+        	step = 0;
         }
-
+        
         sprite.render(screen, x * 16, y * 16);
     }
 
@@ -93,26 +92,12 @@ public class SkyFernTile extends Tile {
         if (entity instanceof Player) {
 
             Player p = (Player) entity;
-
-            stepped++;
-            if (stepped >= 16) {
-                stepped = 0;
-            }
-
-            if (stepped >= 14) {
-
-                if (random.nextInt(3) == 1) {
-                    damage = 5;
-                }
-                if (random.nextInt(3) == 2) {
-                    damage = 4;
-
-                } else {
-                    damage = 3;
-                }
-
-                p.hurt(this, x, y, damage);
-            }
+            p.hurt(this, x, y, random.nextInt(3));
+            
+            stepped = true;
+            
+        } else {
+        	stepped = false;
         }
     }
 

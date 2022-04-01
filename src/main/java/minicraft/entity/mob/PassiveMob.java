@@ -18,6 +18,7 @@ import minicraft.level.tile.Tiles;
 
 public class PassiveMob extends MobAi {
     protected int color;
+    private int tickTime;
 
     /**
      * Constructor for a non-hostile (passive) mob. healthFactor = 4.
@@ -36,7 +37,7 @@ public class PassiveMob extends MobAi {
      *                     difficulty and then added with 5.
      */
     public PassiveMob(MobSprite[][] sprites, int healthFactor) {
-        super(sprites, 5 + healthFactor * Settings.getIdx("diff"), 5 * 60 * Updater.normSpeed, 45, 40);
+        super(sprites, 8 + healthFactor * Settings.getIdx("diff"), 5 * 60 * Updater.normSpeed, 45, 40);
     }
 
     @Override
@@ -46,33 +47,32 @@ public class PassiveMob extends MobAi {
 
     // Burn
     public boolean isBurn = false;
-    private int burnTime = 0;
+    private int burnTime;
 
     public void tick() {
         super.tick();
+        tickTime++;
 
         if (isBurn == true) {
-            burnTime++;
-            if (burnTime >= 128) {
-                burnTime = 0;
-                isBurn = false;
-            }
+        	if (tickTime / 16 % 4 == 0 && burnTime < 128) {
 
-            if (burnTime >= 1) {
-                if (random.nextInt(4) == 2) {
                     int randX = random.nextInt(10);
                     int randY = random.nextInt(9);
 
                     level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
 
                     this.hurt(this, 1);
-                }
+                    burnTime++;
+        	}
+        	if (level.getTile(x / 16, y / 16) == Tiles.get("water")) {
+            	burnTime = 0;
+            	isBurn = false;
+        	}
+            if (burnTime > 128) {
+            	burnTime = 0;
+            	isBurn = false;
             }
-
-        } else {
-            burnTime = 0; // Check
         }
-
     }
 
     @Override
