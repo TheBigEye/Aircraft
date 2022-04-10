@@ -29,14 +29,13 @@ Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chri
 * Added tundra biome (Soon it will be divided into 3 sub-biomes when the infinite worlds are possible).
 * More types of trees were added with their respective types of wood and their variants in doors, walls and floors, (Birch and fir, more trees will be added soon).
 * Better terrain generation.
-* The Generation of the world may take a while due to the process that the game takes to generate them is less optimized, but it works perfectly if you have patience.
 
 ### Technical side :
 * An in-game game mode editor.
-* Multi-texture packs support.
+* Texture packs support.
 * Crash screen more detailed in information
 * More durability in tools.
-* Enchanted Tools and Enchantment Books.
+* Enchanted Tools and Enchantment Books (deprecated for now).
 * --dev (developer mode) argumment when running the game in terminal.
 
 ## Installation
