@@ -1,5 +1,5 @@
 # Aircraft
-![Preview](https://user-images.githubusercontent.com/63316583/162646313-39d1d829-2c0b-495d-a66e-0221c18d6a76.png)
+![PREVIEW](https://user-images.githubusercontent.com/63316583/162649419-e732f796-34d6-40cd-8924-4d8cda851503.png)
 
 Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived) (Another mod, based on the original Minicraft game made by Markus persson "Notch" for the Lodum dare 22 competition), Aircraft adds the following features:
 
