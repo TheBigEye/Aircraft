@@ -365,7 +365,7 @@ public final class Tiles {
 
 		if (tiles.get(id) != null) {
 			return tiles.get(id);
-			
+
 		} else if(id >= 32767) {
 			return TorchTile.getTorchTile(get(id - 32767));
 
@@ -400,5 +400,4 @@ public final class Tiles {
 		return t;
 
 	}
-
 }

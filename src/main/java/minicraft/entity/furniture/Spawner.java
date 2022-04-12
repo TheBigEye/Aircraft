@@ -120,7 +120,7 @@ public class Spawner extends Furniture {
      * Tries to spawn a new mob.
      */
     private void trySpawn() {
-        if (level == null || Game.isValidClient())
+        if (level == null)
             return;
         if (level.mobCount >= level.maxMobCount)
             return; // can't spawn more entities
@@ -137,7 +137,6 @@ public class Spawner extends Furniture {
         MobAi newmob;
         try {
             if (mob instanceof EnemyMob)
-                // noinspection JavaReflectionMemberAccess
                 newmob = mob.getClass().getConstructor(int.class).newInstance(lvl);
             else
             	newmob = mob.getClass().getDeclaredConstructor().newInstance();

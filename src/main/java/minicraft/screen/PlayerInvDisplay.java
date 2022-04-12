@@ -16,19 +16,19 @@ public class PlayerInvDisplay extends Display {
 		super(new InventoryMenu(player, player.getInventory(), "Inventory"));
 		this.player = player;
 	}
-	
+
 	@Override
 	public void tick(InputHandler input) {
 		super.tick(input);
-		
-		if(input.getKey("menu").clicked) {
-			Game.exitMenu();
+
+		if (input.getKey("menu").clicked) {
+			Game.exitDisplay();
 			return;
 		}
-		
-		if(input.getKey("attack").clicked && menus[0].getNumOptions() > 0) {
+
+		if (input.getKey("attack").clicked && menus[0].getNumOptions() > 0) {
 			player.activeItem = player.getInventory().remove(menus[0].getSelection());
-			Game.exitMenu();
+			Game.exitDisplay();
 		}
 	}
 

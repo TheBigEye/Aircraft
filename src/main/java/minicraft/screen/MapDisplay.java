@@ -2,6 +2,7 @@ package minicraft.screen;
 
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
+import minicraft.core.io.Localization;
 import minicraft.gfx.Color;
 import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
@@ -14,7 +15,7 @@ public class MapDisplay extends Display {
     public MapDisplay() {
 
         Menu.Builder builder = new Menu.Builder(true, 0, RelPos.CENTER);
-        builder.setTitle("map");
+        builder.setTitle(Localization.getLocalized("Map"));
         builder.setSize(140, 140);
         builder.setFrame(443, 1, 443);
 
@@ -27,7 +28,7 @@ public class MapDisplay extends Display {
     @Override
     public void tick(InputHandler input) {
         if (input.getKey("menu").clicked || input.getKey("attack").clicked || input.getKey("exit").clicked) {
-            Game.exitMenu();
+            Game.exitDisplay();
         }
     }
 

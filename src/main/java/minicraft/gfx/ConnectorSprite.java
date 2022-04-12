@@ -26,8 +26,7 @@ public class ConnectorSprite {
         this(owner, sparse, sides, full, true);
     }
 
-    public ConnectorSprite(Class<? extends Tile> owner, Sprite sparse, Sprite sides, Sprite full,
-            boolean cornersMatter) {
+    public ConnectorSprite(Class<? extends Tile> owner, Sprite sparse, Sprite sides, Sprite full, boolean cornersMatter) {
         this.owner = owner;
         this.sparse = sparse;
         this.sides = sides;
@@ -133,8 +132,7 @@ public class ConnectorSprite {
                 int pos = coords[i];
                 pixels[r][c] = new Sprite.Px(pos % 32, pos / 32, mirror, sheet);
                 i++;
-                if (i == coords.length && repeat)
-                    i = 0;
+                if (i == coords.length && repeat) i = 0;
             }
         }
 

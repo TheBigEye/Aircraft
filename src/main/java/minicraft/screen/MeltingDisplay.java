@@ -26,9 +26,7 @@ public class MeltingDisplay extends Display {
     private final Menu.Builder itemCountMenu, costsMenu, meltDisplay;
 
     @SuppressWarnings("unused")
-    private final StackableItem[] fuelList = new StackableItem[] { (StackableItem) Items.get("Coal") }; // Must be a
-                                                                                                        // stackable
-                                                                                                        // item
+    private final StackableItem[] fuelList = new StackableItem[] { (StackableItem) Items.get("Coal") }; // Must be a stackable item
     private final StackableItem currentFuel = (StackableItem) Items.get("Coal");
 
     public MeltingDisplay(Crafter.Type type, Player player) {
@@ -100,7 +98,7 @@ public class MeltingDisplay extends Display {
     @Override
     public void tick(InputHandler input) {
         if (input.getKey("menu").clicked) {
-            Game.exitMenu();
+            Game.exitDisplay();
             return;
         }
 

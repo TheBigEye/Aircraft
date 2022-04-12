@@ -3,147 +3,147 @@
 # achievement
 
 minicraft.achievement.woodcutter
-Leñador
+rettucdooW
 
 minicraft.achievement.woodcutter.desc
-Corta madera.
+doow teG.
 
 minicraft.achievement.benchmarking
-¡Crafteando ando!
+emit gnitfarC
 
 minicraft.achievement.benchmarking.desc
-Haz una mesa de crafteo.
+hcnebkrow a tfarC.
 
 minicraft.achievement.mine_stone
-Edad de piedra!
+ega enotS!
 
 minicraft.achievement.mine_stone.desc
-Extrae piedra con tu nuevo pico.
+exakcip wen ruoy htiw enots eniM!
 
 minicraft.achievement.smelt_iron
-Edad de hierro!
+ega norI!!
 
 minicraft.achievement.smelt_iron.desc
-Extrae hierro y derritelo.
+ti tlem dna nori eniM.
 
 minicraft.achievement.upgrade
-Actualizacion!
+edargpU!
 
 minicraft.achievement.upgrade.desc
-Consiga una herramienta con un material más resistente que la madera.
+doow naht regnorts si taht lairetam a fo edam loot a teG.
 
 minicraft.achievement.iron_tools
-Que pesado!
+yvaeh woH!
 
 minicraft.achievement.iron_tools.desc
-Consiga una herramienta con un material más resistente que la piedra.
+enots naht regnorts si taht lairetam a fo edam loot a teG.
 
 minicraft.achievement.monsters
-Que es eso?!
+taht s'tahW!?
 
 minicraft.achievement.monsters.desc
-Mata a un mob hostil.
+bom elitsoh a lliK.
 
 minicraft.achievement.fish
-A pescar!
+hsif oT!
 
 minicraft.achievement.fish.desc
-Pesca un pez
+hsif a teG.
 
 minicraft.achievement.doors
-!TOC toc!
+¡coT COT!
 
 minicraft.achievement.doors.desc
-Coloque todos los tipos de puertas.
+srood fo sepyt lla ecalP.
 
 minicraft.achievement.planks
-¡Camina por los tablones!
+sknalp eht klaW!
 
 minicraft.achievement.planks.desc
-Coloque todos los tipos de tablones.
+sknalp fo sepyt lla ecalP.
 
 minicraft.achievement.clothes
-¡Que tengas un día colorido!
+yad lufroloc a evaH!
 
 minicraft.achievement.clothes.desc
-Craftea toda las ropas de colores.
+sehtolc lufroloc eht lla tfarC.
 
 minicraft.achievement.demolition
-Boom!
+mooB!
 
 minicraft.achievement.demolition.desc
-Utilice TNT.
+TNT esU.
 
 minicraft.achievement.explosive_ending
-Un final explosivo
+gnide evisolpxe nA
 
 minicraft.achievement.explosive_ending.desc
-"Accidentalmente" hazte explotar.
+pu flesruoy wolb "yllatnediccA".
 
 minicraft.achievement.survive_darkness
-¿Miedo a la oscuridad?
+krad eht fo diarfA?
 
 minicraft.achievement.survive_darkness.desc
-Sobrevive 5 minutos en total oscuridad.
+ssenkrad latot ni setunim 5 evivruS.
 
 minicraft.achievement.lava
-Asuntos candentes
+sriaffA toH
 
 minicraft.achievement.lava.desc
-Usa una pocion de lava para nadar en lava.
+aval ni miws ot noitop aval a esU.
 
 minicraft.achievement.find_gem
-¡Oooh Brillante!
+senihs ti woh kooL!
 
 minicraft.achievement.find_gem.desc
-Encuentra gemas y minalas.
+meht enim dna smeg dniF.
 
 minicraft.achievement.lowest_caves
-Oscuridad detrás de la luz
+thgil eht dniheb ssenkraD
 
 minicraft.achievement.lowest_caves.desc
-Llega a las cuevas más bajas.
+sevac rewol eht ot teG.
 
 minicraft.achievement.obsidian_dungeon
-Hace calor aqui abajo!
+ereh nwod toh s'tI!
 
 minicraft.achievement.obsidian_dungeon.desc
-Llega a la mazmorra de obsidiana.
+noegnuD naidisbO eht ot teG.
 
 minicraft.achievement.airwizard
-Esto apenas comienza?
+gninnigeb tsuj siht sI?
 
 minicraft.achievement.airwizard.desc
-¡Derrota al primer Mago del Aire!
+draziW riA tsrif eht lliK!
 
 minicraft.achievement.second_airwizard
-Ultratumba!
+efilretfA!
 
 minicraft.achievement.second_airwizard.desc
-¡Derrota al segundo Mago del Aire!
+egaM riA dnoces eht lliK.
 
 minicraft.achievement.eye_queen
-Te veo!
+uoy ees I!
 
 minicraft.achievement.eye_queen.desc
-Invoca y derrota a la Reina ojo.
+neeuq eyE eht llik dna nommuS.
 
 minicraft.achievement.eat_all_food
-A dieta
+teid a nO
 
 minicraft.achievement.eat_all_food.desc
-Come todo lo sea comestible.
+elbatae si revetahw taE.
 
 
 # AchievementsDisplay.java
 Earned!
-Ganado!
+!denraE
 
 Not Earned
-No Ganado
+denraE toN
 
 Achievements Score:
-Puntaje:
+erocS stnemeveihcA:
 
 ### entity
 
@@ -152,61 +152,61 @@ Puntaje:
 
 # Entity.java
 Entities
-Entidades
+seititnE
 
 # AirWizard.java
 Air Wizard: Defeated!
-Mago de Aire: Derrotado!
+detaefeD :draziW riA!
 
 The Dungeon is now open!
-El calabozo esta abierto ahora!
+nepo won si noegnuD ehT!
 
 A costume lies on the ground...
-Un disfraz descansa en el suelo...
+dnuorg eht no seil emutsoc A...
 
 # Bed.java
 Can't sleep! 
-No puedes dormir! 
+peels t'naC!
 	
 Min 
-Min 
+niM
 	
  Sec left!
- Seg restante!
+ tfel ceS!
 
 # DungeonChest.java
 You hear a noise from the surface!
-Escuchas un ruido de la superficie!
+ecafrus eht morf esion a raeh uoY!
 
 # DeathChest.java
 Death Chest
-Cofre de la Muerte
+tsehC htaeD
 
 # Player.java
 
 Player
-Jugador
+reyalP
 
 Crafting
-Elaborando
+gnitfarC
 
 Set your home!
-Establece tu casa!
+emoh ruoy teS!
 
 Can't set home here!
-No puedes establecer la casa aqui!
+ereh emoh tes t'naC!
 
 Home Sweet Home!
-Hogar Dulce Hogar!
+emoH teewS emoH!
 
 Mode penalty: -2 health
-Modo de penalización: -2 de salud
+htlaeh 2- :ytlanep edoM
 
 You don't have a home!
-No tienes una casa!
+asac anu seneit oN!
 
 You can't go home from here!
-No puedes ir a casa desde aqui!
+ereh morf emoh og t'nac uoY!
  
 ### entity end
 
@@ -217,815 +217,815 @@ No puedes ir a casa desde aqui!
 
 # ArmorItem.java
 Leather Armor
-Armadura de Cuero
+romrA rehtaeL
 
 Snake Armor
-Armadura de Serpiente
+romrA ekanS
 
 ChainMail Armor
-Armadura Cota de malla
+romrA liaMniahC
 
 Iron Armor
-Armadura de Hierro
+romrA norI
 
 Gold Armor
-Armadura de Oro
+romrA dloG
 
 Gem Armor
-Armadura de Gema
+romrA meG
 
 # BoatItem.java
 
 Boat
-Barco
+taoB
 
 # BookItem.java
 
 Book
-Libro
+kooB
 
 Antidious
-Antidoto
+suoiditnA
 
 AlAzif
-Libro del Aire
+fizAlA
 
 # BucketItem.java
 
 Empty Bucket
-Cubo vacio
+tekcuB ytpmE
 
 Water Bucket
-Cubo de Agua
+tekcuB retaW
 
 Lava Bucket
-Cubo de Lava
+tekcuB avaL
 
  Bucket
- Cubo
+ tekcuB
  
 # ClothingItem.java
 
 Red Clothes
-Ropa Roja
+sehtolC deR
 
 Blue Clothes
-Ropa Azul
+sehtolC eulB
 
 Green Clothes
-Ropa Verde
+sehtolC neerG
 
 Yellow Clothes
-Ropa Amarilla
+sehtolC wolleY
 
 Black Clothes
-Ropa Negra
+sehtolC kcalB
 
 Orange Clothes
-Ropa Anaranjada
+sehtolC egnarO
 
 Purple Clothes
-Ropa Morado
+sehtolC elpruP
 
 Cyan Clothes
-Ropa Turquesa
+sehtolC nayC
 
 Reg Clothes
-Ropa Regular
+sehtolC geR
 
 # FoodItem.java
 
 Bread
-Pan
+daerB
 
 Apple
-Manzana
+elppA
 
 Frozen palette
-Paleta congelada
+ettelap nezorF
 
 Mushroom Soup
-Sopa de hongos
+puoS moorhsuM
 
 Carrot Soup
-Sopa de Zanahoria
+puoS torraC
 
 Raw Chicken
-Pollo crudo
+nekcihC waR
 
 Raw Pork
-Cerdo crudo
+kroP waR
 
 Raw Fish
-Pescado crudo
+hsiF waR
 
 Raw Beef
-Bistec crudo
+feeB waR
 
 Cooked Chicken
-Pollo cocinado
+nekcihC dekooC
 
 Pork Chop
-Chuleta de Cerdo
+pohC kroP
 
 Cooked Fish
-Pescado cocido
+hsiF dekooC
 
 Cooked Pork
-Cerdo cocido
+kroP dekooC
 
 Steak
-Bistec
+kaetS
 
 Gold Apple
-Manzana Dorada
+elppA dloG
 
 Gold Carrot
-Zanahoria Dorada
+torraC dloG
 
 # FurnitureItem.java
 
 KingZombie Spawner
-Generador de Reyes Zombies
+renwapS eibmoZ sgniK
 
 Cow Spawner
-Generador de Vacas
+renwapS swoC
 
 Pig Spawner
-Generador de Cerdos
+renwapS sgiP
 
 Sheep Spawner
-Generador de Ovejas
+renwapS speehS
 
 Goat Spawner
-Generador de Cabras
+renwapS staoG
 
 Chicken Spawner
-Generador de Pollos
+renwapS snekcihC
 
 Cleric Spawner
-Generador de Clerigos
+renwapS scirelC
 
 Librarian Spawner
-Generador de Bibliotecarios
+renwapS snairarbiL
 
 GuiMan Spawner
-Generador de Pinguinos
+renwapS sniugneP
 
 Cat Spawner
-Generador de Gatos
+renwapS staC
 
 Golem Spawner
-Generador de Golems
+renwapS smeloG
 
 Slime Spawner
-Generador de Slimes
+renwapS semilS
 
 Zombie Spawner
-Generador de Zombies
+renwapS seibmoZ
 
 Mooshroom Spawner
-Generador de Vacahongos
+renwapS smoorhsooM
 
 Creeper Spawner
-Generador de Creepers
+renwapS srepeerC
 
 Skeleton Spawner
-Generador de Esqueletos
+renwapS snotelekS
 
 Snake Spawner
-Generador de Serpientes
+renwapS sekanS
 
 Knight Spawner
-Generador de Caballeros
+renwapS sthginK
 
 OldGolem Spawner
-Generador de Golems viejos
+renwapS smelog tsuR
 
 AirWizard Spawner
-Generador de Magos de Aire
+renwapS sdraziW riA
 
 EyeQueen Spawner
-Generador de Reinas Ojo
+renwapS sneeuQ eyE
 
 Cthulhu Spawner
-Generador de Cthulhu
+renwapS suhluhtC
 
 Keeper Spawner
-Generador de Guardian
+renwapS srepeeK
 
 Workbench
-Mesa de Crafteo
+hcnebkroW
 
 Oven
-Horno
+nevO
 
 Furnace
-Horno
+ecanruF
 
 Anvil
-Yunque
+livnA
 
 Enchanter
-Encantador
+retnahcnE
 
 Assembler
-Ensamblador
+relbmessA
 
 Stonecutter
-Cortapiedra
+rettucenotS
 
 Brewery
-Destilador
+yrewerB
 
 Loom
-Telar
+mooL
 
 Lantern
-Linterna
+nretnaL
 
 Iron Lantern
-Linterna de Hierro
+nretnaL norI
 
 Gold Lantern
-Linterna de Oro
+nretnaL dloG
 
 Tnt
-Dinamita
+tnT
 
 Bed
-Cama
+deB
 
 SlimeStatue
-Estatua de slime
+eutatS emilS
 
 ZombieStatue
-Estatua de Zombie
+eutatS eibmoZ
 
 SkeletonStatue
-Estatua de Esqueleto
+eutatS notelekS
 
 Chest
-Cofre
+tsehC
 
 Dungeon Chest
-Cofre de mazmorra
+tsehC noegnuD
 
 # MapItem.java
 
 Map book
-Libro de mapas
+koob paM
 
 # AmuletItem.java
 
 Eye Amulet
-Amuleto del ojo
+telumA eyE
 
 # PotionType.java
 
 None Potion
-Ninguna Poción
+noitoP enoN
 
 Speed Potion
-Pocion de Velocidad
+noitoP deepS
 
 xSpeed Potion
-Pocion de Velocidad II
+II noitoP deepS
 
 Light Potion
-Pocion de Luz
+noitoP thgiL
 
 xLight Potion
-Pocion de Luz II
+II noitoP thgiL
 
 Swim Potion
-Pocion de Nadar
+noitoP miwS
 
 xSwim Potion
-Pocion de Nadar II
+II noitoP miwS
 
 Energy Potion
-Pocion de Energia
+noitoP ygrenE
 
 xEnergy Potion
-Pocion de Energia II
+II noitoP ygrenE
 
 Regen Potion
-Pocion de Regeneracion
+noitoP negeR
 
 xRegen Potion
-Pocion de Regen II
+II noitoP negeR
 
 Health Potion
-Pocion de Vida
+noitoP htlaeH
 
 xHealth Potion
-Pocion de Vida II
+II noitoP htlaeH
 
 Time Potion
-Pocion de Tiempo
+noitoP emiT
 
 Lava Potion
-Pocion de Lava
+noitoP avaL
 
 xLava Potion
-Pocion de Lava II
+II noitoP avaL
 
 Shield Potion
-Pocion de Escudo
+noitoP dleihS
 
 xShield Potion
-Pocion de Escudo II
+II noitoP dleihS
 
 Haste Potion
-Pocion de Prisa
+noitoP etsaH
 
 Escape Potion
-Pocion de Escapar
+noitoP epacsE
 
 Blindness Potion
-Pocion de ceguera
+noitoP ssendnilB
 
 Potion
-Pocion
+noitoP
 
 # PowerGloveItem.java
 
 Power Glove
-Guante
+evolG rewoP
 
 # ShearItem.java
 
 Shears
-Tijeras
+sraehS
 
 # StackableItem.java
 
 Wood
-Madera
+dooW
 
 Spruce Wood
-Madera de Abeto
+dooW ecurpS
 
 Birch Wood
-Madera de Abedul
+dooW hcriB
 
 Leaf
-Hoja
+faeL
 
 Paper
-Papel
+repaP
 
 Leather
-Cuero
+rehtaeL
 
 Wheat
-Trigo
+taehW
 
 Key
-Llave
+yeK
 
 arrow
-flecha
+worra
 
 Icicle
-Carambano
+elcicI
 
 Stick
-Palo
+kcitS
 
 Bowl
-Tazon
+lwoB
 
 string
-cuerda
+gnirts
 
 feather
-Pluma
+rehtaef
 
 egg
-Huevo
+gge
 
 Stone
-Piedra
+enotS
 
 Holy stone
-Piedra sagrada
+enots yloH
 
 Andesite
-Andesita
+etisednA
 
 Diorite
-Diorita
+etiroiD
 
 Granite
-Granito
+etinarG
 
 Silicon
-Silicio
+nociliS
 
 Basalt
-Basalto
+tlasaB
 
 Quartzite
-Cuarcita
+etiztrauQ
 
 Light gray dye
-Tinte gris claro
+eyd yarg thgiL
 
 Gray dye
-Tinte gris
+eyd yarG
 
 Ink sac
-Saco de tinta
+cas knI
 
 Lime dye
-Tinte lima
+eyd emiL
 
 Yellow dye
-Tinte amarillo
+eyd wolleY
 
 Green dye
-Tinte verde
+eyd neerG
 
 Brown dye
-Tinte marron
+eyd nworB
 
 Red dye
-Tinte rojo
+eyd deR
 
 Purple dye
-Tinte Morado
+eyd elpruP
 
 Pink dye
-Tinte rosa
+eyd kniP
 
 Magenta dye
-Tinte magenta
+eyd atnegaM
 
 Dark green dye
-Tinte verde oscuro
+eyd neerg kraD
 
 Orange dye
-Tinte naranja
+eyd egnarO
 
 Blue dye
-Tinte azul
+eyd eulB
 
 Cyan dye
-Tinte cian
+eyd nayC
 
 Light blue dye
-Tinte celeste
+eyd eulb thgiL
 
 Coal
-Carbon
+laoC
 
 Iron Ore
-Mena de Hierro
+erO norI
 
 Lapis
-Lapis
+sipaL
 
 Gold Ore
-Mena de Oro
+erO dloG
 
 Iron
-Hierro
+norI
 
 Gold
-Oro
+dloG
 
 Rose
-Rosa
+esoR
 
 GunPowder
-Polvora
+redwoPnuG
 
 Slime
-Slime
+emilS
 
 glass
-Vidrio
+ssalg
 
 cloth
-tela
+htolc
 
 gem
-gema
+meg
 
 emerald
-esmeralda
+dlareme
 
 Scale
-Escama
+elacS
 
 Shard
-elitro
+drahS
 
 Gear
-Engranaje
+reaG
 
 Spring
-Resorte
+gnirpS
 
 Flint
-Pedernal
+tnilF
 
 Flint and Steel
-Mechero
+leetS dna tnilF
 
 Protection I
-Proteccion I
+I noiccetorP
 
 Protection II
-Proteccion II
+II noiccetorP
 
 Protection III
-Proteccion III
+III noiccetorP
 
-Sharp I
-Filo I
+I prahS
+I prahS
 
 Sharp II
-Filo II
+II prahS
 
 Sharp III
-Filo III
+III prahS
 
 Cordyceps essence
-Esencia de cordyceps
+ecnesse specydroC
 
 Sticky essence
-Esencia pegajosa
+ecnesse ykcitS
 
 Gaseous essence
-Esencia gaseosa
+ecnesse suoesaG
 
 Master essence
-Esencia maestra
+ecnesse retsaM
 
 # TileItem.java
 
 Flower
-Flor
+rewolF
 
 Orange Tulip
-Tulipan naranja
+piluT egnarO
 
 Red Mushroom
-Hongo rojo
+moorhsuM deR
 
 Brown Mushroom
-Hongo cafe
+moorhsuM nworB
 
 Acorn
-Bellota
+nrocA
 
 Birch Cone
-Cono de abedul
+enoC hcriB
 
 Fir Cone
-Cono de abeto
+enoC riF
 
 Pine Cone
-Cono de pino
+enoC eniP
 
 Dirt
-Tierra
+triD
 
 Sky dirt
-Tierra del cielo
+trid ykS
 
 Natural Rock
-Piedra natural
+kcoR larutaN
 
 Natural Hard Rock
-Piedra natural dura
+kcoR draH larutaN
 
 Plank
-Tablon
+knalP
 
 Spruce Plank
-Tablon de Abeto
+knalP ecurpS
 
 Birch Plank
-Tablon de Abedul
+knalP hcriB
 
 Plank Wall
-Muro de Tablon
+llaW knalP
 
 Spruce Wall
-Muro de Abeto
+llaW ecurpS
 
 Birch Wall
-Muro de Abedul
+llaW hcriB
 
 Wood Door
-Puerta de Madera
+rooD dooW
 
 Spruce Door
-Puerta de Abeto
+rooD ecurpS
 
 Birch Door
-Puerta de Abedul
+rooD hcriB
 
 Stone Brick
-Ladrillo de Piedra
+kcirB enotS
 
 Stone Wall
-Muro de Piedra
+llaW enotS
 
 Stone Door
-Puerta de Piedra
+rooD enotS
 
 Holy Brick
-Ladrillo Sagrado
+kcirB yloH
 
 Holy Wall
-Muro Sagrado
+llaW yloH
 
 Holy Door
-Puerta Sagrada
+rooD yloH
 
 Obsidian Brick
-Ladrillo de Obsidiana
+kcirB naidisbO
 
 Obsidian Wall
-Muro de Obsidiana
+llaW naidisbO
 
 Obsidian Door
-Puerta de Obsidiana
+rooD naidisbO
 
 Wool
-Lana
+looW
 
 Light Gray Wool
-Lana gris claro
+looW yarG thgiL
 
 Gray Wool
-Lana gris
+looW yarG
 
 Black Wool
-Lana negra
+looW kcalB
 
 Brown Wool
-Lana Marron
+looW nworB
 
 Red Wool
-Lana roja
+looW deR
 
 Orange Wool
-Lana naranja
+looW egnarO
 
 Yellow Wool
-Lana amarilla
+looW wolleY
 
 Lime Wool
-Lana lima
+looW emiL
 
 Green Wool
-Lana verde
+looW neerG
 
 Cyan Wool
-Lana cian
+looW nayC
 
 Light Blue Wool
-Lana celeste
+looW eulB thgiL
 
 Blue Wool
-Lana azul
+looW eulB
 
 Purple Wool
-Lana morada
+looW elpruP
 
 Magenta Wool
-Lana magenta
+looW atnegaM
 
 Pink Wool
-Lana rosa
+looW kniP
 
 Sand
-Arena
+dnaS
 
 Mycelium
-Micelio
+muilecyM
 
 Snow Ball
-Bola de Nieve
+llaB wonS
 
 Cactus
-Cactus
+sutcaC
 
 Seeds
-Semillas
+sdeeS
 
 Carrot
-Zanahoria
+torraC
 
 Potato
-Patata
+otatoP
 
 Sky wart
-Verruga del Cielo
+traw ykS
 
 Sky Seeds
-Semillas del Cielo
+sdeeS ykS
 
 Grass Seeds
-Semillas de Pasto
+sdeeS ssarG
 
 Bone
-Hueso
+enoB
 
 Bone powder
-Polvo de hueso
+redwop enoB
 
 Ferrosite
-Nube rapida
+etisorreF
 
 Cloud
-Nube
+duolC
 
 Can only be placed on 
-Solo se puede colocar en
+no decalp eb ylno naC
 
 Dig a hole first!
-¡Cava un hoyo primero!
+tsrif eloh a giD!
 
 # ToolItem.java
 
 Wood
-Madera
+dooW
 
 Rock
-Roca
+kcoR
 
 Iron
-Hierro
+norI
 
 Gold
-Oro
+dloG
 
 Gem
-Gema
+meG
 
 Fishing rod
-Caña de Pescar
+dor gnihsiF
 
 # FishingRodItem.java
 
 Wood Fishing rod
-Caña de pescar de madera
+dor gnihsiF dooW
 
 Iron Fishing rod
-Caña de pescar de hierro
+dor gnihsiF norI
 
 Gold Fishing rod
-Caña de pescar de oro
+dor gnihsiF dloG
 
 Gem Fishing rod
-Caña de pescar de gema
+dor gnihsiF meG
 
 # ToolType.java
 
 Hoe
-Azada
+eoH
 
 Shovel
-Pala
+levohS
 
 Sword
-Espada
+drowS
 
 Spear
-Lanza
+raepS
 
 Pickaxe
-Pico
+exakciP
 
 Axe
-Hacha
+exA
 
 Bow
-Arco
+woB
 
 FishingRod
-Caña De Pescar
+doRgnihsiF
 
 Claymore
-Casa antigua
+eromyalC
 
 Shears
-Tijeras
+sraehS
 
 Igniter
-Mechero
+retingI
 
 # TorchItem.java
 
 Torch
-Antorcha
+hcroT
 
 ### item end
 
@@ -1036,120 +1036,120 @@ Antorcha
 # Tiles.java
 
 Gem Ore
-Mena de Gema
+erO meG
 
 Wood Planks
-Tablón de Madera
+sknalP dooW
 
 Spruce Planks
-Tablón de abeto
+sknalP ecurpS
 
 Birch Planks
-Tablón de abedul
+sknalP hcriB
 
 Stone Bricks
-Ladrillo de piedra
+skcirB enotS
 
 Obsidian
-Obsidiana
+naidisbO
 
 Wood Wall
-Muro de Madera
+llaW dooW
 
 Spruce Wall
-Muro de abeto
+llaW ecurpS
 
 Birch Wall
-Muro de abedul
+llaW hcriB
 
 Grass
-Pasto
+ssarG
 
 Mycelium
-Micelio
+muilecyM
 
 Dirt
-Tierra
+triD
 
 Flower
-Flor
+rewolF
 
 Hole
-Hoyo
+eloH
 
 Stairs Up
-Escaleras Arriba
+pU sriatS
 
 Stairs Down
-Escaleras Abajo
+nwoD sriatS
 
 Water
-Agua
+retaW
 
 Rock
-Roca
+kcoR
 
 Tree
-Arbol
+eerT
 
 Tree Sapling
-Arbol joven
+gnilpaS eerT
 
 Sand
-Arena
+dnaS
 
 Cactus
-Cactus
+sutcaC
 
 Cactus Sapling
-Cactus Joven
+gnilpaS sutcaC
 
 Lava
-Lava
+avaL
 
 Lava Brick
-Ladrillo de Lava
+kcirB avaL
 
 Explode
-Explotar
+edolpxE
 
 Farmland
-Tierras de cultivo
+dnalmraF
 
 Wheat
-Trigo
+taehW
 
 Carrot
-Zanahoria
+torraC
 
 Hard Rock
-Roca Dura
+kcoR draH
 
 Infinite Fall
-Caída Infinita
+llaF etinifnI
 
 Cloud
-Nube
+duolC
 
 Cloud Cactus
-Nubes de Cactus
+sutcaC duolC
 
 # OreTile.java
 
 Iron
-Hierro
+norI
 
 Lapis
-Lapis
+sipaL
 
 Gold
-Oro
+dloG
 
 Gem
-Gema
+meG
 
 Ore
-Mena
+erO
 
 ## tile end
 
@@ -1172,7 +1172,7 @@ incapaz de obtener la direccion localhost
 # Save.java
 
 World Saved!
-Mundo guardado!
+devaS dlroW!
 
 ### saveload end
 
@@ -1183,180 +1183,180 @@ Mundo guardado!
 # BooleanEntry.java
 
 On
-On
+nO
 
 Off
-Off
+ffO
 
 ## entry end
 
 # BookDisplay.java
 
 There is nothing of use here.
-No hay nada de uso aqui.
+.ereh esu fo gnihton si erehT
 
 Still nothing... :P
-Todavía nada... :P
+gnihton llitS... :P
 
 # CraftingMenu.java
 
 Have:
-Tienes:
+evaH:
 
 Cost:
-Costo:
+tsoC:
 
 # DeadMenu.java
 
-Time: 
-Tiempo: 
+Time:
+emiT: 
 
 Score: 
-Puntos: 
+erocS: 
 
 Quit
-Salir
+tiuQ
 
 Respawn
-Reaparecer
+nwapseR
 
 You died! Aww!
-Moriste! Aww!
+wwA deid! uoY!
 
 # Displays.java
 
 With the default controls...\n\nMove your character with arrow keys or WSAD. Press C to attack and X to open the inventory, and to use items. Select an item in the inventory to equip it.\n\nKill the air wizard to win the game!
-Con los controles predeterminados...\n\nMueve tu personjado con las flechas o WSAD. Presiona C para atacar y X para abrir el inventario, y usar los objetos. Selecciona un objeto del inventario para equiparlo.\n\nMata el Mago de Aire para ganar el juego!
+!emag eht niw ot draziw ria eht lliK\n\n.ti piuqe ot yrotnevni eht ni meti na tceleS .smeti esu ot dna ,yrotnevni eht nepo ot X dna kcatta ot C sserP .DASW ro syek worra htiw retcarahc ruoy evoM\n\n...slortnoc tluafed eht htiW
 
 # EndGameDisplay.java
 
 Player Score: 
-Puntos del Jugador: 
+erocS reyalP: 
 
 <Bonuses>
-<Bonus>
+<sesunoB>
 
 Final Score: 
-Puntos final: 
+erocS laniF:
 
 Exit to Menu
-Salir al Menu
+uneM ot tixE
 
 # InfoDisplay.java
 
 Time Played: 
-Tiempo Jugado: 
+deyalP emiT: 
 
 Current Score: 
-Puntuación Actual: 
+erocS tnerruC: 
 
 Exit
-Salir
+tixE
 
 Player Stats
-Estadisticas del Jugador
+statS reyalP
 
 # KeyInputMenu.java
 
 Controls
-Controles
+slortnoC
 
 Press the desired
-Presione el deseado
+derised eht sserP
 
 key sequence
-secuencia de tecla
+ecneuqes yek
 
 Are you sure you want to reset all key bindings to the default keys?
-Estás seguro que quieres reiniciar todos los atajos de teclado a las teclas predeterminadas?
+syek tluafed eht ot sgnidnib yek lla teser ot tnaw uoy erus uoy erA?
 
 enter to confirm
-enter para confirmar
+mrifnoc ot retne
 
 escape to cancel
-ESC para cancelar
+lecnac ot epacse
 
 Confirm Action
-Confirmar Acción
+noitcA mrifnoC
 
 Press C/Enter to change key binding
-Presiona C/Enter para cambiar el atajo de teclado
+gnidnib yek egnahc ot retnE/C sserP
 
 Press A to add key binding
-Presiona A para añadir atajo de teclado
+gnidnib yek dda ot A sserP
 
 Shift-D to reset all keys to default
-Shift-D para restablecer todas las teclas a sus valores predeterminados
+tluafed ot syek lla teser ot D-tfihS
 
 ESCAPE to Return to menu
-ESC para Regresar al menú
+unem ot nruteR ot EPACSE
 
 # LoadingDisplay.java
 
 Loading
-Cargando
+gnidaoL
 
 Generating
-Generando
+gnitareneG
 
 Separating
-Separando
+gnitarapeS
 
 Planting
-Plantando
+gnitnalP
 
 Eroding
-Erosionando
+gnidorE
 
 Digging
-Cavando
+gniggiD
 
 Raising
-Elevenado
+gnisiaR
 
 Leveling
-Nivelando
+gnileveL
 
 Flattening
-Aplanando
+gninettalF
 
 Molding
-Moldeando
+gnidloM
 
 Building
-Construyendo
+gnidliuB
 
 Rendering
-Renderizando
+gniredneR
 
 World
-Mundo
+dlroW
 
 May take a while, be patient
-Puede tardar un poco, tenga paciencia
+tneitap eb ,elihw a ekat yaM
 
 Level 1
-Nivel 1
+1 leveL
 
 Level 0
-Nivvel 0
+0 leveL
 
 Level B1
-Nivel B1
+1B leveL
 
 Level B2
-Nivel B2
+2B leveL
 
 Level B3
-Nivel B3
+3B leveL
 
 Level B4
-Nivel B4
+4B leveL
 
 # MapDisplay.java
 
 Map
-Mapa
+paM
 
 # MultiplayerMenu.java
 
@@ -1432,215 +1432,215 @@ Presione
 # OptionsMenu.java
 
 Change Key Bindings
-Cambiar Atajos
+sgnidniB yeK egnahC
 
 Options
-Opciones
+snoitpO
 
 Change language
-Cambiar idioma
+egaugnal egnahC
 
 Texture packs
-Paquetes de texturas
+skcap erutxeT
 
 Open Game Folder
-Abrir carpeta del juego
+redloF emaG nepO
 
 # PauseMenu.java
 
 Return to Game
-Regresar al Juego
+emaG ot nruteR
 
 Options
-Opciones
+snoitpO
 
 Info
-Informacion
+ofnI
 
 Make World Multiplayer
-Hacer Mundo Multijugador
+rodagujitluM odnuM recaH
 
 Achievements
-Logros
+stnemeveihcA
 
 World options
-Opciones de mundo
+snoitpo dlroW
 
 Save Game
-Guardar Juego
+emaG evaS
 
  and 
- y 
+ dna 
  
  to Scroll
- para desplazarse
+ llorcS ot
  
 : Choose
-: Escoge
+: esoohC
  
 Paused
-Pausado
+desuaP
 
 Main Menu
-Menu Principal
+uneM niaM
 
 # PauseDisplay.java
 
 Yes
-Si
+seY
 
 No
-No
+oN
 
 # PlayerInvMenu.java
 
 Inventory
-Inventario
+yrotnevnI
 
 to search.
-para buscar
+hcraes ot.
 
 # TitleMenu.java
 
 Singleplayer
-Un jugador
+reyalpelgniS
 
 Load World
-Cargar Mundo
+dlroW daoL
 
 New World
-Nuevo Mundo
+dlroW weN
 
 Multiplayer
-Multijugador
+reyalpitluM
 
 Options
-Opciones
+snoitpO
 
 Credits
-Creditos
+stiderC
 
 Help
-Ayuda
+pleH
 
 Instructions
-Instrucciones
+snoitcurtsnI
 
 Storyline Guide (for the weak)
-Guia de historias (para los debiles)
+(kaew eht rof) ediuG enilyrotS
 
 About
-Acerca de
+tuobA
 
 Minicraft discord
-Discord de Minicraft
+drocsid tfarciniM
 
 Quit
-Salir
+tiuQ
 
  to select
- para seleccionar
+ tceles ot
  
  to accept
- para aceptar
+ tpecca ot
  
  to return
- para regresar
+ nruter ot
 
 Mod by TheBigEye
-Mod por TheBigEye
+eyEgiBehT yb doM
 
 # WorldEditMenu.java
 
 New World Name:
-Nuevo Nombre del Mundo:
+emaN dlroW weN:
 
 Are you sure you want to delete
-Estas seguro que quieres eliminarlo
+eteled ot tnaw uoy erus uoy erA
 
 This can not be undone!
-¡Esto no se puede deshacer!
+enodnu eb ton nac sihT!
 
  to confirm
- para confirmar
+ mrifnoc ot
  
  to cancel
- para cancelar
+ lecnac ot
 
 # WorldGenMenu.java
 
 World Seed
-Semilla del Mundo
+deeS dlroW
 
 Enter World Name
-Ingrese Nombre del Mundo
+emaN dlroW retnE
 
 Trouble with world name?
-¿Problema con el nombre?
+eman dlrow htiw elbuorT?
 
 by default, w and s move the cursor up and down. This can be changed in the key binding menu. To type the letter instead of moving the cursor, hold the shift key while typing the world name.
-de forma predeterminada, w y s mueven el cursor hacia arriba y hacia abajo. Esto se puede cambiar en el menú de enlace de teclas. Para escribir la letra en lugar de mover el cursor, mantenga presionada la tecla Mayús mientras escribe el nombre del mundo.
+by default, w and s move the cursor up and down. This can be changed in the key binding menu. To type the letter instead of moving the cursor, hold the shift key while typing the world name.
 
 Create World
-Crear Mundo
+dlroW etaerC
 
 World Gen Options
-Opciones de Generador de Mundo
+snoitpO neG dlroW
 
 # WorldSelectMenu.java
 
 Name:
-Nombre:
+emaN:
 
 Seed:
-Semilla:
+deeS:
 
  to Copy
- para Copiar
+ ypoC ot
 
  to Rename
- para Renombrar
+ emaneR ot
 
  to Delete
- para Eliminar
+ eteleD ot
 
  to confirm
- para confirmar
+ mrifnoc ot
  
  to return
- para regresar
+ nruter ot
  
 Select World
-Seleccionar Mundo
+dlroW tceleS
 
 Select a World to Delete
-Seleccione un mundo para eliminar
+eteleD ot dlroW a tceleS
 
 Select a World to Rename
-Seleccione un mundo para renombrar
+emaneR ot dlroW a tceleS
 
 Select a World to Copy
-Seleccione un mundo para copiar
+ypoC ot dlroW a tceleS
 
-Select a World to
-Selecionar un Mundo para
+Select a World to 
+ot dlroW a tceleS 
 
 Higher version, cannot load world!
-¡Versión superior, no se puede cargar el mundo!
+dlrow daol tonnac ,noisrev rehgiH!
 
 World Version:
-Version del mundo:
+noisreV dlroW:
 
 # LocalizationMenu.java
 
 Languages
-Idiomas
+segaugnaL
 
 Language
-Idioma
+egaugnaL
 
 Select
-Seleccionar
+tceleS
 
 ### screen end
 
@@ -1649,88 +1649,88 @@ Seleccionar
 # Settings.java
 
 Max FPS
-Max FPS
+SPF xaM
 
 Difficulty
-Dificultad
+ytluciffiD
 
 Peaceful
-Pacifico
+lufecaeP
 
 Easy
-Facil
+ysaE
 
 Normal
-Normal
+lamroN
 
 Hard
-Dificil
+draH
 
 Game Mode
-Modo de Juego
+edoM emaG
 
 Survival
-Supervivencia
+lavivruS
 
 Creative
-Creativo
+evitaerC
 
 Hardcore
-Hardcore
+erocdraH
 
 Score
-Puntos
+erocS
 
 Time (Score Mode)
-Tiempo (Modo Puntos)
+(edoM erocS) emiT
 
 Sound
-Sonido
+dnuoS
 
 Autosave
-Autoguardado
+evasotuA
 
 Ambient
-Ambiente
+tneibmA
 
 World Size
-Tamaño del Mundo
+eziS dlroW
 
 World Theme
-Tema del Mundo
+emehT dlroW
 
 Normal
-Normal
+lamroN
 
 Forest
-Bosque
+tseroF
 
 Desert
-Desierto
+treseD
 
 Plain
-Plano
+nialP
 
 Hell
-Infierno
+lleH
 
 Terrain Type
-Tipo de Terreno
+epyT niarreT
 
 Island
-Isla
+dnalsI
 
 Box
-Caja
+xoB
 
 Mountain
-Montaña
+niatnuoM
 
 Irregular
-Irregular
+ralugerrI
 
 Wear Suit
-Usar traje
+tiuS raeW
 
 # TutorialDisplay.java
 
@@ -1768,7 +1768,7 @@ Furnitures
 Muebles
 
 Crafting
-Crafteo
+gnitfarC
 
 Potions
 Pociones

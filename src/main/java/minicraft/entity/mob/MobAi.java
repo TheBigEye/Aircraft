@@ -1,6 +1,5 @@
 package minicraft.entity.mob;
 
-import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
@@ -116,10 +115,6 @@ public abstract class MobAi extends Mob {
 
     @Override
     public boolean move(int xa, int ya) {
-        // noinspection SimplifiableIfStatement
-        if (Game.isValidClient())
-            return false; // client mobAi's should not move at all.
-
         return super.move(xa, ya);
     }
 

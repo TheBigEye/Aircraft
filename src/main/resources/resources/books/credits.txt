@@ -5,10 +5,11 @@ Minicraft original game by Markus Persson.
 Mod by TheBigEye
 
 Project Maintainers:
-The mod is constantly maintained based on the Minciraft plus code (Minicraft plus is maintained by David.b, Dillyg10, Chris J, afyber and Makkkkus).
+The mod is constantly maintained based on the Minciraft plus code 
+(Minicraft plus is maintained by David.b, Dillyg10, Chris J, afyber and Makkkkus).
 
 Special contributors:
-A.L.I.C.E, and UdhavKumar.
+A.L.I.C.E, Terra5, and UdhavKumar.
 
 Thanks to:
 pelletsstarPL
@@ -24,3 +25,4 @@ Makkkkus
 BoxDude
 MrToad
 itayfeder
+----------------------------

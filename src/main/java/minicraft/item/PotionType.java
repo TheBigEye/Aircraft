@@ -27,13 +27,7 @@ public enum PotionType {
     Swim(Color.get(1, 17, 17, 85), 4800), xSwim(Color.get(1, 26, 26, 130), 9600),
     Energy(Color.get(1, 172, 80, 57), 8400), xEnergy(Color.get(1, 198, 91, 67), 16400),
     Regen(Color.get(1, 168, 54, 146), 1800), xRegen(Color.get(1, 191, 63, 112), 2800),
-    Health(Color.get(1, 161, 46, 69), 0) {
-        public boolean toggleEffect(Player player, boolean addEffect) {
-            if (addEffect)
-                player.heal(5);
-            return true;
-        }
-    },
+    Health(Color.get(1, 161, 46, 69), 100),
     xHealth(Color.get(1, 255, 63, 110), 0) {
         public boolean toggleEffect(Player player, boolean addEffect) {
             if (addEffect) {
@@ -58,11 +52,8 @@ public enum PotionType {
                 int playerDepth = player.getLevel().depth;
 
                 if (playerDepth == 0) {
-                    if (!Game.isValidServer()) {
-                        // player is in overworld
-                        String note = "You can't escape from here!";
-                        Game.notifications.add(note);
-                    }
+                    // player is in overworld
+                	Game.notifications.add("You can't escape from here!");
                     return false;
                 }
 

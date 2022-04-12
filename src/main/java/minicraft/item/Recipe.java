@@ -22,8 +22,7 @@ public class Recipe {
             String curItem = curSep[0].toUpperCase(); // the current cost that's being added to costs.
             int amt = Integer.parseInt(curSep[1]);
             boolean added = false;
-            for (String cost : costs.keySet().toArray(new String[0])) { // loop through the costs that have already been
-                                                                        // added
+            for (String cost : costs.keySet().toArray(new String[0])) { // loop through the costs that have already been added
                 if (cost.equals(curItem)) {
                     costs.put(cost, costs.get(cost) + amt);
                     added = true;

@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.tinylog.Logger;
 
 import minicraft.core.Game;
 import minicraft.core.Network;
@@ -53,7 +54,6 @@ import minicraft.entity.mob.MobAi;
 import minicraft.entity.mob.Phyg;
 import minicraft.entity.mob.Pig;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.RemotePlayer;
 import minicraft.entity.mob.Sheep;
 import minicraft.entity.mob.Sheepuff;
 import minicraft.entity.mob.Skeleton;
@@ -88,10 +88,10 @@ import minicraft.item.PotionType;
 import minicraft.item.StackableItem;
 import minicraft.level.Level;
 import minicraft.level.tile.Tiles;
-import minicraft.network.MinicraftServer;
 import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
+import minicraft.screen.TexturePackDisplay;
 
 public class Load {
 
@@ -118,6 +118,7 @@ public class Load {
 
 	public Load(String worldname, boolean loadGame) {
 		loadFromFile(location + "/saves/" + worldname + "/Game" + extension);
+		
 		if (data.get(0).contains(".")) {
 			worldVer = new Version(data.get(0));
 		}
@@ -126,21 +127,21 @@ public class Load {
 			worldVer = new Version("1.8");
 		}
 
-		if (!loadGame) {
-			return;
-		}
-
+		if (!loadGame) return;
+		
 		if (worldVer.compareTo(new Version("1.9.2")) < 0) {
 			new LegacyLoad(worldname);
 		} else {
 			location += "/saves/" + worldname + "/";
 
-			percentInc = 5 + World.levels.length - 1; // For the methods below, and world.
-
+			// For the methods below, and world.
+			percentInc = 5 + World.levels.length - 1; 
 			percentInc = 100f / percentInc;
 
 			LoadingDisplay.setPercentage(0);
-			loadGame("Game"); // More of the version will be determined here
+			
+			// More of the version will be determined here
+			loadGame("Game"); 
 			loadWorld("Level");
 			loadEntities("Entities");
 			loadInventory("Inventory", Game.player.getInventory());
@@ -150,15 +151,6 @@ public class Load {
 				Items.fillCreativeInv(Game.player.getInventory(), false);
 			}
 
-		}
-	}
-
-	public Load(String worldname, MinicraftServer server) {
-		location += "/saves/" + worldname + "/";
-		File testFile = new File(location + "ServerConfig" + extension);
-
-		if (testFile.exists()) {
-			loadServerConfig("ServerConfig", server);
 		}
 	}
 
@@ -184,15 +176,15 @@ public class Load {
 		if (new File(location + "Preferences.json").exists()) {
 			loadPrefs("Preferences");
 
-			// Check if Preferences.miniplussave exists. (old version)
+		// Check if Preferences.miniplussave exists. (old version)
 		} else if (new File(location + "Preferences" + extension).exists()) {
 			loadPrefsOld("Preferences");
-			System.out.println("Upgrading preferences to JSON.");
+			Logger.info("Upgrading preferences to JSON...");
 			resave = true;
 
-			// No preferences file found.
+		// No preferences file found.
 		} else {
-			System.out.println("No preferences found, creating new file.");
+			Logger.warn("No preferences found, creating new file.");
 			resave = true;
 		}
 
@@ -202,22 +194,23 @@ public class Load {
 
 		if (new File(location + "Unlocks.json").exists()) {
 			loadUnlocks("Unlocks");
-		} else if (testFile.exists() || testFileOld.exists()) { // Load old version
+			
+		// Load old version
+		} else if (testFile.exists() || testFileOld.exists()) { 
 			if (testFileOld.exists() && !testFile.exists()) {
 				if (testFileOld.renameTo(testFile)) {
 					new LegacyLoad(testFile);
 				} else {
-					System.out.println("Failed to rename unlocks to Unlocks; loading old version.");
+					Logger.info("Failed to rename unlocks to Unlocks; loading old version.");
 					new LegacyLoad(testFileOld);
 				}
 			}
 
 			loadUnlocksOld("Unlocks");
 			resave = true;
-			System.out.println("Upgrading unlocks to JSON.");
-
+			Logger.info("Upgrading unlocks to JSON...");
 		} else {
-			System.out.println("No unlocks found, creating new file.");
+			Logger.warn("No unlocks found, creating new file...");
 			resave = true;
 		}
 
@@ -237,12 +230,10 @@ public class Load {
 		InputStream fileStream = Load.class.getResourceAsStream(filename);
 
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(fileStream))) {
-
 			String line;
 			while ((line = br.readLine()) != null) {
 				lines.add(line);
 			}
-
 		}
 
 		return lines;
@@ -283,7 +274,6 @@ public class Load {
 			while ((curLine = br.readLine()) != null) {
 				total.append(curLine).append(isWorldSave ? "" : "\n");
 			}
-
 		}
 
 		return total.toString();
@@ -292,7 +282,8 @@ public class Load {
 	private void loadGame(String filename) {
 		loadFromFile(location + filename + extension);
 
-		worldVer = new Version(data.remove(0)); // Gets the world version
+		// Gets the world version
+		worldVer = new Version(data.remove(0)); 
 		if (worldVer.compareTo(new Version("2.0.4-dev8")) >= 0) {
 			loadMode(data.remove(0));
 		}
@@ -313,19 +304,31 @@ public class Load {
 
 		Settings.setIdx("diff", diffIdx);
 
+
 		AirWizard.beaten = Boolean.parseBoolean(data.remove(0));
 		AirWizardPhase2.beaten = Boolean.parseBoolean(data.remove(0));
 		AirWizardPhase3.beaten = Boolean.parseBoolean(data.remove(0));
+
+		
+		// Check if the AirWizard was beaten in versions prior to 2.1.0
+		if (worldVer.compareTo(new Version("2.1.0-dev2")) < 0) {
+			if (AirWizard.beaten) {
+				Logger.debug("AirWizard was beaten in an old version, giving achievement...");
+				AchievementsDisplay.setAchievement("minicraft.achievement.airwizard", true);
+			}
+		}
 	}
 
 	private void loadMode(String modedata) {
 		int mode;
+		
 		if (modedata.contains(";")) {
 			String[] modeinfo = modedata.split(";");
 			mode = Integer.parseInt(modeinfo[0]);
 
+			// We changed the min mode idx from 1 to 0.
 			if (worldVer.compareTo(new Version("2.0.3")) <= 0) {
-				mode--; // We changed the min mode idx from 1 to 0.
+				mode--; 
 			}
 
 			if (mode == 3) {
@@ -337,8 +340,10 @@ public class Load {
 
 		} else {
 			mode = Integer.parseInt(modedata);
+
+			// We changed the min mode idx from 1 to 0.
 			if (worldVer.compareTo(new Version("2.0.3")) <= 0) {
-				mode--; // We changed the min mode idx from 1 to 0.
+				mode--; 
 			}
 
 			if (mode == 3) {
@@ -352,7 +357,7 @@ public class Load {
 	private void loadPrefsOld(String filename) {
 		loadFromFile(location + filename + extension);
 
-		// the default, b/c this doesn't really matter much being specific past this if it's not set below.
+		// the default, because this doesn't really matter much being specific past this if it's not set below.
 		Version prefVer = new Version("2.0.2");
 
 		// signifies that this file was last written to by a version after 2.0.2.
@@ -415,9 +420,11 @@ public class Load {
 		Settings.set("diff", json.has("diff") ? json.getString("diff") : "Normal");
 		Settings.set("fps", json.getInt("fps"));
 
-		String lang = json.getString("lang");
-		Settings.set("language", lang);
-		Localization.changeLanguage(lang);
+		if (prefVer.compareTo(new Version("2.1.0-dev1")) > 0) {
+			String lang = json.getString("lang");
+			Settings.set("language", lang);
+			Localization.changeLanguage(lang);
+		}
 
 		// Load keymap
 		JSONArray keyData = json.getJSONArray("keymap");
@@ -445,7 +452,6 @@ public class Load {
 			if (unlock.contains("_ScoreTime")) {
 				Settings.getEntry("scoretime").setValueVisibility(Integer.parseInt(unlock.substring(0, unlock.indexOf("_"))), true);
 			}
-
 		}
 	}
 
@@ -470,12 +476,6 @@ public class Load {
 		}
 	}
 
-	private void loadServerConfig(String filename, MinicraftServer server) {
-		loadFromFile(location + filename + extension);
-
-		server.setPlayerCap(Integer.parseInt(data.get(0)));
-	}
-
 	private void loadWorld(String filename) {
 		for (int l = World.maxLevelDepth; l >= World.minLevelDepth; l--) {
 			LoadingDisplay.setMessage(Level.getDepthString(l));
@@ -495,7 +495,7 @@ public class Load {
 			for (int x = 0; x < lvlw; x++) {
 				for (int y = 0; y < lvlh; y++) {
 
-					// the tiles are saved with x outer loop, and y inner loop, meaning that
+					// The tiles are saved with x outer loop, and y inner loop, meaning that
 					// the list reads down, then right one, rather than right, then down one.
 					int tileArrIdx = y + x * lvlw;
 					int tileidx = x + y * lvlw;
@@ -584,8 +584,9 @@ public class Load {
 		player.spawny = Integer.parseInt(data.remove(0));
 		player.health = Integer.parseInt(data.remove(0));
 
-		if (worldVer.compareTo(new Version("2.0.4-dev7")) >= 0)
+		if (worldVer.compareTo(new Version("2.0.4-dev7")) >= 0) {
 			player.hunger = Integer.parseInt(data.remove(0));
+		}
 		player.armor = Integer.parseInt(data.remove(0));
 
 		if (worldVer.compareTo(new Version("2.0.5-dev5")) >= 0 || player.armor > 0 || worldVer.compareTo(new Version("2.0.5-dev4")) == 0 && data.size() > 5) {
@@ -611,15 +612,15 @@ public class Load {
 		Game.currentLevel = Integer.parseInt(data.remove(0));
 		Level level = World.levels[Game.currentLevel];
 
+		// Removes the user player from the level, in case they would be added twice.
 		if (!player.isRemoved()) {
-			player.remove(); // Removes the user player from the level, in case they would be added twice.
+			player.remove(); 
 		}
-		if (!Game.isValidServer() || player != Game.player) {
-			if (level != null) {
-				level.add(player);
-			} else if (Game.debug) {
-				System.out.println(Network.onlinePrefix() + "game level to add player " + player + " to is null.");
-			}
+	
+		if  (level != null) {
+			level.add(player);
+		} else {
+			Logger.trace("Game level to add player {} to is null.", player);
 		}
 
 		if (worldVer.compareTo(new Version("2.0.4-dev8")) < 0) {
@@ -644,6 +645,7 @@ public class Load {
 			String colors = data.remove(0).replace("[", "").replace("]", "");
 			String[] color = colors.split(";");
 			int[] cols = new int[color.length];
+
 			for (int i = 0; i < cols.length; i++) {
 				cols[i] = Integer.parseInt(color[i]) / 50;
 			}
@@ -656,8 +658,10 @@ public class Load {
 			String color = data.remove(0);
 			int[] colors = new int[3];
 
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++) {
 				colors[i] = Integer.parseInt(String.valueOf(color.charAt(i)));
+			}
+			
 			player.shirtColor = Color.get(1, colors[0] * 51, colors[1] * 51, colors[2] * 51);
 		} else
 			player.shirtColor = Integer.parseInt(data.remove(0));
@@ -668,9 +672,10 @@ public class Load {
 
 	protected static String subOldName(String name, Version worldVer) {
 		if (worldVer.compareTo(new Version("1.9.4-dev4")) < 0) {
-			name = name.replace("Hatchet", "Axe").replace("Pick", "Pickaxe").replace("Pickaxeaxe", "Pickaxe").replace("Spade", "Shovel").replace("Pow glove", "Power Glove").replace("II", "")
-					.replace("W.Bucket", "Water Bucket").replace("L.Bucket", "Lava Bucket").replace("G.Apple", "Gold Apple").replace("St.", "Stone").replace("Ob.", "Obsidian")
-					.replace("I.Lantern", "Iron Lantern").replace("G.Lantern", "Gold Lantern").replace("BrickWall", "Wall").replace("Brick", " Brick").replace("Wall", " Wall").replace("  ", " ");
+			name = name.replace("Hatchet", "Axe").replace("Pick", "Pickaxe").replace("Pickaxeaxe", "Pickaxe").replace("Spade", "Shovel")
+					.replace("Pow glove", "Power Glove").replace("II", "").replace("W.Bucket", "Water Bucket").replace("L.Bucket", "Lava Bucket")
+					.replace("G.Apple", "Gold Apple").replace("St.", "Stone").replace("Ob.", "Obsidian").replace("I.Lantern", "Iron Lantern")
+					.replace("G.Lantern", "Gold Lantern").replace("BrickWall", "Wall").replace("Brick", " Brick").replace("Wall", " Wall").replace("  ", " ");
 			if (name.equals("Bucket")) {
 				name = "Empty Bucket";
 			}
@@ -797,10 +802,6 @@ public class Load {
 		// This gets the text before "[", which is the entity name.
 		String entityName = entityData.substring(0, entityData.indexOf("["));
 
-		if (entityName.equals("Player") && Game.debug && Game.isValidClient()) {
-			System.out.println("CLIENT WARNING: Loading regular player: " + entityData);
-		}
-
 		int x = Integer.parseInt(info.get(0));
 		int y = Integer.parseInt(info.get(1));
 
@@ -812,7 +813,6 @@ public class Load {
 			// entity data provided, then I ditch the current entity and make a new one from
 			// the info provided.
 			Entity existing = Network.getEntity(eid);
-			int entityLevel = Integer.parseInt(info.get(info.size() - 1));
 
 			if (existing != null) {
 				// Existing one is out of date; replace it.
@@ -821,45 +821,11 @@ public class Load {
 				return null;
 			}
 
-			if (Game.isValidClient()) {
-				if (eid == Game.player.eid) {
-					return Game.player; // Don't reload the main player via an entity addition, though do add it to the level (will be done elsewhere)
-				}
-				if (Game.player instanceof RemotePlayer && !((RemotePlayer) Game.player).shouldTrack(x >> 4, y >> 4, World.levels[entityLevel])) {
-					// The entity is too far away to bother adding to the level.
-					if (Game.debug) {
-						System.out.println("CLIENT: Entity is too far away to bother loading: " + eid);
-					}
-					Entity dummy = new Cow();
-					dummy.eid = eid;
-					return dummy; /// We need a dummy b/c it's the only way to pass along to entity id.
-				}
-			}
 		}
 
 		Entity newEntity = null;
-
-		if (entityName.equals("RemotePlayer")) {
-			if (isLocalSave) {
-				System.err.println("Remote player found in local save file.");
-				return null; // don't load them; in fact, they shouldn't be here.
-			}
-			String username = info.get(2);
-			java.net.InetAddress ip;
-			try {
-				ip = java.net.InetAddress.getByName(info.get(3));
-				int port = Integer.parseInt(info.get(4));
-				newEntity = new RemotePlayer(null, ip, port);
-				((RemotePlayer) newEntity).setUsername(username);
-				if (Game.debug) {
-					System.out.println("Prob CLIENT: Loaded remote player");
-				}
-			} catch (java.net.UnknownHostException ex) {
-				System.err.println("LOAD could not read ip address of remote player in file.");
-				ex.printStackTrace();
-			}
-
-		} else if (entityName.equals("Spark") && !isLocalSave) {
+		
+		if (entityName.equals("Spark") && !isLocalSave) {
 			int awID = Integer.parseInt(info.get(2));
 			Entity sparkOwner = Network.getEntity(awID);
 			
@@ -903,7 +869,7 @@ public class Load {
 		if (newEntity == null)
 			return null;
 
-		if (newEntity instanceof Mob && !(newEntity instanceof RemotePlayer)) { // This is structured the same way as in Save.java.
+		if (newEntity instanceof Mob) { // This is structured the same way as in Save.java.
 			Mob mob = (Mob) newEntity;
 			mob.health = Integer.parseInt(info.get(2));
 
@@ -992,7 +958,7 @@ public class Load {
 				int textcol = Integer.parseInt(info.get(3));
 				newEntity = new TextParticle(info.get(2), x, y, textcol);
 
-				// if (Game.debug) System.out.println("Loaded text particle; color: "+Color.toString(textcol)+", text: " + info.get(2));
+				// if (Game.debug) System.out.println("Loaded text particle; color: "+ Color.toString(textcol)+", text: " + info.get(2));
 			}
 		}
 
@@ -1003,13 +969,7 @@ public class Load {
 		int curLevel = Integer.parseInt(info.get(info.size() - 1));
 		if (World.levels[curLevel] != null) {
 			World.levels[curLevel].add(newEntity, x, y);
-			if (Game.debug && newEntity instanceof RemotePlayer) {
-				// World.levels[curLevel].printEntityStatus("Loaded ", newEntity, "mob.RemotePlayer");
-			}
-
-		} else if (newEntity instanceof RemotePlayer && Game.isValidClient())
-			System.out.println("CLIENT: Remote player not added because on null level");
-
+		}
 		return newEntity;
 	}
 

@@ -56,9 +56,9 @@ public class Crafter extends Furniture {
     @Override
     public boolean use(Player player) {
         if (type.melt) {
-            Game.setMenu(new MeltingDisplay(type, player));
+            Game.setDisplay(new MeltingDisplay(type, player));
         } else {
-            Game.setMenu(new CraftingDisplay(type.recipes, type.name(), player));
+            Game.setDisplay(new CraftingDisplay(type.recipes, type.name(), player));
         }
         return true;
     }

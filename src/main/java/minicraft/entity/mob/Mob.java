@@ -1,7 +1,5 @@
 package minicraft.entity.mob;
 
-import java.util.List;
-
 import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
@@ -88,11 +86,6 @@ public abstract class Mob extends Entity {
             yKnockback -= yKnockback / Math.abs(yKnockback);
         }
 
-        // if the player moved via knockback, update the server
-        if ((xd != 0 || yd != 0) && Game.isConnectedClient() && this == Game.player) {
-            Game.client.move((Player) this, x + xd, y + yd);
-        }
-
         move(xd, yd, false);
     }
 
@@ -109,31 +102,29 @@ public abstract class Mob extends Entity {
         int oldxt = x >> 4;
         int oldyt = y >> 4;
 
-        // this will be the case when the client has sent a move packet to the server. In this case, we DO want to always move.
-        if (!(Game.isValidServer() && this instanceof RemotePlayer)) { 
-            // these should return true b/c the mob is still technically moving; these are just to make it move *slower*.
-            if (tickTime % 2 == 0 && (isSwimming() || (!(this instanceof Player) && isWooling()))) {
-                return true;
-            }
-            if (tickTime % walkTime == 0 && walkTime > 1) {
-                return true;
-            }
-        }
+		// These should return true b/c the mob is still technically moving; these are just to make it move *slower*.
+		if (tickTime % 2 == 0 && (isSwimming() || (!(this instanceof Player) && isWooling()))) {
+			return true;
+		}
+		if (tickTime % walkTime == 0 && walkTime > 1) {
+			return true;
+		}
 
         boolean moved = true;
 
         // If a mobAi has been hurt recently and hasn't yet cooled down, it won't perform the movement (by not calling super)
         if (hurtTime == 0 || this instanceof Player) { 
             if (xa != 0 || ya != 0) {
-                if (changeDir)
-                    dir = Direction.getDirection(xa, ya); // set the mob's direction; NEVER set it to NONE
+                if (changeDir) {
+                	// set the mob's direction; NEVER set it to NONE
+                    dir = Direction.getDirection(xa, ya); 
+                }
                 walkDist++;
             }
 
             // this part makes it so you can't move in a direction that you are currently being knocked back from.
             if (xKnockback != 0) {
                 xa = Math.copySign(xa, xKnockback) * -1 != xa ? xa : 0; // if xKnockback and xa have different signs, do nothing, otherwise, set xa to 0.
-            
             }
             if (yKnockback != 0) {
                 ya = Math.copySign(ya, yKnockback) * -1 != ya ? ya : 0; // same as above.
@@ -141,46 +132,11 @@ public abstract class Mob extends Entity {
 
             moved = super.move(xa, ya); // Call the move method from Entity
         }
-
-        if (Game.isValidServer() && (xa != 0 || ya != 0)) {
-            updatePlayers(oldxt, oldyt);
-        }
-
         return moved;
     }
 
-    public void updatePlayers(int oldxt, int oldyt) {
-        if (!Game.isValidServer()) {
-            return;
-        }
-        
-        List<RemotePlayer> prevPlayers = Game.server.getPlayersInRange(level, oldxt, oldyt, true);
-
-        List<RemotePlayer> activePlayers = Game.server.getPlayersInRange(this, true);
-        for (int i = 0; i < prevPlayers.size(); i++) {
-            if (activePlayers.contains(prevPlayers.get(i))) {
-                activePlayers.remove(prevPlayers.remove(i));
-                i--;
-            }
-        }
-        for (int i = 0; i < activePlayers.size(); i++) {
-            if (prevPlayers.contains(activePlayers.get(i))) {
-                prevPlayers.remove(activePlayers.remove(i));
-                i--;
-            }
-        }
-        // the lists should now only contain players that are now out of range, and players that are just now in range.
-        for (RemotePlayer rp : prevPlayers) {
-            Game.server.getAssociatedThread(rp).sendEntityRemoval(this.eid);
-        }
-        for (RemotePlayer rp : activePlayers) {
-            Game.server.getAssociatedThread(rp).sendEntityAddition(this);
-        }
-    }
-
     private boolean isWooling() { // supposed to walk at half speed on wool
-        if (level == null)
-            return false;
+        if (level == null) return false;
         Tile tile = level.getTile(x >> 4, y >> 4);
         return tile == Tiles.get("wool");
     }
@@ -192,8 +148,7 @@ public abstract class Mob extends Entity {
      * @return true if the mob is on a light tile, false if not.
      */
     public boolean isLight() {
-        if (level == null)
-            return false;
+        if (level == null) return false;
         return level.isLight(x >> 4, y >> 4);
     }
 

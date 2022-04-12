@@ -73,6 +73,7 @@ public class UpRockTile extends Tile {
 
 	    @Override
 	    public void hurt(Level level, int x, int y, int dmg) {
+	    	dropCoal = false; // Can only be reached when player hits w/o pickaxe, so remove ability to get coal
 	        damage = level.getData(x, y) + dmg;
 
 	        if (Game.isMode("creative")) {
@@ -83,7 +84,7 @@ public class UpRockTile extends Tile {
 	        level.add(new SmashParticle(x * 16, y * 16));
 	        Sound.Tile_generic_hurt.play();
 
-	        level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
+	        level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.DARK_RED));
 	        if (damage >= maxHealth) {
 
 	            if (dropCoal) {
@@ -97,11 +98,11 @@ public class UpRockTile extends Tile {
 	                level.dropItem(x * 16 + 8, y * 16 + 8, coal, coal + 1, Items.get("Coal"));
 
 	            } else {
-	                level.dropItem(x * 16 + 8, y * 16 + 8, 2, 4, Items.get("Stone"));
+	                level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Stone"));
 
 	            }
 
-	            level.setTile(x, y, Tiles.get("Dirt"));
+	            level.setTile(x, y, Tiles.get("dirt"));
 
 	        } else {
 	            level.setData(x, y, damage);

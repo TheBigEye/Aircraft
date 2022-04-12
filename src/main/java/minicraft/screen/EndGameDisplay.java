@@ -64,8 +64,8 @@ public class EndGameDisplay extends Display {
 		// add any unlocks
 		entries.addAll(Arrays.asList(getAndWriteUnlocks()));
 		entries.add(new BlankEntry());
-		entries.add(new SelectEntry("Close", () -> Game.setMenu(null)));
-		entries.add(new SelectEntry("Exit to Menu", () -> Game.setMenu(new TitleDisplay())));
+		entries.add(new SelectEntry("Close", () -> Game.setDisplay(null)));
+		entries.add(new SelectEntry("Exit to Menu", () -> Game.setDisplay(new TitleDisplay())));
 
 		menus = new Menu[] {
 				new Menu.Builder(true, 0, RelPos.LEFT, entries).setPositioning(new Point(SpriteSheet.boxWidth, SpriteSheet.boxWidth * 3), RelPos.BOTTOM_RIGHT).setTitle(TITLE).createMenu() 

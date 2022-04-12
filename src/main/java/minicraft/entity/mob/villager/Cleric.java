@@ -67,7 +67,7 @@ public class Cleric extends VillagerMob {
 
 		// ???
 		if (time.getMonth() == Month.APRIL) {
-			ClericTrdes.add(new Recipe("Apple_10", new String[] { "Emerald_1" }));
+			ClericTrdes.add(new Recipe("Apple_10", new String[] { "Emerald_2" }));
 			ClericTrdes.add(new Recipe("Emerald_10", new String[] { "Gem_1" }));
 			ClericTrdes.add(new Recipe("Iron_10", new String[] { "Gold_1" }));
 			ClericTrdes.add(new Recipe("stone_16", new String[] { "Gold_1" }));
@@ -184,7 +184,7 @@ public class Cleric extends VillagerMob {
 	}
 
 	public boolean use(Player player) {
-		Game.setMenu(new CraftingDisplay(Cleric.ClericTrdes, "Trade", player));
+		Game.setDisplay(new CraftingDisplay(Cleric.ClericTrdes, "Trade", player));
 		return true;
 	}
 

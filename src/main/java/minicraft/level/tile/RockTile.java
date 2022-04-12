@@ -54,6 +54,7 @@ public class RockTile extends Tile {
 
     @Override
     public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+    	dropCoal = false; // Can only be reached when player hits w/o pickaxe, so remove ability to get coal
         hurt(level, x, y, dmg);
         return true;
     }
@@ -78,7 +79,6 @@ public class RockTile extends Tile {
     @Override
     public void hurt(Level level, int x, int y, int dmg) {
         damage = level.getData(x, y) + dmg;
-
         if (Game.isMode("creative")) {
             dmg = damage = maxHealth;
             dropCoal = true;
@@ -101,7 +101,7 @@ public class RockTile extends Tile {
                 level.dropItem(x * 16 + 8, y * 16 + 8, coal, coal + 1, Items.get("Coal"));
 
             } else {
-                level.dropItem(x * 16 + 8, y * 16 + 8, 2, 4, Items.get("Stone"));
+                level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Stone"));
 
             }
 

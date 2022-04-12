@@ -12,86 +12,82 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import minicraft.core.Game;
-
 public class Sound { // Creates sounds from their respective files
 
 	// IMPORTANT: Do not modify these variables, they determine the path of each
 	// category of sounds, changing them would cause many errors
-	private static final String MOB_SOUNDS_DIR = "/resources/sounds/entity/mob/";
-	private static final String PARTICLE_SOUNDS_DIR = "/resources/sounds/entity/particle/";
-	private static final String FURNITURE_SOUNDS_DIR = "/resources/sounds/entity/furniture/";
-	private static final String MENU_SOUNDS_DIR = "/resources/sounds/menu/";
-	private static final String TILE_SOUNDS_DIR = "/resources/sounds/tile/";
+	private static final String ENTITIES_SOUNDS_DIR = "/resources/sounds/entities/";
+	private static final String GUI_SOUNDS_DIR = "/resources/sounds/gui/";
+	private static final String TILES_SOUNDS_DIR = "/resources/sounds/tiles/";
 
 	// Mob sounds
 	// ===================================================================================================================
 
 	// Player and mobs
-	public static final Sound Mob_player_hurt = new Sound(MOB_SOUNDS_DIR + "Player/playerhurt.wav");
-	public static final Sound Mob_player_changelevel = new Sound(MOB_SOUNDS_DIR + "Player/changelevel.wav");
-	public static final Sound Mob_player_death = new Sound(MOB_SOUNDS_DIR + "Player/death.wav");
-	public static final Sound Mob_player_craft = new Sound(MOB_SOUNDS_DIR + "Player/craft.wav");
-	public static final Sound Mob_player_pickup = new Sound(MOB_SOUNDS_DIR + "Player/pickup.wav");
-	public static final Sound Mob_player_pickup_2 = new Sound(MOB_SOUNDS_DIR + "Player/pickup 2.wav");
-	public static final Sound Mob_player_pickup_3 = new Sound(MOB_SOUNDS_DIR + "Player/pickup 3.wav");
-	public static final Sound Mob_player_pickup_4 = new Sound(MOB_SOUNDS_DIR + "Player/pickup 4.wav");
-	public static final Sound Mob_player_place = new Sound(MOB_SOUNDS_DIR + "Player/place.wav");
+	public static final Sound Mob_player_hurt = new Sound(ENTITIES_SOUNDS_DIR + "Player/playerhurt.wav");
+	public static final Sound Mob_player_changelevel = new Sound(ENTITIES_SOUNDS_DIR + "Player/changelevel.wav");
+	public static final Sound Mob_player_death = new Sound(ENTITIES_SOUNDS_DIR + "Player/death.wav");
+	public static final Sound Mob_player_craft = new Sound(ENTITIES_SOUNDS_DIR + "Player/craft.wav");
+	public static final Sound Mob_player_pickup = new Sound(ENTITIES_SOUNDS_DIR + "Player/pickup.wav");
+	public static final Sound Mob_player_pickup_2 = new Sound(ENTITIES_SOUNDS_DIR + "Player/pickup 2.wav");
+	public static final Sound Mob_player_pickup_3 = new Sound(ENTITIES_SOUNDS_DIR + "Player/pickup 3.wav");
+	public static final Sound Mob_player_pickup_4 = new Sound(ENTITIES_SOUNDS_DIR + "Player/pickup 4.wav");
+	public static final Sound Mob_player_place = new Sound(ENTITIES_SOUNDS_DIR + "Player/place.wav");
 
 	// Generic mob
-	public static final Sound Mob_generic_hurt = new Sound(MOB_SOUNDS_DIR + "monsterhurt.wav");
+	public static final Sound Mob_generic_hurt = new Sound(ENTITIES_SOUNDS_DIR + "monsterhurt.wav");
 
 	// Air Wizard
-	public static final Sound Mob_wizard_death = new Sound(MOB_SOUNDS_DIR + "AirWizard/bossdeath.wav");
-	public static final Sound Mob_wizard_changePhase = new Sound(MOB_SOUNDS_DIR + "AirWizard/changephase.wav");
-	public static final Sound Mob_wizard_attack = new Sound(MOB_SOUNDS_DIR + "AirWizard/wizardattack.wav");
+	public static final Sound Mob_wizard_death = new Sound(ENTITIES_SOUNDS_DIR + "AirWizard/bossdeath.wav");
+	public static final Sound Mob_wizard_changePhase = new Sound(ENTITIES_SOUNDS_DIR + "AirWizard/changephase.wav");
+	public static final Sound Mob_wizard_attack = new Sound(ENTITIES_SOUNDS_DIR + "AirWizard/wizardattack.wav");
 
 	// Keeper
-	public static final Sound Mob_keeper_death = new Sound(MOB_SOUNDS_DIR + "Keeper/keeperdeath.wav");
+	public static final Sound Mob_keeper_death = new Sound(ENTITIES_SOUNDS_DIR + "Keeper/keeperdeath.wav");
 
 	// Eye Queen
-	public static final Sound Mob_eyeBoss_death = new Sound(MOB_SOUNDS_DIR + "EyeQueen/eyedeath.wav");
-	public static final Sound Mob_eyeBoss_changePhase = new Sound(MOB_SOUNDS_DIR + "EyeQueen/changephase.wav");
+	public static final Sound Mob_eyeBoss_death = new Sound(ENTITIES_SOUNDS_DIR + "EyeQueen/eyedeath.wav");
+	public static final Sound Mob_eyeBoss_changePhase = new Sound(ENTITIES_SOUNDS_DIR + "EyeQueen/changephase.wav");
 
 	// Creeper
-	public static final Sound Mob_creeper_fuse = new Sound(MOB_SOUNDS_DIR + "Creeper/fuse.wav");
-	public static final Sound Mob_creeper_explode = new Sound(MOB_SOUNDS_DIR + "Creeper/explode.wav");
-	public static final Sound Mob_creeper_explode_2 = new Sound(MOB_SOUNDS_DIR + "Creeper/explode 2.wav");
-	public static final Sound Mob_creeper_explode_3 = new Sound(MOB_SOUNDS_DIR + "Creeper/explode 3.wav");
-	public static final Sound Mob_creeper_explode_4 = new Sound(MOB_SOUNDS_DIR + "Creeper/explode 4.wav");
+	public static final Sound Mob_creeper_fuse = new Sound(ENTITIES_SOUNDS_DIR + "Creeper/fuse.wav");
+	public static final Sound Mob_creeper_explode = new Sound(ENTITIES_SOUNDS_DIR + "Creeper/explode.wav");
+	public static final Sound Mob_creeper_explode_2 = new Sound(ENTITIES_SOUNDS_DIR + "Creeper/explode 2.wav");
+	public static final Sound Mob_creeper_explode_3 = new Sound(ENTITIES_SOUNDS_DIR + "Creeper/explode 3.wav");
+	public static final Sound Mob_creeper_explode_4 = new Sound(ENTITIES_SOUNDS_DIR + "Creeper/explode 4.wav");
 
 	// Particles sounds
 	// =============================================================================================================
 
 	// Sparks
-	public static final Sound Particle_spark_spawn = new Sound(PARTICLE_SOUNDS_DIR + "Spark/spawn.wav");
+	public static final Sound Particle_spark_spawn = new Sound(ENTITIES_SOUNDS_DIR + "Spark/spawn.wav");
 
 	// Furniture sounds
 	// =============================================================================================================
 
 	// Spawner
-	public static final Sound Furniture_spawner_destroy = new Sound(FURNITURE_SOUNDS_DIR + "Spawner/destroy.wav");
-	public static final Sound Furniture_spawner_destroy_2 = new Sound(FURNITURE_SOUNDS_DIR + "Spawner/destroy 2.wav");
-	public static final Sound Furniture_spawner_destroy_3 = new Sound(FURNITURE_SOUNDS_DIR + "Spawner/destroy 3.wav");
-	public static final Sound Furniture_spawner_spawn = new Sound(FURNITURE_SOUNDS_DIR + "Spawner/spawn.wav");
-	public static final Sound Furniture_spawner_hurt = new Sound(FURNITURE_SOUNDS_DIR + "Spawner/hurt.wav");
+	public static final Sound Furniture_spawner_destroy = new Sound(ENTITIES_SOUNDS_DIR + "Spawner/destroy.wav");
+	public static final Sound Furniture_spawner_destroy_2 = new Sound(ENTITIES_SOUNDS_DIR + "Spawner/destroy 2.wav");
+	public static final Sound Furniture_spawner_destroy_3 = new Sound(ENTITIES_SOUNDS_DIR + "Spawner/destroy 3.wav");
+	public static final Sound Furniture_spawner_spawn = new Sound(ENTITIES_SOUNDS_DIR + "Spawner/spawn.wav");
+	public static final Sound Furniture_spawner_hurt = new Sound(ENTITIES_SOUNDS_DIR + "Spawner/hurt.wav");
 
 	// Tnt
-	public static final Sound Furniture_tnt_fuse = new Sound(FURNITURE_SOUNDS_DIR + "Tnt/fuse.wav");
-	public static final Sound Furniture_tnt_explode = new Sound(FURNITURE_SOUNDS_DIR + "Tnt/explode.wav");
-	public static final Sound Furniture_tnt_explode_2 = new Sound(FURNITURE_SOUNDS_DIR + "Tnt/explode 2.wav");
-	public static final Sound Furniture_tnt_explode_3 = new Sound(FURNITURE_SOUNDS_DIR + "Tnt/explode 3.wav");
-	public static final Sound Furniture_tnt_explode_4 = new Sound(FURNITURE_SOUNDS_DIR + "Tnt/explode 4.wav");
+	public static final Sound Furniture_tnt_fuse = new Sound(ENTITIES_SOUNDS_DIR + "Tnt/fuse.wav");
+	public static final Sound Furniture_tnt_explode = new Sound(ENTITIES_SOUNDS_DIR + "Tnt/explode.wav");
+	public static final Sound Furniture_tnt_explode_2 = new Sound(ENTITIES_SOUNDS_DIR + "Tnt/explode 2.wav");
+	public static final Sound Furniture_tnt_explode_3 = new Sound(ENTITIES_SOUNDS_DIR + "Tnt/explode 3.wav");
+	public static final Sound Furniture_tnt_explode_4 = new Sound(ENTITIES_SOUNDS_DIR + "Tnt/explode 4.wav");
 
 	// GUI sounds
 	// ===================================================================================================================
 
 	// Menu
-	public static final Sound Menu_back = new Sound(MENU_SOUNDS_DIR + "back.wav");
-	public static final Sound Menu_select = new Sound(MENU_SOUNDS_DIR + "select.wav");
-	public static final Sound Menu_confirm = new Sound(MENU_SOUNDS_DIR + "confirm.wav");
-	public static final Sound Menu_loaded = new Sound(MENU_SOUNDS_DIR + "loaded.wav");
-	public static final Sound Menu_page_up = new Sound(MENU_SOUNDS_DIR + "page up.wav");
+	public static final Sound Menu_back = new Sound(GUI_SOUNDS_DIR + "back.wav");
+	public static final Sound Menu_select = new Sound(GUI_SOUNDS_DIR + "select.wav");
+	public static final Sound Menu_confirm = new Sound(GUI_SOUNDS_DIR + "confirm.wav");
+	public static final Sound Menu_loaded = new Sound(GUI_SOUNDS_DIR + "loaded.wav");
+	public static final Sound Menu_page_up = new Sound(GUI_SOUNDS_DIR + "page up.wav");
 
 	public static final Sound Intro = new Sound("/resources/sounds/music/title/Intro.wav");
 	public static final Sound Intro2 = new Sound("/resources/sounds/music/title/Intro 2.wav");
@@ -110,17 +106,17 @@ public class Sound { // Creates sounds from their respective files
 	public static final Sound HeavenAmbience = new Sound("/resources/sounds/ambient/HeavenAmbience.wav");
 
 	// Snow tile
-	public static final Sound Tile_snow = new Sound(TILE_SOUNDS_DIR + "Snow/snow.wav");
-	public static final Sound Tile_snow_2 = new Sound(TILE_SOUNDS_DIR + "Snow/snow 2.wav");
-	public static final Sound Tile_snow_3 = new Sound(TILE_SOUNDS_DIR + "Snow/snow 3.wav");
-	public static final Sound Tile_snow_4 = new Sound(TILE_SOUNDS_DIR + "Snow/snow 4.wav");
+	public static final Sound Tile_snow = new Sound(TILES_SOUNDS_DIR + "Snow/snow.wav");
+	public static final Sound Tile_snow_2 = new Sound(TILES_SOUNDS_DIR + "Snow/snow 2.wav");
+	public static final Sound Tile_snow_3 = new Sound(TILES_SOUNDS_DIR + "Snow/snow 3.wav");
+	public static final Sound Tile_snow_4 = new Sound(TILES_SOUNDS_DIR + "Snow/snow 4.wav");
 
 	// Farmland and Sky farmland tile
-	public static final Sound Tile_farmland = new Sound(TILE_SOUNDS_DIR + "Farmland/farmland.wav");
-	public static final Sound Tile_farmland_2 = new Sound(TILE_SOUNDS_DIR + "Farmland/farmland 2.wav");
-	public static final Sound Tile_farmland_3 = new Sound(TILE_SOUNDS_DIR + "Farmland/farmland 3.wav");
+	public static final Sound Tile_farmland = new Sound(TILES_SOUNDS_DIR + "Farmland/farmland.wav");
+	public static final Sound Tile_farmland_2 = new Sound(TILES_SOUNDS_DIR + "Farmland/farmland 2.wav");
+	public static final Sound Tile_farmland_3 = new Sound(TILES_SOUNDS_DIR + "Farmland/farmland 3.wav");
 
-	public static final Sound Tile_generic_hurt = new Sound(TILE_SOUNDS_DIR + "tilehurt.wav");
+	public static final Sound Tile_generic_hurt = new Sound(TILES_SOUNDS_DIR + "tilehurt.wav");
 
 	// Themes
 	public static final Sound Theme_Fall = new Sound("/resources/sounds/ambient/music/Fall.wav");
@@ -136,10 +132,6 @@ public class Sound { // Creates sounds from their respective files
 	} // A way to initialize the class without actually doing anything
 
 	private Sound(String name) {
-		if (!Game.HAS_GUI) {
-			return;
-		}
-
 		try {
 			URL url = getClass().getResource(name);
 
@@ -154,10 +146,9 @@ public class Sound { // Creates sounds from their respective files
 				Line.Info[] sinfo = AudioSystem.getSourceLineInfo(info);
 				Line.Info[] tinfo = AudioSystem.getTargetLineInfo(info);
 
-				for (int i = 0; i < sinfo.length; i++) {
-					if (sinfo[i] instanceof DataLine.Info) {
-
-						DataLine.Info dataLineInfo = (DataLine.Info) sinfo[i];
+				for (Line.Info value : sinfo) {
+					if (value instanceof DataLine.Info) {
+						DataLine.Info dataLineInfo = (DataLine.Info) value;
 						AudioFormat[] supportedFormats = dataLineInfo.getFormats();
 
 						for (AudioFormat af : supportedFormats) {
@@ -199,9 +190,6 @@ public class Sound { // Creates sounds from their respective files
 
 	public void play() { // This plays the clip only once, Syntax: Sound.clip.play();
 		if (!(boolean) Settings.get("sound") || clip == null) {
-			return;
-		}
-		if (Game.isValidServer()) {
 			return;
 		}
 		if (clip.isRunning() || clip.isActive()) {

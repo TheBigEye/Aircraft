@@ -74,17 +74,16 @@ public class ToolItem extends Item {
     }
 
     public boolean payDurability() {
-        if (dur <= 0)
-            return false;
-        if (!Game.isMode("creative"))
-            dur--;
+        if (dur <= 0) return false;
+        if (!Game.isMode("creative")) dur--;
         return true;
     }
 
     /** Gets the attack damage bonus from an item/tool (sword/axe) */
     public int getAttackDamageBonus(Entity e) {
-        if (!payDurability())
-            return 0;
+        if (!payDurability()) {
+            return 0; 
+        }
 
         if (e instanceof Mob) {
             if (type == ToolType.Axe) {
@@ -98,7 +97,6 @@ public class ToolItem extends Item {
             }
             return 1; // all other tools do very little damage to mobs.
         }
-
         return 0;
     }
 

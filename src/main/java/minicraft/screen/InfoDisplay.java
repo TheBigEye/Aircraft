@@ -27,7 +27,7 @@ public class InfoDisplay extends Display {
 	@Override
 	public void tick(InputHandler input) {
 		if (input.getKey("select").clicked || input.getKey("exit").clicked) {
-			Game.exitMenu();
+			Game.exitDisplay();
 		}
 	}
 

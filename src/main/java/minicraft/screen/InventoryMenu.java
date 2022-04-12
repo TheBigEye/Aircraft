@@ -35,7 +35,7 @@ class InventoryMenu extends ItemListMenu {
 	public void tick(InputHandler input) {
 		super.tick(input);
 
-		boolean dropOne = input.getKey("drop-one").clicked && !(Game.getMenu() instanceof ContainerDisplay);
+		boolean dropOne = input.getKey("drop-one").clicked && !(Game.getDisplay() instanceof ContainerDisplay);
 
 		if (getNumOptions() > 0 && (dropOne || input.getKey("drop-stack").clicked)) {
 			ItemEntry entry = ((ItemEntry) getCurEntry());
@@ -55,11 +55,7 @@ class InventoryMenu extends ItemListMenu {
 			}
 
 			if (holder.getLevel() != null) {
-				if (Game.isValidClient()) {
-					Game.client.dropItem(drop);
-				} else {
-					holder.getLevel().dropItem(holder.x, holder.y, drop);
-				}
+				holder.getLevel().dropItem(holder.x, holder.y, drop);
 			}
 		}
 	}

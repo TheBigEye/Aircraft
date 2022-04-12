@@ -51,32 +51,32 @@ public class Spark extends Entity {
 			LTFactor = 15 * 13 + random.nextInt(30);
 
 			// Move the spark:
-            xx += xa; x = (int) xx;
-            yy += ya; y = (int) yy;
+			xx += xa; x = (int) xx;
+			yy += ya; y = (int) yy;
 
 			Player player = getClosestPlayer();
 			if (player != null) {
-            	
-            	int xd = player.x - x;
-            	int yd = player.y - y;
-            	
-            	int sig0 = 1; 
-            	xa = ya = 0;
-            	
-            	if (xd < sig0) xa = -0.5;
-            	if (xd > sig0) xa = +0.6;
-            	if (yd < sig0) ya = -0.5;
-            	if (yd > sig0) ya = +0.6;
-            	
-    			// Random position
-    			switch (random.nextInt(3)) {
-    				case 0: xa += 1; ya += 1; break;
-    				case 1: xa -= 1; ya -= 1; break;
-    				case 2: xa -= 1; ya += 1; break;
-    				case 3: xa += 1; ya -= 1; break;
-    				default: xa += 1; ya += 1; break;
-    			}
-            }
+
+				int xd = player.x - x;
+				int yd = player.y - y;
+
+				int sig0 = 1; 
+				xa = ya = 0;
+
+				if (xd < sig0) xa = -0.5;
+				if (xd > sig0) xa = +0.6;
+				if (yd < sig0) ya = -0.5;
+				if (yd > sig0) ya = +0.6;
+
+				// Random position
+				switch (random.nextInt(3)) {
+				case 0: xa += 1; ya += 1; break;
+				case 1: xa -= 1; ya -= 1; break;
+				case 2: xa -= 1; ya += 1; break;
+				case 3: xa += 1; ya -= 1; break;
+				default: xa += 1; ya += 1; break;
+				}
+			}
 
 			// if the entity is a mob, but not a Air Wizard, then hurt the mob with 2 damage.
 			List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizard), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS)); // gets the entities in the current position to hit.
@@ -87,8 +87,8 @@ public class Spark extends Entity {
 			LTFactor = 25 * 10 + random.nextInt(20);
 
 			// move the spark to the player positon:
-            xx += xa; x = (int) xx;
-            yy += ya; y = (int) yy;
+			xx += xa; x = (int) xx;
+			yy += ya; y = (int) yy;
 
 			List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizardPhase2), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS));
 			toHit.forEach(entity -> ((Mob) entity).hurt(owner, 4));
@@ -97,33 +97,33 @@ public class Spark extends Entity {
 
 			LTFactor = 30 * 10 + random.nextInt(30);
 
-            // move the spark:
-            xx += xa; x = (int) xx;
-            yy += ya; y = (int) yy;
+			// move the spark:
+			xx += xa; x = (int) xx;
+			yy += ya; y = (int) yy;
 
 			List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizardPhase3), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS));
 			toHit.forEach(entity -> ((Mob) entity).hurt(owner, 5));
 
 		}
-        
-        if (time >= lifeTime) {
-            remove(); // Remove this from the world
-            return;
-        }
-    }
 
-    /** Can this entity block you? Nope. */
-    @Override
-    public boolean isSolid() {
-        return false;
-    }
+		if (time >= lifeTime) {
+			remove(); // Remove this from the world
+			return;
+		}
+	}
 
-    @Override
+	/** Can this entity block you? Nope. */
+	@Override
+	public boolean isSolid() {
+		return false;
+	}
+
+	@Override
 	public void render(Screen screen) {
 		int randmirror = 0;
 
 		// If we are in a menu, or we are on a server.
-		if (Game.getMenu() == null || Game.ISONLINE) {
+		if (Game.getDisplay() == null) {
 
 			// The blinking effect.
 			if (time >= lifeTime - 6 * 20) {

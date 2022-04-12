@@ -11,7 +11,6 @@ import minicraft.core.Renderer;
 import minicraft.core.World;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Sound;
-import minicraft.entity.mob.RemotePlayer;
 import minicraft.gfx.Color;
 import minicraft.gfx.Font;
 import minicraft.gfx.Point;
@@ -36,65 +35,48 @@ public class TitleDisplay extends Display {
 		super(false, false, new Menu.Builder(true, 1, RelPos.CENTER,
 				new SelectEntry("Singleplayer", () -> {
 					if (WorldSelectDisplay.getWorldNames().size() > 0) {
-						Game.setMenu(new Display(true,
+						Game.setDisplay(new Display(true,
 								new Menu.Builder(false, 2, RelPos.CENTER,
-								new SelectEntry("Load World", () -> Game.setMenu(new WorldSelectDisplay())),
-								new SelectEntry("New World", () -> Game.setMenu(new WorldGenDisplay()))).createMenu()));
+										new SelectEntry("Load World", () -> Game.setDisplay(new WorldSelectDisplay())),
+										new SelectEntry("New World", () -> Game.setDisplay(new WorldGenDisplay()))).createMenu()));
 					} else {
-						Game.setMenu(new WorldGenDisplay());
+						Game.setDisplay(new WorldGenDisplay());
 					}
 				}),
-				
-				new SelectEntry("Options", () -> Game.setMenu(new OptionsDisplay())),
-				new SelectEntry("Credits", () -> Game.setMenu(new BookDisplay(BookData.credits))),
-				
-				new SelectEntry("Help", () -> Game.setMenu(new Display(true,
+
+				new SelectEntry("Options", () -> Game.setDisplay(new OptionsDisplay())),
+				new SelectEntry("Credits", () -> Game.setDisplay(new BookDisplay(BookData.credits))),
+
+				new SelectEntry("Help", () -> Game.setDisplay(new Display(true,
 						new Menu.Builder(true, 2, RelPos.CENTER, new BlankEntry(),
-								new SelectEntry("Instructions", () -> Game.setMenu(new BookDisplay(BookData.instructions))),
-								new SelectEntry("Tutorial", () -> Game.setMenu(new TutorialDisplay())),
-								new SelectEntry("About", () -> Game.setMenu(new BookDisplay(BookData.about))),
+								new SelectEntry("Instructions", () -> Game.setDisplay(new BookDisplay(BookData.instructions))),
+								new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
+								new SelectEntry("About", () -> Game.setDisplay(new BookDisplay(BookData.about))),
 								new BlankEntry(),
 								new LinkEntry(Color.BLUE, "Minicraft discord", "https://discord.me/minicraft")
-						).setTitle("Help").createMenu()))),
-				
+								).setTitle("Help").createMenu()))),
+
 				new SelectEntry("Exit", Game::quit)
 
-		).setPositioning(new Point(Screen.w / 2, Screen.h * 3 / 5), RelPos.CENTER).createMenu());
+				).setPositioning(new Point(Screen.w / 2, Screen.h * 3 / 5), RelPos.CENTER).createMenu());
 	}
 
 	@Override
 	public void init(Display parent) {
 		super.init(null); // The TitleScreen never has a parent.
 		Renderer.readyToRenderGameplay = false;
-		
+
 		LocalDateTime time = LocalDateTime.now();
 		if (time.getMonth() != Month.OCTOBER) {
 			switch (random.nextInt(4)) {
-				case 0: Sound.Theme_Cave.play(); break;
-				case 1: Sound.Theme_Surface.play(); break;
-				case 2: Sound.Theme_Fall.play(); break;
-				case 3: Sound.Theme_Peaceful.play(); break;
-				case 4: Sound.Theme_Surface.play(); break;
-				default: Sound.Theme_Fall.play(); break;
+			case 0: Sound.Theme_Cave.play(); break;
+			case 1: Sound.Theme_Surface.play(); break;
+			case 2: Sound.Theme_Fall.play(); break;
+			case 3: Sound.Theme_Peaceful.play(); break;
+			case 4: Sound.Theme_Surface.play(); break;
+			default: Sound.Theme_Fall.play(); break;
 			}  
 		}
-		
-		/// This is useful to just ensure that everything is really reset as it should be.
-		if (Game.server != null) {
-			if (Game.debug) {
-				System.out.println("wrapping up loose server ends");
-			}
-			Game.server.endConnection();
-			Game.server = null;
-		}
-		if (Game.client != null) {
-			if (Game.debug) {
-				System.out.println("wrapping up loose client ends");
-			}
-			Game.client.endConnection();
-			Game.client = null;
-		}
-		Game.ISONLINE = false;
 
 		if (time.getMonth() == Month.DECEMBER) {
 			if (time.getDayOfMonth() == 19) {
@@ -128,7 +110,7 @@ public class TitleDisplay extends Display {
 		} else {
 			rand = random.nextInt(splashes.length - 3) + 3;
 		}
-		
+
 		if (time.getMonth() == Month.SEPTEMBER) {
 			if (time.getDayOfMonth() == 18) {
 				rand = 4;
@@ -136,7 +118,7 @@ public class TitleDisplay extends Display {
 		} else {
 			rand = random.nextInt(splashes.length - 3) + 3;
 		}
-		
+
 		if (time.getMonth() == Month.OCTOBER) {
 			if (time.getDayOfMonth() == 8) {
 				Sound.Theme_Cavern.play();
@@ -145,7 +127,7 @@ public class TitleDisplay extends Display {
 				Sound.Theme_Cavern_drip.play();
 			}
 		}
-		
+
 		if (time.getMonth() == Month.AUGUST) {
 			if (time.getDayOfMonth() == 29) {
 				rand = 5;
@@ -159,7 +141,7 @@ public class TitleDisplay extends Display {
 
 		World.levels = new Level[World.levels.length];
 
-		if (Game.player == null || Game.player instanceof RemotePlayer) {
+		if (Game.player == null) {
 			// Was online, need to reset player
 			World.resetGame(false);
 		}
@@ -167,7 +149,7 @@ public class TitleDisplay extends Display {
 
 	@NotNull
 	private static SelectEntry displayFactory(String entryText, ListEntry... entries) {
-		return new SelectEntry(entryText, () -> Game.setMenu(new Display(true, new Menu.Builder(false, 2, RelPos.CENTER, entries).createMenu())));
+		return new SelectEntry(entryText, () -> Game.setDisplay(new Display(true, new Menu.Builder(false, 2, RelPos.CENTER, entries).createMenu())));
 	}
 
 	@Override
@@ -229,12 +211,12 @@ public class TitleDisplay extends Display {
 		/// This isn't as complicated as it looks. It just gets a color based off of count, which oscilates between 0 and 25.
 		int bcol = 5 - count / 5; // this number ends up being between 1 and 5, inclusive.
 		int splashColor = 
-				isblue ? Color.BLUE
-				: isRed ? Color.RED
-				: isGreen ? Color.GREEN
-				: isOrange ? Color.ORANGE
-				: isYellow ? Color.YELLOW 
-				: Color.get(1, bcol * 51, bcol * 51, bcol * 25);
+				isblue ? Color.BLUE :
+					isRed ? Color.RED :
+						isGreen ? Color.GREEN :
+							isOrange ? Color.ORANGE :
+								isYellow ? Color.YELLOW :
+									Color.get(1, bcol * 51, bcol * 51, bcol * 25);
 
 		Font.drawCentered(splashes[rand], screen, 100, splashColor);
 
@@ -243,19 +225,19 @@ public class TitleDisplay extends Display {
 		 * In case it is false, it will show the numerical version of the game
 		 */
 		if (Game.in_dev == true) {
-			Font.draw("Pre " + Game.BUILD, screen, 1, 280, Color.WHITE);
+			Font.draw("Pre " + Game.BUILD, screen, 1, Screen.h - 10, Color.WHITE);
 		} else {
-			Font.draw(Game.BUILD, screen, 1, 280, Color.WHITE);
+			Font.draw(Game.BUILD, screen, 1, Screen.h - 10, Color.WHITE);
 		}
 
 		/*
 		 * Show the author's name below the options
 		 */
-		Font.draw("Mod by TheBigEye", screen, 300, 280, Color.WHITE);
+		Font.draw("Mod by TheBigEye", screen, 300, Screen.h - 10, Color.WHITE);
 	}
 
-	private static final String[] splashes = { "Happy birthday Minicraft!", "Happy XMAS!", "Happy birthday Eye :)",
-			"Happy birthday Zaq :)", "Thanks A.L.I.C.E!",
+	private static final String[] splashes = {
+			"Happy birthday Minicraft!", "Happy XMAS!", "Happy birthday Eye :)", "Happy birthday Zaq :)", "Thanks A.L.I.C.E!",
 
 			// "Bye ben :(",
 

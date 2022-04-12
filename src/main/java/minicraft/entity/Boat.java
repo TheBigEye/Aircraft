@@ -9,7 +9,6 @@ import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Sound;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.RemotePlayer;
 import minicraft.entity.particle.SplashParticle;
 import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
@@ -120,21 +119,16 @@ public class Boat extends Entity {
     public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
         if (item instanceof PowerGloveItem) {
             Sound.Mob_generic_hurt.play();
-            if (!Game.ISONLINE) {
                 remove();
-                if (!Game.isMode("creative") && player.activeItem != null
-                        && !(player.activeItem instanceof PowerGloveItem))
-                    player.getInventory().add(0, player.activeItem); // put whatever item the player is holding into
-                                                                     // their inventory
-                player.activeItem = new BoatItem("Boat"); // make this the player's current item.
+                
+                if (!Game.isMode("creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem)) {
+                	// put whatever item the player is holding into their inventory
+                    player.getInventory().add(0, player.activeItem); 
+                }
+                
+                // make this the player's current item.
+                player.activeItem = new BoatItem("Boat"); 
                 return true;
-            } else if (Game.isValidServer() && player instanceof RemotePlayer) {
-                remove();
-                Game.server.getAssociatedThread((RemotePlayer) player).updatePlayerActiveItem(new BoatItem("Boat"));
-                return true;
-            } else
-                System.out.println("WARNING: undefined behavior; online game was not server and ticked furniture: "
-                        + this + "; and/or player in online game found that isn't a RemotePlayer: " + player);
         }
         return false;
     }

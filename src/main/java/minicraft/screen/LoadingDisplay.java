@@ -28,7 +28,7 @@ public class LoadingDisplay extends Display {
 
 	String[] BuildString = { 
 			"Generating", "Separating", "Planting", "Eroding", "Digging",
-			"Elevating", "Leveling", "Flattening", "Molding", "Building" 
+			"Raising", "Leveling", "Flattening", "Molding", "Building" 
 	};
 
 	private static Random random = new Random();
@@ -42,7 +42,7 @@ public class LoadingDisplay extends Display {
 		t = new Timer(500, e -> {
 			World.initWorld();
 			msg = Localization.getLocalized("Rendering");
-			Game.setMenu(null);
+			Game.setDisplay(null);
 		});
 		t.setRepeats(false);
 	}

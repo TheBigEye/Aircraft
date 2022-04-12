@@ -33,7 +33,7 @@ public class Librarian extends VillagerMob {
     }
 
     public boolean use(Player player) {
-        Game.setMenu(new CraftingDisplay(minicraft.entity.mob.villager.Librarian.LibrarianTrdes, "Trade", player));
+        Game.setDisplay(new CraftingDisplay(minicraft.entity.mob.villager.Librarian.LibrarianTrdes, "Trade", player));
         return true;
     }
 

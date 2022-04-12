@@ -1,4 +1,5 @@
 package minicraft.core.io;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import org.tinylog.Logger;
 
 import minicraft.core.Game;
+
 public class Localization {
 	
 	private static final HashSet<String> knownUnlocalizedStrings = new HashSet<>();
@@ -44,12 +46,12 @@ public class Localization {
 	@NotNull
 	public static String getLocalized(String key) {
 		if (key.matches("^[ ]*$")) return key; // Blank, or just whitespace
-
+		
 		try {
 			Double.parseDouble(key);
 			return key; // This is a number; don't try to localize it
 		} catch(NumberFormatException ignored) {}
-
+		
 		String localString = localization.get(key);
 		
 		if (Game.debug && localString == null) {
@@ -61,10 +63,14 @@ public class Localization {
 		return (localString == null ? key : localString);
 	}
 	
-	public static Locale getSelectedLocale() { return locales.getOrDefault(selectedLanguage, Locale.getDefault()); }
+	public static Locale getSelectedLocale() {
+		return locales.getOrDefault(selectedLanguage, Locale.getDefault()); 
+	}
 	
 	@NotNull
-	public static String getSelectedLanguage() { return selectedLanguage; }
+	public static String getSelectedLanguage() {
+		return selectedLanguage; 
+	}
 	
 	public static void changeLanguage(String newLanguage) {
 		selectedLanguage = newLanguage;
@@ -96,12 +102,16 @@ public class Localization {
 	@NotNull
 	private static String getFileAsString() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(Game.class.getResourceAsStream(localizationFiles.getOrDefault(selectedLanguage, "/resources/localization/english_en-us.mcpl")), StandardCharsets.UTF_8));
+
+
 		return String.join("\n", reader.lines().toArray(String[]::new));
 		// Using getResourceAsStream since we're publishing this as a jar file.
 	}
 	
 	@NotNull
-	public static String[] getLanguages() { return loadedLanguages; }
+	public static String[] getLanguages() {
+		return loadedLanguages; 
+	}
 	
 	// Couldn't find a good way to find all the files in a directory when the program is
 	// exported as a jar file so I copied this. Thanks!
@@ -167,6 +177,7 @@ public class Localization {
 				String filename = p.getFileName().toString();
 				String data = filename.replace(".mcpl", "");
 				String lang = data.substring(0, data.indexOf('_'));
+
 				languages.add(lang);
 				localizationFiles.put(lang, "/resources/localization/"+filename);
 				locales.put(lang, Locale.forLanguageTag(data.substring(data.indexOf('_')+1)));

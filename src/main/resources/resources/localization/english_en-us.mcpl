@@ -142,8 +142,8 @@ Earned!
 Not Earned
 Not Earned
 
-Achievement Score:
-Achievement Score:
+Achievements Score:
+Achievements Score:
 
 ### entity
 
@@ -247,6 +247,9 @@ Book
 Antidious
 Antidious
 
+AlAzif
+AlAzif
+
 # BucketItem.java
 
 Empty Bucket
@@ -343,73 +346,73 @@ Gold Carrot
 # FurnitureItem.java
 
 KingZombie Spawner
-KingZombie Spawner
+Kings Zombie Spawner
 
 Cow Spawner
-Cow Spawner
+Cows Spawner
 
 Pig Spawner
-Pig Spawner
+Pigs Spawner
 
 Sheep Spawner
-Sheep Spawner
+Sheeps Spawner
 
 Goat Spawner
-Goat Spawner
+Goats Spawner
 
 Chicken Spawner
-Chicken Spawner
+Chickens Spawner
 
 Cleric Spawner
-Cleric Spawner
+Clerics Spawner
 
 Librarian Spawner
-Librarian Spawner
+Librarians Spawner
 
 GuiMan Spawner
-GuiMan Spawner
+Penguins Spawner
 
 Cat Spawner
-Cat Spawner
+Cats Spawner
 
 Golem Spawner
-Golem Spawner
+Golems Spawner
 
 Slime Spawner
-Slime Spawner
+Slimes Spawner
 
 Zombie Spawner
-Zombie Spawner
+Zombies Spawner
 
 Mooshroom Spawner
-Mooshroom Spawner
+Mooshrooms Spawner
 
 Creeper Spawner
-Creeper Spawner
+Creepers Spawner
 
 Skeleton Spawner
-Skeleton Spawner
+Skeletons Spawner
 
 Snake Spawner
-Snake Spawner
+Snakes Spawner
 
 Knight Spawner
-Knight Spawner
+Knights Spawner
 
 OldGolem Spawner
-OldGolem Spawner
+Rust golems Spawner
 
 AirWizard Spawner
-AirWizard Spawner
+Air Wizards Spawner
 
 EyeQueen Spawner
-EyeQueen Spawner
+Eye Queens Spawner
 
 Cthulhu Spawner
-Cthulhu Spawner
+Cthulhus Spawner
 
 Keeper Spawner
-Keeper Spawner
+Keepers Spawner
 
 Workbench
 Workbench
@@ -487,37 +490,37 @@ Speed Potion
 Speed Potion
 
 xSpeed Potion
-xSpeed Potion
+Speed Potion II
 
 Light Potion
 Light Potion
 
 xLight Potion
-xLight Potion
+Light Potion II
 
 Swim Potion
 Swim Potion
 
 xSwim Potion
-xSwim Potion
+Swim Potion II
 
 Energy Potion
 Energy Potion
 
 xEnergy Potion
-xEnergy Potion
+Energy Potion II
 
 Regen Potion
 Regen Potion
 
 xRegen Potion
-xRegen Potion
+Regen Potion II
 
 Health Potion
 Health Potion
 
 xHealth Potion
-xHealth Potion
+Health Potion II
 
 Time Potion
 Time Potion
@@ -526,19 +529,22 @@ Lava Potion
 Lava Potion
 
 xLava Potion
-xLava Potion
+Lava Potion II
 
 Shield Potion
 Shield Potion
 
 xShield Potion
-xShield Potion
+Shield Potion II
 
 Haste Potion
 Haste Potion
 
 Escape Potion
 Escape Potion
+
+Blindness Potion
+Blindness Potion
 
 Potion
 Potion
@@ -550,8 +556,8 @@ Power Glove
 
 # ShearItem.java
 
-Shear
-Shear
+Shears
+Shears
 
 # StackableItem.java
 
@@ -935,6 +941,9 @@ Bone
 Bone powder
 Bone powder
 
+Ferrosite
+Ferrosite
+
 Cloud
 Cloud
 
@@ -961,30 +970,30 @@ Gold
 Gem
 Gem
 
-Fishing Rod
-Fishing Rod
+Fishing rod
+Fishing rod
 
 # FishingRodItem.java
 
-Wood Fishing Rod
-Wood Fishing Rod
+Wood Fishing rod
+Wood Fishing rod
 
-Iron Fishing Rod
-Iron Fishing Rod
+Iron Fishing rod
+Iron Fishing rod
 
-Gold Fishing Rod
-Gold Fishing Rod
+Gold Fishing rod
+Gold Fishing rod
 
-Gem Fishing Rod
-Gem Fishing Rod
+Gem Fishing rod
+Gem Fishing rod
 
 # ToolType.java
 
-Shovel
-Shovel
+Hoe
+Hoe
 
-Hoe
-Hoe
+Shovel
+Shovel
 
 Sword
 Sword
@@ -1001,19 +1010,17 @@ Axe
 Bow
 Bow
 
+FishingRod
+FishingRod
+
 Claymore
 Claymore
 
-Shear
-Shear
-
-# ShearItem.java
-
-Shear
-Shear
+Shears
+Shears
 
 Igniter
-Encendedor
+Igniter
 
 # TorchItem.java
 
@@ -1292,29 +1299,32 @@ Loading
 Generating
 Generating
 
-Calculating
-Calculating
-
-Pre Calculating
-Pre Calculating
-
-Building
-Building
-
-Melting
-Melting
-
-Eroding
-Eroding
+Separating
+Separating
 
 Planting
 Planting
 
-Molding
-Molding
+Eroding
+Eroding
+
+Digging
+Digging
 
 Raising
 Raising
+
+Leveling
+Leveling
+
+Flattening
+Flattening
+
+Molding
+Molding
+
+Building
+Building
 
 Rendering
 Rendering
@@ -1324,6 +1334,29 @@ World
 
 May take a while, be patient
 May take a while, be patient
+
+Level 1
+Level 1
+
+Level 0
+Level 0
+
+Level B1
+Level B1
+
+Level B2
+Level B2
+
+Level B3
+Level B3
+
+Level B4
+Level B4
+
+# MapDisplay.java
+
+Map
+Map
 
 # MultiplayerMenu.java
 
@@ -1427,11 +1460,11 @@ info
 Make World Multiplayer
 Make World Multiplayer
 
-World options
-World options
+Achievements
+Achievements
 
-achievement
-achievement
+World options
+World options
 
 Save Game
 Save Game
@@ -1466,7 +1499,6 @@ Inventory
 
 to search.
 to search.
-
 
 # TitleMenu.java
 
@@ -1514,6 +1546,9 @@ Quit
  
  to return
  to return
+ 
+ Mod by TheBigEye
+ Mod by TheBigEye
 
 # WorldEditMenu.java
 
@@ -1553,6 +1588,12 @@ World Gen Options
 World Gen Options
 
 # WorldSelectMenu.java
+
+Name:
+Name:
+
+Seed:
+Seed:
 
  to Copy
  to Copy

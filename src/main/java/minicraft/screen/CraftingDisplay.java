@@ -83,7 +83,7 @@ public class CraftingDisplay extends Display {
 	@Override
 	public void tick(InputHandler input) {
 		if (input.getKey("menu").clicked || (isPersonalCrafter && input.getKey("craft").clicked)) {
-			Game.exitMenu();
+			Game.exitDisplay();
 			return;
 		}
 

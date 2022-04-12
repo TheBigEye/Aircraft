@@ -37,7 +37,6 @@ import minicraft.screen.InfoDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.RelPos;
 import minicraft.util.Info;
-import minicraft.util.MyUtils;
 
 public class Renderer extends Game {
 	private Renderer() {}
@@ -59,19 +58,21 @@ public class Renderer extends Game {
 	public static boolean readyToRenderGameplay = false;
 	public static boolean showinfo = false;
 	
-	
+	public static final String resourcesFolder = "/resources";
+
+	@SuppressWarnings("unused")
 	private static Ellipsis ellipsis = new SmoothEllipsis(new TickUpdater());
 
 	public static SpriteSheet[] loadDefaultSpriteSheets() {
 		SpriteSheet itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background;
 		try {
 			// These set the sprites to be used.
-			itemSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/default/items.png"))));
-			tileSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/default/tiles.png"))));
-			entitySheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/default/entities.png"))));
-			guiSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/default/gui.png"))));
-			iconsSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/default/icons.png"))));
-			background = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/default/background.png"))));
+			itemSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/items.png"))));
+			tileSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/tiles.png"))));
+			entitySheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/entities.png"))));
+			guiSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/gui.png"))));
+			iconsSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/icons.png"))));
+			background = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/background.png"))));
 
 		} catch (NullPointerException e) {
 			// If a provided InputStream has no name. (in practice meaning it cannot be found.)
@@ -87,7 +88,7 @@ public class Renderer extends Game {
 			System.exit(-1);
 			return null;
 		}
-		
+
 		Logger.debug("[Default sprites] Loaded!");
 
 		return new SpriteSheet[] { itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background };
@@ -96,12 +97,12 @@ public class Renderer extends Game {
 	public static SpriteSheet[] loadLegacySpriteSheets() {
 		SpriteSheet itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background;
 		try {
-			itemSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/items.png"))));
-			tileSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/tiles.png"))));
-			entitySheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/entities.png"))));
-			guiSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/gui.png"))));
-			iconsSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/icons.png"))));
-			background = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/background.png"))));
+			itemSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/legacy/items.png"))));
+			tileSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/legacy/tiles.png"))));
+			entitySheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/legacy/entities.png"))));
+			guiSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/legacy/gui.png"))));
+			iconsSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/legacy/icons.png"))));
+			background = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/legacy/background.png"))));
 
 		} catch (NullPointerException e) {
 			e.printStackTrace();
@@ -115,65 +116,45 @@ public class Renderer extends Game {
 			System.exit(-1);
 			return null;
 		}
-		
+
 		Logger.debug("[Legacy sprites] Loaded!");
 
 		return new SpriteSheet[] { itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background };
 	}
 
 	static void initScreen() {
-		if (!HAS_GUI) {
-			return;
-		}
-
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
 		Logger.debug("Loading spriteheets...");
-		
+
 		SpriteSheet[] sheets = loadDefaultSpriteSheets();
 		screen = new Screen(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
 		lightScreen = new Screen(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
 
 		screen.pixels = pixels;
 
-		if (HAS_GUI) {
-			canvas.createBufferStrategy(3);
-			canvas.requestFocus();
-		}
+		canvas.createBufferStrategy(3);
+		canvas.requestFocus();
 	}
-	
+
 
 	/** Renders the current screen. Called in game loop, a bit after tick(). */
 	public static void render() {
-		if (!HAS_GUI || screen == null) {
+		if (screen == null) {
 			return; // No point in this if there's no gui... :P
 		}
 
 		if (readyToRenderGameplay) {
-			if (isValidServer()) {
-				screen.clear(0);
-				Font.drawCentered("Awaiting client connections" + ellipsis.updateAndGet(), screen, 10, Color.get(-1, 444));
-				Font.drawCentered("So far:", screen, 20, Color.get(-1, 444));
-				int i = 0;
-				for (String playerString: server.getClientInfo()) {
-					Font.drawCentered(playerString, screen, 30 + i * 10, Color.get(-1, 134));
-					i++;
-				}
-				renderDebugInfo();
-				
-			} else {
-				renderLevel();
-				renderGui();
-				
-			}
+			renderLevel();
+			renderGui();
 		}
 
-		if (menu != null) { // Renders menu, if present.
-			menu.render(screen);
+		if (display != null) { // Renders menu, if present.
+			display.render(screen);
 		}
 
-		if (!canvas.hasFocus() && !ISONLINE) {
+		if (!canvas.hasFocus()) {
 			renderFocusNagger(); // Calls the renderFocusNagger() method, which creates the "Click to Focus" message.
 		}
 
@@ -196,7 +177,7 @@ public class Renderer extends Game {
 
 	private static void renderLevel() {
 		Level level = levels[currentLevel];
-		
+
 		if (level == null) {
 			return;
 		}
@@ -209,7 +190,7 @@ public class Renderer extends Game {
 		if (yScroll < 0) yScroll = 0; // ...Top border.
 		if (xScroll > level.w * 16 - Screen.w) xScroll = level.w * 16 - Screen.w; // ...right border.
 		if (yScroll > level.h * 16 - Screen.h) yScroll = level.h * 16 - Screen.h; // ...bottom border.
-		
+
 		if (currentLevel > 3) { // If the current level is higher than 3 (which only the sky level (and dungeon) is)
 			for (int y = 0; y < 56; y++) {
 				for (int x = 0; x < 96; x++) {
@@ -242,7 +223,7 @@ public class Renderer extends Game {
 
 		if (player != null && player.potioneffects.containsKey(PotionType.Blindness) && currentLevel == 3 && !Game.isMode("Creative") || player != null && player.potioneffects.containsKey(PotionType.Blindness) && currentLevel == 4 && !Game.isMode("Creative")) {
 			lightScreen.clear(0); 
-			
+
 			// Brightens all
 			int brightnessMultiplier = player.potioneffects.containsKey(PotionType.Light) ? 12 : 8; 
 			level.renderLight(lightScreen, xScroll, yScroll, brightnessMultiplier); // Finds (and renders) all the light from objects (like the player, lanterns, and lava).
@@ -357,23 +338,8 @@ public class Renderer extends Game {
 			permStatus.add("Sleeping...");
 		}
 
-		else if (!Game.isValidServer() && Bed.getPlayersAwake() > 0) {
-			int numAwake = Bed.getPlayersAwake();
-
-			if (Bed.inBed(Game.player)) {
-				permStatus.add(MyUtils.plural(numAwake, "player") + " still awake");
-				permStatus.add(" ");
-				permStatus.add("Press " + input.getMapping("exit") + " to cancel");
-
-			} else if (Game.isValidClient()) {
-				// Draw it in a corner
-				int total = Game.client.getPlayerCount();
-				int sleepCount = total - numAwake;
-
-				if (sleepCount > 0) {
-					new FontStyle(Color.WHITE).setRelTextPos(RelPos.BOTTOM_LEFT).setAnchor(Screen.w, 0).draw(sleepCount + "/" + total + " players sleeping", screen);
-				}
-			}
+		if (Bed.inBed(Game.player)) {
+			permStatus.add("Press " + input.getMapping("exit") + " to cancel");
 		}
 
 		if (permStatus.size() > 0) {
@@ -543,9 +509,9 @@ public class Renderer extends Game {
 
 		renderDebugInfo();
 	}
-	
+
 	public static void renderBossbar(int length, String title) {
-		
+
 		int x = Screen.w / 4 + 4;
 		int y = Screen.h / 8 - 28;
 
@@ -556,16 +522,16 @@ public class Renderer extends Game {
 		int ACTIVE_BOSSBAR = 25; // sprite x position
 
 
-		screen.render(x + (max_bar_length * 2) , y , 0 + INACTIVE_BOSSBAR * 32, 1, 3);
-		
+		screen.render(x + (max_bar_length * 2) , y , 0 + INACTIVE_BOSSBAR * 32, 1, 3); // left corner
+
 		// The middle
 		for (int bx = 0; bx < max_bar_length; bx++) {
 			for (int by = 0; by < 1; by++) {
 				screen.render(x + bx * 2, y + by * 8, 3 + INACTIVE_BOSSBAR * 32, 0, 3);
 			}
 		}  
-		
-		screen.render(x - 5 , y , 0 + ACTIVE_BOSSBAR * 32, 0, 3);
+
+		screen.render(x - 5 , y , 0 + ACTIVE_BOSSBAR * 32, 0, 3); // right corner
 
 		for (int bx = 0; bx < bar_length; bx++) {
 			for (int by = 0; by < 1; by++) {
@@ -582,45 +548,40 @@ public class Renderer extends Game {
 	private static void renderDebugInfo() { 
 
 		int textcol;
-		String separator = "                                       ";
 
 		if (debug) textcol = Color.YELLOW;
 		else if (dev) textcol = Color.ORANGE;
 		else textcol = Color.WHITE;
-		
+
 		if (showinfo) {
 			ArrayList <String> info = new ArrayList <> ();
 			ArrayList <String> subinfo = new ArrayList <> ();
 
-			info.add("Version: " + Game.BUILD + " (" + Game.VERSION + ")");               subinfo.add(separator + "Time:" + InfoDisplay.getTimeString());
-			info.add("Engine: " + "Minicraft Plus Legacy");                               subinfo.add(separator + "Java:" + Info.Java_Version);
-			info.add("" + time.toLocalDate());                                            subinfo.add(separator + "Java arch: x" + Info.Java_Arch);
-			info.add(Initializer.fra + " fps");                                           subinfo.add(separator + "Max mem:" + Info.max_Memory);
-			info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")");   subinfo.add(separator + "Total mem:" + Info.total_Memory);
-			info.add((Updater.normSpeed * Updater.gamespeed) + " tps ");                  subinfo.add(separator + "Free mem: " + Info.free_Memory);
-			if (!isValidServer()) {
+			info.add("Version: " + Game.BUILD + " (" + Game.VERSION + ")");               subinfo.add("Time:" + InfoDisplay.getTimeString());
+			info.add("Base: " + "Minicraft Plus Legacy");                                 subinfo.add("Java:" + Info.Java_Version);
+			info.add("" + time.toLocalDate());                                            subinfo.add("Java arch: x" + Info.Java_Arch);
+			info.add(Initializer.fra + " fps");                                           subinfo.add("Max mem:" + Info.max_Memory);
+			info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")");   subinfo.add("Total mem:" + Info.total_Memory);
+			info.add((Updater.normSpeed * Updater.gamespeed) + " tps ");                  subinfo.add("Free mem: " + Info.free_Memory);
 
-				// player info
-				info.add("walk spd:" + player.moveSpeed);
-				info.add("X:" + (player.x / 16) + "." + (player.x % 16));
-				info.add("Y:" + (player.y / 16) + "." + (player.y % 16));
-				info.add("");
+			// player info
+			info.add("walk spd:" + player.moveSpeed);
+			info.add("X:" + (player.x / 16) + "." + (player.x % 16));
+			info.add("Y:" + (player.y / 16) + "." + (player.y % 16));
+			info.add("");
 
-				// tile
-				if (levels[currentLevel] != null)
-				info.add("Tile:" + levels[currentLevel].getTile(player.x >> 4, player.y >> 4).name);
-				info.add("Id:" + levels[currentLevel].getTile(player.x >> 4, player.y >> 4).id);
-				info.add("Data:" + levels[currentLevel].getData(player.x >> 4, player.y >> 4));
-				info.add("Depth:" + levels[currentLevel].depth);
-				info.add("");
+			info.add("Tile:" + levels[currentLevel].getTile(player.x >> 4, player.y >> 4).name);
+			info.add("Id:" + levels[currentLevel].getTile(player.x >> 4, player.y >> 4).id);
+			info.add("Data:" + levels[currentLevel].getData(player.x >> 4, player.y >> 4));
+			info.add("Depth:" + levels[currentLevel].depth);
+			info.add("");
 
-				// screen info
-				info.add("Screen: " + java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight() + "x" + java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth());
-				info.add("Current: " + getWindowSize().getHeight() + "x" + getWindowSize().getWidth());
+			// screen info
+			info.add("Screen: " + java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight() + "x" + java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth());
+			info.add("Current: " + getWindowSize().getHeight() + "x" + getWindowSize().getWidth());
 
-				if (isMode("score")) {
-					info.add("Score " + player.getScore());
-				}
+			if (isMode("score")) {
+				info.add("Score " + player.getScore());
 			}
 
 			if (levels[currentLevel] != null) {
@@ -637,15 +598,11 @@ public class Renderer extends Game {
 					default: levelName = "Secret dimension"; break;
 				}
 
-				if (!isValidClient()) {
-					info.add("Mob Cnt " + levels[currentLevel].mobCount + "/" + levels[currentLevel].maxMobCount);
-				} else {
-					info.add("Mob Load Cnt " + levels[currentLevel].mobCount);
-				}
+				info.add("Mob Cnt: " + levels[currentLevel].mobCount + "/" + levels[currentLevel].maxMobCount);
 			}
 
 			/// Displays number of chests left, if on dungeon level.
-			if (levels[currentLevel] != null && (isValidServer() || currentLevel == 5 && !isValidClient())) {
+			if (levels[currentLevel] != null && currentLevel == 5) {
 				if (levels[5].chestCount > 0) {
 					info.add("Chests: " + levels[5].chestCount);
 				} else {
@@ -653,12 +610,10 @@ public class Renderer extends Game {
 				}
 			}
 
-			if (!isValidServer()) {
-				info.add("Hunger stam: " + player.getDebugHunger());
-				if (player.armor > 0) {
-					info.add("armor: " + player.armor);
-					info.add("dam buffer: " + player.armorDamageBuffer);
-				}
+			info.add("Hunger stam: " + player.getDebugHunger());
+			if (player.armor > 0) {
+				info.add("Armor: " + player.armor);
+				info.add("Dam buffer: " + player.armorDamageBuffer);
 			}
 
 			if (levels[currentLevel] != null) {
@@ -667,25 +622,8 @@ public class Renderer extends Game {
 				info.add("Music factor: " + Level.randomMusic + "/16000");
 			}
 
-			FontStyle style = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(1);
-			FontStyle substyle = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(1);
-			
-			if (Game.isValidServer()) {
-				style.setYPos(Screen.h).setRelTextPos(RelPos.TOP_RIGHT, true);
-				substyle.setYPos(Screen.h).setRelTextPos(RelPos.TOP_LEFT, true);
-				
-				for (int i = 1; i < info.size(); i++) { // Reverse order
-					info.add(0, info.remove(i));
-				}
-				
-				for (int i = 1; i < subinfo.size(); i++) { // Reverse order
-					subinfo.add(0, subinfo.remove(i));
-				}
-				
-			} else {
-				style.setYPos(2);
-				substyle.setYPos(2);
-			}
+			FontStyle style = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(1).setYPos(1);
+			FontStyle substyle = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(screen.w - 116).setYPos(1);
 
 			Font.drawParagraph(info, screen, style, 2);
 			Font.drawParagraph(subinfo, screen, substyle, 2);

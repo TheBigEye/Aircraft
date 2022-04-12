@@ -97,7 +97,7 @@ public class Settings {
 		if (10 > hz) {
 			return 60;
 		}
-		
+
 		return hz;
 	}
 }

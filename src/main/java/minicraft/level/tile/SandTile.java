@@ -49,9 +49,9 @@ public class SandTile extends Tile {
 
     protected static int sCol(int depth) {
         switch (depth) {
-        case 0: return Color.get(1, 237, 190, 82); // surface.
-        case -4: return Color.get(1, 237, 190, 82); // dungeons.
-        default: return Color.get(1, 237, 190, 82); // caves.
+	        case 0: return Color.get(1, 237, 190, 82); // surface.
+	        case -4: return Color.get(1, 237, 190, 82); // dungeons.
+	        default: return Color.get(1, 237, 190, 82); // caves.
         }
     }
 

@@ -81,8 +81,7 @@ public class DeathChest extends Chest {
     public void render(Screen screen) {
         super.render(screen);
         String timeString = (time / Updater.normSpeed) + "S";
-        Font.draw(timeString, screen, x - Font.textWidth(timeString) / 2,
-                y - Font.textHeight() - getBounds().getHeight() / 2, Color.WHITE);
+        Font.draw(timeString, screen, x - Font.textWidth(timeString) / 2, y - Font.textHeight() - getBounds().getHeight() / 2, Color.WHITE);
     }
 
     @Override
@@ -96,15 +95,9 @@ public class DeathChest extends Chest {
 	@Override
 	public void touchedBy(Entity other) {
 		if(other instanceof Player) {
-			if(!Game.ISONLINE) {
-				((Player)other).getInventory().addAll(getInventory());
-				remove();
-				Game.notifications.add("Death chest retrieved!");
-			}
-			else if(Game.isValidClient()) {
-				Game.client.touchDeathChest(this);
-				remove();
-			}
+			((Player)other).getInventory().addAll(getInventory());
+			remove();
+			Game.notifications.add("Death chest retrieved!");
 		}
 	}
 
@@ -118,12 +111,11 @@ public class DeathChest extends Chest {
 
     @Override
     protected boolean updateField(String field, String val) {
-        if (super.updateField(field, val))
+        if (super.updateField(field, val)) {
             return true;
+        }
         switch (field) {
-        case "time":
-            time = Integer.parseInt(val);
-            return true;
+        	case "time": time = Integer.parseInt(val); return true;
         }
 
         return false;

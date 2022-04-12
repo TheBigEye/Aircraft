@@ -83,7 +83,7 @@ public class OreTile extends Tile {
     }
 
     public void hurt(Level level, int x, int y, int dmg) {
-        int damage = level.getData(x, y) + 1;
+		int damage = level.getData(x, y) + 1;
         int oreH = random.nextInt(10) + 3;
         if (Game.isMode("creative"))
             dmg = damage = oreH;

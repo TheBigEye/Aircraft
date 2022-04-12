@@ -10,7 +10,6 @@ import minicraft.core.Game;
 import minicraft.core.Network;
 import minicraft.core.Updater;
 import minicraft.core.World;
-import minicraft.entity.mob.MobAi;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
@@ -228,30 +227,23 @@ public abstract class Entity implements Tickable {
 
         int xr = this.xr;
         int yr = this.yr;
-        if (Game.isValidClient() && this instanceof Player) {
-            xr++;
-            yr++;
-        }
 
-        List<Entity> isInside = level
-                .getEntitiesInRect(new Rectangle(x + xd, y + yd, xr * 2, yr * 2, Rectangle.CENTER_DIMS)); // Gets the
-                                                                                                          // entities
-                                                                                                          // that this
-                                                                                                          // entity will
-                                                                                                          // touch once
-                                                                                                          // moved.
+
+        List<Entity> isInside = level.getEntitiesInRect(new Rectangle(x + xd, y + yd, xr * 2, yr * 2, Rectangle.CENTER_DIMS)); // Gets the entities                                                                                        // moved.
         if (interact) {
             for (Entity e : isInside) {
-                /// Cycles through entities about to be touched, and calls touchedBy(this) for
-                /// each of them.
-                if (e == this)
+                /// Cycles through entities about to be touched, and calls touchedBy(this) for each of them.
+                if (e == this) {
                     continue; // Touching yourself doesn't count.
+                }
 
                 if (e instanceof Player) {
-                    if (!(this instanceof Player))
+                    if (!(this instanceof Player)) {
                         touchedBy(e);
-                } else
-                    e.touchedBy(this); // Call the method. ("touch" the entity)
+                    }
+                } else {
+                    e.touchedBy(this);// Call the method. ("touch" the entity)
+                } 
             }
         }
 
@@ -316,8 +308,6 @@ public abstract class Entity implements Tickable {
         if (level == null) {
             System.out.println("Tried to set level of entity " + this + " to a null level; Should use remove(level)");
             return;
-        } else if (level != this.level && Game.isValidServer() && this.level != null) {
-            Game.server.broadcastEntityRemoval(this, this.level, !(this instanceof Player));
         }
 
         this.level = level;
@@ -325,21 +315,22 @@ public abstract class Entity implements Tickable {
         this.x = x;
         this.y = y;
 
-        if (eid < 0)
-            eid = Network.generateUniqueEntityId();
+        if (eid < 0) eid = Network.generateUniqueEntityId();
     }
 
     public boolean isWithin(int tileRadius, Entity other) {
-        if (level == null || other.getLevel() == null)
+        if (level == null || other.getLevel() == null) {
             return false;
-        if (level.depth != other.getLevel().depth)
+        }
+        if (level.depth != other.getLevel().depth) {
             return false; // Obviously, if they are on different levels, they can't be next to each other.
+        }
 
-        double distance = Math.abs(Math.hypot(x - other.x, y - other.y)); // Calculate the distance between the two
-                                                                          // entities, in entity coordinates.
+        // Calculate the distance between the two entities, in entity coordinates.
+        double distance = Math.abs(Math.hypot(x - other.x, y - other.y)); 
 
-        return Math.round(distance) >> 4 <= tileRadius; // Compare the distance (converted to tile units) with the
-                                                        // specified radius.
+        // Compare the distance (converted to tile units) with the specified radius.
+        return Math.round(distance) >> 4 <= tileRadius; 
     }
 
     /**
@@ -359,11 +350,11 @@ public abstract class Entity implements Tickable {
      * @return The closest player to this entity.
      */
     protected Player getClosestPlayer(boolean returnSelf) {
-        if (this instanceof Player && returnSelf)
+        if (this instanceof Player && returnSelf) {
             return (Player) this;
+        }
 
-        if (level == null)
-            return null;
+        if (level == null) return null;
 
         return level.getClosestPlayer(x, y);
     }
@@ -380,10 +371,6 @@ public abstract class Entity implements Tickable {
             String val = field.substring(field.indexOf(",") + 1);
             updateField(fieldName, val);
         }
-
-        if (Game.isValidClient() && this instanceof MobAi) {
-            lastUpdate = System.nanoTime();
-        }
     }
 
     /**
@@ -396,26 +383,22 @@ public abstract class Entity implements Tickable {
      */
     protected boolean updateField(String fieldName, String val) {
         switch (fieldName) {
-        case "eid":
-            eid = Integer.parseInt(val);
-            return true;
-        case "x":
-            x = Integer.parseInt(val);
-            return true;
-        case "y":
-            y = Integer.parseInt(val);
-            return true;
-        case "level":
-            if (val.equals("null"))
-                return true; // This means no level.
-            Level newLvl = World.levels[Integer.parseInt(val)];
-            if (newLvl != null && level != null) {
-                if (newLvl.depth == level.depth)
-                    return true;
-                level.remove(this);
-                newLvl.add(this);
-            }
-            return true;
+	        case "eid": eid = Integer.parseInt(val); return true;
+	        case "x": x = Integer.parseInt(val); return true;
+	        case "y": y = Integer.parseInt(val); return true;
+	        case "level":
+	            if (val.equals("null")) {
+	                return true; // This means no level.
+	            }
+	            Level newLvl = World.levels[Integer.parseInt(val)];
+	            if (newLvl != null && level != null) {
+	                if (newLvl.depth == level.depth) {
+	                    return true;
+	                }
+	                level.remove(this);
+	                newLvl.add(this);
+	            }
+	            return true;
         }
         return false;
     }
@@ -444,15 +427,17 @@ public abstract class Entity implements Tickable {
      */
     public final String getUpdates(boolean fetchAll) {
         if (accessedUpdates) {
-            if (fetchAll)
+            if (fetchAll) {
                 return prevUpdates;
-            else
+            } else {
                 return curDeltas;
+            }
         } else {
-            if (fetchAll)
+            if (fetchAll) {
                 return getUpdateString();
-            else
+            } else {
                 return getUpdates();
+            }
         }
     }
 
@@ -503,8 +488,7 @@ public abstract class Entity implements Tickable {
 
         curDeltas = deltas.toString();
 
-        if (curDeltas.length() > 0)
-            curDeltas = curDeltas.substring(0, curDeltas.length() - 1); // Cuts off extra ";"
+        if (curDeltas.length() > 0) curDeltas = curDeltas.substring(0, curDeltas.length() - 1); // Cuts off extra ";"
 
         return curDeltas;
     }

@@ -40,8 +40,8 @@ public class EndMessageDisplay extends Display {
 
 		entries.add(new StringEntry("lol", Color.GREEN));
 		entries.add(new BlankEntry());
-		entries.add(new SelectEntry("Close", () -> Game.setMenu(null)));
-		entries.add(new SelectEntry("Exit to Menu", () -> Game.setMenu(new TitleDisplay())));
+		entries.add(new SelectEntry("Close", () -> Game.setDisplay(null)));
+		entries.add(new SelectEntry("Exit to Menu", () -> Game.setDisplay(new TitleDisplay())));
 
 		menus = new Menu[] {
 				new Menu.Builder(true, 1, RelPos.LEFT, entries).setPositioning(new Point(SpriteSheet.boxWidth, SpriteSheet.boxWidth * 4), RelPos.BOTTOM_RIGHT).setTitle(TITLE).createMenu() 

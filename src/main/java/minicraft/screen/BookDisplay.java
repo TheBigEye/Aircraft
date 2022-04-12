@@ -89,8 +89,9 @@ public class BookDisplay extends Display {
 
     @Override
     public void tick(InputHandler input) {
+    	// this is what closes the book; TODO if books were editable, I would probably remake the book here with the edited pages.
         if (input.getKey("menu").clicked || input.getKey("exit").clicked) {
-            Game.exitMenu(); // this is what closes the book; TODO if books were editable, I would probably remake the book here with the edited pages.
+            Game.exitDisplay(); 
         }
         
         if (input.getKey("cursor-left").clicked) {

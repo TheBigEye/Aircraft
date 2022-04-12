@@ -27,20 +27,20 @@ import minicraft.screen.entry.SelectEntry;
 
 public class TexturePackDisplay extends Display {
 
-    private static final String DEFAULT_TEXTURE_PACK = "Default"; // Default texture :)
-    private static final String LEGACY_TEXTURE_PACK = "Legacy"; // Legacy texture :)
-    private static final String[] ENTRY_NAMES = new String[] {
+	private static final String DEFAULT_TEXTURE_PACK = "Default"; // Default texture :)
+	private static final String LEGACY_TEXTURE_PACK = "Legacy"; // Legacy texture :)
+	private static final String[] ENTRY_NAMES = new String[] {
 
-            "items.png", // Items sheet (0)
-            "tiles.png", // Tiles sheet (1)
-            "entities.png", // Entities sheet (2)
-            "gui.png", // GUI Elements sheet (3)
-            "icons.png", // More GUI Elements sheet (4)
-            "background.png" // More GUI Elements sheet (5)
+			"items.png", // Items sheet (0)
+			"tiles.png", // Tiles sheet (1)
+			"entities.png", // Entities sheet (2)
+			"gui.png", // GUI Elements sheet (3)
+			"icons.png", // More GUI Elements sheet (4)
+			"background.png" // More GUI Elements sheet (5)
 
-    };
-    
-    private static boolean shouldUpdate;
+	};
+
+	private static boolean shouldUpdate;
 
 	private static final File location = new File(FileHandler.getSystemGameDir() + "/" + FileHandler.getLocalGameDir() + "/texture packs");
 
@@ -68,17 +68,16 @@ public class TexturePackDisplay extends Display {
 
 		return textureList;
 	}
-	
+
 	public TexturePackDisplay() {
-		super(true, true,
-				new Menu.Builder(false, 2, RelPos.CENTER, loadTexturePacks()).setSize(64, 64).createMenu());
+		super(true, true, new Menu.Builder(false, 2, RelPos.CENTER, loadTexturePacks()).setSize(64, 64).createMenu());
 	}
-	
+
 	private static void update() {
 		shouldUpdate = true;
 		Sound.Menu_loaded.play();
 	}
-	
+
 	private void updateSheets(Screen screen) throws IOException {
 		try {
 			SpriteSheet[] sheets = new SpriteSheet[TexturePackDisplay.ENTRY_NAMES.length];
@@ -86,36 +85,36 @@ public class TexturePackDisplay extends Display {
 			if (menus[0].getSelection() == 0) {
 				// Load default sprite sheet.
 				sheets = Renderer.loadDefaultSpriteSheets();
-				
+
 			} else if (menus[0].getSelection() == 1) {
 				// Load legacy sprite sheet.
 				sheets = Renderer.loadLegacySpriteSheets();
-				
+
 			} else {
 				try (ZipFile zipFile = new ZipFile(new File(location, Objects.requireNonNull(menus[0].getCurEntry()).toString()))) {
 					for (int i = 0; i < TexturePackDisplay.ENTRY_NAMES.length; i++) {
 						ZipEntry entry = zipFile.getEntry(TexturePackDisplay.ENTRY_NAMES[i]);
-						
+
 						if (entry != null) {
 							try (InputStream inputEntry = zipFile.getInputStream(entry)) {
 								sheets[i] = new SpriteSheet(ImageIO.read(inputEntry));
-								
+
 							} catch (IOException e) {
 								e.printStackTrace();
 								Logger.error("Loading sheet {} failed. Aborting.", TexturePackDisplay.ENTRY_NAMES[i]);
 								return;
 							}
-							
+
 						} else {
 							Logger.debug("Couldn't load sheet {}, ignoring.", TexturePackDisplay.ENTRY_NAMES[i]);
 						}
 					}
-					
+
 				} catch (IllegalStateException | IOException e) {
 					e.printStackTrace();
 					Logger.error("Could not load texture pack with name {} at {}.", Objects.requireNonNull(menus[0].getCurEntry()).toString(), location);
 					return;
-					
+
 				} catch (NullPointerException e) {
 					e.printStackTrace();
 					return;
@@ -132,20 +131,20 @@ public class TexturePackDisplay extends Display {
 		Logger.debug("Changed texture pack to {}.", Objects.requireNonNull(menus[0].getCurEntry()).toString());
 	}
 
-	
+
 	@Override
 	public void render(Screen screen) {
 		super.render(screen);
-		
-        if (shouldUpdate) {
-            shouldUpdate = false;
 
-            try {
-            	updateSheets(screen);
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
-        }
+		if (shouldUpdate) {
+			shouldUpdate = false;
+
+			try {
+				updateSheets(screen);
+			} catch (IOException exception) {
+				exception.printStackTrace();
+			}
+		}
 
 		// Title
 		Font.drawCentered(Localization.getLocalized("Texture Packs"), screen, Screen.h - 280, Color.YELLOW);
@@ -153,16 +152,16 @@ public class TexturePackDisplay extends Display {
 		// Movement instructions
 		Font.drawCentered("Use " + Game.input.getMapping("MOVE-DOWN") + ", " + Game.input.getMapping("MOVE-UP") + ", " + Game.input.getMapping("SELECT"), screen, Screen.h - 11, Color.GRAY);
 
-        int h = 2;
-        int w = 15;
-        int xo = (Screen.w - w * 8) / 2;
-        int yo = 28;
+		int h = 2;
+		int w = 15;
+		int xo = (Screen.w - w * 8) / 2;
+		int yo = 28;
 
-        for (int y = 0; y < h; y++) {
-            for (int x = 0; x < w; x++) {
-                screen.render(xo + x * 8, yo + y * 8, x + y * 32, 0, 3); // Texture pack logo
-            }
-        }
-     
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				screen.render(xo + x * 8, yo + y * 8, x + y * 32, 0, 3); // Texture pack logo
+			}
+		}
+
 	}
 }

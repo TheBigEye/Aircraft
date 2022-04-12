@@ -30,7 +30,7 @@ public class LevelTransitionDisplay extends Display {
             World.changeLevel(dir); // When time equals 30, it will change the level
         }
         if (time == DURATION) {
-            Game.setMenu(null); // When time equals 60, it will get out of this menu
+            Game.setDisplay(null); // When time equals 60, it will get out of this menu
         }
     }
 

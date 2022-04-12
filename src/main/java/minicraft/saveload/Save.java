@@ -30,7 +30,6 @@ import minicraft.entity.furniture.Spawner;
 import minicraft.entity.mob.EnemyMob;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.RemotePlayer;
 import minicraft.entity.mob.Sheep;
 import minicraft.entity.mob.boss.AirWizard;
 import minicraft.entity.mob.boss.AirWizardPhase2;
@@ -40,22 +39,23 @@ import minicraft.entity.particle.TextParticle;
 import minicraft.item.Inventory;
 import minicraft.item.Item;
 import minicraft.item.PotionType;
-import minicraft.network.MinicraftServer;
 import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
+import minicraft.screen.TexturePackDisplay;
 import minicraft.screen.WorldSelectDisplay;
 
 public class Save {
 
 	public String location = Game.gameDir;
 	File folder;
-
-	public static String extension = ".miniplussave";
 	
 	// Used to indent the .json files
 	private static final int indent = 4;
 
+	// Save files extension
+	public static String extension = ".miniplussave";
+	
 	List<String> data;
 
 	/**
@@ -97,50 +97,24 @@ public class Save {
 	public Save(String worldname) {
 		this(new File(Game.gameDir + "/saves/" + worldname + "/"));
 
-		if (Game.isValidClient()) {
-			// Clients are not allowed to save.
-			Updater.saving = false;
-			return;
-		}
-
 		writeGame("Game");
 		writeWorld("Level");
-		
-		if (!Game.isValidServer()) { // This must be waited for on a server.
-			writePlayer("Player", Game.player);
-			writeInventory("Inventory", Game.player);
-		}
-		
+		writePlayer("Player", Game.player);
+		writeInventory("Inventory", Game.player);
 		writeEntities("Entities");
+
 		WorldSelectDisplay.refreshWorldNames();
+
 		Updater.notifyAll("World Saved!");
 		Updater.asTick = 0;
 		Updater.saving = false;
-	}
-
-	/**
-	 * This will save server config options
-	 * 
-	 * @param worldname The name of the world.
-	 * @param server
-	 */
-	public Save(String worldname, MinicraftServer server) {
-		this(new File(Game.gameDir + "/saves/" + worldname + "/"));
-
-		if (Game.debug) {
-			System.out.println("Writing server config...");
-		}
-
-		writeServerConfig("ServerConfig", server);
 	}
 
 	/** This will save the settings in the settings menu. */
 	public Save() {
 		this(new File(Game.gameDir + "/"));
 
-		if (Game.debug) {
-			System.out.println("Writing preferences and unlocks...");
-		}
+		Logger.debug("Writing preferences and unlocks...");
 
 		writePrefs();
 		writeUnlocks();
@@ -187,8 +161,9 @@ public class Save {
 					if (filename.contains("Level5") && i == savedata.length - 1) {
 						bufferedWriter.write(",");
 					}
-				} else
+				} else {
 					bufferedWriter.write("\n");
+				}
 			}
 		}
 	}
@@ -228,7 +203,7 @@ public class Save {
 
 		json.put("keymap", new JSONArray(Game.input.getKeyPrefs()));
 
-		// Save json
+		// Save preferences to json file
 		try {
 			writeJSONToFile(location + "Preferences.json", json.toString(indent));
 		} catch (IOException e) {
@@ -251,20 +226,14 @@ public class Save {
 		}
 
 		json.put("visibleScoreTimes", scoretimes);
-
 		json.put("unlockedAchievements", new JSONArray(AchievementsDisplay.getUnlockedAchievements()));
 
+		// Save unlocks to json file
 		try {
 			writeJSONToFile(location + "Unlocks.json", json.toString(indent));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void writeServerConfig(String filename, MinicraftServer server) {
-		data.add(String.valueOf(server.getPlayerCap()));
-
-		writeToFile(location + filename + extension, data);
 	}
 
 	private void writeWorld(String filename) {
@@ -281,7 +250,7 @@ public class Save {
 					data.add(String.valueOf(World.levels[l].getTile(x, y).name));
 				}
 			}
-
+			
 			writeToFile(location + filename + l + extension, data);
 		}
 
@@ -291,10 +260,9 @@ public class Save {
 					data.add(String.valueOf(World.levels[l].getData(x, y)));
 				}
 			}
-
+			
 			writeToFile(location + filename + l + "data" + extension, data);
 		}
-
 	}
 
 	private void writePlayer(String filename, Player player) {
@@ -323,8 +291,9 @@ public class Save {
 			subdata.append(potion.getKey()).append(";").append(potion.getValue()).append(":");
 		}
 
+		// Cuts off extra ":" and appends "]"
 		if (player.potioneffects.size() > 0) {
-			subdata = new StringBuilder(subdata.substring(0, subdata.length() - (1)) + "]"); // Cuts off extra ":" and appends "]"
+			subdata = new StringBuilder(subdata.substring(0, subdata.length() - (1)) + "]"); 
 		} else {
 			subdata.append("]");
 		}
@@ -373,17 +342,14 @@ public class Save {
 		name = name.substring(name.lastIndexOf('.') + 1);
 		StringBuilder extradata = new StringBuilder();
 
-		// Don't even write ItemEntities or particle effects; Spark... will probably is
-		// saved, eventually; it presents an unfair cheat to remove the sparks by
-		// reloading the Game.
+		// Don't even write ItemEntities or particle effects; Spark... will probably is saved, eventually; 
+		// it presents an unfair cheat to remove the sparks by reloading the Game.
 
-		// If(e instanceof Particle) return ""; // TODO I don't want to, but there are
-		// complications.
+		// TODO I don't want to, but there are complications.
+		// If (e instanceof Particle) return ""; 
 
 		// wirte these only when sending a world, not writing
-		if (isLocalSave && (e instanceof ItemEntity || e instanceof Arrow || e instanceof RemotePlayer || e instanceof Spark || e instanceof Particle)) {
-			// it. (RemotePlayers are saved separately, when their
-			// info is received.)
+		if (isLocalSave && (e instanceof ItemEntity || e instanceof Arrow || e instanceof Spark || e instanceof Particle)) {
 			return "";
 		}
 
@@ -391,11 +357,7 @@ public class Save {
 			extradata.append(":").append(e.eid);
 		}
 
-		if (!isLocalSave && e instanceof RemotePlayer) {
-			RemotePlayer rp = (RemotePlayer) e;
-			extradata.append(":").append(rp.getData());
-		} // The "else" part is so that remote player, which is a mob, doesn't get the health thing.
-		else if (e instanceof Mob) {
+		if (e instanceof Mob) {
 			Mob m = (Mob) e;
 			extradata.append(":").append(m.health);
 
@@ -417,13 +379,8 @@ public class Save {
 				extradata.append(":").append(item.getData());
 			}
 
-			if (chest instanceof DeathChest) {
-				extradata.append(":").append(((DeathChest) chest).time);
-			}
-
-			if (chest instanceof DungeonChest) {
-				extradata.append(":").append(((DungeonChest) chest).isLocked());
-			}
+			if (chest instanceof DeathChest) extradata.append(":").append(((DeathChest) chest).time);
+			if (chest instanceof DungeonChest) extradata.append(":").append(((DungeonChest) chest).isLocked());	
 		}
 
 		if (e instanceof Spawner) {
@@ -442,18 +399,11 @@ public class Save {
 		}
 
 		if (!isLocalSave) {
-			if (e instanceof ItemEntity) {
-				extradata.append(":").append(((ItemEntity) e).getData());
-			}
-			if (e instanceof Arrow) {
-				extradata.append(":").append(((Arrow) e).getData());
-			}
-			if (e instanceof Spark) {
-				extradata.append(":").append(((Spark) e).getData());
-			}
-			if (e instanceof TextParticle) {
-				extradata.append(":").append(((TextParticle) e).getData());
-			}
+			if (e instanceof ItemEntity) extradata.append(":").append(((ItemEntity) e).getData());
+			if (e instanceof Arrow) extradata.append(":").append(((Arrow) e).getData());
+			if (e instanceof Spark) extradata.append(":").append(((Spark) e).getData());
+			if (e instanceof TextParticle) extradata.append(":").append(((TextParticle) e).getData());
+			
 		}
 		// else // is a local save
 

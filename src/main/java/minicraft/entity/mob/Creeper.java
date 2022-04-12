@@ -99,7 +99,7 @@ public class Creeper extends EnemyMob {
                 int yt = (y - 2) >> 4;
 
                 // used for calculations
-                int radius = lvl;
+                int radius = lvl + 1;
 
                 int lvlDamage = BLAST_DAMAGE * lvl;
 

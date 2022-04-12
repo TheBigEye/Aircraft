@@ -74,9 +74,9 @@ public class WorldEditDisplay extends Display {
 
                 WorldSelectDisplay.refreshWorldNames();
                 if (WorldSelectDisplay.getWorldNames().size() > 0)
-                    Game.setMenu(new WorldSelectDisplay());
+                    Game.setDisplay(new WorldSelectDisplay());
                 else
-                    Game.setMenu(new TitleDisplay());
+                    Game.setDisplay(new TitleDisplay());
                 break;
 
             case Copy:
@@ -98,7 +98,7 @@ public class WorldEditDisplay extends Display {
                     e.printStackTrace();
                 }
 
-                Game.setMenu(new WorldSelectDisplay());
+                Game.setDisplay(new WorldSelectDisplay());
 
                 break;
 
@@ -111,7 +111,7 @@ public class WorldEditDisplay extends Display {
                 if (Game.debug)
                     System.out.println("renaming world " + world + " to new name: " + name);
                 world.renameTo(new File(worldsDir + name));
-                Game.setMenu(new WorldSelectDisplay());
+                Game.setDisplay(new WorldSelectDisplay());
                 break;
             }
         }
