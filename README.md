@@ -63,7 +63,7 @@
 
 <!-- ![PREVIEW](https://user-images.githubusercontent.com/63316583/162649419-e732f796-34d6-40cd-8924-4d8cda851503.png) -->
 
-**Aircraft** is a modified version (Mod) of [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived) (Another mod, based on the original Minicraft game made by Markus persson "Notch" for the Lodum dare 22 competition), Aircraft adds the following features:
+**Aircraft** is a modified version (Mod) of [**Minicraft Plus**](https://github.com/chrisj42/minicraft-plus-revived) (Another mod, based on the original Minicraft game made by Markus persson "Notch" for the Lodum dare 22 competition), Aircraft adds the following features:
 
 ## Main features
 ### Graphics:
@@ -107,8 +107,8 @@
 />
 
 ## Installation
-1. Download and install [Java](https://java.com/en/download/), 
-2. Then download the file with the extension .jar of the game [here](https://github.com/TheBigEye/Aircraft/releases).
+1. Download and install [**Java**](https://java.com/en/download/), 
+2. Then download the file with the extension .jar of the game [**here**](https://github.com/TheBigEye/Aircraft/releases).
 3. If you are on Windows:
       Double click on the file or right click > open with "Java platform SE binary".
    If you are on Linux:
