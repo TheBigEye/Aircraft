@@ -1,7 +1,69 @@
-# Aircraft
-![PREVIEW](https://user-images.githubusercontent.com/63316583/162649419-e732f796-34d6-40cd-8924-4d8cda851503.png)
+<!-- ----------------------------------------------------------------------- Python OS ----------------------------------------------------------------------------->
 
-Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived) (Another mod, based on the original Minicraft game made by Markus persson "Notch" for the Lodum dare 22 competition), Aircraft adds the following features:
+<!-- Text header -->
+<p align="center">
+    <a href="https://github.com/TheBigEye/Aircraft#gh-light-mode-only"> <!-- light mode -->
+        <img
+             width="100%"
+             src="https://capsule-render.vercel.app/api?type=transparent&height=150&section=header&text=Aircraft&fontSize=79&animation=fadeIn&fontAlignY=38&desc=A nice Minicraft Plus mod&descAlignY=75&descAlign=50&descSize=22" alt="Nice lightning!"
+         />
+    </a>
+    <a href="https://github.com/TheBigEye/Aircraft#gh-dark-mode-only"> <!-- dark mode -->
+        <img
+             width="100%"
+             src="https://capsule-render.vercel.app/api?type=transparent&height=150&section=header&text=Aircraft&fontSize=79&animation=fadeIn&fontAlignY=38&desc=A nice Minicraft Plus mod&descAlignY=75&descAlign=50&descSize=22&fontColor=f0f0f0" alt="Too dark!!"
+         />
+    </a>
+</p>
+
+<!-- Badges -->
+<p align="center"> 
+     <a href="https://github.com/TheBigEye/Aircraft#gh-light-mode-only"> <!-- light mode -->
+          <img 
+               src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=orange&color=4f4f4f" 
+               Title="Java"  
+          />
+          <img 
+               src="https://komarev.com/ghpvc/?username=Eye-Aircraft&label=Views&style=for-the-badge&color=orange" 
+               Title="Views" 
+          />
+          <img 
+               src="https://img.shields.io/badge/Eclipse-2C2255?style=for-the-badge&logo=eclipse&logoColor=ffffff&color=orange" 
+               Title="Eclipse" 
+          />
+     </a>
+     <a href="https://github.com/TheBigEye/Aircraft#gh-dark-mode-only"> <!-- dark mode -->
+          <img 
+               src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=orange&color=4f4f4f" 
+               Title="Python"  
+          />
+          <img 
+               src="https://komarev.com/ghpvc/?username=Eye-Aircraft&label=Views&color=000000&style=for-the-badge" 
+               Title="Views" 
+          />
+          <img 
+               src="https://img.shields.io/badge/Eclipse-2C2255?style=for-the-badge&logo=eclipse&logoColor=orange&color=000000" 
+               Title="VScode" 
+          />
+     </a>
+</p>
+
+
+
+<!-- Light or dark according to the github theme that the user has when viewing it -->
+
+ <!-- Logo -->
+<img 
+     align="right"
+     width="32%"
+     src="https://github.com/TheBigEye/Aircraft/blob/master/src/main/resources/resources/logo.png"
+     title="Aircraft"
+/>
+
+
+<!-- ![PREVIEW](https://user-images.githubusercontent.com/63316583/162649419-e732f796-34d6-40cd-8924-4d8cda851503.png) -->
+
+**Aircraft** is a modified version (Mod) of [Minicraft Plus](https://github.com/chrisj42/minicraft-plus-revived) (Another mod, based on the original Minicraft game made by Markus persson "Notch" for the Lodum dare 22 competition), Aircraft adds the following features:
 
 ## Main features
 ### Graphics:
@@ -38,9 +100,15 @@ Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chri
 * Enchanted Tools and Enchantment Books (deprecated for now).
 * --dev (developer mode) argumment when running the game in terminal.
 
+<img 
+     align="center"
+     src="https://user-images.githubusercontent.com/63316583/162649419-e732f796-34d6-40cd-8924-4d8cda851503.png"
+     title="Aircraft"
+/>
+
 ## Installation
 1. Download and install [Java](https://java.com/en/download/), 
-2. Then download the file with the extension .jar of the game [here](https://github.com/TheBigEye/Aircraft-Mod/releases).
+2. Then download the file with the extension .jar of the game [here](https://github.com/TheBigEye/Aircraft/releases).
 3. If you are on Windows:
       Double click on the file or right click > open with "Java platform SE binary".
    If you are on Linux:
@@ -49,4 +117,6 @@ Aircraft is a modified version (Mod) of [Minicraft Plus](https://github.com/chri
 
 ## About
 Aircraft is a mod that is totally based on Minicraft Plus. has compatibility with Minicraft plus 2.0.6 and 2.0.7, (Older versions before 1.3 are compatible with 2.0.3 to 2.0.4). Is in Beta phase, it is continuously updated to clean most of the bugs, make maintenance and add features.
+
+#
 
