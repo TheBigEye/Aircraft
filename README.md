@@ -120,3 +120,7 @@ Aircraft is a mod that is totally based on Minicraft Plus. has compatibility wit
 
 #
 
+<!-- -------------------------------------------------------------------------- Credits ------------------------------------------------------------------------------>
+<!-- Header and footer svgs --- kyechan99/capsule-render -->
+<!-- Views counter --- antonkomarev/github-profile-views-counter -->
+<!-- ---------------------------------------------------------------------------- END -------------------------------------------------------------------------------->
