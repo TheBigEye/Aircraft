@@ -109,14 +109,14 @@
 #### Is continuously updated to clean most of the bugs, make maintenance and add features
 
 ## How run?
-1. Download and install [**Java**](https://java.com/en/download/).
-2. Download the file with the extension .jar of the game [**here**](https://github.com/TheBigEye/Aircraft/releases).
-3. If you are on Windows `double click` on the file or `right click > open with "Java platform SE binary`".
-   If you are on Linux open your terminal, go to the path where the .jar was downloaded and write the following: 
+- Download and install [**Java**](https://java.com/en/download/).
+- Download the file with the extension .jar of the game [**here**](https://github.com/TheBigEye/Aircraft/releases).
+- If you are on Windows `double click` on the file or `right click > open with "Java platform SE binary`".
+- If you are on Linux open your terminal, go to the path where the .jar was downloaded and write the following: 
    ```sh
     java -jar Aircraft.jar
    ```
-   If you get any problem when running the game on Windows (like a black screen that appears and disappears, open CMD or Powershell, go to the path where the .jar file is and type the same command).
+- There are some times when trying to run the game with java installed it does not open, or opens a black window that closes immediately, to solve this, open CMD, Powershell or your Terminal, go to the location of the .jar file and write the same command from above).
 
 #
 
