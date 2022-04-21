@@ -118,6 +118,21 @@
    ```
 - There are some times when trying to run the game with java installed it does not open, or opens a black window that closes immediately, to solve this, open CMD, Powershell or your Terminal, go to the location of the .jar file and write the same command from above).
 
+## How build?
+- Download the source code clicking the green code button, and download it as a ZIP.
+- Extract the contents of the folder.
+- Open your command prompt and go using the `cd` command to the folder this will open the folder in the command prompt.
+- Type the following command to build:
+   ```sh
+    ./gradlew build
+   ```
+   or to run:
+   ```sh
+    ./gradlew run
+   ```
+- If you built the project, the jar file is found in `build/libs`
+- If you get an error screaming that you're missing java. You need to set up your JAVA_HOME environment variable, or download a JDK if you haven't already.
+
 #
 
 <!-- -------------------------------------------------------------------------- Credits ------------------------------------------------------------------------------>
