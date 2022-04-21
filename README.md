@@ -1,4 +1,4 @@
-<!-- ----------------------------------------------------------------------- Python OS ----------------------------------------------------------------------------->
+<!-- ----------------------------------------------------------------------- Aircraft ----------------------------------------------------------------------------->
 
 <!-- Text header -->
 <p align="center">
@@ -49,17 +49,15 @@
 </p>
 
 
-
 <!-- Light or dark according to the github theme that the user has when viewing it -->
 
  <!-- Logo -->
 <img 
      align="right"
      width="32%"
-     src="https://github.com/TheBigEye/Aircraft/blob/master/src/main/resources/resources/logo.png"
+     src="https://user-images.githubusercontent.com/63316583/164436759-d1cc8e05-e414-40e7-b77c-fbad0c46a6df.png"
      title="Aircraft"
 />
-
 
 <!-- ![PREVIEW](https://user-images.githubusercontent.com/63316583/162649419-e732f796-34d6-40cd-8924-4d8cda851503.png) -->
 
