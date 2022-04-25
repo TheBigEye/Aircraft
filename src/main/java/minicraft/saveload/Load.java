@@ -91,7 +91,6 @@ import minicraft.level.tile.Tiles;
 import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
-import minicraft.screen.TexturePackDisplay;
 
 public class Load {
 
@@ -942,6 +941,15 @@ public class Load {
 					Direction dir = Direction.values[Integer.parseInt(info.get(3))];
 					int dmg = Integer.parseInt(info.get(5));
 					newEntity = new Arrow(m, x, y, dir, dmg);
+				}
+			}
+			if (newEntity instanceof Fireball) {
+				int ownerID = Integer.parseInt(info.get(2));
+				Mob m = (Mob)Network.getEntity(ownerID);
+				if (m != null) {
+					Direction dir = Direction.values[Integer.parseInt(info.get(3))];
+					int dmg = Integer.parseInt(info.get(5));
+					newEntity = new Fireball(m, x, y, dir, dmg);
 				}
 			}
 			if (newEntity instanceof ItemEntity) {

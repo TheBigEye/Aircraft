@@ -9,7 +9,7 @@ minicraft.achievement.woodcutter.desc
 Corta madera.
 
 minicraft.achievement.benchmarking
-¡Crafteando ando!
+¡Hora de craftear!
 
 minicraft.achievement.benchmarking.desc
 Haz una mesa de crafteo.
@@ -165,12 +165,12 @@ A costume lies on the ground...
 Un disfraz descansa en el suelo...
 
 # Bed.java
-Can't sleep! 
-No puedes dormir! 
-	
+Can't sleep!
+No puedes dormir!
+
 Min 
 Min 
-	
+
  Sec left!
  Seg restante!
 
@@ -1339,7 +1339,7 @@ Level 1
 Nivel 1
 
 Level 0
-Nivvel 0
+Nivel 0
 
 Level B1
 Nivel B1
@@ -1570,10 +1570,10 @@ This can not be undone!
 # WorldGenMenu.java
 
 World Seed
-Semilla del Mundo
+Semilla
 
 Enter World Name
-Ingrese Nombre del Mundo
+Nombre del Mundo
 
 Trouble with world name?
 ¿Problema con el nombre?

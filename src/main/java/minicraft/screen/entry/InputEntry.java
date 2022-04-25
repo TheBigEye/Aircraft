@@ -13,7 +13,7 @@ public class InputEntry extends ListEntry {
 	private String regex;
 	private int maxLength;
 	
-	private String userInput;
+	public String userInput;
 	
 	private ChangeListener listener;
 

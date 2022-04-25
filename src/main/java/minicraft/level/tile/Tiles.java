@@ -310,94 +310,79 @@ public final class Tiles {
 	}
 
 	private static int overflowCheck = 0;
-
 	public static Tile get(String name) {
-		// System.out.println("Getting from tile list: " + name);
-
+		//System.out.println("Getting from tile list: " + name);
+		
 		name = name.toUpperCase();
-
+		
 		overflowCheck++;
-
-		if (overflowCheck > 50) {
+		
+		if(overflowCheck > 50) {
 			System.out.println("STACKOVERFLOW prevented in Tiles.get(), on: " + name);
 			System.exit(1);
 		}
-
-		// System.out.println("Fetching tile " + name);
-
+		
+		//System.out.println("Fetching tile " + name);
+		
 		Tile getting = null;
-
+		
 		boolean isTorch = false;
-		if (name.startsWith("TORCH ")) {
+		if(name.startsWith("TORCH")) {
 			isTorch = true;
-			name = name.substring(6); // cuts off torch prefix.
+			name = name.substring(6); // Cuts off torch prefix.
 		}
 
-		if (name.contains("_")) {
+		if(name.contains("_")) {
 			name = name.substring(0, name.indexOf("_"));
 		}
 
-		for (Tile t : tiles) {
-			if (t == null)
-				continue;
-			if (t.name.equals(name)) {
+		for(Tile t: tiles) {
+			if(t == null) continue;
+			if(t.name.equals(name)) {
 				getting = t;
 				break;
 			}
 		}
-
-		if (getting == null) {
+		
+		if(getting == null) {
 			System.out.println("TILES.GET: Invalid tile requested: " + name);
 			getting = tiles.get(0);
 		}
-
-		if (isTorch) {
+		
+		if(isTorch) {
 			getting = TorchTile.getTorchTile(getting);
 		}
-
+		
 		overflowCheck = 0;
 		return getting;
 	}
 
 	public static Tile get(int id) {
-		// System.out.println("Requesting tile by id: " + id);
+		//System.out.println("Requesting tile by id: " + id);
 		if(id < 0) id += 32768;
 
-		if (tiles.get(id) != null) {
+		if(tiles.get(id) != null) {
 			return tiles.get(id);
-
-		} else if(id >= 32767) {
+		}
+		else if(id >= 32767) {
 			return TorchTile.getTorchTile(get(id - 32767));
-
-		} else {
+		}
+		else {
 			System.out.println("TILES.GET: Unknown tile id requested: " + id);
 			return tiles.get(0);
 		}
 	}
-
+	
 	public static boolean containsTile(int id) {
 		return tiles.get(id) != null;
 	}
-
+	
 	public static String getName(String descriptName) {
-		if (!descriptName.contains("_"))
-			return descriptName;
+		if(!descriptName.contains("_")) return descriptName;
 		int data;
 		String[] parts = descriptName.split("_");
 		descriptName = parts[0];
 		data = Integer.parseInt(parts[1]);
 		return get(descriptName).getName(data);
-	}
-
-	public static Tile getAll() {
-
-		Tile t = null;
-
-		for (Tile ti : tiles) {
-			t = ti;
-		}
-
-		return t;
-
 	}
 }

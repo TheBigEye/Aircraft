@@ -76,38 +76,33 @@ import minicraft.level.tile.TorchTile;
 public class Level {
 	private Random random = new Random();
 
-	private static final String[] levelNames = {
-			"Heaven", "Surface", "Iron", "Gold", "Lava", "Dungeon", "Hell"
-	};
+	private static final String[] levelNames = {"The Void", "Heaven", "Surface", "Iron", "Gold", "Lava", "Dungeon"};
 
 	public static String getLevelName(int depth) {
-		return levelNames[-1 * depth + 1];
+		return levelNames[-1 * depth + 2];
 	}
 
 	public static String getDepthString(int depth) {
 		return "Level " + (depth < 0 ? "B" + (-depth) : depth);
 	}
 
-	private static final int MOB_SPAWN_FACTOR = 100; // the chance of a mob actually trying to spawn when trySpawn is
+	// the chance of a mob actually trying to spawn when trySpawn is
 	// called equals: mobCount / maxMobCount * MOB_SPAWN_FACTOR. so, it
 	// basically equals the chance, 1/number, of a mob spawning when
 	// the mob cap is reached. I hope that makes sense...
+	private static final int MOB_SPAWN_FACTOR = 100; 
 
 	public int w, h;
 	private long seed; // The used seed that was used to generate the world
 
-	// An array of all the tiles in the world.
-	public short[] tiles; 
-	
-	// An array of the data of the tiles in the world
-	public short[] data; 
+	public short[] tiles; // An array of all the tiles in the world.
+	public short[] data; // An array of the data of the tiles in the world
 
-	// used for the Random music system in the current level
-	public static int randomMusic; 
+	public static int randomMusic; // used for the Random music system in the current level
 
 	// Depth level of the level
 	public final int depth; 
-	
+
 	// Affects the number of monsters that are on the level, bigger the number the less monsters spawn.
 	public int monsterDensity = 10; 
 	public int maxMobCount;
@@ -175,12 +170,8 @@ public class Level {
 
 	private void updateMobCap() {
 		maxMobCount = 150 + 150 * Settings.getIdx("diff");
-		if (depth == 1) {
-			maxMobCount /= 2;
-		}
-		if (depth == 0 || depth == -4) {
-			maxMobCount = maxMobCount * 2 / 3;
-		}
+		if (depth == 1) maxMobCount /= 2;
+		if (depth == 0 || depth == -4) maxMobCount = maxMobCount * 2 / 3;
 	}
 
 	public Level(int w, int h, long seed, int level, Level parentLevel, boolean makeWorld) {
@@ -191,7 +182,7 @@ public class Level {
 		short[][] maps; // Multidimensional array (an array within a array), used for the map
 
 		if (level != -4 && level != 0)
-			monsterDensity = 8;
+			monsterDensity = 9;
 
 		updateMobCap();
 
@@ -241,7 +232,7 @@ public class Level {
 				}
 			}
 
-		} else { // This is the sky level
+		} else if (depth == 1) { // This is the sky level
 			boolean placedSkyDungeon = false;
 			while (!placedSkyDungeon) {
 				int x = random.nextInt(this.w - 7);
@@ -764,7 +755,7 @@ public class Level {
 			// spawns the enemy mobs; first part prevents enemy mob spawn on surface and the sky on
 			// first day, more or less.
 			if (!Settings.get("diff").equals("Peaceful")) {
-				if ((Updater.getTime() == Updater.Time.Night || depth != 0 && depth != 1) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
+				if ((Updater.getTime() == Updater.Time.Night || depth != 0 && depth != 1 && depth != 2) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
 					if (depth != -4) { // normal mobs
 						if (rnd <= 40)
 							add((new Slime(lvl)), nx, ny);
@@ -793,6 +784,13 @@ public class Level {
 				}
 			} else {
 				spawned = false;
+			}
+			
+			if (depth == 2 && EnemyMob.checkStartPos(this, nx, ny)) { // if nether
+
+				if (rnd <= 40) add((new Skeleton(1)), nx, ny);
+
+				spawned = true;
 			}
 
 			if (depth == 0 && PassiveMob.checkStartPos(this, nx, ny)) {

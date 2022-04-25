@@ -25,11 +25,9 @@ import minicraft.core.io.Sound;
 import minicraft.entity.mob.Player;
 import minicraft.level.Level;
 import minicraft.level.tile.Tiles;
-import minicraft.network.MinicraftProtocol;
 import minicraft.saveload.Load;
 import minicraft.saveload.Version;
 import minicraft.screen.Display;
-import minicraft.screen.TexturePackDisplay;
 import minicraft.screen.TitleDisplay;
 import minicraft.util.Info;
 
@@ -112,7 +110,7 @@ public class Game {
 
 
 	// LEVEL
-	public static Level[] levels = new Level[6]; // This array stores the different levels.
+	public static Level[] levels = new Level[7]; // This array stores the different levels.
 	public static int currentLevel = 3; // This is the level the player is on. It defaults to 3, the surface.
 
 	// GAME
@@ -239,17 +237,17 @@ public class Game {
 		player.eid = 0;
 		new Load(true); // This loads any saved preferences.
 
-		setDisplay(new TitleDisplay()); // Sets menu to the title screen.
-
-
 		// Window events ----------------------------------------------------------------------------------------------------------------------------------
 
 		// Create a game window
 		Initializer.createAndDisplayFrame();
+		
+		// Sets menu to the title screen.
+		setDisplay(new TitleDisplay()); 
 
 		// Display objects in the screen
 		Renderer.initScreen();
-
+		
 		// Update fullscreen frame if Updater.FULLSCREEN was updated previously
 		if (Updater.FULLSCREEN) {
 			Updater.updateFullscreen();

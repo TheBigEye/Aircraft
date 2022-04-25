@@ -6,116 +6,193 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
+
 import minicraft.core.FileHandler;
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
+import minicraft.core.io.Localization;
+import minicraft.core.io.Sound;
 import minicraft.gfx.Color;
+import minicraft.gfx.Font;
+import minicraft.gfx.Screen;
 import minicraft.screen.Menu.Builder;
-import minicraft.screen.WorldSelectDisplay.Action;
 import minicraft.screen.entry.InputEntry;
 import minicraft.screen.entry.ListEntry;
+import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
 
+/**
+ * Used to edit worlds. These actions include renaming, deleting, and copying worlds.
+ */
 public class WorldEditDisplay extends Display {
+	private static final String worldsDir = Game.gameDir + "/saves/";
+	private final Action action;
 
-    /// this class will be used to enact the extra actions (copy, delete, rename)
-    /// that you can do for worlds in the WorldSelectMenu.
+	private static String worldName;
+	private boolean confirm;
 
-    private Action action;
-    private String worldName;
+	enum Action {
+		Copy("C", Color.BLUE),
+		Rename("R", Color.GREEN),
+		Delete("D", Color.RED);
 
-    private static final String worldsDir = Game.gameDir + "/saves/";
+		public final String key;
+		public final int color;
 
-    public WorldEditDisplay(Action action, String worldName) {
-        super(true);
-        this.action = action;
-        this.worldName = worldName;
+		Action(String key, int col) {
+			this.key = key;
+			this.color = col;
+		}
+	}
 
-        Builder builder = new Builder(false, 8, RelPos.CENTER);
-        ArrayList<ListEntry> entries = new ArrayList<>();
+	public WorldEditDisplay(Action action) {
+		super(true);
+		this.action = action;
+		this.confirm = false;
+	}
 
-        if (action != Action.Delete) {
-            List<String> names = WorldSelectDisplay.getWorldNames();
-            if (action == Action.Rename)
-                names.remove(worldName);
-            entries.add(new StringEntry("New World Name:", action.color));
-            entries.add(WorldGenDisplay.makeWorldNameInput("", names, worldName));
-        } else {
-            entries.addAll(Arrays.asList(new StringEntry("Are you sure you want to delete", action.color),
-                    new StringEntry("\"" + worldName + "\"?", Color.tint(action.color, 1, true)),
-                    new StringEntry("This can not be undone!", action.color)));
-        }
+	@Override
+	public void init(@Nullable Display parent) {
+		super.init(parent);
 
-        entries.addAll(Arrays.asList(StringEntry.useLines(Color.WHITE, "",
-                Game.input.getMapping("select") + " to confirm", Game.input.getMapping("exit") + " to cancel")));
+		if (getParent() instanceof WorldSelectDisplay) {
+			ArrayList<ListEntry> entries = new ArrayList<>();
 
-        builder.setEntries(entries);
+			ArrayList<String> names = WorldSelectDisplay.getWorldNames();
+			for (String name : names) {
+				entries.add(new SelectEntry(name, () -> {
+					worldName = name;
+					menus[1] = new Builder(true, 0, RelPos.CENTER, getConfirmMenuEntries(action)).setSelectable(true).createMenu();
+					confirm = true;
+					selection = 1;
+				}, false) {
+					@Override
+					public int getColor(boolean isSelected) {
+						if (isSelected)
+							return action.color;
+						return super.getColor(false);
+					}
+				});
+			}
 
-        menus = new Menu[] { builder.createMenu() };
-    }
+			menus = new Menu[] {
+					new Menu.Builder(false, 0, RelPos.CENTER, entries)
+					.setDisplayLength(7)
+					.setScrollPolicies(1, true)
+					.createMenu(),
+					new Menu.Builder(true, 0, RelPos.CENTER).setShouldRender(false).createMenu()
+			};
+		}
+	}
 
-    @Override
-    public void tick(InputHandler input) {
-        super.tick(input);
+	@Override
+	public void tick(InputHandler input) {
+		if (confirm) {
+			if (input.getKey("select").clicked) {
+				InputEntry entry;
 
-        if (input.getKey("select").clicked) {
-            // do action
-            InputEntry entry;
-            File world = new File(worldsDir + worldName);
-            switch (action) {
-            case Delete:
-                if (Game.debug)
-                    System.out.println("deleting world: " + world);
-                File[] list = world.listFiles();
-                for (int i = 0; i < list.length; i++) {
-                    list[i].delete();
-                }
-                world.delete();
+				// The location of the world folder on the disk.
+				File world = new File(worldsDir + worldName);
 
-                WorldSelectDisplay.refreshWorldNames();
-                if (WorldSelectDisplay.getWorldNames().size() > 0)
-                    Game.setDisplay(new WorldSelectDisplay());
-                else
-                    Game.setDisplay(new TitleDisplay());
-                break;
+				// Do the action.
+				switch (action) {
+				case Delete:
+					Logger.debug("Deleting world: " + world);
+					File[] list = world.listFiles();
+					for (File file : list) {
+						file.delete();
+					}
+					world.delete();
+					break;
 
-            case Copy:
-                entry = (InputEntry) menus[0].getCurEntry();
-                if (!entry.isValid())
-                    break;
-                // user hits enter with a valid new name; copy is created here.
-                String oldname = worldName;
-                String newname = entry.getUserInput();
-                File newworld = new File(worldsDir + newname);
-                newworld.mkdirs();
-                if (Game.debug)
-                    System.out.println("copying world " + world + " to world " + newworld);
-                // walk file tree
-                try {
-                    FileHandler.copyFolderContents(new File(worldsDir + oldname).toPath(), newworld.toPath(),
-                            FileHandler.REPLACE_EXISTING, false);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+				case Copy:
+					entry = (InputEntry) menus[1].getCurEntry();
+					if (!entry.isValid()) {
+						break;
+					}
+					
+					// user hits enter with a valid new name; copy is created here.
+					String newname = entry.getUserInput();
+					File newworld = new File(worldsDir + newname);
+					newworld.mkdirs();
+					
+					Logger.debug("Copying world {} to world {}.", world, newworld);
+					
+					// walk file tree
+					try {
+						FileHandler.copyFolderContents(new File(worldsDir + worldName).toPath(), newworld.toPath(), FileHandler.REPLACE_EXISTING, false);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					break;
 
-                Game.setDisplay(new WorldSelectDisplay());
+				case Rename:
+					entry = (InputEntry) menus[1].getCurEntry();
+					if (!entry.isValid()) {
+						break;
+					}
 
-                break;
+					// User hits enter with a vaild new name; name is set here:
+					String name = entry.getUserInput();
 
-            case Rename:
-                entry = (InputEntry) menus[0].getCurEntry();
-                if (!entry.isValid())
-                    break;
-                // user hits enter with a vaild new name; name is set here:
-                String name = entry.getUserInput();
-                if (Game.debug)
-                    System.out.println("renaming world " + world + " to new name: " + name);
-                world.renameTo(new File(worldsDir + name));
-                Game.setDisplay(new WorldSelectDisplay());
-                break;
-            }
-        }
-        // Display class will take care to exiting
-    }
+					// Try to rename the file, if it works, return
+					if (world.renameTo(new File(worldsDir + name))) {
+						Logger.debug("Renaming world {} to new name: {}", world, name);
+					} else {
+						Logger.error("Rename failed in WorldEditDisplay.");
+					}
+					break;
+				}
 
+				confirm = false;
+				Sound.Menu_select.play();
+				if (WorldSelectDisplay.getWorldNames().size() > 0) {
+					Game.setDisplay(new WorldSelectDisplay());
+				} else {
+					Game.setDisplay(new WorldGenDisplay());
+				}
+				return;
+			}
+		}
+
+		super.tick(input);
+	}
+
+	@Override
+	public void render(Screen screen) {
+		super.render(screen);
+		Font.drawCentered(Localization.getLocalized("Select a World to " + action), screen, 0, action.color);
+
+		Font.drawCentered(Game.input.getMapping("select") + Localization.getLocalized(" to confirm"), screen, Screen.h - 60, Color.GRAY);
+		Font.drawCentered(Game.input.getMapping("exit") + Localization.getLocalized(" to return"), screen, Screen.h - 40, Color.GRAY);
+	}
+
+	private static List<ListEntry> getConfirmMenuEntries(Action action) {
+		ArrayList<ListEntry> entries = new ArrayList<>();
+		if (action == Action.Delete) {
+			entries.addAll(Arrays.asList(
+					new StringEntry("Are you sure you want to delete", action.color),
+					new StringEntry("\"" + worldName + "\"?", Color.tint(action.color, 1, true)),
+					new StringEntry("This can not be undone!", action.color)
+			));
+		} else {
+			List<String> names = WorldSelectDisplay.getWorldNames();
+			
+			if (action == Action.Rename) {
+				names.remove(worldName);
+			}
+			
+			entries.add(new StringEntry("New World Name:", action.color));
+			entries.add(WorldGenDisplay.makeWorldNameInput("", names, worldName));
+		}
+
+		entries.addAll(Arrays.asList(StringEntry.useLines(Color.WHITE, "",
+				Game.input.getMapping("select") + " to confirm",
+				Game.input.getMapping("exit") + " to cancel"
+		)));
+
+		return entries;
+	}
 }

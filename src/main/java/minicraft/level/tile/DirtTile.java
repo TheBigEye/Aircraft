@@ -30,6 +30,7 @@ public class DirtTile extends Tile {
 		case 1: return Color.get(1, 194, 194, 194); // Sky.
         case 0: return Color.get(1, 129, 105, 83); // surface.
         case -4: return Color.get(1, 44, 21, 67); // dungeons.
+        case 2: return Color.get(1, 73, 55, 44); // the void.
         default: return Color.get(1, 102); // caves.
         }
     }

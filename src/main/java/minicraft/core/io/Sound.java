@@ -12,6 +12,8 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import org.tinylog.Logger;
+
 public class Sound { // Creates sounds from their respective files
 
 	// IMPORTANT: Do not modify these variables, they determine the path of each
@@ -127,90 +129,80 @@ public class Sound { // Creates sounds from their respective files
 	public static final Sound Theme_Cavern_drip = new Sound("/resources/sounds/ambient/music/Cavern drip.wav");
 
 	private Clip clip; // Creates a audio clip to be played
-
-	public static void init() {
-	} // A way to initialize the class without actually doing anything
-
+	
+	public static void init() {} // A way to initialize the class without actually doing anything
+	
 	private Sound(String name) {
 		try {
 			URL url = getClass().getResource(name);
-
+			
 			DataLine.Info info = new DataLine.Info(Clip.class, AudioSystem.getAudioFileFormat(url).getFormat());
-
+			
 			if (!AudioSystem.isLineSupported(info)) {
-				System.err.println("ERROR: Audio format of file " + name + " is not supported: " + AudioSystem.getAudioFileFormat(url));
-
+				Logger.error("ERROR: Audio format of file " + name + " is not supported: " + AudioSystem.getAudioFileFormat(url));
+				
 				System.out.println("Supported audio formats:");
 				System.out.println("-source:");
-
 				Line.Info[] sinfo = AudioSystem.getSourceLineInfo(info);
 				Line.Info[] tinfo = AudioSystem.getTargetLineInfo(info);
-
 				for (Line.Info value : sinfo) {
 					if (value instanceof DataLine.Info) {
 						DataLine.Info dataLineInfo = (DataLine.Info) value;
 						AudioFormat[] supportedFormats = dataLineInfo.getFormats();
-
-						for (AudioFormat af : supportedFormats) {
+						for (AudioFormat af : supportedFormats)
 							System.out.println(af);
-						}
 					}
 				}
 				System.out.println("-target:");
-				for (int i = 0; i < tinfo.length; i++) {
-					if (tinfo[i] instanceof DataLine.Info) {
-
+				for (int i = 0; i < tinfo.length; i++)
+				{
+					if (tinfo[i] instanceof DataLine.Info)
+					{
 						DataLine.Info dataLineInfo = (DataLine.Info) tinfo[i];
 						AudioFormat[] supportedFormats = dataLineInfo.getFormats();
-
-						for (AudioFormat af : supportedFormats) {
-							System.out.println(af);
-						}
+						for (AudioFormat af: supportedFormats)
+							 System.out.println(af);
 					}
 				}
-
+				
 				return;
 			}
-
-			clip = (Clip) AudioSystem.getLine(info);
+			
+			clip = (Clip)AudioSystem.getLine(info);
 			clip.open(AudioSystem.getAudioInputStream(url));
-
+			
 			clip.addLineListener(e -> {
 				if (e.getType() == LineEvent.Type.STOP) {
 					clip.flush();
 					clip.setFramePosition(0);
 				}
 			});
-
+			
 		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-			System.err.println("Could not load sound file " + name);
+			Logger.error("Could not load sound file " + name);
 			e.printStackTrace();
 		}
 	}
-
-	public void play() { // This plays the clip only once, Syntax: Sound.clip.play();
-		if (!(boolean) Settings.get("sound") || clip == null) {
-			return;
-		}
-		if (clip.isRunning() || clip.isActive()) {
+	
+	public void play() {
+		if (!(boolean)Settings.get("sound") || clip == null) return;
+		
+		if (clip.isRunning() || clip.isActive())
 			clip.stop();
-		}
+		
 		clip.start();
 	}
-
-	public void loop(boolean start) { // This repeats the same clip over and over again,
-		if (!(boolean) Settings.get("sound") || clip == null) {
-			return;
-		}
-		if (start) {
+	
+	public void loop(boolean start) {
+		if (!(boolean)Settings.get("sound") || clip == null) return;
+		
+		if (start)
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
-		} else {
+		else
 			clip.stop();
-		}
 	}
-
+	
 	public void stop() { // This stops the clip
 		clip.stop();
 	}
-
 }

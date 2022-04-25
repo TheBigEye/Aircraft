@@ -47,16 +47,14 @@ public class Renderer extends Game {
 	static float SCALE = 2; // Scales the window
 
 	private static String levelName; // Used to store the names of the levels in the debug GUI
-
 	public static Screen screen; // Creates the main screen
 
 	static Canvas canvas = new Canvas();
 
 	private static BufferedImage image; // Creates an image to be displayed on the screen.
-	private static int[] pixels; // The array of pixels that will be displayed on the screen.
 	public static Screen lightScreen; // Creates a front screen to render the darkness in caves (Fog of war).
 	public static boolean readyToRenderGameplay = false;
-	public static boolean showinfo = false;
+	public static boolean showDebugInfo = false;
 	
 	public static final String resourcesFolder = "/resources";
 
@@ -77,19 +75,19 @@ public class Renderer extends Game {
 		} catch (NullPointerException e) {
 			// If a provided InputStream has no name. (in practice meaning it cannot be found.)
 			e.printStackTrace();
-			Logger.error("[Default sprites] A sprite sheet was not found.");
+			Logger.error("Default sprites a sprite sheet was not found.");
 			System.exit(-1);
 			return null;
 
 		} catch (IOException | IllegalArgumentException e) {
 			// If there is an error reading the file.
 			e.printStackTrace();
-			Logger.error("[Default sprites] Could not load a sprite sheet.");
+			Logger.error("Default sprites could not load a sprite sheet.");
 			System.exit(-1);
 			return null;
 		}
 
-		Logger.debug("[Default sprites] Loaded!");
+		Logger.debug("Default sprites loaded!");
 
 		return new SpriteSheet[] { itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background };
 	}
@@ -106,33 +104,31 @@ public class Renderer extends Game {
 
 		} catch (NullPointerException e) {
 			e.printStackTrace();
-			Logger.error("[Legacy sprites] A sprite sheet was not found.");
+			Logger.error("Legacy sprites a sprite sheet was not found.");
 			System.exit(-1);
 			return null;
 
 		} catch (IOException | IllegalArgumentException e) {
 			e.printStackTrace();
-			Logger.error("[Legacy sprites] Could not load a sprite sheet.");
+			Logger.error("Legacy sprites could not load a sprite sheet.");
 			System.exit(-1);
 			return null;
 		}
 
-		Logger.debug("[Legacy sprites] Loaded!");
+		Logger.debug("Legacy sprites loaded!");
 
 		return new SpriteSheet[] { itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background };
 	}
 
 	static void initScreen() {
-		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-		pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-
 		Logger.debug("Loading spriteheets...");
 
 		SpriteSheet[] sheets = loadDefaultSpriteSheets();
 		screen = new Screen(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
 		lightScreen = new Screen(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
-
-		screen.pixels = pixels;
+		
+		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		screen.pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
 		canvas.createBufferStrategy(3);
 		canvas.requestFocus();
@@ -185,7 +181,7 @@ public class Renderer extends Game {
 		int xScroll = player.x - Screen.w / 2; // Scrolls the screen in the x axis.
 		int yScroll = player.y - (Screen.h - 8) / 2; // Scrolls the screen in the y axis.
 
-		// Top scrolling if the screen is at the ...
+		// Stop scrolling if the screen is at the ...
 		if (xScroll < 0) xScroll = 0; // ...Left border.
 		if (yScroll < 0) yScroll = 0; // ...Top border.
 		if (xScroll > level.w * 16 - Screen.w) xScroll = level.w * 16 - Screen.w; // ...right border.
@@ -553,7 +549,7 @@ public class Renderer extends Game {
 		else if (dev) textcol = Color.ORANGE;
 		else textcol = Color.WHITE;
 
-		if (showinfo) {
+		if (showDebugInfo) {
 			ArrayList <String> info = new ArrayList <> ();
 			ArrayList <String> subinfo = new ArrayList <> ();
 

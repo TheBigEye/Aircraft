@@ -105,7 +105,7 @@ public class Items {
 
         Item i = null;
         for (Item cur : items) {
-            if (cur.getName().compareToIgnoreCase(name) == 0) {
+            if (cur.getName().equalsIgnoreCase(name)) {
                 i = cur;
                 break;
             }

@@ -70,7 +70,9 @@ public class TexturePackDisplay extends Display {
 	}
 
 	public TexturePackDisplay() {
-		super(true, true, new Menu.Builder(false, 2, RelPos.CENTER, loadTexturePacks()).setSize(64, 64).createMenu());
+		super(true, true, new Menu.Builder(false, 2, RelPos.CENTER, loadTexturePacks())
+		.setSize(64, 64)
+		.createMenu());
 	}
 
 	private static void update() {

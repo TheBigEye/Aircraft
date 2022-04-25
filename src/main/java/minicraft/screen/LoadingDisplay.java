@@ -58,7 +58,7 @@ public class LoadingDisplay extends Display {
 		percentage = 0;
 		progressType = "World";
 		
-		if (WorldSelectDisplay.loadedWorld()) {
+		if (WorldSelectDisplay.hasLoadedWorld()) {
 			msg = Localization.getLocalized("Loading");
 		} else {
 			LoadingDisplay.Build = Localization.getLocalized(BuildString[random.nextInt(BuildString.length)]);
@@ -73,7 +73,7 @@ public class LoadingDisplay extends Display {
 	@Override
 	public void onExit() {
 		percentage = 0;
-		if (!WorldSelectDisplay.loadedWorld()) {
+		if (!WorldSelectDisplay.hasLoadedWorld()) {
 			progressType = "World";
 			msg = Localization.getLocalized("Rendering");
 			new Save(WorldSelectDisplay.getWorldName());
@@ -107,7 +107,7 @@ public class LoadingDisplay extends Display {
 		
 		int LoadingIndex = (step / 4) % 24;
 
-		if (!WorldSelectDisplay.loadedWorld()) {
+		if (!WorldSelectDisplay.hasLoadedWorld()) {
 			
 			if (LoadingIndex == 0) {
 				msg = BuildString[random.nextInt(BuildString.length)];

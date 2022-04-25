@@ -50,6 +50,7 @@ public class TitleDisplay extends Display {
 				new SelectEntry("Help", () -> Game.setDisplay(new Display(true,
 						new Menu.Builder(true, 2, RelPos.CENTER, new BlankEntry(),
 								new SelectEntry("Instructions", () -> Game.setDisplay(new BookDisplay(BookData.instructions))),
+								new SelectEntry("Story guide", () -> Game.setDisplay(new BookDisplay(BookData.storylineGuide))),
 								new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
 								new SelectEntry("About", () -> Game.setDisplay(new BookDisplay(BookData.about))),
 								new BlankEntry(),
@@ -192,7 +193,7 @@ public class TitleDisplay extends Display {
 
 		// Title sprite
 		int h = 6; // Height of squares (on the spritesheet)
-		int w = 20; // Width of squares (on the spritesheet)
+		int w = 26; // Width of squares (on the spritesheet)
 		int xo = (Screen.w - w * 8) / 2; // X location of the title
 		int yo = 55; // Y location of the title
 
@@ -211,12 +212,12 @@ public class TitleDisplay extends Display {
 		/// This isn't as complicated as it looks. It just gets a color based off of count, which oscilates between 0 and 25.
 		int bcol = 5 - count / 5; // this number ends up being between 1 and 5, inclusive.
 		int splashColor = 
-				isblue ? Color.BLUE :
-					isRed ? Color.RED :
-						isGreen ? Color.GREEN :
-							isOrange ? Color.ORANGE :
-								isYellow ? Color.YELLOW :
-									Color.get(1, bcol * 51, bcol * 51, bcol * 25);
+			isblue ? Color.BLUE :
+			isRed ? Color.RED :
+			isGreen ? Color.GREEN :
+			isOrange ? Color.ORANGE :
+			isYellow ? Color.YELLOW :
+			Color.get(1, bcol * 51, bcol * 51, bcol * 25);
 
 		Font.drawCentered(splashes[rand], screen, 100, splashColor);
 
@@ -272,7 +273,7 @@ public class TitleDisplay extends Display {
 
 			"Test == InDev!", "Story? yes!", "Mod on phase B-eta",
 
-			"Axes: good against plants!", "Picaxes: good against rocks!", "Shovels: good against dirt!",
+			"Axes: good against plants!", "Pickaxes: good against rocks!", "Shovels: good against dirt!",
 			"Swords: good against mobs!",
 
 			// What's that?
@@ -322,7 +323,7 @@ public class TitleDisplay extends Display {
 			"That guy is such a sly fox!", "Hola senor!", "Sonic Boom!", "Hakuna Matata!", "One truth prevails!", "Awesome!",
 			"Sweet!", "Great!", "Cool!", "Radical!", "011011000110111101101100!", "001100010011000000110001!",
 			"011010000110110101101101?", "...zzz...", "The movie", "hmm yummy", "Doki Doki...", "*Epic music*", "OMG!... wow...",
-			"Java edition",
+			"Java edition", "Sorry Aether, but i win...",
 
 			// Tributes
 			"Rick May, 1940 - 2020", "The Constant", "Just Monika!",

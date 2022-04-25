@@ -33,8 +33,7 @@ public class Menu {
     private int spacing = 0;
     private Rectangle bounds = null;
     private Rectangle entryBounds = null;
-    private RelPos entryPos = RelPos.CENTER; // the x part of this is re-applied per entry, while the y part is
-                                             // calculated once using the cumulative height of all entries and spacing.
+    private RelPos entryPos = RelPos.CENTER; // the x part of this is re-applied per entry, while the y part is calculated once using the cumulative height of all entries and spacing.
 
     private String title = "";
     private int titleColor;
@@ -148,10 +147,18 @@ public class Menu {
         return dispSelection;
     }
 
-	ListEntry[] getEntries() { return entries.toArray(new ListEntry[0]); }
-	void setEntries(ListEntry[] entries) {
+	ListEntry[] getEntries() {
+		return entries.toArray(new ListEntry[0]); 
+	}
+	
+	protected void setEntries(ListEntry[] entries) {
 		this.entries.clear();
 		this.entries.addAll(0, Arrays.asList(entries));
+	}
+	
+	protected void setEntries(List<ListEntry> entries) {
+		this.entries.clear();
+		this.entries.addAll(entries);
 	}
 
     @Nullable

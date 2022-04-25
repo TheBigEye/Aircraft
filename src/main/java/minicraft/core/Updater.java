@@ -32,12 +32,9 @@ public class Updater extends Game {
 	static int time = 0; // Facilities time of day / sunlight.
 
 	public static final int dayLength = 64800; // This value determines how long one game day is.
-	public static final int sleepEndTime = dayLength / 8; // This value determines when the player "wakes up" in the
-	// morning.
-	public static final int sleepStartTime = dayLength / 2 + dayLength / 8; // This value determines when the player
-	// allowed to sleep.
-	// public static int noon = 32400; // This value determines when the sky
-	// switches from getting lighter to getting darker.
+	public static final int sleepEndTime = dayLength / 8; // This value determines when the player "wakes up" in the morning.
+	public static final int sleepStartTime = dayLength / 2 + dayLength / 8; // This value determines when the player allowed to sleep.
+	// public static int noon = 32400; // This value determines when the sky switches from getting lighter to getting darker.
 
 	public static int gameTime = 0; // This stores the total time (number of ticks) you've been playing your
 	public static boolean pastDay1 = true; // Used to prevent mob spawn on surface on day 1.
@@ -94,25 +91,18 @@ public class Updater extends Game {
 		Info.getInfo();
 
 		// move the player -1 level for testing...
-		if (isMode("creative") && input.getKey("SHIFT-S").clicked ) {
-			Game.setDisplay(new LevelTransitionDisplay(-1));
-
-		} else if (isMode("creative") && input.getKey("SHIFT-W").clicked ){
-			Game.setDisplay(new LevelTransitionDisplay(1));
-
-		}
+		if (isMode("creative") && input.getKey("SHIFT-S").clicked ) Game.setDisplay(new LevelTransitionDisplay(-1));
+		if (isMode("creative") && input.getKey("SHIFT-W").clicked ) Game.setDisplay(new LevelTransitionDisplay(1));
 
 		if (input.getKey("FULLSCREEN").clicked) {
 			Updater.FULLSCREEN = !Updater.FULLSCREEN;
 			Updater.updateFullscreen();
-
 		}
 
 		if (newDisplay != display) {
 			if (display != null && (newDisplay == null || newDisplay.getParent() != display)) {
 				display.onExit();
 			}
-
 			if (newDisplay != null && (display == null || newDisplay != display.getParent())) {
 				newDisplay.init(display);
 			}
@@ -215,7 +205,7 @@ public class Updater extends Game {
 				}
 
 				if (display == null && input.getKey("F3").clicked) { // shows debug info in upper-left
-					Renderer.showinfo = !Renderer.showinfo;
+					Renderer.showDebugInfo = !Renderer.showDebugInfo;
 				}
 
 				// for debugging only
@@ -315,10 +305,11 @@ public class Updater extends Game {
 	// this one works too.
 	public static void changeTimeOfDay(int t) {
 		Time[] times = Time.values();
-		if (t > 0 && t < times.length)
+		if (t > 0 && t < times.length) {
 			changeTimeOfDay(times[t]); // it just references the other one.
-		else
+		} else {
 			System.out.println("Time " + t + " does not exist.");
+		}
 	}
 
 	public static Time getTime() {

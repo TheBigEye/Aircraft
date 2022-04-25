@@ -32,6 +32,7 @@ import minicraft.entity.mob.villager.Librarian;
 import minicraft.entity.particle.CloudParticle;
 import minicraft.entity.particle.FerrositeParticle;
 import minicraft.entity.particle.FireParticle;
+import minicraft.entity.particle.Particle;
 import minicraft.entity.particle.PotionParticle;
 import minicraft.entity.particle.SplashParticle;
 import minicraft.entity.particle.TextParticle;
@@ -60,6 +61,7 @@ import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 import minicraft.saveload.Save;
 import minicraft.screen.AchievementsDisplay;
+import minicraft.screen.CommandsDisplay;
 import minicraft.screen.CraftingDisplay;
 import minicraft.screen.InfoDisplay;
 import minicraft.screen.LoadingDisplay;
@@ -677,6 +679,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                 if (input.getKey("pause").clicked) {
                     Game.setDisplay(new PauseDisplay());
                 }
+				if (input.getKey("commands").clicked) {
+					Game.setDisplay(new CommandsDisplay());
+				}
                 if (input.getKey("craft").clicked && !use()) {
                     Game.setDisplay(new CraftingDisplay(Recipes.craftRecipes, "Crafting", this, true));
                 }
@@ -791,7 +796,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			if (t.x >= 0 && t.y >= 0 && t.x < level.w && t.y < level.h) {
 				
 				// Get any entities (except dropped items) on the tile.
-				List<Entity> tileEntities = level.getEntitiesInTiles(t.x, t.y, t.x, t.y, false, ItemEntity.class);
+				List<Entity> tileEntities = level.getEntitiesInTiles(t.x, t.y, t.x, t.y, false, ItemEntity.class, Particle.class);
 				
 				// If there are no other entities than us on the tile.
 				if (tileEntities.size() == 0 || tileEntities.size() == 1 && tileEntities.get(0) == this) {
@@ -1325,7 +1330,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             }
         }
 
-        return r; // Return light radius
+        return r + super.getLightRadius(); // Return light radius
     }
 
     /** What happens when the player dies */

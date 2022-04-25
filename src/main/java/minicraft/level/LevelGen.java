@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
 
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
@@ -124,8 +125,8 @@ public class LevelGen {
 			 */
 
 			stepSize /= 2;
-			scale *= (scaleMod + 0.8D);
-			scaleMod *= 0.4D;
+			scale *= (scaleMod + 0.8);
+			scaleMod *= 0.4;
 
 		} while (stepSize > 1); // This stops when the stepsize is < 1, aka 0 b/c it's an int. At this point there are no more mid values.
 	}
@@ -156,11 +157,14 @@ public class LevelGen {
 	@Nullable
 	static short[][] createAndValidateMap(int w, int h, int level) {
 		worldSeed = WorldGenDisplay.getSeed();
+		
+		Logger.debug("Checking level index for {} ", level);
 
 		if (level == 1) return createAndValidateSkyMap(w, h);      
-		if (level == 0)  return createAndValidateTopMap(w, h);       
+		if (level == 0) return createAndValidateTopMap(w, h);       
 		if (level == -4) return createAndValidateDungeon(w, h);
-		if ((level > -4) && (level < 0))  return createAndValidateUndergroundMap(w, h, -level);
+		if ((level > -4) && (level < 0)) return createAndValidateUndergroundMap(w, h, -level);
+		if (level == 2) return createAndValidateVoidMap(w, h);  // World.java is 2 as here
 
 		System.err.println("LevelGen ERROR: level index is not valid. Could not generate a level.");
 
@@ -169,6 +173,8 @@ public class LevelGen {
 
 	private static short[][] createAndValidateTopMap(int w, int h) {
 		random.setSeed(worldSeed);
+		
+		Logger.debug("Generating surface level, {}x{}...", w, h);
 
 		do {
 			short[][] result = createTopMap(w, h);
@@ -193,6 +199,8 @@ public class LevelGen {
 
 	private static @Nullable short[][] createAndValidateUndergroundMap(int w, int h, int depth) {
 		random.setSeed(worldSeed);
+		
+		Logger.debug("Genereting underground level, {}x{}...", w, h);
 
 		do {
 			short[][] result = createUndergroundMap(w, h, depth);
@@ -216,6 +224,8 @@ public class LevelGen {
 
 	private static short[][] createAndValidateDungeon(int w, int h) {
 		random.setSeed(worldSeed);
+		
+		Logger.debug("Genereting dungeon level, {}x{}...", w, h);
 
 		do {
 			short[][] result = createDungeon(w, h);
@@ -237,6 +247,8 @@ public class LevelGen {
 
 	private static @Nullable short[][] createAndValidateSkyMap(int w, int h) {
 		random.setSeed(worldSeed);
+		
+		Logger.debug("Genereting sky level, {}x{}...", w, h);
 
 		do {
 			short[][] result = createSkyMap(w, h);
@@ -249,6 +261,28 @@ public class LevelGen {
 
 			if (count[Tiles.get("cloud").id & 0xffff] < 2000) continue;
 			if (count[Tiles.get("Stairs Down").id & 0xffff] < w / 64) continue; // size 128 = 2 stairs min
+
+			return result;
+
+		} while (true);
+	}
+	
+	public static @Nullable short[][] createAndValidateVoidMap(int w, int h) {
+		random.setSeed(worldSeed);
+		
+		Logger.debug("Genereting void level, {}x{}...", w, h);
+
+		do {
+			short[][] result = createVoidMap(w, h);
+
+			int[] count = new int[256];
+
+			for (int i = 0; i < w * h; i++) {
+				count[result[0][i] & 0xffff]++;
+			}
+			if (count[Tiles.get("rock").id & 0xffff] < 100) continue;
+			if (count[Tiles.get("grass").id & 0xffff] < 100) continue;
+			if (count[Tiles.get("tree").id & 0xffff] < 100) continue;
 
 			return result;
 
@@ -403,7 +437,7 @@ public class LevelGen {
 		}
 
 		// These biomes are established :
-
+		
 		// Desert (big) biome
 		if (Settings.get("Theme").equals("Desert")) {
 			for (int i = 0; i < w * h / 800; i++) {
@@ -824,7 +858,8 @@ public class LevelGen {
 			System.out.println("Generating stairs for surface level...");
 		}
 
-		stairsLoop: for (int i = 0; i < w * h / 100; i++) { // loops a certain number of times, more for bigger world
+		stairsLoop: 
+		for (int i = 0; i < w * h / 100; i++) { // loops a certain number of times, more for bigger world
 
 			// sizes.
 			int x = random.nextInt(w - 2) + 1;
@@ -1020,7 +1055,7 @@ public class LevelGen {
 				}
 			}
 		}
-
+		
 		// Generate ores
 		{
 			// Iron ore
@@ -1051,20 +1086,18 @@ public class LevelGen {
 			}
 		}
 
-		if (depth > 2) { // Generate stairs
+		if (depth > 2) {
 			int r = 1;
 			int xx = 60;
 			int yy = 60;
 			for (int i = 0; i < w * h / 380; i++) {
 				for (int j = 0; j < 10; j++) {
 					if (xx < w - r && yy < h - r) {
+						
 						Structure.dungeonLock.draw(map, xx, yy, w);
-
-						/// The "& 0xff" is a common way to convert a short to an unsigned int, which
-						/// basically prevents negative values... except... this doesn't do anything if
-						/// you flip it back to a byte again...
-
-						map[xx + yy * w] = (short)(Tiles.get("Stairs Down").id & 0xffff);
+						
+						/// The "& 0xffff" is a common way to convert a short to an unsigned int, which basically prevents negative values... except... this doesn't do anything if you flip it back to a short again...
+						map[xx + yy * w] = (short) (Tiles.get("Stairs Down").id & 0xffff);
 					}
 				}
 			}
@@ -1072,36 +1105,26 @@ public class LevelGen {
 
 		if (depth < 3) {
 			int count = 0;
-			stairsLoop: for (int i = 0; i < w * h / 100; i++) {
+			stairsLoop:
+			for (int i = 0; i < w * h / 100; i++) {
 				int x = random.nextInt(w - 20) + 10;
 				int y = random.nextInt(h - 20) + 10;
-
-				for (int yy = y - 1; yy <= y + 1; yy++) {
-					for (int xx = x - 1; xx <= x + 1; xx++) {
-						if (map[xx + yy * w] != Tiles.get("rock").id) {
-							continue stairsLoop;
-						}
-					}
-				}
-
-				// this should prevent any stairsDown tile from being within 30 tiles of any
-				// other stairsDown tile.
-				for (int yy = Math.max(0, y - stairRadius); yy <= Math.min(h - 1, y + stairRadius); yy++) {
-					for (int xx = Math.max(0, x - stairRadius); xx <= Math.min(w - 1, x + stairRadius); xx++) {
-						if (map[xx + yy * w] == Tiles.get("Stairs Down").id) {
-							continue stairsLoop;
-						}
-					}
-				}
-
+				
+				for (int yy = y - 1; yy <= y + 1; yy++)
+					for (int xx = x - 1; xx <= x + 1; xx++)
+						if (map[xx + yy * w] != Tiles.get("rock").id) continue stairsLoop;
+				
+				// This should prevent any stairsDown tile from being within 30 tiles of any other stairsDown tile.
+				for (int yy = Math.max(0, y - stairRadius); yy <= Math.min(h - 1, y + stairRadius); yy++)
+					for (int xx = Math.max(0, x - stairRadius); xx <= Math.min(w - 1, x + stairRadius); xx++)
+						if (map[xx + yy * w] == Tiles.get("Stairs Down").id) continue stairsLoop;
+				
 				map[x + y * w] = Tiles.get("Stairs Down").id;
 				count++;
-				if (count >= w / 32) {
-					break;
-				}
+				if (count >= w / 32) break;
 			}
 		}
-
+		
 		return new short[][]{map, data};
 	}
 
@@ -1553,6 +1576,65 @@ public class LevelGen {
 		return new short[][] {map, data};
 
 	}
+	
+	public static short[][] createVoidMap(int w, int h) {
+		// creates a bunch of value maps, some with small size...
+		LevelGen mnoise1 = new LevelGen(w, h, 16);
+		LevelGen mnoise2 = new LevelGen(w, h, 16);
+		LevelGen mnoise3 = new LevelGen(w, h, 16);
+		// ...and some with larger size.
+		LevelGen noise1 = new LevelGen(w, h, 32);
+		LevelGen noise2 = new LevelGen(w, h, 32);
+
+		short[] map = new short[w * h];
+		short[] data = new short[w * h];
+
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				int i = x + y * w;
+
+				double val = Math.abs(noise1.values[i] - noise2.values[i]) * 3 - 2;
+				double mval = Math.abs(mnoise1.values[i] - mnoise2.values[i]);
+				mval = Math.abs(mval - mnoise3.values[i]) * 3 - 2;
+
+				// this calculates a sort of distance based on the current coordinate.
+				double xd = x / (w - 1.0) * 2 - 1;
+				double yd = y / (h - 1.0) * 2 - 1;
+				if (xd < 0) xd = -xd;
+				if (yd < 0) yd = -yd;
+				double dist = xd >= yd ? xd : yd;
+				dist = dist * dist * dist * dist;
+				dist = dist * dist * dist * dist;
+				val += 1 - dist*20;
+
+				if (val < -0.5) {
+					map[i] = Tiles.get("Infinite Fall").id;
+				} else if (val > 0.5 && mval < -1.0) {
+					map[i] = Tiles.get("rock").id;
+				} else {
+					map[i] = Tiles.get("grass").id;
+				}
+			}
+		}
+		
+		for (int i = 0; i < w * h / 200; i++) {
+			int x = random.nextInt(w);
+			int y = random.nextInt(h);
+			for (int j = 0; j < 200; j++) {
+				int xx = x + random.nextInt(15) - random.nextInt(14);
+				int yy = y + random.nextInt(15) - random.nextInt(14);
+				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+					if (map[xx + yy * w] == Tiles.get("grass").id) {
+						map[xx + yy * w] = Tiles.get("tree").id;
+					}
+				}
+			}
+		}
+
+		return new short[][]{map, data};
+	}
+
+
 
 	public static void main(String[] args) {
 		/*
@@ -1570,34 +1652,30 @@ public class LevelGen {
 		Game.gameDir = "";
 
 		Tiles.initTileList();
-
 		// End of fixes
+
 		int idx = -1;
 
 		int[] maplvls = new int[args.length];
 		boolean valid = true;
-
 		if (maplvls.length > 0) {
 			for (int i = 0; i < args.length; i++) {
 				try {
 					int lvlnum = Integer.parseInt(args[i]);
+					maplvls[i] = lvlnum;
 					maplvls[i] = lvlnum;
 				} catch (Exception ex) {
 					valid = false;
 					break;
 				}
 			}
-		} else {
-			valid = false;
-		}
+		} else valid = false;
 
 		if (!valid) {
 			maplvls = new int[1];
 			maplvls[0] = 0;
 		}
-
-		// Execute it forever
-		// noinspection InfiniteLoopStatement
+		
 		boolean hasquit = false;
 		while (!hasquit) { // stop the loop and close the program.) 
 
@@ -1708,14 +1786,15 @@ public class LevelGen {
 
 			String finalGenTime;
 
-			if (timeElapsed > 60) {
+			if (timeElapsed > 32) {
 				finalGenTime = "Time: " + timeElapsed + "s" + " | " + "WARNING: Slow gen!";
 			} else {
 				finalGenTime = "Time: " + timeElapsed + "s";
 			}
 
 			// Print the seed, the generator version, the elapsed time
-			System.out.println("[LevelGen]" + " | " + "Seed: " + worldSeed + " | " + "Gen-Version: " + Game.BUILD + " | " + finalGenTime);
+			//System.out.println("[LevelGen]" + " | " + "Seed: " + worldSeed + " | " + "Gen-Version: " + Game.BUILD + " | " + finalGenTime);
+			Logger.debug("Generated: {} | Seed: {} | Gen-Version: {} | {}", lvl, worldSeed, Game.BUILD, finalGenTime);
 
 			img.setRGB(0, 0, w, h, pixels, 0, w); // Sets the pixels into the image
 

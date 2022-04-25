@@ -19,6 +19,7 @@ import minicraft.core.io.Localization;
 import minicraft.core.io.Settings;
 import minicraft.entity.Arrow;
 import minicraft.entity.Entity;
+import minicraft.entity.Fireball;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.Spark;
 import minicraft.entity.furniture.Chest;
@@ -42,7 +43,6 @@ import minicraft.item.PotionType;
 import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
-import minicraft.screen.TexturePackDisplay;
 import minicraft.screen.WorldSelectDisplay;
 
 public class Save {
@@ -103,7 +103,7 @@ public class Save {
 		writeInventory("Inventory", Game.player);
 		writeEntities("Entities");
 
-		WorldSelectDisplay.refreshWorldNames();
+		WorldSelectDisplay.updateWorlds();
 
 		Updater.notifyAll("World Saved!");
 		Updater.asTick = 0;
@@ -250,7 +250,7 @@ public class Save {
 					data.add(String.valueOf(World.levels[l].getTile(x, y).name));
 				}
 			}
-			
+
 			writeToFile(location + filename + l + extension, data);
 		}
 
@@ -260,9 +260,10 @@ public class Save {
 					data.add(String.valueOf(World.levels[l].getData(x, y)));
 				}
 			}
-			
+
 			writeToFile(location + filename + l + "data" + extension, data);
 		}
+
 	}
 
 	private void writePlayer(String filename, Player player) {
@@ -403,6 +404,7 @@ public class Save {
 			if (e instanceof Arrow) extradata.append(":").append(((Arrow) e).getData());
 			if (e instanceof Spark) extradata.append(":").append(((Spark) e).getData());
 			if (e instanceof TextParticle) extradata.append(":").append(((TextParticle) e).getData());
+			if (e instanceof Fireball) extradata.append(":").append(((Fireball) e).getData());
 			
 		}
 		// else // is a local save

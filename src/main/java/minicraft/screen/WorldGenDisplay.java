@@ -100,7 +100,8 @@ public class WorldGenDisplay extends Display {
 			}
 		};
 
-		menus = new Menu[] { new Menu.Builder(false, 10, RelPos.LEFT, nameField, nameHelp, Settings.getEntry("mode"),
+		menus = new Menu[] {
+				new Menu.Builder(false, 10, RelPos.LEFT, nameField, nameHelp, Settings.getEntry("mode"),
 				Settings.getEntry("scoretime"),
 
 				new SelectEntry("Create World", () -> {
