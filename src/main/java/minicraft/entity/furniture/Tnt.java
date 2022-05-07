@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.Timer;
 
+import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
@@ -24,7 +25,7 @@ import minicraft.screen.AchievementsDisplay;
 public class Tnt extends Furniture implements ActionListener {
 	private static int FUSE_TIME = 90;
 	private static int BLAST_RADIUS = 32;
-	private static int BLAST_DAMAGE = 30;
+	private static int BLAST_DAMAGE = 75;
 
 	private int damage = 0;
 	private int light;
@@ -52,7 +53,7 @@ public class Tnt extends Furniture implements ActionListener {
 
 		if (fuseLit) {
 			ftik++;
-			
+
 			light = 2;
 
 			if (ftik >= FUSE_TIME) {
@@ -62,24 +63,24 @@ public class Tnt extends Furniture implements ActionListener {
 				for (Entity e : entitiesInRange) {
 					float dist = (float) Math.hypot(e.x - x, e.y - y);
 					damage = (int) (BLAST_DAMAGE * (1 - (dist / BLAST_RADIUS))) + 1;
-					
-					if (e instanceof Mob) {
+
+					if (e instanceof Mob && damage > 0) {
 						((Mob) e).onExploded(this, damage);
 					}
 
 					// Ignite other bombs in range.
 					if (e instanceof Tnt) {
 						Tnt tnt = (Tnt) e;
-						
+
 						if (!tnt.fuseLit) {
 							tnt.fuseLit = true;
 							Sound.Furniture_tnt_fuse.play();
 							tnt.ftik = FUSE_TIME * 2 / 3;
 						}
-						
+
 					}
 				}
-				
+
 				int xt = x >> 4;
 				int yt = (y - 2) >> 4;
 
@@ -96,12 +97,12 @@ public class Tnt extends Furniture implements ActionListener {
 
 				// Random explode sound
 				switch (random.nextInt(4)) {
-					case 0: Sound.Furniture_tnt_explode.play(); break;
-					case 1: Sound.Furniture_tnt_explode.play(); break;
-					case 2: Sound.Furniture_tnt_explode_2.play(); break;
-					case 3: Sound.Furniture_tnt_explode_3.play(); break;
-					case 4: Sound.Furniture_tnt_explode_4.play(); break;
-					default: Sound.Furniture_tnt_explode.play(); break;
+				case 0: Sound.Furniture_tnt_explode.play(); break;
+				case 1: Sound.Furniture_tnt_explode.play(); break;
+				case 2: Sound.Furniture_tnt_explode_2.play(); break;
+				case 3: Sound.Furniture_tnt_explode_3.play(); break;
+				case 4: Sound.Furniture_tnt_explode_4.play(); break;
+				default: Sound.Furniture_tnt_explode.play(); break;
 				}
 
 				level.setAreaTiles(xt, yt, 1, Tiles.get("explode"), 0, explosionBlacklist);
@@ -109,8 +110,11 @@ public class Tnt extends Furniture implements ActionListener {
 				levelSave = level;
 				explodeTimer.start();
 				super.remove();
-				
-				AchievementsDisplay.setAchievement("minicraft.achievement.demolition", true);
+
+				if (!Game.isMode("creative")) {
+					AchievementsDisplay.setAchievement("minicraft.achievement.demolition", true);
+				}
+
 			}
 		}
 	}
@@ -130,16 +134,16 @@ public class Tnt extends Furniture implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		explodeTimer.stop();
 		int xt = x >> 4;
-		int yt = (y - 2) >> 4;
-		
-		if (levelSave.depth != 1) {
-			levelSave.setAreaTiles(xt, yt, 1, Tiles.get("hole"), 0, explosionBlacklist);
-			
-		} else {
-			levelSave.setAreaTiles(xt, yt, 1, Tiles.get("Infinite Fall"), 0, explosionBlacklist);
-		}
-		
-		levelSave = null;
+				int yt = (y - 2) >> 4;
+
+				if (levelSave.depth != 1 && levelSave.depth != 2) {
+					levelSave.setAreaTiles(xt, yt, 1, Tiles.get("hole"), 0, explosionBlacklist);
+
+				} else {
+					levelSave.setAreaTiles(xt, yt, 1, Tiles.get("Infinite Fall"), 0, explosionBlacklist);
+				}
+
+				levelSave = null;
 	}
 
 	@Override
@@ -165,12 +169,12 @@ public class Tnt extends Furniture implements ActionListener {
 			return true;
 		}
 		switch (field) {
-			case "fuseLit": fuseLit = Boolean.parseBoolean(val); return true;
-			case "ftik": ftik = Integer.parseInt(val); return true;
+		case "fuseLit": fuseLit = Boolean.parseBoolean(val); return true;
+		case "ftik": ftik = Integer.parseInt(val); return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int getLightRadius() {
 		return light;

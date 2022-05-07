@@ -181,7 +181,10 @@ public class TreeTile extends Tile {
             
             level.setTile(x, y, Tiles.get(baseTile));
             
-            AchievementsDisplay.setAchievement("minicraft.achievement.woodcutter", true);
+			if (!Game.isMode("creative")) {
+				AchievementsDisplay.setAchievement("minicraft.achievement.woodcutter", true);
+			}
+			
         } else {
             level.setData(x, y, damage);
         }

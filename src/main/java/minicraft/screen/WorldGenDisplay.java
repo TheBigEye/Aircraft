@@ -46,7 +46,7 @@ public class WorldGenDisplay extends Display {
 	}
 
 	public static InputEntry makeWorldNameInput(String prompt, List<String> takenNames, String initValue) {
-		return new InputEntry(prompt, worldNameRegex, 36, initValue) {
+		return new InputEntry(prompt, worldNameRegex, 32, initValue) {
 			@Override
 			public boolean isValid() {
 				if (!super.isValid())

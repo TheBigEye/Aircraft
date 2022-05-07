@@ -23,11 +23,7 @@ public class Cow extends PassiveMob {
         super.tick();
 
         Player player = getClosestPlayer();
-        if (player != null && player.activeItem != null && player.activeItem.name.equals("Wheat")) { // This function
-                                                                                                     // will make the
-                                                                                                     // entity follow
-                                                                                                     // the player
-                                                                                                     // directly
+        if (player != null && player.activeItem != null && player.activeItem.name.equals("Wheat")) {
 
             // Render heart particles
             int randX = rnd.nextInt(10);

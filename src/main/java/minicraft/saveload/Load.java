@@ -471,7 +471,7 @@ public class Load {
 
 		// Load unlocked achievements.
 		if (json.has("unlockedAchievements")) {
-			AchievementsDisplay.setUnlockedAchievements(json.getJSONArray("unlockedAchievements"));
+			AchievementsDisplay.unlockAchievements(json.getJSONArray("unlockedAchievements"));
 		}
 	}
 
@@ -877,12 +877,10 @@ public class Load {
 			if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is more or equal to 2.0.7-dev1
 				if (newEntity instanceof Sheep) {
 					Sheep sheep = ((Sheep) mob);
-
 					if (info.get(3).equalsIgnoreCase("true")) {
 						sheep.isCut = true;
 
 					}
-
 					mob = sheep;
 				}
 			}

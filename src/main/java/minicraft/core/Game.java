@@ -56,7 +56,7 @@ public class Game {
 
 	public static final String NAME = "Aircraft"; // This is the name on the application window
 	public static final String BUILD = "0.5"; // Aircraft version
-	public static final Version VERSION = new Version("2.1.0-dev2"); // Minicraft plus mod base version
+	public static final Version VERSION = new Version("2.1.0-dev3"); // Minicraft plus mod base version
 
 	public static InputHandler input; // Input used in Game, Player, and just about all the *Menu classes*.
 	public static Player player;
@@ -142,6 +142,7 @@ public class Game {
 			PrintWriter printer = new PrintWriter(crash);
 			throwable.printStackTrace(printer);
 
+			// If the OS not have a desktop or graphic interface
 			if (GraphicsEnvironment.isHeadless()) {
 				return;
 			}
@@ -236,17 +237,19 @@ public class Game {
 		World.resetGame(); // "half"-starts a new game, to set up initial variables
 		player.eid = 0;
 		new Load(true); // This loads any saved preferences.
+		
+		MAX_FPS = (int) Settings.get("fps"); // Load FPS
 
 		// Window events ----------------------------------------------------------------------------------------------------------------------------------
 
 		// Create a game window
 		Initializer.createAndDisplayFrame();
-		
-		// Sets menu to the title screen.
-		setDisplay(new TitleDisplay()); 
 
 		// Display objects in the screen
 		Renderer.initScreen();
+		
+		// Sets menu to the title screen.
+		setDisplay(new TitleDisplay()); 
 		
 		// Update fullscreen frame if Updater.FULLSCREEN was updated previously
 		if (Updater.FULLSCREEN) {

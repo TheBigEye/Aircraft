@@ -126,20 +126,24 @@ public class Spawner extends Furniture {
             return; // can't spawn more entities
 
         Player player = getClosestPlayer();
-        if (player == null)
+        if (player == null) {
             return;
+        }
+        
         int xd = player.x - x;
         int yd = player.y - y;
 
-        if (xd * xd + yd * yd > ACTIVE_RADIUS * ACTIVE_RADIUS)
+        if (xd * xd + yd * yd > ACTIVE_RADIUS * ACTIVE_RADIUS) {
             return;
+        }
 
         MobAi newmob;
         try {
-            if (mob instanceof EnemyMob)
+            if (mob instanceof EnemyMob) {
                 newmob = mob.getClass().getConstructor(int.class).newInstance(lvl);
-            else
+            } else {
             	newmob = mob.getClass().getDeclaredConstructor().newInstance();
+            }
         } catch (Exception ex) {
             System.err.println("Spawner ERROR: could not spawn mob; error initializing mob instance:");
             ex.printStackTrace();
@@ -149,20 +153,22 @@ public class Spawner extends Furniture {
         Point pos = new Point(x >> 4, y >> 4);
         Point[] areaPositions = level.getAreaTilePositions(pos.x, pos.y, 1);
         ArrayList<Point> validPositions = new ArrayList<>();
-        for (Point p : areaPositions)
-            if (!(!level.getTile(p.x, p.y).mayPass(level, p.x, p.y, newmob)
-                    || mob instanceof EnemyMob && level.getTile(p.x, p.y).getLightRadius(level, p.x, p.y) > 0))
+        for (Point p : areaPositions) {
+            if (!(!level.getTile(p.x, p.y).mayPass(level, p.x, p.y, newmob) || mob instanceof EnemyMob && level.getTile(p.x, p.y).getLightRadius(level, p.x, p.y) > 0)) {
                 validPositions.add(p);
+            }
+        }
 
-        if (validPositions.size() == 0)
+        if (validPositions.size() == 0) {
             return; // cannot spawn mob.
+        }
 
         Point spawnPos = validPositions.get(random.nextInt(validPositions.size()));
 
         newmob.x = spawnPos.x << 4;
         newmob.y = spawnPos.y << 4;
         
-        if (Game.debug) level.printLevelLoc("Spawning new " + mob, (newmob.x>>4), (newmob.y>>4), "...");
+        if (Game.debug) level.printLevelLoc("Spawning new " + mob, (newmob.x >> 4), (newmob.y >> 4), "...");
 
         level.add(newmob);
         Sound.Furniture_spawner_spawn.play();

@@ -2,6 +2,7 @@ package minicraft.item;
 
 import java.util.ArrayList;
 
+import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Sprite;
@@ -11,83 +12,84 @@ import minicraft.screen.AchievementsDisplay;
 
 public class PotionItem extends StackableItem {
 
-    protected static ArrayList<Item> getAllInstances() {
-        ArrayList<Item> items = new ArrayList<>();
+	protected static ArrayList<Item> getAllInstances() {
+		ArrayList<Item> items = new ArrayList<>();
 
-        for (PotionType type : PotionType.values())
-            items.add(new PotionItem(type));
+		for (PotionType type : PotionType.values()) {
+			items.add(new PotionItem(type));
+		}
 
-        return items;
-    }
+		return items;
+	}
 
-    public PotionType type;
+	public PotionType type;
 
-    private PotionItem(PotionType type) {
-        this(type, 1);
-    }
+	private PotionItem(PotionType type) {
+		this(type, 1);
+	}
 
-    private PotionItem(PotionType type, int count) {
-        super(type.name, new Sprite(0, 7, 0), count);
-        this.type = type;
-        this.sprite.color = type.dispColor;
-    }
+	private PotionItem(PotionType type, int count) {
+		super(type.name, new Sprite(0, 7, 0), count);
+		this.type = type;
+		this.sprite.color = type.dispColor;
+	}
 
-    // the return value is used to determine if the potion was used, which means
-    // being discarded.
-    public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
-    	
-    	// Hot affairs achievement
-		if (type.equals(PotionType.Lava)) {
+	// the return value is used to determine if the potion was used, which means being discarded.
+	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
+
+		// Hot affairs achievement
+		if (type.equals(PotionType.Lava) && !Game.isMode("creative")) {
 			AchievementsDisplay.setAchievement("minicraft.achievement.lava",true);
 		}
-		
-        return super.interactOn(applyPotion(player, type, true));
-    }
 
-    /// only ever called to load from file
-    public static boolean applyPotion(Player player, PotionType type, int time) {
-        boolean result = applyPotion(player, type, time > 0);
-        if (result && time > 0)
-            player.addPotionEffect(type, time); // overrides time
-        return result;
-    }
+		return super.interactOn(applyPotion(player, type, true));
+	}
 
-    /// main apply potion method
-    public static boolean applyPotion(Player player, PotionType type, boolean addEffect) {
-    	
-    	// if hasEffect, and is disabling, or doesn't have effect, and is enabling...
-        if (player.getPotionEffects().containsKey(type) != addEffect) { 
-            if (!type.toggleEffect(player, addEffect)) {
-                return false; // usage failed
-            }
-        }
+	/// only ever called to load from file
+	public static boolean applyPotion(Player player, PotionType type, int time) {
+		boolean result = applyPotion(player, type, time > 0);
+		if (result && time > 0) {
+			player.addPotionEffect(type, time); // overrides time
+		}
+		return result;
+	}
 
-        if (addEffect && type.duration > 0) {
-            player.potioneffects.put(type, type.duration); // add it
-        }
-        else {
-            player.potioneffects.remove(type);
-        }
+	/// main apply potion method
+	public static boolean applyPotion(Player player, PotionType type, boolean addEffect) {
 
-        return true;
-    }
+		// if hasEffect, and is disabling, or doesn't have effect, and is enabling...
+		if (player.getPotionEffects().containsKey(type) != addEffect) { 
+			if (!type.toggleEffect(player, addEffect)) {
+				return false; // usage failed
+			}
+		}
 
-    @Override
-    public boolean equals(Item other) {
-        return super.equals(other) && ((PotionItem) other).type == type;
-    }
+		if (addEffect && type.duration > 0) {
+			player.potioneffects.put(type, type.duration); // add it
+		}
+		else {
+			player.potioneffects.remove(type);
+		}
 
-    @Override
-    public int hashCode() {
-        return super.hashCode() + type.name.hashCode();
-    }
+		return true;
+	}
 
-    @Override
-    public boolean interactsWithWorld() {
-        return false;
-    }
+	@Override
+	public boolean equals(Item other) {
+		return super.equals(other) && ((PotionItem) other).type == type;
+	}
 
-    public PotionItem clone() {
-        return new PotionItem(type, count);
-    }
+	@Override
+	public int hashCode() {
+		return super.hashCode() + type.name.hashCode();
+	}
+
+	@Override
+	public boolean interactsWithWorld() {
+		return false;
+	}
+
+	public PotionItem clone() {
+		return new PotionItem(type, count);
+	}
 }

@@ -10,6 +10,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import org.tinylog.Logger;
+
 // Game imports
 import minicraft.core.Game;
 import minicraft.core.Updater;
@@ -181,8 +183,9 @@ public class Level {
 		this.seed = seed;
 		short[][] maps; // Multidimensional array (an array within a array), used for the map
 
-		if (level != -4 && level != 0)
+		if (level != -4 && level != 0) {
 			monsterDensity = 9;
+		}
 
 		updateMobCap();
 
@@ -1276,14 +1279,9 @@ public class Level {
 				int y = random.nextInt(h);
 
 				// makes sure the village isn't to close to the previous village
-				if (getTile(x, y) == Tiles.get("grass") &&
-						(Math.abs(x - lastVillageX) > 28 && Math.abs(y - lastVillageY) > 28)) {
+				if (getTile(x, y) == Tiles.get("grass") && (Math.abs(x - lastVillageX) > 28 && Math.abs(y - lastVillageY) > 28)) {
 					lastVillageX = x;
 					lastVillageY = y;
-
-					if (Game.debug) {
-						System.out.println("Trying to generate a village at (" + x + ", " + y + ") ...");
-					}
 
 					// loops for each house in the village
 					for (int hs = 0; hs < 1; hs++) {
@@ -1296,7 +1294,7 @@ public class Level {
 						xo += random.nextInt(8);
 						yo += random.nextInt(8);
 
-						System.out.println((x + xo) + "," + (y + yo));
+						Logger.debug("Generating a village at ({} {}) ...", x, y);
 
 						// generate the villages an villagers
 						if (hasCrops) {

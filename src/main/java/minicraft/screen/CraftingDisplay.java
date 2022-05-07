@@ -45,11 +45,9 @@ public class CraftingDisplay extends Display {
 		this.player = player;
 		this.recipes = recipes.toArray(new Recipe[recipes.size()]);
 
-		itemCountMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Have:").setTitlePos(RelPos.TOP_LEFT)
-				.setPositioning(new Point(recipeMenu.getBounds().getRight() + SpriteSheet.boxWidth, recipeMenu.getBounds().getTop()), RelPos.BOTTOM_RIGHT);
+		itemCountMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Have:").setTitlePos(RelPos.TOP_LEFT).setPositioning(new Point(recipeMenu.getBounds().getRight() + SpriteSheet.boxWidth, recipeMenu.getBounds().getTop()), RelPos.BOTTOM_RIGHT);
 
-		costsMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Cost:").setTitlePos(RelPos.TOP_LEFT)
-				.setPositioning(new Point(itemCountMenu.createMenu().getBounds().getLeft(), recipeMenu.getBounds().getBottom()), RelPos.TOP_RIGHT);
+		costsMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Cost:").setTitlePos(RelPos.TOP_LEFT).setPositioning(new Point(itemCountMenu.createMenu().getBounds().getLeft(), recipeMenu.getBounds().getBottom()), RelPos.TOP_RIGHT);
 
 		menus = new Menu[] { recipeMenu, itemCountMenu.createMenu(), costsMenu.createMenu() };
 
@@ -95,16 +93,47 @@ public class CraftingDisplay extends Display {
 
 		if ((input.getKey("select").clicked || input.getKey("attack").clicked) && recipeMenu.getSelection() >= 0) {
 			// check the selected recipe
-			Recipe r = recipes[recipeMenu.getSelection()];
-			if (r.getCanCraft()) {
-				r.craft(player);
+			Recipe selectedRecipe = recipes[recipeMenu.getSelection()];
+			if (selectedRecipe.getCanCraft()) {
+				
+				if (!Game.isMode("creative"))  {
+					if (selectedRecipe.getProduct().equals(Items.get("Workbench"))){
+						AchievementsDisplay.setAchievement("minicraft.achievement.benchmarking",true);
+					}
+					if (selectedRecipe.getProduct().equals(Items.get("Plank"))){
+						AchievementsDisplay.setAchievement("minicraft.achievement.planks",true);
+					}
+					if (selectedRecipe.getProduct().equals(Items.get("Wood Door"))){
+						AchievementsDisplay.setAchievement("minicraft.achievement.doors",true);
+					}
+					if (selectedRecipe.getProduct().equals(Items.get("Rock Sword")) ||
+							selectedRecipe.getProduct().equals(Items.get("Rock Pickaxe")) ||
+							selectedRecipe.getProduct().equals(Items.get("Rock Axe")) ||
+							selectedRecipe.getProduct().equals(Items.get("Rock Shovel")) ||
+							selectedRecipe.getProduct().equals(Items.get("Rock Hoe")) ||
+							selectedRecipe.getProduct().equals(Items.get("Rock Bow")) ||
+							selectedRecipe.getProduct().equals(Items.get("Rock Claymore"))) {
+						AchievementsDisplay.setAchievement("minicraft.achievement.upgrade", true);
+					}
+					if (selectedRecipe.getProduct().equals(Items.get("blue clothes")) ||
+							selectedRecipe.getProduct().equals(Items.get("green clothes")) ||
+							selectedRecipe.getProduct().equals(Items.get("yellow clothes")) ||
+							selectedRecipe.getProduct().equals(Items.get("black clothes")) ||
+							selectedRecipe.getProduct().equals(Items.get("orange clothes")) ||
+							selectedRecipe.getProduct().equals(Items.get("purple clothes")) ||
+							selectedRecipe.getProduct().equals(Items.get("cyan clothes")) ||
+							selectedRecipe.getProduct().equals(Items.get("reg clothes"))) {
+						AchievementsDisplay.setAchievement("minicraft.achievement.clothes", true);
+					}
+				}
+
+				selectedRecipe.craft(player);
 
 				Sound.Mob_player_craft.play();
 
 				refreshData();
 				for (Recipe recipe : recipes) {
 					recipe.checkCanCraft(player);
-
 				}
 			}
 		}

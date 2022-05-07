@@ -117,11 +117,13 @@ public class World extends Game {
 				Logger.trace("Loading level " + i + "...");
 
 				LoadingDisplay.setMessage(Level.getDepthString(i));
-				if (i > 0)
+				if (i > 0) {
 					levels[lvlIdx(i)] = new Level(worldSize, worldSize, WorldGenDisplay.getSeed(), i, null, !WorldSelectDisplay.hasLoadedWorld());
-				else
+				} 
+				else {
 					levels[lvlIdx(i)] = new Level(worldSize, worldSize, WorldGenDisplay.getSeed(), i, levels[lvlIdx(i+1)], !WorldSelectDisplay.hasLoadedWorld());
-
+				}
+				
 				LoadingDisplay.progress(loadingInc);
 			}
 
@@ -172,14 +174,17 @@ public class World extends Game {
 		player.x = (player.x >> 4) * 16 + 8; // Sets the player's x coord (to center yourself on the stairs)
 		player.y = (player.y >> 4) * 16 + 8; // Sets the player's y coord (to center yourself on the stairs)
 		
-
 		levels[currentLevel].add(player); // Adds the player to the level.
 
-		if (currentLevel == 0) {
-			AchievementsDisplay.setAchievement("minicraft.achievement.lowest_caves", true);
+		
+		if (!Game.isMode("creative")) {
+			if (currentLevel == 0) {
+				AchievementsDisplay.setAchievement("minicraft.achievement.lowest_caves", true);
+			}
+			if (currentLevel == 5) {
+				AchievementsDisplay.setAchievement("minicraft.achievement.obsidian_dungeon", true);
+			}
 		}
-		if (currentLevel == 5) {
-			AchievementsDisplay.setAchievement("minicraft.achievement.obsidian_dungeon", true);
-		}
+		
 	}
 }

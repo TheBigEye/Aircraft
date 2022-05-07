@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
@@ -34,13 +35,11 @@ public class AchievementsDisplay extends Display {
 	private static Achievement selectedAchievement;
 	private static int achievementScore;
 
-	private static final ArrayList<ListEntry> stringEntries = new ArrayList<>();
-
 	static {
 
 		// Get achievements from a json filed stored in resources. Relative to project root.
 		String achievementJson = "";
-		try (InputStream stream = Game.class.getResourceAsStream("/resources/achievements.json")) {
+		try (InputStream stream = Game.class.getResourceAsStream("/resources/Achievements.json")) {
 			assert stream != null;
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			achievementJson = reader.lines().collect(Collectors.joining("\n"));
@@ -62,30 +61,41 @@ public class AchievementsDisplay extends Display {
 
 			achievements.put(obj.getString("id"), a);
 
-			SelectEntry entry = new SelectEntry(obj.getString("id"), null, true);
-
-			stringEntries.add(entry);
 		}
 	}
 
 	public AchievementsDisplay() {
 		super(true, true,
-				new Menu.Builder(true, 2,RelPos.CENTER, stringEntries).setSize(218, 96).setPositioning(new Point(Screen.w / 2, Screen.h / 2 - 64), RelPos.BOTTOM).createMenu(),
-				new Menu.Builder(true, 2, RelPos.BOTTOM, new StringEntry("")).setSize(218, 48).setPositioning(new Point(Screen.w / 2, Screen.h / 2 + 32), RelPos.BOTTOM).createMenu());
+				new Menu.Builder(true, 2,RelPos.CENTER, getAchievemensAsEntries()).setSize(218, 96).setPositioning(new Point(Screen.w / 2, Screen.h / 2 - 64), RelPos.BOTTOM).createMenu(),
+				new Menu.Builder(true, 2, RelPos.BOTTOM, new StringEntry("")).setSize(218, 48).setPositioning(new Point(Screen.w / 2, Screen.h / 2 + 32), RelPos.BOTTOM).createMenu()
+		);
 	}
 
 	@Override
 	public void init(@Nullable Display parent) {
 		super.init(parent);
 
-		selectedAchievement = achievements.get(((SelectEntry) stringEntries.get(menus[0].getSelection())).getText());
+        if (achievements.isEmpty()) {
+            Game.setDisplay(new TitleDisplay());
+            Logger.error("Could not open achievements menu because no achievements could be found.");
+            return;
+        }
+        
+        ListEntry curEntry = menus[0].getCurEntry();
+        if (curEntry instanceof SelectEntry) {
+            selectedAchievement = achievements.get(((SelectEntry) curEntry).getText());
+        }
+
 	}
 
 	@Override
 	public void tick(InputHandler input) {
 		super.tick(input);
 
-		selectedAchievement = achievements.get(((SelectEntry) stringEntries.get(menus[0].getSelection())).getText());
+        ListEntry curEntry = menus[0].getCurEntry();
+        if (curEntry instanceof SelectEntry) {
+            selectedAchievement = achievements.get(((SelectEntry) curEntry).getText());
+        }
 	}
 
 	@Override
@@ -104,24 +114,24 @@ public class AchievementsDisplay extends Display {
 	}
 
 	private static boolean setAchievement(String id, boolean unlocked, boolean save) {
-		Achievement a = achievements.get(id);
+		Achievement achievement = achievements.get(id);
 
 		// Return if we didn't find any achievements.
-		if (a == null) return false;
+		if (achievement == null) return false;
 
-		if (a.getUnlocked() && unlocked) return false; // Return if it is already unlocked.
-		if (!a.getUnlocked() && !unlocked) return false;  // Return if it is already locked.
+		if (achievement.getUnlocked() && unlocked) return false; // Return if it is already unlocked.
+		if (!achievement.getUnlocked() && !unlocked) return false;  // Return if it is already locked.
 
 		// Make the achievement unlocked in memory.
-		a.setUnlocked(unlocked);
-		Logger.debug("Updating " + id + " achievement data...");
+		achievement.setUnlocked(unlocked);
+		Logger.debug("Updating {} achievement data...", id);
 
 		// Add or subtract from score
 		if (unlocked) {
-			achievementScore += a.score;
+			achievementScore += achievement.score;
 
 		} else {
-			achievementScore -= a.score;
+			achievementScore -= achievement.score;
 		}
 
 		// Save the new list of achievements stored in memory.
@@ -141,6 +151,8 @@ public class AchievementsDisplay extends Display {
 		// Achievement score.
 		Font.drawCentered(Localization.getLocalized("Achievements Score:") + " " + achievementScore, screen, 32, Color.GRAY);
 
+		if (selectedAchievement != null) {
+		
 		// Render Achievement Info.
 		if (selectedAchievement.getUnlocked()){
 			Font.drawCentered(Localization.getLocalized("Earned!"), screen, 48, Color.GREEN);
@@ -150,6 +162,7 @@ public class AchievementsDisplay extends Display {
 
 		// Achievement description.
 		menus[1].setEntries(StringEntry.useLines(Font.getLines(Localization.getLocalized(selectedAchievement.description), menus[1].getBounds().getSize().width, menus[1].getBounds().getSize().height, 2)));
+		}
 
 		// Help text.
 		Font.drawCentered("Use " + Game.input.getMapping("cursor-down") + " and " + Game.input.getMapping("cursor-up") + " to move.", screen, Screen.h - 8, Color.DARK_GRAY);
@@ -162,23 +175,52 @@ public class AchievementsDisplay extends Display {
 		new Save();
 	}
 
-	public static String[] getUnlockedAchievements() {
-		ArrayList<String> strings = new ArrayList<>();
+    /**
+     * Gets an array of all the unlocked achievements.
+     * @return A string array with each unlocked achievement's id in it.
+     */
+    public static String[] getUnlockedAchievements() {
+        ArrayList<String> strings = new ArrayList<>();
+        for (String id : achievements.keySet()) {
+            if (achievements.get(id).getUnlocked()) {
+                strings.add(id);
+            }
+        }
+        return strings.toArray(new String[0]);
+    }
+    
+    public static List<ListEntry> getAchievemensAsEntries() {
+        List<ListEntry> achievementsList = new ArrayList<>();
+        for (String id : achievements.keySet()) {
+            // Add entry to list.
+        	achievementsList.add(new SelectEntry(id, null, true){
+                /**
+                 * Change the color of the selection.
+                 */
+                @Override
+                public int getColor(boolean isSelected) {
+                    if (achievements.get(id).getUnlocked()) {
+                        return Color.GREEN;
+                    } else {
+                        return Color.WHITE;
+                    }
+                }
+            });
+        }
 
-		for (String id : achievements.keySet()) {
-			if (achievements.get(id).getUnlocked()) {
-				strings.add(id);
-			}
-		}
+        return achievementsList;
+    }
 
-		return strings.toArray(new String[0]);
-	}
+    /**
+     * Unlocks a list of achievements.
+     * @param unlockedAchievements An array of all the achievements we want to load, ids.
+     */
+    public static void unlockAchievements(JSONArray unlockedAchievements) {
+        for (Object id : unlockedAchievements.toList()) {
+            if (!setAchievement(id.toString(), true, false)) {
+                Logger.warn("Could not load unlocked achievement with name {}.", id.toString());
+            }
+        }
+    }
 
-	public static void setUnlockedAchievements(JSONArray unlockedAchievements) {
-		for (Object id : unlockedAchievements.toList()) {
-			if (!setAchievement(id.toString(), true, false)) {
-				Logger.error("Could not load unlocked achievement with name {}.", id.toString());
-			}
-		}
-	}
 }
