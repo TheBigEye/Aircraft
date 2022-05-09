@@ -1,4 +1,4 @@
-package minicraft.core;
+package minicraft.core.io;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +9,9 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 
+import org.tinylog.Logger;
+
+import minicraft.core.Game;
 import minicraft.saveload.Save;
 
 public class FileHandler extends Game {
@@ -55,7 +58,7 @@ public class FileHandler extends Game {
 		return localGameDir;
 	}
 
-	static void determineGameDir(String saveDir) {
+	public static void determineGameDir(String saveDir) {
 		gameDir = saveDir + localGameDir;
 
 		if (debug) {
@@ -105,10 +108,8 @@ public class FileHandler extends Game {
 
 	public static void copyFolderContents(Path origFolder, Path newFolder, int ifExisting, boolean deleteOriginal) throws IOException {
 
-		// I can determine the local folder structure with origFolder.relativize(file),
-		// then use newFolder.resolve(relative).
-		// if (Game.debug) System.out.println("Copying contents of folder " + origFolder
-		// + " to new folder " + newFolder);
+		// I can determine the local folder structure with origFolder.relativize(file), then use newFolder.resolve(relative).
+		Logger.info("Copying contents of folder " + origFolder + " to new folder " + newFolder);
 
 		Files.walkFileTree(origFolder, new FileVisitor<Path>() {
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {

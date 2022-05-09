@@ -115,6 +115,21 @@ public class Screen {
 	public void render(int xp, int yp, Pixel pixel, int bits, int whiteTint, boolean fullbright, int color) {
 		render(xp, yp, pixel.getX(), pixel.getY(), bits, pixel.getIndex(), whiteTint, fullbright, color);
 	}
+	
+	public void renderColor(int xp, int yp, int width, int height, int color) {
+		xp -= xOffset;
+		yp -= yOffset;
+
+		for (int x = 0; x < width; x++) {
+			if (x + width < 0 || x + width > w) continue;
+			for (int y = 0; y < height; y++) {
+				if (y + height < 0 || y + height > h) continue;
+
+				pixels[(x + xp) + (y + yp) * w] = color;
+			}
+		}
+	}
+	
 
 	/** Renders an object from the sprite sheet based on screen coordinates, tile (SpriteSheet location), colors, and bits (for mirroring).
 	 *  I believe that xp and yp refer to the desired position of the upper-left-most pixel. 

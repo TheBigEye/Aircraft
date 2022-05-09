@@ -315,14 +315,18 @@ public class Level {
 		int numChests = 0;
 
 		if (check) {
-			for (Entity e: entitiesToAdd)
-				if (e instanceof DungeonChest)
+			for (Entity e: entitiesToAdd) {
+				if (e instanceof DungeonChest) {
 					numChests++;
-			for (Entity e: entities)
-				if (e instanceof DungeonChest)
+				}
+			}
+			for (Entity e: entities) {
+				if (e instanceof DungeonChest) {
 					numChests++;
-			if (Game.debug)
-				System.out.println("Found " + numChests + " chests.");
+				}
+			}
+
+			if (Game.debug) System.out.println("Found " + numChests + " chests.");
 		}
 
 		/// Make DungeonChests!
@@ -407,7 +411,16 @@ public class Level {
 			}
 			entitiesToAdd.remove(entity);
 		}
-
+		
+		// LEVEL AMBIENT LOOPS!
+		
+		// in the sky
+		if (depth == 1 && Game.getDisplay() == null) { 
+			Sound.Sky_enviroment.loop(true);
+		} else {
+			Sound.Sky_enviroment.stop();
+		}
+			
 		// this play random music in game
 		if (Settings.get("ambient").equals("Nice")) {
 

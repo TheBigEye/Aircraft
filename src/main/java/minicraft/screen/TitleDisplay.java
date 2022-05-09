@@ -1,10 +1,18 @@
 package minicraft.screen;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import minicraft.core.Game;
 import minicraft.core.Renderer;
@@ -30,15 +38,41 @@ public class TitleDisplay extends Display {
 	private int count = 0; // this and reverse are for the logo; they produce the fade-in/out effect.
 	private boolean reverse = false;
 
+	private static List<String> splashes = new ArrayList<>();
+
+	static {
+		try (InputStream stream = Game.class.getResourceAsStream("/resources/texts/splashes.json")) {
+			if (stream != null) {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+
+				String splashesJson = reader.lines().collect(Collectors.joining("\n"));
+				JSONObject json = new JSONObject(splashesJson);
+
+				JSONArray splashes = json.getJSONArray("splashes");
+
+				List<String> list = new ArrayList<>();
+
+				for (Object obj : splashes) {
+					String s = (String) obj;
+					list.add(s);
+				}
+
+				TitleDisplay.splashes = list;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public TitleDisplay() {
 
 		super(false, false, new Menu.Builder(true, 1, RelPos.CENTER,
 				new SelectEntry("Singleplayer", () -> {
 					if (WorldSelectDisplay.getWorldNames().size() > 0) {
-						Game.setDisplay(new Display(true,
-								new Menu.Builder(false, 2, RelPos.CENTER,
-										new SelectEntry("Load World", () -> Game.setDisplay(new WorldSelectDisplay())),
-										new SelectEntry("New World", () -> Game.setDisplay(new WorldGenDisplay()))).createMenu()));
+						Game.setDisplay(new Display(true, new Menu.Builder(false, 2, RelPos.CENTER,
+							new SelectEntry("Load World", () -> Game.setDisplay(new WorldSelectDisplay())),
+							new SelectEntry("New World", () -> Game.setDisplay(new WorldGenDisplay()))).createMenu())
+						);
 					} else {
 						Game.setDisplay(new WorldGenDisplay());
 					}
@@ -47,19 +81,19 @@ public class TitleDisplay extends Display {
 				new SelectEntry("Options", () -> Game.setDisplay(new OptionsDisplay())),
 				new SelectEntry("Credits", () -> Game.setDisplay(new BookDisplay(BookData.credits))),
 
-				new SelectEntry("Help", () -> Game.setDisplay(new Display(true,
-						new Menu.Builder(true, 2, RelPos.CENTER, new BlankEntry(),
-								new SelectEntry("Instructions", () -> Game.setDisplay(new BookDisplay(BookData.instructions))),
-								new SelectEntry("Story guide", () -> Game.setDisplay(new BookDisplay(BookData.storylineGuide))),
-								new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
-								new SelectEntry("About", () -> Game.setDisplay(new BookDisplay(BookData.about))),
-								new BlankEntry(),
-								new LinkEntry(Color.BLUE, "Minicraft discord", "https://discord.me/minicraft")
-								).setTitle("Help").createMenu()))),
+				new SelectEntry("Help", () -> Game.setDisplay(new Display(true, new Menu.Builder(true, 2, RelPos.CENTER,
+						new BlankEntry(),
+						new SelectEntry("Instructions", () -> Game.setDisplay(new BookDisplay(BookData.instructions))),
+						new SelectEntry("Story guide", () -> Game.setDisplay(new BookDisplay(BookData.storylineGuide))),
+						new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
+						new SelectEntry("About", () -> Game.setDisplay(new BookDisplay(BookData.about))),
+						new BlankEntry(),
+						new LinkEntry(Color.BLUE, "Minicraft discord", "https://discord.me/minicraft")
+				).setTitle("Help").createMenu()))),
 
 				new SelectEntry("Exit", Game::quit)
 
-				).setPositioning(new Point(Screen.w / 2, Screen.h * 3 / 5), RelPos.CENTER).createMenu());
+			).setPositioning(new Point(Screen.w / 2, Screen.h * 3 / 5), RelPos.CENTER).createMenu());
 	}
 
 	@Override
@@ -87,7 +121,7 @@ public class TitleDisplay extends Display {
 				rand = 2;
 			}
 		} else {
-			rand = random.nextInt(splashes.length - 3) + 3;
+			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
 
 		if (time.getMonth() == Month.FEBRUARY) {
@@ -101,7 +135,7 @@ public class TitleDisplay extends Display {
 				rand = 0;
 			}
 		} else {
-			rand = random.nextInt(splashes.length - 3) + 3;
+			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
 
 		if (time.getMonth() == Month.JULY) {
@@ -109,7 +143,7 @@ public class TitleDisplay extends Display {
 				rand = 3;
 			}
 		} else {
-			rand = random.nextInt(splashes.length - 3) + 3;
+			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
 
 		if (time.getMonth() == Month.SEPTEMBER) {
@@ -117,7 +151,7 @@ public class TitleDisplay extends Display {
 				rand = 4;
 			}
 		} else {
-			rand = random.nextInt(splashes.length - 3) + 3;
+			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
 
 		if (time.getMonth() == Month.OCTOBER) {
@@ -137,7 +171,7 @@ public class TitleDisplay extends Display {
 				rand = 6;
 			}
 		} else {
-			rand = random.nextInt(splashes.length - 3) + 3;
+			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
 
 		World.levels = new Level[World.levels.length];
@@ -155,21 +189,9 @@ public class TitleDisplay extends Display {
 
 	@Override
 	public void tick(InputHandler input) {
-		if (input.getKey("r").clicked)
-			rand = random.nextInt(splashes.length - 3) + 3;
-
-		if (!reverse) {
-			count++;
-			if (count == 25)
-				reverse = true;
-		} else {
-			count--;
-			if (count == 0)
-				reverse = false;
-		}
+		if (input.getKey("r").clicked) rand = random.nextInt(splashes.size() - 3) + 3;
 
 		super.tick(input);
-
 	}
 
 	@Override
@@ -203,23 +225,31 @@ public class TitleDisplay extends Display {
 			}
 		}
 
-		boolean isblue = splashes[rand].contains("blue");
-		boolean isGreen = splashes[rand].contains("Green");
-		boolean isRed = splashes[rand].contains("Red");
-		boolean isOrange = splashes[rand].contains("Orange");
-		boolean isYellow = splashes[rand].contains("Yellow") || splashes[rand].contains("Java edition") || splashes[rand].contains("The movie");
+		boolean isblue = splashes.get(rand).contains("blue");
+		boolean isGreen = splashes.get(rand).contains("Green");
+		boolean isRed = splashes.get(rand).contains("Red");
+		boolean isOrange = splashes.get(rand).contains("Orange");
+		boolean isYellow = splashes.get(rand).contains("Yellow") || splashes.get(rand).contains("Java edition") || splashes.get(rand).contains("The movie");
+
+		if (reverse) {
+			count--;
+			if (count == 0) reverse = false;
+		} else {
+			count++;
+			if (count == 25) reverse = true;
+		}
 
 		/// This isn't as complicated as it looks. It just gets a color based off of count, which oscilates between 0 and 25.
 		int bcol = 5 - count / 5; // this number ends up being between 1 and 5, inclusive.
 		int splashColor = 
-			isblue ? Color.BLUE :
-			isRed ? Color.RED :
-			isGreen ? Color.GREEN :
-			isOrange ? Color.ORANGE :
-			isYellow ? Color.YELLOW :
-			Color.get(1, bcol * 51, bcol * 51, bcol * 25);
+				isblue ? Color.BLUE :
+				isRed ? Color.RED :
+				isGreen ? Color.GREEN :
+				isOrange ? Color.ORANGE :
+				isYellow ? Color.YELLOW :
+				Color.get(1, bcol * 51, bcol * 51, bcol * 25);
 
-		Font.drawCentered(splashes[rand], screen, 100, splashColor);
+		Font.drawCentered(splashes.get(rand), screen, 100, splashColor);
 
 		/*
 		 * In case the game has the "in_dev" mode set to true it will show the version as in "Development"
@@ -236,99 +266,4 @@ public class TitleDisplay extends Display {
 		 */
 		Font.draw("Mod by TheBigEye", screen, 300, Screen.h - 10, Color.WHITE);
 	}
-
-	private static final String[] splashes = {
-			"Happy birthday Minicraft!", "Happy XMAS!", "Happy birthday Eye :)", "Happy birthday Zaq :)", "Thanks A.L.I.C.E!",
-
-			// "Bye ben :(",
-
-			// Also play
-			"Also play Minicraft Plus!", "Also play InfinityTale!", "Also play Minicraft Delux!", "Also play Alecraft!",
-			"Also play Hackcraft!", "Also play Minicrate!", "Also play Minicraft Mob Overload!",
-			"Also play Minitale!, oh right :(",
-
-			"Playing " + Game.BUILD + ", nice!", "Based in Minicraft+, nice!", "Updates always!, nice?",
-
-			// Now with...
-			"Now with better fishing!", "Now with better Weapons!", "Now with better tools!", "Now with better chests!",
-			"Now with better dungeons!", "Now with better sounds!", "Air Wizard now with phases!",
-
-			"Only on PlayMinicraft.com!", "Playminicraft.com is the bomb!", "@MinicraftPlus on Twitter",
-			"MinicraftPlus on Youtube", "Join the Forums!", "The Wiki is weak! Help it!", "Great little community!",
-
-			"Notch is Awesome!", "Dillyg10 is cool as Ice!", "Shylor is the man!", "Chris J is great with portals!",
-			"AntVenom loves cows! Honest!", "The eye and Cake rain!", "ASCII", "34.565 lines of code!",
-
-			"You should read Antidious Venomi!", "Oh Hi Mark", "Use the force!", "Keep calm!",
-			"Get him, Steve!", "Forty-Two!", "A hostile paradise",
-
-			// kill
-			"Kill Creeper, get Gunpowder!", "Kill Cow, get Beef!", "Kill Zombie, get Cloth!", "Kill Slime, get Slime!",
-			"Kill Slime, get Problems!", "Kill Skeleton, get Bones!", "Kill Skeleton, get Arrows!", "Kill Sheep, get Wool!",
-			"Kill Goat, get Leather!", "Kill Pig, get Porkchop!", "Kill Chicken, get Feathers!",
-			"Kill Guiman, get more Feathers!",
-
-			// Mineral levels
-			"Wood > Hands", "Stone > Wood", "Iron > Stone", "Gold > Iron", "Gem > Gold",
-
-			"Test == InDev!", "Story? yes!", "Mod on phase B-eta",
-
-			"Axes: good against plants!", "Pickaxes: good against rocks!", "Shovels: good against dirt!",
-			"Swords: good against mobs!",
-
-			// What's that?
-			"Infinite terrain? What's that?", "Ceilings? What's is that?", "Redstone? What's that?",
-			"Minecarts? What are those?", "Windows? I prefer Doors!", "2.5D FTW!", "Grab your friends!", "Sky?, better Aether!",
-
-			// Not Included
-			"Null not included", "Humans not included", "Herobine not included?", "Mouse not included!", "No spiders included!",
-			"No Endermen included!", "3rd dimension not included!", "Orange box not included!", "Alpha version not included!",
-			"Cthulhu sold separately!", "Skins not included!", "Warden not included",
-
-			// Included
-			"Villagers included!", "Creepers included!", "Skeletons included!", "Knights included!", "Snakes included!",
-			"Cows included!", "Sheep included!", "Chickens included!", "Goats included!", "Pigs included!", "Cthulhu included?",
-			"Enchantments Now Included!", "Multiplayer Now Included!", "Carrots Now Included!", "Potatos Now Included!",
-			"Boats Now Included!", "Maps Now Included!", "Books included!", "Sad music included!", "Big eye included!",
-
-			"Shhh!,secret splash!", "A nice cup of coffee!",
-
-			// Worlds
-			"Bigger Worlds!", "World types!", "World themes!", "Mushroom Biome!", "Desert Biome!", "Forest Biome!",
-			"Snow Biome!", "Better sky", "Slow world gen :(",
-
-			// Ideas
-			"Sugarcane is a Idea!", "Milk is an idea!", "Cakes is an idea!", "Coffee is another idea!", "Bottled farts.. maybe an idea",
-
-			"Texture packs!",
-
-			"Creeper, aw man", "So we back in the mine,", "pickaxe swinging from side to side", "In search of Gems!",
-			"Life itself suspended by a thread", "saying ay-oh, that creeper's KO'd!",
-
-			"Gimmie a bucket!", "Farming with water!", "Press \"R\"!", "Get the High-Score!", "I see a dreamer!",
-			"Potions ftw!", "Beds ftw!",
-
-			"Defeat the Air Wizard!", "Defeat the Eye queen!", "Defeat the Keeper!", "Defeat me...",
-
-			"Conquer the Dungeon!", "One down, one to go...", "Loom + Wool = String!", "String + Wood = Rod!",
-			"Sand + Gunpowder = TNT!",
-
-			"Try Eyenglish!",
-
-			"Sleep at Night!", "Farm at Day!",
-
-			"Explanation Mark!", "!sdrawkcab si sihT", "This is forwards!", "Why is this blue?", "Green is a nice color!",
-			"Red is my favorite color!", "Hmmm Orange!", "Yellow = Happy!", "Made with 10000% Vitamin Z!", "Too much DP!",
-			"Punch the Moon!", "This is String qq!", "Why?", "You are null!", "hello down there!",
-			"That guy is such a sly fox!", "Hola senor!", "Sonic Boom!", "Hakuna Matata!", "One truth prevails!", "Awesome!",
-			"Sweet!", "Great!", "Cool!", "Radical!", "011011000110111101101100!", "001100010011000000110001!",
-			"011010000110110101101101?", "...zzz...", "The movie", "hmm yummy", "Doki Doki...", "*Epic music*", "OMG!... wow...",
-			"Java edition", "Sorry Aether, but i win...",
-
-			// Tributes
-			"Rick May, 1940 - 2020", "The Constant", "Just Monika!",
-
-			"Something cool is coming ;)",
-
-			"Algorithms ?, nah", };
 }

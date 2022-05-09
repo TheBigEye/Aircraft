@@ -11,9 +11,11 @@ import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.tinylog.Logger;
 
+import minicraft.core.Achievement;
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
@@ -26,7 +28,6 @@ import minicraft.saveload.Save;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
-import minicraft.util.Achievement;
 
 public class AchievementsDisplay extends Display {
 
@@ -35,34 +36,40 @@ public class AchievementsDisplay extends Display {
 	private static Achievement selectedAchievement;
 	private static int achievementScore;
 
-	static {
+	  static {
+	        // Get achievements from a json file stored in resources. Relative to project root.
+	        try (InputStream stream = Game.class.getResourceAsStream("/resources/achievements.json")) {
+	            if (stream != null) {
+	                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 
-		// Get achievements from a json filed stored in resources. Relative to project root.
-		String achievementJson = "";
-		try (InputStream stream = Game.class.getResourceAsStream("/resources/Achievements.json")) {
-			assert stream != null;
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			achievementJson = reader.lines().collect(Collectors.joining("\n"));
-		} catch (IOException ex) {
-			Logger.error("Could not read achievements from json file.");
-			ex.printStackTrace();
-		}
+	                // Read lines and combine into a string.
+	                String achievementJson = reader.lines().collect(Collectors.joining("\n"));
 
-		// Read the json and put it in the achievements list.
-		JSONArray json = new JSONArray(achievementJson);
-		for (Object object : json) {
-			JSONObject obj = (JSONObject) object;
+	                // Load json.
+					JSONObject json = new JSONObject(achievementJson);
+					JSONArray jsonArr = json.getJSONArray("achievements");
+	                for (Object object : jsonArr) {
+	                    JSONObject obj = (JSONObject) object;
 
-			Achievement a = new Achievement(
-					Localization.getLocalized(obj.getString("id")),
-					obj.getString("desc"),
-					obj.getInt("score")
-			);
+	                    // Create an achievement with the data.
+	                    Achievement a = new Achievement(
+	                            Localization.getLocalized(obj.getString("id")),
+	                            obj.getString("description"),
+	                            obj.getInt("score")
+	                    );
 
-			achievements.put(obj.getString("id"), a);
-
-		}
-	}
+	                    achievements.put(obj.getString("id"), a);
+	                }
+	            } else {
+	                Logger.error("Could not find achievements json.");
+	            }
+	        } catch (IOException ex) {
+	            Logger.error("Could not read achievements from json file.");
+	            ex.printStackTrace();
+	        } catch (JSONException e) {
+	            Logger.error("Achievements json contains invalid json.");
+	        }
+	    }
 
 	public AchievementsDisplay() {
 		super(true, true,

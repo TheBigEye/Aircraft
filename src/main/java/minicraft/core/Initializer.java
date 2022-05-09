@@ -14,6 +14,8 @@ import javax.swing.WindowConstants;
 
 import org.tinylog.Logger;
 
+import minicraft.core.io.FileHandler;
+
 public class Initializer extends Game {
 	private Initializer() {}
 
@@ -32,7 +34,7 @@ public class Initializer extends Game {
 		boolean dev = false;
 
 		// parses command line arguments
-		String saveDir = FileHandler.systemGameDir;
+		String saveDir = FileHandler.getSystemGameDir();
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equals("--debug")) {
 				debug = true;

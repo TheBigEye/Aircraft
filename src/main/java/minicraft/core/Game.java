@@ -40,7 +40,7 @@ import minicraft.util.Info;
 
 public class Game {
 
-	Game() {} // Can't instantiate the Game class.
+	protected Game() {} // Can't instantiate the Game class.
 
 	private static Random random = new Random();
 

@@ -1,7 +1,6 @@
 package minicraft.level.tile;
 
 import minicraft.entity.Entity;
-import minicraft.entity.mob.Mob;
 import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Sprite;
 import minicraft.level.Level;

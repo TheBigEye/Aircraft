@@ -105,7 +105,7 @@ public class Sound { // Creates sounds from their respective files
 	public static final Sound Ambience4 = new Sound("/resources/sounds/ambient/Ambience4.wav");
 	public static final Sound Ambience5 = new Sound("/resources/sounds/ambient/Ambience5.wav");
 
-	public static final Sound HeavenAmbience = new Sound("/resources/sounds/ambient/HeavenAmbience.wav");
+	public static final Sound Sky_enviroment = new Sound("/resources/sounds/ambient/sky environment.wav");
 
 	// Snow tile
 	public static final Sound Tile_snow = new Sound(TILES_SOUNDS_DIR + "Snow/snow.wav");
@@ -121,12 +121,12 @@ public class Sound { // Creates sounds from their respective files
 	public static final Sound Tile_generic_hurt = new Sound(TILES_SOUNDS_DIR + "tilehurt.wav");
 
 	// Themes
-	public static final Sound Theme_Fall = new Sound("/resources/sounds/ambient/music/Fall.wav");
-	public static final Sound Theme_Surface = new Sound("/resources/sounds/ambient/music/Surface.wav");
-	public static final Sound Theme_Peaceful = new Sound("/resources/sounds/ambient/music/Peaceful.wav");
-	public static final Sound Theme_Cave = new Sound("/resources/sounds/ambient/music/Cave.wav");
-	public static final Sound Theme_Cavern = new Sound("/resources/sounds/ambient/music/Cavern.wav");
-	public static final Sound Theme_Cavern_drip = new Sound("/resources/sounds/ambient/music/Cavern drip.wav");
+	public static final Sound Theme_Fall = new Sound("/resources/sounds/music/fall.wav");
+	public static final Sound Theme_Surface = new Sound("/resources/sounds/music/surface.wav");
+	public static final Sound Theme_Peaceful = new Sound("/resources/sounds/music/peaceful.wav");
+	public static final Sound Theme_Cave = new Sound("/resources/sounds/music/cave.wav");
+	public static final Sound Theme_Cavern = new Sound("/resources/sounds/music/cavern.wav");
+	public static final Sound Theme_Cavern_drip = new Sound("/resources/sounds/music/cavern drip.wav");
 
 	private Clip clip; // Creates a audio clip to be played
 	

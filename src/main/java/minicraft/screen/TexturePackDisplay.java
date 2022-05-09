@@ -13,9 +13,9 @@ import javax.imageio.ImageIO;
 
 import org.tinylog.Logger;
 
-import minicraft.core.FileHandler;
 import minicraft.core.Game;
 import minicraft.core.Renderer;
+import minicraft.core.io.FileHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
 import minicraft.gfx.Color;

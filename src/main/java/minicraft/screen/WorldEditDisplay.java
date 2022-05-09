@@ -9,8 +9,8 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import org.tinylog.Logger;
 
-import minicraft.core.FileHandler;
 import minicraft.core.Game;
+import minicraft.core.io.FileHandler;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
