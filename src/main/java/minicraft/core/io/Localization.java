@@ -77,7 +77,7 @@ public class Localization {
 		loadSelectedLanguageFile();
 	}
 	
-	private static void loadSelectedLanguageFile() {
+	public static void loadSelectedLanguageFile() {
 		String fileText = getFileAsString();
 		
 		// System.out.println("File:");

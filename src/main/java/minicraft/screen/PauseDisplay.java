@@ -23,7 +23,7 @@ public class PauseDisplay extends Display {
 		ArrayList<ListEntry> entries = new ArrayList<>(Arrays.asList(
 				new BlankEntry(),
 				new SelectEntry("Return to Game", () -> Game.setDisplay(null)),
-				new SelectEntry("World options", () -> Game.setDisplay(new WorldInfoDisplay())),
+				new SelectEntry("World info", () -> Game.setDisplay(new WorldInfoDisplay())),
 				new SelectEntry("Options", () -> Game.setDisplay(new OptionsDisplay())),
 				new SelectEntry("Achievements", () -> Game.setDisplay(new AchievementsDisplay()))
 		));

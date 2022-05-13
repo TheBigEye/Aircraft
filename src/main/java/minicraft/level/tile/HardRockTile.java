@@ -4,6 +4,7 @@ import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
+import minicraft.entity.mob.Firefly;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.SmashParticle;
@@ -27,8 +28,9 @@ public class HardRockTile extends Tile {
         super(name, sprite);
     }
 
+    @Override
     public boolean mayPass(Level level, int x, int y, Entity e) {
-        return false;
+        return e instanceof Firefly;
     }
 
     public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
@@ -42,7 +44,7 @@ public class HardRockTile extends Tile {
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Pickaxe && tool.level == 4) {
-                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                if (player.payStamina(4) && tool.payDurability()) {
                     hurt(level, xt, yt, random.nextInt(10) + (tool.level) * 5 + 10);
                     return true;
                 }

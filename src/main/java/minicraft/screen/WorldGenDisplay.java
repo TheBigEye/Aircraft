@@ -19,7 +19,7 @@ public class WorldGenDisplay extends Display {
 
 	private static final String worldNameRegex = "[a-zA-Z0-9 ]+";
 
-	private static InputEntry worldSeed = new InputEntry("World Seed", "[-!\"#%/()=+,a-zA-Z0-9]+", 20);
+	private static InputEntry worldSeed = new InputEntry("World Seed", "[-!\"#%/()=+,a-zA-Z0-9]+", 20, true);
 
 	// public static int Seed = 0;
 
@@ -46,7 +46,7 @@ public class WorldGenDisplay extends Display {
 	}
 
 	public static InputEntry makeWorldNameInput(String prompt, List<String> takenNames, String initValue) {
-		return new InputEntry(prompt, worldNameRegex, 32, initValue) {
+		return new InputEntry(prompt, worldNameRegex, 32, initValue, false) {
 			@Override
 			public boolean isValid() {
 				if (!super.isValid())
@@ -69,11 +69,11 @@ public class WorldGenDisplay extends Display {
 	public WorldGenDisplay() {
 		super(true);
 
-		InputEntry nameField = makeWorldNameInput("Enter World Name", WorldSelectDisplay.getWorldNames(), "");
+		InputEntry nameField = makeWorldNameInput("- ", WorldSelectDisplay.getWorldNames(), "new world");
 
 		SelectEntry nameHelp = new SelectEntry("Trouble with world name?", () -> Game.setDisplay(new BookDisplay(
 				"it seems you've set letters as the controls to move the cursor up and down, which is probably annoying." +
-				" This can be changed in the key binding menu as the \"cursor-XXX\" keys. For now, to type the letter" +
+						" This can be changed in the key binding menu as the \"cursor-XXX\" keys. For now, to type the letter" +
 				" instead of moving the cursor, hold the shift key while typing."))) {
 			@Override
 			public int getColor(boolean isSelected) {
@@ -93,7 +93,7 @@ public class WorldGenDisplay extends Display {
 			}
 		}
 
-		worldSeed = new InputEntry("World Seed", "[-!\"#%/()=+,a-zA-Z0-9]+", 20) {
+		worldSeed = new InputEntry("World Seed", "[-!\"#%/()=+,a-zA-Z0-9]+", 20, true) {
 			@Override
 			public boolean isValid() {
 				return true;
@@ -101,22 +101,26 @@ public class WorldGenDisplay extends Display {
 		};
 
 		menus = new Menu[] {
-				new Menu.Builder(false, 10, RelPos.LEFT, nameField, nameHelp, Settings.getEntry("mode"),
-				Settings.getEntry("scoretime"),
+				new Menu.Builder(false, 10, RelPos.LEFT, nameField, nameHelp,
+						Settings.getEntry("mode"),
+						Settings.getEntry("cheats"),
+						Settings.getEntry("scoretime"),
 
-				new SelectEntry("Create World", () -> {
-					if (!nameField.isValid())
-						return;
-					WorldSelectDisplay.setWorldName(nameField.getUserInput(), false);
-					Game.setDisplay(new LoadingDisplay());
-				}) {
-			@Override
-			public void render(Screen screen, int x, int y, boolean isSelected) {
-				Font.draw(toString(), screen, x, y, Color.CYAN);
-			}
-		},
+						new SelectEntry("Create World", () -> {
+							if (!nameField.isValid())
+								return;
+							WorldSelectDisplay.setWorldName(nameField.getUserInput(), false);
+							Game.setDisplay(new LoadingDisplay());
+						}) {
+					@Override
+					public void render(Screen screen, int x, int y, boolean isSelected) {
+						Font.draw(toString(), screen, x, y, Color.CYAN);
+					}
+				},
 
-				Settings.getEntry("size"), Settings.getEntry("theme"), Settings.getEntry("type"), worldSeed)
+						Settings.getEntry("size"),
+						Settings.getEntry("theme"),
+						Settings.getEntry("type"), worldSeed)
 				.setDisplayLength(5).setScrollPolicies(0.8f, false).setTitle("World Gen Options")
 				.createMenu() };
 	}

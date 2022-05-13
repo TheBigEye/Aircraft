@@ -79,7 +79,7 @@ public class TitleDisplay extends Display {
 				}),
 
 				new SelectEntry("Options", () -> Game.setDisplay(new OptionsDisplay())),
-				new SelectEntry("Credits", () -> Game.setDisplay(new BookDisplay(BookData.credits))),
+				new SelectEntry("Credits", () -> Game.setDisplay(new EndGameCreditsDisplay())),
 
 				new SelectEntry("Help", () -> Game.setDisplay(new Display(true, new Menu.Builder(true, 2, RelPos.CENTER,
 						new BlankEntry(),

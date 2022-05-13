@@ -12,6 +12,7 @@ public class InputEntry extends ListEntry {
 	private String prompt;
 	private String regex;
 	private int maxLength;
+	private boolean colon;
 
 	public String userInput;
 
@@ -19,16 +20,17 @@ public class InputEntry extends ListEntry {
 
 	private ClipboardHandler clipboardHandler = new ClipboardHandler();
 
-	public InputEntry(String prompt) {
-		this(prompt, null, 0);
+	public InputEntry(String prompt, boolean colon) {
+		this(prompt, null, 0, colon);
 	}
-	public InputEntry(String prompt, String regex, int maxLen) {
-		this(prompt, regex, maxLen, "");
+	public InputEntry(String prompt, String regex, int maxLen, boolean colon) {
+		this(prompt, regex, maxLen, "", colon);
 	}
-	public InputEntry(String prompt, String regex, int maxLen, String initValue) {
+	public InputEntry(String prompt, String regex, int maxLen, String initValue, boolean colon) {
 		this.prompt = prompt;
 		this.regex = regex;
 		this.maxLength = maxLen;
+		this.colon = colon;
 
 		userInput = initValue;
 	}
@@ -56,14 +58,20 @@ public class InputEntry extends ListEntry {
 		}
 	}
 
-	public String getUserInput() { return userInput; }
+	public String getUserInput() {
+		return userInput; 
+	}
 
 	public String toString() {
 		return Localization.getLocalized(prompt) + (prompt.length() == 0 ? "" : ": ") + userInput;
 	}
 
 	public void render(Screen screen, int x, int y, boolean isSelected) {
-		Font.draw(toString(), screen, x, y, isValid() ? isSelected ? Color.GREEN : COL_UNSLCT : Color.RED);
+		if (colon == true) {
+			Font.draw(toString(), screen, x, y, isValid() ? isSelected ? Color.GREEN : COL_UNSLCT : Color.DARK_RED);
+		} else {
+			Font.draw(toString().replace(": ", ""), screen, x, y, isValid() ? isSelected ? Color.GREEN : COL_UNSLCT : Color.DARK_RED);
+		}
 	}
 
 	public boolean isValid() {

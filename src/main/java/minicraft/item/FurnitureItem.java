@@ -20,6 +20,7 @@ import minicraft.entity.mob.Cat;
 import minicraft.entity.mob.Chicken;
 import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
+import minicraft.entity.mob.Firefly;
 import minicraft.entity.mob.Goat;
 import minicraft.entity.mob.GuiMan;
 import minicraft.entity.mob.Keeper;
@@ -76,6 +77,7 @@ public class FurnitureItem extends Item {
 		// Principal Bosses
 		items.add(new FurnitureItem(new Spawner(new EyeQueen(1)), 19, 27));
 		items.add(new FurnitureItem(new Spawner(new Keeper(1)), 20, 27));
+		items.add(new FurnitureItem(new Spawner(new Firefly()), 20, 27));
 
 		items.add(new FurnitureItem(new Chest()));
 		items.add(new FurnitureItem(new DungeonChest(false, true)));
@@ -134,6 +136,7 @@ public class FurnitureItem extends Item {
 			else if (mob instanceof AirWizard) sprite = new Sprite(18, 27, 1, 1, 0);
 			else if (mob instanceof EyeQueen) sprite = new Sprite(199, 27, 1, 1, 0);
 			else if (mob instanceof Keeper) sprite = new Sprite(20, 27, 1, 1, 0);
+			else if (mob instanceof Firefly) sprite = new Sprite(20, 27, 1, 1, 0);
 			else sprite = new Sprite(getSpritePos(furniture.sprite.getPos()), 0);
 		} else sprite = new Sprite(getSpritePos(furniture.sprite.getPos()), 0);
 		return sprite;

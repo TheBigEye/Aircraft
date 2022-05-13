@@ -98,53 +98,53 @@ public class WorldEditDisplay extends Display {
 
 				// Do the action.
 				switch (action) {
-				case Delete:
-					Logger.debug("Deleting world: " + world);
-					File[] list = world.listFiles();
-					for (File file : list) {
-						file.delete();
-					}
-					world.delete();
-					break;
-
-				case Copy:
-					entry = (InputEntry) menus[1].getCurEntry();
-					if (!entry.isValid()) {
+					case Delete:
+						Logger.debug("Deleting world: " + world);
+						File[] list = world.listFiles();
+						for (File file : list) {
+							file.delete();
+						}
+						world.delete();
 						break;
-					}
-					
-					// user hits enter with a valid new name; copy is created here.
-					String newname = entry.getUserInput();
-					File newworld = new File(worldsDir + newname);
-					newworld.mkdirs();
-					
-					Logger.debug("Copying world {} to world {}.", world, newworld);
-					
-					// walk file tree
-					try {
-						FileHandler.copyFolderContents(new File(worldsDir + worldName).toPath(), newworld.toPath(), FileHandler.REPLACE_EXISTING, false);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					break;
-
-				case Rename:
-					entry = (InputEntry) menus[1].getCurEntry();
-					if (!entry.isValid()) {
+	
+					case Copy:
+						entry = (InputEntry) menus[1].getCurEntry();
+						if (!entry.isValid()) {
+							break;
+						}
+	
+						// user hits enter with a valid new name; copy is created here.
+						String newname = entry.getUserInput();
+						File newworld = new File(worldsDir + newname);
+						newworld.mkdirs();
+	
+						Logger.debug("Copying world {} to world {}.", world, newworld);
+	
+						// walk file tree
+						try {
+							FileHandler.copyFolderContents(new File(worldsDir + worldName).toPath(), newworld.toPath(), FileHandler.REPLACE_EXISTING, false);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 						break;
-					}
-
-					// User hits enter with a vaild new name; name is set here:
-					String name = entry.getUserInput();
-
-					// Try to rename the file, if it works, return
-					if (world.renameTo(new File(worldsDir + name))) {
-						Logger.debug("Renaming world {} to new name: {}", world, name);
-						WorldSelectDisplay.updateWorlds();
-					} else {
-						Logger.error("Rename failed in WorldEditDisplay.");
-					}
-					break;
+	
+					case Rename:
+						entry = (InputEntry) menus[1].getCurEntry();
+						if (!entry.isValid()) {
+							break;
+						}
+	
+						// User hits enter with a vaild new name; name is set here:
+						String name = entry.getUserInput();
+	
+						// Try to rename the file, if it works, return
+						if (world.renameTo(new File(worldsDir + name))) {
+							Logger.debug("Renaming world {} to new name: {}", world, name);
+							WorldSelectDisplay.updateWorlds();
+						} else {
+							Logger.error("Rename failed in WorldEditDisplay.");
+						}
+						break;
 				}
 
 				confirm = false;
@@ -180,11 +180,11 @@ public class WorldEditDisplay extends Display {
 			));
 		} else {
 			List<String> names = WorldSelectDisplay.getWorldNames();
-			
+
 			if (action == Action.Rename) {
 				names.remove(worldName);
 			}
-			
+
 			entries.add(new StringEntry("New World Name:", action.color));
 			entries.add(WorldGenDisplay.makeWorldNameInput("", names, worldName));
 		}

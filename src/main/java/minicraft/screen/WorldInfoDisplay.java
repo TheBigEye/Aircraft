@@ -12,42 +12,42 @@ import minicraft.gfx.Font;
 import minicraft.gfx.Screen;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.SelectEntry;
+import minicraft.screen.entry.StringEntry;
 
 public class WorldInfoDisplay extends Display {
 
-    public WorldInfoDisplay() {
-        super(true,
-                new Menu.Builder(false, 6, RelPos.LEFT, new BlankEntry(), new BlankEntry(), new BlankEntry(),
-                        new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(),
-                        new BlankEntry(), Settings.getEntry("mode"), new SelectEntry("Open World Folder", () -> {
-                            try {
-                                Desktop.getDesktop().open(new File(Game.gameDir + "/saves/" + WorldSelectDisplay.getWorldName()));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+	public WorldInfoDisplay() {
+		super(true, new Menu.Builder(true, 3, RelPos.CENTER,
+				new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(),
+				new StringEntry("                                  "),
+				new SelectEntry("Open World Folder", () -> {
+					try {
+						Desktop.getDesktop().open(new File(Game.gameDir + "/saves/" + WorldSelectDisplay.getWorldName()));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}),
+				new BlankEntry()
+				).setTitle(Localization.getLocalized("World info"))
+				.createMenu());
+	}
 
-                        }),
+	public void render(Screen screen) {
+		super.render(screen);
+		Font.draw(Localization.getLocalized("Name:") + " " + WorldSelectDisplay.getWorldName() + "", screen, 120, 90, Color.GREEN);
+		Font.draw(Localization.getLocalized("Seed:") + " " + Game.levels[selection].getSeed(), screen, 120, 100, Color.GREEN);
 
-                        new BlankEntry(), new BlankEntry(), new BlankEntry()
+		Font.draw(Settings.getEntry("size") + "", screen, 120, 115, Color.GRAY);
+		Font.draw(Settings.getEntry("theme") + "", screen, 120, 125, Color.GRAY);
+		Font.draw(Settings.getEntry("type") + "", screen, 120, 135, Color.GRAY);
 
-                ).setTitle("World").createMenu());
-    }
+		Font.draw(Settings.getEntry("mode") + "", screen, 120, 150, Color.GRAY);
+		Font.draw(Settings.getEntry("cheats") + "", screen, 120, 160, Color.GRAY);
 
-    public void render(Screen screen) {
-        super.render(screen);
-        Font.drawCentered(Localization.getLocalized("Name:") + " " + WorldSelectDisplay.getWorldName() + "", screen, Screen.h - 212, Color.YELLOW);
+	}
 
-        Font.drawCentered(Localization.getLocalized("Seed:") + " " + Game.levels[selection].getSeed(), screen, Screen.h - 150, Color.GRAY);
+	@Override
+	public void onExit() {
 
- 
-        Font.drawCentered(Settings.getEntry("size") + "", screen, Screen.h - 190, Color.GRAY);
-        Font.drawCentered(Settings.getEntry("theme") + "", screen, Screen.h - 180, Color.GRAY);
-        Font.drawCentered(Settings.getEntry("type") + "", screen, Screen.h - 170, Color.GRAY);
-
-    }
-
-    @Override
-    public void onExit() {
-
-    }
+	}
 }

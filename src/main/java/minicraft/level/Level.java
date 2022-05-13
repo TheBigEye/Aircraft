@@ -28,6 +28,8 @@ import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
 import minicraft.entity.mob.DefenderMob;
 import minicraft.entity.mob.EnemyMob;
+import minicraft.entity.mob.Firefly;
+import minicraft.entity.mob.FlyMob;
 import minicraft.entity.mob.FrostMob;
 import minicraft.entity.mob.Goat;
 import minicraft.entity.mob.GuiMan;
@@ -95,7 +97,7 @@ public class Level {
 	private static final int MOB_SPAWN_FACTOR = 100; 
 
 	public int w, h;
-	private long seed; // The used seed that was used to generate the world
+	private final long seed; // The used seed that was used to generate the world
 
 	public short[] tiles; // An array of all the tiles in the world.
 	public short[] data; // An array of the data of the tiles in the world
@@ -196,11 +198,11 @@ public class Level {
 			return;
 		}
 
-		if (Game.debug) System.out.println("Making level " + level + "...");
+		Logger.debug("Making level " + level + "...");
 
 		maps = LevelGen.createAndValidateMap(w, h, level);
 		if (maps == null) {
-			System.err.println("Level Gen ERROR: Returned maps array is null");
+			Logger.error("Level generation: Returned maps array is null");
 			return;
 		}
 
@@ -218,17 +220,19 @@ public class Level {
 		if (parentLevel != null) { // If the level above this one is not null (aka, if this isn't the sky level)
 			for (int y = 0; y < h; y++) { // Loop through height
 				for (int x = 0; x < w; x++) { // Loop through width
-					if (parentLevel.getTile(x, y) == Tiles.get("Stairs Down")) { // If the tile in the level above the
-						// current one is a stairs down then...
-						if (level == -4) /// Make the obsidian wall formation around the stair in the dungeon level
+					if (parentLevel.getTile(x, y) == Tiles.get("Stairs Down")) { // If the tile in the level above the current one is a stairs down then...
+						if (level == -4) { /// Make the obsidian wall formation around the stair in the dungeon level
 							Structure.dungeonGate.draw(this, x, y);
 
-						else if (level == 0) { // Surface
-							if (Game.debug)
-								System.out.println("Setting tiles around " + x + "," + y + " to hard rock");
-							setAreaTiles(x, y, 1, Tiles.get("Hard Rock"), 0); // Surround the sky stairs with hard rock
-						} else // Any other level, the up-stairs should have dirt on all sides.
+						} else if (level == 0) { // Surface
+							// Surround the sky stairs with hard rock
+							Logger.trace("Setting tiles around " + x + "," + y + " to hard rock");
+							setAreaTiles(x, y, 1, Tiles.get("Hard Rock"), 0); 
+							
+						} else {
+							// Any other level, the up-stairs should have dirt on all sides.
 							setAreaTiles(x, y, 1, Tiles.get("dirt"), 0);
+						}
 
 						setTile(x, y, Tiles.get("Stairs Up")); // Set a stairs up tile in the same position on the current level
 					}
@@ -242,10 +246,8 @@ public class Level {
 				int y = random.nextInt(this.h - 5);
 
 				// Generate the sky dungeon (always in Sky grass tile)
-				if (this.getTile(x - 3, y - 2) == Tiles.get("Sky grass") &&
-						this.getTile(x + 3, y - 2) == Tiles.get("Sky grass")) {
-					if (this.getTile(x - 3, y + 2) == Tiles.get("Sky grass") &&
-							this.getTile(x + 3, y + 2) == Tiles.get("Sky grass")) {
+				if (this.getTile(x - 3, y - 2) == Tiles.get("Sky grass") && this.getTile(x + 3, y - 2) == Tiles.get("Sky grass")) {
+					if (this.getTile(x - 3, y + 2) == Tiles.get("Sky grass") && this.getTile(x + 3, y + 2) == Tiles.get("Sky grass")) {
 						Structure.skyDungeon.draw(this, x, y);
 						placedSkyDungeon = true;
 					}
@@ -257,8 +259,9 @@ public class Level {
 
 		checkAirWizard();
 
-		if (Game.debug)
+		if (Game.debug) {
 			printTileLocs(Tiles.get("Stairs Down"));
+		}
 	}
 
 	public Level(int w, int h, int level, Level parentLevel, boolean makeWorld) {
@@ -809,17 +812,28 @@ public class Level {
 				spawned = true;
 			}
 
-			if (depth == 0 && PassiveMob.checkStartPos(this, nx, ny)) {
+			if (depth == 0 && Updater.getTime() == Updater.Time.Night && FlyMob.checkStartPos(this, nx, ny)) {
 				// Spawns the friendly mobs.
-				if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33)) {
+				if (rnd >= 16) {
+					add((new Firefly()), nx, ny);
+
+				} else {
+					add((new Firefly()), nx, ny);
+				}
+
+				spawned = true;
+			}
+			
+			if (depth == 0 && Updater.getTime() != Updater.Time.Night && PassiveMob.checkStartPos(this, nx, ny)) {
+				// Spawns the friendly mobs.
+				if (rnd >= 60) {
 					add((new Cow()), nx, ny);
 				}
-				if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33)) {
+				if (rnd >= 68) {
 					add((new Chicken()), nx, ny);
 
-				} else if (rnd >= 68) {
+				} else if (rnd >= 50) {
 					add((new Pig()), nx, ny);
-
 				} else {
 					add((new Sheep()), nx, ny);
 				}

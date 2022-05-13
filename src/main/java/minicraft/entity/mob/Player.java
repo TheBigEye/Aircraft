@@ -165,7 +165,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	private int burnTime = 0;
 
 	// Note: the player's health & max health are inherited from Mob.java
-
 	public String getDebugHunger() {
 		return hungerStamCnt + "_" + stamHungerTicks;
 	}
@@ -675,9 +674,12 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                 if (input.getKey("pause").clicked) {
                     Game.setDisplay(new PauseDisplay());
                 }
-				if (input.getKey("commands").clicked) {
+				if (input.getKey("commands").clicked && (boolean)Settings.get("cheats") == true) {
 					Game.setDisplay(new CommandsDisplay());
+				} else if (input.getKey("commands").clicked && (boolean)Settings.get("cheats") == false) {
+					Game.notifications.add("Cheats are disabled!");
 				}
+				
                 if (input.getKey("craft").clicked && !use()) {
                     Game.setDisplay(new CraftingDisplay(Recipes.craftRecipes, "Crafting", this, true));
                 }
@@ -1036,10 +1038,12 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
         if (isSwimming()) {
         	yo += 4; // y offset is moved up by 4
+      
 
         	if (level.getTile(x / 16, y / 16) == Tiles.get("water")) {
+        		
         		// animation effect
-        		if (tickTime / 8 % 2 == 0) {
+        		if (tickTime / 8 % 2 == 0) {           		
         			screen.render(xo + 0, yo + 3, 5 + 2 * 32, 0, 3); // Render the water graphic
         			screen.render(xo + 8, yo + 3, 5 + 2 * 32, 1, 3); // Render the mirrored water graphic to the right.
         		} else {
@@ -1061,6 +1065,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         		}           
         	}
         }
+        
 
         // Renders indicator for what tile the item will be placed on
         if (activeItem instanceof TileItem) {

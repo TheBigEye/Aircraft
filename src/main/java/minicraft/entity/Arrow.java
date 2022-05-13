@@ -28,12 +28,13 @@ public class Arrow extends Entity implements ClientTickable {
         damage = dmg;
         col = Color.get(-1, 111, 222, 430);
 
-        if (damage > 3)
-            speed = 8;
-        else if (damage >= 0)
-            speed = 7;
-        else
-            speed = 6;
+        if (damage > 3) {
+            speed = 4;
+        } else if (damage >= 0) {
+            speed = 3;
+        } else {
+            speed = 2;
+        }
     }
 
     /**
@@ -66,11 +67,11 @@ public class Arrow extends Entity implements ClientTickable {
                 mob.hurt(owner, damage + extradamage, dir);
             }
 
-            if (!level.getTile(x / 16, y / 16).mayPass(level, x / 16, y / 16, this)
-                    && !level.getTile(x / 16, y / 16).connectsToFluid && level.getTile(x / 16, y / 16).id != 16) {
+            if (!level.getTile(x / 16, y / 16).mayPass(level, x / 16, y / 16, this) && !level.getTile(x / 16, y / 16).connectsToFluid && level.getTile(x / 16, y / 16).id != 16) {
                 this.remove();
             }
         }
+
     }
 
     @Override
@@ -83,13 +84,11 @@ public class Arrow extends Entity implements ClientTickable {
         int xt = 0;
         int yt = 2;
 
-        if (dir == Direction.LEFT)
-            xt = 1;
-        if (dir == Direction.UP)
-            xt = 2;
-        if (dir == Direction.DOWN)
-            xt = 3;
+        if (dir == Direction.LEFT) xt = 1;
+        if (dir == Direction.UP) xt = 2;
+        if (dir == Direction.DOWN) xt = 3;
 
-        screen.render(x - 4, y - 4, xt + yt * 32, 0);
+        screen.render(x - 4, y + 2, xt + yt * 32, 0, 0, -1, false, Color.BLACK); // Shadow
+        screen.render(x - 4, y - 4, xt + yt * 32, 0, 0); // Sprite
     }
 }

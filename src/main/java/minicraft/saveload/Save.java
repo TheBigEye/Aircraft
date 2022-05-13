@@ -183,6 +183,7 @@ public class Save {
 		data.add(String.valueOf(AirWizard.beaten));
 		data.add(String.valueOf(AirWizardPhase2.beaten));
 		data.add(String.valueOf(AirWizardPhase3.beaten));
+		data.add(String.valueOf(Settings.get("cheats")));
 
 		writeToFile(location + filename + extension, data);
 		

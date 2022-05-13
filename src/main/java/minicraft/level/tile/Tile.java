@@ -18,6 +18,9 @@ public abstract class Tile {
 	public static int tickCount = 0; // A global tickCount used in the Lava & water tiles.
 	protected Random random = new Random();
 
+	/**
+	 * This is used by wall tiles to get what material they're made of.
+	 */
 	protected enum Material {
 		Wood(ToolType.Axe),
 		Spruce(ToolType.Axe),

@@ -19,13 +19,8 @@ import minicraft.item.PowerGloveItem;
 
 public class Boat extends Entity {
     private static Sprite boatSprite = new Sprite(1, 30, 2, 2, 0);
-    private static Sprite boatUp = new Sprite(3, 30, 2, 2, 0);
-    private static Sprite boatDown = new Sprite(5, 30, 2, 2, 0);
-    private static Sprite boatLeft = new Sprite(1, 30, 2, 2, 0);
-    private static Sprite boatRight = new Sprite(7, 30, 2, 2, 0);
 
-    private Player playerInBoat = null;
-
+    public Player playerInBoat = null;
     private Random rnd = new Random();
 
     private int exitTimer = 0;
@@ -40,26 +35,51 @@ public class Boat extends Entity {
 
     @Override
     public void render(Screen screen) {
-        boatSprite.render(screen, x - 8, y - 8);
+    	//boatSprite.render(screen, x - 8, y - 8);
+    	
+        int xo = x - 4; // Horizontal
+        int yo = y - 8; // Vertical
 
-        if (playerInBoat != null == true) {
+        if (Game.player.equals(playerInBoat)) {
+        	switch (Game.player.dir) {
+        	case UP: // if currently attacking upwards...
+        		screen.render(xo + 4, yo, 3 + 30 * 32, 1, 0);
+        		screen.render(xo - 4, yo, 4 + 30 * 32, 1, 0);
+        		screen.render(xo + 4, yo + 8, 3 + 31 * 32, 1, 0);
+        		screen.render(xo - 4, yo + 8, 4 + 31 * 32, 1, 0);
+        		break;
 
-            if (Game.input.getKey("move-up").down) {
-                boatUp.render(screen, x - 8, y - 8);
-            }
-            if (Game.input.getKey("move-down").down) {
-                boatDown.render(screen, x - 8, y - 8);
-            }
-            if (Game.input.getKey("move-left").down) {
-                boatLeft.render(screen, x - 8, y - 8);
-            }
-            if (Game.input.getKey("move-right").down) {
-                boatRight.render(screen, x - 8, y - 8);
-            }
+        	case LEFT: // Attacking to the left... (Same as above)
+        		screen.render(xo + 4, yo, 7 + 30 * 32, 1, 0);
+        		screen.render(xo - 4, yo, 8 + 30 * 32, 1, 0);
+        		screen.render(xo + 4, yo + 8, 7 + 31 * 32, 1, 0);
+        		screen.render(xo - 4, yo + 8, 8 + 31 * 32, 1, 0);
+        		break;
 
+        	case RIGHT: // Attacking to the right (Same as above)
+        		screen.render(xo + 4, yo, 1 + 30 * 32, 1, 0);
+        		screen.render(xo - 4, yo, 2 + 30 * 32, 1, 0);
+        		screen.render(xo + 4, yo + 8, 1 + 31 * 32, 1, 0);
+        		screen.render(xo - 4, yo + 8, 2 + 31 * 32, 1, 0);
+        		break;
+
+        	case DOWN: // Attacking downwards (Same as above)
+        		screen.render(xo + 4, yo, 5 + 30 * 32, 1, 0);
+        		screen.render(xo - 4, yo, 6 + 30 * 32, 1, 0);
+        		screen.render(xo + 4, yo + 8, 5 + 31 * 32, 1, 0);
+        		screen.render(xo - 4, yo + 8, 6 + 31 * 32, 1, 0);
+        		break;
+
+        	case NONE:
+        		break;
+        	}
+        }  else {
+        	boatSprite.render(screen, x - 8, y - 8);
         }
     }
+    
 
+    
     @Override
     public void tick() {
         if (playerInBoat != null) {
@@ -71,19 +91,15 @@ public class Boat extends Entity {
                     return;
                 }
             }
-
+            
             double ya = 0;
             double xa = 0;
 
-            if (Game.input.getKey("move-up").down)
-                ya -= 1;
-            if (Game.input.getKey("move-down").down)
-                ya += 1;
-            if (Game.input.getKey("move-left").down)
-                xa -= 1;
-            if (Game.input.getKey("move-right").down)
-                xa += 1;
-
+            if (Game.input.getKey("move-up").down) ya -= 1;
+            if (Game.input.getKey("move-down").down) ya += 1;
+            if (Game.input.getKey("move-left").down) xa -= 1;
+            if (Game.input.getKey("move-right").down) xa += 1;
+            
             int randX = rnd.nextInt(10);
             int randY = rnd.nextInt(9);
 
@@ -117,20 +133,20 @@ public class Boat extends Entity {
     }
 
     public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
-        if (item instanceof PowerGloveItem) {
-            Sound.Mob_generic_hurt.play();
-                remove();
-                
-                if (!Game.isMode("creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem)) {
-                	// put whatever item the player is holding into their inventory
-                    player.getInventory().add(0, player.activeItem); 
-                }
-                
-                // make this the player's current item.
-                player.activeItem = new BoatItem("Boat"); 
-                return true;
-        }
-        return false;
+    	if (item instanceof PowerGloveItem) {
+    		Sound.Mob_generic_hurt.play();
+    		remove();
+
+    		if (!Game.isMode("creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem)) {
+    			// put whatever item the player is holding into their inventory
+    			player.getInventory().add(0, player.activeItem); 
+    		}
+
+    		// make this the player's current item.
+    		player.activeItem = new BoatItem("Boat"); 
+    		return true;
+    	}
+    	return false;
     }
 
     public boolean move(double xa, double ya) {

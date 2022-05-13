@@ -45,6 +45,7 @@ import minicraft.entity.mob.Chicken;
 import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
 import minicraft.entity.mob.EnemyMob;
+import minicraft.entity.mob.Firefly;
 import minicraft.entity.mob.Goat;
 import minicraft.entity.mob.GuiMan;
 import minicraft.entity.mob.Keeper;
@@ -307,6 +308,8 @@ public class Load {
 		AirWizard.beaten = Boolean.parseBoolean(data.remove(0));
 		AirWizardPhase2.beaten = Boolean.parseBoolean(data.remove(0));
 		AirWizardPhase3.beaten = Boolean.parseBoolean(data.remove(0));
+		
+		Settings.set("Cheats", Boolean.parseBoolean(data.remove(0)));
 
 		
 		// Check if the AirWizard was beaten in versions prior to 2.1.0
@@ -419,10 +422,12 @@ public class Load {
 		Settings.set("diff", json.has("diff") ? json.getString("diff") : "Normal");
 		Settings.set("fps", json.getInt("fps"));
 
-		if (prefVer.compareTo(new Version("2.1.0-dev1")) > 0) {
+		if (json.has("lang")) {
 			String lang = json.getString("lang");
 			Settings.set("language", lang);
 			Localization.changeLanguage(lang);
+		} else {
+			Localization.loadSelectedLanguageFile();
 		}
 
 		// Load keymap
@@ -474,6 +479,7 @@ public class Load {
 			AchievementsDisplay.unlockAchievements(json.getJSONArray("unlockedAchievements"));
 		}
 	}
+	
 
 	private void loadWorld(String filename) {
 		for (int l = World.maxLevelDepth; l >= World.minLevelDepth; l--) {
@@ -483,7 +489,7 @@ public class Load {
 
 			int lvlw = Integer.parseInt(data.get(0));
 			int lvlh = Integer.parseInt(data.get(1));
-
+			
 			boolean hasSeed = worldVer.compareTo(new Version("2.0.7-dev2")) >= 0;
 			long seed = hasSeed ? Long.parseLong(data.get(2)) : 0;
 			Settings.set("size", lvlw);
@@ -508,7 +514,7 @@ public class Load {
 						if (Tiles.oldids.get(tileID) != null) {
 							tilename = Tiles.oldids.get(tileID);
 						} else {
-							System.out.println("Tile list doesn't contain tile " + tileID);
+							Logger.warn("Tile list doesn't contain tile " + tileID);
 							tilename = "grass";
 						}
 					}
@@ -787,7 +793,8 @@ public class Load {
 		return Load.loadEntity(entityData, Game.VERSION, isLocalSave);
 	}
 
-	@Nullable
+	
+	@Nullable @SuppressWarnings({ "rawtypes", "unused" })
 	public static Entity loadEntity(String entityData, Version worldVer, boolean isLocalSave) {
 		entityData = entityData.trim();
 
@@ -983,79 +990,78 @@ public class Load {
     private static Entity getEntity(String string, int moblvl) {
 
         switch (string) {
-
-        // Load Mob entities
-        case "Player": return null;
-        case "RemotePlayer": return null;
-        case "Cow": return new Cow();
-        case "Goat": return new Goat();
-        case "Sheep": return new Sheep();
-        case "Sheepuff": return new Sheepuff();
-        case "Chicken": return new Chicken();
-        case "Pig": return new Pig();
-        case "Phyg": return new Phyg();
-        case "Cleric": return new Cleric();
-        case "Librarian": return new Librarian();
-        case "GuiMan": return new GuiMan();
-        case "Cat": return new Cat();
-        case "Golem": return new Golem();
-        case "Zombie": return new Zombie(moblvl);
-        case "Slime": return new Slime(moblvl);
-        case "Creeper": return new Creeper(moblvl);
-        case "Skeleton": return new Skeleton(moblvl);
-        case "Knight": return new Knight(moblvl);
-        case "OldGolem": return new OldGolem(moblvl);
-        case "Snake": return new Snake(moblvl);
-        case "Cthulhu": return new EyeQueen(moblvl); // Check...
-        case "EyeQueen": return new EyeQueen(moblvl);
-        case "EyeQueenPhase2": return new EyeQueenPhase2(moblvl);
-        case "EyeQueenPhase3": return new EyeQueenPhase3(moblvl);
-        case "DeepGuardian": return new Keeper(moblvl);
-        case "Keeper": return new Keeper(moblvl);
-        case "AirWizard": return new AirWizard(moblvl > 1);
-        case "AirWizardPhase2": return new AirWizardPhase2(moblvl > 1);
-        case "AirWizardPhase3": return new AirWizardPhase3(moblvl > 1);
-
-        // Load Furniture entities
-        case "Boat": return new Boat();
-        case "Spawner": return new Spawner(new Zombie(1));
-        case "Workbench": return new Crafter(Crafter.Type.Workbench);
-        case "Chest": return new Chest();
-        case "DeathChest": return new DeathChest();
-        case "DungeonChest": return new DungeonChest(false);
-        case "Anvil": return new Crafter(Crafter.Type.Anvil);
-        case "Enchanter": return new Crafter(Crafter.Type.Enchanter);
-        case "Stonecutter": return new Crafter(Crafter.Type.Stonecutter);
-        case "Assembler": return new Crafter(Crafter.Type.Assembler);
-        case "Brewery": return new Crafter(Crafter.Type.Brewery);
-        case "Loom": return new Crafter(Crafter.Type.Loom);
-        case "Furnace": return new Crafter(Crafter.Type.Furnace);
-        case "Oven": return new Crafter(Crafter.Type.Oven);
-        case "Bed": return new Bed();
-        case "SlimeStatue": return new SlimeStatue();
-        case "ZombieStatue": return new ZombieStatue();
-        case "SkeletonStatue": return new SkeletonStatue();
-        case "Tnt": return new Tnt();
-        case "Lantern": return new Lantern(Lantern.Type.NORM);
-        case "Arrow": return new Arrow(new Skeleton(0), 0, 0, Direction.NONE, 0);
-        case "Fireball": return new Fireball(new Skeleton(0), 0, 0, Direction.NONE, 0);
-        case "XpOrb": return new SmokeParticle(0, 0); // Unussed, but works
-        case "ItemEntity": return new ItemEntity(Items.get("unknown"), 0, 0);
-
-        // Load Particles
-        case "FireParticle": return new FireParticle(0, 0);
-        case "SplashParticle": return new SplashParticle(0, 0);
-        case "HeartParticle": return new HeartParticle(0, 0);
-        case "BrightParticle": return new BrightParticle(0, 0);
-        case "SmashParticle": return new SmashParticle(0, 0);
-        case "SmokeParticle": return new SmokeParticle(0, 0);
-        case "CloudParticle": return new CloudParticle(0, 0);
-        case "TextParticle": return new TextParticle("", 0, 0, 0);
-
-        default:
-            System.err.println("LOAD ERROR: unknown or outdated entity requested: " + string);
-            return null;
-
+	        // Load Mob entities
+	        case "Player": return null;
+	        case "RemotePlayer": return null;
+	        case "Cow": return new Cow();
+	        case "Goat": return new Goat();
+	        case "Sheep": return new Sheep();
+	        case "Sheepuff": return new Sheepuff();
+	        case "Chicken": return new Chicken();
+	        case "Pig": return new Pig();
+	        case "Phyg": return new Phyg();
+	        case "Cleric": return new Cleric();
+	        case "Librarian": return new Librarian();
+	        case "GuiMan": return new GuiMan();
+	        case "Cat": return new Cat();
+	        case "Golem": return new Golem();
+	        case "Zombie": return new Zombie(moblvl);
+	        case "Slime": return new Slime(moblvl);
+	        case "Creeper": return new Creeper(moblvl);
+	        case "Skeleton": return new Skeleton(moblvl);
+	        case "Knight": return new Knight(moblvl);
+	        case "OldGolem": return new OldGolem(moblvl);
+	        case "Snake": return new Snake(moblvl);
+	        case "Cthulhu": return new EyeQueen(moblvl); // Check...
+	        case "EyeQueen": return new EyeQueen(moblvl);
+	        case "EyeQueenPhase2": return new EyeQueenPhase2(moblvl);
+	        case "EyeQueenPhase3": return new EyeQueenPhase3(moblvl);
+	        case "DeepGuardian": return new Keeper(moblvl);
+	        case "Keeper": return new Keeper(moblvl);
+	        case "AirWizard": return new AirWizard(moblvl > 1);
+	        case "AirWizardPhase2": return new AirWizardPhase2(moblvl > 1);
+	        case "AirWizardPhase3": return new AirWizardPhase3(moblvl > 1);
+	        case "Firefly": return new Firefly();
+	
+	        // Load Furniture entities
+	        case "Boat": return new Boat();
+	        case "Spawner": return new Spawner(new Zombie(1));
+	        case "Workbench": return new Crafter(Crafter.Type.Workbench);
+	        case "Chest": return new Chest();
+	        case "DeathChest": return new DeathChest();
+	        case "DungeonChest": return new DungeonChest(false);
+	        case "Anvil": return new Crafter(Crafter.Type.Anvil);
+	        case "Enchanter": return new Crafter(Crafter.Type.Enchanter);
+	        case "Stonecutter": return new Crafter(Crafter.Type.Stonecutter);
+	        case "Assembler": return new Crafter(Crafter.Type.Assembler);
+	        case "Brewery": return new Crafter(Crafter.Type.Brewery);
+	        case "Loom": return new Crafter(Crafter.Type.Loom);
+	        case "Furnace": return new Crafter(Crafter.Type.Furnace);
+	        case "Oven": return new Crafter(Crafter.Type.Oven);
+	        case "Bed": return new Bed();
+	        case "SlimeStatue": return new SlimeStatue();
+	        case "ZombieStatue": return new ZombieStatue();
+	        case "SkeletonStatue": return new SkeletonStatue();
+	        case "Tnt": return new Tnt();
+	        case "Lantern": return new Lantern(Lantern.Type.NORM);
+	        case "Arrow": return new Arrow(new Skeleton(0), 0, 0, Direction.NONE, 0);
+	        case "Fireball": return new Fireball(new Skeleton(0), 0, 0, Direction.NONE, 0);
+	        case "XpOrb": return new SmokeParticle(0, 0); // Unussed, but works
+	        case "ItemEntity": return new ItemEntity(Items.get("unknown"), 0, 0);
+	
+	        // Load Particles
+	        case "FireParticle": return new FireParticle(0, 0);
+	        case "SplashParticle": return new SplashParticle(0, 0);
+	        case "HeartParticle": return new HeartParticle(0, 0);
+	        case "BrightParticle": return new BrightParticle(0, 0);
+	        case "SmashParticle": return new SmashParticle(0, 0);
+	        case "SmokeParticle": return new SmokeParticle(0, 0);
+	        case "CloudParticle": return new CloudParticle(0, 0);
+	        case "TextParticle": return new TextParticle("", 0, 0, 0);
+	
+	        default:
+	            System.err.println("LOAD ERROR: unknown or outdated entity requested: " + string);
+	            return null;
         }
     }
 }

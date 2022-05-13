@@ -25,7 +25,7 @@ public class LevelGen {
 	private static int beaches_thickness = 1;
 
 	// width and height of the map
-	private int w, h;
+	private final int w, h;
 
 	private static final int stairRadius = 15;
 
