@@ -56,7 +56,10 @@ public class World extends Game {
 	
 	
 	/** This method is used when respawning, and by initWorld to reset the vars. It does not generate any new terrain. */
-	public static void resetGame() { resetGame(true); }
+	public static void resetGame() {
+		resetGame(true); 
+	}
+	
 	public static void resetGame(boolean keepPlayer) {
 		Logger.debug("Resetting...");
 		playerDeadTime = 0;
@@ -141,12 +144,13 @@ public class World extends Game {
 		
 		Logger.trace("World initialized.");
 	}
-	
-	
-	
+
 	
 	/** This method is called when you interact with stairs, this will give you the transition effect. While changeLevel(int) just changes the level. */
-	public static void scheduleLevelChange(int dir) { scheduleLevelChange(dir, null); }
+	public static void scheduleLevelChange(int dir) {
+		scheduleLevelChange(dir, null); 
+	}
+	
 	public static void scheduleLevelChange(int dir, @Nullable Action changeAction) {
 		onChangeAction = changeAction;
 		pendingLevelChange = dir;

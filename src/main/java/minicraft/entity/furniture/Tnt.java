@@ -157,25 +157,6 @@ public class Tnt extends Furniture implements ActionListener {
 	}
 
 	@Override
-	protected String getUpdateString() {
-		String updates = super.getUpdateString() + ";";
-		updates += "fuseLit," + fuseLit + ";ftik," + ftik;
-		return updates;
-	}
-
-	@Override
-	protected boolean updateField(String field, String val) {
-		if (super.updateField(field, val)) {
-			return true;
-		}
-		switch (field) {
-		case "fuseLit": fuseLit = Boolean.parseBoolean(val); return true;
-		case "ftik": ftik = Integer.parseInt(val); return true;
-		}
-		return false;
-	}
-
-	@Override
 	public int getLightRadius() {
 		return light;
 	}

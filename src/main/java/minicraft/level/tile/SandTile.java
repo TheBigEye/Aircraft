@@ -3,6 +3,7 @@ package minicraft.level.tile;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
+import minicraft.entity.mob.Firefly;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Color;
@@ -61,13 +62,11 @@ public class SandTile extends Tile {
 
         if (steppedOn) {
             csprite.full = SandTile.steppedOn_sprite;
-        }
-        else {
+        } else {
             csprite.full = SandTile.normal_sprite;
         }
 
         csprite.sparse.color = DirtTile.dCol(level.depth);
-
         csprite.render(screen, level, x, y);
     }
 
@@ -85,6 +84,10 @@ public class SandTile extends Tile {
     public void steppedOn(Level level, int x, int y, Entity entity) {
         if (entity instanceof Mob) {
             level.setData(x, y, 10);
+        }
+        
+        if (entity instanceof Firefly) {
+        	level.setData(x, y, 0);
         }
     }
 

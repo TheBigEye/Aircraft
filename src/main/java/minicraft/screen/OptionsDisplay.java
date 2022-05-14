@@ -41,9 +41,9 @@ public class OptionsDisplay extends Display {
 							e.printStackTrace();
 						}
 					})
-	        		)
-	            .setTitle("Options")
-	            .createMenu();
+	        )
+	        .setTitle("Options")
+	        .createMenu();
 
 	        Menu popupMenu = new Menu.Builder(true, 4, RelPos.CENTER)
 	            .setShouldRender(false)
@@ -63,7 +63,7 @@ public class OptionsDisplay extends Display {
 			super.render(screen);
 	        
 	        // Forcefully render the popup menu above everything else
-	        if(menus[1].shouldRender) {
+	        if (menus[1].shouldRender) {
 	            menus[1].render(screen);
 	        }
 	    }

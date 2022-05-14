@@ -235,36 +235,4 @@ public abstract class Mob extends Entity {
     protected static Direction getAttackDir(Entity attacker, Entity hurt) {
         return Direction.getDirection(hurt.x - attacker.x, hurt.y - attacker.y);
     }
-
-    @Override
-    protected String getUpdateString() {
-        String updates = super.getUpdateString() + ";";
-        updates += "dir," + dir.ordinal() + ";health," + health + ";hurtTime," + hurtTime;
-
-        return updates;
-    }
-
-    @Override
-    protected boolean updateField(String field, String val) {
-        if (field.equals("x") || field.equals("y")) {
-            walkDist++;
-        }
-        if (super.updateField(field, val)) {
-            return true;
-        }
-        
-        switch (field) {
-	        case "dir":
-	            dir = Direction.values[Integer.parseInt(val)];
-	            return true;
-	        case "health":
-	            health = Integer.parseInt(val);
-	            return true;
-	        case "hurtTime":
-	            hurtTime = Integer.parseInt(val);
-	            return true;
-	    }
-
-        return false;
-    }
 }

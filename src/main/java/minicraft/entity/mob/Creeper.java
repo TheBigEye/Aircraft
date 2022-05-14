@@ -76,11 +76,11 @@ public class Creeper extends EnemyMob {
                 }
             }
 
-            // basically, if there aren't any players it "defuses" itself and doesn't blow
-            // up
+			// Handles what happens when it blows up.
+			// It will only blow up if there are any players nearby.
             if (playerInRange) {
-                // blow up
-
+            	
+            	// Play explosion sound
                 if (random.nextInt(3) == 0) {
                     Sound.Mob_creeper_explode.play();
                 }
@@ -99,8 +99,9 @@ public class Creeper extends EnemyMob {
                 int yt = (y - 2) >> 4;
 
                 // used for calculations
-                int radius = lvl + 1;
+                int radius = lvl;
 
+                // The total amount of damage we want to apply.
                 int lvlDamage = BLAST_DAMAGE * lvl;
 
                 // hurt all the entities
@@ -138,8 +139,7 @@ public class Creeper extends EnemyMob {
                     }
                 }
 
-                for (Entity entity : entitiesInRange) { // This is repeated because of tilePositions need to be
-                                                        // calculated
+                for (Entity entity : entitiesInRange) { // This is repeated because of tilePositions need to be calculated
                     if (entity == this)
                         continue;
                     Point ePos = new Point(entity.x >> 4, entity.y >> 4);
@@ -193,36 +193,10 @@ public class Creeper extends EnemyMob {
 
     public void die() {
         // Only drop items if the creeper has not exploded
-        if (!fuseLit)
+        if (!fuseLit) {
             dropItem(1, 4 - Settings.getIdx("diff"), Items.get("Gunpowder"));
-        super.die();
-    }
-
-    @Override
-    protected String getUpdateString() {
-        String updates = super.getUpdateString() + ";";
-        updates += "fuseTime," + fuseTime + ";fuseLit," + fuseLit;
-
-        return updates;
-    }
-
-    @Override
-    protected boolean updateField(String field, String val) {
-        if (super.updateField(field, val))
-            return true;
-        switch (field) {
-        case "fuseTime":
-            fuseTime = Integer.parseInt(val);
-            return true;
-
-        case "fuseLit":
-            boolean wasLit = fuseLit;
-            fuseLit = Boolean.parseBoolean(val);
-            if (fuseLit && !wasLit)
-                Sound.Mob_creeper_fuse.play();
         }
-
-        return false;
+        super.die();
     }
     
 	@Override

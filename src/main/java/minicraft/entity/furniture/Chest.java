@@ -78,28 +78,6 @@ public class Chest extends Furniture implements ItemHolder {
     }
 
     @Override
-    protected String getUpdateString() {
-        String updates = super.getUpdateString() + ";";
-        updates += "inventory," + inventory.getItemData();
-        return updates;
-    }
-
-    @Override
-    protected boolean updateField(String fieldName, String val) {
-        if (super.updateField(fieldName, val))
-            return true;
-        switch (fieldName) {
-        case "inventory":
-            inventory.updateInv(val);
-            if (Game.getDisplay() instanceof ContainerDisplay) {
-                ((ContainerDisplay) Game.getDisplay()).onInvUpdate(this);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public Inventory getInventory() {
         return inventory;
     }

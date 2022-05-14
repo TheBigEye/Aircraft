@@ -41,7 +41,6 @@ public class StairsTile extends Tile {
             return true;
 
         } else {
-
             return false;
         }
     }

@@ -7,6 +7,7 @@ import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.boss.AirWizard;
+import minicraft.entity.mob.boss.AirWizardPhase3;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
@@ -97,9 +98,9 @@ public class WallTile extends Tile {
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
             if (tool.type == type.getRequiredTool()) {
-                if (level.depth != -3 || type != Material.Obsidian || AirWizard.beaten) {
+                if (level.depth != -3 || type != Material.Obsidian || AirWizardPhase3.beaten) {
                     if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                        hurt(level, xt, yt, random.nextInt(10) + (tool.level) * 5 + 10);
+						hurt(level, xt, yt, tool.getDamage());
                         return true;
                     }
                 } else {

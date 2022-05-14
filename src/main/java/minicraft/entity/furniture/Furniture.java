@@ -137,22 +137,4 @@ public class Furniture extends Entity {
     public boolean canWool() {
         return true;
     }
-
-    @Override
-    protected String getUpdateString() {
-        return super.getUpdateString() + ";pushTime," + multiPushTime;
-    }
-
-    @Override
-    protected boolean updateField(String field, String val) {
-        if (super.updateField(field, val)) {
-            return true;
-        }
-
-        switch (field) {
-        	case "pushTime": pushTime = Integer.parseInt(val); return true;
-        }
-
-        return false;
-    }
 }

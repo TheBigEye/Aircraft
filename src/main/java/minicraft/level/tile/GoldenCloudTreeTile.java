@@ -100,13 +100,14 @@ public class GoldenCloudTreeTile extends Tile {
 
     @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (Game.isMode("Creative"))
-            return false; // go directly to hurt method
+        if (Game.isMode("Creative")) {
+            return false; // Go directly to hurt method
+        }
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Axe) {
-                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    hurt(level, xt, yt, random.nextInt(10) + (tool.level) * 5 + 10);
+				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+					hurt(level, xt, yt, tool.getDamage());
                     return true;
                 }
             }

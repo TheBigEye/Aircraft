@@ -23,104 +23,97 @@ import minicraft.level.Level;
 // This is the normal stone you see underground and on the surface, that drops coal and stone.
 
 public class RockTile extends Tile {
-    private ConnectorSprite sprite = new ConnectorSprite(RockTile.class, new Sprite(18, 6, 3, 3, 1, 3),
-            new Sprite(21, 8, 2, 2, 1, 3), new Sprite(21, 6, 2, 2, 1, 3)) {
- 	   
-        
-        public boolean connectsTo(Tile tile, boolean isSide) {
-            return tile == Tiles.get("rock") || tile == Tiles.get("up rock");
-        }
- 	   };
+	private ConnectorSprite sprite = new ConnectorSprite(RockTile.class, new Sprite(18, 6, 3, 3, 1, 3),
+			new Sprite(21, 8, 2, 2, 1, 3), new Sprite(21, 6, 2, 2, 1, 3)) {
 
-    private boolean dropCoal = false;
-    private final int maxHealth = 50;
+		public boolean connectsTo(Tile tile, boolean isSide) {
+			return tile == Tiles.get("rock") || tile == Tiles.get("up rock");
+		}
+	};
 
-    private int damage;
+	private boolean dropCoal = false;
+	private final int maxHealth = 50;
 
-    protected RockTile(String name) {
-        super(name, (ConnectorSprite) null);
-        csprite = sprite;
-    }
+	private int damage;
 
-    @Override
-    public void render(Screen screen, Level level, int x, int y) {
-        sprite.sparse.color = DirtTile.dCol(level.depth);
-        sprite.render(screen, level, x, y);
-    }
+	protected RockTile(String name) {
+		super(name, (ConnectorSprite) null);
+		csprite = sprite;
+	}
 
-    @Override
-    public boolean mayPass(Level level, int x, int y, Entity e) {
-        return e instanceof Firefly;
-    }
+	@Override
+	public void render(Screen screen, Level level, int x, int y) {
+		sprite.sparse.color = DirtTile.dCol(level.depth);
+		sprite.render(screen, level, x, y);
+	}
 
-    @Override
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-    	dropCoal = false; // Can only be reached when player hits w/o pickaxe, so remove ability to get coal
-        hurt(level, x, y, dmg);
-        return true;
-    }
+	@Override
+	public boolean mayPass(Level level, int x, int y, Entity e) {
+		return e instanceof Firefly;
+	}
 
-    @Override
-    public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
+	@Override
+	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+		dropCoal = false; // Can only be reached when player hits w/o pickaxe, so remove ability to get coal
+		hurt(level, x, y, dmg);
+		return true;
+	}
 
-        // creative mode can just act like survival here
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
-            if (tool.type == ToolType.Pickaxe && player.payStamina(4 - tool.level) && tool.payDurability()) {
+	@Override
+	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 
-                // Drop coal since we use a pickaxe.
-                dropCoal = true;
-                hurt(level, xt, yt, random.nextInt(10) + (tool.level) * 5 + 10);
-                return true;
-            }
-        }
-        return false;
-    }
+		// creative mode can just act like survival here
+		if (item instanceof ToolItem) {
+			ToolItem tool = (ToolItem) item;
+			if (tool.type == ToolType.Pickaxe && player.payStamina(4 - tool.level) && tool.payDurability()) {
 
-    @Override
-    public void hurt(Level level, int x, int y, int dmg) {
-        damage = level.getData(x, y) + dmg;
-        if (Game.isMode("creative")) {
-            dmg = damage = maxHealth;
-            dropCoal = true;
-        }
+				// Drop coal since we use a pickaxe.
+				dropCoal = true;
+				hurt(level, xt, yt, tool.getDamage());
+				return true;
+			}
+		}
+		return false;
+	}
 
-        level.add(new SmashParticle(x * 16, y * 16));
-        Sound.Tile_generic_hurt.play();
+	@Override
+	public void hurt(Level level, int x, int y, int dmg) {
+		damage = level.getData(x, y) + dmg;
+		if (Game.isMode("creative")) {
+			dmg = damage = maxHealth;
+			dropCoal = true;
+		}
 
-        level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
-        if (damage >= maxHealth) {
+		level.add(new SmashParticle(x * 16, y * 16));
+		Sound.Tile_generic_hurt.play();
 
-            if (dropCoal) {
-                level.dropItem(x * 16 + 8, y * 16 + 8, 1, 3, Items.get("Stone"));
-                int coal = 0;
+		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
+		if (damage >= maxHealth) {
 
-                if (!Settings.get("diff").equals("Hard")) {
-                    coal++;
-                }
+			if (dropCoal) {
+				level.dropItem(x * 16 + 8, y * 16 + 8, 1, 3, Items.get("Stone"));
+				int coal = 0;
 
-                level.dropItem(x * 16 + 8, y * 16 + 8, coal, coal + 1, Items.get("Coal"));
+				if (!Settings.get("diff").equals("Hard")) {
+					coal++;
+				}
+				level.dropItem(x * 16 + 8, y * 16 + 8, coal, coal + 1, Items.get("Coal"));
+			} else {
+				level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Stone"));
+			}
+			level.setTile(x, y, Tiles.get("Dirt"));
+		} else {
+			level.setData(x, y, damage);
+		}
+	}
 
-            } else {
-                level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Stone"));
-
-            }
-
-            level.setTile(x, y, Tiles.get("Dirt"));
-
-        } else {
-            level.setData(x, y, damage);
-
-        }
-    }
-
-    @Override
-    public boolean tick(Level level, int xt, int yt) {
-        damage = level.getData(xt, yt);
-        if (damage > 0) {
-            level.setData(xt, yt, damage - 1);
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean tick(Level level, int xt, int yt) {
+		damage = level.getData(xt, yt);
+		if (damage > 0) {
+			level.setData(xt, yt, damage - 1);
+			return true;
+		}
+		return false;
+	}
 }

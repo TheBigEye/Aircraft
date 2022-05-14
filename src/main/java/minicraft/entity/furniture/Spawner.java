@@ -258,29 +258,4 @@ public class Spawner extends Furniture {
     public Furniture clone() {
         return new Spawner(mob);
     }
-
-    @Override
-    protected String getUpdateString() {
-        String updates = super.getUpdateString() + ";";
-        updates += "health," + health + ";lvl," + lvl;
-
-        return updates;
-    }
-
-    @Override
-    protected boolean updateField(String field, String val) {
-        if (super.updateField(field, val)) {
-            return true;
-        }
-        switch (field) {
-        case "health":
-            health = Integer.parseInt(val);
-            return true;
-        case "lvl":
-            lvl = Integer.parseInt(val);
-            return true;
-        }
-
-        return false;
-    }
 }

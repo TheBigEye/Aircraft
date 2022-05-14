@@ -12,5 +12,4 @@ public class CommandBlock extends Furniture {
     public Furniture clone() {
         return new CommandBlock();
     }
-
 }

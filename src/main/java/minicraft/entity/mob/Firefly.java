@@ -6,7 +6,7 @@ import minicraft.gfx.MobSprite;
 public class Firefly extends FlyMob {
 	private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(68, 68);
 
-	private int lightRadious = 0;
+	private int lightRadious = 3;
 
 	/**
 	 * Creates a firefly.
@@ -21,8 +21,8 @@ public class Firefly extends FlyMob {
 		// Light ON
 		if (Updater.getTime() == Updater.Time.Night) {
 			sprites = MobSprite.compileMobSpriteAnimations(68, 68); 
-			lightRadious = 3;
-
+			lightRadious = 2;
+			
 		} else {
 			// Light OFF	
 			if (tickTime / 8 % 2 == 0 && lightRadious > 0) {

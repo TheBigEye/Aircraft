@@ -100,24 +100,4 @@ public class DeathChest extends Chest {
 			Game.notifications.add("Death chest retrieved!");
 		}
 	}
-
-    @Override
-    protected String getUpdateString() {
-        String updates = super.getUpdateString() + ";";
-        updates += "time," + time;
-
-        return updates;
-    }
-
-    @Override
-    protected boolean updateField(String field, String val) {
-        if (super.updateField(field, val)) {
-            return true;
-        }
-        switch (field) {
-        	case "time": time = Integer.parseInt(val); return true;
-        }
-
-        return false;
-    }
 }

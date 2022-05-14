@@ -17,9 +17,11 @@ import minicraft.screen.entry.StringEntry;
 public class WorldInfoDisplay extends Display {
 
 	public WorldInfoDisplay() {
-		super(true, new Menu.Builder(true, 3, RelPos.CENTER,
+		super(true);
+
+		Menu worldInfo = new Menu.Builder(true, 3, RelPos.CENTER,
 				new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(), new BlankEntry(),
-				new StringEntry("                                  "),
+				new StringEntry("                               "),
 				new SelectEntry("Open World Folder", () -> {
 					try {
 						Desktop.getDesktop().open(new File(Game.gameDir + "/saves/" + WorldSelectDisplay.getWorldName()));
@@ -27,9 +29,13 @@ public class WorldInfoDisplay extends Display {
 						e.printStackTrace();
 					}
 				}),
-				new BlankEntry()
-				).setTitle(Localization.getLocalized("World info"))
-				.createMenu());
+				new BlankEntry())
+				.setTitle(Localization.getLocalized("World info"))
+				.createMenu();
+
+		menus = new Menu[]{
+			worldInfo
+		};
 	}
 
 	public void render(Screen screen) {
@@ -43,11 +49,5 @@ public class WorldInfoDisplay extends Display {
 
 		Font.draw(Settings.getEntry("mode") + "", screen, 120, 150, Color.GRAY);
 		Font.draw(Settings.getEntry("cheats") + "", screen, 120, 160, Color.GRAY);
-
-	}
-
-	@Override
-	public void onExit() {
-
 	}
 }

@@ -60,11 +60,11 @@ public class UpRockTile extends Tile {
 	        // creative mode can just act like survival here
 	        if (item instanceof ToolItem) {
 	            ToolItem tool = (ToolItem) item;
-	            if (tool.type == ToolType.Pickaxe && player.payStamina(4 - tool.level) && tool.payDurability()) {
+	            if (tool.type == ToolType.Pickaxe && player.payStamina(5 - tool.level) && tool.payDurability()) {
 
 	                // Drop coal since we use a pickaxe.
 	                dropCoal = true;
-	                hurt(level, xt, yt, random.nextInt(10) + (tool.level) * 5 + 10);
+	                hurt(level, xt, yt, tool.getDamage());
 	                return true;
 	            }
 	        }

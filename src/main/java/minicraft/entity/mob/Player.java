@@ -440,7 +440,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			onStairDelay--; 
 		}
 
-
 		if (onTile == Tiles.get("Infinite Fall") && !Game.isMode("creative")) {
 
 			if (fallWarn == false) {
@@ -1435,87 +1434,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     public void remove() {
     	Logger.trace("Removing player from level " + getLevel());
     	super.remove();
-    }
-
-    protected String getUpdateString() {
-    	String updates = super.getUpdateString() + ";";
-    	updates += "skinon," + skinon + 
-    			";shirtColor," + shirtColor + 
-    			";armor," + armor + 
-    			";stamina," + stamina + 
-    			";health," + health + 
-    			";hunger," + hunger + 
-    			";attackTime," + attackTime + 
-    			";attackDir," + attackDir.ordinal() + 
-    			";activeItem," + (activeItem == null ? "null" : activeItem.getData()) + 
-    			";isFishing," + (isFishing ? "1" : "0");
-
-    	return updates;
-    }
-
-    @Override
-    protected boolean updateField(String field, String val) {
-    	if (super.updateField(field, val)) {
-    		return true;
-    	}
-    	switch (field) {
-	    	case "skinon": skinon = Boolean.parseBoolean(val); return true;
-	    	case "shirtColor": shirtColor = Integer.parseInt(val); return true;
-	    	case "armor": armor = Integer.parseInt(val); return true;
-	    	case "stamina": stamina = Integer.parseInt(val); return true;
-	    	case "health": health = Integer.parseInt(val); return true;
-	    	case "hunger": hunger = Integer.parseInt(val); return true;
-	    	case "score": score = Integer.parseInt(val); return true;
-	    	case "mult": multiplier = Integer.parseInt(val); return true;
-	    	case "attackTime": attackTime = Integer.parseInt(val); return true;
-	    	case "attackDir": attackDir = Direction.values[Integer.parseInt(val)]; return true;
-	    	case "activeItem":
-	    		activeItem = Items.get(val, true);
-	    		attackItem = activeItem != null && activeItem.canAttack() ? activeItem : null;
-	    		return true;
-	    	case "isFishing":
-	    		isFishing = Integer.parseInt(val) == 1;
-	    		return true;
-	    	case "potioneffects":
-	    		potioneffects.clear();
-	    		for (String potion : val.split(":")) {
-	    			String[] parts = potion.split("_");
-	    			potioneffects.put(PotionType.values[Integer.parseInt(parts[0])], Integer.parseInt(parts[1]));
-	    		}
-	    	return true;
-    	}
-
-    	return false;
-    }
-
-    public final String getPlayerData() {
-    	List<String> datalist = new ArrayList<>();
-    	StringBuilder playerdata = new StringBuilder();
-    	playerdata.append(Game.VERSION).append("\n");
-
-    	Save.writePlayer(this, datalist);
-    	for (String str : datalist) {
-    		if (str.length() > 0) {
-    			playerdata.append(str).append(",");
-    		}
-    	}
-
-    	playerdata = new StringBuilder(playerdata.substring(0, playerdata.length() - 1) + "\n");
-
-    	Save.writeInventory(this, datalist);
-    	for (String str : datalist) {
-    		if (str.length() > 0) {
-    			playerdata.append(str).append(",");
-    		}
-    	}
-
-    	if (datalist.size() == 0) {
-    		playerdata.append("null");
-    	} else {
-    		playerdata = new StringBuilder(playerdata.substring(0, playerdata.length() - 1));
-    	}
-
-    	return playerdata.toString();
     }
 
     @Override

@@ -557,19 +557,19 @@ public class Renderer extends Game {
 			info.add("Base: " + "Minicraft Plus Legacy");                                 subinfo.add("Java:" + Info.Java_Version);
 			info.add("" + time.toLocalDate());                                            subinfo.add("Java arch: x" + Info.Java_Arch);
 			info.add(Initializer.fra + " fps");                                           subinfo.add("Max mem:" + Info.max_Memory);
-			info.add("day tiks:" + Updater.tickCount + " (" + Updater.getTime() + ")");   subinfo.add("Total mem:" + Info.total_Memory);
+			info.add("day tiks: " + Updater.tickCount + " (" + Updater.getTime() + ")");   subinfo.add("Total mem:" + Info.total_Memory);
 			info.add((Updater.normSpeed * Updater.gamespeed) + " tps ");                  subinfo.add("Free mem: " + Info.free_Memory);
 
 			// player info
-			info.add("walk spd:" + player.moveSpeed);
-			info.add("X:" + (player.x / 16) + "." + (player.x % 16));
-			info.add("Y:" + (player.y / 16) + "." + (player.y % 16));
+			info.add("walk spd: " + player.moveSpeed);
+			info.add("X: " + (player.x / 16) + "." + (player.x % 16));
+			info.add("Y: " + (player.y / 16) + "." + (player.y % 16));
 			info.add("");
 
-			info.add("Tile:" + levels[currentLevel].getTile(player.x >> 4, player.y >> 4).name);
-			info.add("Id:" + levels[currentLevel].getTile(player.x >> 4, player.y >> 4).id);
-			info.add("Data:" + levels[currentLevel].getData(player.x >> 4, player.y >> 4));
-			info.add("Depth:" + levels[currentLevel].depth);
+			info.add("Tile: " + levels[currentLevel].getTile(player.x >> 4, player.y >> 4).name);
+			info.add("Id: " + levels[currentLevel].getTile(player.x >> 4, player.y >> 4).id);
+			info.add("Data: " + levels[currentLevel].getData(player.x >> 4, player.y >> 4));
+			info.add("Depth: " + levels[currentLevel].depth + " (" + levels[currentLevel].w +"x" + levels[currentLevel].h +")");
 			info.add("");
 
 			// screen info
@@ -615,11 +615,12 @@ public class Renderer extends Game {
 			if (levels[currentLevel] != null) {
 				info.add("");
 				info.add("Seed: " + levels[currentLevel].getSeed());
-				info.add("Music factor: " + Level.randomMusic + "/16000");
+				info.add("Night factor: " + levels[currentLevel].niceNight + " > " + (Updater.tickCount / 1000) + "/16");
+				info.add("Music factor: " + (levels[currentLevel].randomMusic / 1000) + "/16");
 			}
 
 			FontStyle style = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(1).setYPos(1);
-			FontStyle substyle = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(screen.w - 116).setYPos(1);
+			FontStyle substyle = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(Screen.w - 116).setYPos(1);
 
 			Font.drawParagraph(info, screen, style, 2);
 			Font.drawParagraph(subinfo, screen, substyle, 2);

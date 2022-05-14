@@ -89,25 +89,4 @@ public class Slime extends EnemyMob {
             level.add(new Keeper(1), x, y);
         }
     }
-
-    @Override
-    protected String getUpdateString() {
-        String updates = super.getUpdateString() + ";";
-        updates += "jumpTime," + jumpTime;
-
-        return updates;
-    }
-
-    @Override
-    protected boolean updateField(String field, String val) {
-        if (super.updateField(field, val))
-            return true;
-        switch (field) {
-        case "jumpTime":
-            jumpTime = Integer.parseInt(val);
-            return true;
-        }
-
-        return false;
-    }
 }

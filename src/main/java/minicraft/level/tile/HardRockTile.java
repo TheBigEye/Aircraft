@@ -44,8 +44,8 @@ public class HardRockTile extends Tile {
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Pickaxe && tool.level == 4) {
-                if (player.payStamina(4) && tool.payDurability()) {
-                    hurt(level, xt, yt, random.nextInt(10) + (tool.level) * 5 + 10);
+				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+					hurt(level, xt, yt, tool.getDamage());
                     return true;
                 }
             } else {
@@ -72,7 +72,9 @@ public class HardRockTile extends Tile {
         level.add(new SmashParticle(x * 16, y * 16));
         Sound.Tile_generic_hurt.play();
 
-        level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
+
+        	level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
+
         if (damage >= hrHealth) {
             level.setTile(x, y, Tiles.get("dirt"));
             level.dropItem(x * 16 + 8, y * 16 + 8, 1, 3, Items.get("Stone"));

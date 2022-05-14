@@ -37,6 +37,11 @@ public class TitleDisplay extends Display {
 	private int rand;
 	private int count = 0; // this and reverse are for the logo; they produce the fade-in/out effect.
 	private boolean reverse = false;
+	
+	private int time = 0;
+	private int tickTime = 0;
+	
+	private boolean shouldRender = false;
 
 	private static List<String> splashes = new ArrayList<>();
 
@@ -65,51 +70,66 @@ public class TitleDisplay extends Display {
 	}
 
 	public TitleDisplay() {
-
-		super(false, false, new Menu.Builder(true, 1, RelPos.CENTER,
+		super(false);
+		
+		// Title menu
+		Menu titleDisplay = new Menu.Builder(true, 1, RelPos.CENTER,
 				new SelectEntry("Singleplayer", () -> {
+					// if there are no worlds, it redirects to WorldGenDisplay()
 					if (WorldSelectDisplay.getWorldNames().size() > 0) {
 						Game.setDisplay(new Display(true, new Menu.Builder(false, 2, RelPos.CENTER,
 							new SelectEntry("Load World", () -> Game.setDisplay(new WorldSelectDisplay())),
-							new SelectEntry("New World", () -> Game.setDisplay(new WorldGenDisplay()))).createMenu())
-						);
+							new SelectEntry("New World", () -> Game.setDisplay(new WorldGenDisplay()))
+							)
+							.createMenu()
+						));
 					} else {
 						Game.setDisplay(new WorldGenDisplay());
 					}
 				}),
 
-				new SelectEntry("Options", () -> Game.setDisplay(new OptionsDisplay())),
-				new SelectEntry("Credits", () -> Game.setDisplay(new EndGameCreditsDisplay())),
+			new SelectEntry("Options", () -> Game.setDisplay(new OptionsDisplay())),
+			new SelectEntry("Credits", () -> Game.setDisplay(new EndGameCreditsDisplay())),
+			new SelectEntry("Help", () -> Game.setDisplay(new Display(true, new Menu.Builder(true, 2, RelPos.CENTER,
+					new BlankEntry(),
+					new LinkEntry(Color.CYAN, "Minicraft discord", "https://discord.me/minicraft"),
+					new BlankEntry(),
+					new SelectEntry("Instructions", () -> Game.setDisplay(new BookDisplay(BookData.instructions))),
+					new SelectEntry("Story guide", () -> Game.setDisplay(new BookDisplay(BookData.storylineGuide))),
+					new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
+					new SelectEntry("About", () -> Game.setDisplay(new BookDisplay(BookData.about))),
+					new BlankEntry()
+					
+				)
+				.setTitle("Help")
+				.createMenu()
+			))),
+			new SelectEntry("Exit", Game::quit)
 
-				new SelectEntry("Help", () -> Game.setDisplay(new Display(true, new Menu.Builder(true, 2, RelPos.CENTER,
-						new BlankEntry(),
-						new SelectEntry("Instructions", () -> Game.setDisplay(new BookDisplay(BookData.instructions))),
-						new SelectEntry("Story guide", () -> Game.setDisplay(new BookDisplay(BookData.storylineGuide))),
-						new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
-						new SelectEntry("About", () -> Game.setDisplay(new BookDisplay(BookData.about))),
-						new BlankEntry(),
-						new LinkEntry(Color.BLUE, "Minicraft discord", "https://discord.me/minicraft")
-				).setTitle("Help").createMenu()))),
+		)
+		.setPositioning(new Point(Screen.w / 2, Screen.h * 3 / 5), RelPos.CENTER)
+		.setShouldRender(false)
+		.createMenu();
 
-				new SelectEntry("Exit", Game::quit)
-
-			).setPositioning(new Point(Screen.w / 2, Screen.h * 3 / 5), RelPos.CENTER).createMenu());
+		menus = new Menu[]{
+			titleDisplay
+		};
 	}
 
 	@Override
 	public void init(Display parent) {
 		super.init(null); // The TitleScreen never has a parent.
 		Renderer.readyToRenderGameplay = false;
-
+		
 		LocalDateTime time = LocalDateTime.now();
 		if (time.getMonth() != Month.OCTOBER) {
 			switch (random.nextInt(4)) {
-			case 0: Sound.Theme_Cave.play(); break;
-			case 1: Sound.Theme_Surface.play(); break;
-			case 2: Sound.Theme_Fall.play(); break;
-			case 3: Sound.Theme_Peaceful.play(); break;
-			case 4: Sound.Theme_Surface.play(); break;
-			default: Sound.Theme_Fall.play(); break;
+				case 0: Sound.Theme_Cave.play(); break;
+				case 1: Sound.Theme_Surface.play(); break;
+				case 2: Sound.Theme_Fall.play(); break;
+				case 3: Sound.Theme_Peaceful.play(); break;
+				case 4: Sound.Theme_Surface.play(); break;
+				default: Sound.Theme_Fall.play(); break;
 			}  
 		}
 
@@ -190,38 +210,53 @@ public class TitleDisplay extends Display {
 	@Override
 	public void tick(InputHandler input) {
 		if (input.getKey("r").clicked) rand = random.nextInt(splashes.size() - 3) + 3;
-
+		
 		super.tick(input);
+		
+		if (shouldRender) menus[0].shouldRender = true;
+		
+		if (time > 72) shouldRender = true;
+		if (tickTime /3 %2 == 0) time++;
+		
+		tickTime++;
 	}
 
 	@Override
 	public void render(Screen screen) {
 		screen.clear(0);
+		
+		if (shouldRender == true) {
+			// Background sprite
+			int hh = 39; // Height of squares (on the spritesheet)
+			int ww = 416; // Width of squares (on the spritesheet)
+			int xxo = (Screen.w - ww * 8) / 2; // X location of the title
+			int yyo = 0; // Y location of the title
 
-		// Background sprite
-		int hh = 39; // Height of squares (on the spritesheet)
-		int ww = 416; // Width of squares (on the spritesheet)
-		int xxo = (Screen.w - ww * 8) / 2; // X location of the title
-		int yyo = 0; // Y location of the title
-
-		for (int y = 0; y < hh; y++) {
-			for (int x = 0; x < ww; x++) {
-				screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x - 8, y, 0, 5));
+			for (int y = 0; y < hh; y++) {
+				for (int x = 0; x < ww; x++) {
+					screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x - 8, y, 0, 5));
+				}
 			}
 		}
 
 		// Render the options
 		super.render(screen);
-
-		// Title sprite
-		int h = 6; // Height of squares (on the spritesheet)
-		int w = 26; // Width of squares (on the spritesheet)
-		int xo = (Screen.w - w * 8) / 2; // X location of the title
-		int yo = 55; // Y location of the title
-
-		for (int y = 0; y < h; y++) {
-			for (int x = 0; x < w; x++) {
-				screen.render(xo + x * 8, yo + y * 8, x + (y + 7) * 32, 0, 3);
+		
+        if (shouldRender) {
+            menus[0].render(screen);
+        }
+		
+		if (shouldRender == true) {
+			// Title sprite
+			int h = 6; // Height of squares (on the spritesheet)
+			int w = 26; // Width of squares (on the spritesheet)
+			int xo = (Screen.w - w * 8) / 2; // X location of the title
+			int yo = 55; // Y location of the title
+	
+			for (int y = 0; y < h; y++) {
+				for (int x = 0; x < w; x++) {
+					screen.render(xo + x * 8, yo + y * 8, x + (y + 7) * 32, 0, 3);
+				}
 			}
 		}
 
@@ -249,21 +284,29 @@ public class TitleDisplay extends Display {
 				isYellow ? Color.YELLOW :
 				Color.get(1, bcol * 51, bcol * 51, bcol * 25);
 
-		Font.drawCentered(splashes.get(rand), screen, 100, splashColor);
+		if (shouldRender == true) {
+			Font.drawCentered(splashes.get(rand), screen, 100, splashColor);
+			
+			// In case the game has the "in_dev" mode set to true it will show the version as in "Development"
+			// In case it is false, it will show the numerical version of the game
+			if (Game.in_dev == true) {
+				Font.draw("Pre " + Game.BUILD, screen, 1, Screen.h - 10, Color.WHITE);
+			} else {
+				Font.draw(Game.BUILD, screen, 1, Screen.h - 10, Color.WHITE);
+			}
 
-		/*
-		 * In case the game has the "in_dev" mode set to true it will show the version as in "Development"
-		 * In case it is false, it will show the numerical version of the game
-		 */
-		if (Game.in_dev == true) {
-			Font.draw("Pre " + Game.BUILD, screen, 1, Screen.h - 10, Color.WHITE);
-		} else {
-			Font.draw(Game.BUILD, screen, 1, Screen.h - 10, Color.WHITE);
+			// Show the author's name below the options
+			Font.draw("Mod by TheBigEye", screen, 300, Screen.h - 10, Color.WHITE);
 		}
-
-		/*
-		 * Show the author's name below the options
-		 */
-		Font.draw("Mod by TheBigEye", screen, 300, Screen.h - 10, Color.WHITE);
+		
+		for (int x = 0; x < 200; x++) { // Loop however many times depending on the width (It's divided by 3 because the pixels are scaled up by 3)
+			for (int y = 0; y < 150; y++) { // Loop however many times depending on the height (It's divided by 3 because the pixels are scaled up by 3)
+				int dd = (y + x % 2 * 2 + x / 2) - time * 2; // Used as part of the positioning.
+				if (dd < 0 && dd > -140) {
+					screen.render(x * 8, Screen.h - y * 8 - 8, 12 + 24 * 32, 0, 3); // The squares will go down.
+				} 
+			}
+		}
 	}
+
 }

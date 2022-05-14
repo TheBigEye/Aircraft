@@ -26,7 +26,6 @@ import minicraft.entity.furniture.Spawner;
 import minicraft.entity.mob.Chicken;
 import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
-import minicraft.entity.mob.DefenderMob;
 import minicraft.entity.mob.EnemyMob;
 import minicraft.entity.mob.Firefly;
 import minicraft.entity.mob.FlyMob;
@@ -50,10 +49,8 @@ import minicraft.entity.mob.Zombie;
 import minicraft.entity.mob.boss.AirWizard;
 import minicraft.entity.mob.boss.AirWizardPhase3;
 import minicraft.entity.mob.villager.Cleric;
-import minicraft.entity.mob.villager.Golem;
 import minicraft.entity.mob.villager.Librarian;
 import minicraft.entity.mob.villager.OldGolem;
-import minicraft.entity.mob.villager.VillagerMob;
 import minicraft.gfx.Point;
 import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
@@ -102,16 +99,18 @@ public class Level {
 	public short[] tiles; // An array of all the tiles in the world.
 	public short[] data; // An array of the data of the tiles in the world
 
-	public static int randomMusic; // used for the Random music system in the current level
+	public int randomMusic; // used for the Random music system in the current level
 
 	// Depth level of the level
 	public final int depth; 
 
 	// Affects the number of monsters that are on the level, bigger the number the less monsters spawn.
-	public int monsterDensity = 10; 
+	public int monsterDensity = 8; 
 	public int maxMobCount;
 	public int chestCount;
 	public int mobCount = 0;
+	
+	public boolean niceNight = false;
 
 	/**
 	 * I will be using this lock to avoid concurrency exceptions in entities and sparks set
@@ -393,6 +392,10 @@ public class Level {
 
 	public void tick(boolean fullTick) {
 		int count = 0;
+		
+		if (Updater.tickCount == 16000) {
+			niceNight = random.nextBoolean();
+		}
 
 		while (entitiesToAdd.size() > 0) {
 			Entity entity = entitiesToAdd.get(0);
@@ -771,35 +774,29 @@ public class Level {
 			// System.out.println("trySpawn on level " + depth + " of lvl " + lvl + " mob w/
 			// rand " + rnd + " at tile " + nx + "," + ny);
 
-			// spawns the enemy mobs; first part prevents enemy mob spawn on surface and the sky on
-			// first day, more or less.
-			if (!Settings.get("diff").equals("Peaceful")) {
-				if ((Updater.getTime() == Updater.Time.Night || depth != 0 && depth != 1 && depth != 2) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
+			// spawns the enemy mobs; first part prevents enemy mob spawn on surface and the sky on first day, more or less.
+			if (!Settings.get("diff").equals("Peaceful") || niceNight != true) {
+				if ((Updater.getTime() == Updater.Time.Night && depth != 1 && depth != 2) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
 					if (depth != -4) { // normal mobs
-						if (rnd <= 40)
-							add((new Slime(lvl)), nx, ny);
-						else if (rnd <= 75)
-							add((new Zombie(lvl)), nx, ny);
-						else if (rnd >= 85)
-							add((new OldGolem(lvl)), nx, ny);
-						else if (rnd >= 85)
-							add((new Skeleton(lvl)), nx, ny);
-						else
-							add((new Creeper(lvl)), nx, ny);
+						if (depth == 0) {
+							if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
+							else if (rnd >= 85) add((new Skeleton(lvl)), nx, ny);
+							else add((new Creeper(lvl)), nx, ny);
+						} else {
+							if (rnd <= 40) add((new Slime(lvl)), nx, ny);
+							else if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
+							else if (rnd >= 85) add((new OldGolem(lvl)), nx, ny);
+							else if (rnd >= 85) add((new Skeleton(lvl)), nx, ny);
+							else add((new Creeper(lvl)), nx, ny);
+						}
 
 					} else { // special dungeon mobs
-						if (rnd <= 40)
-							add((new Snake(lvl)), nx, ny);
-						else if (rnd <= 75)
-							add((new Knight(lvl)), nx, ny);
-						else if (rnd >= 85)
-							add((new Snake(lvl)), nx, ny);
-						else
-							add((new Knight(lvl)), nx, ny);
+						if (rnd <= 40) add((new Snake(lvl)), nx, ny);
+						else if (rnd <= 75) add((new Knight(lvl)), nx, ny);
+						else if (rnd >= 85) add((new Snake(lvl)), nx, ny);
+						else add((new Knight(lvl)), nx, ny);
 					}
-
 					spawned = true;
-
 				}
 			} else {
 				spawned = false;
@@ -812,24 +809,24 @@ public class Level {
 				spawned = true;
 			}
 
-			if (depth == 0 && Updater.getTime() == Updater.Time.Night && FlyMob.checkStartPos(this, nx, ny)) {
-				// Spawns the friendly mobs.
-				if (rnd >= 16) {
-					add((new Firefly()), nx, ny);
-
-				} else {
-					add((new Firefly()), nx, ny);
+			if (niceNight == true) {
+				if (depth == 0 && Updater.getTime() == Updater.Time.Night && FlyMob.checkStartPos(this, nx, ny)) {
+					// Spawns the friendly mobs.
+					if (rnd < 75) {
+						add((new Firefly()), nx, ny);
+					} else {
+						add((new Firefly()), nx, ny);
+					}
+	
+					spawned = true;
 				}
-
-				spawned = true;
 			}
 			
-			if (depth == 0 && Updater.getTime() != Updater.Time.Night && PassiveMob.checkStartPos(this, nx, ny)) {
+			if (depth == 0 && Updater.getTime() != Updater.Time.Night && Updater.getTime() != Updater.Time.Evening && PassiveMob.checkStartPos(this, nx, ny)) {
 				// Spawns the friendly mobs.
 				if (rnd >= 60) {
 					add((new Cow()), nx, ny);
-				}
-				if (rnd >= 68) {
+				} else if (rnd >= 68) {
 					add((new Chicken()), nx, ny);
 
 				} else if (rnd >= 50) {
@@ -841,57 +838,6 @@ public class Level {
 				spawned = true;
 			}
 
-			if (depth == 0 && VillagerMob.checkStartPos(this, nx, ny)) {
-				// Spawns the villagers.
-				if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33)) {
-					add((new Librarian()), nx, ny);
-
-				} else if (rnd >= 68) {
-					add((new Librarian()), nx, ny);
-
-				} else {
-					add((new Librarian()), nx, ny);
-				}
-				if (rnd <= 75) {
-					add((new Librarian()), nx, ny);
-				}
-
-				spawned = true;
-			}
-
-			if (depth == 0 && VillagerMob.checkStartPos(this, nx, ny)) {
-				// Spawns the villagers.
-				if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33)) {
-					add((new Cleric()), nx, ny);
-				}
-				if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33)) {
-					add((new Cleric()), nx, ny);
-				} else if (rnd >= 34) {
-					add((new Cleric()), nx, ny);
-				} else {
-					add((new Cleric()), nx, ny);
-				}
-
-				spawned = true;
-
-			}
-
-			if (depth == 0 && DefenderMob.checkStartPos(this, nx, ny)) {
-				// Spawns the golems.
-				if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33)) {
-					add((new Golem()), nx, ny);
-				}
-				if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33)) {
-					add((new Golem()), nx, ny);
-				} else if (rnd >= 34) {
-					add((new Golem()), nx, ny);
-				} else {
-					add((new Golem()), nx, ny);
-				}
-
-				spawned = true;
-
-			}
 
 			if (depth == 0 && FrostMob.checkStartPos(this, nx, ny)) {
 				// Spawns the villagers.

@@ -10,16 +10,16 @@ import minicraft.screen.entry.BlankEntry;
 public class EndGameCreditsDisplay extends Display {
 	
 	private int line = 0;
-	private int step = 0;
 	private int tickTime = 0;
 
     public EndGameCreditsDisplay() {
         super(true);
 
         Menu credits = new Menu.Builder(false, 6, RelPos.LEFT,
-            new BlankEntry())
-            .setTitle("")
-            .createMenu();
+            new BlankEntry()
+        )
+        .setTitle("")
+        .createMenu();
 
         menus = new Menu[]{
             credits
@@ -27,7 +27,7 @@ public class EndGameCreditsDisplay extends Display {
     }
     
     public void tick(InputHandler input) {
-    	if (tickTime / 3 %16 == 0) {
+    	if (tickTime / 3 %12 == 0) {
     		line++;
     	}
     	
@@ -41,7 +41,7 @@ public class EndGameCreditsDisplay extends Display {
 
 	public void render(Screen screen) {
 		super.render(screen);
-
+		
 		Font.draw("--------[ Aircraft ]--------", screen, Screen.h / 2  - 40, 190 - line, Color.YELLOW);
 		
 		Font.draw("Aircraft by:", screen, Screen.h/2 - 40, 210 - line, Color.WHITE);
@@ -103,11 +103,7 @@ public class EndGameCreditsDisplay extends Display {
 		Font.draw("And thanks to the Minicraft plus", screen, Screen.h/2 - 40, 740 - line, Color.YELLOW);
 		Font.draw("maintainers that thanks to their", screen, Screen.h/2 - 40, 750 - line, Color.YELLOW);
 		Font.draw("work this nice mod is possible :)", screen, Screen.h/2 - 40, 760 - line, Color.YELLOW);
-		
-	}
-
-	@Override
-	public void onExit() {
 
 	}
+
 }
