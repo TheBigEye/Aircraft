@@ -2,7 +2,6 @@ package minicraft.level.tile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import minicraft.core.Game;
 import minicraft.level.tile.TreeTile.TreeType;
 import minicraft.level.tile.WoolTile.WoolType;
@@ -21,7 +20,7 @@ public final class Tiles {
 
 	public static ArrayList<String> oldids = new ArrayList<>();
 
-	private static HashMap<Short, Tile> tiles = new HashMap<>();
+	private static final HashMap<Short, Tile> tiles = new HashMap<>();
 
 	public static void initTileList() {
 

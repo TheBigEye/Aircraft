@@ -26,6 +26,7 @@ public class CommandsDisplay extends Display {
     @Override
     public void tick(InputHandler input) {
     	super.tick(input);
+    	
     	if (input.getKey("exit").clicked) {
     		Game.exitDisplay();
     	}
@@ -35,29 +36,49 @@ public class CommandsDisplay extends Display {
     		switch (CommandArguments[0]) {
 	    		case "help":
 	    			Game.notifications.add("gamemode survival | creative");
-	    			Game.notifications.add("time day | morning | evening | night");
+	    			Game.notifications.add("time set day | morning | evening | night");
+	    			Game.notifications.add("time add 1000");
 	    			Game.notifications.add("say something");
 	    			break;
 	    		case "gamemode":
 	    			switch (CommandArguments[1]) {
 	    			case "creative": Settings.set("mode", "creative"); break;
 	    			case "survival": Settings.set("mode", "survival"); break;
+	    			case "c": Settings.set("mode", "creative"); break;
+	    			case "s": Settings.set("mode", "survival"); break;
 	    			default:
 	    				Game.notifications.add("Unknown Gamemode.");
 	    				break;
 	    			}
 	    			break;
-	    		case "time":
+	    		case "weather":
 	    			switch (CommandArguments[1]) {
-	    			case "morning": Updater.changeTimeOfDay(Updater.Time.Morning); break;
-	    			case "day": Updater.changeTimeOfDay(Updater.Time.Day); break;
-	    			case "evening": Updater.changeTimeOfDay(Updater.Time.Evening); break;
-	    			case "night": Updater.changeTimeOfDay(Updater.Time.Night); break;
+	    			case "rain": Game.player.isRaining = true; break;
+	    			case "clear": Game.player.isRaining = false; break;
 	    			default:
-	    				Game.notifications.add("Unknown Time.");
+	    				Game.notifications.add("Unknown weather status.");
 	    				break;
 	    			}
 	    			break;
+	    		case "time":
+	    			switch (CommandArguments[1]) {
+	    			case "set":
+	    				switch (CommandArguments[2]) {
+	    				case "morning": Updater.changeTimeOfDay(Updater.Time.Morning); break;
+	    				case "day": Updater.changeTimeOfDay(Updater.Time.Day); break;
+	    				case "evening": Updater.changeTimeOfDay(Updater.Time.Evening); break;
+	    				case "night": Updater.changeTimeOfDay(Updater.Time.Night); break;
+	    				default:
+	    					Game.notifications.add("Unknown time status.");
+	    					break;
+	    				}
+	    				break;
+	    			case "add": 
+	    				Updater.tickCount += Integer.parseInt(CommandArguments[2]); break;
+	    			default:
+	    				Game.notifications.add("Unknown time modifier.");
+	    				break;
+	    			}
 	    		case "say":       
 	    			String sayStr = command.getUserInput().toLowerCase(Localization.getSelectedLocale()).replace("say ", "");
 	    			Game.notifications.add(sayStr);

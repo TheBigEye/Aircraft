@@ -2,6 +2,7 @@ package minicraft.core;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.util.Random;
 
 import org.tinylog.Logger;
 
@@ -9,6 +10,7 @@ import minicraft.core.io.Localization;
 import minicraft.core.io.Settings;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
+import minicraft.entity.particle.SplashParticle;
 import minicraft.item.Items;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
@@ -17,6 +19,7 @@ import minicraft.saveload.Save;
 import minicraft.screen.EndGameDisplay;
 import minicraft.screen.LevelTransitionDisplay;
 import minicraft.screen.PlayerDeathDisplay;
+import minicraft.screen.TransitionDisplay;
 import minicraft.screen.WorldSelectDisplay;
 import minicraft.util.Info;
 
@@ -93,7 +96,7 @@ public class Updater extends Game {
 		// move the player -1 level for testing...
 		if (isMode("creative") && input.getKey("SHIFT-S").clicked ) Game.setDisplay(new LevelTransitionDisplay(-1));
 		if (isMode("creative") && input.getKey("SHIFT-W").clicked ) Game.setDisplay(new LevelTransitionDisplay(1));
-
+		
 		if (input.getKey("FULLSCREEN").clicked) {
 			Updater.FULLSCREEN = !Updater.FULLSCREEN;
 			Updater.updateFullscreen();
@@ -198,12 +201,12 @@ public class Updater extends Game {
 				}
 
 				player.tick(); // Ticks the player when there's no menu.
-
+				
 				if (level != null) {
 					level.tick(true);
 					Tile.tickCount++;
 				}
-
+				
 				if (display == null && input.getKey("F3").clicked) { // shows debug info in upper-left
 					Renderer.showDebugInfo = !Renderer.showDebugInfo;
 				}

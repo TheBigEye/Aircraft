@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -55,6 +56,7 @@ public class Renderer extends Game {
 	public static Screen lightScreen; // Creates a front screen to render the darkness in caves (Fog of war).
 	public static boolean readyToRenderGameplay = false;
 	public static boolean showDebugInfo = false;
+	public static boolean renderRain = false;
 	
 	public static final String resourcesFolder = "/resources";
 
@@ -503,7 +505,36 @@ public class Renderer extends Game {
 			}
 		}
 
+		renderRain();
 		renderDebugInfo();
+	}
+	
+	public static void renderRain() {
+
+		if (currentLevel == 3 && player.isRaining == true) {
+			if (renderRain) {
+				for (int x = 0; x < 200; x++) { // Loop however many times depending on the width (It's divided by 3 because the pixels are scaled up by 3)
+					for (int y = 0; y < 75; y++) { // Loop however many times depending on the height (It's divided by 3 because the pixels are scaled up by 3)
+						int dd = (y + x % 2 * 2 + x / 3) - player.rainTick * 2; // Used as part of the positioning.
+						if (dd < 0 && dd > -140) {
+							Random rnd = new Random();
+							screen.render(x * 16 - rnd.nextInt(8), y * 16 - rnd.nextInt(8), 14 + 24 * 32, 0, 3); // If the direction is upwards then render the squares going up
+						} 
+					}
+				}
+			} else {
+				for (int x = 0; x < 200; x++) { // Loop however many times depending on the width (It's divided by 3 because the pixels are scaled up by 3)
+					for (int y = 0; y < 75; y++) { // Loop however many times depending on the height (It's divided by 3 because the pixels are scaled up by 3)
+						int dd = (y + x % 2 * 2 + x / 3) - player.rainTick * 2; // Used as part of the positioning.
+						if (dd < 0 && dd > -140) {
+							Random rnd = new Random();
+							screen.render(x * 16 - rnd.nextInt(12), y * 16 - rnd.nextInt(12), 14 + 24 * 32, 0, 3); // If the direction is upwards then render the squares going up
+						} 
+					}
+				}
+			}
+		}
+
 	}
 
 	public static void renderBossbar(int length, String title) {
@@ -614,8 +645,9 @@ public class Renderer extends Game {
 
 			if (levels[currentLevel] != null) {
 				info.add("");
-				info.add("Seed: " + levels[currentLevel].getSeed());
-				info.add("Night factor: " + levels[currentLevel].niceNight + " > " + (Updater.tickCount / 1000) + "/16");
+				info.add("Level seed: " + levels[currentLevel].getSeed());
+				info.add("Night factor: " + levels[currentLevel].getNightFactor() + " > " + (levels[currentLevel].getNightTick() / 1000) + "/16");
+				info.add("Rain factor: " + player.isRaining + " > " + player.rainCount + "/8");
 				info.add("Music factor: " + (levels[currentLevel].randomMusic / 1000) + "/16");
 			}
 

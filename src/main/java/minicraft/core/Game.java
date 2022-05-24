@@ -10,20 +10,14 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
-
-import org.jetbrains.annotations.Nullable;
-import org.tinylog.Logger;
-
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Screen;
 import minicraft.level.Level;
 import minicraft.level.tile.Tiles;
 import minicraft.saveload.Load;
@@ -31,12 +25,14 @@ import minicraft.saveload.Version;
 import minicraft.screen.Display;
 import minicraft.screen.TitleDisplay;
 import minicraft.util.Info;
+import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*
  *This is the main class, where is all the important variables and
- * functions that make up the game at the beginning of the game. 
+ * functions that make up the game at the beginning of the game.
  */
 
 public class Game {
@@ -68,7 +64,7 @@ public class Game {
 	public static Level level;
 
 	// Crash splashes
-	private static String[] Splash = {
+	private static final String[] Splash = {
 			"Who has put TNT?",
 			"An error has occurred again??",
 			"A nice cup of coffee?",
@@ -84,8 +80,8 @@ public class Game {
 
 	// DISPLAY
 	static Display display = null, newDisplay = null;
-	public static void setDisplay(@Nullable Display display) {	
-		newDisplay = display; 
+	public static void setDisplay(@Nullable Display display) {
+		newDisplay = display;
 	}
 	public static void exitDisplay() {
 		if (display == null) {
@@ -102,15 +98,13 @@ public class Game {
 
 	@Nullable
 	public static Display getDisplay() {
-		return newDisplay; 
+		return newDisplay;
 	}
-
 
 	// GAMEMODE
 	public static boolean isMode(String mode) {
 		return ((String) Settings.get("mode")).equalsIgnoreCase(mode);
 	}
-
 
 	// LEVEL
 	public static Level[] levels = new Level[7]; // This array stores the different levels.
@@ -160,7 +154,7 @@ public class Game {
 			crashDisplay.setText(
 
 				" " + errorSplash + "\n" +
-				" If the problem persists, send a screenshot to the author.\n" + "\n" + 
+				" If the problem persists, send a screenshot to the author.\n" + "\n" +
 
                 "--- BEGIN ERROR REPORT ---------" + "\n" +
                 "Generated: " + time.toLocalDate() + "\n\n" +
@@ -240,7 +234,7 @@ public class Game {
 		World.resetGame(); // "half"-starts a new game, to set up initial variables
 		player.eid = 0;
 		new Load(true); // This loads any saved preferences.
-		
+
 		MAX_FPS = (int) Settings.get("fps"); // Load FPS
 
 		// Window events ----------------------------------------------------------------------------------------------------------------------------------
@@ -250,10 +244,10 @@ public class Game {
 
 		// Display objects in the screen
 		Renderer.initScreen();
-		
+
 		// Sets menu to the title screen.
-		setDisplay(new TitleDisplay()); 
-		
+		setDisplay(new TitleDisplay());
+
 		// Update fullscreen frame if Updater.FULLSCREEN was updated previously
 		if (Updater.FULLSCREEN) {
 			Updater.updateFullscreen();

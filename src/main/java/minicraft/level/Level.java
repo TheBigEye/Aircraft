@@ -9,10 +9,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
-
-import org.tinylog.Logger;
-
-// Game imports
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
@@ -58,6 +54,7 @@ import minicraft.item.Item;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 import minicraft.level.tile.TorchTile;
+import org.tinylog.Logger;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -110,8 +107,12 @@ public class Level {
 	public int chestCount;
 	public int mobCount = 0;
 	
-	public boolean niceNight = false;
+	public static boolean nightFactor = false;
+	public static int nightTick = 0;
+	
 
+	
+	
 	/**
 	 * I will be using this lock to avoid concurrency exceptions in entities and sparks set
 	 */
@@ -275,6 +276,15 @@ public class Level {
 	public long getSeed() {
 		return seed;
 	}
+	
+	public boolean getNightFactor() {
+		return nightFactor;
+	}
+	
+	public int getNightTick() {
+		return nightTick;
+	}
+
 
 	public void checkAirWizard() {
 		checkAirWizard(true);
@@ -393,10 +403,9 @@ public class Level {
 	public void tick(boolean fullTick) {
 		int count = 0;
 		
-		if (Updater.tickCount == 16000) {
-			niceNight = random.nextBoolean();
-		}
-
+		nightTick = Updater.tickCount;
+		if (nightTick == 16000) nightFactor = random.nextBoolean();
+		
 		while (entitiesToAdd.size() > 0) {
 			Entity entity = entitiesToAdd.get(0);
 			boolean inLevel = entities.contains(entity);
@@ -417,6 +426,7 @@ public class Level {
 			}
 			entitiesToAdd.remove(entity);
 		}
+		
 		
 		// LEVEL AMBIENT LOOPS!
 		
@@ -775,7 +785,7 @@ public class Level {
 			// rand " + rnd + " at tile " + nx + "," + ny);
 
 			// spawns the enemy mobs; first part prevents enemy mob spawn on surface and the sky on first day, more or less.
-			if (!Settings.get("diff").equals("Peaceful") || niceNight != true) {
+			if (!Settings.get("diff").equals("Peaceful") || nightFactor != true) {
 				if ((Updater.getTime() == Updater.Time.Night && depth != 1 && depth != 2) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
 					if (depth != -4) { // normal mobs
 						if (depth == 0) {
@@ -809,7 +819,7 @@ public class Level {
 				spawned = true;
 			}
 
-			if (niceNight == true) {
+			if (nightFactor == true) {
 				if (depth == 0 && Updater.getTime() == Updater.Time.Night && FlyMob.checkStartPos(this, nx, ny)) {
 					// Spawns the friendly mobs.
 					if (rnd < 75) {
@@ -1128,7 +1138,6 @@ public class Level {
 		return false;
 	}
 
-	@SuppressWarnings("unused")
 	private boolean noStairs(int x, int y) {
 		return getTile(x, y) != Tiles.get("Stairs Down");
 	}

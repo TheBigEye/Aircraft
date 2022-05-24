@@ -3,12 +3,11 @@ package minicraft.gfx;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import minicraft.core.io.Localization;
 
 public class Font {
     // These are all the characters that will be translated to the screen. (The spaces and the UTF8 incoding are important)
-    private static String chars =
+    private static final String chars =
     		"ABCDEFGHIJKLMNOPQRSTUVWXYZ012345" +
     		"6789.,!?'\"-+=/\\%()<>:;Ω@ÁÉÍÓÚÑ¿¡" + 
     		"ÃÊÇÔÕĞÇÜİÖŞÆØÅŰŐ[]#|{}_&^~$*   А" +
@@ -163,21 +162,29 @@ public class Font {
             int splitIndex = getLine(para, w); // determine how many letters can be fit on to this line.
             lines.add(para.substring(0, splitIndex)); // add the specified number of characters.
 
-            if (splitIndex < para.length() && para.substring(splitIndex, splitIndex + 1).matches("[ \n]"))
-                splitIndex++; // if there are more characters to do, and the next character is a space or
-                              // newline, skip it (because the getLine() method will always break before
-                              // newlines, and will usually otherwise break before spaces.
-            para = para.substring(splitIndex); // remove the characters that have now been added on to the line
+            // if there are more characters to do, and the next character is a space or
+            // newline, skip it (because the getLine() method will always break before
+            // newlines, and will usually otherwise break before spaces.
+            if (splitIndex < para.length() && para.substring(splitIndex, splitIndex + 1).matches("[ \n]")) {
+                splitIndex++; 
+            }
+                              
+             // remove the characters that have now been added on to the line
+            para = para.substring(splitIndex); 
 
-            height += lineSpacing + textHeight(); // move y pos down a line
-            if (height > h)
-                break; // If we've run out of space to draw lines, then there's no point in parsing
-                       // more characters, so we should break out of the loop.
+            // move y pos down a line
+            height += lineSpacing + textHeight(); 
+            
+            // If we've run out of space to draw lines, then there's no point
+            // in parsing more characters, so we should break out of the loop.
+            if (height > h) {
+                break; 
+            }
         }
-
-        if (para.length() > 0 || keepEmptyRemainder)
-            lines.add(para); // add remainder, but don't add empty lines unintentionally.
-
+        // add remainder, but don't add empty lines unintentionally.
+        if (para.length() > 0 || keepEmptyRemainder) {
+            lines.add(para); 
+        }
         return lines.toArray(new String[lines.size()]);
     }
 
@@ -185,8 +192,9 @@ public class Font {
     // that the first part is the longest line possible.
     // note, the index returned is exclusive; it should not be included in the line.
     private static int getLine(String text, int maxWidth) {
-        if (maxWidth <= 0)
+        if (maxWidth <= 0) {
             return 0; // just to pass the monkey test. :P
+        }
 
         text = text.replaceAll(" ?\n ?", " \n ");
 
@@ -195,28 +203,23 @@ public class Font {
         int curWidth = textWidth(words[0]);
 
         if (curWidth > maxWidth) {
-            // we can't even fit the first word on to the line, even by itself. So we'll
-            // have to fit what we can.
+            // we can't even fit the first word on to the line, even by itself. So we'll have to fit what we can.
             int i;
             for (i = 1; i < words[0].length(); i++) // find how many characters do fit
-                if (textWidth(words[0].substring(0, i + 1)) > maxWidth)
+                if (textWidth(words[0].substring(0, i + 1)) > maxWidth){
                     break;
-
-            return i; // stop here and return, because we know we can't fit more so we can ignore all
-                      // that's below
+                }
+            return i; // stop here and return, because we know we can't fit more so we can ignore all that's below
         }
 
         int i;
         for (i = 1; i < words.length; i++) {
-            if (words[i].equals("\n"))
-                break;
+            if (words[i].equals("\n")) break;
 
             curWidth += textWidth(" " + words[i]);
-            if (curWidth > maxWidth)
-                break;
+            if (curWidth > maxWidth) break;
         }
         // i now contains the number of words that fit on the line.
-
         String line = String.join(" ", Arrays.copyOfRange(words, 0, i));
         return line.length();
     }

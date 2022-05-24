@@ -139,4 +139,5 @@ public class Display {
 			}
 		} while (idx != selection);
 	}
+
 }

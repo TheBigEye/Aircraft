@@ -40,6 +40,7 @@ import minicraft.entity.particle.TextParticle;
 import minicraft.item.Inventory;
 import minicraft.item.Item;
 import minicraft.item.PotionType;
+import minicraft.level.Level;
 import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
@@ -95,6 +96,7 @@ public class Save {
 	 * @param worldname The name of the world.
 	 */
 	public Save(String worldname) {
+		
 		this(new File(Game.gameDir + "/saves/" + worldname + "/"));
 
 		writeGame("Game");
@@ -175,6 +177,7 @@ public class Save {
 	}
 
 	private void writeGame(String filename) {
+	
 		data.add(String.valueOf(Game.VERSION));
 		data.add(Settings.getIdx("mode") + (Game.isMode("score") ? ";" + Updater.scoreTime + ";" + Settings.get("scoretime") : ""));
 		data.add(String.valueOf(Updater.tickCount));
@@ -184,9 +187,11 @@ public class Save {
 		data.add(String.valueOf(AirWizardPhase2.beaten));
 		data.add(String.valueOf(AirWizardPhase3.beaten));
 		data.add(String.valueOf(Settings.get("cheats")));
-
-		writeToFile(location + filename + extension, data);
 		
+		// Night
+		data.add(String.valueOf(Level.nightFactor));
+	
+		writeToFile(location + filename + extension, data);
 	}
 
 	private void writePrefs() {
@@ -304,6 +309,9 @@ public class Save {
 
 		data.add(String.valueOf(player.shirtColor));
 		data.add(String.valueOf(player.skinon));
+		
+		data.add(String.valueOf(player.isRaining));
+		data.add(String.valueOf(player.rainCount));
 	}
 
 	private void writeInventory(String filename, Player player) {

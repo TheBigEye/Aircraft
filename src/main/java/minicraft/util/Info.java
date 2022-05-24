@@ -51,18 +51,17 @@ public class Info {
 		// Memory details
 		Memory_info = free_Memory_bytes + " bytes (" + free_Memory + " MB) / " + total_Memory_bytes + " bytes (" + total_Memory + " MB) up to " + max_Memory_bytes + " bytes (" + max_Memory + " MB)";
 
-		// Os properties, Get information about the actual OS
-		OS_Name = System.getProperty("os.name");
-		OS_Arch = System.getProperty("os.arch");
-		OS_Version = System.getProperty("os.version");
+        // Os properties, Get information about the actual OS
+        OS_Name = System.getProperty("os.name");
+        OS_Arch = System.getProperty("os.arch");
+        OS_Version = System.getProperty("os.version");
 
-		// Java info
-		Java_Arch = System.getProperty("sun.arch.data.model");
-		Java_Version = System.getProperty("java.version");
-		Java_Vendor = System.getProperty("java.vendor");
-		JVM_Name = System.getProperty("java.vm.name");
-		JVM_Info = System.getProperty("java.vm.info");
-		JVM_Vendor = System.getProperty("java.vm.vendor");
-
-	}
+        // Java info
+        Java_Arch = System.getProperty("sun.arch.data.model");
+        Java_Version = System.getProperty("java.version");
+        Java_Vendor = System.getProperty("java.vendor");
+        JVM_Name = System.getProperty("java.vm.name");
+        JVM_Info = System.getProperty("java.vm.info");
+        JVM_Vendor = System.getProperty("java.vm.vendor");
+    }
 }

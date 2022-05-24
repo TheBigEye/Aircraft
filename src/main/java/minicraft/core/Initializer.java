@@ -7,14 +7,11 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
-
-import org.tinylog.Logger;
-
 import minicraft.core.io.FileHandler;
+import org.tinylog.Logger;
 
 public class Initializer extends Game {
 	private Initializer() {}
@@ -144,7 +141,7 @@ public class Initializer extends Game {
 			public void windowDeiconified(WindowEvent e) {}
 			public void windowOpened(WindowEvent e) {}
 			public void windowClosed(WindowEvent e) {
-				Logger.debug("Window closed"); 
+				Logger.debug("Window closed");
 			}
 			public void windowClosing(WindowEvent e) {
 				Logger.info("Window closing");

@@ -304,14 +304,14 @@ public class Load {
 
 		Settings.setIdx("diff", diffIdx);
 
-
 		AirWizard.beaten = Boolean.parseBoolean(data.remove(0));
 		AirWizardPhase2.beaten = Boolean.parseBoolean(data.remove(0));
 		AirWizardPhase3.beaten = Boolean.parseBoolean(data.remove(0));
 		
 		Settings.set("Cheats", Boolean.parseBoolean(data.remove(0)));
 
-		
+		Level.nightFactor = Boolean.parseBoolean(data.remove(0));
+
 		// Check if the AirWizard was beaten in versions prior to 2.1.0
 		if (worldVer.compareTo(new Version("2.1.0-dev2")) < 0) {
 			if (AirWizard.beaten) {
@@ -613,7 +613,7 @@ public class Load {
 				player.getInventory().add(Items.get("arrow"), arrowCount);
 			}
 		}
-
+	
 		Game.currentLevel = Integer.parseInt(data.remove(0));
 		Level level = World.levels[Game.currentLevel];
 
@@ -673,6 +673,9 @@ public class Load {
 
 		// This works for some reason... lol
 		Settings.set("skinon", player.skinon = Boolean.parseBoolean(data.remove(0)));
+		
+		player.isRaining = Boolean.parseBoolean(data.remove(0));
+		player.rainCount  = Integer.parseInt(data.remove(0));
 	}
 
 	protected static String subOldName(String name, Version worldVer) {

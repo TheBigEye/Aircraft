@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import org.tinylog.Logger;
 
 import minicraft.core.Game;
+import minicraft.core.Renderer;
 import minicraft.core.Updater;
 import minicraft.core.World;
 import minicraft.core.io.InputHandler;
@@ -163,6 +164,16 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public boolean playerBurning = false;
 	private boolean fallWarn = false;
 	private int burnTime = 0;
+	
+	// RAIN STUFF
+	public boolean isRaining = false; // Is raining?
+	public int rainCount = 0; // RAIN PROBABILITY
+	
+	public int rainTick = 0; // rain animation delay
+	
+	private int rainTickCount = 0; // Used to get the Currrent time value
+	private int rainTime = 0; // Delay
+
 
 	// Note: the player's health & max health are inherited from Mob.java
 	public String getDebugHunger() {
@@ -306,6 +317,40 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 		// Ticks Mob.java
 		super.tick(); 
+
+		rainTime++;
+
+		Level level = Game.levels[Game.currentLevel];
+		rainTickCount = Updater.tickCount;
+
+		if (rainTickCount == 24255) {
+			rainCount += 1;
+
+			if (rainCount == 8) isRaining = true;
+			if (rainCount < 8) isRaining = false;
+			if (rainCount > 8) rainCount = 0;
+		}
+
+		if (rainTickCount == 0) isRaining = false;
+
+		if (isRaining == true) {
+			if (!Updater.paused && Game.currentLevel == 3) {
+
+				if (rainTime /24 %2 == 0) {
+					Random rnd = new Random();
+					rainTick++;
+
+					for (int i = 0; i < 6; i++) {
+						level.add(new SplashParticle(Game.player.x, Game.player.y), Game.player.x + rnd.nextInt(256) - rnd.nextInt(256), Game.player.y + rnd.nextInt(256) - rnd.nextInt(256));
+					}
+				}
+				if (rainTick > 56) rainTick = 0;
+			}
+
+			if (rainTime /2 %2 == 0) {
+				Renderer.renderRain = !Renderer.renderRain;
+			}
+		}
 
 		// PLAYER BURNING
 		if (playerBurning == true) {
@@ -705,6 +750,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             }
         }
     }
+	
 
 	/**
 	 * Removes an held item and places it back into the inventory. Looks complicated

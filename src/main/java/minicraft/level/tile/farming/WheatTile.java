@@ -1,5 +1,6 @@
 package minicraft.level.tile.farming;
 
+import minicraft.core.io.Sound;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.mob.Player;
@@ -59,6 +60,9 @@ public class WheatTile extends Plant {
         if (age >= maxAge && entity instanceof Player) {
             ((Player) entity).addScore(random.nextInt(4) + 1);
         }
+        
+        // Play sound.
+		Sound.Tile_generic_hurt.play();
 
         level.setTile(x, y, Tiles.get("Dirt"));
     }

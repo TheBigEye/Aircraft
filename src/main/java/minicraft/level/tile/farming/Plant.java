@@ -1,5 +1,6 @@
 package minicraft.level.tile.farming;
 
+import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
@@ -13,22 +14,14 @@ import minicraft.level.tile.Tiles;
 
 public class Plant extends FarmTile {
     protected static int maxAge = 100;
-    private final String name;
 
     protected Plant(String name) {
         super(name, null);
-        this.name = name;
     }
 
     @Override
     public void steppedOn(Level level, int xt, int yt, Entity entity) {
-        if (entity instanceof ItemEntity)
-            return;
-        if (random.nextInt(60) != 0)
-            return;
-        if (level.getData(xt, yt) < 5)
-            return;
-        // super.steppedOn(level, xt, yt, entity);
+        super.steppedOn(level, xt, yt, entity);
         harvest(level, xt, yt, entity);
     }
 
@@ -87,6 +80,8 @@ public class Plant extends FarmTile {
         if (age >= maxAge && entity instanceof Player) {
             ((Player) entity).addScore(random.nextInt(5) + 1);
         }
+        
+        Sound.Tile_generic_hurt.play();
 
         level.setTile(x, y, Tiles.get("Dirt"));
     }

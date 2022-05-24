@@ -9,11 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
-
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import minicraft.core.Game;
 import minicraft.core.Renderer;
 import minicraft.core.World;
@@ -30,6 +25,9 @@ import minicraft.screen.entry.LinkEntry;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.tutorial.TutorialDisplay;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class TitleDisplay extends Display {
 	private static final Random random = new Random();
@@ -70,50 +68,47 @@ public class TitleDisplay extends Display {
 	}
 
 	public TitleDisplay() {
-		super(false);
-		
-		// Title menu
-		Menu titleDisplay = new Menu.Builder(true, 1, RelPos.CENTER,
+		super(false, false, new Menu.Builder(true, 1, RelPos.CENTER,
 				new SelectEntry("Singleplayer", () -> {
 					// if there are no worlds, it redirects to WorldGenDisplay()
-					if (WorldSelectDisplay.getWorldNames().size() > 0) {
+					if (!WorldSelectDisplay.getWorldNames().isEmpty()) {
 						Game.setDisplay(new Display(true, new Menu.Builder(false, 2, RelPos.CENTER,
-							new SelectEntry("Load World", () -> Game.setDisplay(new WorldSelectDisplay())),
-							new SelectEntry("New World", () -> Game.setDisplay(new WorldGenDisplay()))
-							)
-							.createMenu()
-						));
+								new SelectEntry("Load World", () -> Game.setDisplay(new WorldSelectDisplay())),
+								new SelectEntry("New World", () -> Game.setDisplay(new WorldGenDisplay()))
+								)
+								.createMenu()
+								));
 					} else {
 						Game.setDisplay(new WorldGenDisplay());
 					}
 				}),
 
-			new SelectEntry("Options", () -> Game.setDisplay(new OptionsDisplay())),
-			new SelectEntry("Credits", () -> Game.setDisplay(new EndGameCreditsDisplay())),
-			new SelectEntry("Help", () -> Game.setDisplay(new Display(true, new Menu.Builder(true, 2, RelPos.CENTER,
-					new BlankEntry(),
-					new LinkEntry(Color.CYAN, "Minicraft discord", "https://discord.me/minicraft"),
-					new BlankEntry(),
-					new SelectEntry("Instructions", () -> Game.setDisplay(new BookDisplay(BookData.instructions))),
-					new SelectEntry("Story guide", () -> Game.setDisplay(new BookDisplay(BookData.storylineGuide))),
-					new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
-					new SelectEntry("About", () -> Game.setDisplay(new BookDisplay(BookData.about))),
-					new BlankEntry()
-					
+				new SelectEntry("Options", () -> Game.setDisplay(new OptionsDisplay())),
+				new SelectEntry("Credits", () -> Game.setDisplay(new EndGameCreditsDisplay())),
+				new SelectEntry("Help", () -> Game.setDisplay(new Display(true, new Menu.Builder(true, 2, RelPos.CENTER,
+						new BlankEntry(),
+						new LinkEntry(Color.CYAN, "Minicraft discord", "https://discord.me/minicraft"),
+						new BlankEntry(),
+						new SelectEntry("Instructions", () -> Game.setDisplay(new BookDisplay(BookData.instructions))),
+						new SelectEntry("Story guide", () -> Game.setDisplay(new BookDisplay(BookData.storylineGuide))),
+						new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
+						new SelectEntry("About", () -> Game.setDisplay(new BookDisplay(BookData.about))),
+						new BlankEntry()
+
+						)
+						.setTitle("Help")
+						.createMenu()
+						))),
+				new SelectEntry("Exit", Game::quit)
+
+
+
 				)
-				.setTitle("Help")
+				.setPositioning(new Point(Screen.w / 2, Screen.h * 3 / 5), RelPos.CENTER)
+				.setShouldRender(false)
 				.createMenu()
-			))),
-			new SelectEntry("Exit", Game::quit)
+				);
 
-		)
-		.setPositioning(new Point(Screen.w / 2, Screen.h * 3 / 5), RelPos.CENTER)
-		.setShouldRender(false)
-		.createMenu();
-
-		menus = new Menu[]{
-			titleDisplay
-		};
 	}
 
 	@Override
@@ -216,7 +211,7 @@ public class TitleDisplay extends Display {
 		if (shouldRender) menus[0].shouldRender = true;
 		
 		if (time > 72) shouldRender = true;
-		if (tickTime /3 %2 == 0) time++;
+		if (tickTime /3 %1 == 0) time++;
 		
 		tickTime++;
 	}
@@ -308,5 +303,4 @@ public class TitleDisplay extends Display {
 			}
 		}
 	}
-
 }

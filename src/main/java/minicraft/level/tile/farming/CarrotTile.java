@@ -91,6 +91,10 @@ public class CarrotTile extends Plant {
         if (age >= 50 && entity instanceof Player) {
             ((Player) entity).addScore(random.nextInt(5) + 1);
         }
+        
+        // Play sound.
+		Sound.Tile_generic_hurt.play();
+        
         level.setTile(x, y, Tiles.get("dirt"));
     }
 }
