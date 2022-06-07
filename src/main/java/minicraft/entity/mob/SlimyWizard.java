@@ -28,34 +28,27 @@ public class SlimyWizard extends EnemyMob {
         super.tick();
 
         Player player = getClosestPlayer();
-        if (player != null && player != null) {
+        if (player == null) {
+            randomizeWalkDir(false);
+        } else {
             int xd = player.x - x;
             int yd = player.y - y;
+            
             int sig0 = 1;
             xa = ya = 0;
-            if (xd < sig0)
-                xa = -1;
-            if (xd > sig0)
-                xa = +1;
-            if (yd < sig0)
-                ya = -1;
-            if (yd > sig0)
-                ya = +1;
-        } else {
-            randomizeWalkDir(false);
+            if (xd < sig0) xa = -1;
+            if (xd > sig0) xa = +1;
+            if (yd < sig0) ya = -1;
+            if (yd > sig0) ya = +1;
         }
 
     }
 
     public void die() {
-        if (Settings.get("diff").equals("Peaceful"))
-            dropItem(2, 30, Items.get("slime"));
-        if (Settings.get("diff").equals("Easy"))
-            dropItem(2, 30, Items.get("slime"));
-        if (Settings.get("diff").equals("Normal"))
-            dropItem(2, 20, Items.get("slime"));
-        if (Settings.get("diff").equals("Hard"))
-            dropItem(1, 10, Items.get("slime"));
+        if (Settings.get("diff").equals("Peaceful")) dropItem(2, 30, Items.get("slime"));
+        if (Settings.get("diff").equals("Easy")) dropItem(2, 30, Items.get("slime"));
+        if (Settings.get("diff").equals("Normal")) dropItem(2, 20, Items.get("slime"));
+        if (Settings.get("diff").equals("Hard")) dropItem(1, 10, Items.get("slime"));
 
         level.dropItem(x, y, Items.get("Sticky essence"));
         level.dropItem(x, y, Items.get("Sticky essence"));

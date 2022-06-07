@@ -1,7 +1,6 @@
 package minicraft.gfx;
 
 import java.util.Arrays;
-
 import minicraft.screen.RelPos;
 
 public class FontStyle {
@@ -47,12 +46,10 @@ public class FontStyle {
 		shadowType = "";
 		anchor = new Point(Screen.w / 2, Screen.h / 2);
 
-		/// by default, the styling is set so as to center the text in the middle of the
-		/// screen, with no shadow.
+		/// by default, the styling is set so as to center the text in the middle of the screen, with no shadow.
 	}
 
-	// TODO make a constructor that takes another FontStyle and just copies all the
-	// protected fields.
+	// TODO make a constructor that takes another FontStyle and just copies all the protected fields.
 
 	/// actually draws the text.
 	public void draw(String msg, Screen screen) {
@@ -88,8 +85,7 @@ public class FontStyle {
 		configuredPara = para; // save the passed in paragraph for later comparison
 
 		// at this point, the main anchor is meant for the whole paragraph block.
-		// when drawing a line, there's an anchor, and then a position around that
-		// anchor.
+		// when drawing a line, there's an anchor, and then a position around that anchor.
 		// in a paragraph, it could be the left side, or right, or top... it depends.
 		// either way, the draw method needs to use a different position.
 
@@ -100,10 +96,11 @@ public class FontStyle {
 	public void setupParagraphLine(String[] para, int line, int spacing) {
 		if (para == null || line < 0 || line >= para.length) {
 			System.err.print("FontStyle.java: ");
-			if (para == null)
+			if (para == null) {
 				System.err.print("paragraph is null");
-			else
+            } else {
 				System.err.print("index " + line + " is invalid");
+            }
 			System.err.println("; can't draw line.");
 			return;
 		}
@@ -115,10 +112,8 @@ public class FontStyle {
 		textArea.setSize(textArea.getWidth(), Font.textHeight() + spacing, RelPos.TOP_LEFT);
 		textArea.translate(0, line * textArea.getHeight());
 
-		anchor = textArea.getPosition(relTextPos.getOpposite()); // for the relpos to put the rect in the correct pos,
-		// the anchor should be fetched using to opposite
-		// relpos.
-
+        // for the relpos to put the rect in the correct pos, the anchor should be fetched using to opposite relpos.
+		anchor = textArea.getPosition(relTextPos.getOpposite()); 
 		padX = paraBounds.getWidth() - Font.textWidth(para[line]);
 		padY = spacing;
 	}
@@ -187,8 +182,9 @@ public class FontStyle {
 
 	public FontStyle setRelTextPos(RelPos relPos, boolean setBoth) {
 		this.relTextPos = relPos;
-		if (setBoth)
+		if (setBoth) {
 			relLinePos = relTextPos.getOpposite();
+        }
 		return this;
 	}
 

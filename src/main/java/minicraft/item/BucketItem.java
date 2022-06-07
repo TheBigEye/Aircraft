@@ -1,7 +1,6 @@
 package minicraft.item;
 
 import java.util.ArrayList;
-
 import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
@@ -84,10 +83,8 @@ public class BucketItem extends StackableItem {
      * should be changed at one time.
      */
     private BucketItem editBucket(Player player, Fill newFill) {
-        if (count == 0)
-            return null; // this honestly should never happen...
-        if (count == 1)
-            return new BucketItem(newFill);
+        if (count == 0) return null; // this honestly should never happen...
+        if (count == 1) return new BucketItem(newFill);
 
         // this item object is a stack of buckets.
         count--;

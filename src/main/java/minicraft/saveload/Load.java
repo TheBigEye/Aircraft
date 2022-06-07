@@ -9,15 +9,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.jetbrains.annotations.Nullable;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
-import minicraft.core.Network;
 import minicraft.core.Updater;
 import minicraft.core.World;
 import minicraft.core.io.Localization;
@@ -89,9 +81,15 @@ import minicraft.item.PotionType;
 import minicraft.item.StackableItem;
 import minicraft.level.Level;
 import minicraft.level.tile.Tiles;
+import minicraft.network.Network;
 import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
+import org.jetbrains.annotations.Nullable;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.tinylog.Logger;
 
 public class Load {
 
@@ -150,7 +148,6 @@ public class Load {
 			if (Game.isMode("creative")) {
 				Items.fillCreativeInv(Game.player.getInventory(), false);
 			}
-
 		}
 	}
 
@@ -310,8 +307,6 @@ public class Load {
 		
 		Settings.set("Cheats", Boolean.parseBoolean(data.remove(0)));
 
-		Level.nightFactor = Boolean.parseBoolean(data.remove(0));
-
 		// Check if the AirWizard was beaten in versions prior to 2.1.0
 		if (worldVer.compareTo(new Version("2.1.0-dev2")) < 0) {
 			if (AirWizard.beaten) {
@@ -421,6 +416,10 @@ public class Load {
 		Settings.set("autosave", json.getBoolean("autosave"));
 		Settings.set("diff", json.has("diff") ? json.getString("diff") : "Normal");
 		Settings.set("fps", json.getInt("fps"));
+        Settings.set("vsync", json.getBoolean("vsync"));
+        Settings.set("bossbar", json.has("diff") ? json.getString("diff") : "On screen");
+        Settings.set("particles", json.getBoolean("particles"));
+        Settings.set("shadows", json.getBoolean("shadows"));
 
 		if (json.has("lang")) {
 			String lang = json.getString("lang");
@@ -676,6 +675,9 @@ public class Load {
 		
 		player.isRaining = Boolean.parseBoolean(data.remove(0));
 		player.rainCount  = Integer.parseInt(data.remove(0));
+        
+        player.isNiceNight = Boolean.parseBoolean(data.remove(0));
+		player.nightCount  = Integer.parseInt(data.remove(0));
 	}
 
 	protected static String subOldName(String name, Version worldVer) {

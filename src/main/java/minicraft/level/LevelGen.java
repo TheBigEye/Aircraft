@@ -149,23 +149,13 @@ public class LevelGen {
 
         Logger.debug("Checking level index for {} ", level);
 
-        if (level == 1) {
-            return createAndValidateSkyMap(w, h);
-        }
-        if (level == 0) {
-            return createAndValidateTopMap(w, h);
-        }
-        if (level == -4) {
-            return createAndValidateDungeon(w, h);
-        }
-        if ((level > -4) && (level < 0)) {
-            return createAndValidateUndergroundMap(w, h, -level);
-        }
-        if (level == 2) {
-            return createAndValidateVoidMap(w, h);  // World.java is 2 as here
-        }
-        System.err.println("LevelGen ERROR: level index is not valid. Could not generate a level.");
+        if (level == 1) return createAndValidateSkyMap(w, h);
+        if (level == 0) return createAndValidateTopMap(w, h);
+        if (level == -4) return createAndValidateDungeon(w, h);
+        if ((level > -4) && (level < 0)) return createAndValidateUndergroundMap(w, h, -level);
+        if (level == 2) return createAndValidateVoidMap(w, h);  // World.java is 2 as here
 
+        System.err.println("LevelGen ERROR: level index is not valid. Could not generate a level.");
         return null;
     }
 
@@ -221,19 +211,10 @@ public class LevelGen {
                 count[result[0][i] & 0xffff]++;
             }
 
-            if (count[Tiles.get("rock").id & 0xffff] < 100) {
-                continue;
-            }
-            if (count[Tiles.get("dirt").id & 0xffff] < 100) {
-                continue;
-            }
-            if (count[(Tiles.get("iron Ore").id & 0xffff) + depth - 1] < 20) {
-                continue;
-            }
-
-            if (depth < 3 && count[Tiles.get("Stairs Down").id & 0xffff] < w / 32) {
-                continue; // size 128 = 4 stairs min
-            }
+            if (count[Tiles.get("rock").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("dirt").id & 0xffff] < 100) continue;
+            if (count[(Tiles.get("iron Ore").id & 0xffff) + depth - 1] < 20) continue;
+            if (depth < 3 && count[Tiles.get("Stairs Down").id & 0xffff] < w / 32) continue; // size 128 = 4 stairs min
             return result;
 
         } while (true);
@@ -1742,9 +1723,7 @@ public class LevelGen {
         while (!hasquit) { // stop the loop and close the program.)
 
             long startTime = System.nanoTime();
-
             int w = 256, h = 256;
-
             int mapScale = 0;
 
             if ((w == 128) && (h == 128)) {
@@ -1793,7 +1772,7 @@ public class LevelGen {
                     if (map[i] == Tiles.get("lava").id) pixels[i] = 0xC82020;
                     if (map[i] == Tiles.get("rock").id) pixels[i] = 0x7a7a7a;
                     if (map[i] == Tiles.get("Up rock").id) pixels[i] = 0x939393;
-                    
+
                     if (map[i] == Tiles.get("iron Ore").id) pixels[i] = 0x452728;
                     if (map[i] == Tiles.get("gold Ore").id) pixels[i] = 0x948028;
                     if (map[i] == Tiles.get("gem Ore").id) pixels[i] = 0x821DB6;

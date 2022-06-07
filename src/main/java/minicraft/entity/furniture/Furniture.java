@@ -1,7 +1,5 @@
 package minicraft.entity.furniture;
 
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
@@ -12,6 +10,7 @@ import minicraft.gfx.Sprite;
 import minicraft.item.FurnitureItem;
 import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Many furniture classes are very similar; they might not even need to be there
@@ -72,10 +71,11 @@ public class Furniture extends Entity {
         move(pushDir.getX(), pushDir.getY());
         pushDir = Direction.NONE;
 
-        if (pushTime > 0)
+        if (pushTime > 0) {
             pushTime--; // update pushTime by subtracting 1.
-        else
+        } else {
             multiPushTime = 0;
+        }
     }
 
     /** Draws the furniture on the screen. */

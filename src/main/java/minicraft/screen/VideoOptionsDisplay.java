@@ -1,55 +1,38 @@
 package minicraft.screen;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
-import minicraft.core.io.Localization;
 import minicraft.core.io.Settings;
 import minicraft.gfx.Color;
 import minicraft.gfx.Screen;
 import minicraft.saveload.Save;
 import minicraft.screen.entry.BlankEntry;
-import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
-import org.tinylog.Logger;
 
-public class OptionsDisplay extends Display {
+public class VideoOptionsDisplay extends Display {
 	
-    boolean originalSound = (boolean) Settings.get("sound");
+    int originalFPS = (int) Settings.get("fps");
+    boolean originalVsync = (boolean) Settings.get("vsync");
 
-	public OptionsDisplay() {
+	public VideoOptionsDisplay() {
         super(true);
 
         Menu optionsMenu = new Menu.Builder(true, 6, RelPos.LEFT,
             new BlankEntry(),
-            Settings.getEntry("diff"),
-            Settings.getEntry("sound"),
-            Settings.getEntry("ambient"),
-            Settings.getEntry("autosave"),
-            Settings.getEntry("skinon"),
-            Settings.getEntry("language"),
-            new SelectEntry("Video options", () -> Game.setDisplay(new VideoOptionsDisplay())),
-            new SelectEntry("Controls options", () -> Game.setDisplay(new KeyInputDisplay())),
-            new SelectEntry("Texture packs", () -> Game.setDisplay(new TexturePackDisplay())),
+            Settings.getEntry("fps"),
+            Settings.getEntry("vsync"),
+            Settings.getEntry("particles"),
+            Settings.getEntry("shadows"),
             new BlankEntry(),
-            new SelectEntry("Open Game Folder", () -> {
-                try {
-                    Desktop.getDesktop().open(new File(Game.gameDir));
-                } catch (IOException e) {
-                    Logger.error(e, "Could not find the program requested for this action");
-                    e.printStackTrace();
-                }
-            })
+            Settings.getEntry("bossbar")
         )
-        .setTitle("Options")
+        .setTitle("Video options")
         .createMenu();
 
         Menu popupMenu = new Menu.Builder(true, 4, RelPos.CENTER)
             .setShouldRender(false)
             .setSelectable(false)
-            .setEntries(StringEntry.useLines(Color.RED, "A restart will be required, you can continue playing anyway", "enter to confirm", "escape to cancel"))
+            .setEntries(StringEntry.useLines(Color.RED,"A restart will be required, you can continue playing anyway", "enter to confirm", "escape to cancel"))
             .setTitle("Confirm Action")
             .createMenu();
 
@@ -80,9 +63,15 @@ public class OptionsDisplay extends Display {
             }
             return;
         }
+        
+        if (originalVsync == true) {
+            Settings.set("fps", Settings.getRefreshRate());
+        } else if (originalFPS != (int) Settings.get("fps")) {
+            Settings.set("vsync", false);
+        }
 
         // If exit key is pressed, then display the popup menu if changes requiring a restart have been made
-        if (input.getKey("exit").clicked && originalSound != (boolean) Settings.get("sound")) {
+        if (input.getKey("exit").clicked && originalFPS != (int) Settings.get("fps") || input.getKey("exit").clicked && originalVsync != (boolean) Settings.get("vsync")) {
             menus[1].shouldRender = true;
             return;
         }
@@ -92,7 +81,7 @@ public class OptionsDisplay extends Display {
 
     @Override
     public void onExit() {
-        Localization.changeLanguage((String)Settings.get("language"));
+        Game.MAX_FPS = (int) Settings.get("fps");
         new Save();
     }
 }

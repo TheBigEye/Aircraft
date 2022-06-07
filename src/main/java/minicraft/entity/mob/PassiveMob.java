@@ -1,7 +1,5 @@
 package minicraft.entity.mob;
 
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
@@ -15,6 +13,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
+import org.jetbrains.annotations.Nullable;
 
 public class PassiveMob extends MobAi {
     protected int color;
@@ -55,15 +54,16 @@ public class PassiveMob extends MobAi {
 
         if (isBurn == true) {
         	if (tickTime / 16 % 4 == 0 && burnTime < 128) {
-
+                if (Settings.get("particles").equals(true)) {
                     int randX = random.nextInt(10);
                     int randY = random.nextInt(9);
 
                     level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
-
-                    this.hurt(this, 1);
-                    burnTime++;
+                }
+                this.hurt(this, 1);
+                burnTime++;
         	}
+            
         	if (level.getTile(x / 16, y / 16) == Tiles.get("water")) {
             	burnTime = 0;
             	isBurn = false;

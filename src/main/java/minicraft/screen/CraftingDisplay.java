@@ -3,7 +3,6 @@ package minicraft.screen;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Sound;
@@ -40,15 +39,23 @@ public class CraftingDisplay extends Display {
 			recipeMenu = new RecipeMenu(recipes, title, player);
 		} else {
 			recipeMenu = new RecipeMenu(recipes, title, player);
+            recipeMenu.setBackground(20); // turn the background to red
 		}
 
 		this.player = player;
 		this.recipes = recipes.toArray(new Recipe[recipes.size()]);
 
-		itemCountMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Have:").setTitlePos(RelPos.TOP_LEFT).setPositioning(new Point(recipeMenu.getBounds().getRight() + SpriteSheet.boxWidth, recipeMenu.getBounds().getTop()), RelPos.BOTTOM_RIGHT);
-
-		costsMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Cost:").setTitlePos(RelPos.TOP_LEFT).setPositioning(new Point(itemCountMenu.createMenu().getBounds().getLeft(), recipeMenu.getBounds().getBottom()), RelPos.TOP_RIGHT);
-
+        if (!isPersonal) {
+            itemCountMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Have:").setTitlePos(RelPos.TOP_LEFT).setPositioning(new Point(recipeMenu.getBounds().getRight() + SpriteSheet.boxWidth, recipeMenu.getBounds().getTop()), RelPos.BOTTOM_RIGHT);
+        } else {
+            itemCountMenu = new Menu.Builder(true, 0, RelPos.LEFT).setBackground(20).setTitle("Have:").setTitlePos(RelPos.TOP_LEFT).setPositioning(new Point(recipeMenu.getBounds().getRight() + SpriteSheet.boxWidth, recipeMenu.getBounds().getTop()), RelPos.BOTTOM_RIGHT);
+        }
+        
+        if (!isPersonal) {
+            costsMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Cost:").setTitlePos(RelPos.TOP_LEFT).setPositioning(new Point(itemCountMenu.createMenu().getBounds().getLeft(), recipeMenu.getBounds().getBottom()), RelPos.TOP_RIGHT);
+        } else {
+            costsMenu = new Menu.Builder(true, 0, RelPos.LEFT).setBackground(20).setTitle("Cost:").setTitlePos(RelPos.TOP_LEFT).setPositioning(new Point(itemCountMenu.createMenu().getBounds().getLeft(), recipeMenu.getBounds().getBottom()), RelPos.TOP_RIGHT);
+        }
 		menus = new Menu[] { recipeMenu, itemCountMenu.createMenu(), costsMenu.createMenu() };
 
 		refreshData();

@@ -20,7 +20,7 @@ import minicraft.level.Level;
 
 public class WallTile extends Tile {
 
-    private static final String obrickMsg = "The airwizard must be defeated first.";
+    private static final String obsidianBricksMsg = "The airwizard must be defeated first.";
 
     private ConnectorSprite sprite;
 
@@ -86,7 +86,7 @@ public class WallTile extends Tile {
             hurt(level, x, y, random.nextInt(6) / 6 * dmg / 2);
             return true;
         } else {
-            Game.notifications.add(obrickMsg);
+            Game.notifications.add(obsidianBricksMsg);
             return false;
         }
     }
@@ -104,7 +104,7 @@ public class WallTile extends Tile {
                         return true;
                     }
                 } else {
-                    Game.notifications.add(obrickMsg);
+                    Game.notifications.add(obsidianBricksMsg);
                 }
             }
         }

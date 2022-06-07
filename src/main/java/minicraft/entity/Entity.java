@@ -3,17 +3,15 @@ package minicraft.entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
-import minicraft.core.Network;
+import minicraft.network.Network;
 import minicraft.core.Updater;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
 import minicraft.item.Item;
 import minicraft.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class Entity implements Tickable {
 
@@ -88,20 +86,20 @@ public abstract class Entity implements Tickable {
         return level;
     }
 
-    /** Returns a Rectangle instance using the defined bounds of the entity. */
+    /** @return a Rectangle instance using the defined bounds of the entity. */
     protected Rectangle getBounds() {
         return new Rectangle(x, y, xr * 2, yr * 2, Rectangle.CENTER_DIMS);
     }
 
     /**
-     * returns true if this entity is found in the rectangle specified by given two
+     * @return true if this entity is found in the rectangle specified by given two
      * coordinates.
      */
     public boolean isTouching(Rectangle area) {
         return area.intersects(getBounds());
     }
 
-    /** returns if this entity stops other solid entities from moving. */
+    /** @return if this entity stops other solid entities from moving. */
     public boolean isSolid() {
         return true;
     } // most entities are solid

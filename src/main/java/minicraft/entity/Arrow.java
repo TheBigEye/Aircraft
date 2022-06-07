@@ -1,7 +1,7 @@
 package minicraft.entity;
 
 import java.util.List;
-
+import minicraft.core.io.Settings;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Color;
@@ -88,7 +88,9 @@ public class Arrow extends Entity implements ClientTickable {
         if (dir == Direction.UP) xt = 2;
         if (dir == Direction.DOWN) xt = 3;
 
-        screen.render(x - 4, y + 2, xt + yt * 32, 0, 0, -1, false, Color.BLACK); // Shadow
+        if ((boolean) Settings.get("sahdows")  == true) {
+            screen.render(x - 4, y + 2, xt + yt * 32, 0, 0, -1, false, Color.BLACK); // Shadow
+        }
         screen.render(x - 4, y - 4, xt + yt * 32, 0, 0); // Sprite
     }
 }

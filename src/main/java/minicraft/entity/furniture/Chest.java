@@ -2,9 +2,6 @@ package minicraft.entity.furniture;
 
 import java.io.IOException;
 import java.util.List;
-
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.ItemHolder;
@@ -15,6 +12,7 @@ import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.saveload.Load;
 import minicraft.screen.ContainerDisplay;
+import org.jetbrains.annotations.Nullable;
 
 public class Chest extends Furniture implements ItemHolder {
     private Inventory inventory; // Inventory of the chest

@@ -5,10 +5,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
@@ -22,9 +18,12 @@ import minicraft.gfx.Screen;
 import minicraft.gfx.SpriteSheet;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.ListEntry;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Menu {
 
+    private int bg_sprite = 21;
     private static final int LIMIT_TYPING_SEARCHER = 21;
 
     @NotNull
@@ -96,6 +95,7 @@ public class Menu {
         listSearcher = new ArrayList<>();
         listPositionSearcher = 0;
         typingSearcher = "";
+        bg_sprite = m.bg_sprite;
     }
 
     public void init() {
@@ -128,15 +128,16 @@ public class Menu {
     }
 
     void setSelection(int idx) {
-        if (idx >= entries.size())
-            idx = entries.size() - 1;
-
-        if (idx < 0)
-            idx = 0;
+        if (idx >= entries.size()) idx = entries.size() - 1;
+        if (idx < 0) idx = 0;
 
         this.selection = idx;
 
         doScroll();
+    }
+    
+    void setBackground(int bg_sprite){
+        this.bg_sprite = bg_sprite;
     }
 
     int getSelection() {
@@ -323,15 +324,14 @@ public class Menu {
         }
 
         // only useful when wrap is true
-        if (offset < 0)
-            offset += entries.size();
-        if (offset > 0)
-            offset = offset % entries.size();
+        if (offset < 0) offset += entries.size();
+        if (offset > 0) offset = offset % entries.size();
 
         this.offset = offset;
     }
 
     public void render(Screen screen) {
+
         renderFrame(screen);
 
         // render the title
@@ -339,14 +339,14 @@ public class Menu {
             if (drawVertically) {
                 for (int i = 0; i < title.length(); i++) {
                     if (hasFrame)
-                        screen.render(titleLoc.x, titleLoc.y + i * Font.textHeight(), 3 + 21 * 32, 0, 3);
+                        screen.render(titleLoc.x, titleLoc.y + i * Font.textHeight(), 3 + 21 * bg_sprite, 0, 3);
                     Font.draw(title.substring(i, i + 1), screen, titleLoc.x, titleLoc.y + i * Font.textHeight(),
                             titleColor);
                 }
             } else {
                 for (int i = 0; i < title.length(); i++) {
                     if (hasFrame)
-                        screen.render(titleLoc.x + i * Font.textWidth(" "), titleLoc.y, 3 + 21 * 32, 0, 3);
+                        screen.render(titleLoc.x + i * Font.textWidth(" "), titleLoc.y, 3 + bg_sprite * 32, 0, 3);
                     Font.draw(title.substring(i, i + 1), screen, titleLoc.x + i * Font.textWidth(" "), titleLoc.y,
                             titleColor);
                 }
@@ -357,8 +357,7 @@ public class Menu {
         if (searcherBarActive && useSearcherBar) {
             int spaceWidth = Font.textWidth(" ");
             int leading = typingSearcher.length() * spaceWidth / 2;
-            // int xSearcherBar = titleLoc.x + title.length() * spaceWidth / 3 -
-            // title.length() / 2;
+            // int xSearcherBar = titleLoc.x + title.length() * spaceWidth / 3 - title.length() / 2;
             int xSearcherBar = titleLoc.x + title.length() * 8 / 2 - 16;
 
             if (xSearcherBar - leading < 0) {
@@ -367,7 +366,7 @@ public class Menu {
 
             for (int i = 0; i < typingSearcher.length() + 4; i++) {
                 if (hasFrame) {
-                    screen.render(xSearcherBar + spaceWidth * i - leading, titleLoc.y - 8, 3 + 21 * 32, 0, 3);
+                    screen.render(xSearcherBar + spaceWidth * i - leading, titleLoc.y - 8, 3 + bg_sprite * 32, 0, 3);
                 }
 
                 Font.draw("> " + typingSearcher + " <", screen, xSearcherBar - leading, titleLoc.y - 8,
@@ -452,7 +451,7 @@ public class Menu {
                 int spriteoffset = (xend && yend ? 0 : (yend ? 1 : (xend ? 2 : 3))); // determines which sprite to use
                 int mirrors = (x == right ? 1 : 0) + (y == bottom ? 2 : 0); // gets mirroring
 
-                screen.render(x, y, spriteoffset + 21 * 32, mirrors, 3);
+                screen.render(x, y, spriteoffset + bg_sprite * 32, mirrors, 3);
 
                 if (x < right && x + SpriteSheet.boxWidth > right)
                     x = right - SpriteSheet.boxWidth;
@@ -522,15 +521,17 @@ public class Menu {
             return this;
         }
 
+        // can be used to set the size to null
         public Builder setMenuSize(Dimension d) {
             menuSize = d;
             return this;
-        } // can be used to set the size to null
+        } 
 
         public Builder setBounds(Rectangle rect) {
             menuSize = rect.getSize();
-            setPositioning(rect.getCenter(), RelPos.CENTER); // because the anchor represents the center of the
-                                                             // rectangle.
+            
+            // because the anchor represents the center of the rectangle.
+            setPositioning(rect.getCenter(), RelPos.CENTER); 
             return this;
         }
 
@@ -558,17 +559,25 @@ public class Menu {
 
             fullTitleColor = fullColor;
             setTitleColor = true;
-            if (fullColor) // this means that the color is the full 4 parts, abcd. Otherwise, it is assumed
-                           // it is only the main component, the one that matters.
+            
+            // This means that the color is the full 4 parts, abcd. Otherwise,
+            // it is assumed it is only the main component, the one that matters.
+            if (fullColor) { 
                 menu.titleColor = color;
-            else
+            } else{
                 titleCol = color;
+            }
 
             return this;
         }
 
         public Builder setFrame(boolean hasFrame) {
             menu.hasFrame = hasFrame;
+            return this;
+        }
+        
+        public Builder setBackground(int bg_sprite){
+            menu.bg_sprite = bg_sprite;
             return this;
         }
 
@@ -621,18 +630,15 @@ public class Menu {
             if (!setSelectable) {
                 for (ListEntry entry : menu.entries) {
                     menu.selectable = menu.selectable || entry.isSelectable();
-                    if (menu.selectable)
-                        break;
+                    if (menu.selectable) break;
                 }
             }
 
-            // check the centering of the title, and find the dimensions of the title's
-            // display space.
+            // check the centering of the title, and find the dimensions of the title's display space.
 
             menu.drawVertically = titlePos == RelPos.LEFT || titlePos == RelPos.RIGHT;
 
-            Dimension titleDim = menu.drawVertically ? new Dimension(Font.textHeight() * 2, Font.textWidth(menu.title))
-                    : new Dimension(Font.textWidth(menu.title), Font.textHeight() * 2);
+            Dimension titleDim = menu.drawVertically ? new Dimension(Font.textHeight() * 2, Font.textWidth(menu.title)) : new Dimension(Font.textWidth(menu.title), Font.textHeight() * 2);
 
             // find the area used by the title and/or frame, that can't be used by the
             // entries
@@ -653,23 +659,25 @@ public class Menu {
              */
 
             Insets border;
-            if (menu.hasFrame)
+            if (menu.hasFrame) {
                 border = new Insets(SpriteSheet.boxWidth); // add frame insets
-            else {
+            } else {
                 border = new Insets();
 
                 // add title insets
                 if (menu.title.length() > 0 && titlePos != RelPos.CENTER) {
                     RelPos c = titlePos;
                     int space = SpriteSheet.boxWidth * 2;
-                    if (c.yIndex == 0)
+
+                    if (c.yIndex == 0) {
                         border.top = space;
-                    else if (c.yIndex == 2)
+                    } else if (c.yIndex == 2) {
                         border.bottom = space;
-                    else if (c.xIndex == 0) // must be center left
+                    } else if (c.xIndex == 0) { // must be center left
                         border.left = space;
-                    else if (c.xIndex == 2) // must be center right
+                    } else if (c.xIndex == 2) { // must be center right
                         border.right = space;
+                    }
                 }
             }
 
@@ -679,36 +687,38 @@ public class Menu {
                 border.right += SpriteSheet.boxWidth * 2;
             }
 
-            if (menu.wrap && menu.displayLength > 0)
+            if (menu.wrap && menu.displayLength > 0) {
                 menu.displayLength = Math.min(menu.displayLength, menu.entries.size());
+            }
 
-            // I have anchor and menu's relative position to it, and may or may not have
-            // size.
+            // I have anchor and menu's relative position to it, and may or may not have size.
             Dimension entrySize;
 
             if (menuSize == null) {
                 int width = titleDim.width;
                 for (ListEntry entry : menu.entries) {
                     int entryWidth = entry.getWidth();
-                    if (menu.isSelectable() && !entry.isSelectable())
+                    if (menu.isSelectable() && !entry.isSelectable()) {
                         entryWidth = Math.max(0, entryWidth - SpriteSheet.boxWidth * 4);
+                    }
                     width = Math.max(width, entryWidth);
                 }
 
                 if (menu.displayLength > 0) { // has been set; use to determine entry bounds
                     int height = (ListEntry.getHeight() + menu.spacing) * menu.displayLength - menu.spacing;
-
                     entrySize = new Dimension(width, height);
-                } else {
-                    // no set size; just keep going to the edges of the screen
 
+                } else {
+
+                    // no set size; just keep going to the edges of the screen
                     int maxHeight;
-                    if (menuPos.yIndex == 0) // anchor is lowest down coordinate (highest y value)
+                    if (menuPos.yIndex == 0) { // anchor is lowest down coordinate (highest y value)
                         maxHeight = anchor.y;
-                    else if (menuPos.yIndex == 2)
+                    } else if (menuPos.yIndex == 2) {
                         maxHeight = Screen.h - anchor.y;
-                    else // is centered; take the lowest value of the other two, and double it
+                    } else { // is centered; take the lowest value of the other two, and double it
                         maxHeight = Math.min(anchor.y, Screen.h - anchor.y) * 2;
+                    }
 
                     maxHeight -= border.top + border.bottom; // reserve border space
 
@@ -720,12 +730,14 @@ public class Menu {
                 }
 
                 menuSize = border.addTo(entrySize);
-            } else // menuSize was set manually
+            } else { // menuSize was set manually
                 entrySize = border.subtractFrom(menuSize);
+            }
 
             // set default max display length (needs size first)
-            if (menu.displayLength <= 0 && menu.entries.size() > 0)
+            if (menu.displayLength <= 0 && menu.entries.size() > 0) {
                 menu.displayLength = (entrySize.height + menu.spacing) / (ListEntry.getHeight() + menu.spacing);
+            }
 
             // based on the menu centering, and the anchor, determine the upper-left point
             // from which to draw the menu.
@@ -766,8 +778,7 @@ public class Menu {
             return menu;
         }
 
-        // returns a new Builder instance, that can be further modified to create
-        // another menu.
+        // returns a new Builder instance, that can be further modified to creat another menu.
         public Builder copy() {
             Builder b = new Builder(menu.hasFrame, menu.spacing, menu.entryPos, menu.entries);
 
@@ -788,7 +799,7 @@ public class Menu {
         }
 
         public Builder setFrame(int i, int j, int k) {
-            // TODO Auto-generated method stub
+            // TODO Make this method change the sprite of the menu frame
             return null;
         }
     }

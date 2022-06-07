@@ -1,7 +1,6 @@
 package minicraft.item;
 
 import java.util.ArrayList;
-
 import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
@@ -88,6 +87,10 @@ public class PotionItem extends StackableItem {
 	public boolean interactsWithWorld() {
 		return false;
 	}
+    
+    public Sprite getIcon(PotionType type){
+        return new PotionItem(type).sprite;
+    }
 
 	public PotionItem clone() {
 		return new PotionItem(type, count);

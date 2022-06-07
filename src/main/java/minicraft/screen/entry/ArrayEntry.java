@@ -1,7 +1,6 @@
 package minicraft.screen.entry;
 
 import java.util.Arrays;
-
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
@@ -39,9 +38,9 @@ public class ArrayEntry<T> extends ListEntry {
 		this.localize = localize;
 
 		maxWidth = 0;
-		for (T option : options)
-			maxWidth = Math.max(maxWidth,
-					Font.textWidth(localize ? Localization.getLocalized(option.toString()) : option.toString()));
+		for (T option : options) {
+			maxWidth = Math.max(maxWidth, Font.textWidth(localize ? Localization.getLocalized(option.toString()) : option.toString()));
+        }
 
 		optionVis = new boolean[options.length];
 		Arrays.fill(optionVis, true);
@@ -51,8 +50,9 @@ public class ArrayEntry<T> extends ListEntry {
 		boolean diff = idx != selection;
 		if (idx >= 0 && idx < options.length) {
 			selection = idx;
-			if (diff && changeAction != null)
+			if (diff && changeAction != null) {
 				changeAction.onChange(getValue());
+            }
 		}
 	}
 
@@ -73,10 +73,11 @@ public class ArrayEntry<T> extends ListEntry {
 	}
 
 	public boolean valueIs(Object value) {
-		if (value instanceof String && options instanceof String[])
+		if (value instanceof String && options instanceof String[]) {
 			return ((String) value).equalsIgnoreCase((String) getValue());
-		else
+        } else {
 			return getValue().equals(value);
+        }
 	}
 
 	private int getIndex(Object value) {
@@ -94,15 +95,17 @@ public class ArrayEntry<T> extends ListEntry {
 		int idx = getIndex(value);
 		if (idx >= 0) {
 			optionVis[idx] = visible;
-			if (idx == selection && !visible)
+			if (idx == selection && !visible) {
 				moveSelection(1);
+            }
 		}
 	}
 
 	public boolean getValueVisibility(Object value) {
 		int idx = getIndex(value);
-		if (idx < 0)
+		if (idx < 0) {
 			return false;
+        }
 		return optionVis[idx];
 	}
 
@@ -157,7 +160,8 @@ public class ArrayEntry<T> extends ListEntry {
 
 	public void setChangeAction(ChangeListener l) {
 		this.changeAction = l;
-		if (l != null)
+		if (l != null) {
 			l.onChange(getValue());
+        }
 	}
 }

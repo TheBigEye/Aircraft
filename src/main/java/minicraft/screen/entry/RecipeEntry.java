@@ -1,7 +1,6 @@
 package minicraft.screen.entry;
 
 import java.util.List;
-
 import minicraft.core.io.InputHandler;
 import minicraft.gfx.Font;
 import minicraft.gfx.Screen;
@@ -11,8 +10,9 @@ public class RecipeEntry extends ItemEntry {
 
     public static RecipeEntry[] useRecipes(List<Recipe> recipes) {
         RecipeEntry[] entries = new RecipeEntry[recipes.size()];
-        for (int i = 0; i < recipes.size(); i++)
+        for (int i = 0; i < recipes.size(); i++) {
             entries[i] = new RecipeEntry(recipes.get(i));
+        }
         return entries;
     }
 
@@ -37,6 +37,6 @@ public class RecipeEntry extends ItemEntry {
 
     @Override
     public String toString() {
-        return super.toString() + (recipe.getAmount() > 1 ? " x" + recipe.getAmount() : "");
+        return super.toString().replace("1 ", "") + (recipe.getAmount() > 1 ? " x" + recipe.getAmount() : "");
     }
 }

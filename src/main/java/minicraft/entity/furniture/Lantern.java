@@ -1,7 +1,7 @@
 package minicraft.entity.furniture;
 
 import java.util.Random;
-
+import minicraft.core.io.Settings;
 import minicraft.entity.particle.BrightParticle;
 import minicraft.gfx.Sprite;
 
@@ -41,17 +41,19 @@ public class Lantern extends Furniture {
     public void tick() {
         super.tick();
 
-        int randX = rnd.nextInt(10);
-        int randY = rnd.nextInt(9);
+        if ((boolean) Settings.get("particles") == true) {
+            int randX = rnd.nextInt(10);
+            int randY = rnd.nextInt(9);
 
-        if (random.nextInt(12) == 0) {
-            level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
-        }
-        if (random.nextInt(12) == 6) {
-            level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
-        }
-        if (random.nextInt(12) == 12) {
-            level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
+            if (random.nextInt(12) == 0) {
+                level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
+            }
+            if (random.nextInt(12) == 6) {
+                level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
+            }
+            if (random.nextInt(12) == 12) {
+                level.add(new BrightParticle(x - 9 + randX, y - 18 + randY));
+            }
         }
     }
 

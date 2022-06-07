@@ -16,8 +16,9 @@ public class ToolItem extends Item {
 
 		for (ToolType tool : ToolType.values()) {
 			if (!tool.noLevel) {
-				for (int lvl = 0; lvl <= 4; lvl++)
+				for (int lvl = 0; lvl <= 4; lvl++) {
 					items.add(new ToolItem(tool, lvl));
+				}
 			} else {
 				items.add(new ToolItem(tool));
 			}
@@ -28,7 +29,8 @@ public class ToolItem extends Item {
 
 	private Random random = new Random();
 
-	public static final String[] LEVEL_NAMES = { "Wood", "Rock", "Iron", "Gold", "Gem" }; // The names of the different levels. A later level means a stronger tool.
+	// The names of the different levels. A later level means a stronger tool.
+	public static final String[] LEVEL_NAMES = { "Wood", "Rock", "Iron", "Gold", "Gem" };
 
 	public ToolType type; // Type of tool (Sword, hoe, axe, pickaxe, shovel)
 	public int level; // Level of said tool
@@ -74,13 +76,13 @@ public class ToolItem extends Item {
 	public boolean canAttack() {
 		return type != ToolType.Shears && type != ToolType.Igniter;
 	}
-	
+
 	public boolean payDurability() {
 		if (dur <= 0) return false;
 		if (!Game.isMode("creative")) dur--;
 		return true;
 	}
-	
+
 	public int getDamage() {
 		return random.nextInt(5) + damage;
 	}
@@ -93,7 +95,7 @@ public class ToolItem extends Item {
 		if (e instanceof Mob) {
 			if (type == ToolType.Axe) {
 				return (level + 1) * 2 + random.nextInt(4); // Wood axe damage: 2-5; gem axe damage: 10-13.
-			} else if (type == ToolType.Sword) {
+			} else if (type == ToolType.Sword || type == ToolType.Spear) {
 				return (level + 1) * 3 + random.nextInt(2 + level * level); // Wood: 3-5 damage; gem: 15-32 damage.
 			} else if (type == ToolType.Claymore) {
 				return (level + 1) * 3 + random.nextInt(4 + level * level * 3); // Wood: 3-6 damage; gem: 15-66 damage.
@@ -104,12 +106,12 @@ public class ToolItem extends Item {
 		}
 		return 0;
 	}
-	
+
 	@Override
 	public String getData() {
 		return super.getData() + "_" + dur;
 	}
-	
+
 	/** Sees if this item equals another. */
 	@Override
 	public boolean equals(Item item) {
@@ -119,10 +121,10 @@ public class ToolItem extends Item {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() { return type.name().hashCode() + level; }
-	
+
 	public ToolItem clone() {
 		ToolItem ti;
 		if (type.noLevel) {

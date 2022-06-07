@@ -2,14 +2,9 @@ package minicraft.entity.mob;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
-import org.jetbrains.annotations.Nullable;
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.core.Renderer;
 import minicraft.core.Updater;
@@ -70,6 +65,8 @@ import minicraft.screen.PauseDisplay;
 import minicraft.screen.PlayerInvDisplay;
 import minicraft.screen.WorldSelectDisplay;
 import minicraft.util.Vector2;
+import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
 
 public class Player extends Mob implements ItemHolder, ClientTickable {
 	protected InputHandler input;
@@ -173,6 +170,15 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	
 	private int rainTickCount = 0; // Used to get the Currrent time value
 	private int rainTime = 0; // Delay
+    
+    // NICE NIGHT STUFF
+    public boolean isNiceNight = false; // Spawn mobs or spaw fireflyes?
+    public int nightCount = 0; // NIGHT PROBABILITY
+    
+    public int nightTick = 0;
+    
+    private int nightTickCount = 0; // Used to get the Currrent time value
+	private int nightTime = 0; // Delay
 
 
 	// Note: the player's health & max health are inherited from Mob.java
@@ -319,9 +325,11 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		super.tick(); 
 
 		rainTime++;
+        nightTime++;
 
 		Level level = Game.levels[Game.currentLevel];
 		rainTickCount = Updater.tickCount;
+        nightTickCount = Updater.tickCount;
 
 		if (rainTickCount == 24255) {
 			rainCount += 1;
@@ -330,8 +338,14 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			if (rainCount < 8) isRaining = false;
 			if (rainCount > 8) rainCount = 0;
 		}
+        
+        if (rainTickCount == 0) isRaining = false;
 
-		if (rainTickCount == 0) isRaining = false;
+		if (nightTickCount == 16000) nightCount +=1;
+        
+        if (nightCount == 4) isNiceNight = true;
+		if (nightCount < 4) isNiceNight = false;
+		if (nightCount > 4) nightCount = 0;
 
 		if (isRaining == true) {
 			if (!Updater.paused && Game.currentLevel == 3) {
@@ -339,10 +353,12 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				if (rainTime /24 %2 == 0) {
 					Random rnd = new Random();
 					rainTick++;
-
-					for (int i = 0; i < 6; i++) {
-						level.add(new SplashParticle(Game.player.x, Game.player.y), Game.player.x + rnd.nextInt(256) - rnd.nextInt(256), Game.player.y + rnd.nextInt(256) - rnd.nextInt(256));
-					}
+                    
+                    if (Settings.get("particles").equals(true)) {
+                        for (int i = 0; i < 6; i++) {
+                            level.add(new SplashParticle(Game.player.x, Game.player.y), Game.player.x + rnd.nextInt(256) - rnd.nextInt(256), Game.player.y + rnd.nextInt(256) - rnd.nextInt(256));
+                        }
+                    }
 				}
 				if (rainTick > 56) rainTick = 0;
 			}
@@ -355,10 +371,12 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		// PLAYER BURNING
 		if (playerBurning == true) {
 			if (tickTime / 16 % 4 == 0 && burnTime != 120) {
+                if (Settings.get("particles").equals(true)) {
+                    int randX = random.nextInt(10);
+                    int randY = random.nextInt(9);
 
-				int randX = random.nextInt(10);
-				int randY = random.nextInt(9);
-				level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
+                    level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
+                }
 
 				this.hurt(this, 1);
 				burnTime++;
@@ -381,14 +399,15 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 		tickMultiplier();
 
-		if (potioneffects.size() > 0 && !Bed.inBed(this)) {
+		if (!potioneffects.isEmpty() && !Bed.inBed(this)) {
 
 			// Add potion particles...
-			int randY = rnd.nextInt(9);
-
-			if (random.nextInt(18) == 9) {
-				level.add(new PotionParticle(x - 1, y - 23 + randY));
-			}
+            if (Settings.get("particles").equals(true)) {
+                int randY = rnd.nextInt(9);
+                if (random.nextInt(18) == 9) {
+                    level.add(new PotionParticle(x - 1, y - 23 + randY));
+                }
+            }
 
 			for (PotionType potionType : potioneffects.keySet().toArray(new PotionType[0])) {
 				if (potioneffects.get(potionType) <= 1) { // if time is zero (going to be set to 0 in a moment)...
@@ -400,17 +419,16 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		}
 
 		if (isSwimming()) {
-			if (tickTime / 8 % 2 == 0) {
+			if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
 
 				int randX = rnd.nextInt(10);
 				int randY = rnd.nextInt(9);
 
-				// Add water particles
-				if (level.getTile(x / 16, y / 16) == Tiles.get("water")) { 
-					level.add(new SplashParticle(x - 8 + randX, y - 8 + randY)); 
-					
-				// Add fire particles
-				} else if (level.getTile(x / 16, y / 16) == Tiles.get("lava")) { 
+				// Add water particles and fire particles when the player swim
+				if (level.getTile(x / 16, y / 16) == Tiles.get("water") ) { 
+					level.add(new SplashParticle(x - 8 + randX, y - 8 + randY));    
+				} 
+                else if (level.getTile(x / 16, y / 16) == Tiles.get("lava")) { 
 					level.add(new FireParticle(x - 8 + randX, y - 8 + randY)); 
 				}
 			}
@@ -418,7 +436,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 		// Display Ferrosite cloud particles when walk
 		if (level.getTile(x / 16, y / 16) == Tiles.get("Ferrosite")) {
-			if (tickTime / 8 % 2 == 0) {
+			if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
 				int randX = rnd.nextInt(12);
 				int randY = rnd.nextInt(12);
 				level.add(new FerrositeParticle(x - 8 + randX, y - 8 + randY));
@@ -435,7 +453,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 		if (level.getTile(x / 16, y / 16) == Tiles.get("Cloud")) {
 
-			if (tickTime / 8 % 2 == 0) {
+			if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
 				int randX = rnd.nextInt(12);
 				int randY = rnd.nextInt(12);
 				level.add(new CloudParticle(x - 8 + randX, y - 8 + randY));
@@ -1252,7 +1270,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
      * Finds a starting position for the player.
      * 
      * @param level Level which the player wants to start in.
-     * @param spawnSeed Spawnseed.
+     * @param spawnSeed Spawn seed.
      */
     public void findStartPos(Level level, long spawnSeed) {
         random.setSeed(spawnSeed);
@@ -1285,11 +1303,12 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         if (spawnTilePositions.size() == 0) {
             spawnPos = new Point(random.nextInt(level.w / 4) + level.w * 3 / 8, random.nextInt(level.h / 4) + level.h * 3 / 8);
             level.setTile(spawnPos.x, spawnPos.y, Tiles.get("grass"));
-        } else // Gets random valid spawn tile position.
+        } else { // Gets random valid spawn tile position.
             spawnPos = spawnTilePositions.get(random.nextInt(spawnTilePositions.size()));
+        }
 
         if (setSpawn) {
-            // Used to save (tile) coordinates of spawnpoint outside of this method.
+            // Used to save (tile) coordinates of spawn point outside of this method.
             spawnx = spawnPos.x;
             spawny = spawnPos.y;
         }
@@ -1302,30 +1321,11 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	 * Finds a location where the player can respawn in a given level.
 	 * 
 	 * @param level The level.
-	 * @return true
 	 */
     public void respawn(Level level) {
+        // If there's no bed to spawn from, and the stored coordinates don't point to a grass tile, then find a new point.
     	if (!level.getTile(spawnx, spawny).maySpawn()) {
-    		findStartPos(level); // If there's no bed to spawn from, and the stored coordinates don't point to a grass tile, then find a new point.
-
-    		int x = spawnx;
-    		int y = spawny;
-
-    		x = (Math.random() > .5) ? -80 : 80;
-    		y = (Math.random() > .5) ? -80 : 80;
-
-    		// Iterate through diagonal line for possible random spawn.
-    		for (int i = 0; i < 20; i++) {
-    			if (!level.getTile(spawnx, spawny).maySpawn()) {
-    				x += 4 * (x / -x);
-    				y += 4 * (-y / y);
-    			} else {
-    				spawnx = x;
-    				spawny = y;
-    				break;
-    			}
-    		}
-
+    		findStartPos(level); 
     	}
     	// Move the player to the spawnpoint
     	this.x = spawnx * 16 + 8;
@@ -1393,7 +1393,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     	if (curArmor != null) dc.getInventory().add(curArmor);
 
     	Sound.Mob_player_death.play();
+        
+        // Add the death chest to the world.
     	World.levels[Game.currentLevel].add(dc);
+        
     	super.die(); // Calls the die() Method in Mob.java
     }
 

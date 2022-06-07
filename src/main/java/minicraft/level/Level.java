@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
 import minicraft.core.Game;
+import static minicraft.core.Game.player;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -106,13 +107,7 @@ public class Level {
 	public int maxMobCount;
 	public int chestCount;
 	public int mobCount = 0;
-	
-	public static boolean nightFactor = false;
-	public static int nightTick = 0;
-	
-
-	
-	
+		
 	/**
 	 * I will be using this lock to avoid concurrency exceptions in entities and sparks set
 	 */
@@ -277,15 +272,6 @@ public class Level {
 		return seed;
 	}
 	
-	public boolean getNightFactor() {
-		return nightFactor;
-	}
-	
-	public int getNightTick() {
-		return nightTick;
-	}
-
-
 	public void checkAirWizard() {
 		checkAirWizard(true);
 	}
@@ -402,10 +388,7 @@ public class Level {
 
 	public void tick(boolean fullTick) {
 		int count = 0;
-		
-		nightTick = Updater.tickCount;
-		if (nightTick == 16000) nightFactor = random.nextBoolean();
-		
+				
 		while (entitiesToAdd.size() > 0) {
 			Entity entity = entitiesToAdd.get(0);
 			boolean inLevel = entities.contains(entity);
@@ -785,13 +768,15 @@ public class Level {
 			// rand " + rnd + " at tile " + nx + "," + ny);
 
 			// spawns the enemy mobs; first part prevents enemy mob spawn on surface and the sky on first day, more or less.
-			if (!Settings.get("diff").equals("Peaceful") || nightFactor != true) {
+			if (!Settings.get("diff").equals("Peaceful")) {
 				if ((Updater.getTime() == Updater.Time.Night && depth != 1 && depth != 2) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
 					if (depth != -4) { // normal mobs
 						if (depth == 0) {
-							if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
-							else if (rnd >= 85) add((new Skeleton(lvl)), nx, ny);
-							else add((new Creeper(lvl)), nx, ny);
+                            if (player.isNiceNight == false) {
+                                if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
+                                else if (rnd >= 85) add((new Skeleton(lvl)), nx, ny);
+                                else add((new Creeper(lvl)), nx, ny);
+                            }
 						} else {
 							if (rnd <= 40) add((new Slime(lvl)), nx, ny);
 							else if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
@@ -818,8 +803,8 @@ public class Level {
 
 				spawned = true;
 			}
-
-			if (nightFactor == true) {
+           
+			if (player.isNiceNight == true) {
 				if (depth == 0 && Updater.getTime() == Updater.Time.Night && FlyMob.checkStartPos(this, nx, ny)) {
 					// Spawns the friendly mobs.
 					if (rnd < 75) {
@@ -1308,8 +1293,8 @@ public class Level {
 							Chest c1 = new Chest(), c2 = new Chest();
 							c1.populateInvRandom("villagehouse", 1);
 							c2.populateInvRandom("villagehouse", random.nextInt(10));
-							add(c1, (x + xo + 5) * 16, (y + yo - 7) * 16);
-							add(c2, (x + xo - 6) * 16, (y + yo + 3) * 16);
+							add(c1, (x + xo + 5) * 16, (y + yo - 6) * 16); // up
+							add(c2, (x + xo - 5) * 16, (y + yo + 4) * 16); // down
 						}
 					}
 

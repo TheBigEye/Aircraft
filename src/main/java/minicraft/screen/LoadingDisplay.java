@@ -1,9 +1,7 @@
 package minicraft.screen;
 
 import java.util.Random;
-
 import javax.swing.Timer;
-
 import minicraft.core.Game;
 import minicraft.core.World;
 import minicraft.core.io.InputHandler;
@@ -26,9 +24,9 @@ public class LoadingDisplay extends Display {
 
 	private static String Build = "";
 
-	String[] BuildString = { 
+	String[] BuildString = {
 			"Generating", "Separating", "Planting", "Eroding", "Digging",
-			"Raising", "Leveling", "Flattening", "Molding", "Building" 
+			"Raising", "Leveling", "Flattening", "Molding", "Building"
 	};
 
 	private static Random random = new Random();
@@ -46,7 +44,7 @@ public class LoadingDisplay extends Display {
 		});
 		t.setRepeats(false);
 	}
-	
+
     public void tick(InputHandler input) {
         super.tick(input);
         step++;
@@ -57,7 +55,7 @@ public class LoadingDisplay extends Display {
 		super.init(parent);
 		percentage = 0;
 		progressType = "World";
-		
+
 		if (WorldSelectDisplay.hasLoadedWorld()) {
 			msg = Localization.getLocalized("Loading");
 		} else {
@@ -65,9 +63,7 @@ public class LoadingDisplay extends Display {
 		}
 
 		msg = Build;
-		
 		t.start();
-
 	}
 
 	@Override
@@ -81,7 +77,6 @@ public class LoadingDisplay extends Display {
 		}
 
 		Sound.Mob_player_changelevel.play();
-
 	}
 
 	public static void setPercentage(float percent) {
@@ -104,15 +99,15 @@ public class LoadingDisplay extends Display {
 	public void render(Screen screen) {
 		super.render(screen);
 		int percent = Math.round(percentage);
-		
+
 		int LoadingIndex = (step / 4) % 24;
 
 		if (!WorldSelectDisplay.hasLoadedWorld()) {
-			
+
 			if (LoadingIndex == 0) {
 				msg = BuildString[random.nextInt(BuildString.length)];
 			}
-			
+
 			Font.drawParagraph(screen, new FontStyle(Color.YELLOW), 0, Localization.getLocalized(msg) + ellipsis.updateAndGet(), percent + "%");
 			Font.drawCentered(Localization.getLocalized("May take a while, be patient"), screen, Screen.h - 12, Color.get(1, 51));
 

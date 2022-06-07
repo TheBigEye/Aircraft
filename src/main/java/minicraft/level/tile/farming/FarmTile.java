@@ -60,15 +60,12 @@ public class FarmTile extends Tile {
         }
         level.setTile(xt, yt, Tiles.get("Dirt"));
         
-        if (random.nextInt(3) == 0) {
-        	Sound.Tile_farmland.play();
-        	
-        } else if (random.nextInt(3) == 1) {
-        	Sound.Tile_farmland_2.play();
-        	
-        } else if (random.nextInt(3) == 2) {
-        	Sound.Tile_farmland_3.play();
+        switch (random.nextInt(3)) {
+            case 0: Sound.Tile_farmland.play(); break;
+            case 1: Sound.Tile_farmland_2.play(); break;
+            case 2: Sound.Tile_farmland_3.play(); break;
+            default:
+                break;
         }
-        
     }
 }

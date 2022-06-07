@@ -2,7 +2,6 @@ package minicraft.level;
 
 import java.util.HashMap;
 import java.util.HashSet;
-
 import minicraft.entity.furniture.Crafter;
 import minicraft.entity.furniture.Furniture;
 import minicraft.entity.furniture.Lantern;
@@ -233,18 +232,28 @@ public class Structure {
                 "WFFFW**O**ZZXCC\n" + 
                 "WFFFDOOO**ZZXCC\n" + 
                 "WFFFW**O**ZZXCC\n" + 
-                "WWWWW**O**ZZXCC\n" + 
-                "***************\n"
+                "WWWWW**O**ZZXCC\n"
         );
         villageCrops.addFurniture(0, -1, new ZombieStatue());
 
         villageHouseNormal2 = new Structure();
         villageHouseNormal2.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass,O:Path",
-                "*******O********\n" + "WWWWW**O**WWWWW\n" + "WFFFW**O**WFFFW\n" + "WFFFW**O**WFFFW\n"
-                        + "WFFFW**O**WFFFW\n" + "WWDWW**O**WWDWW\n" + "**O****O****O**\n" + "**O***OOO***O**\n"
-                        + "OOOOOOOGOOOOOOO\n" + "**O***OOO***O**\n" + "**O****O****O**\n" + "WWDWW**O**WWDWW\n"
-                        + "WFFFW**O**WFFFW\n" + "WFFFW**O**WFFFW\n" + "WFFFW**O**WFFFW\n" + "WWWWW**O**WWWWW\n"
-                        + "*******O*******\n");
+                "WWWWW**O**WWWWW\n" + 
+                "WFFFW**O**WFFFW\n" + 
+                "WFFFW**O**WFFFW\n" + 
+                "WFFFW**O**WFFFW\n" + 
+                "WWDWW**O**WWDWW\n" + 
+                "**O****O****O**\n" + 
+                "**O***OOO***O**\n" + 
+                "OOOOOOOGOOOOOOO\n" +   
+                "**O***OOO***O**\n" + 
+                "**O****O****O**\n" + 
+                "WWDWW**O**WWDWW\n" + 
+                "WFFFW**O**WFFFW\n" + 
+                "WFFFW**O**WFFFW\n" + 
+                "WFFFW**O**WFFFW\n" + 
+                "WWWWW**O**WWWWW\n"
+        );
         villageHouseNormal2.addFurniture(0, -1, new SkeletonStatue());
 
         villageHouseTwoDoor = new Structure();

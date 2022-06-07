@@ -1,8 +1,5 @@
 package minicraft.core;
 
-import org.jetbrains.annotations.Nullable;
-import org.tinylog.Logger;
-
 import minicraft.core.io.Settings;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
@@ -13,6 +10,8 @@ import minicraft.screen.LoadingDisplay;
 import minicraft.screen.PlayerDeathDisplay;
 import minicraft.screen.WorldGenDisplay;
 import minicraft.screen.WorldSelectDisplay;
+import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
 
 public class World extends Game {
 	private World() {}
@@ -23,10 +22,12 @@ public class World extends Game {
 		int min, max;
 		min = max = idxToDepth[0];
 		for (int depth: idxToDepth) {
-			if (depth < min)
+			if (depth < min) {
 				min = depth;
-			if (depth > max)
+            }
+			if (depth > max) {
 				max = depth;
+            }
 		}
 		minLevelDepth = min;
 		maxLevelDepth = max;
@@ -70,9 +71,10 @@ public class World extends Game {
 		// Adds a new player
 		if (keepPlayer) {
 			player = new Player(player, input);
-		} else
+		} else {
 			player = new Player(null, input);
-		
+        }
+        
 		if (levels[currentLevel] == null) return;
 		
 		// "shouldRespawn" is false on hardcore, or when making a new world.
@@ -122,8 +124,7 @@ public class World extends Game {
 				LoadingDisplay.setMessage(Level.getDepthString(i));
 				if (i > 0) {
 					levels[lvlIdx(i)] = new Level(worldSize, worldSize, WorldGenDisplay.getSeed(), i, null, !WorldSelectDisplay.hasLoadedWorld());
-				} 
-				else {
+				} else {
 					levels[lvlIdx(i)] = new Level(worldSize, worldSize, WorldGenDisplay.getSeed(), i, levels[lvlIdx(i+1)], !WorldSelectDisplay.hasLoadedWorld());
 				}
 				
@@ -189,6 +190,5 @@ public class World extends Game {
 				AchievementsDisplay.setAchievement("minicraft.achievement.obsidian_dungeon", true);
 			}
 		}
-		
 	}
 }

@@ -15,10 +15,10 @@ public class CommandsDisplay extends Display {
     
     public CommandsDisplay() {
         super(new Menu.Builder(false, 3, RelPos.LEFT, command)
-        		.setTitle("")
-        		.setTitlePos(RelPos.TOP_LEFT)
-        		.setPositioning(new Point(SpriteSheet.boxWidth,  Screen.h - 24), RelPos.BOTTOM_RIGHT)
-        		.createMenu()
+            .setTitle("")
+            .setTitlePos(RelPos.TOP_LEFT)
+            .setPositioning(new Point(SpriteSheet.boxWidth,  Screen.h - 24), RelPos.BOTTOM_RIGHT)
+            .createMenu()
         );
         command.userInput = "";
     }
@@ -82,7 +82,10 @@ public class CommandsDisplay extends Display {
 	    		case "say":       
 	    			String sayStr = command.getUserInput().toLowerCase(Localization.getSelectedLocale()).replace("say ", "");
 	    			Game.notifications.add(sayStr);
-	
+	    			break;
+                case "kill":       
+	    			Game.player.die();
+	    			Game.notifications.add("ooof!");
 	    			break;
 	    		default:
 	    			Game.notifications.add("Unknown Command.");

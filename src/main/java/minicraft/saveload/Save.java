@@ -6,11 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.core.Renderer;
 import minicraft.core.Updater;
@@ -40,28 +35,30 @@ import minicraft.entity.particle.TextParticle;
 import minicraft.item.Inventory;
 import minicraft.item.Item;
 import minicraft.item.PotionType;
-import minicraft.level.Level;
 import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
 import minicraft.screen.WorldSelectDisplay;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.tinylog.Logger;
 
 public class Save {
 
 	public String location = Game.gameDir;
 	File folder;
-	
+
 	// Used to indent the .json files
 	private static final int indent = 4;
 
 	// Save files extension
 	public static String extension = ".miniplussave";
-	
+
 	List<String> data;
 
 	/**
 	 * This is the main save method. Called by all Save() methods.
-	 * 
+	 *
 	 * @param worldFolder The folder of where to save
 	 */
 	private Save(File worldFolder) {
@@ -92,11 +89,11 @@ public class Save {
 
 	/**
 	 * This will save world options
-	 * 
+	 *
 	 * @param worldname The name of the world.
 	 */
 	public Save(String worldname) {
-		
+
 		this(new File(Game.gameDir + "/saves/" + worldname + "/"));
 
 		writeGame("Game");
@@ -177,7 +174,7 @@ public class Save {
 	}
 
 	private void writeGame(String filename) {
-	
+
 		data.add(String.valueOf(Game.VERSION));
 		data.add(Settings.getIdx("mode") + (Game.isMode("score") ? ";" + Updater.scoreTime + ";" + Settings.get("scoretime") : ""));
 		data.add(String.valueOf(Updater.tickCount));
@@ -187,10 +184,7 @@ public class Save {
 		data.add(String.valueOf(AirWizardPhase2.beaten));
 		data.add(String.valueOf(AirWizardPhase3.beaten));
 		data.add(String.valueOf(Settings.get("cheats")));
-		
-		// Night
-		data.add(String.valueOf(Level.nightFactor));
-	
+
 		writeToFile(location + filename + extension, data);
 	}
 
@@ -202,11 +196,16 @@ public class Save {
 		json.put("sound", String.valueOf(Settings.get("sound")));
 		json.put("autosave", String.valueOf(Settings.get("autosave")));
 		json.put("fps", String.valueOf(Settings.get("fps")));
+        json.put("vsync", String.valueOf(Settings.get("vsync")));
+        json.put("bossbar", Settings.get("bossbar"));
+        json.put("particles", String.valueOf(Settings.get("particles")));
+        json.put("shadows", String.valueOf(Settings.get("shadows")));
 		json.put("lang", Localization.getSelectedLanguage());
 		json.put("savedIP", MultiplayerDisplay.savedIP);
 		json.put("savedUUID", MultiplayerDisplay.savedUUID);
 		json.put("savedUsername", MultiplayerDisplay.savedUsername);
 
+        
 		json.put("keymap", new JSONArray(Game.input.getKeyPrefs()));
 
 		// Save preferences to json file
@@ -300,7 +299,7 @@ public class Save {
 
 		// Cuts off extra ":" and appends "]"
 		if (player.potioneffects.size() > 0) {
-			subdata = new StringBuilder(subdata.substring(0, subdata.length() - (1)) + "]"); 
+			subdata = new StringBuilder(subdata.substring(0, subdata.length() - (1)) + "]");
 		} else {
 			subdata.append("]");
 		}
@@ -309,9 +308,12 @@ public class Save {
 
 		data.add(String.valueOf(player.shirtColor));
 		data.add(String.valueOf(player.skinon));
-		
+
 		data.add(String.valueOf(player.isRaining));
 		data.add(String.valueOf(player.rainCount));
+        
+        data.add(String.valueOf(player.isNiceNight));
+        data.add(String.valueOf(player.nightCount));
 	}
 
 	private void writeInventory(String filename, Player player) {
@@ -352,11 +354,11 @@ public class Save {
 		name = name.substring(name.lastIndexOf('.') + 1);
 		StringBuilder extradata = new StringBuilder();
 
-		// Don't even write ItemEntities or particle effects; Spark... will probably is saved, eventually; 
+		// Don't even write ItemEntities or particle effects; Spark... will probably is saved, eventually;
 		// it presents an unfair cheat to remove the sparks by reloading the Game.
 
 		// TODO I don't want to, but there are complications.
-		// If (e instanceof Particle) return ""; 
+		// If (e instanceof Particle) return "";
 
 		// wirte these only when sending a world, not writing
 		if (isLocalSave && (e instanceof ItemEntity || e instanceof Arrow || e instanceof Spark || e instanceof Particle)) {
@@ -390,7 +392,7 @@ public class Save {
 			}
 
 			if (chest instanceof DeathChest) extradata.append(":").append(((DeathChest) chest).time);
-			if (chest instanceof DungeonChest) extradata.append(":").append(((DungeonChest) chest).isLocked());	
+			if (chest instanceof DungeonChest) extradata.append(":").append(((DungeonChest) chest).isLocked());
 		}
 
 		if (e instanceof Spawner) {
@@ -414,7 +416,6 @@ public class Save {
 			if (e instanceof Spark) extradata.append(":").append(((Spark) e).getData());
 			if (e instanceof TextParticle) extradata.append(":").append(((TextParticle) e).getData());
 			if (e instanceof Fireball) extradata.append(":").append(((Fireball) e).getData());
-			
 		}
 		// else // is a local save
 

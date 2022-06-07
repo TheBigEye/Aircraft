@@ -5,10 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.jetbrains.annotations.Nullable;
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.core.io.FileHandler;
 import minicraft.core.io.InputHandler;
@@ -22,6 +18,8 @@ import minicraft.screen.entry.InputEntry;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
+import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
 
 /**
  * Used to edit worlds. These actions include renaming, deleting, and copying worlds.
@@ -149,7 +147,7 @@ public class WorldEditDisplay extends Display {
 
 				confirm = false;
 				Sound.Menu_select.play();
-				if (WorldSelectDisplay.getWorldNames().size() > 0) {
+				if (!WorldSelectDisplay.getWorldNames().isEmpty()) {
 					Game.setDisplay(new WorldSelectDisplay());
 				} else {
 					Game.setDisplay(new WorldGenDisplay());

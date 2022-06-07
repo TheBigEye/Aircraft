@@ -36,7 +36,6 @@ public class IceSpikeTile extends Tile {
         level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.BLUE));
 
         if (damage >= cHealth) {
-            int count = random.nextInt(2) + 2;
             level.setTile(x, y, Tiles.get("snow"));
             Sound.Tile_generic_hurt.play();
             level.dropItem(x * 16 + 8, y * 16 + 8, 2, 4, Items.get("Icicle"));

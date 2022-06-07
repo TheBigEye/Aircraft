@@ -1,10 +1,14 @@
 package minicraft.core;
 
+import de.jcm.discordgamesdk.Core;
+import de.jcm.discordgamesdk.CreateParams;
+import de.jcm.discordgamesdk.activity.Activity;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
@@ -53,7 +57,7 @@ public class Game {
 
 	public static final String NAME = "Aircraft"; // This is the name on the application window
 	public static final String BUILD = "0.5"; // Aircraft version
-	public static final Version VERSION = new Version("2.1.0-dev3"); // Minicraft plus mod base version
+	public static final Version VERSION = new Version("2.1.2"); // Minicraft plus mod base version
 
 	public static InputHandler input; // Input used in Game, Player, and just about all the *Menu classes*.
 	public static Player player;
@@ -65,15 +69,15 @@ public class Game {
 
 	// Crash splashes
 	private static final String[] Splash = {
-			"Who has put TNT?",
-			"An error has occurred again??",
-			"A nice cup of coffee?",
-			"Unexpected error again??",
-			"Oh. That hurts :(",
-			"Sorry for the crash :(",
-			"You can play our brother game, Minitale",
-			"F, crash again??", "Interesting, hmmmmm...",
-			"ok, i messed it up"
+		"Who has put TNT?",
+		"An error has occurred again??",
+		"A nice cup of coffee?",
+		"Unexpected error again??",
+		"Oh. That hurts :(",
+		"Sorry for the crash :(",
+		"You can play our brother game, Minitale",
+		"F, crash again??", "Interesting, hmmmmm...",
+		"ok, i messed it up"
 	};
 
 	//--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -116,7 +120,7 @@ public class Game {
 
 	static boolean running = true;
 
-	// Quit function
+	// Quit function.
 	public static void quit() {
 		running = false;
 	}
@@ -154,7 +158,7 @@ public class Game {
 			crashDisplay.setText(
 
 				" " + errorSplash + "\n" +
-				" If the problem persists, send a screenshot to the author.\n" + "\n" +
+				" If the problem persists, send a screenshot to the developer.\n" + "\n" +
 
                 "--- BEGIN ERROR REPORT ---------" + "\n" +
                 "Generated: " + time.toLocalDate() + "\n\n" +
@@ -170,7 +174,7 @@ public class Game {
 
                 "~~ERROR~~ " + "\n" +
 
-                 crash.toString() + "\n" +
+                crash.toString() + "\n" +
 
                 "--- END ERROR REPORT ---------"
 			);
@@ -191,37 +195,42 @@ public class Game {
 
 			// Display the window
 			JOptionPane.showOptionDialog(null, errorPane, "Aircraft has crashed!", JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, args, thread);
-
-			// Log it
 			Logger.error(crash.toString());
+            
+            // Stop and close the game window
+            quit();
 		});
 
 		// Start events ------------------------------------------------------------------------------------------------------------------------------------
 
+        // Discord rich presence
+        Core discordCore = null;
+		try {
+			Core.initDownload();
+			CreateParams params = new CreateParams();
+			params.setClientID(981764521616093214L); // Discord APP ID
+			params.setFlags(CreateParams.getDefaultFlags());
+            params.setFlags(CreateParams.Flags.NO_REQUIRE_DISCORD);
+
+			discordCore = new Core(params);
+			Activity activity = new Activity();
+			activity.assets().setLargeImage("logo"); // Big image
+            activity.assets().setLargeText("Aircraft " + BUILD + ", Nice!"); // Big image text
+            activity.assets().setSmallImage("small-logo"); // Small image
+            activity.assets().setSmallText("Minicraft+ mod"); // Small image text
+			activity.timestamps().setStart(Instant.now()); // Start timer
+
+			discordCore.activityManager().updateActivity(activity);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+        
 		Initializer.parseArgs(args);
 
-		// Initialize game events
-
-		// Christmas
-		if ((time.getMonth() == Month.DECEMBER) && (time.getDayOfMonth() == 24)) {
-			IS_Christmas = true;
-		} else {
-			IS_Christmas = false;
-		}
-
-		// Halloween
-		if ((time.getMonth() == Month.OCTOBER) && (time.getDayOfMonth() == 31)) {
-			IS_Halloween = true;
-		} else {
-			IS_Halloween = false;
-		}
-
-		// April Fools
-		if ((time.getMonth() == Month.APRIL) && (time.getDayOfMonth() == 1)) {
-			IS_April_fools = true;
-		} else {
-			IS_April_fools = false;
-		}
+        // Initialize game events
+        IS_Christmas = (time.getMonth() == Month.DECEMBER) && (time.getDayOfMonth() == 24); // Christmas
+        IS_Halloween = (time.getMonth() == Month.OCTOBER) && (time.getDayOfMonth() == 31); // Halloween
+        IS_April_fools = (time.getMonth() == Month.APRIL) && (time.getDayOfMonth() == 1); // April Fools
 
 		// Initialize input handler
 		input = new InputHandler(Renderer.canvas);
@@ -253,8 +262,8 @@ public class Game {
 			Updater.updateFullscreen();
 		}
 
-		// Start tick() count
-		Initializer.run();
+		// Start tick() count and start the game
+		Initializer.run(discordCore);
 
 		// Exit events -------------------------------------------------------------------------------------------------------------------------------------
 
@@ -264,5 +273,4 @@ public class Game {
 
 		System.exit(0);
 	}
-
 }

@@ -1,5 +1,6 @@
 package minicraft.core;
 
+import de.jcm.discordgamesdk.Core;
 import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -57,7 +58,7 @@ public class Initializer extends Game {
 	 * time that has passed -fires the ticks needed to run the game -fires the
 	 * command to render out the screen.
 	 */
-	static void run() {
+	static void run(Core discordCore) {
 		long lastTick = System.nanoTime();
 		long lastRender = System.nanoTime();
 		double unprocessed = 0;
@@ -93,6 +94,10 @@ public class Initializer extends Game {
 				frames++;
 				lastRender = System.nanoTime();
 				Renderer.render();
+			}
+            
+            if (discordCore != null) {
+				discordCore.runCallbacks();
 			}
 
 			if (System.currentTimeMillis() - lastTimer1 > 1000) { // updates every 1 second

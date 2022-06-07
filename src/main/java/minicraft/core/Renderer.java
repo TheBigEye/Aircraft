@@ -11,11 +11,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
-
 import javax.imageio.ImageIO;
-
-import org.tinylog.Logger;
-
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.boss.AirWizard;
@@ -38,6 +34,7 @@ import minicraft.screen.InfoDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.RelPos;
 import minicraft.util.Info;
+import org.tinylog.Logger;
 
 public class Renderer extends Game {
 	private Renderer() {}
@@ -63,6 +60,7 @@ public class Renderer extends Game {
 	@SuppressWarnings("unused")
 	private static Ellipsis ellipsis = new SmoothEllipsis(new TickUpdater());
 
+    @SuppressWarnings("CallToPrintStackTrace")
 	public static SpriteSheet[] loadDefaultSpriteSheets() {
 		SpriteSheet itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background;
 		try {
@@ -94,6 +92,7 @@ public class Renderer extends Game {
 		return new SpriteSheet[] { itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background };
 	}
 
+    @SuppressWarnings("CallToPrintStackTrace")
 	public static SpriteSheet[] loadLegacySpriteSheets() {
 		SpriteSheet itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background;
 		try {
@@ -135,7 +134,6 @@ public class Renderer extends Game {
 		canvas.createBufferStrategy(3);
 		canvas.requestFocus();
 	}
-
 
 	/** Renders the current screen. Called in game loop, a bit after tick(). */
 	public static void render() {
@@ -219,7 +217,7 @@ public class Renderer extends Game {
 			screen.overlay(lightScreen, currentLevel, xScroll, yScroll); // Overlays the light screen over the main screen.
 		}
 
-		if (player != null && player.potioneffects.containsKey(PotionType.Blindness) && currentLevel == 3 && !Game.isMode("Creative") || player != null && player.potioneffects.containsKey(PotionType.Blindness) && currentLevel == 4 && !Game.isMode("Creative")) {
+		if (player != null && player.isNiceNight == false && currentLevel == 3 && !Game.isMode("Creative") || player != null && player.isNiceNight == false && currentLevel == 4 && !Game.isMode("Creative")) {
 			lightScreen.clear(0); 
 
 			// Brightens all
@@ -241,33 +239,30 @@ public class Renderer extends Game {
 			if (((ToolItem) player.activeItem).type == ToolType.Bow) {
 				int ac = player.getInventory().count(Items.arrowItem);
 
-				int xx = (Screen.w) / 2 - 32 - player.activeItem.arrAdjusted; // the width of the box
-				int yy = (Screen.h - 8) - 13; // the height of the box
+				int x = (Screen.w) / 2 - 32 - player.activeItem.arrAdjusted; // the width of the box
+				int y = (Screen.h - 8) - 13; // the height of the box
 				int w = 3; // length of message in characters.
 				int h = 1;
 
-				int x = 170;
-				int y = 25;
-
 				// Renders the four corners of the box
-				screen.render(xx - 8, yy - 8, 0 + 21 * 32, 0, 3);
-				screen.render(xx + w * 8, yy - 8, 0 + 21 * 32, 1, 3);
-				screen.render(xx - 8, yy + 8, 0 + 21 * 32, 2, 3);
-				screen.render(xx + w * 8, yy + 8, 0 + 21 * 32, 3, 3);
+				screen.render(x - 8, y - 8, 0 + 21 * 32, 0, 3);
+				screen.render(x + w * 8, y - 8, 0 + 21 * 32, 1, 3);
+				screen.render(x - 8, y + 8, 0 + 21 * 32, 2, 3);
+				screen.render(x + w * 8, y + 8, 0 + 21 * 32, 3, 3);
 
 				// Renders each part of the box...
-				for (x = 0; x < w; x++) {
-					screen.render(xx + x * 8, yy - 8, 1 + 21 * 32, 0, 3); // ...top part
-					screen.render(xx + x * 8, yy + 8, 1 + 21 * 32, 2, 3); // ...bottom part
+				for (int xb = 0; xb < w; xb++) {
+					screen.render(x + xb * 8, y - 8, 1 + 21 * 32, 0, 3); // ...top part
+					screen.render(x + xb * 8, y + 8, 1 + 21 * 32, 2, 3); // ...bottom part
 				}
-				for (y = 0; y < h; y++) {
-					screen.render(xx - 8, yy + y * 8, 2 + 21 * 32, 0, 3); // ...left part
-					screen.render(xx + w * 8, yy + y * 8, 2 + 21 * 32, 1, 3); // ...right part
+				for (int yb = 0; yb < h; yb++) {
+					screen.render(x - 8, y + yb * 8, 2 + 21 * 32, 0, 3); // ...left part
+					screen.render(x + w * 8, y + yb * 8, 2 + 21 * 32, 1, 3); // ...right part
 				}
 
 				// The middle
-				for (x = 0; x < w; x++) {
-					screen.render(xx + x * 8, yy, 3 + 21 * 32, 0, 3);
+				for (int xb = 0; xb < w; xb++) {
+					screen.render(x + xb * 8, y, 3 + 21 * 32, 0, 3);
 				}
 
 				if (isMode("creative") || ac >= 10000) {
@@ -288,33 +283,30 @@ public class Renderer extends Game {
 			int dura = tool.dur * 100 / (tool.type.durability * (tool.level + 1));
 			int green = (int)(dura * 2.55f);
 
-			int xx = (Screen.w) / 2 + 8 + player.activeItem.durAdjusted; // The width of the box
-			int yy = (Screen.h - 8) - 13; // The height of the box
+			int x = (Screen.w) / 2 + 8 + player.activeItem.durAdjusted; // The width of the box
+			int y = (Screen.h - 8) - 13; // The height of the box
 			int w = 3; // Length of message in characters.
 			int h = 1;
 
-			int x = 250;
-			int y = 25;
-
 			// Renders the four corners of the box
-			screen.render(xx - 8, yy - 8, 0 + 21 * 32, 0, 3);
-			screen.render(xx + w * 8, yy - 8, 0 + 21 * 32, 1, 3);
-			screen.render(xx - 8, yy + 8, 0 + 21 * 32, 2, 3);
-			screen.render(xx + w * 8, yy + 8, 0 + 21 * 32, 3, 3);
+			screen.render(x - 8, y - 8, 0 + 21 * 32, 0, 3);
+			screen.render(x + w * 8, y - 8, 0 + 21 * 32, 1, 3);
+			screen.render(x - 8, y + 8, 0 + 21 * 32, 2, 3);
+			screen.render(x + w * 8, y + 8, 0 + 21 * 32, 3, 3);
 
 			// Renders each part of the box...
-			for (x = 0; x < w; x++) {
-				screen.render(xx + x * 8, yy - 8, 1 + 21 * 32, 0, 3); // ...top part
-				screen.render(xx + x * 8, yy + 8, 1 + 21 * 32, 2, 3); // ...bottom part
+			for (int xb = 0; xb < w; xb++) {
+				screen.render(x + xb * 8, y - 8, 1 + 21 * 32, 0, 3); // ...top part
+				screen.render(x + xb * 8, y + 8, 1 + 21 * 32, 2, 3); // ...bottom part
 			}
-			for (y = 0; y < h; y++) {
-				screen.render(xx - 8, yy + y * 8, 2 + 21 * 32, 0, 3); // ...left part
-				screen.render(xx + w * 8, yy + y * 8, 2 + 21 * 32, 1, 3); // ...right part
+			for (int yb = 0; yb < h; yb++) {
+				screen.render(x - 8, y + yb * 8, 2 + 21 * 32, 0, 3); // ...left part
+				screen.render(x + w * 8, y + yb * 8, 2 + 21 * 32, 1, 3); // ...right part
 			}
 
 			// The middle
-			for (x = 0; x < w; x++) {
-				screen.render(xx + x * 8, yy, 3 + 21 * 32, 0, 3);
+			for (int xb = 0; xb < w; xb++) {
+				screen.render(x + xb * 8, y, 3 + 21 * 32, 0, 3);
 			}
 
 			Font.drawTransparentBackground(dura + "%", screen, 221 + player.activeItem.durAdjusted, Screen.h - 24, Color.get(1, 255 - green, green, 0));
@@ -340,13 +332,13 @@ public class Renderer extends Game {
 			permStatus.add("Press " + input.getMapping("exit") + " to cancel");
 		}
 
-		if (permStatus.size() > 0) {
+		if (!permStatus.isEmpty()) {
 			FontStyle style = new FontStyle(Color.WHITE).setYPos(Screen.h / 2 - 25).setRelTextPos(RelPos.TOP).setShadowType(Color.DARK_GRAY, false);
 			Font.drawParagraph(permStatus, screen, style, 1);
 		}
 
 		/// NOTIFICATIONS
-		if (permStatus.size() == 0 && notifications.size() > 0) {
+		if (permStatus.isEmpty() && !notifications.isEmpty()) {
 			Updater.notetick++;
 			if (notifications.size() > 3) { // Only show 3 notifs max at one time; erase old notifs.
 				notifications = notifications.subList(notifications.size() - 3, notifications.size());
@@ -360,14 +352,6 @@ public class Renderer extends Game {
 			// draw each current notification, with shadow text effect.
 			FontStyle style = new FontStyle(Color.WHITE).setShadowType(Color.DARK_GRAY, false).setYPos(Screen.h * 2 / 5).setRelTextPos(RelPos.TOP, false);
 			Font.drawParagraph(notifications, screen, style, 0);
-		}
-
-
-		// AirWizard bossbar
-		if (currentLevel == 4 && isMode("survival")) {
-			if (!AirWizard.beaten) renderBossbar(AirWizard.length, "Air wizard");
-			else if (!AirWizardPhase2.beaten) renderBossbar(AirWizardPhase2.length, "Phase II");
-			else if (!AirWizardPhase3.beaten) renderBossbar(AirWizardPhase3.length, "Phase III");
 		}
 
 		// SCORE MODE ONLY:
@@ -402,7 +386,7 @@ public class Renderer extends Game {
 		}
 
 		/// This renders the potions overlay
-		if (player.showpotioneffects && player.potioneffects.size() > 0) {
+		if (player.showpotioneffects && !player.potioneffects.isEmpty()) {
 			Map.Entry < PotionType, Integer > [] effects = player.potioneffects.entrySet().toArray(new Map.Entry[0]);
 
 			PotionType pType;
@@ -453,11 +437,11 @@ public class Renderer extends Game {
 			for (int i = 0; i < effects.length; i++) {
 				pType = effects[i].getKey();
 				int pTime = effects[i].getValue() / Updater.normSpeed;
-
+                
 				int minutes = pTime / 60;
 				int seconds = pTime % 60;
 
-				Font.drawTransparentBackground("(" + input.getMapping("potionEffects") + " to hide!)", screen, 300, 9);
+				Font.drawTransparentBackground("(" + input.getMapping("potionEffects") + " to hide!)", screen, 300, 8);
 				Font.drawTransparentBackground(pType + " (" + minutes + ":" + (seconds < 10? "0" + seconds:seconds) + ")", screen, 300, 17 + i * Font.textHeight(), pType.dispColor);
 			}
 
@@ -505,8 +489,14 @@ public class Renderer extends Game {
 			}
 		}
 
-		renderRain();
-		renderDebugInfo();
+		renderRain(); // last layer
+        // AirWizard bossbar
+		if (currentLevel == 4 && isMode("survival")) {
+			if (!AirWizard.beaten) renderBossbar(AirWizard.length, "Air wizard");
+			else if (!AirWizardPhase2.beaten) renderBossbar(AirWizardPhase2.length, "Phase II");
+			else if (!AirWizardPhase3.beaten) renderBossbar(AirWizardPhase3.length, "Phase III");
+		}
+		renderDebugInfo(); // top layer
 	}
 	
 	public static void renderRain() {
@@ -534,7 +524,6 @@ public class Renderer extends Game {
 				}
 			}
 		}
-
 	}
 
 	public static void renderBossbar(int length, String title) {
@@ -569,7 +558,7 @@ public class Renderer extends Game {
 		Font.drawCentered(title, screen, y + 8, Color.WHITE);
 	}
 
-	private static LocalDateTime time = LocalDateTime.now();
+	private static final LocalDateTime time = LocalDateTime.now();
 
 	// Renders show debug info on the screen.
 	private static void renderDebugInfo() { 
@@ -646,7 +635,7 @@ public class Renderer extends Game {
 			if (levels[currentLevel] != null) {
 				info.add("");
 				info.add("Level seed: " + levels[currentLevel].getSeed());
-				info.add("Night factor: " + levels[currentLevel].getNightFactor() + " > " + (levels[currentLevel].getNightTick() / 1000) + "/16");
+				info.add("Night factor: " + player.isNiceNight + " > " + player.nightCount + "/4");
 				info.add("Rain factor: " + player.isRaining + " > " + player.rainCount + "/8");
 				info.add("Music factor: " + (levels[currentLevel].randomMusic / 1000) + "/16");
 			}

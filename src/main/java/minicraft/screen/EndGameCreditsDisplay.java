@@ -26,6 +26,7 @@ public class EndGameCreditsDisplay extends Display {
         };
     }
     
+    @Override
     public void tick(InputHandler input) {
     	if (tickTime / 3 %12 == 0) {
     		line++;
@@ -39,6 +40,7 @@ public class EndGameCreditsDisplay extends Display {
     	tickTime++;
     }
 
+    @Override
 	public void render(Screen screen) {
 		super.render(screen);
 		

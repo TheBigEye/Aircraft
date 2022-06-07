@@ -22,10 +22,8 @@ import minicraft.gfx.Sprite;
 import minicraft.level.Level;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.LinkEntry;
-import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.tutorial.TutorialDisplay;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -35,10 +33,10 @@ public class TitleDisplay extends Display {
 	private int rand;
 	private int count = 0; // this and reverse are for the logo; they produce the fade-in/out effect.
 	private boolean reverse = false;
-	
+
 	private int time = 0;
 	private int tickTime = 0;
-	
+
 	private boolean shouldRender = false;
 
 	private static List<String> splashes = new ArrayList<>();
@@ -77,7 +75,7 @@ public class TitleDisplay extends Display {
 								new SelectEntry("New World", () -> Game.setDisplay(new WorldGenDisplay()))
 								)
 								.createMenu()
-								));
+						));
 					} else {
 						Game.setDisplay(new WorldGenDisplay());
 					}
@@ -94,28 +92,23 @@ public class TitleDisplay extends Display {
 						new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
 						new SelectEntry("About", () -> Game.setDisplay(new BookDisplay(BookData.about))),
 						new BlankEntry()
-
-						)
-						.setTitle("Help")
-						.createMenu()
-						))),
+					)
+					.setTitle("Help")
+					.createMenu()
+				))),
 				new SelectEntry("Exit", Game::quit)
-
-
-
-				)
-				.setPositioning(new Point(Screen.w / 2, Screen.h * 3 / 5), RelPos.CENTER)
-				.setShouldRender(false)
-				.createMenu()
-				);
-
+			)
+			.setPositioning(new Point(Screen.w / 2, Screen.h * 3 / 5), RelPos.CENTER)
+			.setShouldRender(false)
+			.createMenu()
+		);
 	}
 
 	@Override
 	public void init(Display parent) {
 		super.init(null); // The TitleScreen never has a parent.
 		Renderer.readyToRenderGameplay = false;
-		
+
 		LocalDateTime time = LocalDateTime.now();
 		if (time.getMonth() != Month.OCTOBER) {
 			switch (random.nextInt(4)) {
@@ -125,66 +118,44 @@ public class TitleDisplay extends Display {
 				case 3: Sound.Theme_Peaceful.play(); break;
 				case 4: Sound.Theme_Surface.play(); break;
 				default: Sound.Theme_Fall.play(); break;
-			}  
+			}
 		}
 
 		if (time.getMonth() == Month.DECEMBER) {
-			if (time.getDayOfMonth() == 19) {
-				rand = 1;
-			}
-			if (time.getDayOfMonth() == 25) {
-				rand = 2;
-			}
+			if (time.getDayOfMonth() == 19) rand = 1;
+			if (time.getDayOfMonth() == 25) rand = 2;
 		} else {
 			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
 
 		if (time.getMonth() == Month.FEBRUARY) {
-			if (time.getDayOfMonth() == 14) {
-				rand = 0;
-			}
-			if (time.getDayOfMonth() == 15) {
-				rand = 0;
-			}
-			if (time.getDayOfMonth() == 16) {
-				rand = 0;
-			}
+			if (time.getDayOfMonth() == 14) rand = 0;
+			if (time.getDayOfMonth() == 15) rand = 0;
+			if (time.getDayOfMonth() == 16) rand = 0;
 		} else {
 			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
 
 		if (time.getMonth() == Month.JULY) {
-			if (time.getDayOfMonth() == 6) {
-				rand = 3;
-			}
+			if (time.getDayOfMonth() == 6) rand = 3;
 		} else {
 			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
 
 		if (time.getMonth() == Month.SEPTEMBER) {
-			if (time.getDayOfMonth() == 18) {
-				rand = 4;
-			}
+			if (time.getDayOfMonth() == 18) rand = 4;
 		} else {
 			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
 
 		if (time.getMonth() == Month.OCTOBER) {
-			if (time.getDayOfMonth() == 8) {
-				Sound.Theme_Cavern.play();
-			}
-			if (time.getDayOfMonth() == 16) {
-				Sound.Theme_Cavern_drip.play();
-			}
+			if (time.getDayOfMonth() == 8) Sound.Theme_Cavern.play();
+			if (time.getDayOfMonth() == 16) Sound.Theme_Cavern_drip.play();
 		}
 
 		if (time.getMonth() == Month.AUGUST) {
-			if (time.getDayOfMonth() == 29) {
-				rand = 5;
-			}
-			if (time.getDayOfMonth() == 10) {
-				rand = 6;
-			}
+			if (time.getDayOfMonth() == 29) rand = 5;
+			if (time.getDayOfMonth() == 10) rand = 6;
 		} else {
 			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
@@ -197,29 +168,23 @@ public class TitleDisplay extends Display {
 		}
 	}
 
-	@NotNull
-	private static SelectEntry displayFactory(String entryText, ListEntry... entries) {
-		return new SelectEntry(entryText, () -> Game.setDisplay(new Display(true, new Menu.Builder(false, 2, RelPos.CENTER, entries).createMenu())));
-	}
-
 	@Override
 	public void tick(InputHandler input) {
 		if (input.getKey("r").clicked) rand = random.nextInt(splashes.size() - 3) + 3;
-		
+
 		super.tick(input);
-		
+
 		if (shouldRender) menus[0].shouldRender = true;
-		
 		if (time > 72) shouldRender = true;
 		if (tickTime /3 %1 == 0) time++;
-		
+
 		tickTime++;
 	}
 
 	@Override
 	public void render(Screen screen) {
 		screen.clear(0);
-		
+
 		if (shouldRender == true) {
 			// Background sprite
 			int hh = 39; // Height of squares (on the spritesheet)
@@ -236,18 +201,18 @@ public class TitleDisplay extends Display {
 
 		// Render the options
 		super.render(screen);
-		
+
         if (shouldRender) {
             menus[0].render(screen);
         }
-		
+
 		if (shouldRender == true) {
 			// Title sprite
 			int h = 6; // Height of squares (on the spritesheet)
 			int w = 26; // Width of squares (on the spritesheet)
 			int xo = (Screen.w - w * 8) / 2; // X location of the title
 			int yo = 55; // Y location of the title
-	
+
 			for (int y = 0; y < h; y++) {
 				for (int x = 0; x < w; x++) {
 					screen.render(xo + x * 8, yo + y * 8, x + (y + 7) * 32, 0, 3);
@@ -271,17 +236,17 @@ public class TitleDisplay extends Display {
 
 		/// This isn't as complicated as it looks. It just gets a color based off of count, which oscilates between 0 and 25.
 		int bcol = 5 - count / 5; // this number ends up being between 1 and 5, inclusive.
-		int splashColor = 
-				isblue ? Color.BLUE :
-				isRed ? Color.RED :
-				isGreen ? Color.GREEN :
-				isOrange ? Color.ORANGE :
-				isYellow ? Color.YELLOW :
-				Color.get(1, bcol * 51, bcol * 51, bcol * 25);
+		int splashColor =
+			isblue ? Color.BLUE :
+			isRed ? Color.RED :
+			isGreen ? Color.GREEN :
+			isOrange ? Color.ORANGE :
+			isYellow ? Color.YELLOW :
+		Color.get(1, bcol * 51, bcol * 51, bcol * 25);
 
 		if (shouldRender == true) {
 			Font.drawCentered(splashes.get(rand), screen, 100, splashColor);
-			
+
 			// In case the game has the "in_dev" mode set to true it will show the version as in "Development"
 			// In case it is false, it will show the numerical version of the game
 			if (Game.in_dev == true) {
@@ -293,13 +258,13 @@ public class TitleDisplay extends Display {
 			// Show the author's name below the options
 			Font.draw("Mod by TheBigEye", screen, 300, Screen.h - 10, Color.WHITE);
 		}
-		
+
 		for (int x = 0; x < 200; x++) { // Loop however many times depending on the width (It's divided by 3 because the pixels are scaled up by 3)
 			for (int y = 0; y < 150; y++) { // Loop however many times depending on the height (It's divided by 3 because the pixels are scaled up by 3)
 				int dd = (y + x % 2 * 2 + x / 2) - time * 2; // Used as part of the positioning.
 				if (dd < 0 && dd > -140) {
 					screen.render(x * 8, Screen.h - y * 8 - 8, 12 + 24 * 32, 0, 3); // The squares will go down.
-				} 
+				}
 			}
 		}
 	}

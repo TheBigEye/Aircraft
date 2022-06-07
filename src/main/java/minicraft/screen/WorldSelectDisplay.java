@@ -2,9 +2,6 @@ package minicraft.screen;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
@@ -16,6 +13,7 @@ import minicraft.saveload.Save;
 import minicraft.saveload.Version;
 import minicraft.screen.WorldEditDisplay.Action;
 import minicraft.screen.entry.SelectEntry;
+import org.tinylog.Logger;
 
 public class WorldSelectDisplay extends Display {
 
@@ -38,8 +36,7 @@ public class WorldSelectDisplay extends Display {
 	@Override
 	public void init(Display parent) {
 		if (parent instanceof WorldEditDisplay && parent.getParent() != null) {
-			// this should get original parent when World Select Display
-			// changed to World Edit Display
+			// this should get original parent when World Select Display changed to World Edit Display
 			super.init(parent.getParent().getParent());
 		} else {
 			super.init(parent);

@@ -1,8 +1,8 @@
 package minicraft.entity;
 
 import java.util.List;
-
 import minicraft.core.Game;
+import minicraft.core.io.Settings;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.boss.AirWizard;
@@ -134,7 +134,9 @@ public class Spark extends Entity {
 			randmirror = random.nextInt(4);
 		}
 
-		screen.render(x - 4, y - 4 + 2, 0 + 20 * 32, randmirror, 2, -1, false, Color.BLACK); // renders the shadow on the ground
+		if ((boolean) Settings.get("shadows")  == true) {
+            screen.render(x - 4, y - 4 + 2, 0 + 20 * 32, randmirror, 2, -1, false, Color.BLACK); // renders the shadow on the ground
+        }        
 		screen.render(x - 4, y - 4 - 2, 0 + 20 * 32, randmirror, 2); // renders the spark
 	}
 

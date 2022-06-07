@@ -1,7 +1,6 @@
 package minicraft.entity.mob.boss;
 
 import java.util.Random;
-
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.mob.EnemyMob;
@@ -114,12 +113,14 @@ public class EyeQueen extends EnemyMob {
             min = 0;
             max = 2;
         }
-
-        int randX = rnd.nextInt(16);
-        int randY = rnd.nextInt(16);
-        level.add(new FireParticle(x - 0 + randX, y - 0 + randY));
-        level.add(new FireParticle(x - 32 + randX, y - 24 + randY));
-        level.add(new FireParticle(x - 26 + randX, y - 14 + randY));
+        
+        if (Settings.get("particles").equals(true)) {
+            int randX = rnd.nextInt(16);
+            int randY = rnd.nextInt(16);
+            level.add(new FireParticle(x - 0 + randX, y - 0 + randY));
+            level.add(new FireParticle(x - 32 + randX, y - 24 + randY));
+            level.add(new FireParticle(x - 26 + randX, y - 14 + randY));
+        }
 
         super.die();
         Sound.Mob_eyeBoss_changePhase.play();

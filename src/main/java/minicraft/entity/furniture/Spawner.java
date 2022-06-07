@@ -2,7 +2,6 @@ package minicraft.entity.furniture;
 
 import java.util.ArrayList;
 import java.util.Random;
-
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -98,7 +97,8 @@ public class Spawner extends Furniture {
             resetSpawnInterval();
         }
         
-        if (tickTime / 64 % 2 == 0) {
+        // Fire particles
+        if (tickTime / 64 % 2 == 0 && Settings.get("particles").equals(true)) {
             int randX = rnd.nextInt(14);
             int randY = rnd.nextInt(14);
             level.add(new FireParticle(x - 10 + randX, y - 8 + randY));
@@ -172,10 +172,14 @@ public class Spawner extends Furniture {
 
         level.add(newmob);
         Sound.Furniture_spawner_spawn.play();
-        for (int i = 0; i < 6; i++) {
-            int randX = rnd.nextInt(16);
-            int randY = rnd.nextInt(12);
-            level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
+        
+        // Fire particles when spawn a mob
+        if (Settings.get("particles").equals(true)) {
+            for (int i = 0; i < 6; i++) {
+                int randX = rnd.nextInt(16);
+                int randY = rnd.nextInt(12);
+                level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
+            }
         }
     }
 

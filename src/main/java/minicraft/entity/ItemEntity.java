@@ -1,7 +1,7 @@
 package minicraft.entity;
 
 import java.util.List;
-
+import minicraft.core.io.Settings;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Color;
 import minicraft.gfx.Screen;
@@ -73,8 +73,7 @@ public class ItemEntity extends Entity implements ClientTickable {
      * @return string representation of this entity
      */
     public String getData() {
-        return String.join(":",
-                (new String[] { item.getData(), zz + "", lifeTime + "", time + "", xa + "", ya + "", za + "" }));
+        return String.join(":", (new String[] { item.getData(), zz + "", lifeTime + "", time + "", xa + "", ya + "", za + "" }));
     }
 
     @Override
@@ -132,7 +131,9 @@ public class ItemEntity extends Entity implements ClientTickable {
 			if (time / 6 % 2 == 0) return;
 		}
 		
-		item.sprite.render(screen, x-4, y - 4, 4, -1, Color.BLACK); // item shadow uses black color
+        if ((boolean) Settings.get("shadows")  == true) {
+            item.sprite.render(screen, x-4, y - 4, 4, -1, Color.BLACK); // item shadow uses black color
+        }
 		item.sprite.render(screen, x - 4, y - 4 - (int)(zz));
 	}
 

@@ -1,7 +1,6 @@
 package minicraft.gfx;
 
 import java.util.Arrays;
-
 import minicraft.core.Renderer;
 import minicraft.core.Updater;
 
@@ -129,7 +128,6 @@ public class Screen {
 			}
 		}
 	}
-	
 
 	/** Renders an object from the sprite sheet based on screen coordinates, tile (SpriteSheet location), colors, and bits (for mirroring).
 	 *  I believe that xp and yp refer to the desired position of the upper-left-most pixel. 
@@ -301,11 +299,10 @@ public class Screen {
 			double relTime = (Updater.tickCount % transTime) * 1.0 / transTime;
 
 			switch (Updater.getTime()) {
-			case Morning: tintFactor = relTime * -MAXDARK / relTime; break;
-			case Evening: tintFactor = relTime * MAXDARK / relTime ; break;
+			case Morning: tintFactor = Updater.pastDay1 ? (1 - relTime) * MAXDARK : 0; break;
+			case Day: tintFactor = 0; break;
+			case Evening: tintFactor = relTime * MAXDARK; break;
 			case Night: tintFactor = MAXDARK; break;
-			default:
-				break;
 			}
 
 			if (currentLevel > 3) {
@@ -336,20 +333,14 @@ public class Screen {
 
 					if (intense != 0) {
 						switch (intense) {
-						case 1: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
-						case 2: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
-						case 3: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
-						case -4: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
-						case -3: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
-						case -2: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
-						case -1: pixels[i] = Color.createShadowCol(pixels[i], Math.min(intense, 1), 0, Math.min(intense, 1)); break;
+                            case 5: pixels[i] = Color.createShadowCol(Color.tintColor(pixels[i], (int) tintFactor), (int)Math.min(intense, 1), 6, Math.min(intense, 1)); break;
 						}
 					}
 				}
 
 				// increase the tinting of all colors by 20.
 				pixels[i] = Color.tintColor(pixels[i], 20);
-				i++; // moves to the next pixel.
+				i++; // moves to the next pixel
 
 			}
 		}
@@ -402,6 +393,4 @@ public class Screen {
 			pixels[xp + yp * w] = color;
 		}
 	}
-
-
 }

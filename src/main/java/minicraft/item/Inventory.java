@@ -3,10 +3,8 @@ package minicraft.item;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.entity.furniture.Furniture;
+import org.jetbrains.annotations.Nullable;
 
 public class Inventory {
     private final Random random = new Random();

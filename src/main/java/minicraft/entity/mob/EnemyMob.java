@@ -1,7 +1,5 @@
 package minicraft.entity.mob;
 
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
@@ -17,6 +15,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
+import org.jetbrains.annotations.Nullable;
 
 public class EnemyMob extends MobAi {
 
@@ -133,22 +132,20 @@ public class EnemyMob extends MobAi {
                 burnTime = 0;
                 isBurn = false;
             }
-
             if (burnTime >= 1) {
                 if (random.nextInt(4) == 2) {
-                    int randX = random.nextInt(10);
-                    int randY = random.nextInt(9);
+                    if (Settings.get("particles").equals(true)) {
+                        int randX = random.nextInt(10);
+                        int randY = random.nextInt(9);
 
-                    level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
-
+                        level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
+                    }
                     this.hurt(this, 1);
                 }
             }
-
         } else {
             burnTime = 0; // Check
         }
-
     }
 
     @Override

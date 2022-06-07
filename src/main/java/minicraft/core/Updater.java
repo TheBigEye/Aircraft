@@ -2,15 +2,10 @@ package minicraft.core;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.util.Random;
-
-import org.tinylog.Logger;
-
 import minicraft.core.io.Localization;
 import minicraft.core.io.Settings;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
-import minicraft.entity.particle.SplashParticle;
 import minicraft.item.Items;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
@@ -19,9 +14,9 @@ import minicraft.saveload.Save;
 import minicraft.screen.EndGameDisplay;
 import minicraft.screen.LevelTransitionDisplay;
 import minicraft.screen.PlayerDeathDisplay;
-import minicraft.screen.TransitionDisplay;
 import minicraft.screen.WorldSelectDisplay;
 import minicraft.util.Info;
+import org.tinylog.Logger;
 
 public class Updater extends Game {
 	private Updater() {}
@@ -150,7 +145,6 @@ public class Updater extends Game {
 		}
 
 		/// SCORE MODE ONLY
-
 		if (isMode("score") && (!paused && !gameOver)) {
 			if (scoreTime <= 0) { // GAME OVER
 				gameOver = true;
@@ -184,7 +178,6 @@ public class Updater extends Game {
 			} else {
 				// no menu, currently.
 				paused = false;
-
 
 				// If player is alive, but no level change, nothing happens here.
 				if (player.isRemoved() && Renderer.readyToRenderGameplay && !Bed.inBed(player)) {
@@ -223,7 +216,6 @@ public class Updater extends Game {
 						}
 					}
 
-
 					// Host-only cheats.
 					if (input.getKey("Shift-r").clicked) World.initWorld(); // For single-player use only.
 
@@ -250,8 +242,9 @@ public class Updater extends Game {
 					}
 
 					float prevSpeed = gamespeed;
-					if (input.getKey("shift-0").clicked)
+					if (input.getKey("shift-0").clicked) {
 						gamespeed = 1;
+                    }
 
 					if (input.getKey("shift-equals").clicked) {
 						if (gamespeed < 1) gamespeed *= 2;

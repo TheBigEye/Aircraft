@@ -12,7 +12,6 @@ public class WaterTile extends Tile {
         public boolean connectsTo(Tile tile, boolean isSide) {
             return tile.connectsToFluid;
         }
-
     };
 
     protected WaterTile(String name) {

@@ -4,7 +4,6 @@ import java.awt.DisplayMode;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.util.HashMap;
-
 import minicraft.screen.entry.ArrayEntry;
 import minicraft.screen.entry.BooleanEntry;
 import minicraft.screen.entry.RangeEntry;
@@ -15,7 +14,6 @@ public class Settings {
 	private static HashMap<String, ArrayEntry> options = new HashMap<>();
 
 	static {
-		options.put("fps", new RangeEntry("Max FPS", 10, 300, getRefreshRate()));
 		options.put("diff", new ArrayEntry<>("Difficulty", "Peaceful", "Easy", "Normal", "Hard"));
 		options.get("diff").setSelection(2);
 		options.put("mode", new ArrayEntry<>("Game Mode", "Survival", "Creative", "Hardcore", "Score"));
@@ -47,6 +45,19 @@ public class Settings {
 
 		options.put("textures", new ArrayEntry<>("Textures", "Original", "Custom"));
 		options.get("textures").setSelection(0);
+        
+        // Video options
+        options.put("fps", new RangeEntry("Max FPS", 10, 300, getRefreshRate()));
+        options.put("vsync", new BooleanEntry("V.Sync", false));
+       
+        options.put("bossbar", new ArrayEntry<>("Bossbar type", "On screen", "On entity", "Percent"));
+        options.get("bossbar").setSelection(0);
+        
+        options.put("particles", new BooleanEntry("Particles", true));
+        options.put("shadows", new BooleanEntry("Sahdows", true));
+        
+        
+  
 	}
 
 	public static void init() {
@@ -79,9 +90,10 @@ public class Settings {
 		options.get(option.toLowerCase()).setSelection(idx);
 	}
 
-	private static int getRefreshRate() {
-		if (GraphicsEnvironment.isHeadless())
+	public static int getRefreshRate() {
+		if (GraphicsEnvironment.isHeadless()){
 			return 60;
+        }
 
 		int hz;
 		try {

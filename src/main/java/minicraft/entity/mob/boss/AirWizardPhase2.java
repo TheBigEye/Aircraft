@@ -204,6 +204,7 @@ public class AirWizardPhase2 extends EnemyMob {
             textcol = Color.get(1, 204, 204, 9);
             textcol2 = Color.get(1, 51, 51, 0);
         }
+        
         int textwidth = Font.textWidth(h);
         Font.draw(h, screen, (x - textwidth / 2) + 1, y - 17, textcol2);
         Font.draw(h, screen, (x - textwidth / 2), y - 18, textcol);

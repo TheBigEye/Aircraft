@@ -1,7 +1,6 @@
 package minicraft.entity;
 
 import java.util.List;
-
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Color;
@@ -59,8 +58,8 @@ public class Fireball extends Entity implements ClientTickable {
             }
 
             if (!level.getTile(x / 16, y / 16).mayPass(level, x / 16, y / 16, this)
-                    && !level.getTile(x / 16, y / 16).connectsToFluid
-                    && level.getTile(x / 16, y / 16).id != 16) {
+                && !level.getTile(x / 16, y / 16).connectsToFluid
+                && level.getTile(x / 16, y / 16).id != 16) {
                 this.remove();
             }
         }

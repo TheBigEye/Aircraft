@@ -20,19 +20,21 @@ public class KeyInputEntry extends SelectEntry {
         this.mapping = mapping;
 
         StringBuilder buffer = new StringBuilder();
-        for (int spaces = 0; spaces < Screen.w / Font.textWidth(" ") - action.length() - mapping.length(); spaces++)
+        for (int spaces = 0; spaces < Screen.w / Font.textWidth(" ") - action.length() - mapping.length(); spaces++){
             buffer.append(" ");
+        }
 
         this.buffer = buffer.toString();
     }
 
     @Override
     public void tick(InputHandler input) {
-        if (input.getKey("c").clicked || input.getKey("enter").clicked)
+        if (input.getKey("c").clicked || input.getKey("enter").clicked) {
             input.changeKeyBinding(action);
-        else if (input.getKey("a").clicked)
+        } else if (input.getKey("a").clicked) { 
             // add a binding, don't remove previous.
             input.addKeyBinding(action);
+        }
     }
 
     @Override

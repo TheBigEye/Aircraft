@@ -2,11 +2,9 @@ package minicraft.entity;
 
 import java.util.List;
 import java.util.Random;
-
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
 import minicraft.core.Updater;
+import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.SplashParticle;
@@ -16,6 +14,7 @@ import minicraft.gfx.Sprite;
 import minicraft.item.BoatItem;
 import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
+import org.jetbrains.annotations.Nullable;
 
 public class Boat extends Entity {
     private static Sprite boatSprite = new Sprite(1, 30, 2, 2, 0);
@@ -100,10 +99,13 @@ public class Boat extends Entity {
             if (Game.input.getKey("move-left").down) xa -= 1;
             if (Game.input.getKey("move-right").down) xa += 1;
             
-            int randX = rnd.nextInt(10);
-            int randY = rnd.nextInt(9);
+            // Water particles
+            if (Settings.get("particles").equals(true)) {
+                int randX = rnd.nextInt(10);
+                int randY = rnd.nextInt(9);
 
-            level.add(new SplashParticle(x - 8 + randX, y - 8 + randY));
+                level.add(new SplashParticle(x - 8 + randX, y - 8 + randY));
+            }
 
             move(xa, ya);
             playerInBoat.x = x;

@@ -1,7 +1,6 @@
 package minicraft.item;
 
 import java.util.HashMap;
-
 import minicraft.core.Game;
 import minicraft.entity.mob.Player;
 
@@ -86,8 +85,9 @@ public class Recipe {
         }
 
         // add the crafted items.
-        for (int i = 0; i < amount; i++)
+        for (int i = 0; i < amount; i++) {
             player.getInventory().add(getProduct());
+        }
 
         return true;
     }

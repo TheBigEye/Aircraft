@@ -44,6 +44,7 @@ public class Color {
 	public static final int RED = Color.get(1, 198, 44, 44);
 	public static final int DARK_RED = Color.get(1, 166, 38, 38);
 	public static final int GREEN = Color.get(1, 77, 212, 77);
+    public static final int DARK_GREEN = Color.get(1, 56, 156, 56);
 	public static final int BLUE = Color.get(1, 32, 32, 136);
 	public static final int YELLOW = Color.get(1, 254, 254, 0);
 	public static final int MAGENTA = Color.get(1, 255, 0, 255);
@@ -234,17 +235,17 @@ public class Color {
 	public static int createShadowCol(int col, int intensity_r, int intensity_g, int intensity_b) {
 		int r = (col & 0xFF_00_00) >> 16;
 		int g = (col & 0x00_FF_00) >> 8;
-			int b = (col & 0x00_00_FF);
+		int b = (col & 0x00_00_FF);
 
 			r -= intensity_r;
-			if (r < 0)
-				r = 0;
+			if (r < 0) r = 0;
+            
 			g  -= intensity_g;
-			if (g < 0)
-				g = 0;
+			if (g < 0) g = 0;
+            
 			b -= intensity_b;
-			if (b < 0)
-				b = 0;
+			if (b < 0) b = 0;
+            
 			return r * 16 + g * 8 + b;
 	}
 }

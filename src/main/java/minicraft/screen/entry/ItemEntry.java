@@ -1,7 +1,6 @@
 package minicraft.screen.entry;
 
 import java.util.List;
-
 import minicraft.core.io.InputHandler;
 import minicraft.gfx.Screen;
 import minicraft.item.Item;
@@ -10,8 +9,9 @@ public class ItemEntry extends ListEntry {
 
     public static ItemEntry[] useItems(List<Item> items) {
         ItemEntry[] entries = new ItemEntry[items.size()];
-        for (int i = 0; i < items.size(); i++)
+        for (int i = 0; i < items.size(); i++) {
             entries[i] = new ItemEntry(items.get(i));
+        }
         return entries;
     }
 
