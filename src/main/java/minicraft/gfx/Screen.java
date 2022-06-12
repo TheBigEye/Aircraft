@@ -291,7 +291,7 @@ public class Screen {
 		}
 	}
 
-	public void Blind(Screen screen, int currentLevel, int xa, int ya) {
+	public void darkness(Screen screen, int currentLevel, int xa, int ya) {
 
 		double tintFactor = 0;
 		if (currentLevel >= 3  && currentLevel < 5) {

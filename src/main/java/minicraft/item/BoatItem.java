@@ -18,16 +18,17 @@ public class BoatItem extends Item {
     }
 
     public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
-        if (level.getTile(xt, yt).id == 6) {
+        if (level.getTile(xt, yt).id == 6) { // if are on water
             Boat boat = new Boat();
 
             boat.x = xt * 16 + 8;
             boat.y = yt * 16 + 8;
             level.add(boat);
-            if (Game.isMode("creative"))
+            if (Game.isMode("creative")) {
                 boat = boat.clone();
-            else
+            } else {
                 placed = true;
+            }
 
             return true;
         }

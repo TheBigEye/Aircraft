@@ -73,8 +73,8 @@ public class TitleDisplay extends Display {
 						Game.setDisplay(new Display(true, new Menu.Builder(false, 2, RelPos.CENTER,
 								new SelectEntry("Load World", () -> Game.setDisplay(new WorldSelectDisplay())),
 								new SelectEntry("New World", () -> Game.setDisplay(new WorldGenDisplay()))
-								)
-								.createMenu()
+							)
+							.createMenu()
 						));
 					} else {
 						Game.setDisplay(new WorldGenDisplay());

@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import minicraft.core.io.Settings;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.boss.AirWizard;
@@ -223,7 +224,7 @@ public class Renderer extends Game {
 			// Brightens all
 			int brightnessMultiplier = player.potioneffects.containsKey(PotionType.Light) ? 12 : 8; 
 			level.renderLight(lightScreen, xScroll, yScroll, brightnessMultiplier); // Finds (and renders) all the light from objects (like the player, lanterns, and lava).
-			screen.Blind(lightScreen, currentLevel, xScroll, yScroll);
+			screen.darkness(lightScreen, currentLevel, xScroll, yScroll);
 		}
 	}
 
@@ -266,7 +267,7 @@ public class Renderer extends Game {
 				}
 
 				if (isMode("creative") || ac >= 10000) {
-					Font.drawTransparentBackground(" x" + "Ω", screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
+					Font.drawTransparentBackground(" x" + "∞", screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
 				} else {
 					Font.drawTransparentBackground(" x" + ac, screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
 				}
@@ -492,9 +493,11 @@ public class Renderer extends Game {
 		renderRain(); // last layer
         // AirWizard bossbar
 		if (currentLevel == 4 && isMode("survival")) {
-			if (!AirWizard.beaten) renderBossbar(AirWizard.length, "Air wizard");
-			else if (!AirWizardPhase2.beaten) renderBossbar(AirWizardPhase2.length, "Phase II");
-			else if (!AirWizardPhase3.beaten) renderBossbar(AirWizardPhase3.length, "Phase III");
+            if (Settings.get("bossbar").equals("On screen")) {
+                if (!AirWizard.beaten) renderBossbar(AirWizard.length, "Air wizard");
+                else if (!AirWizardPhase2.beaten) renderBossbar(AirWizardPhase2.length, "Phase II");
+                else if (!AirWizardPhase3.beaten) renderBossbar(AirWizardPhase3.length, "Phase III");
+            }
 		}
 		renderDebugInfo(); // top layer
 	}

@@ -6,11 +6,18 @@ import java.util.List;
 import minicraft.core.io.Localization;
 
 public class Font {
+    
+    private static final int CHAR_SHEET_Y = 2;
+    
     // These are all the characters that will be translated to the screen. (The spaces and the UTF8 incoding are important)
     private static final String chars =
-    		"ABCDEFGHIJKLMNOPQRSTUVWXYZ012345" +
-    		"6789.,!?'\"-+=/\\%()<>:;Ω@ÁÉÍÓÚÑ¿¡" + 
-    		"ÃÊÇÔÕĞÇÜİÖŞÆØÅŰŐ[]#|{}_&^~$*   А" +
+    		" !\"#$%&'()*+,-./0123456789:;<=>?" +
+            "@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_" +
+            "`abcdefghijklmnopqrstuvwxyz{|}~∞" +
+            "ÇÜÉÂÄÀÅÇÊËÈÏÎÌÄÅÉæÆÔÖÒÛÙŸÖÜ¢£¥₧Ƒ" +
+            "ÁÍÓÚñÑªº¿⌐¬½¼¡«»░▒▓│┤╡╢╖╕╣║╗╝╜╛┐" +
+            "└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀" +
+            "αßΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■А" +
     		"БВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
     
     /*
@@ -29,7 +36,7 @@ public class Font {
             int ix = chars.indexOf(msg.charAt(i)); // the current letter in the message loop
             if (ix >= 0) {
                 // if that character's position is larger than or equal to 0, then render the character on the screen.
-                screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, ix + 28 * 32, 0, 3, whiteTint);
+                screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, ix + CHAR_SHEET_Y * 32, 0, 4, whiteTint);
             }
         }
     }
@@ -75,7 +82,7 @@ public class Font {
                 // render the black background
                 screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, 12 + 24 * 32, 0, 3);
 
-                screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, ix + 28 * 32, 0, 3, whiteTint);
+                screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, ix + CHAR_SHEET_Y * 32, 0, 4, whiteTint);
             }
         }
     }
@@ -92,7 +99,7 @@ public class Font {
             // render the black background
             screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, 13 + 24 * 32, 0, 3);
             if (ix >= 0) {
-                screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, ix + 28 * 32, 0, 3, whiteTint);
+                screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, ix + CHAR_SHEET_Y * 32, 0, 4, whiteTint);
             }
         }
     }
