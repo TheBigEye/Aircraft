@@ -104,7 +104,7 @@
      title="Aircraft"
 />
 
-#### Is continuously updated to clean most of the bugs, make maintenance and add features
+#### Is continuously updated to clean most of the bugs, make maintenance and add features, for now don't try to load old worlds in new versions, the save system is not ready yet
 
 ## How run?
 - Download and install [**Java**](https://java.com/en/download/).
