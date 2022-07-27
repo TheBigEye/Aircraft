@@ -11,13 +11,13 @@ import minicraft.gfx.SpriteSheet;
 import minicraft.screen.entry.InputEntry;
 
 public class CommandsDisplay extends Display {
-    public static InputEntry command = new InputEntry("Command", "[a-zA-Z0-9 ]+", 40, true);
+    public static InputEntry command = new InputEntry("Command", "[a-zA-Z0-9 ]+", 39, true);
     
     public CommandsDisplay() {
         super(new Menu.Builder(false, 3, RelPos.LEFT, command)
             .setTitle("")
             .setTitlePos(RelPos.TOP_LEFT)
-            .setPositioning(new Point(SpriteSheet.boxWidth,  Screen.h - 24), RelPos.BOTTOM_RIGHT)
+            .setPositioning(new Point(SpriteSheet.boxWidth,  Screen.h - 20), RelPos.BOTTOM_RIGHT)
             .createMenu()
         );
         command.userInput = "";
@@ -30,6 +30,7 @@ public class CommandsDisplay extends Display {
     	if (input.getKey("exit").clicked) {
     		Game.exitDisplay();
     	}
+        
     	if (input.getKey("select").clicked) {
     		String CommandStr = command.getUserInput().toLowerCase(Localization.getSelectedLocale());
     		String[] CommandArguments = CommandStr.split(" ");
@@ -97,6 +98,33 @@ public class CommandsDisplay extends Display {
 
     @Override
     public void render(Screen screen) {
+        int x = 12; // box x pos
+        int y = (Screen.h - 20); // box y pos
+        int w = command.userInput.length() + 12; // length of message in characters.
+        int h = 1; // box height
+
+        // Renders the four corners of the box
+        screen.render(x - 8, y - 8, 0 + 21 * 32, 0, 3);
+        screen.render(x + w * 8, y - 8, 0 + 21 * 32, 1, 3);
+        screen.render(x - 8, y + 8, 0 + 21 * 32, 2, 3);
+        screen.render(x + w * 8, y + 8, 0 + 21 * 32, 3, 3);
+
+        // Renders each part of the box...
+        for (int xb = 0; xb < w; xb++) {
+            screen.render(x + xb * 8, y - 8, 1 + 21 * 32, 0, 3); // ...top part
+            screen.render(x + xb * 8, y + 8, 1 + 21 * 32, 2, 3); // ...bottom part
+        }
+        for (int yb = 0; yb < h; yb++) {
+            screen.render(x - 8, y + yb * 8, 2 + 21 * 32, 0, 3); // ...left part
+            screen.render(x + w * 8, y + yb * 8, 2 + 21 * 32, 1, 3); // ...right part
+        }
+
+        // The middle
+        for (int xb = 0; xb < w; xb++) {
+            screen.render(x + xb * 8, y, 3 + 21 * 32, 0, 3);
+        }
+        
+        // render the entryes in the top
         super.render(screen);
     }
 }

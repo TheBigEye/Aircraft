@@ -2,12 +2,12 @@ package minicraft.item;
 
 import java.util.ArrayList;
 import java.util.Random;
-
 import minicraft.core.Game;
 import minicraft.core.io.Localization;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.gfx.Sprite;
+import minicraft.screen.AchievementsDisplay;
 
 public class ToolItem extends Item {
 
@@ -93,6 +93,7 @@ public class ToolItem extends Item {
 			return 0;
 
 		if (e instanceof Mob) {
+            AchievementsDisplay.setAchievement("minicraft.achievement.monsters", true);
 			if (type == ToolType.Axe) {
 				return (level + 1) * 2 + random.nextInt(4); // Wood axe damage: 2-5; gem axe damage: 10-13.
 			} else if (type == ToolType.Sword || type == ToolType.Spear) {

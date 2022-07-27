@@ -107,12 +107,19 @@ public class CraftingDisplay extends Display {
 					if (selectedRecipe.getProduct().equals(Items.get("Workbench"))){
 						AchievementsDisplay.setAchievement("minicraft.achievement.benchmarking",true);
 					}
-					if (selectedRecipe.getProduct().equals(Items.get("Plank"))){
+                    // walk to planks achievement
+					if (selectedRecipe.getProduct().equals(Items.get("Plank")) ||
+                        selectedRecipe.getProduct().equals(Items.get("Spruce Plank")) ||
+                        selectedRecipe.getProduct().equals(Items.get("Birch Plank"))){
 						AchievementsDisplay.setAchievement("minicraft.achievement.planks",true);
 					}
-					if (selectedRecipe.getProduct().equals(Items.get("Wood Door"))){
+                    // TO, TOC! achievement
+					if (selectedRecipe.getProduct().equals(Items.get("Wood Door")) ||
+                        selectedRecipe.getProduct().equals(Items.get("Spruce Door")) ||
+                        selectedRecipe.getProduct().equals(Items.get("Birch Door"))){
 						AchievementsDisplay.setAchievement("minicraft.achievement.doors",true);
 					}
+                    // Upgrade! achievement
 					if (selectedRecipe.getProduct().equals(Items.get("Rock Sword")) ||
 							selectedRecipe.getProduct().equals(Items.get("Rock Pickaxe")) ||
 							selectedRecipe.getProduct().equals(Items.get("Rock Axe")) ||
@@ -122,6 +129,17 @@ public class CraftingDisplay extends Display {
 							selectedRecipe.getProduct().equals(Items.get("Rock Claymore"))) {
 						AchievementsDisplay.setAchievement("minicraft.achievement.upgrade", true);
 					}
+                    // Iron tools achievement
+                    if (selectedRecipe.getProduct().equals(Items.get("Iron Sword")) ||
+							selectedRecipe.getProduct().equals(Items.get("Iron Pickaxe")) ||
+							selectedRecipe.getProduct().equals(Items.get("Iron Axe")) ||
+							selectedRecipe.getProduct().equals(Items.get("Iron Shovel")) ||
+							selectedRecipe.getProduct().equals(Items.get("Iron Hoe")) ||
+							selectedRecipe.getProduct().equals(Items.get("Iron Bow")) ||
+							selectedRecipe.getProduct().equals(Items.get("Iron Claymore"))) {
+						AchievementsDisplay.setAchievement("minicraft.achievement.iron_tools", true);
+					}
+                    // Color full day achievement
 					if (selectedRecipe.getProduct().equals(Items.get("blue clothes")) ||
 							selectedRecipe.getProduct().equals(Items.get("green clothes")) ||
 							selectedRecipe.getProduct().equals(Items.get("yellow clothes")) ||

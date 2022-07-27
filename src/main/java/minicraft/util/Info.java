@@ -32,6 +32,9 @@ public class Info {
 	// time, and some system specifications such as the operating system and Java version,
 	// do not make many modifications, to avoid problems with Crash logs
 
+    /*
+    * Get the system info, like RAM count, JVM version, OS Naame, etc
+    */
 	public static void getInfo() {
 
 		// JVM Runtime Memory, Get information about the RAM memory used

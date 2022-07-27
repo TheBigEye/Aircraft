@@ -38,12 +38,11 @@ import org.tinylog.Logger;
  *This is the main class, where is all the important variables and
  * functions that make up the game at the beginning of the game.
  */
-
 public class Game {
 
 	protected Game() {} // Can't instantiate the Game class.
 
-	private static Random random = new Random();
+	private static final Random random = new Random();
 
 	public static boolean debug = false; // --debug arg
 	public static boolean dev = false; // --dev arg
@@ -57,7 +56,7 @@ public class Game {
 
 	public static final String NAME = "Aircraft"; // This is the name on the application window
 	public static final String BUILD = "0.5"; // Aircraft version
-	public static final Version VERSION = new Version("2.1.2"); // Minicraft plus mod base version
+	public static final Version VERSION = new Version("2.2.0-dev1"); // Minicraft plus mod base version
 
 	public static InputHandler input; // Input used in Game, Player, and just about all the *Menu classes*.
 	public static Player player;

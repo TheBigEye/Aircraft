@@ -116,7 +116,7 @@ public class Recipes {
 		loomRecipes.add(new Recipe("Leather Armor_1", "leather_10"));
 		loomRecipes.add(new Recipe("Snake Armor_1", "scale_15"));
 
-		anvilRecipes.add(new Recipe("Shear_1", "iron_2"));
+		anvilRecipes.add(new Recipe("Shears_1", "iron_2"));
 		anvilRecipes.add(new Recipe("Iron Armor_1", "iron_10"));
 		anvilRecipes.add(new Recipe("Gold Armor_1", "gold_10"));
 		anvilRecipes.add(new Recipe("Gem Armor_1", "gem_65"));

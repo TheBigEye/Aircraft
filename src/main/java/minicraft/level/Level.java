@@ -73,7 +73,7 @@ import org.tinylog.Logger;
  */
 
 public class Level {
-	private Random random = new Random();
+	private final Random random;
 
 	private static final String[] levelNames = {"The Void", "Heaven", "Surface", "Iron", "Gold", "Lava", "Dungeon"};
 
@@ -178,6 +178,7 @@ public class Level {
 		this.w = w;
 		this.h = h;
 		this.seed = seed;
+        random = new Random(seed);
 		short[][] maps; // Multidimensional array (an array within a array), used for the map
 
 		if (level != -4 && level != 0) {
@@ -195,7 +196,7 @@ public class Level {
 
 		Logger.debug("Making level " + level + "...");
 
-		maps = LevelGen.createAndValidateMap(w, h, level);
+		maps = LevelGen.createAndValidateMap(w, h, level, seed);
 		if (maps == null) {
 			Logger.error("Level generation: Returned maps array is null");
 			return;
@@ -769,13 +770,15 @@ public class Level {
 
 			// spawns the enemy mobs; first part prevents enemy mob spawn on surface and the sky on first day, more or less.
 			if (!Settings.get("diff").equals("Peaceful")) {
-				if ((Updater.getTime() == Updater.Time.Night && depth != 1 && depth != 2) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
+				if ((depth != 1 && depth != 2) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
 					if (depth != -4) { // normal mobs
 						if (depth == 0) {
-                            if (player.isNiceNight == false) {
-                                if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
-                                else if (rnd >= 85) add((new Skeleton(lvl)), nx, ny);
-                                else add((new Creeper(lvl)), nx, ny);
+                            if (Updater.getTime() == Updater.Time.Night) {
+                                if (player.isNiceNight == false) {
+                                    if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
+                                    else if (rnd >= 85) add((new Skeleton(lvl)), nx, ny);
+                                    else add((new Creeper(lvl)), nx, ny);
+                                }
                             }
 						} else {
 							if (rnd <= 40) add((new Slime(lvl)), nx, ny);
@@ -791,6 +794,15 @@ public class Level {
 						else if (rnd >= 85) add((new Snake(lvl)), nx, ny);
 						else add((new Knight(lvl)), nx, ny);
 					}
+                    
+                    if (depth == -3) {
+                        if (rnd <= 40) add((new Slime(lvl)), nx, ny);
+						else if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
+						else if (rnd >= 85) add((new OldGolem(lvl)), nx, ny);
+						else if (rnd >= 85) add((new Skeleton(lvl)), nx, ny);
+						else add((new Creeper(lvl)), nx, ny);
+                    }
+                    
 					spawned = true;
 				}
 			} else {

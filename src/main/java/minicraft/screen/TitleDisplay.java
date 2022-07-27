@@ -171,6 +171,7 @@ public class TitleDisplay extends Display {
 	@Override
 	public void tick(InputHandler input) {
 		if (input.getKey("r").clicked) rand = random.nextInt(splashes.size() - 3) + 3;
+        if (input.getKey("shift-c").clicked) Game.setDisplay(new CharsTestDisplay());
 
 		super.tick(input);
 

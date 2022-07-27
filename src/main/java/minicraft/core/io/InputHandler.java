@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
-
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
+import org.jetbrains.annotations.Nullable;
 
 public class InputHandler implements KeyListener {
 	/**

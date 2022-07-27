@@ -14,6 +14,9 @@ import javax.swing.WindowConstants;
 import minicraft.core.io.FileHandler;
 import org.tinylog.Logger;
 
+/*
+* Make the game window and ticks counter
+*/
 public class Initializer extends Game {
 	private Initializer() {}
 
@@ -171,8 +174,7 @@ public class Initializer extends Game {
 		String exceptionStr;
 		try {
 			exceptionStr = bytestream.toString("UTF-8");
-		}
-		catch(Exception ex) {
+		} catch(Exception ex) {
 			exceptionStr = "Unavailable";
 		}
 		return exceptionStr;

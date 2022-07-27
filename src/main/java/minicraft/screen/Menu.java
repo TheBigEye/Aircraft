@@ -369,8 +369,7 @@ public class Menu {
                     screen.render(xSearcherBar + spaceWidth * i - leading, titleLoc.y - 8, 3 + bg_sprite * 32, 0, 3);
                 }
 
-                Font.draw("> " + typingSearcher + " <", screen, xSearcherBar - leading, titleLoc.y - 8,
-                        typingSearcher.length() < Menu.LIMIT_TYPING_SEARCHER ? Color.YELLOW : Color.RED);
+                Font.draw("> " + typingSearcher + " <", screen, xSearcherBar - leading, titleLoc.y - 8, typingSearcher.length() < Menu.LIMIT_TYPING_SEARCHER ? Color.YELLOW : Color.RED);
             }
         }
 

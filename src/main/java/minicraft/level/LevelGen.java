@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.level.tile.Tiles;
-import minicraft.screen.WorldGenDisplay;
 import org.jetbrains.annotations.Nullable;
 import org.tinylog.Logger;
 
@@ -144,8 +143,8 @@ public class LevelGen {
     }
 
     @Nullable
-    static short[][] createAndValidateMap(int w, int h, int level) {
-        worldSeed = WorldGenDisplay.getSeed();
+	static short[][] createAndValidateMap(int w, int h, int level, long seed) {
+		worldSeed = seed;
 
         Logger.debug("Checking level index for {} ", level);
 
@@ -1739,7 +1738,7 @@ public class LevelGen {
                 continue;
             }
 
-            short[][] fullmap = LevelGen.createAndValidateMap(w, h, -3);
+            short[][] fullmap = LevelGen.createAndValidateMap(w, h, lvl, LevelGen.worldSeed);
 
             if (fullmap == null) {
                 continue;

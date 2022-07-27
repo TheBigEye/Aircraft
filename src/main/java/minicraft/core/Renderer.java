@@ -37,6 +37,9 @@ import minicraft.screen.RelPos;
 import minicraft.util.Info;
 import org.tinylog.Logger;
 
+/*
+* Make the game display logic
+*/
 public class Renderer extends Game {
 	private Renderer() {}
 

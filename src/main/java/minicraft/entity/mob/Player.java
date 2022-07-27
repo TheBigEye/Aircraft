@@ -377,8 +377,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
                     level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
                 }
-
-				this.hurt(this, 1);
+                
+                if (!potioneffects.containsKey(PotionType.Lava) || !potioneffects.containsKey(PotionType.xLava)) {
+                    this.hurt(this, 1);
+                }
 				burnTime++;
 			}
 		} else {

@@ -18,6 +18,9 @@ import minicraft.screen.WorldSelectDisplay;
 import minicraft.util.Info;
 import org.tinylog.Logger;
 
+/*
+* Game updater
+*/
 public class Updater extends Game {
 	private Updater() {}
 

@@ -7,6 +7,7 @@ import minicraft.entity.mob.EnemyMob;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
+import minicraft.screen.AchievementsDisplay;
 
 public class EyeQueenPhase3 extends EnemyMob {
     private static final MobSprite[][][] sprites = new MobSprite[2][2][2];
@@ -142,6 +143,7 @@ public class EyeQueenPhase3 extends EnemyMob {
         }
 
         DeathAnim = true;
+        AchievementsDisplay.setAchievement("minicraft.achievement.eye_queen", true);
         super.die();
         Sound.Mob_eyeBoss_death.play();
         // Game.setMenu(new EndGameDisplay(player));
