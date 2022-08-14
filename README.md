@@ -5,13 +5,13 @@
     <a href="https://github.com/TheBigEye/Aircraft#gh-light-mode-only"> <!-- light mode -->
         <img
              width="100%"
-             src="https://capsule-render.vercel.app/api?type=transparent&height=150&section=header&text=Aircraft&fontSize=79&animation=fadeIn&fontAlignY=38&desc=A nice Minicraft Plus mod&descAlignY=75&descAlign=50&descSize=22" alt="Nice lightning!"
+             src="https://github.com/TheBigEye/TheBigEye/tree/main/Projects/Aircraft/Light-header.svg?raw=true" alt="Light mode Aircraft logo!"
          />
     </a>
     <a href="https://github.com/TheBigEye/Aircraft#gh-dark-mode-only"> <!-- dark mode -->
         <img
              width="100%"
-             src="https://capsule-render.vercel.app/api?type=transparent&height=150&section=header&text=Aircraft&fontSize=79&animation=fadeIn&fontAlignY=38&desc=A nice Minicraft Plus mod&descAlignY=75&descAlign=50&descSize=22&fontColor=f0f0f0" alt="Too dark!!"
+             src="https://github.com/TheBigEye/TheBigEye/tree/main/Projects/Aircraft/Dark-header.svg?raw=true" alt="Dark mode Aircraft logo!"
          />
     </a>
 </p>
