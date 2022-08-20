@@ -98,12 +98,6 @@
 * Enchanted Tools and Enchantment Books (deprecated for now).
 * --dev (developer mode) argumment when running the game in terminal.
 
-<img 
-     align="center"
-     src="https://user-images.githubusercontent.com/63316583/162649419-e732f796-34d6-40cd-8924-4d8cda851503.png"
-     title="Aircraft"
-/>
-
 #### Is continuously updated to clean most of the bugs, make maintenance and add features, for now don't try to load old worlds in new versions, the save system is not ready yet
 
 ## How run?
@@ -132,6 +126,12 @@ Currently the project is built with Gradle, a tool that makes it easy to build o
    ```
 - If you built the project, the jar file is found in `build/libs`
 - If you get an error screaming that you're missing java. You need to set up your `JAVA_HOME` environment variable, or download a [**JDK**](https://www.oracle.com/java/technologies/downloads/) if you haven't already.
+
+<img 
+     align="center"
+     src="https://user-images.githubusercontent.com/63316583/162649419-e732f796-34d6-40cd-8924-4d8cda851503.png"
+     title="Aircraft"
+/>
 
 #
 
