@@ -217,7 +217,7 @@ public class Structure {
         skyDungeon.addFurniture(0, 0, new Crafter(Crafter.Type.Enchanter));
 
         villageCrops = new Structure();
-    villageCrops.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass,O:Path,C:potato,Z:wheat,X:Water",
+        villageCrops.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass,O:Path,C:potato,Z:wheat,X:Water",
             "WWWWW**O**WWWWW\n" + 
             "WFFFW**O**WFFFW\n" + 
             "WFFFDOOOOODFFFW\n" + 

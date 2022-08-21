@@ -57,12 +57,12 @@ public class SlimyWizard extends EnemyMob {
 
         if (random.nextInt(40) == 19) {
             int rand = random.nextInt(3);
-            if (rand == 0) {
-                level.dropItem(x, y, Items.get("green clothes"));
-            } else if (rand == 1) {
-                level.dropItem(x, y, Items.get("green clothes"));
-            } else if (rand == 2) {
-                level.dropItem(x, y, Items.get("slime"));
+            switch (rand) {
+                case 0: level.dropItem(x, y, Items.get("green clothes")); break;
+                case 1: level.dropItem(x, y, Items.get("green clothes")); break;
+                case 2: level.dropItem(x, y, Items.get("slime")); break;
+                default:
+                    break;
             }
         }
 

@@ -3,9 +3,11 @@ package minicraft.entity;
 import java.util.List;
 import minicraft.core.io.Settings;
 import minicraft.entity.mob.Player;
+import minicraft.entity.particle.FireParticle;
 import minicraft.gfx.Color;
 import minicraft.gfx.Screen;
 import minicraft.item.Item;
+import minicraft.level.tile.Tiles;
 
 public class ItemEntity extends Entity implements ClientTickable {
     private int lifeTime; // the life time of this entity in the level
@@ -89,22 +91,24 @@ public class ItemEntity extends Entity implements ClientTickable {
         zz += za;
         if (zz < 0) { // if z pos is smaller than 0 (which probably marks hitting the ground)
             zz = 0; // set it to zero
+            
             // multiply the accelerations by an amount:
             za *= -0.5;
             xa *= 0.6;
             ya *= 0.6;
         }
+        
         za -= 0.15; // decrease z acceleration by 0.15
 
         // storage of x and y positions before move
         int ox = x;
         int oy = y;
-        // integer conversion of the double x and y postions (which have already been
-        // updated):
+        
+        // integer conversion of the double x and y postions (which have already been updated):
         int nx = (int) xx;
         int ny = (int) yy;
-        // the difference between the double->int new positions, and the inherited x and
-        // y positions:
+        
+        // the difference between the double->int new positions, and the inherited x and y positions:
         int expectedx = nx - x; // expected movement distance
         int expectedy = ny - y;
 
@@ -114,10 +118,24 @@ public class ItemEntity extends Entity implements ClientTickable {
         // finds the difference between the inherited before and after positions
         int gotx = x - ox;
         int goty = y - oy;
-        // Basically, this accounts for any error in the whole double-to-int position
-        // conversion thing:
+        
+        // Basically, this accounts for any error in the whole double-to-int position conversion thing:
         xx += gotx - expectedx;
         yy += goty - expectedy;
+        
+        // If some item touch lava, is burned
+        if (level.getTile(x >> 4,y >> 4) == Tiles.get("lava")) {
+			for (int i = 0; i < 1 + random.nextInt(2); i++) {
+				int randX = random.nextInt(16);
+				int randY = random.nextInt(12);
+				level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
+			}
+			
+			// Burn the items
+			if (time > 60) {
+				remove();
+			}
+        }
     }
 
     public boolean isSolid() {
@@ -134,6 +152,7 @@ public class ItemEntity extends Entity implements ClientTickable {
         if ((boolean) Settings.get("shadows")  == true) {
             item.sprite.render(screen, x-4, y - 4, 4, -1, Color.BLACK); // item shadow uses black color
         }
+
 		item.sprite.render(screen, x - 4, y - 4 - (int)(zz));
 	}
 

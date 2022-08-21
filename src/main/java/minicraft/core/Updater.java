@@ -2,6 +2,9 @@ package minicraft.core;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+
+import org.tinylog.Logger;
+
 import minicraft.core.io.Localization;
 import minicraft.core.io.Settings;
 import minicraft.entity.furniture.Bed;
@@ -16,7 +19,6 @@ import minicraft.screen.LevelTransitionDisplay;
 import minicraft.screen.PlayerDeathDisplay;
 import minicraft.screen.WorldSelectDisplay;
 import minicraft.util.Info;
-import org.tinylog.Logger;
 
 /*
 * Game updater
@@ -94,7 +96,7 @@ public class Updater extends Game {
 		// move the player -1 level for testing...
 		if (isMode("creative") && input.getKey("SHIFT-S").clicked ) Game.setDisplay(new LevelTransitionDisplay(-1));
 		if (isMode("creative") && input.getKey("SHIFT-W").clicked ) Game.setDisplay(new LevelTransitionDisplay(1));
-		
+
 		if (input.getKey("FULLSCREEN").clicked) {
 			Updater.FULLSCREEN = !Updater.FULLSCREEN;
 			Updater.updateFullscreen();
@@ -151,7 +153,7 @@ public class Updater extends Game {
 		if (isMode("score") && (!paused && !gameOver)) {
 			if (scoreTime <= 0) { // GAME OVER
 				gameOver = true;
-				setDisplay(new EndGameDisplay(player));
+				setDisplay(new EndGameDisplay());
 			}
 
 			scoreTime--;
@@ -174,7 +176,7 @@ public class Updater extends Game {
 					// it is CRUCIAL that the player is ticked HERE, before the menu is ticked. I'm
 					// not quite sure why... the menus break otherwise, though.
 					player.tick();
-				}	
+				}
 				display.tick(input);
 				paused = true;
 
@@ -197,12 +199,12 @@ public class Updater extends Game {
 				}
 
 				player.tick(); // Ticks the player when there's no menu.
-				
+
 				if (level != null) {
 					level.tick(true);
 					Tile.tickCount++;
 				}
-				
+
 				if (display == null && input.getKey("F3").clicked) { // shows debug info in upper-left
 					Renderer.showDebugInfo = !Renderer.showDebugInfo;
 				}
@@ -244,7 +246,7 @@ public class Updater extends Game {
 						scoreTime = normSpeed * 5; // 5 seconds
 					}
 
-					float prevSpeed = gamespeed;
+					//float prevSpeed = gamespeed;
 					if (input.getKey("shift-0").clicked) {
 						gamespeed = 1;
                     }
@@ -271,10 +273,10 @@ public class Updater extends Game {
 					if (input.getKey("minus").clicked && player.moveSpeed > 1) player.moveSpeed--; // -= 0.5D;
 
 					if (input.getKey("shift-u").clicked) {
-						levels[currentLevel].setTile(player.x>>4, player.y>>4, Tiles.get("Stairs Up"));
+						levels[currentLevel].setTile(player.x >> 4, player.y >> 4, Tiles.get("Stairs Up"));
 					}
 					if (input.getKey("shift-d").clicked) {
-						levels[currentLevel].setTile(player.x>>4, player.y>>4, Tiles.get("Stairs Down"));
+						levels[currentLevel].setTile(player.x >> 4, player.y >> 4, Tiles.get("Stairs Down"));
 					}
 				} // end debug only cond.
 			} // end "menu-null" conditional

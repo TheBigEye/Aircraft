@@ -23,6 +23,11 @@ public class Boat extends Entity {
     private Random rnd = new Random();
 
     private int exitTimer = 0;
+    
+    protected int pushTime = 0;
+    protected int multiPushTime = 0;
+
+    private Direction pushDir = Direction.NONE; // the direction to push the furniture
 
     public Boat() {
         super(1, 1);
@@ -81,6 +86,17 @@ public class Boat extends Entity {
     
     @Override
     public void tick() {
+    	
+        // moves the furniture in the correct direction.
+        move(pushDir.getX(), pushDir.getY());
+        pushDir = Direction.NONE;
+
+        if (pushTime > 0) {
+            pushTime--; // update pushTime by subtracting 1.
+        } else {
+            multiPushTime = 0;
+        }
+    	
         if (playerInBoat != null) {
             exitTimer--;
 

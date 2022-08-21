@@ -24,13 +24,15 @@ public class Knight extends EnemyMob {
     }
 
     public void die() {
-        if (Settings.get("diff").equals("Peaceful") || Settings.get("diff").equals("Easy"))
+        if (Settings.get("diff").equals("Peaceful") || Settings.get("diff").equals("Easy")) {
             dropItem(1, 3, Items.get("shard"));
-        else
+        } else {
             dropItem(0, 2, Items.get("shard"));
+        }
 
-        if (random.nextInt(24 / lvl / (Settings.getIdx("diff") + 1)) == 0)
+        if (random.nextInt(24 / lvl / (Settings.getIdx("diff") + 1)) == 0) {
             dropItem(1, 1, Items.get("key"));
+        }
 
         super.die();
     }

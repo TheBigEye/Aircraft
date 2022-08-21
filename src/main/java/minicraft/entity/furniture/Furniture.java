@@ -5,11 +5,14 @@ import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Player;
+import minicraft.entity.particle.FireParticle;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.item.FurnitureItem;
 import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
+import minicraft.level.tile.Tiles;
+
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -76,6 +79,15 @@ public class Furniture extends Entity {
         } else {
             multiPushTime = 0;
         }
+        
+        if (level.getTile(x >> 4,y >> 4) == Tiles.get("lava") && !(this instanceof Spawner) && !(this instanceof DeathChest) && !(this instanceof Tnt)) {
+			for(int i = 0; i < 1 + random.nextInt(3); i++) {
+				int randX = random.nextInt(16);
+				int randY = random.nextInt(12);
+				level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
+			}
+			this.die();
+		}
     }
 
     /** Draws the furniture on the screen. */

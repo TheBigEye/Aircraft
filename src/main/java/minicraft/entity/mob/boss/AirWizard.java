@@ -52,10 +52,9 @@ public class AirWizard extends EnemyMob {
         super(secondform ? 2 : 1, sprites, secondform ? 6000 : 3500, false, 16 * 8, -1, 10, 50);
 
         this.secondform = secondform;
-        if (secondform)
-            speed = 3;
-        else
-            speed = 2;
+        if (secondform) speed = 3;
+        if (!secondform) speed = 2;
+        
         walkTime = 2;
     }
 
@@ -64,7 +63,7 @@ public class AirWizard extends EnemyMob {
     }
 
     public boolean canWool() {
-        return false;
+        return true;
     }
 
     @Override

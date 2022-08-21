@@ -10,6 +10,9 @@ public class Recipe {
     private int amount;
     private boolean canCraft; // checks if the player can craft the recipe
 
+    // Renowable items list
+    private static final String[] renewableItems = { "AlAzift" };
+
     public Recipe(String createdItem, String... reqItems) {
         canCraft = false;
         String[] sep = createdItem.split("_");
@@ -58,8 +61,9 @@ public class Recipe {
 
     /** Checks if the player can craft the recipe */
     private boolean getCanCraft(Player player) {
-        if (Game.isMode("creative"))
+        if (Game.isMode("creative")) {
             return true;
+        }
 
         for (String cost : costs.keySet().toArray(new String[0])) { // cycles through the costs list
             /// this method ONLY WORKS if costs does not contain two elements such that
@@ -68,19 +72,19 @@ public class Recipe {
                 return false;
             }
         }
-
         return true;
     }
 
     // (WAS) abstract method given to the sub-recipe classes.
     public boolean craft(Player player) {
-        if (!getCanCraft(player))
+        if (!getCanCraft(player)) {
             return false;
+        }
 
         if (!Game.isMode("creative")) {
             // remove the cost items from the inventory.
             for (String cost : costs.keySet().toArray(new String[0])) {
-                player.getInventory().removeItems(Items.get(cost), costs.get(cost));
+                if(!cost.contains("AlAzif")) player.getInventory().removeItems(Items.get(cost), costs.get(cost));
             }
         }
 

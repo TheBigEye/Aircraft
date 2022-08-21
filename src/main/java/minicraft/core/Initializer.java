@@ -98,7 +98,7 @@ public class Initializer extends Game {
 				lastRender = System.nanoTime();
 				Renderer.render();
 			}
-            
+
             if (discordCore != null) {
 				discordCore.runCallbacks();
 			}
@@ -125,7 +125,7 @@ public class Initializer extends Game {
 
 		frame.pack(); // squishes everything into the preferredSize.
 
-		try {
+		try { // Loads the icon for the window.
 			BufferedImage logo = ImageIO.read(Game.class.getResourceAsStream("/resources/logo.png"));
 			frame.setIconImage(logo);
 		} catch (IOException e) {

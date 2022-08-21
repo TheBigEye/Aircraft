@@ -142,7 +142,8 @@ public enum MapData {
     WHEAT(Tiles.get("Wheat").id, Color.get(1, 226, 226, 111)),
     CARROT(Tiles.get("Carrot").id, Color.get(1, 242, 131, 33)),
 
-    INFINITE_FALL(Tiles.get("Infinite Fall").id, Color.get(1, 0, 87, 122)), CLOUD(Tiles.get("cloud").id, Color.WHITE),
+    INFINITE_FALL(Tiles.get("Infinite Fall").id, Color.get(1, 0, 87, 122)),
+    CLOUD(Tiles.get("cloud").id, Color.WHITE),
     CLOUD_CACTUS(Tiles.get("Cloud Cactus").id, Color.WHITE),
 
     FERROSITE(Tiles.get("Ferrosite").id, Color.get(1, 203, 197, 121)),

@@ -42,69 +42,72 @@ public class Spark extends Entity {
 
 		lifeTime = LTFactor;
 	}
+	
+	private void SparkCloud(int damage) {
+		LTFactor = 15 * 13 + random.nextInt(30);
 
-	@Override
-	public void tick() {
-		time++;
+		// Move the spark:
+		xx += xa; x = (int) xx;
+		yy += ya; y = (int) yy;
 
-		if (type == 1) {
-			LTFactor = 15 * 13 + random.nextInt(30);
+		Player player = getClosestPlayer();
+		if (player != null) {
 
-			// Move the spark:
-			xx += xa; x = (int) xx;
-			yy += ya; y = (int) yy;
+			int xd = player.x - x;
+			int yd = player.y - y;
 
-			Player player = getClosestPlayer();
-			if (player != null) {
+			int sig0 = 1; 
+			xa = ya = 0;
 
-				int xd = player.x - x;
-				int yd = player.y - y;
+			if (xd < sig0) xa = -0.5;
+			if (xd > sig0) xa = +0.6;
+			if (yd < sig0) ya = -0.5;
+			if (yd > sig0) ya = +0.6;
 
-				int sig0 = 1; 
-				xa = ya = 0;
-
-				if (xd < sig0) xa = -0.5;
-				if (xd > sig0) xa = +0.6;
-				if (yd < sig0) ya = -0.5;
-				if (yd > sig0) ya = +0.6;
-
-				// Random position
-				switch (random.nextInt(3)) {
+			// Random position
+			switch (random.nextInt(3)) {
 				case 0: xa += 1; ya += 1; break;
 				case 1: xa -= 1; ya -= 1; break;
 				case 2: xa -= 1; ya += 1; break;
 				case 3: xa += 1; ya -= 1; break;
 				default: xa += 1; ya += 1; break;
-				}
 			}
-
-			// if the entity is a mob, but not a Air Wizard, then hurt the mob with 2 damage.
-			List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizard), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS)); // gets the entities in the current position to hit.
-			toHit.forEach(entity -> ((Mob) entity).hurt(owner, 2));
-
-		} else if (type == 2) {
-
-			LTFactor = 25 * 10 + random.nextInt(20);
-
-			// move the spark to the player positon:
-			xx += xa; x = (int) xx;
-			yy += ya; y = (int) yy;
-
-			List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizardPhase2), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS));
-			toHit.forEach(entity -> ((Mob) entity).hurt(owner, 4));
-
-		} else if (type == 3) {
-
-			LTFactor = 30 * 10 + random.nextInt(30);
-
-			// move the spark:
-			xx += xa; x = (int) xx;
-			yy += ya; y = (int) yy;
-
-			List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizardPhase3), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS));
-			toHit.forEach(entity -> ((Mob) entity).hurt(owner, 5));
-
 		}
+
+		// if the entity is a mob, but not a Air Wizard, then hurt the mob.
+		List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizard), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS)); // gets the entities in the current position to hit.
+		toHit.forEach(entity -> ((Mob) entity).hurt(owner, damage));
+	}
+	
+	private void SparkRain(int damage) {
+		LTFactor = 25 * 10 + random.nextInt(20);
+
+		// move the spark to the player positon:
+		xx += xa; x = (int) xx;
+		yy += ya; y = (int) yy;
+
+		List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizardPhase2), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS));
+		toHit.forEach(entity -> ((Mob) entity).hurt(owner, damage));
+	}
+	
+	private void SparkSpiralRain(int damage) {
+		LTFactor = 30 * 10 + random.nextInt(30);
+
+		// move the spark:
+		xx += xa; x = (int) xx;
+		yy += ya; y = (int) yy;
+
+		List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizardPhase3), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS));
+		toHit.forEach(entity -> ((Mob) entity).hurt(owner, damage));
+	}
+
+	@Override
+	public void tick() {
+		time++;
+
+		if (type == 1) SparkCloud(2);
+		if (type == 2) SparkRain(4);
+		if (type == 3) SparkSpiralRain(5);
 
 		if (time >= lifeTime) {
 			remove(); // Remove this from the world
@@ -112,8 +115,8 @@ public class Spark extends Entity {
 		}
 	}
 
-	/** Can this entity block you? Nope. */
-	@Override
+	
+	@Override /** Can this entity block you? Nope. */
 	public boolean isSolid() {
 		return false;
 	}

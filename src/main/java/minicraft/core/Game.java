@@ -86,6 +86,7 @@ public class Game {
 	public static void setDisplay(@Nullable Display display) {
 		newDisplay = display;
 	}
+
 	public static void exitDisplay() {
 		if (display == null) {
 			Logger.warn("Game tried to exit display, but no menu is open.");
@@ -195,7 +196,7 @@ public class Game {
 			// Display the window
 			JOptionPane.showOptionDialog(null, errorPane, "Aircraft has crashed!", JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, args, thread);
 			Logger.error(crash.toString());
-            
+
             // Stop and close the game window
             quit();
 		});
@@ -210,8 +211,8 @@ public class Game {
 			params.setClientID(981764521616093214L); // Discord APP ID
 			params.setFlags(CreateParams.getDefaultFlags());
             params.setFlags(CreateParams.Flags.NO_REQUIRE_DISCORD);
-
 			discordCore = new Core(params);
+
 			Activity activity = new Activity();
 			activity.assets().setLargeImage("logo"); // Big image
             activity.assets().setLargeText("Aircraft " + BUILD + ", Nice!"); // Big image text
@@ -223,7 +224,7 @@ public class Game {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-        
+
 		Initializer.parseArgs(args);
 
         // Initialize game events

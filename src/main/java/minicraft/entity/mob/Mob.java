@@ -158,20 +158,16 @@ public abstract class Mob extends Entity {
      * @return true if the mob is swimming, false if not.
      */
     public boolean isSwimming() {
-        if (level == null)
-            return false;
+        if (level == null) return false;
         Tile tile = level.getTile(x >> 4, y >> 4); // Get the tile the mob is standing on (at x/16, y/16)
-        return tile == Tiles.get("water") || tile == Tiles.get("lava"); // Check if the tile is liquid, and return true
-                                                                        // if so
+        return tile == Tiles.get("water") || tile == Tiles.get("lava"); // Check if the tile is liquid, and return true if so
     }
 
     public void hurt(Tile tile, int x, int y, int damage) { // Hurt the mob, when the source of damage is a tile
-        Direction attackDir = Direction.getDirection(dir.getDir() ^ 1); // Set attackDir to our own direction, inverted.
-                                                                        // XORing it with 1 flips the rightmost bit in
-                                                                        // the variable, this effectively adds one when
-                                                                        // even, and subtracts one when odd.
-        if (!(tile == Tiles.get("lava") && this instanceof Player
-                && ((Player) this).potioneffects.containsKey(PotionType.Lava)))
+    	// Set attackDir to our own direction, inverted. XORing it with 1 flips the rightmost bit in the variable, this effectively adds one when even, and subtracts one when odd.
+        Direction attackDir = Direction.getDirection(dir.getDir() ^ 1);
+        if (!(tile == Tiles.get("lava") && this instanceof Player &&
+        	((Player) this).potioneffects.containsKey(PotionType.Lava)))
             doHurt(damage, tile.mayPass(level, x, y, this) ? Direction.NONE : attackDir); // Call the method that
                                                                                           // actually performs damage,
                                                                                           // and set it to no particular

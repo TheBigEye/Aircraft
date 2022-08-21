@@ -40,14 +40,10 @@ public class Keeper extends EnemyMob {
 
             xa = ya = 0;
 
-            if (xd < sig0)
-                xa = -1;
-            if (xd > sig0)
-                xa = +1;
-            if (yd < sig0)
-                ya = -1;
-            if (yd > sig0)
-                ya = +1;
+            if (xd < sig0) xa = -1;
+            if (xd > sig0) xa = +1;
+            if (yd < sig0) ya = -1;
+            if (yd > sig0) ya = +1;
 
             // texture phases
             if (yd > sig0) { // up
@@ -117,5 +113,4 @@ public class Keeper extends EnemyMob {
         level.add(new SlimyWizard(1), x, y);
         super.die();
     }
-
 }

@@ -12,6 +12,7 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
+import minicraft.entity.particle.FireParticle;
 import minicraft.gfx.Color;
 import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
@@ -50,6 +51,16 @@ public class Tnt extends Furniture implements ActionListener {
 	@Override
 	public void tick() {
 		super.tick();
+		
+		// Ignite the TNT when touch lava :)
+		if (level.getTile(x >> 4,y >> 4) == Tiles.get("lava") && fuseLit == false) {
+			for (int i = 0; i < 1 + random.nextInt(3); i++) {
+				int randX = random.nextInt(16);
+				int randY = random.nextInt(12);
+				level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
+			}
+			fuseLit = true;
+		}
 
 		if (fuseLit) {
 			ftik++;
@@ -97,12 +108,12 @@ public class Tnt extends Furniture implements ActionListener {
 
 				// Random explode sound
 				switch (random.nextInt(4)) {
-				case 0: Sound.Furniture_tnt_explode.play(); break;
-				case 1: Sound.Furniture_tnt_explode.play(); break;
-				case 2: Sound.Furniture_tnt_explode_2.play(); break;
-				case 3: Sound.Furniture_tnt_explode_3.play(); break;
-				case 4: Sound.Furniture_tnt_explode_4.play(); break;
-				default: Sound.Furniture_tnt_explode.play(); break;
+					case 0: Sound.Furniture_tnt_explode.play(); break;
+					case 1: Sound.Furniture_tnt_explode.play(); break;
+					case 2: Sound.Furniture_tnt_explode_2.play(); break;
+					case 3: Sound.Furniture_tnt_explode_3.play(); break;
+					case 4: Sound.Furniture_tnt_explode_4.play(); break;
+					default: Sound.Furniture_tnt_explode.play(); break;
 				}
 
 				level.setAreaTiles(xt, yt, 1, Tiles.get("explode"), 0, explosionBlacklist);

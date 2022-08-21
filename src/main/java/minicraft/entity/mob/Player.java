@@ -159,8 +159,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public int fishingLevel;
 
 	public boolean playerBurning = false;
-	private boolean fallWarn = false;
+	public boolean fallWarn = false;
 	private int burnTime = 0;
+	private int fallTime = 0;
 	
 	// RAIN STUFF
 	public boolean isRaining = false; // Is raining?
@@ -505,21 +506,17 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			onStairDelay--; 
 		}
 
-		if (onTile == Tiles.get("Infinite Fall") && !Game.isMode("creative")) {
-
-			if (fallWarn == false) {
-				Updater.notifyAll("Watch out so you won't slip and fall!");
-				fallWarn = true;
-			}
+		if (onTile == Tiles.get("Infinite Fall") && !Game.isMode("creative") && tickTime / 4 % 2 == 0) {
 
 			if (tickTime / 4 % 2 == 0 && fallWarn == true) {
-				if (random.nextInt(48) == 8 && onFallDelay <= 0) {
+				if (onFallDelay <= 0) {
 					World.scheduleLevelChange(-1);
 					onFallDelay = 40;
+					// directHurt(5, attackDir); TODO: do hurt player with 5 damage when touch the ground
 					fallWarn = false;
-
+					
 					return;
-				}
+				} 
 			}
 
 		} else if (onFallDelay > 0) {
@@ -667,7 +664,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
         	// Executes if not saving; and... essentially halves speed if out of stamina.
         	if ((vec.x != 0 || vec.y != 0) && (staminaRechargeDelay % 2 == 0 || isSwimming()) && !Updater.saving) {
-        		double spd = moveSpeed * (potioneffects.containsKey(PotionType.Speed) ? 1.5D : 1);
+        		double spd = moveSpeed * (potioneffects.containsKey(PotionType.Speed) || potioneffects.containsKey(PotionType.xSpeed) ? 1.5D : 1);
 
         		int xd = (int) (vec.x * spd);
         		int yd = (int) (vec.y * spd);
@@ -1363,7 +1360,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
      */
     @Override
     public int getLightRadius() {
-    	int r = 5; // The radius of the light.
+    	int r = 4; // The radius of the light.
 
     	// If the player holds a torch, he increases the radius of light that he has
     	if (activeItem != null && activeItem.name.equals("Torch")) {

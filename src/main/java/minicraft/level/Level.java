@@ -59,9 +59,9 @@ import org.tinylog.Logger;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
-/* 
+/*
  * This class is in charge of managing events or functions related to the world (Level)
- * 
+ *
  *  - Level variables
  *  - Sky dungeon generation
  *  - Checks for entities (AirWizard, mobs and dungeon chests)
@@ -89,7 +89,7 @@ public class Level {
 	// called equals: mobCount / maxMobCount * MOB_SPAWN_FACTOR. so, it
 	// basically equals the chance, 1/number, of a mob spawning when
 	// the mob cap is reached. I hope that makes sense...
-	private static final int MOB_SPAWN_FACTOR = 100; 
+	private static final int MOB_SPAWN_FACTOR = 100;
 
 	public int w, h;
 	private final long seed; // The used seed that was used to generate the world
@@ -100,14 +100,14 @@ public class Level {
 	public int randomMusic; // used for the Random music system in the current level
 
 	// Depth level of the level
-	public final int depth; 
+	public final int depth;
 
 	// Affects the number of monsters that are on the level, bigger the number the less monsters spawn.
-	public int monsterDensity = 8; 
+	public int monsterDensity = 8;
 	public int maxMobCount;
 	public int chestCount;
 	public int mobCount = 0;
-		
+
 	/**
 	 * I will be using this lock to avoid concurrency exceptions in entities and sparks set
 	 */
@@ -223,8 +223,8 @@ public class Level {
 						} else if (level == 0) { // Surface
 							// Surround the sky stairs with hard rock
 							Logger.trace("Setting tiles around " + x + "," + y + " to hard rock");
-							setAreaTiles(x, y, 1, Tiles.get("Hard Rock"), 0); 
-							
+							setAreaTiles(x, y, 1, Tiles.get("Hard Rock"), 0);
+
 						} else {
 							// Any other level, the up-stairs should have dirt on all sides.
 							setAreaTiles(x, y, 1, Tiles.get("dirt"), 0);
@@ -238,16 +238,15 @@ public class Level {
 		} else if (depth == 1) { // This is the sky level
 			boolean placedSkyDungeon = false;
 			while (!placedSkyDungeon) {
-				int x = random.nextInt(this.w - 7);
-				int y = random.nextInt(this.h - 5);
+				Logger.debug("Placing Sky dungeon structure...");
+				int x = (this.w / 2) - 2;
+				int y = (this.h / 2) - 2;
 
-				// Generate the sky dungeon (always in Sky grass tile)
-				if (this.getTile(x - 3, y - 2) == Tiles.get("Sky grass") && this.getTile(x + 3, y - 2) == Tiles.get("Sky grass")) {
-					if (this.getTile(x - 3, y + 2) == Tiles.get("Sky grass") && this.getTile(x + 3, y + 2) == Tiles.get("Sky grass")) {
-						Structure.skyDungeon.draw(this, x, y);
-						placedSkyDungeon = true;
-					}
-				}
+				Structure.skyDungeon.draw(this, x, y);
+				placedSkyDungeon = true;
+
+				Logger.debug("Placed Sky dungeon!");
+
 			}
 		}
 
@@ -272,7 +271,7 @@ public class Level {
 	public long getSeed() {
 		return seed;
 	}
-	
+
 	public void checkAirWizard() {
 		checkAirWizard(true);
 	}
@@ -389,7 +388,7 @@ public class Level {
 
 	public void tick(boolean fullTick) {
 		int count = 0;
-				
+
 		while (entitiesToAdd.size() > 0) {
 			Entity entity = entitiesToAdd.get(0);
 			boolean inLevel = entities.contains(entity);
@@ -410,17 +409,17 @@ public class Level {
 			}
 			entitiesToAdd.remove(entity);
 		}
-		
-		
+
+
 		// LEVEL AMBIENT LOOPS!
-		
+
 		// in the sky
-		if (depth == 1 && Game.getDisplay() == null) { 
+		if (depth == 1 && Game.getDisplay() == null) {
 			Sound.Sky_enviroment.loop(true);
 		} else {
 			Sound.Sky_enviroment.stop();
 		}
-			
+
 		// this play random music in game
 		if (Settings.get("ambient").equals("Nice")) {
 
@@ -794,7 +793,7 @@ public class Level {
 						else if (rnd >= 85) add((new Snake(lvl)), nx, ny);
 						else add((new Knight(lvl)), nx, ny);
 					}
-                    
+
                     if (depth == -3) {
                         if (rnd <= 40) add((new Slime(lvl)), nx, ny);
 						else if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
@@ -802,20 +801,20 @@ public class Level {
 						else if (rnd >= 85) add((new Skeleton(lvl)), nx, ny);
 						else add((new Creeper(lvl)), nx, ny);
                     }
-                    
+
 					spawned = true;
 				}
 			} else {
 				spawned = false;
 			}
-			
+
 			if (depth == 2 && EnemyMob.checkStartPos(this, nx, ny)) { // if nether
 
 				if (rnd <= 40) add((new Skeleton(1)), nx, ny);
 
 				spawned = true;
 			}
-           
+
 			if (player.isNiceNight == true) {
 				if (depth == 0 && Updater.getTime() == Updater.Time.Night && FlyMob.checkStartPos(this, nx, ny)) {
 					// Spawns the friendly mobs.
@@ -824,11 +823,11 @@ public class Level {
 					} else {
 						add((new Firefly()), nx, ny);
 					}
-	
+
 					spawned = true;
 				}
 			}
-			
+
 			if (depth == 0 && Updater.getTime() != Updater.Time.Night && Updater.getTime() != Updater.Time.Evening && PassiveMob.checkStartPos(this, nx, ny)) {
 				// Spawns the friendly mobs.
 				if (rnd >= 60) {
@@ -892,7 +891,7 @@ public class Level {
 		for (Entity e: getEntityArray()) {
 			if (e instanceof EnemyMob) {
 				// don't remove the airwizard bosses! Unless in creative, since you can spawn more.
-				if (!(e instanceof AirWizard) || Game.isMode("creative")) { 
+				if (!(e instanceof AirWizard) || Game.isMode("creative")) {
 					e.remove();
 				}
 			}
@@ -928,7 +927,7 @@ public class Level {
 
 	/**
 	 * Get entities in a certain area on the level.
-	 * 
+	 *
 	 * @param xt0 Left
 	 * @param yt0 Top
 	 * @param xt1 Right
@@ -940,7 +939,7 @@ public class Level {
 
 	/**
 	 * Get entities in a certain area on the level, and filter them by class.
-	 * 
+	 *
 	 * @param xt0           Left
 	 * @param yt0           Top
 	 * @param xt1           Right
@@ -1224,24 +1223,24 @@ public class Level {
 
 	/*
 	 * Generates the villages on the level
-	 * 
+	 *
 	 * Villages are somewhat limited in their generation...
-	 * 
+	 *
 	 * In this list shows the probabilities of generating villages according to the
 	 * size of the world
-	 * 
+	 *
 	 * 128 x 128 = 0 - 1 can be generated 256 x 256 = 2 - 3 can be generated 512 x
 	 * 512 = 3 - 4 can be generated 1024 x 1024 = 4 - 4 can be generated
-	 * 
+	 *
 	 * Villages can only be generated on grass, they may be able to generate in the
 	 * middle of deserts .. but that is because the generation of the world is
 	 * somewhat uneven, so there may be grass in a desert, and the village can be
 	 * generated there
-	 * 
+	 *
 	 * Previously the villages had no paths .. the first attempt was to make them in
 	 * the code .. but it was quite buggy :(, so I got bored and put them directly
 	 * in the structures file (structure.java)
-	 * 
+	 *
 	 */
 
 	private void generateVillages() {
@@ -1283,18 +1282,18 @@ public class Level {
 								add(new Librarian(), (x + xo + k) * 16, (y + yo + k) * 16);
 							}
 							// inside of the houses
-							for (int k = 0; k < 1; k++) { 
+							for (int k = 0; k < 1; k++) {
 								add(new Librarian(), (x + xo + 5) * 16, (y + yo - 5) * 16);
 								add(new Cleric(), (x + xo - 5) * 16, (y + yo + 4) * 16);
 							}
 						} else {
 							Structure.villageHouseNormal2.draw(this, x + xo, y + yo);
-							for (int k = 0; k < 2; k++) { 
+							for (int k = 0; k < 2; k++) {
 								add(new Librarian(), (x + xo + k) * 16, (y + yo + k) * 16);
 								add(new Cleric(), (x + xo + k) * 16, (y + yo + k) * 16);
 							}
 							// inside of the houses
-							for (int k = 0; k < 1; k++) { 
+							for (int k = 0; k < 1; k++) {
 								add(new Librarian(), (x + xo + 5) * 16, (y + yo - 5) * 16);
 								add(new Cleric(), (x + xo - 5) * 16, (y + yo + 4) * 16);
 							}

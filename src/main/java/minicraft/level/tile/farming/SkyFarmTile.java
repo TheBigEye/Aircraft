@@ -5,6 +5,7 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.mob.Player;
+import minicraft.entity.mob.boss.AirWizard;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
 import minicraft.item.ToolItem;
@@ -55,12 +56,10 @@ public class SkyFarmTile extends Tile {
 
     @Override
     public void steppedOn(Level level, int xt, int yt, Entity entity) {
-        if (entity instanceof ItemEntity)
-            return;
-        if (random.nextInt(60) != 0)
-            return;
-        if (level.getData(xt, yt) < 5)
-            return;
+        if (entity instanceof ItemEntity || entity instanceof AirWizard) return;
+        if (random.nextInt(60) != 0) return;
+        if (level.getData(xt, yt) < 5) return;
+
         level.setTile(xt, yt, Tiles.get("Sky dirt"));
     }
 }

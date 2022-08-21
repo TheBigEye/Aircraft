@@ -172,26 +172,14 @@ public class LevelGen {
                 count[result[0][i] & 0xffff]++;
             }
 
-            if (count[Tiles.get("rock").id & 0xffff] < 100) {
-                continue;
-            }
-            if (count[Tiles.get("sand").id & 0xffff] < 100) {
-                continue;
-            }
-            if (count[Tiles.get("grass").id & 0xffff] < 100) {
-                continue;
-            }
-            if (count[Tiles.get("tree").id & 0xffff] < 100) {
-                continue;
-            }
-            if (count[Tiles.get("flower").id & 0xffff] < 100) {
-                continue;
-            }
-            if (count[Tiles.get("Stairs Down").id & 0xffff] == 0) {
-                continue; // size 128 = 6 stairs min
-            }
-            return result;
+            if (count[Tiles.get("rock").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("sand").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("grass").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("tree").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("flower").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("Stairs Down").id & 0xffff] == 0) continue; // size 128 = 6 stairs min
 
+            return result;
         } while (true);
     }
 
@@ -233,15 +221,9 @@ public class LevelGen {
                 count[result[0][i] & 0xffff]++;
             }
 
-            if (count[Tiles.get("Obsidian").id & 0xffff] < 100) {
-                continue;
-            }
-            if (count[Tiles.get("Obsidian Wall").id & 0xffff] < 100) {
-                continue;
-            }
-            if (count[Tiles.get("Raw obsidian").id & 0xffff] < 100) {
-                continue;
-            }
+            if (count[Tiles.get("Obsidian").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("Obsidian Wall").id & 0xffff] < 100) continue;
+            if (count[Tiles.get("Raw obsidian").id & 0xffff] < 100) continue;
 
             return result;
 
@@ -263,12 +245,9 @@ public class LevelGen {
                 count[result[0][i] & 0xffff]++;
             }
 
-            if (count[Tiles.get("cloud").id & 0xffff] < 2000) {
-                continue;
-            }
-            if (count[Tiles.get("Stairs Down").id & 0xffff] < w / 64) {
-                continue; // size 128 = 2 stairs min
-            }
+            if (count[Tiles.get("cloud").id & 0xffff] < 2000) continue;
+            if (count[Tiles.get("Stairs Down").id & 0xffff] < w / 64) continue; // size 128 = 2 stairs min
+            
             return result;
 
         } while (true);
@@ -1177,13 +1156,9 @@ public class LevelGen {
                 double xd = x / (w - 1.0) * 2 - 1;
                 double yd = y / (h - 1.0) * 2 - 1;
 
-                if (xd < 0) {
-                    xd = -xd;
-                }
-                if (yd < 0) {
-                    yd = -yd;
-                }
-
+                if (xd < 0) xd = -xd;
+                if (yd < 0) yd = -yd;
+                
                 double dist = xd >= yd ? xd : yd;
                 dist = dist * dist * dist * dist;
                 dist = dist * dist * dist * dist;
@@ -1191,7 +1166,7 @@ public class LevelGen {
                 val = -val * 1 - 2.2;
                 val += 1 - dist * 20;
 
-                if (val < -0.26) {
+                if (val < -0.27) {
                     map[i] = Tiles.get("Infinite Fall").id;
                 } else {
                     map[i] = Tiles.get("cloud").id;
@@ -1400,6 +1375,7 @@ public class LevelGen {
                 }
             }
 
+            /*
             for (int i = 0; i < w * h / 800; i++) {
                 int x = random.nextInt(w);
                 int y = random.nextInt(h);
@@ -1412,7 +1388,7 @@ public class LevelGen {
                         }
                     }
                 }
-            }
+            } */
 
             for (int i = 0; i < w * h / 150; i++) {
                 int xx = random.nextInt(w);
@@ -1685,7 +1661,7 @@ public class LevelGen {
 		 * the world generated
          */
 
-        LevelGen.worldSeed = 0x100;
+        LevelGen.worldSeed = 0x100; // ???
 
         // Fixes to get this method to work
         // AirWizard needs this in constructor
@@ -1738,7 +1714,7 @@ public class LevelGen {
                 continue;
             }
 
-            short[][] fullmap = LevelGen.createAndValidateMap(w, h, lvl, LevelGen.worldSeed);
+            short[][] fullmap = LevelGen.createAndValidateSkyMap(w, h);
 
             if (fullmap == null) {
                 continue;

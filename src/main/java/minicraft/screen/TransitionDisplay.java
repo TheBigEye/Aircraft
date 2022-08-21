@@ -21,8 +21,9 @@ public class TransitionDisplay extends Display {
 		if (time == DURATION / 2)
 			Game.setDisplay(null);
 
+		// When time equals 60, it will get out of this menu
 		if (time == DURATION)
-			Game.setDisplay(null); // When time equals 60, it will get out of this menu
+			Game.setDisplay(null); 
 	}
 
 	public void render(Screen screen) {
@@ -32,15 +33,19 @@ public class TransitionDisplay extends Display {
 				// because the pixels are scaled up by 3)
 				int dd = (y + x % 2 * 2 + x / 3) - time * 2; // Used as part of the positioning.
 				if (dd < 0 && dd > -100) {
-					if (dt > 0)
-						screen.render(x * 8, y * 8, 14 + 24 * 32, 0, 3); // If the direction is upwards then render the
-					// squares going up
-					else
-						screen.render(x * 8, Screen.h - y * 8 - 8, 14 + 24 * 32, 0, 3); // If the direction is negative,
-					// then the squares will go
-					// down.
+					if (dt > 0) {
+						// If the direction is upwards then render the squares going up
+						screen.render(x * 8, y * 8, 14 + 24 * 32, 0, 3); 
+					} else {
+						// If the direction is negative, then the squares will go down.
+						screen.render(x * 8, Screen.h - y * 8 - 8, 14 + 24 * 32, 0, 3); 
+					}
 				}
+				
 			}
 		}
+		
 	}
+	
+
 }
