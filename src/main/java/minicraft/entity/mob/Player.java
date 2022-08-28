@@ -5,6 +5,10 @@ import java.time.Month;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
+import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
+
 import minicraft.core.Game;
 import minicraft.core.Renderer;
 import minicraft.core.Updater;
@@ -65,8 +69,6 @@ import minicraft.screen.PauseDisplay;
 import minicraft.screen.PlayerInvDisplay;
 import minicraft.screen.WorldSelectDisplay;
 import minicraft.util.Vector2;
-import org.jetbrains.annotations.Nullable;
-import org.tinylog.Logger;
 
 public class Player extends Mob implements ItemHolder, ClientTickable {
 	protected InputHandler input;
@@ -512,7 +514,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				if (onFallDelay <= 0) {
 					World.scheduleLevelChange(-1);
 					onFallDelay = 40;
-					// directHurt(5, attackDir); TODO: do hurt player with 5 damage when touch the ground
+					// TODO: do hurt player with 5 damage when touch the ground
 					fallWarn = false;
 					
 					return;

@@ -3,6 +3,7 @@ package minicraft.screen;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Sound;

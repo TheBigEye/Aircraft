@@ -5,11 +5,13 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.mob.Player;
+import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
+import minicraft.level.tile.DirtTile;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
@@ -22,6 +24,11 @@ public class FarmTile extends Tile {
 
     protected FarmTile(String name, Sprite sprite) {
         super(name, sprite);
+    }
+    
+    @Override
+    public void render(Screen screen, Level level, int x, int y) {
+        sprite.render(screen, x * 16, y * 16, 0, DirtTile.dCol(level.depth));
     }
 
     @Override
@@ -42,8 +49,9 @@ public class FarmTile extends Tile {
     @Override
     public boolean tick(Level level, int xt, int yt) {
         int age = level.getData(xt, yt);
-        if (age < 5)
+        if (age < 5) {
             level.setData(xt, yt, age + 1);
+        }
         return true;
     }
 

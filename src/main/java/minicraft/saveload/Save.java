@@ -6,6 +6,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.tinylog.Logger;
+
 import minicraft.core.Game;
 import minicraft.core.Renderer;
 import minicraft.core.Updater;
@@ -39,9 +44,6 @@ import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
 import minicraft.screen.WorldSelectDisplay;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.tinylog.Logger;
 
 public class Save {
 

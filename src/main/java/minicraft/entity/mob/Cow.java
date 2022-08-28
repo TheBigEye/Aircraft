@@ -1,6 +1,7 @@
 package minicraft.entity.mob;
 
 import java.util.Random;
+
 import minicraft.core.io.Settings;
 import minicraft.entity.particle.HeartParticle;
 import minicraft.gfx.MobSprite;

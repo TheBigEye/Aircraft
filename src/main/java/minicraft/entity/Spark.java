@@ -1,6 +1,7 @@
 package minicraft.entity;
 
 import java.util.List;
+
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.entity.mob.Mob;
@@ -106,8 +107,8 @@ public class Spark extends Entity {
 		time++;
 
 		if (type == 1) SparkCloud(2);
-		if (type == 2) SparkRain(4);
-		if (type == 3) SparkSpiralRain(5);
+		if (type == 2) SparkRain(3);
+		if (type == 3) SparkSpiralRain(4);
 
 		if (time >= lifeTime) {
 			remove(); // Remove this from the world

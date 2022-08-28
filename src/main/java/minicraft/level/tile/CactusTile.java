@@ -58,20 +58,12 @@ public class CactusTile extends Tile {
 
     @Override
     public void bumpedInto(Level level, int x, int y, Entity entity) {
-        if (!(entity instanceof Mob))
-            return;
-        Mob m = (Mob) entity;
-        if (Settings.get("diff").equals("Peaceful")) {
-            m.hurt(this, x, y, 0);
+        if (!(entity instanceof Mob) || Settings.get("diff").equals("Peaceful")) {
+            return; // Cannot do damage
         }
-        if (Settings.get("diff").equals("Easy")) {
-            m.hurt(this, x, y, 1);
-        }
-        if (Settings.get("diff").equals("Normal")) {
-            m.hurt(this, x, y, 2);
-        }
-        if (Settings.get("diff").equals("Hard")) {
-            m.hurt(this, x, y, 3);
+        
+        if (entity instanceof Mob) {
+            ((Mob) entity).hurt(this, x, y, 1 + Settings.getIdx("diff"));
         }
     }
 
@@ -82,6 +74,7 @@ public class CactusTile extends Tile {
             level.setData(xt, yt, damage - 1);
             return true;
         }
+
         if (Game.IS_April_fools == true) { // April fools texture :)
             sprite = new Sprite(0, 44, 2, 2, 1);
             return true;

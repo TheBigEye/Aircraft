@@ -1,6 +1,7 @@
 package minicraft.gfx;
 
 import java.util.Arrays;
+
 import minicraft.screen.RelPos;
 
 public class FontStyle {

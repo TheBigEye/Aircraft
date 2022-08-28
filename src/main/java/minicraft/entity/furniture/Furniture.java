@@ -1,5 +1,7 @@
 package minicraft.entity.furniture;
 
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
@@ -12,8 +14,6 @@ import minicraft.item.FurnitureItem;
 import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
 import minicraft.level.tile.Tiles;
-
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Many furniture classes are very similar; they might not even need to be there

@@ -26,7 +26,6 @@ public class IceSpikeTile extends Tile {
         return false;
     }
 
-    @SuppressWarnings("unused")
     public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
         int damage = level.getData(x, y) + dmg;
         int cHealth = 10;
@@ -59,18 +58,14 @@ public class IceSpikeTile extends Tile {
         sprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
     }
 
+    @Override
     public void bumpedInto(Level level, int x, int y, Entity entity) {
-        if (!(entity instanceof Mob))
-            return;
-        Mob m = (Mob) entity;
-        if (Settings.get("diff").equals("Easy")) {
-            m.hurt(this, x, y, 2);
+        if (!(entity instanceof Mob) || Settings.get("diff").equals("Peaceful")) {
+            return; // Cannot do damage
         }
-        if (Settings.get("diff").equals("Normal")) {
-            m.hurt(this, x, y, 3);
-        }
-        if (Settings.get("diff").equals("Hard")) {
-            m.hurt(this, x, y, 5);
+        
+        if (entity instanceof Mob) {
+            ((Mob) entity).hurt(this, x, y, 1 + Settings.getIdx("diff"));
         }
     }
 

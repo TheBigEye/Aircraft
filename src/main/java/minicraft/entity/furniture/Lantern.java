@@ -1,6 +1,7 @@
 package minicraft.entity.furniture;
 
 import java.util.Random;
+
 import minicraft.core.io.Settings;
 import minicraft.entity.particle.BrightParticle;
 import minicraft.gfx.Sprite;

@@ -1,5 +1,7 @@
 package minicraft.entity.mob;
 
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.entity.Direction;
@@ -11,7 +13,6 @@ import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
-import org.jetbrains.annotations.Nullable;
 
 public class Sheep extends PassiveMob {
     private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 26);

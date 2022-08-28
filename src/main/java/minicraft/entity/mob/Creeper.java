@@ -2,6 +2,8 @@ package minicraft.entity.mob;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
@@ -42,8 +44,9 @@ public class Creeper extends EnemyMob {
     public boolean move(int xa, int ya) {
         boolean result = super.move(xa, ya);
         dir = Direction.DOWN;
-        if (xa == 0 && ya == 0)
+        if (xa == 0 && ya == 0) {
             walkDist = 0;
+        }
         return result;
     }
 
@@ -51,8 +54,9 @@ public class Creeper extends EnemyMob {
     public void tick() {
         super.tick();
 
-        if (Settings.get("diff").equals("Peaceful"))
+        if (Settings.get("diff").equals("Peaceful") || Game.isMode("creative")) {
             return; // Creeper should not explode if player is in passive mode
+        }
 
         if (fuseTime > 0) {
             fuseTime--; // fuse getting shorter...
@@ -177,6 +181,9 @@ public class Creeper extends EnemyMob {
 
         if (Settings.get("diff").equals("Peaceful"))
             return;
+        
+        if (Game.isMode("creative"))
+        	return;
 
         if (entity instanceof Player) {
             if (fuseTime == 0 && !fuseLit) {

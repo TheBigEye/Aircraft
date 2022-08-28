@@ -37,7 +37,6 @@ public class SnowTile extends Tile {
             }
             return tile.connectsToSnow;
         }
-
     };
 
     protected SnowTile(String name) {

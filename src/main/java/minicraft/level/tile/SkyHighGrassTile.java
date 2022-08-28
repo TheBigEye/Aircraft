@@ -13,16 +13,15 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class SkyHighGrassTile extends Tile {
-    private static ConnectorSprite sprite = new ConnectorSprite(SkyHighGrassTile.class, new Sprite(51, 6, 3, 3, 1, 3),
-            new Sprite(54, 6, 2, 2, 1)) {
+    private static ConnectorSprite sprite = new ConnectorSprite(SkyHighGrassTile.class, new Sprite(51, 6, 3, 3, 1, 3), new Sprite(54, 6, 2, 2, 1)) {
 
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) {
-            if (!isSide)
+            if (!isSide) {
                 return true;
+            }
             return tile.connectsToSkyHighGrass;
         }
-
     };
 
     protected SkyHighGrassTile(String name) {
@@ -36,16 +35,18 @@ public class SkyHighGrassTile extends Tile {
     @Override
     public boolean tick(Level level, int xt, int yt) {
 
-        if (random.nextInt(40) != 0)
+        if (random.nextInt(40) != 0) {
             return false;
+        }
 
         int xn = xt;
         int yn = yt;
 
-        if (random.nextBoolean())
+        if (random.nextBoolean()) {
             xn += random.nextInt(2) * 2 - 1;
-        else
+        } else {
             yn += random.nextInt(2) * 2 - 1;
+        }
 
         if (level.getTile(xn, yn) == Tiles.get("Sky Dirt")) {
             level.setTile(xn, yn, this);

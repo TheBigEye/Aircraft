@@ -3,6 +3,7 @@ package minicraft.screen;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.InputHandler;

@@ -3,15 +3,17 @@ package minicraft.entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.Game;
-import minicraft.network.Network;
 import minicraft.core.Updater;
 import minicraft.entity.mob.Player;
 import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
 import minicraft.item.Item;
 import minicraft.level.Level;
-import org.jetbrains.annotations.Nullable;
+import minicraft.network.Network;
 
 public abstract class Entity implements Tickable {
 

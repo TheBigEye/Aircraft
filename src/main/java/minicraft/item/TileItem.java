@@ -21,7 +21,7 @@ public class TileItem extends StackableItem {
 		/// TileItem sprites all have 1x1 sprites.
 		items.add(new TileItem("Flower", (new Sprite(4, 0, 0)), "flower", "grass"));
 		items.add(new TileItem("Orange Tulip", (new Sprite(22, 0, 0)), "orange tulip", "grass"));
-		items.add(new TileItem("Acorn", (new Sprite(1, 3, 0)), "tree Sapling", "grass"));
+		items.add(new TileItem("Acorn", (new Sprite(1, 3, 0)), "Oak Sapling", "grass"));
 		items.add(new TileItem("Birch Cone", (new Sprite(18, 3, 0)), "birch Sapling", "grass"));
 		items.add(new TileItem("Fir Cone", (new Sprite(18, 3, 0)), "fir Sapling", "snow"));
 		items.add(new TileItem("Pine Cone", (new Sprite(19, 3, 0)), "pine Sapling", "snow"));
@@ -81,7 +81,7 @@ public class TileItem extends StackableItem {
 		items.add(new TileItem("Sky wart", (new Sprite(0, 43, 0)), "Sky wart", "Sky farmland"));
 		items.add(new TileItem("Sky Seeds", (new Sprite(1, 43, 0)), "Sky wart", "Sky farmland"));
 		items.add(new TileItem("Grass Seeds", (new Sprite(3, 0, 0)), "grass", "dirt"));
-		items.add(new TileItem("Bone", (new Sprite(3, 3, 0)), "tree", "tree Sapling"));
+		items.add(new TileItem("Bone", (new Sprite(3, 3, 0)), "Oak tree", "Oak Sapling"));
 		items.add(new TileItem("Bone powder", (new Sprite(0, 22, 0)), "lawn", "grass"));
 		items.add(new TileItem("Ferrosite", (new Sprite(2, 44, 0)), "ferrosite", "Infinite Fall", "hole"));
 		items.add(new TileItem("Cloud", (new Sprite(4, 3, 0)), "cloud", "Infinite Fall", "ferrosite", "hole"));

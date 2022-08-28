@@ -1,6 +1,7 @@
 package minicraft.gfx;
 
 import java.util.Arrays;
+
 import minicraft.core.Renderer;
 import minicraft.core.Updater;
 

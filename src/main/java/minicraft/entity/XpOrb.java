@@ -48,14 +48,10 @@ public class XpOrb extends Entity {
 		int yd = (int) (player.y - y + Math.toRadians(xp));
 
 		int sig0 = 1;
-		if (xd < sig0)
-			xa = -0.2;
-		if (xd > sig0)
-			xa = +0.2;
-		if (yd < sig0)
-			ya = -0.2;
-		if (yd > sig0)
-			ya = +0.2;
+		if (xd < sig0) xa = -0.2;
+		if (xd > sig0) xa = +0.2;
+		if (yd < sig0) ya = -0.2;
+		if (yd > sig0) ya = +0.2;
 
 		if (random.nextInt(4) == 4) {
 			xa += 0.1;
@@ -82,6 +78,7 @@ public class XpOrb extends Entity {
 			remove(); // Remove this from the world
 			return;
 		}
+
 		if (level != null && level.getTile(x >> 4, y >> 4) == Tiles.get("lava")) {
 			remove();
 		}

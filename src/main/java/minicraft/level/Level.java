@@ -1,5 +1,7 @@
 package minicraft.level;
 
+import static minicraft.core.Game.player;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -9,8 +11,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
+
+import org.tinylog.Logger;
+
 import minicraft.core.Game;
-import static minicraft.core.Game.player;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -55,7 +59,6 @@ import minicraft.item.Item;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 import minicraft.level.tile.TorchTile;
-import org.tinylog.Logger;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 

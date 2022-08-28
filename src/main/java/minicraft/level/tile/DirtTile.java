@@ -25,21 +25,21 @@ public class DirtTile extends Tile {
         maySpawn = true;
     }
 
-    protected static int dCol(int depth) {
+    public static int dCol(int depth) {
         switch (depth) {
-		case 1: return Color.get(1, 194, 194, 194); // Sky.
-        case 0: return Color.get(1, 129, 105, 83); // surface.
-        case -4: return Color.get(1, 44, 21, 67); // dungeons.
-        case 2: return Color.get(1, 73, 55, 44); // the void.
-        default: return Color.get(1, 102); // caves.
+			case 1: return Color.get(1, 194, 194, 194); // Sky.
+	        case 0: return Color.get(1, 129, 105, 83); // surface.
+	        case -4: return Color.get(1, 44, 21, 67); // dungeons.
+	        case 2: return Color.get(1, 73, 55, 44); // the void.
+	        default: return Color.get(1, 102); // caves.
         }
     }
 
     protected static int dIdx(int depth) {
         switch (depth) {
-        case 0: return 0; // surface
-        case -4: return 2; // dungeons
-        default: return 1; // caves
+	        case 0: return 0; // surface
+	        case -4: return 2; // dungeons
+	        default: return 1; // caves
         }
     }
 

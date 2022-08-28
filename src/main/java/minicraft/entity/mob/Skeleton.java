@@ -1,5 +1,6 @@
 package minicraft.entity.mob;
 
+import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.entity.Arrow;
 import minicraft.gfx.MobSprite;
@@ -34,8 +35,17 @@ public class Skeleton extends EnemyMob {
     public void tick() {
         super.tick();
 
-        if (skipTick())
+        if (skipTick()) {
             return;
+        }
+        
+        if (Game.isMode("creative")) {
+        	return;
+        }
+        
+        if (Settings.get("diff").equals("Peaceful")) {
+            return;
+        }
 
         Player player = getClosestPlayer();
         if (player != null && randomWalkTime == 0) {

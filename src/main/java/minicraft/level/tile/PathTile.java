@@ -3,6 +3,7 @@ package minicraft.level.tile;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
+import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
@@ -17,6 +18,11 @@ public class PathTile extends Tile {
         super(name, sprite);
         connectsToGrass = false;
         maySpawn = true;
+    }
+    
+    @Override
+    public void render(Screen screen, Level level, int x, int y) {
+        sprite.render(screen, x * 16, y * 16, 0, DirtTile.dCol(level.depth));
     }
 
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {

@@ -9,6 +9,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.tinylog.Logger;
+
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.World;
@@ -85,11 +92,6 @@ import minicraft.network.Network;
 import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
-import org.jetbrains.annotations.Nullable;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.tinylog.Logger;
 
 public class Load {
 
@@ -533,6 +535,11 @@ public class Load {
 							default:
 								tilename = "Wool";
 						}
+					}
+					
+					if (tilename.equalsIgnoreCase("TREE") && worldVer.compareTo(new Version("2.2.0-dev1")) >= 0) {
+						tilename = "Oak Tree";
+						Logger.info("Detected old TREE tile, converting to new OAK_TREE tile...");
 					}
 
 					if (l == World.minLevelDepth + 1 && tilename.equalsIgnoreCase("LAPIS") && worldVer.compareTo(new Version("2.0.3-dev6")) < 0) {

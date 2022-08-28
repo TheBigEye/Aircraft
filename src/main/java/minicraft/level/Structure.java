@@ -2,6 +2,7 @@ package minicraft.level;
 
 import java.util.HashMap;
 import java.util.HashSet;
+
 import minicraft.entity.furniture.Crafter;
 import minicraft.entity.furniture.Furniture;
 import minicraft.entity.furniture.Lantern;

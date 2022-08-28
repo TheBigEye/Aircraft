@@ -1,7 +1,8 @@
 package minicraft.core;
 
-import minicraft.saveload.Version;
 import org.json.JSONObject;
+
+import minicraft.saveload.Version;
 
 public class VersionInfo {
 

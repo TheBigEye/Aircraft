@@ -23,71 +23,60 @@ import minicraft.screen.AchievementsDisplay;
 
 public class TreeTile extends Tile {
 	
-	public int health;
-	public TreeType type;
-	public String[] Loot;
-	public String baseTile;
-    public int x1, x2;
-    public int y1, y2;
-    public int y3, y4;
-    
-    public enum TreeType {
-    	TREE(0, 1, 0, 1, 2, 3, "Grass", new String[] {"Wood", "Wood", "Acorn"}, 20),
-    	BIRCH(0, 1, 28, 29, 30, 31, "Grass", new String[] {"Birch Wood", "Leaf", "Birch cone"}, 25),
-    	RED_MUSHROOM(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Wood", "Leaf", "Acorn"}, 20),
-    	FIR(4, 5, 28, 29, 30, 31, "Snow", new String[] {"Wood", "Wood", "Fir cone"}, 22),
-    	PINE(6, 7, 28, 29, 30, 31, "Snow", new String[] {"Spruce wood", "Spruce wood", "Pine cone"}, 22),
-    	BROWN_MUSHROOM(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Wood", "Leaf", "Acorn"}, 24);
-    	
-        public int x1, x2;
-        public int y1, y2;
-        public int y3, y4;
-        public String baseTile;
-        public String[] loot;
-        public int health;
+	private TreeType type;
 
-        /**
-         * Create a type of tree.
-         */
-        TreeType(int x1, int x2, int y1, int y2, int y3, int y4, String baseTile, String[] loot, int health) {
-            this.x1 = x1;
-            this.x2 = x2;
-            this.y1 = y1;
-            this.y2 = y2;
-            this.y3 = y3;
-            this.y4 = y4;
+	public enum TreeType {
+		Oak(0, 1, 0, 1, 2, 3, "Grass", new String[] {"Wood", "Wood", "Acorn"}, 20),
+		Birch(0, 1, 28, 29, 30, 31, "Grass", new String[] {"Birch Wood", "Leaf", "Birch cone"}, 25),
+		Red_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Wood", "Leaf", "Acorn"}, 20),
+		Fir(4, 5, 28, 29, 30, 31, "Snow", new String[] {"Wood", "Wood", "Fir cone"}, 22),
+		Pine(6, 7, 28, 29, 30, 31, "Snow", new String[] {"Spruce wood", "Spruce wood", "Pine cone"}, 22),
+		Brown_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Wood", "Leaf", "Acorn"}, 24);
+
+		//                   00   01
+		//X1 X2  //-- Y1  //[DD] [DD] 00 // each tree parts are 8x8 squares
+		//-- --  //-- Y2  //[DD] [AA] 01 // together make a 16x32 area
+		//-- --  //-- Y3  // --  [BA] 02
+		//-- --  //-- Y4  // --  [BB] 03
+		
+    	private int sprite_x1, sprite_x2; 
+    	private int sprite_y1, sprite_y2; 
+    	private int sprite_y3, sprite_y4; 
+    	
+    	private String baseTile;
+    	private String[] loot;
+    	private int health;
+
+		TreeType(int sprite_x1, int sprite_x2, int sprite_y1, int sprite_y2, int sprite_y3, int sprite_y4, String baseTile, String[] loot, int health) {
+			this.sprite_x1 = sprite_x1; this.sprite_x2 = sprite_x2;
+			this.sprite_y1 = sprite_y1; this.sprite_y2 = sprite_y2;
+			this.sprite_y3 = sprite_y3; this.sprite_y4 = sprite_y4;
+			
             this.baseTile = baseTile;
             this.loot = loot;
             this.health = health;
-            
-        }
-    }
-	
-    public TreeTile(String name, TreeType t) {
-        super(name, (ConnectorSprite) null);
-    	
-    	this.type = t;
-        this.baseTile = type.baseTile;
-        this.x1 = type.x1; this.x2 = type.x2;
-        this.y1 = type.y1; this.y2 = type.y2;
-        this.y3 = type.y3; this.y4 = type.y4;
-        this.Loot = type.loot;
-        this.health = type.health;
-        
-        switch (this.baseTile) {
+		}
+	}
+
+    protected TreeTile(TreeType type) {
+        super((type == TreeTile.TreeType.Red_mushroom ? "Red mushroom" : type.name() + " Tree"), (ConnectorSprite) null);
+    	this.type = type;
+
+        switch (type.baseTile) {
         	case "Grass": connectsToGrass = true; break;
         	case "Snow": connectsToSnow = true; break;
         	case "Sand": connectsToSand = true; break;
         	case "Dirt": connectsToDirt = true; break;
         	case "Sky grass": connectsToSkyGrass = true; break;
         	case "Sky high grass": connectsToSkyHighGrass = true; break;
-        	default: Logger.error("The connector type {} is invalid", this.baseTile);
+        	default: 
+        		Logger.error("The connector type {} is invalid", type.baseTile);
         }
     }
     
     @Override
     public void render(Screen screen, Level level, int x, int y) {
-        Tiles.get(baseTile).render(screen, level, x, y);
+        Tiles.get(type.baseTile).render(screen, level, x, y);
 
         boolean u = level.getTile(x, y - 1) == this;
         boolean l = level.getTile(x - 1, y) == this;
@@ -99,24 +88,24 @@ public class TreeTile extends Tile {
         boolean dr = level.getTile(x + 1, y + 1) == this;
 
         if (u && ul && l) {
-            screen.render(x * 16 + 0, y * 16 + 0, x2 + y2 * 32, 0, 1); // y2
+            screen.render(x * 16 + 0, y * 16 + 0, type.sprite_x2 + type.sprite_y2 * 32, 0, 1); // y2
         } else {
-            screen.render(x * 16 + 0, y * 16 + 0, x1 + y1 * 32, 0, 1); // y1
+            screen.render(x * 16 + 0, y * 16 + 0, type.sprite_x1 + type.sprite_y1 * 32, 0, 1); // y1
         }
         if (u && ur && r) {
-            screen.render(x * 16 + 8, y * 16 + 0, x2 + y3 * 32, 0, 1); // y3
+            screen.render(x * 16 + 8, y * 16 + 0, type.sprite_x2 + type.sprite_y3 * 32, 0, 1); // y3
         } else {
-            screen.render(x * 16 + 8, y * 16 + 0, x2 + y1 * 32, 0, 1); // y1
+            screen.render(x * 16 + 8, y * 16 + 0, type.sprite_x2 + type.sprite_y1 * 32, 0, 1); // y1
         }
         if (d && dl && l) {
-            screen.render(x * 16 + 0, y * 16 + 8, x2 + y3 * 32, 0, 1); // y3
+            screen.render(x * 16 + 0, y * 16 + 8, type.sprite_x2 + type.sprite_y3 * 32, 0, 1); // y3
         } else {
-            screen.render(x * 16 + 0, y * 16 + 8, x1 + y2 * 32, 0, 1); // y2
+            screen.render(x * 16 + 0, y * 16 + 8, type.sprite_x1 + type.sprite_y2 * 32, 0, 1); // y2
         }
         if (d && dr && r) {
-            screen.render(x * 16 + 8, y * 16 + 8, x2 + y2 * 32, 0, 1); // y2
+            screen.render(x * 16 + 8, y * 16 + 8, type.sprite_x2 + type.sprite_y2 * 32, 0, 1); // y2
         } else {
-            screen.render(x * 16 + 8, y * 16 + 8, x2 + y4 * 32, 0, 1); // y4
+            screen.render(x * 16 + 8, y * 16 + 8, type.sprite_x2 + type.sprite_y4 * 32, 0, 1); // y4
         }
     }
 
@@ -160,12 +149,12 @@ public class TreeTile extends Tile {
 
     @Override
     public void hurt(Level level, int x, int y, int dmg) {
-        if (random.nextInt(100) == 0) {
+        if (random.nextInt(100) == 50) {
             level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Apple"));
         }
 
         int damage = level.getData(x, y) + dmg;
-        int treeHealth = health;
+        int treeHealth = type.health;
         if (Game.isMode("Creative")) {
             dmg = damage = treeHealth;
         }
@@ -176,11 +165,11 @@ public class TreeTile extends Tile {
         level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
         if (damage >= treeHealth) {
         	
-        	level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get(Loot[0]));
-            level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get(Loot[1]));
-            level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get(Loot[2]));
+        	level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get(type.loot[0]));
+            level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get(type.loot[1]));
+            level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get(type.loot[2]));
             
-            level.setTile(x, y, Tiles.get(baseTile));
+            level.setTile(x, y, Tiles.get(type.baseTile));
             
 			if (!Game.isMode("creative")) {
 				AchievementsDisplay.setAchievement("minicraft.achievement.woodcutter", true);

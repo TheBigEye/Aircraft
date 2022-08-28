@@ -99,7 +99,7 @@ public enum MapData {
 
     CACTUS(Tiles.get("Cactus").id, Color.get(1, 183, 183, 91)),
 
-    TREE(Tiles.get("Tree").id, Color.get(1, 37, 83, 37)),
+    OAK_TREE(Tiles.get("Oak Tree").id, Color.get(1, 37, 83, 37)),
     BIRCH_TREE(Tiles.get("Birch Tree").id, Color.get(1, 12, 117, 12)),
     FIR_TREE(Tiles.get("Fir Tree").id, Color.get(1, 19, 139, 98)),
     PINE_TREE(Tiles.get("Pine Tree").id, Color.get(1, 17, 127, 89)),

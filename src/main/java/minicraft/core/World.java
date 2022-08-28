@@ -1,6 +1,10 @@
 package minicraft.core;
 
 import java.util.Random;
+
+import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
+
 import minicraft.core.io.Settings;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
@@ -11,8 +15,6 @@ import minicraft.screen.LoadingDisplay;
 import minicraft.screen.PlayerDeathDisplay;
 import minicraft.screen.WorldGenDisplay;
 import minicraft.screen.WorldSelectDisplay;
-import org.jetbrains.annotations.Nullable;
-import org.tinylog.Logger;
 
 public class World extends Game {
 	private World() {}

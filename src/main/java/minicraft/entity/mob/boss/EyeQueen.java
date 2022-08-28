@@ -1,6 +1,7 @@
 package minicraft.entity.mob.boss;
 
 import java.util.Random;
+
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.mob.EnemyMob;

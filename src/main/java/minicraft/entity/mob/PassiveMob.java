@@ -1,5 +1,7 @@
 package minicraft.entity.mob;
 
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
@@ -13,7 +15,6 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
-import org.jetbrains.annotations.Nullable;
 
 public class PassiveMob extends MobAi {
     protected int color;

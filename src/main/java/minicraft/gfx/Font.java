@@ -3,6 +3,7 @@ package minicraft.gfx;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import minicraft.core.io.Localization;
 
 public class Font {

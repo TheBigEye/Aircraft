@@ -1,6 +1,7 @@
 package minicraft.item;
 
 import java.util.ArrayList;
+
 import minicraft.core.Game;
 import minicraft.core.io.Localization;
 import minicraft.gfx.Sprite;

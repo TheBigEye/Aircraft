@@ -2,8 +2,8 @@ package minicraft.level.tile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import minicraft.core.Game;
-import minicraft.level.tile.TreeTile.TreeType;
 import minicraft.level.tile.WoolTile.WoolType;
 import minicraft.level.tile.farming.CarrotTile;
 import minicraft.level.tile.farming.FarmTile;
@@ -39,8 +39,8 @@ public final class Tiles {
 		tiles.put((short) 17, new LavaTile("Lava"));
 
 		tiles.put((short) 7, new RockTile("Rock"));
-		tiles.put((short) 8, new TreeTile("Tree", TreeType.TREE));
-		tiles.put((short) 9, new SaplingTile("Tree Sapling", Tiles.get("Grass"), Tiles.get("Tree")));
+		tiles.put((short) 8, new TreeTile(TreeTile.TreeType.Oak));
+		tiles.put((short) 9, new SaplingTile("Oak Sapling", Tiles.get("Grass"), Tiles.get("Oak Tree")));
 		tiles.put((short) 10, new SandTile("Sand"));
 		tiles.put((short) 11, new CactusTile("Cactus"));
 		tiles.put((short) 12, new SaplingTile("Cactus Sapling", Tiles.get("Sand"), Tiles.get("Cactus")));
@@ -105,13 +105,13 @@ public final class Tiles {
 
 		tiles.put((short) 66, new SnowTile("Snow"));
 
-		tiles.put((short) 67, new TreeTile("Birch Tree", TreeType.BIRCH));
+		tiles.put((short) 67, new TreeTile(TreeTile.TreeType.Birch));
 		tiles.put((short) 68, new SaplingTile("Birch Sapling", Tiles.get("Grass"), Tiles.get("Birch tree")));
 
-		tiles.put((short) 69, new TreeTile("Fir Tree", TreeType.FIR));
+		tiles.put((short) 69, new TreeTile(TreeTile.TreeType.Fir));
 		tiles.put((short) 70, new SaplingTile("Fir Sapling", Tiles.get("Snow"), Tiles.get("Fir tree")));
 
-		tiles.put((short) 71, new TreeTile("Pine Tree", TreeType.PINE));
+		tiles.put((short) 71, new TreeTile(TreeTile.TreeType.Pine));
 		tiles.put((short) 72, new SaplingTile("Pine Sapling", Tiles.get("Snow"), Tiles.get("Pine tree")));
 
 		tiles.put((short) 73, new CloudTreeTile("Cloud Tree"));
@@ -160,7 +160,7 @@ public final class Tiles {
 		oldids.set(1, "rock");
 		oldids.set(2, "water");
 		oldids.set(3, "flower");
-		oldids.set(4, "tree");
+		oldids.set(4, "oak tree");
 		oldids.set(5, "dirt");
 		oldids.set(41, "wool");
 		oldids.set(42, "red wool");
@@ -171,7 +171,7 @@ public final class Tiles {
 		oldids.set(6, "sand");
 		oldids.set(7, "cactus");
 		oldids.set(8, "hole");
-		oldids.set(9, "tree Sapling");
+		oldids.set(9, "oak Sapling");
 		oldids.set(10, "cactus Sapling");
 		oldids.set(11, "farmland");
 		oldids.set(12, "wheat");
@@ -204,7 +204,7 @@ public final class Tiles {
 		// Light/torch versions, for compatibility with before 1.9.4-dev3. (were removed in making dev3)
 		oldids.set(100, "grass");
 		oldids.set(101, "sand");
-		oldids.set(102, "tree");
+		oldids.set(102, "oak tree");
 		oldids.set(103, "cactus");
 		oldids.set(104, "water");
 		oldids.set(105, "dirt");
@@ -227,7 +227,7 @@ public final class Tiles {
 		oldids.set(61, "yellow wool");
 		oldids.set(62, "black wool");
 		oldids.set(63, "Obsidian");
-		oldids.set(64, "tree Sapling");
+		oldids.set(64, "oak Sapling");
 		oldids.set(65, "cactus Sapling");
 		
 		oldids.set(44, "torch grass");
@@ -279,7 +279,7 @@ public final class Tiles {
 			}
 		}
 		
-		if(getting == null) {
+		if (getting == null) {
 			System.out.println("TILES.GET: Invalid tile requested: " + name);
 			getting = tiles.get((short)0);
 		}

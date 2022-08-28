@@ -85,7 +85,7 @@ public class Tnt extends Furniture implements ActionListener {
 
 						if (!tnt.fuseLit) {
 							tnt.fuseLit = true;
-							Sound.Furniture_tnt_fuse.play();
+							Sound.Furniture_tnt_fuse.echo(x);
 							tnt.ftik = FUSE_TIME * 2 / 3;
 						}
 
@@ -108,12 +108,12 @@ public class Tnt extends Furniture implements ActionListener {
 
 				// Random explode sound
 				switch (random.nextInt(4)) {
-					case 0: Sound.Furniture_tnt_explode.play(); break;
-					case 1: Sound.Furniture_tnt_explode.play(); break;
-					case 2: Sound.Furniture_tnt_explode_2.play(); break;
-					case 3: Sound.Furniture_tnt_explode_3.play(); break;
-					case 4: Sound.Furniture_tnt_explode_4.play(); break;
-					default: Sound.Furniture_tnt_explode.play(); break;
+					case 0: Sound.Furniture_tnt_explode.echo(x); break;
+					case 1: Sound.Furniture_tnt_explode.echo(x); break;
+					case 2: Sound.Furniture_tnt_explode_2.echo(x); break;
+					case 3: Sound.Furniture_tnt_explode_3.echo(x); break;
+					case 4: Sound.Furniture_tnt_explode_4.echo(x); break;
+					default: Sound.Furniture_tnt_explode.echo(x); break;
 				}
 
 				level.setAreaTiles(xt, yt, 1, Tiles.get("explode"), 0, explosionBlacklist);

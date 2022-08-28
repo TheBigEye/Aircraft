@@ -1,6 +1,7 @@
 package minicraft.screen.entry;
 
 import java.util.Arrays;
+
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;

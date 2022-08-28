@@ -1,6 +1,5 @@
 package minicraft.core;
 
-import de.jcm.discordgamesdk.Core;
 import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -8,11 +7,15 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
-import minicraft.core.io.FileHandler;
+
 import org.tinylog.Logger;
+
+import de.jcm.discordgamesdk.Core;
+import minicraft.core.io.FileHandler;
 
 /*
 * Make the game window and ticks counter

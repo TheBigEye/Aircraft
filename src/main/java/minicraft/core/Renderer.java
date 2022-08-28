@@ -11,7 +11,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+
 import javax.imageio.ImageIO;
+
+import org.tinylog.Logger;
+
 import minicraft.core.io.Settings;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
@@ -35,7 +39,6 @@ import minicraft.screen.InfoDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.RelPos;
 import minicraft.util.Info;
-import org.tinylog.Logger;
 
 /*
 * Make the game display logic
@@ -399,7 +402,7 @@ public class Renderer extends Game {
 			int pyy = 0; // the height of the box
 			int pw = 0; // length of message in characters.
 			int ph = 0;
-			int px = (Screen.w - 8) / 3 + pxx;
+			int px = (Screen.w - 8) / 3 + pxx - 8;
 			int py = (Screen.h - 8) / 36 - 130;
 
 			for (int i = 0; i < effects.length; i++) {

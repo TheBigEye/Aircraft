@@ -37,39 +37,39 @@ public class WallTile extends Tile {
         switch (type) {
 	        case Wood:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		new Sprite(0, 14, 3, 3, 1, 3),
-	            		new Sprite(3, 14, 2, 2, 1, 3),
-	                    new Sprite(1, 15, 2, 2, 1, 0, true));
+	            		 new Sprite(0, 14, 3, 3, 1, 3),
+	            		 new Sprite(3, 14, 2, 2, 1, 3),
+	                     new Sprite(1, 15, 2, 2, 1, 0, true));
 	            break;
 	        case Stone:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		new Sprite(10, 14, 3, 3, 1, 3),
-	            		new Sprite(13, 14, 2, 2, 1, 3),
-	                    new Sprite(11, 15, 2, 2, 1, 0, true));
+	            		 new Sprite(10, 14, 3, 3, 1, 3),
+	            		 new Sprite(13, 14, 2, 2, 1, 3),
+	                     new Sprite(11, 15, 2, 2, 1, 0, true));
 	            break;
 	        case Obsidian:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		new Sprite(20, 14, 3, 3, 1, 3),
-	            		new Sprite(23, 14, 2, 2, 1, 3),
-	                    new Sprite(21, 15, 2, 2, 1, 0, true));
+	            		 new Sprite(20, 14, 3, 3, 1, 3),
+	            		 new Sprite(23, 14, 2, 2, 1, 3),
+	                     new Sprite(21, 15, 2, 2, 1, 0, true));
 	            break;
 	        case Spruce:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		new Sprite(30, 14, 3, 3, 1, 3),
-	            		new Sprite(33, 14, 2, 2, 1, 3),
-	                    new Sprite(31, 15, 2, 2, 1, 0, true));
+	            		 new Sprite(30, 14, 3, 3, 1, 3),
+	            		 new Sprite(33, 14, 2, 2, 1, 3),
+	                     new Sprite(31, 15, 2, 2, 1, 0, true));
 	            break;
 	        case Birch:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		new Sprite(40, 14, 3, 3, 1, 3),
-	            		new Sprite(43, 14, 2, 2, 1, 3),
-	                    new Sprite(41, 15, 2, 2, 1, 0, true));
+	            		 new Sprite(40, 14, 3, 3, 1, 3),
+	            		 new Sprite(43, 14, 2, 2, 1, 3),
+	                     new Sprite(41, 15, 2, 2, 1, 0, true));
 	            break;
 	        case Holy:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		new Sprite(50, 14, 3, 3, 1, 3),
-	            		new Sprite(53, 14, 2, 2, 1, 3),
-	                    new Sprite(51, 15, 2, 2, 1, 0, true));
+	            		 new Sprite(50, 14, 3, 3, 1, 3),
+	            		 new Sprite(53, 14, 2, 2, 1, 3),
+	                     new Sprite(51, 15, 2, 2, 1, 0, true));
 	            break;
         }
         csprite = sprite;
@@ -93,8 +93,9 @@ public class WallTile extends Tile {
 
     @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (Game.isMode("creative"))
+        if (Game.isMode("creative")) {
             return false; // go directly to hurt method
+        }
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
             if (tool.type == type.getRequiredTool()) {
@@ -115,6 +116,7 @@ public class WallTile extends Tile {
     public void hurt(Level level, int x, int y, int dmg) {
         int damage = level.getData(x, y) + dmg;
         int sbwHealth = 100;
+
         if (Game.isMode("creative")) {
             dmg = damage = sbwHealth;
         }
@@ -129,30 +131,12 @@ public class WallTile extends Tile {
             String tilename = "";
 
             switch (type) {
-            case Wood:
-                itemName = "Plank";
-                tilename = "Wood Planks";
-                break;
-            case Stone:
-                itemName = "Stone Brick";
-                tilename = "Stone Bricks";
-                break;
-            case Obsidian:
-                itemName = "Obsidian Brick";
-                tilename = "Obsidian";
-                break;
-            case Spruce:
-                itemName = "Spruce Plank";
-                tilename = "Spruce Planks";
-                break;
-            case Birch:
-                itemName = "Birch Plank";
-                tilename = "Birch Planks";
-                break;
-            case Holy:
-                itemName = "Holy Brick";
-                tilename = "Holy Bricks";
-                break;
+	            case Wood: itemName = "Plank"; tilename = "Wood Planks"; break;
+	            case Stone: itemName = "Stone Brick"; tilename = "Stone Bricks"; break;
+	            case Obsidian: itemName = "Obsidian Brick"; tilename = "Obsidian"; break;
+	            case Spruce: itemName = "Spruce Plank"; tilename = "Spruce Planks"; break;
+	            case Birch: itemName = "Birch Plank"; tilename = "Birch Planks"; break;
+	            case Holy: itemName = "Holy Brick"; tilename = "Holy Bricks"; break;
             }
 
             level.dropItem(x * 16 + 8, y * 16 + 8, 1, 6 - type.ordinal(), Items.get(itemName));

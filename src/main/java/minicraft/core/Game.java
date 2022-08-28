@@ -1,8 +1,5 @@
 package minicraft.core;
 
-import de.jcm.discordgamesdk.Core;
-import de.jcm.discordgamesdk.CreateParams;
-import de.jcm.discordgamesdk.activity.Activity;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -14,10 +11,18 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
+
+import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
+
+import de.jcm.discordgamesdk.Core;
+import de.jcm.discordgamesdk.CreateParams;
+import de.jcm.discordgamesdk.activity.Activity;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -29,8 +34,6 @@ import minicraft.saveload.Version;
 import minicraft.screen.Display;
 import minicraft.screen.TitleDisplay;
 import minicraft.util.Info;
-import org.jetbrains.annotations.Nullable;
-import org.tinylog.Logger;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 

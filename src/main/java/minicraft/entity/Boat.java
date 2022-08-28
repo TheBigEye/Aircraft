@@ -2,6 +2,9 @@ package minicraft.entity;
 
 import java.util.List;
 import java.util.Random;
+
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
@@ -14,7 +17,6 @@ import minicraft.gfx.Sprite;
 import minicraft.item.BoatItem;
 import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
-import org.jetbrains.annotations.Nullable;
 
 public class Boat extends Entity {
     private static Sprite boatSprite = new Sprite(1, 30, 2, 2, 0);

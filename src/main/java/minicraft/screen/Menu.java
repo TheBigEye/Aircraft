@@ -5,6 +5,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
@@ -18,8 +22,6 @@ import minicraft.gfx.Screen;
 import minicraft.gfx.SpriteSheet;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.ListEntry;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class Menu {
 

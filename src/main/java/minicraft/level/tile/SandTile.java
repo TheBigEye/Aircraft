@@ -6,6 +6,7 @@ import minicraft.entity.Entity;
 import minicraft.entity.mob.Firefly;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
+import minicraft.entity.mob.Slime;
 import minicraft.gfx.Color;
 import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Screen;
@@ -34,11 +35,11 @@ public class SandTile extends Tile {
 
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) {
-            if (!isSide)
+            if (!isSide) {
                 return true;
+            }
             return tile.connectsToSand;
         }
-
     };
 
     protected SandTile(String name) {
@@ -85,8 +86,7 @@ public class SandTile extends Tile {
         if (entity instanceof Mob) {
             level.setData(x, y, 10);
         }
-        
-        if (entity instanceof Firefly) {
+        if (entity instanceof Firefly || entity instanceof Slime) {
         	level.setData(x, y, 0);
         }
     }

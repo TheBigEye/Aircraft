@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.World;

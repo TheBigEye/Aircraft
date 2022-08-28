@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import minicraft.core.Game;
 import minicraft.core.Renderer;
 import minicraft.core.World;
@@ -24,8 +28,6 @@ import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.LinkEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.tutorial.TutorialDisplay;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class TitleDisplay extends Display {
 	private static final Random random = new Random();

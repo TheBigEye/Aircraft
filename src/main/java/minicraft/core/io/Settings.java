@@ -4,6 +4,7 @@ import java.awt.DisplayMode;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.util.HashMap;
+
 import minicraft.screen.entry.ArrayEntry;
 import minicraft.screen.entry.BooleanEntry;
 import minicraft.screen.entry.RangeEntry;

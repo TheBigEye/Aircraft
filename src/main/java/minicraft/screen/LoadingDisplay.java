@@ -1,7 +1,9 @@
 package minicraft.screen;
 
 import java.util.Random;
+
 import javax.swing.Timer;
+
 import minicraft.core.Game;
 import minicraft.core.World;
 import minicraft.core.io.InputHandler;

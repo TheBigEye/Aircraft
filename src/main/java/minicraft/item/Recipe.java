@@ -1,6 +1,7 @@
 package minicraft.item;
 
 import java.util.HashMap;
+
 import minicraft.core.Game;
 import minicraft.entity.mob.Player;
 
@@ -84,8 +85,9 @@ public class Recipe {
         if (!Game.isMode("creative")) {
             // remove the cost items from the inventory.
             for (String cost : costs.keySet().toArray(new String[0])) {
-                if(!cost.contains("AlAzif")) player.getInventory().removeItems(Items.get(cost), costs.get(cost));
+                if(!cost.contains("ALAZIF")) player.getInventory().removeItems(Items.get(cost), costs.get(cost));
             }
+            
         }
 
         // add the crafted items.

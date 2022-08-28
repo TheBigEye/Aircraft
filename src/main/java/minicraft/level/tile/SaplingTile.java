@@ -27,7 +27,6 @@ public class SaplingTile extends Tile {
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		onType.render(screen, level, x, y);
-
 		sprite.render(screen, x * 16, y * 16);
 	}
 
@@ -36,7 +35,7 @@ public class SaplingTile extends Tile {
 		int age = level.getData(x, y) + 1;
 		if (age > 100) {
 			// Don't grow if there is an entity on this tile.
-			if (!level.isEntityOnTile(x, y)) {
+			if (!level.isEntityOnTile(x, y)) { // TODO: add grow sound
 				level.setTile(x, y, growsTo);
 			}
 		} else {

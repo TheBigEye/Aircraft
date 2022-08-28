@@ -1,6 +1,7 @@
 package minicraft.item;
 
 import java.util.ArrayList;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tinylog.Logger;

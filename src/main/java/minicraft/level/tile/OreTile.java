@@ -9,8 +9,8 @@ import minicraft.entity.mob.Player;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
+import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -20,37 +20,72 @@ import minicraft.screen.AchievementsDisplay;
 
 /// this is all the spikey stuff (except "cloud cactus")
 public class OreTile extends Tile {
-	private Sprite sprite;
 	private OreType type;
 
 	public enum OreType {
-		Iron(Items.get("Iron Ore"), 0),
-		Lapis(Items.get("Lapis"), 2),
-		Gold(Items.get("Gold Ore"), 4),
-		Gem(Items.get("Gem"), 6);
+		Iron(24, 25, 0, 1, 2, 3, Items.get("Iron Ore"), 0),
+		Lapis(26, 27, 0, 1, 2, 3, Items.get("Lapis"), 2),
+		Gold(28, 29, 0, 1, 2, 3, Items.get("Gold Ore"), 4),
+		Gem(30, 31, 0, 1, 2, 3, Items.get("Gem"), 6);
 
+    	private int sprite_x1, sprite_x2;
+    	private int sprite_y1, sprite_y2;
+    	private int sprite_y3, sprite_y4;
+    	
 		private Item drop;
 		public final int color;
 
-		OreType(Item drop, int color) {
+		OreType(int sprite_x1, int sprite_x2, int sprite_y1, int sprite_y2, int sprite_y3, int sprite_y4, Item drop, int color) {
+			this.sprite_x1 = sprite_x1; this.sprite_x2 = sprite_x2;
+			this.sprite_y1 = sprite_y1; this.sprite_y2 = sprite_y2;
+			this.sprite_y3 = sprite_y3; this.sprite_y4 = sprite_y4;
+			
 			this.drop = drop;
 			this.color = color;
 		}
-
+		
 		protected Item getOre() {
 			return drop.clone();
 		}
 	}
 
 	protected OreTile(OreType o) {
-		super((o == OreTile.OreType.Lapis ? "Lapis" : o.name() + " Ore"), new Sprite(24 + o.color, 0, 2, 2, 1));
+		super((o == OreTile.OreType.Lapis ? "Lapis" : o.name() + " Ore"), (ConnectorSprite) null);
 		this.type = o;
-		this.sprite = super.sprite;
 	}
 
 	public void render(Screen screen, Level level, int x, int y) {
-		sprite.color = DirtTile.dCol(level.depth);
-		sprite.render(screen, x * 16, y * 16);
+		Tiles.get("dirt").render(screen, level, x, y);
+
+        boolean u = level.getTile(x, y - 1) == this;
+        boolean l = level.getTile(x - 1, y) == this;
+        boolean r = level.getTile(x + 1, y) == this;
+        boolean d = level.getTile(x, y + 1) == this;
+        boolean ul = level.getTile(x - 1, y - 1) == this;
+        boolean ur = level.getTile(x + 1, y - 1) == this;
+        boolean dl = level.getTile(x - 1, y + 1) == this;
+        boolean dr = level.getTile(x + 1, y + 1) == this;
+
+        if (u && ul && l) {
+            screen.render(x * 16 + 0, y * 16 + 0, type.sprite_x2 + type.sprite_y2 * 32, 0, 1); // y2
+        } else {
+            screen.render(x * 16 + 0, y * 16 + 0, type.sprite_x1 + type.sprite_y1 * 32, 0, 1); // y1
+        }
+        if (u && ur && r) {
+            screen.render(x * 16 + 8, y * 16 + 0, type.sprite_x2 + type.sprite_y3 * 32, 0, 1); // y3
+        } else {
+            screen.render(x * 16 + 8, y * 16 + 0, type.sprite_x2 + type.sprite_y1 * 32, 0, 1); // y1
+        }
+        if (d && dl && l) {
+            screen.render(x * 16 + 0, y * 16 + 8, type.sprite_x2 + type.sprite_y3 * 32, 0, 1); // y3
+        } else {
+            screen.render(x * 16 + 0, y * 16 + 8, type.sprite_x1 + type.sprite_y2 * 32, 0, 1); // y2
+        }
+        if (d && dr && r) {
+            screen.render(x * 16 + 8, y * 16 + 8, type.sprite_x2 + type.sprite_y2 * 32, 0, 1); // y2
+        } else {
+            screen.render(x * 16 + 8, y * 16 + 8, type.sprite_x2 + type.sprite_y4 * 32, 0, 1); // y4
+        }
 	}
 
 	public boolean mayPass(Level level, int x, int y, Entity e) {

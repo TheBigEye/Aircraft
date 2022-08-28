@@ -61,7 +61,7 @@ public class FlyMob extends MobAi {
 			return false;
 		
 		Tile tile = level.getTile(x >> 4, y >> 4);
-		return tile == Tiles.get("grass") || tile == Tiles.get("flower") || tile == Tiles.get("tree") || tile == Tiles.get("rock") || tile == Tiles.get("lawn");
+		return tile == Tiles.get("grass") || tile == Tiles.get("flower") || tile == Tiles.get("Oak tree") || tile == Tiles.get("rock") || tile == Tiles.get("lawn");
 		
 	}
 	

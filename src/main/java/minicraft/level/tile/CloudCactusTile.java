@@ -26,7 +26,6 @@ public class CloudCactusTile extends Tile {
     }
 
     private final String baseTile = "Ferrosite";
-
     @Override
     public boolean mayPass(Level level, int x, int y, Entity e) {
         return e instanceof AirWizard;
@@ -79,10 +78,12 @@ public class CloudCactusTile extends Tile {
 
     @Override
     public void bumpedInto(Level level, int x, int y, Entity entity) {
-        if (entity instanceof AirWizard)
-            return;
+        if (entity instanceof AirWizard || Settings.get("diff").equals("Peaceful")) {
+            return; // Cannot do damage
+        }
 
-        if (entity instanceof Mob)
-            ((Mob) entity).hurt(this, x, y, 1 + Settings.getIdx("diff"));
+        if (entity instanceof Mob) {
+            ((Mob) entity).hurt(this, x, y, random.nextInt(2) + Settings.getIdx("diff"));
+        }
     }
 }

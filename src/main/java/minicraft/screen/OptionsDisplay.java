@@ -3,6 +3,9 @@ package minicraft.screen;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+
+import org.tinylog.Logger;
+
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
@@ -13,7 +16,6 @@ import minicraft.saveload.Save;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
-import org.tinylog.Logger;
 
 public class OptionsDisplay extends Display {
 	
