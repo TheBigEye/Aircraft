@@ -69,7 +69,7 @@
 * Semi-transparent GUI (Without those annoying black boxes behind the letters), and more centered.
 * Improved status bar (Hotbar).
 * Debug screen (F3 screen) expanded with detailed information regarding the game.
-* Higher screen resolution.
+* Higher screen resolution (scale).
 * Full screen when pressing F11.
 
 ### Mobs and bosses:
