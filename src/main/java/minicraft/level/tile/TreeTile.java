@@ -26,12 +26,12 @@ public class TreeTile extends Tile {
 	private TreeType type;
 
 	public enum TreeType {
-		Oak(0, 1, 0, 1, 2, 3, "Grass", new String[] {"Wood", "Wood", "Acorn"}, 20),
+		Oak(0, 1, 0, 1, 2, 3, "Grass", new String[] {"Oak Wood", "Oak Wood", "Acorn"}, 20),
 		Birch(0, 1, 28, 29, 30, 31, "Grass", new String[] {"Birch Wood", "Leaf", "Birch cone"}, 25),
-		Red_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Wood", "Leaf", "Acorn"}, 20),
-		Fir(4, 5, 28, 29, 30, 31, "Snow", new String[] {"Wood", "Wood", "Fir cone"}, 22),
+		Red_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Oak Wood", "Leaf", "Acorn"}, 20),
+		Fir(4, 5, 28, 29, 30, 31, "Snow", new String[] {"Spruce wood", "Spruce wood", "Fir cone"}, 22),
 		Pine(6, 7, 28, 29, 30, 31, "Snow", new String[] {"Spruce wood", "Spruce wood", "Pine cone"}, 22),
-		Brown_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Wood", "Leaf", "Acorn"}, 24);
+		Brown_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Oak Wood", "Leaf", "Acorn"}, 24);
 
 		//                   00   01
 		//X1 X2  //-- Y1  //[DD] [DD] 00 // each tree parts are 8x8 squares

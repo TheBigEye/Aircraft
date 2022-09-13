@@ -59,54 +59,41 @@ public class ConnectorSprite {
         boolean dl = connectsToDoEdgeCheck(level.getTile(x - 1, y + 1), false);
         boolean ur = connectsToDoEdgeCheck(level.getTile(x + 1, y - 1), false);
         boolean dr = connectsToDoEdgeCheck(level.getTile(x + 1, y + 1), false);
-        /*
-         * disabled boolean u = connectsTo(ut, true); boolean d = connectsTo(dt, true);
-         * boolean l = connectsTo(lt, true); boolean r = connectsTo(rt, true);
-         * 
-         * boolean ul = connectsTo(level.getTile(x - 1, y - 1), false); boolean dl =
-         * connectsTo(level.getTile(x - 1, y + 1), false); boolean ur =
-         * connectsTo(level.getTile(x + 1, y - 1), false); boolean dr =
-         * connectsTo(level.getTile(x + 1, y + 1), false);
-         */
+
         x = x << 4;
         y = y << 4;
 
         if (u && l) {
-            if (ul || !checkCorners)
-                full.renderPixel(1, 1, screen, x, y);
-            else
-                sides.renderPixel(0, 0, screen, x, y);
-        } else
-            sparse.renderPixel(l ? 1 : 2, u ? 1 : 2, screen, x, y);
+            if (ul || !checkCorners) full.renderPixel(0, 0, screen, x, y);
+            else sides.renderPixel(1, 1, screen, x, y);
+        } else {
+            sparse.renderPixel(l ? 1 : 0, u ? 1 : 0, screen, x, y);
+        }
 
         if (u && r) {
-            if (ur || !checkCorners)
-                full.renderPixel(0, 1, screen, x + 8, y);
-            else
-                sides.renderPixel(1, 0, screen, x + 8, y);
-        } else
-            sparse.renderPixel(r ? 1 : 0, u ? 1 : 2, screen, x + 8, y);
+			if (ur || !checkCorners) full.renderPixel(1, 0, screen, x + 8, y);
+			else sides.renderPixel(0, 1, screen, x + 8, y);
+        } else {
+        	sparse.renderPixel(r ? 1 : 2, u ? 1 : 0, screen, x + 8, y);
+        }
 
         if (d && l) {
-            if (dl || !checkCorners)
-                full.renderPixel(1, 0, screen, x, y + 8);
-            else
-                sides.renderPixel(0, 1, screen, x, y + 8);
-        } else
-            sparse.renderPixel(l ? 1 : 2, d ? 1 : 0, screen, x, y + 8);
+			if (dl || !checkCorners) full.renderPixel(0, 1, screen, x, y + 8);
+			else sides.renderPixel(1, 0, screen, x, y + 8);
+        } else {
+        	sparse.renderPixel(l ? 1 : 0, d ? 1 : 2, screen, x, y + 8);
+        }
 
         if (d && r) {
-            if (dr || !checkCorners)
-                full.renderPixel(0, 0, screen, x + 8, y + 8);
-            else
-                sides.renderPixel(1, 1, screen, x + 8, y + 8);
-        } else
-            sparse.renderPixel(r ? 1 : 0, d ? 1 : 0, screen, x + 8, y + 8);
+			if (dr || !checkCorners) full.renderPixel(1, 1, screen, x + 8, y + 8);
+			else sides.renderPixel(0, 0, screen, x + 8, y + 8);
+        } else {
+        	sparse.renderPixel(r ? 1 : 2, d ? 1 : 2, screen, x + 8, y + 8);
+        }
 
     }
 
-    // it is expected that some tile classes will override this on class
-    // instantiation.
+    // it is expected that some tile classes will override this on class instantiation.
     public boolean connectsTo(Tile tile, boolean isSide) {
         // System.out.println("original connection check");
         return tile.getClass() == owner;

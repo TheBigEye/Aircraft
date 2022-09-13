@@ -36,14 +36,14 @@ public class InfiniteFallTile extends Tile {
                 || Game.isMode("creative") ||
                 
                 // Make un-solid when trigger the fall warning in survival
-                Game.isMode("survival") && Game.player.fallWarn == true); 
+                !Game.isMode("creative") && Game.player.fallWarn == true); 
     }
     
     @Override
     public void bumpedInto(Level level, int x, int y, Entity entity) {
         if (entity instanceof Player) {
 	        Player p = (Player) entity;
-	        if (Game.player.fallWarn == false) {
+	        if (Game.player.fallWarn == false && !Game.isMode("creative")) {
 	        	Updater.notifyAll("Watch out so you won't slip and fall!");
 	        	p.hurt(this, x, y, 1);
 	            Game.player.fallWarn = true;

@@ -539,7 +539,22 @@ public class Load {
 					
 					if (tilename.equalsIgnoreCase("TREE") && worldVer.compareTo(new Version("2.2.0-dev1")) >= 0) {
 						tilename = "Oak Tree";
-						Logger.info("Detected old TREE tile, converting to new OAK_TREE tile...");
+						Logger.info("Detected old TREE tile, converting to new OAK TREE tile...");
+					}
+					
+					if (tilename.equalsIgnoreCase("WOOD PLANKS") && worldVer.compareTo(new Version("2.2.0-dev1")) >= 0) {
+						tilename = "Oak Planks";
+						Logger.info("Detected old WOOD PLANKS tile, converting to new OAK PLANKS tile...");
+					}
+					
+					if (tilename.equalsIgnoreCase("WOOD WALL") && worldVer.compareTo(new Version("2.2.0-dev1")) >= 0) {
+						tilename = "Oak Wall";
+						Logger.info("Detected old WOOD WALL tile, converting to new OAK WALL tile...");
+					}
+					
+					if (tilename.equalsIgnoreCase("WOOD DOOR") && worldVer.compareTo(new Version("2.2.0-dev1")) >= 0) {
+						tilename = "Oak Door";
+						Logger.info("Detected old WOOD DOOR tile, converting to new OAK DOOR tile...");
 					}
 
 					if (l == World.minLevelDepth + 1 && tilename.equalsIgnoreCase("LAPIS") && worldVer.compareTo(new Version("2.0.3-dev6")) < 0) {
@@ -729,6 +744,18 @@ public class Load {
 		if (worldVer.compareTo(new Version("2.1.0-dev2")) < 0) {
 			if (name.startsWith("Shear")) {
 				name = name.replace("Shear", "Shears");
+			}
+		}
+		
+		if (worldVer.compareTo(new Version("2.2.0-dev1")) < 0) {
+			if (name.startsWith("Plank")) {
+				name = name.replace("Plank", "Oak Plank");
+			}
+			if (name.startsWith("Plank Wall")) {
+				name = name.replace("Plank Wall", "Oak Wall");
+			}
+			if (name.startsWith("Plank Door")) {
+				name = name.replace("Plank Door", "Oak Door");
 			}
 		}
 

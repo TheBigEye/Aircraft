@@ -14,8 +14,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class SkyDirtTile extends Tile {
-    private static ConnectorSprite sprite = new ConnectorSprite(SkyDirtTile.class, new Sprite(44, 9, 3, 3, 1, 3),
-            new Sprite(47, 9, 2, 2, 1)) {
+    private static ConnectorSprite sprite = new ConnectorSprite(SkyDirtTile.class, new Sprite(44, 9, 3, 3, 1), new Sprite(47, 10, 2, 2, 1)) {
 
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) {
@@ -67,7 +66,7 @@ public class SkyDirtTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    level.setTile(xt, yt, Tiles.get("Cloud"));
+                    level.setTile(xt, yt, Tiles.get("Cloud Hole"));
                     Sound.Tile_generic_hurt.play();
                     level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Sky dirt"));
 

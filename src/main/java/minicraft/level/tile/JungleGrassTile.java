@@ -13,7 +13,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class JungleGrassTile extends Tile {
-    private static ConnectorSprite sprite = new ConnectorSprite(JungleGrassTile.class, new Sprite(16, 34, 3, 3, 1, 3), new Sprite(19, 34, 2, 2, 1)) {
+    private static ConnectorSprite sprite = new ConnectorSprite(JungleGrassTile.class, new Sprite(16, 34, 3, 3, 1), new Sprite(19, 34, 2, 2, 1)) {
 
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) {

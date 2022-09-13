@@ -2,16 +2,11 @@ package minicraft.util;
 
 public final class MyUtils {
 
-    private MyUtils() {
-    }
+    private MyUtils() {}
 
     public static int clamp(int val, int min, int max) {
-        if (val > max) {
-            return max;
-        }
-        if (val < min) {
-            return min;
-        }
+        if (val > max) return max;
+        if (val < min)  return min; 
         return val;
     }
 
@@ -35,6 +30,8 @@ public final class MyUtils {
         }
     }
 
+	@Deprecated
+	/** @deprecated Multiplayer removed. */
     public static <T> T fromNetworkStatus(T offline, T client, T server) {
         return offline;
     }

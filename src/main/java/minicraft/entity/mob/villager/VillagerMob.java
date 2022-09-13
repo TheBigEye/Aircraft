@@ -75,7 +75,7 @@ public class VillagerMob extends MobAi {
 			return false;
 
 		Tile tile = level.getTile(x >> 4, y >> 4);
-		return tile == Tiles.get("Wood Planks") || tile == Tiles.get("path");
+		return tile == Tiles.get("Oak Planks") || tile == Tiles.get("path");
 
 	}
 

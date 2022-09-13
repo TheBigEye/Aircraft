@@ -561,8 +561,8 @@ Shears
 
 # StackableItem.java
 
-Wood
-Wood
+Oak Wood
+Oak Wood
 
 Spruce Wood
 Spruce Wood
@@ -585,8 +585,8 @@ Wheat
 Key
 Key
 
-arrow
-arrow
+Arrow
+Arrow
 
 Icicle
 Icicle
@@ -597,14 +597,14 @@ Stick
 Bowl
 Bowl
 
-string
-string
+String
+String
 
-feather
-feather
+Feather
+Feather
 
-egg
-egg
+Egg
+Egg
 
 Stone
 Stone
@@ -705,17 +705,17 @@ GunPowder
 Slime
 Slime
 
-glass
-glass
+Glass
+Glass
 
-cloth
-cloth
+Cloth
+Cloth
 
-gem
-gem
+Gem
+Gem
 
-emerald
-emerald
+Emerald
+Emerald
 
 Scale
 Scale
@@ -803,8 +803,8 @@ Natural Rock
 Natural Hard Rock
 Natural Hard Rock
 
-Plank
-Plank
+Oak Plank
+Oak Plank
 
 Spruce Plank
 Spruce Plank
@@ -812,8 +812,8 @@ Spruce Plank
 Birch Plank
 Birch Plank
 
-Plank Wall
-Plank Wall
+Oak Wall
+Oak Wall
 
 Spruce Wall
 Spruce Wall
@@ -821,8 +821,8 @@ Spruce Wall
 Birch Wall
 Birch Wall
 
-Wood Door
-Wood Door
+Oak Door
+Oak Door
 
 Spruce Door
 Spruce Door
@@ -1038,8 +1038,8 @@ Torch
 Gem Ore
 Gem Ore
 
-Wood Planks
-Wood Planks
+Oak Planks
+Oak Planks
 
 Spruce Planks
 Spruce Planks
@@ -1053,8 +1053,8 @@ Stone Bricks
 Obsidian
 Obsidian
 
-Wood Wall
-Wood Wall
+Oak Wall
+Oak Wall
 
 Spruce Wall
 Spruce Wall
@@ -1335,6 +1335,9 @@ World
 May take a while, be patient
 May take a while, be patient
 
+Level 2
+Level 2
+
 Level 1
 Level 1
 
@@ -1431,66 +1434,73 @@ Press
 
 # OptionsMenu.java
 
-Change Key Bindings
-Change Key Bindings
-
 Options
 Options
 
+Change Key Bindings
+Change Key Bindings
+
 Change language
 Change language
+
+Video options
+Video options
 
 Texture packs
 Texture packs
 
 Open Game Folder
 Open Game Folder
-
-# PauseMenu.java
-
-Return to Game
-Return to Game
-
-Options
-Options
-
-info
-info
-
-Make World Multiplayer
-Make World Multiplayer
-
-Achievements
-Achievements
-
-World info
-World info
-
-Save Game
-Save Game
-
- and 
- and 
- 
- to Scroll
- to Scroll
- 
-: Choose
-: Choose
- 
-Paused
-Paused
-
-Main Menu
-Main Menu
 
 # PauseDisplay.java
 
+Return to Game
+Return to Game
+
+Options
+Options
+
+Achievements
+Achievements
+
+World info
+World info
+
+Save Game
+Save Game
+
+ and 
+ and 
+ 
+ to Scroll
+ to Scroll
+ 
+: Choose
+: Choose
+ 
+Paused
+Paused
+
+Main Menu
+Main Menu
+
 Yes
 Yes
 
 No
 No
+
+Cancel
+Cancel
+
+Are you sure you want to exit the game?
+Are you sure you want to exit the game?
+
+All unsaved progress will be lost
+All unsaved progress will be lost
+
+Quit without saving
+Quit without saving
 
 # PlayerInvDisplay.java
 
@@ -1500,7 +1510,7 @@ Inventory
 to search.
 to search.
 
-# TitleMenu.java
+# TitleDisplay.java
 
 Singleplayer
 Singleplayer
@@ -1550,7 +1560,7 @@ Quit
  Mod by TheBigEye
  Mod by TheBigEye
 
-# WorldEditMenu.java
+# WorldEditDisplay.java
 
 New World Name:
 New World Name:
@@ -1567,7 +1577,10 @@ This can not be undone!
  to cancel
  to cancel
 
-# WorldGenMenu.java
+# WorldGenDisplay.java
+
+New World
+New World
 
 World Seed
 World Seed
@@ -1587,7 +1600,7 @@ Create World
 World Gen Options
 World Gen Options
 
-# WorldSelectMenu.java
+# WorldSelectDisplay.java
 
 Name:
 Name:
@@ -1690,6 +1703,24 @@ Autosave
 Ambient
 Ambient
 
+Particles
+Particles
+
+Shadows
+Shadows
+
+Bossbar type
+Bossbar type
+
+On screen
+On screen
+
+On entity
+On entity
+
+Percent
+Percent
+
 World Size
 World Size
 
@@ -1728,6 +1759,9 @@ Irregular
 
 Wear Suit
 Wear Suit
+
+Cheats
+Cheats
 
 # TutorialDisplay.java
 

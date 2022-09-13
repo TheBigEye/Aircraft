@@ -57,8 +57,9 @@ public class WorldSelectDisplay extends Display {
 			final Version version = worldVersions.get(i);
 			entries[i] = new SelectEntry(name, () -> {
 				// Executed when we select a world.
-				if (version.compareTo(Game.VERSION) > 0)
+				if (version.compareTo(Game.VERSION) > 0) {
 					return; // cannot load a game saved by a higher version!
+				}
 				worldName = name;
 				Game.setDisplay(new LoadingDisplay());
 			}, false);

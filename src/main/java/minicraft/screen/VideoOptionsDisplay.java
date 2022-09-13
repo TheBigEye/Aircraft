@@ -32,7 +32,10 @@ public class VideoOptionsDisplay extends Display {
         Menu popupMenu = new Menu.Builder(true, 4, RelPos.CENTER)
             .setShouldRender(false)
             .setSelectable(false)
-            .setEntries(StringEntry.useLines(Color.RED,"A restart will be required, you can continue playing anyway", "enter to confirm", "escape to cancel"))
+            .setEntries(StringEntry.useLines(Color.RED,
+            		"A restart will be required, you can continue playing anyway",
+            		"enter to confirm", "escape to cancel"
+            ))
             .setTitle("Confirm Action")
             .createMenu();
 

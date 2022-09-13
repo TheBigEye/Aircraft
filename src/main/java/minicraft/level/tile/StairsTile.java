@@ -27,7 +27,25 @@ public class StairsTile extends Tile {
 
     @Override
     public void render(Screen screen, Level level, int x, int y) {
-        sprite.render(screen, x * 16, y * 16, 0, DirtTile.dCol(level.depth));
+    	
+    	// Get the tiles from a 3x3 area from the tile center
+    	Tile[] areaTiles = level.getAreaTiles(x, y, 1);
+    	
+    	switch (level.depth) {
+			case 1: Tiles.get("Cloud").render(screen, level, x, y); break; // Sky.
+	        default: Tiles.get("Dirt").render(screen, level, x, y); break; // caves, surface and dungeon
+    	}
+    	
+        for (Tile t : areaTiles) {
+            if (t == Tiles.get("Obsidian")) Tiles.get("Obsidian").render(screen, level, x, y);
+            if (t == Tiles.get("Stone bricks")) Tiles.get("Stone bricks").render(screen, level, x, y);
+            if (t == Tiles.get("Oak planks")) Tiles.get("Oak planks").render(screen, level, x, y);
+            if (t == Tiles.get("Spruce planks")) Tiles.get("Spruce planks").render(screen, level, x, y);
+            if (t == Tiles.get("Birch planks")) Tiles.get("Birch planks").render(screen, level, x, y);
+            if (t == Tiles.get("Holy bricks")) Tiles.get("Holy bricks").render(screen, level, x, y);
+        }
+    	
+        sprite.render(screen, x * 16, y * 16, 0);
     }
 
     @Override
@@ -39,7 +57,6 @@ public class StairsTile extends Tile {
             level.setTile(xt, yt, Tiles.get("Grass"));
             Sound.Tile_generic_hurt.play();
             return true;
-
         } else {
             return false;
         }

@@ -109,13 +109,13 @@ public class CraftingDisplay extends Display {
 						AchievementsDisplay.setAchievement("minicraft.achievement.benchmarking",true);
 					}
                     // walk to planks achievement
-					if (selectedRecipe.getProduct().equals(Items.get("Plank")) ||
+					if (selectedRecipe.getProduct().equals(Items.get("Oak Plank")) ||
                         selectedRecipe.getProduct().equals(Items.get("Spruce Plank")) ||
                         selectedRecipe.getProduct().equals(Items.get("Birch Plank"))){
 						AchievementsDisplay.setAchievement("minicraft.achievement.planks",true);
 					}
                     // TO, TOC! achievement
-					if (selectedRecipe.getProduct().equals(Items.get("Wood Door")) ||
+					if (selectedRecipe.getProduct().equals(Items.get("Oak Door")) ||
                         selectedRecipe.getProduct().equals(Items.get("Spruce Door")) ||
                         selectedRecipe.getProduct().equals(Items.get("Birch Door"))){
 						AchievementsDisplay.setAchievement("minicraft.achievement.doors",true);

@@ -32,7 +32,7 @@ public class EndGameCreditsDisplay extends Display {
     		line++;
     	}
     	
-    	if (line > 775) {
+    	if (line > 795) {
     		Game.exitDisplay();
     	}
     	
@@ -43,6 +43,20 @@ public class EndGameCreditsDisplay extends Display {
     @Override
 	public void render(Screen screen) {
 		super.render(screen);
+		
+		// TODO: Port credits text to txt or JSON file
+		
+		// Title sprite
+		int h = 6; // Height of squares (on the spritesheet)
+		int w = 26; // Width of squares (on the spritesheet)
+		int xo = (Screen.w - w * 8) / 2; // X position on screen
+		int yo = 54 - line; // Y position on screen
+
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				screen.render(xo + x * 8, yo + y * 8, x + (y + 7) * 32, 0, 3);
+			}
+		}
 		
 		Font.draw("--------[ Aircraft ]--------", screen, Screen.h / 2  - 40, 190 - line, Color.YELLOW);
 		
@@ -70,12 +84,12 @@ public class EndGameCreditsDisplay extends Display {
 		
 		Font.draw("Sounds:", screen, Screen.h/2 - 40, 410 - line, Color.WHITE);
 		Font.draw(" - TheBigEye", screen, Screen.h/2 - 40, 420 - line, Color.GRAY);
-		Font.draw(" - Markus person (Minicraft)", screen, Screen.h/2 - 40, 430 - line, Color.GRAY);
+		Font.draw(" - Markus persson (Minicraft)", screen, Screen.h/2 - 40, 430 - line, Color.GRAY);
 		
 		Font.draw("GUI desing:", screen, Screen.h/2 - 40, 445 - line, Color.WHITE);
 		Font.draw(" - TheBigEye", screen, Screen.h/2 - 40, 455 - line, Color.GRAY);
 		
-		Font.draw("     >{ Programming };     ", screen, Screen.h / 2  - 40, 475 - line, Color.YELLOW);
+		Font.draw("     >{ Programming };      ", screen, Screen.h / 2  - 40, 475 - line, Color.YELLOW);
 		
 		Font.draw("Main developer:", screen, Screen.h/2 - 40, 495 - line, Color.WHITE);
 		Font.draw(" - TheBigEye", screen, Screen.h/2 - 40, 505 - line, Color.GRAY);
@@ -83,28 +97,29 @@ public class EndGameCreditsDisplay extends Display {
 		Font.draw("Code contributions:", screen, Screen.h/2 - 40, 520 - line, Color.WHITE);
 		Font.draw(" - A.L.I.C.E", screen, Screen.h/2 - 40, 530 - line, Color.GRAY);
 		Font.draw(" - UdhavKumar", screen, Screen.h/2 - 40, 540 - line, Color.GRAY);
+		Font.draw(" - pelletsstarPL", screen, Screen.h/2 - 40, 550 - line, Color.GRAY);
 		
-		Font.draw("Thanks to...", screen, Screen.h/2 - 40, 560 - line, Color.YELLOW);
-		Font.draw(" - pelletsstarPL", screen, Screen.h/2 - 40, 570 - line, Color.GRAY);
-		Font.draw(" - terrarianmisha", screen, Screen.h/2 - 40, 580 - line, Color.GRAY);
-		Font.draw(" - Litorom1", screen, Screen.h/2 - 40, 590 - line, Color.GRAY);
-		Font.draw(" - Felix pants", screen, Screen.h/2 - 40, 600 - line, Color.GRAY);
-		Font.draw(" - benichi (why not xd)", screen, Screen.h/2 - 40, 610 - line, Color.GRAY);
-		Font.draw(" - Fusyon", screen, Screen.h/2 - 40, 620 - line, Color.GRAY);
-		Font.draw(" - ChrisJ", screen, Screen.h/2 - 40, 630 - line, Color.GRAY);
-		Font.draw(" - dafist", screen, Screen.h/2 - 40, 640 - line, Color.GRAY);
-		Font.draw(" - EduardoPlayer13", screen, Screen.h/2 - 40, 650 - line, Color.GRAY);
-		Font.draw(" - Makkkkus", screen, Screen.h/2 - 40, 660 - line, Color.GRAY);
-		Font.draw(" - BoxDude", screen, Screen.h/2 - 40, 670 - line, Color.GRAY);
-		Font.draw(" - MrToad", screen, Screen.h/2 - 40, 680 - line, Color.GRAY);
-		Font.draw(" - itayfeder", screen, Screen.h/2 - 40, 690 - line, Color.GRAY);
-		Font.draw("for giving me ideas and", screen, Screen.h/2 - 40, 700 - line, Color.YELLOW);
-		Font.draw("participate in the ", screen, Screen.h/2 - 40, 710 - line, Color.YELLOW);
-		Font.draw("development of this nice mod ", screen, Screen.h/2 - 40, 720 - line, Color.YELLOW);
+		Font.draw("Thanks to...", screen, Screen.h/2 - 40, 570 - line, Color.YELLOW);
+		Font.draw(" - pelletsstarPL", screen, Screen.h/2 - 40, 580 - line, Color.GRAY);
+		Font.draw(" - terrarianmisha", screen, Screen.h/2 - 40, 590 - line, Color.GRAY);
+		Font.draw(" - Litorom1", screen, Screen.h/2 - 40, 600 - line, Color.GRAY);
+		Font.draw(" - Felix pants", screen, Screen.h/2 - 40, 610 - line, Color.GRAY);
+		Font.draw(" - benichi (why not, xd)", screen, Screen.h/2 - 40, 620 - line, Color.GRAY);
+		Font.draw(" - Fusyon", screen, Screen.h/2 - 40, 630 - line, Color.GRAY);
+		Font.draw(" - ChrisJ", screen, Screen.h/2 - 40, 640 - line, Color.GRAY);
+		Font.draw(" - dafist", screen, Screen.h/2 - 40, 650 - line, Color.GRAY);
+		Font.draw(" - EduardoPlayer13", screen, Screen.h/2 - 40, 660 - line, Color.GRAY);
+		Font.draw(" - Makkkkus", screen, Screen.h/2 - 40, 670 - line, Color.GRAY);
+		Font.draw(" - BoxDude", screen, Screen.h/2 - 40, 680 - line, Color.GRAY);
+		Font.draw(" - MrToad", screen, Screen.h/2 - 40, 690 - line, Color.GRAY);
+		Font.draw(" - itayfeder", screen, Screen.h/2 - 40, 700 - line, Color.GRAY);
+		Font.draw("for giving me ideas and", screen, Screen.h/2 - 40, 710 - line, Color.YELLOW);
+		Font.draw("participate in the ", screen, Screen.h/2 - 40, 720 - line, Color.YELLOW);
+		Font.draw("development of this nice mod ", screen, Screen.h/2 - 40, 730 - line, Color.YELLOW);
 		
-		Font.draw("And thanks to the Minicraft plus", screen, Screen.h/2 - 40, 740 - line, Color.YELLOW);
-		Font.draw("maintainers that thanks to their", screen, Screen.h/2 - 40, 750 - line, Color.YELLOW);
-		Font.draw("work this nice mod is possible :)", screen, Screen.h/2 - 40, 760 - line, Color.YELLOW);
+		Font.draw("And thanks to the Minicraft plus", screen, Screen.h/2 - 40, 750 - line, Color.YELLOW);
+		Font.draw("maintainers that thanks to their", screen, Screen.h/2 - 40, 760 - line, Color.YELLOW);
+		Font.draw("  work this mod is possible :)", screen, Screen.h/2 - 40, 770 - line, Color.YELLOW);
 
 	}
 

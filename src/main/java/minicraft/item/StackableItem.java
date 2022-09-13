@@ -14,7 +14,7 @@ public class StackableItem extends Item {
 	protected static ArrayList<Item> getAllInstances() {
 		ArrayList<Item> items = new ArrayList<>();
 
-		items.add(new StackableItem("Wood", new Sprite(2, 1, 0)));
+		items.add(new StackableItem("Oak Wood", new Sprite(2, 1, 0)));
 		items.add(new StackableItem("Spruce Wood", new Sprite(1, 1, 0)));
 		items.add(new StackableItem("Birch Wood", new Sprite(0, 1, 0)));
 
@@ -23,13 +23,13 @@ public class StackableItem extends Item {
 		items.add(new StackableItem("Leather", new Sprite(8, 0, 0)));
 		items.add(new StackableItem("Wheat", new Sprite(6, 0, 0)));
 		items.add(new StackableItem("Key", new Sprite(0, 4, 0)));
-		items.add(new StackableItem("arrow", new Sprite(0, 2, 0)));
+		items.add(new StackableItem("Arrow", new Sprite(0, 2, 0)));
 		items.add(new StackableItem("Icicle", new Sprite(11, 3, 0)));
 		items.add(new StackableItem("Stick", new Sprite(9, 3, 0)));
 		items.add(new StackableItem("Bowl", new Sprite(13, 3, 0)));
-		items.add(new StackableItem("string", new Sprite(1, 4, 0)));
-		items.add(new StackableItem("feather", new Sprite(15, 3, 0)));
-		items.add(new StackableItem("egg", new Sprite(14, 3, 0)));
+		items.add(new StackableItem("String", new Sprite(1, 4, 0)));
+		items.add(new StackableItem("Feather", new Sprite(15, 3, 0)));
+		items.add(new StackableItem("Egg", new Sprite(14, 3, 0)));
 
 		// Elements
 		items.add(new StackableItem("Obsidian", new Sprite(17, 3, 0)));
@@ -72,10 +72,10 @@ public class StackableItem extends Item {
 		items.add(new StackableItem("GunPowder", new Sprite(8, 4, 0)));
 
 		items.add(new StackableItem("Slime", new Sprite(9, 4, 0)));
-		items.add(new StackableItem("glass", new Sprite(10, 4, 0)));
-		items.add(new StackableItem("cloth", new Sprite(11, 4, 0)));
-		items.add(new StackableItem("gem", new Sprite(12, 4, 0)));
-		items.add(new StackableItem("emerald", new Sprite(16, 4, 0)));
+		items.add(new StackableItem("Glass", new Sprite(10, 4, 0)));
+		items.add(new StackableItem("Cloth", new Sprite(11, 4, 0)));
+		items.add(new StackableItem("Gem", new Sprite(12, 4, 0)));
+		items.add(new StackableItem("Emerald", new Sprite(16, 4, 0)));
 		items.add(new StackableItem("Scale", new Sprite(13, 4, 0)));
 		items.add(new StackableItem("Shard", new Sprite(14, 4, 0)));
 		items.add(new StackableItem("Gear", new Sprite(15, 4, 0)));

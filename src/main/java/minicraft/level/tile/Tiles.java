@@ -58,19 +58,19 @@ public final class Tiles {
 		tiles.put((short) 25, new CloudCactusTile("Cloud Cactus"));
 
 		// Building tiles
-		tiles.put((short) 26, new DoorTile(Tile.Material.Wood));
+		tiles.put((short) 26, new DoorTile(Tile.Material.Oak));
 		tiles.put((short) 27, new DoorTile(Tile.Material.Spruce));
 		tiles.put((short) 28, new DoorTile(Tile.Material.Birch));
 		tiles.put((short) 29, new DoorTile(Tile.Material.Stone));
 		tiles.put((short) 30, new DoorTile(Tile.Material.Obsidian));
 		tiles.put((short) 31, new DoorTile(Tile.Material.Holy));
-		tiles.put((short) 32, new FloorTile(Tile.Material.Wood));
+		tiles.put((short) 32, new FloorTile(Tile.Material.Oak));
 		tiles.put((short) 33, new FloorTile(Tile.Material.Spruce));
 		tiles.put((short) 34, new FloorTile(Tile.Material.Birch));
 		tiles.put((short) 35, new FloorTile(Tile.Material.Stone));
 		tiles.put((short) 36, new FloorTile(Tile.Material.Obsidian));
 		tiles.put((short) 37, new FloorTile(Tile.Material.Holy));
-		tiles.put((short) 38, new WallTile(Tile.Material.Wood));
+		tiles.put((short) 38, new WallTile(Tile.Material.Oak));
 		tiles.put((short) 39, new WallTile(Tile.Material.Spruce));
 		tiles.put((short) 40, new WallTile(Tile.Material.Birch));
 		tiles.put((short) 41, new WallTile(Tile.Material.Stone));
@@ -132,7 +132,11 @@ public final class Tiles {
 		tiles.put((short) 85, new SkyFernTile("Sky Fern"));
 		tiles.put((short) 86, new UpRockTile("Up rock"));
 
-		tiles.put((short)87, new JungleGrassTile("Jungle Grass"));
+		tiles.put((short) 87, new JungleGrassTile("Jungle Grass"));
+		
+		tiles.put((short) 88, new CloudHoleTile("Cloud Hole"));
+		
+		tiles.put((short) 89, new IceTile("Ice"));
 
 		// tiles.put((short)?, new SandRockTile("Sand rock"));
 

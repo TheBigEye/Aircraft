@@ -88,7 +88,7 @@ public class DefenderMob extends MobAi {
             return false;
 
         Tile tile = level.getTile(x >> 4, y >> 4);
-        if (tile != Tiles.get("Wood Planks") && tile != Tiles.get("wood planks") && tile != Tiles.get("Path")
+        if (tile != Tiles.get("Oak Planks") && tile != Tiles.get("oak planks") && tile != Tiles.get("Path")
                 && tile != Tiles.get("path")) {
             return false;
         } else if (tile != Tiles.get("Grass") && tile != Tiles.get("Sand") && tile != Tiles.get("Snow")

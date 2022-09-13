@@ -31,7 +31,7 @@ public class SandTile extends Tile {
         steppedOn_sprite = new Sprite(pixels);
     }
 
-    private ConnectorSprite sprite = new ConnectorSprite(SandTile.class, new Sprite(6, 6, 3, 3, 1, 3), normal_sprite) {
+    private ConnectorSprite sprite = new ConnectorSprite(SandTile.class, new Sprite(6, 6, 3, 3, 1), normal_sprite) {
 
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) {

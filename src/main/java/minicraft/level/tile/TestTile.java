@@ -110,7 +110,7 @@ public class TestTile extends Tile {
 
         level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
         if (damage >= treeHealth) {
-            level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Wood"));
+            level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Oak Wood"));
             level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Leaf"));
             level.setTile(x, y, Tiles.get("grass"));
         } else {

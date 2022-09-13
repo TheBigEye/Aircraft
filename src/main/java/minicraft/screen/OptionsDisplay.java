@@ -33,7 +33,7 @@ public class OptionsDisplay extends Display {
             Settings.getEntry("skinon"),
             Settings.getEntry("language"),
             new SelectEntry("Video options", () -> Game.setDisplay(new VideoOptionsDisplay())),
-            new SelectEntry("Controls options", () -> Game.setDisplay(new KeyInputDisplay())),
+            new SelectEntry("Change Key Bindings", () -> Game.setDisplay(new KeyInputDisplay())),
             new SelectEntry("Texture packs", () -> Game.setDisplay(new TexturePackDisplay())),
             new BlankEntry(),
             new SelectEntry("Open Game Folder", () -> {

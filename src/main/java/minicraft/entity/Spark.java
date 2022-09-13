@@ -1,28 +1,21 @@
 package minicraft.entity;
 
-import java.util.List;
-
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.boss.AirWizard;
-import minicraft.entity.mob.boss.AirWizardPhase2;
-import minicraft.entity.mob.boss.AirWizardPhase3;
 import minicraft.gfx.Color;
-import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
 
 public class Spark extends Entity {
 
 	private Mob owner; // The mob that created this spark
+	private final int lifeTime; // how much time until the spark disappears
 	private double xa, ya; // the x and y acceleration
 	private double xx, yy; // the x and y positions
-	private int type;
-
-	private int lifeTime; // how much time until the spark disappears
-	private int LTFactor = 15 * 13 + random.nextInt(30);
+	private int durTime = 15 * 13 + random.nextInt(30);
 	private int time; // the amount of time that has passed
+	private int type;
 
 	/**
 	 * Creates a new spark. Owner is the AirWizard which is spawning this spark.
@@ -41,65 +34,75 @@ public class Spark extends Entity {
 		this.ya = ya;
 		this.type = type;
 
-		lifeTime = LTFactor;
+		lifeTime = durTime;
 	}
 	
 	private void SparkCloud(int damage) {
-		LTFactor = 15 * 13 + random.nextInt(30);
+		durTime = 15 * 13 + random.nextInt(30);
 
 		// Move the spark:
 		xx += xa; x = (int) xx;
 		yy += ya; y = (int) yy;
+		
+		if (getClosestPlayer() != null) { // Avoid NullPointer if player dies
+			Player player = getClosestPlayer();
+			if (player != null) {
 
-		Player player = getClosestPlayer();
-		if (player != null) {
+				int xd = player.x - x;
+				int yd = player.y - y;
 
-			int xd = player.x - x;
-			int yd = player.y - y;
+				int sig0 = 1; 
+				xa = ya = 0;
 
-			int sig0 = 1; 
-			xa = ya = 0;
+				if (xd < sig0) xa = -0.5;
+				if (xd > sig0) xa = +0.6;
+				if (yd < sig0) ya = -0.5;
+				if (yd > sig0) ya = +0.6;
 
-			if (xd < sig0) xa = -0.5;
-			if (xd > sig0) xa = +0.6;
-			if (yd < sig0) ya = -0.5;
-			if (yd > sig0) ya = +0.6;
+				// Random position
+				switch (random.nextInt(3)) {
+					case 0: xa += 1; ya += 1; break;
+					case 1: xa -= 1; ya -= 1; break;
+					case 2: xa -= 1; ya += 1; break;
+					case 3: xa += 1; ya -= 1; break;
+					default: xa += 1; ya += 1; break;
+				}
+			}
 
-			// Random position
-			switch (random.nextInt(3)) {
-				case 0: xa += 1; ya += 1; break;
-				case 1: xa -= 1; ya -= 1; break;
-				case 2: xa -= 1; ya += 1; break;
-				case 3: xa += 1; ya -= 1; break;
-				default: xa += 1; ya += 1; break;
+			if (getClosestPlayer().isWithin(0,this)) {
+				player.hurt(owner, damage);
 			}
 		}
-
-		// if the entity is a mob, but not a Air Wizard, then hurt the mob.
-		List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizard), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS)); // gets the entities in the current position to hit.
-		toHit.forEach(entity -> ((Mob) entity).hurt(owner, damage));
 	}
 	
 	private void SparkRain(int damage) {
-		LTFactor = 25 * 10 + random.nextInt(20);
+		durTime = 25 * 10 + random.nextInt(20);
 
 		// move the spark to the player positon:
 		xx += xa; x = (int) xx;
 		yy += ya; y = (int) yy;
 
-		List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizardPhase2), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS));
-		toHit.forEach(entity -> ((Mob) entity).hurt(owner, damage));
+		if (getClosestPlayer() != null) { // Avoid NullPointer if player dies
+			Player player = getClosestPlayer();
+			if (getClosestPlayer().isWithin(0, this)) {
+				player.hurt(owner, damage);
+			}
+		}
 	}
 	
 	private void SparkSpiralRain(int damage) {
-		LTFactor = 30 * 10 + random.nextInt(30);
+		durTime = 30 * 10 + random.nextInt(30);
 
 		// move the spark:
 		xx += xa; x = (int) xx;
 		yy += ya; y = (int) yy;
 
-		List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizardPhase3), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS));
-		toHit.forEach(entity -> ((Mob) entity).hurt(owner, damage));
+		if (getClosestPlayer() != null) { // Avoid NullPointer if player dies
+			Player player = getClosestPlayer();
+			if (getClosestPlayer().isWithin(0, this)) {
+				player.hurt(owner, damage);
+			}
+		}
 	}
 
 	@Override

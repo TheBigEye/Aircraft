@@ -66,7 +66,7 @@ public class Game {
 
 	public static List<String> notifications = new ArrayList<>();
 
-	public static int MAX_FPS = (int) Settings.get("fps");
+	public static int MAX_FPS;
 	public static Level level;
 
 	// Crash splashes
@@ -130,14 +130,19 @@ public class Game {
 
 	// Main functions
 	public static void main(String[] args) {
+		
+		// Load the time vars
+		LocalDateTime time = LocalDateTime.now();
+		
+        // Initialize game events
+        IS_Christmas = (time.getMonth() == Month.DECEMBER) && (time.getDayOfMonth() == 24); // Christmas
+        IS_Halloween = (time.getMonth() == Month.OCTOBER) && (time.getDayOfMonth() == 31); // Halloween
+        IS_April_fools = (time.getMonth() == Month.APRIL) && (time.getDayOfMonth() == 1); // April Fools
 
 		// Crash window log ------------------------------------------------------------------------------------------------------------------------------
 
 		// Load the splashes
 		String errorSplash = Splash[random.nextInt(Splash.length)];
-
-		// Load the time vars
-		LocalDateTime time = LocalDateTime.now();
 
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
 			throwable.printStackTrace();
@@ -228,12 +233,7 @@ public class Game {
 			e.printStackTrace();
 		}
 
-		Initializer.parseArgs(args);
-
-        // Initialize game events
-        IS_Christmas = (time.getMonth() == Month.DECEMBER) && (time.getDayOfMonth() == 24); // Christmas
-        IS_Halloween = (time.getMonth() == Month.OCTOBER) && (time.getDayOfMonth() == 31); // Halloween
-        IS_April_fools = (time.getMonth() == Month.APRIL) && (time.getDayOfMonth() == 1); // April Fools
+		Initializer.parseArgs(args); // Parses the command line arguments
 
 		// Initialize input handler
 		input = new InputHandler(Renderer.canvas);
@@ -246,8 +246,7 @@ public class Game {
 		World.resetGame(); // "half"-starts a new game, to set up initial variables
 		player.eid = 0;
 		new Load(true); // This loads any saved preferences.
-
-		MAX_FPS = (int) Settings.get("fps"); // Load FPS
+		MAX_FPS = (int) Settings.get("fps");  // DO NOT put this above.
 
 		// Window events ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -257,22 +256,20 @@ public class Game {
 		// Display objects in the screen
 		Renderer.initScreen();
 
-		// Sets menu to the title screen.
-		setDisplay(new TitleDisplay());
-
 		// Update fullscreen frame if Updater.FULLSCREEN was updated previously
 		if (Updater.FULLSCREEN) {
 			Updater.updateFullscreen();
 		}
+		
+		// Sets menu to the title screen.
+		setDisplay(new TitleDisplay());
 
 		// Start tick() count and start the game
 		Initializer.run(discordCore);
 
 		// Exit events -------------------------------------------------------------------------------------------------------------------------------------
 
-		if (debug) {
-			System.out.println("Main game loop ended; Terminating application...");
-		}
+		Logger.debug("Main game loop ended; Terminating application...");
 
 		System.exit(0);
 	}

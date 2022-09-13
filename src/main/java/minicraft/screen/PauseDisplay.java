@@ -12,7 +12,6 @@ import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
-import minicraft.util.MyUtils;
 
 public class PauseDisplay extends Display {
 
@@ -21,11 +20,11 @@ public class PauseDisplay extends Display {
 		String selectString = Game.input.getMapping("select") + Localization.getLocalized(": Choose");
 		
 		ArrayList<ListEntry> entries = new ArrayList<>(Arrays.asList(
-				new BlankEntry(),
-				new SelectEntry("Return to Game", () -> Game.setDisplay(null)),
-				new SelectEntry("World info", () -> Game.setDisplay(new WorldInfoDisplay())),
-				new SelectEntry("Options", () -> Game.setDisplay(new OptionsDisplay())),
-				new SelectEntry("Achievements", () -> Game.setDisplay(new AchievementsDisplay()))
+			new BlankEntry(),
+			new SelectEntry("Return to Game", () -> Game.setDisplay(null)),
+			new SelectEntry("World info", () -> Game.setDisplay(new WorldInfoDisplay())),
+			new SelectEntry("Options", () -> Game.setDisplay(new OptionsDisplay())),
+			new SelectEntry("Achievements", () -> Game.setDisplay(new AchievementsDisplay()))
 		));
 
 		entries.add(new SelectEntry("Save Game", () -> {
@@ -35,38 +34,30 @@ public class PauseDisplay extends Display {
 
 
 		entries.addAll(Arrays.asList(
-				new SelectEntry("Main Menu", () -> {
-					ArrayList<ListEntry> items = new ArrayList<>();
-					items.addAll(Arrays.asList(StringEntry.useLines(
-							"Are you sure you want to",
-							MyUtils.fromNetworkStatus("Exit the Game?", "Leave the Server?", "Close the Server?")
-							)));
+			new SelectEntry("Main Menu", () -> {
+				ArrayList<ListEntry> items = new ArrayList<>(Arrays.asList(StringEntry.useLines(Localization.getLocalized("Are you sure you want to exit the game?"))));
+				
+				items.add(new BlankEntry());
+				items.addAll(Arrays.asList(StringEntry.useLines(Color.RED, Localization.getLocalized("All unsaved progress will be lost"))));
+				items.add(new BlankEntry());
+				items.add(new BlankEntry());
+				items.add(new SelectEntry("Cancel", Game::exitDisplay));
 
-					int color = MyUtils.fromNetworkStatus(Color.RED, Color.GREEN, Color.TRANSPARENT);
-					items.addAll(Arrays.asList(StringEntry.useLines(color, "",
-							MyUtils.fromNetworkStatus("All unsaved progress", "Your progress", ""),
-							MyUtils.fromNetworkStatus("will be lost!", "will be saved.", ""),
-							""
-							)));
+				items.add(new SelectEntry(Localization.getLocalized("Quit without saving"), () -> Game.setDisplay(new TitleDisplay())));
 
-					items.add(new BlankEntry());
-					items.add(new SelectEntry("Cancel", Game::exitDisplay));
+				Game.setDisplay(new Display(false, true, new Menu.Builder(true, 8, RelPos.CENTER, items).createMenu()));
+			}),
 
-					items.add(new SelectEntry("Quit without saving", () -> Game.setDisplay(new TitleDisplay())));
+			new BlankEntry(),
 
-					Game.setDisplay(new Display(false, true, new Menu.Builder(true, 8, RelPos.CENTER, items).createMenu()));
-				}),
-
-				new BlankEntry(),
-
-				new StringEntry(upString, Color.GRAY),
-				new StringEntry(selectString, Color.GRAY)
-				));
+			new StringEntry(upString, Color.GRAY),
+			new StringEntry(selectString, Color.GRAY)
+		));
 
 		menus = new Menu[] {
-				new Menu.Builder(true, 4, RelPos.CENTER, entries)
-				.setTitle("Paused", Color.YELLOW)
-				.createMenu()
+			new Menu.Builder(true, 4, RelPos.CENTER, entries)
+			.setTitle("Paused", Color.YELLOW)
+			.createMenu()
 		};
 	}
 

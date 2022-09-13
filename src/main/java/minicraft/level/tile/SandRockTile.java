@@ -22,7 +22,7 @@ import minicraft.level.Level;
 /// this is the typical stone you see underground and on the surface, that gives coal.
 
 public class SandRockTile extends Tile {
-    private ConnectorSprite sprite = new ConnectorSprite(SandRockTile.class, new Sprite(58, 6, 3, 3, 1, 3), new Sprite(61, 8, 2, 2, 1, 3), new Sprite(61, 6, 2, 2, 1, 3));
+    private ConnectorSprite sprite = new ConnectorSprite(SandRockTile.class, new Sprite(58, 6, 3, 3, 1), new Sprite(61, 8, 2, 2, 1), new Sprite(61, 6, 2, 2, 1));
 
     private int coalLvl = 0;
 

@@ -1,4 +1,4 @@
-package minicraft.screen;
+package minicraft.util;
 
 import java.io.IOException;
 

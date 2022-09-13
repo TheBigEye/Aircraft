@@ -67,7 +67,6 @@ public class Renderer extends Game {
 	@SuppressWarnings("unused")
 	private static Ellipsis ellipsis = new SmoothEllipsis(new TickUpdater());
 
-    @SuppressWarnings("CallToPrintStackTrace")
 	public static SpriteSheet[] loadDefaultSpriteSheets() {
 		SpriteSheet itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background;
 		try {
@@ -99,7 +98,6 @@ public class Renderer extends Game {
 		return new SpriteSheet[] { itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background };
 	}
 
-    @SuppressWarnings("CallToPrintStackTrace")
 	public static SpriteSheet[] loadLegacySpriteSheets() {
 		SpriteSheet itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background;
 		try {
@@ -185,6 +183,8 @@ public class Renderer extends Game {
 			return;
 		}
 
+		Random rnd = new Random();
+
 		int xScroll = player.x - Screen.w / 2; // Scrolls the screen in the x axis.
 		int yScroll = player.y - (Screen.h - 8) / 2; // Scrolls the screen in the y axis.
 
@@ -198,7 +198,7 @@ public class Renderer extends Game {
 			for (int y = 0; y < 56; y++) {
 				for (int x = 0; x < 96; x++) {
 					// Creates the background for the sky (and dungeon) level:
-					screen.render(x * 8 - ((xScroll / 4) & 7), y * 8 - ((yScroll / 4) & 7), 2 + 25 * 32, 0, 1);
+					screen.render(x * 8 - ((xScroll / 4) & 7), y * 8 - ((yScroll / 4) & 7), rnd.nextInt(2) + 25 * 32, 0, 1);
 				}
 			}
 		}
@@ -496,20 +496,22 @@ public class Renderer extends Game {
 			}
 		}
 
-		renderRain(); // last layer
+		renderRain();
+
         // AirWizard bossbar
-		if (currentLevel == 4 && isMode("survival")) {
+		if (/*currentLevel == 4 &&*/ isMode("survival") && !player.isRemoved()){
             if (Settings.get("bossbar").equals("On screen")) {
-                if (!AirWizard.beaten) renderBossbar(AirWizard.length, "Air wizard");
-                else if (!AirWizardPhase2.beaten) renderBossbar(AirWizardPhase2.length, "Phase II");
-                else if (!AirWizardPhase3.beaten) renderBossbar(AirWizardPhase3.length, "Phase III");
+                if (AirWizard.active && (player.getLevel().depth == 1)) renderBossbar(AirWizard.length, "Air wizard");
+                else if (AirWizardPhase2.active && (player.getLevel().depth == 1)) renderBossbar(AirWizardPhase2.length, "Phase II");
+                else if (AirWizardPhase3.active && (player.getLevel().depth == 1)) renderBossbar(AirWizardPhase3.length, "Phase III");
             }
 		}
-		renderDebugInfo(); // top layer
+
+		renderDebugInfo();
 	}
 	
 	public static void renderRain() {
-
+		// THIS IS THE PROGRAMMER-HELL (ok no, this render the rain)
 		if (currentLevel == 3 && player.isRaining == true) {
 			if (renderRain) {
 				for (int x = 0; x < 200; x++) { // Loop however many times depending on the width (It's divided by 3 because the pixels are scaled up by 3)
@@ -518,21 +520,28 @@ public class Renderer extends Game {
 						if (dd < 0 && dd > -140) {
 							Random rnd = new Random();
 							screen.render(x * 16 - rnd.nextInt(8), y * 16 - rnd.nextInt(8), 14 + 24 * 32, 0, 3); // If the direction is upwards then render the squares going up
-						} 
-					}
-				}
-			} else {
-				for (int x = 0; x < 200; x++) { // Loop however many times depending on the width (It's divided by 3 because the pixels are scaled up by 3)
-					for (int y = 0; y < 75; y++) { // Loop however many times depending on the height (It's divided by 3 because the pixels are scaled up by 3)
-						int dd = (y + x % 2 * 2 + x / 3) - player.rainTick * 2; // Used as part of the positioning.
-						if (dd < 0 && dd > -140) {
+						} else {
 							Random rnd = new Random();
 							screen.render(x * 16 - rnd.nextInt(12), y * 16 - rnd.nextInt(12), 14 + 24 * 32, 0, 3); // If the direction is upwards then render the squares going up
-						} 
+						}
+					}
+				}
+			} else { // Makes a second rain layer for avoid visual issues with the screen refresh
+				for (int x = 0; x < 200; x++) {
+					for (int y = 0; y < 75; y++) {
+						int dd = (y + x % 2 * 2 + x / 3) - player.rainTick * 2;
+						if (dd < 0 && dd > -140) {
+							Random rnd = new Random();
+							screen.render(x * 16 - rnd.nextInt(12), y * 16 - rnd.nextInt(12), 14 + 24 * 32, 0, 3);
+						} else {
+							Random rnd = new Random();
+							screen.render(x * 16 - rnd.nextInt(8), y * 16 - rnd.nextInt(8), 14 + 24 * 32, 0, 3);
+						}
 					}
 				}
 			}
 		}
+		
 	}
 
 	public static void renderBossbar(int length, String title) {

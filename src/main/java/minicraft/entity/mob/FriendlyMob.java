@@ -70,23 +70,24 @@ public class FriendlyMob extends MobAi {
     public static boolean checkStartPos(Level level, int x, int y) { // Find a place to spawn the mob
         int r = (level.depth == -4 ? (Game.isMode("score") ? 22 : 15) : 13);
 
-        if (!MobAi.checkStartPos(level, x, y, 60, r))
+        if (!MobAi.checkStartPos(level, x, y, 60, r)) {
             return false;
+        }
 
         x = x >> 4;
         y = y >> 4;
 
         Tile t = level.getTile(x, y);
         if (level.depth == -4) {
-            if (t != Tiles.get("Obsidian"))
+            if (t != Tiles.get("Obsidian")) {
                 return false;
-        } else if (t != Tiles.get("Stone Door") && t != Tiles.get("Wood Door") && t != Tiles.get("Obsidian Door")
-                && t != Tiles.get("wheat") && t != Tiles.get("farmland")) {
-            // prevents mobs from spawning on lit tiles, farms, or doors (unless in the
-            // dungeons)
+            }
+        } else if (t != Tiles.get("Stone Door") && t != Tiles.get("Oak Door") && t != Tiles.get("Spruce Door") && t != Tiles.get("Birch Door") && t != Tiles.get("Obsidian Door") && t != Tiles.get("wheat") && t != Tiles.get("farmland")) {
+            // prevents mobs from spawning on lit tiles, farms, or doors (unless in the dungeons)
             return !level.isLight(x, y);
-        } else
+        } else {
             return false;
+        }
 
         return true;
     }

@@ -22,7 +22,7 @@ public abstract class Tile {
 	 * This is used by wall tiles to get what material they're made of.
 	 */
 	protected enum Material {
-		Wood(ToolType.Axe),
+		Oak(ToolType.Axe),
 		Spruce(ToolType.Axe),
 		Birch(ToolType.Axe),
 		Stone(ToolType.Pickaxe),
@@ -60,6 +60,9 @@ public abstract class Tile {
 	protected Sprite sprite;
 	protected ConnectorSprite csprite;
 	protected boolean connectsToSnow = false;
+	
+	protected boolean connectsToIce = false;
+	
 	protected boolean connectsToObsidian = false;
 
 	public boolean connectsToSkyGrass = false;

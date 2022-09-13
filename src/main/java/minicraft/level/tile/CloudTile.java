@@ -16,12 +16,11 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class CloudTile extends Tile {
-    private static ConnectorSprite sprite = new ConnectorSprite(CloudTile.class, new Sprite(0, 22, 3, 3, 1, 3),
-        new Sprite(3, 24, 2, 2, 1, 3), new Sprite(3, 22, 2, 2, 1)) {
+    private static ConnectorSprite sprite = new ConnectorSprite(CloudTile.class, new Sprite(0, 22, 3, 3, 1), new Sprite(3, 24, 2, 2, 1), new Sprite(3, 22, 2, 2, 1)) {
 
         @Override
-        public boolean connectsTo(Tile tile, boolean isSide) {
-            return tile != Tiles.get("Infinite fall") && tile != Tiles.get("Ferrosite");
+        public boolean connectsTo(Tile tile, boolean isSide) { // Cloud tile cannot connect with these tiles
+            return tile != Tiles.get("Infinite fall") && tile != Tiles.get("Ferrosite") && tile != Tiles.get("Cloud cactus");
         }
 
     };
@@ -56,11 +55,8 @@ public class CloudTile extends Tile {
                 */
                 if (Game.currentLevel == 4) {
 
-                    if (random.nextInt(3) == 1) {
-                        level.setTile(xt, yt, Tiles.get("Ferrosite"));
-                    } else {
-                        level.setTile(xt, yt, Tiles.get("Infinite fall"));
-                    }
+                    level.setTile(xt, yt, Tiles.get("Cloud Hole"));
+                    
 
                 } else {
                     level.setTile(xt, yt, Tiles.get("hole"));

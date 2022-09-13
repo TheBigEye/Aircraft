@@ -79,10 +79,6 @@ public class Fireball extends Entity implements ClientTickable {
         if (dir == Direction.UP) xt = 6;
         if (dir == Direction.DOWN) xt = 7;
 
-        int randX = random.nextInt(2);
-        int randY = random.nextInt(2);
-
         screen.render(x - 4, y - 4, xt + yt * 32, 0);
-        //level.add(new FireParticle(x - 1 + randX, y - 1 + randY));
     }
 }

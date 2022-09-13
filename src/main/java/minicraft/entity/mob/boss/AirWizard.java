@@ -27,6 +27,7 @@ public class AirWizard extends EnemyMob {
     }
 
     public static boolean beaten = false;
+    public static boolean active = true;
 
     public boolean secondform;
     private int attackDelay = 0;
@@ -50,6 +51,8 @@ public class AirWizard extends EnemyMob {
      */
     public AirWizard(boolean secondform) {
         super(secondform ? 2 : 1, sprites, secondform ? 6000 : 3500, false, 16 * 8, -1, 10, 50);
+        
+        active = true;
 
         this.secondform = secondform;
         if (secondform) speed = 3;
@@ -218,12 +221,11 @@ public class AirWizard extends EnemyMob {
         if (!secondform) {
             level.add(new AirWizardPhase2(1), x, y);
             Updater.notifyAll("Phase II");
-            if (!beaten)
-                Updater.notifyAll("Phase II", 200);
+            if (!beaten) Updater.notifyAll("Phase II", 200);
             beaten = true;
+            active = false;
 
         } else {
-
             level.add(new AirWizardPhase2(true), x, y);
             Updater.notifyAll("Phase II");
         }

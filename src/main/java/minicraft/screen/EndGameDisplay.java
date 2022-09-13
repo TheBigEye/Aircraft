@@ -23,7 +23,7 @@ public class EndGameDisplay extends Display {
 	private static String TITLE = "";
 	private static final Random random = new Random();
 
-	private static final String[] scoredItems = { "Wood", "Cloth", "Slime", "Bone", "Arrow", "Gunpowder", "Antidious" };
+	private static final String[] scoredItems = { "Oak Wood", "Cloth", "Slime", "Bone", "Arrow", "Gunpowder", "Antidious" };
 
 	String[] Titles = { "Game Over", "Win?", "Win!!", "Nice!", "The End!" };
 

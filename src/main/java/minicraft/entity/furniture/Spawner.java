@@ -25,6 +25,7 @@ import minicraft.item.ToolType;
 public class Spawner extends Furniture {
 
     private Random rnd = new Random();
+    private static int frame = 0;
 
     private static final int ACTIVE_RADIUS = 8 * 16;
     private static final int minSpawnInterval = 200;
@@ -66,7 +67,7 @@ public class Spawner extends Furniture {
      * @param m Mob which will be spawned.
      */
     public Spawner(MobAi m) {
-        super(getClassName(m.getClass()) + " Spawner", new Sprite(8, 26, 2, 2, 2), 7, 2);
+        super(getClassName(m.getClass()) + " Spawner", new Sprite(8, 26 + frame, 2, 2, 2), 7, 2);
         health = 100;
         initMob(m);
         resetSpawnInterval();
@@ -93,16 +94,17 @@ public class Spawner extends Furniture {
         spawnTick--;
         if (spawnTick <= 0) {
             int chance = (int) (minMobSpawnChance * Math.pow(level.mobCount, 2) / Math.pow(level.maxMobCount, 2)); // this forms a quadratic function that determines the mob spawn chance.
-            if (chance <= 0 || random.nextInt(chance) == 0)
-                trySpawn();
+            if (chance <= 0 || random.nextInt(chance) == 0) trySpawn();
             resetSpawnInterval();
         }
         
         // Fire particles
-        if (tickTime / 64 % 2 == 0 && Settings.get("particles").equals(true)) {
+        if (tickTime / 64 % 4 == 0 && Settings.get("particles").equals(true)) {
             int randX = rnd.nextInt(14);
             int randY = rnd.nextInt(14);
             level.add(new FireParticle(x - 10 + randX, y - 8 + randY));
+        }  else {
+        	frame = rnd.nextInt(2) * 2;
         }
 
         if (Settings.get("diff").equals("Peaceful")) {
@@ -121,10 +123,10 @@ public class Spawner extends Furniture {
      * Tries to spawn a new mob.
      */
     private void trySpawn() {
-        if (level == null)
-            return;
-        if (level.mobCount >= level.maxMobCount)
+        if (level == null) return;
+        if (level.mobCount >= level.maxMobCount) {
             return; // can't spawn more entities
+        }
 
         Player player = getClosestPlayer();
         if (player == null) {
@@ -192,16 +194,18 @@ public class Spawner extends Furniture {
             Sound.Furniture_spawner_hurt.play();
 
             int dmg;
-            if (Game.isMode("creative"))
+            if (Game.isMode("creative")) {
                 dmg = health;
-            else {
+            } else {
                 dmg = tool.level + random.nextInt(2);
 
-                if (tool.type == ToolType.Pickaxe)
+                if (tool.type == ToolType.Pickaxe) {
                     dmg += random.nextInt(5) + 2;
+                }
 
-                if (player.potioneffects.containsKey(PotionType.Haste))
+                if (player.potioneffects.containsKey(PotionType.Haste)) {
                     dmg *= 2;
+                }
             }
 
             health -= dmg;
@@ -228,14 +232,16 @@ public class Spawner extends Furniture {
 
         if (item instanceof PowerGloveItem && Game.isMode("creative")) {
             level.remove(this);
-            if (!(player.activeItem instanceof PowerGloveItem))
+            if (!(player.activeItem instanceof PowerGloveItem)) {
                 player.getInventory().add(0, player.activeItem);
+            }
             player.activeItem = new FurnitureItem(this);
             return true;
         }
 
-        if (item == null)
+        if (item == null) {
             return use(player);
+        }
 
         return false;
     }

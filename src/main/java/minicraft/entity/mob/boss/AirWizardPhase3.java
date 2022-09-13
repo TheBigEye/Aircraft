@@ -28,6 +28,7 @@ public class AirWizardPhase3 extends EnemyMob {
     }
 
     public static boolean beaten = false;
+    public static boolean active = true;
 
     public boolean secondform;
     private int attackDelay = 0;
@@ -51,6 +52,8 @@ public class AirWizardPhase3 extends EnemyMob {
      */
     public AirWizardPhase3(boolean secondform) {
         super(secondform ? 2 : 1, sprites, secondform ? 2000 : 2000, false, 16 * 8, -1, 10, 50);
+        
+        active = true;
 
         this.secondform = secondform;
         if (secondform) speed = 3;
@@ -211,24 +214,26 @@ public class AirWizardPhase3 extends EnemyMob {
             
 			// Achievement:
 			AchievementsDisplay.setAchievement("minicraft.achievement.airwizard", true);
-            if (!beaten)
-                Updater.notifyAll("Well played!", 200);
+            if (!beaten) Updater.notifyAll("Well played!", 200);
             beaten = true;
+            active = false;
 
         } else {
             Updater.notifyAll("Well played!, again");
 
 			// Second Achievement:
 			AchievementsDisplay.setAchievement("minicraft.achievement.second_airwizard", true);
-            if (!(boolean) Settings.get("unlockedskin"))
+			
+            if (!(boolean) Settings.get("unlockedskin")) {
                 Updater.notifyAll("A costume lies on the ground...", -200);
+            }
+            
             Settings.set("unlockedskin", true);
             new Save();
 
         }
 
         super.die(); // Calls the die() method in EnemyMob.java
-
     }
 
     public int getMaxLevel() {

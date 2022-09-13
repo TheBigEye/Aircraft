@@ -11,9 +11,6 @@ public class Recipe {
     private int amount;
     private boolean canCraft; // checks if the player can craft the recipe
 
-    // Renowable items list
-    private static final String[] renewableItems = { "AlAzift" };
-
     public Recipe(String createdItem, String... reqItems) {
         canCraft = false;
         String[] sep = createdItem.split("_");
@@ -33,8 +30,7 @@ public class Recipe {
                 }
             }
 
-            if (added)
-                continue;
+            if (added) continue;
             costs.put(curItem, amt);
         }
     }

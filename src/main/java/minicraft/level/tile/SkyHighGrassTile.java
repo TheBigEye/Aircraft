@@ -13,22 +13,20 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class SkyHighGrassTile extends Tile {
-    private static ConnectorSprite sprite = new ConnectorSprite(SkyHighGrassTile.class, new Sprite(51, 6, 3, 3, 1, 3), new Sprite(54, 6, 2, 2, 1)) {
+    private static ConnectorSprite sprite = new ConnectorSprite(SkyHighGrassTile.class, new Sprite(51, 6, 3, 3, 1), new Sprite(54, 6, 2, 2, 1)) {
 
-        @Override
-        public boolean connectsTo(Tile tile, boolean isSide) {
-            if (!isSide) {
-                return true;
-            }
-            return tile.connectsToSkyHighGrass;
-        }
+		@Override
+		public boolean connectsTo(Tile tile, boolean isSide) {
+			if (!isSide)
+				return true;
+			return tile.connectsToSkyHighGrass;
+		}
     };
 
     protected SkyHighGrassTile(String name) {
-        super(name, sprite);
-        csprite.sides = csprite.sparse;
+		super(name, sprite);
+		csprite.sides = csprite.sparse;
         connectsToSkyHighGrass = true;
-        connectsToSkyGrass = true;
         maySpawn = true;
     }
 

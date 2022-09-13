@@ -55,7 +55,7 @@ public class Settings {
         options.get("bossbar").setSelection(0);
         
         options.put("particles", new BooleanEntry("Particles", true));
-        options.put("shadows", new BooleanEntry("Sahdows", true));
+        options.put("shadows", new BooleanEntry("Shadows", true));
         
         
   
@@ -75,8 +75,7 @@ public class Settings {
 	}
 
 	// Return the ArrayEntry object associated with the given option name.
-	@SuppressWarnings("rawtypes")
-	public static ArrayEntry getEntry(String option) {
+	public static ArrayEntry<?> getEntry(String option) {
 		return options.get(option.toLowerCase());
 	}
 
@@ -103,16 +102,10 @@ public class Settings {
 			return 60;
 		}
 
-		if (hz == DisplayMode.REFRESH_RATE_UNKNOWN) {
-			return 60;
-		}
-		if (hz > 300) {
-			return 60;
-		}
-		if (10 > hz) {
-			return 60;
-		}
-
+		if (hz == DisplayMode.REFRESH_RATE_UNKNOWN) return 60;
+		if (hz > 300) return 60;
+		if (10 > hz) return 60;
+		
 		return hz;
 	}
 }

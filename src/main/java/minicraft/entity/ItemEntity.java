@@ -150,7 +150,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 			if (time / 6 % 2 == 0) return;
 		}
 		
-        if ((boolean) Settings.get("shadows")  == true) {
+        if ((boolean) Settings.get("shadows") == true) {
             item.sprite.render(screen, x-4, y - 4, 4, -1, Color.BLACK); // item shadow uses black color
         }
 

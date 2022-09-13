@@ -12,6 +12,6 @@ public class BooleanEntry extends ArrayEntry<Boolean> {
 
     @Override
     public String toString() {
-        return getLabel() + ": " + (getValue() ? Localization.getLocalized("On") : Localization.getLocalized("Off"));
+        return Localization.getLocalized(getLabel()) + ": " + (getValue() ? Localization.getLocalized("On") : Localization.getLocalized("Off"));
     }
 }

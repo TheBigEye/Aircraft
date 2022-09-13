@@ -17,7 +17,7 @@ public class FloorTile extends Tile {
 
 	protected FloorTile(Material type) {
 		super((
-				type == Material.Wood ? "Wood Planks" : 
+				type == Material.Oak ? "Oak Planks" : 
 				type == Material.Spruce ? "Spruce Planks" : 
 				type == Material.Birch ? "Birch Planks" : 
 				type == Material.Holy ? "Holy Bricks" : 
@@ -34,12 +34,12 @@ public class FloorTile extends Tile {
 		this.type = type;
 		maySpawn = true;
 		switch (type) {
-		case Wood: sprite = new Sprite(5, 14, 2, 2, 1, 0); break;
-		case Stone: sprite = new Sprite(15, 14, 2, 2, 1, 0); break;
-		case Obsidian: sprite = new Sprite(25, 14, 2, 2, 1, 0); break;
-		case Spruce: sprite = new Sprite(35, 14, 2, 2, 1, 0); break;
-		case Birch: sprite = new Sprite(45, 14, 2, 2, 1, 0); break;
-		case Holy: sprite = new Sprite(55, 14, 2, 2, 1, 0); break;
+			case Oak: sprite = new Sprite(5, 14, 2, 2, 1, 0); break;
+			case Stone: sprite = new Sprite(15, 14, 2, 2, 1, 0); break;
+			case Obsidian: sprite = new Sprite(25, 14, 2, 2, 1, 0); break;
+			case Spruce: sprite = new Sprite(35, 14, 2, 2, 1, 0); break;
+			case Birch: sprite = new Sprite(45, 14, 2, 2, 1, 0); break;
+			case Holy: sprite = new Sprite(55, 14, 2, 2, 1, 0); break;
 		}
 		super.sprite = sprite;
 	}
@@ -52,14 +52,14 @@ public class FloorTile extends Tile {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 
 					if (level.depth == 1) {
-						level.setTile(xt, yt, Tiles.get("Cloud"));
+						level.setTile(xt, yt, Tiles.get("Cloud hole"));
 					} else {
 						level.setTile(xt, yt, Tiles.get("hole"));
 					}
 
 					Item drop;
 					switch (type) {
-					case Wood: drop = Items.get("Plank"); break;
+					case Oak: drop = Items.get("Oak Plank"); break;
 					case Spruce: drop = Items.get("Spruce Plank"); break;
 					case Birch: drop = Items.get("Birch Plank"); break;
 					default: drop = Items.get(type.name() + " Brick"); break;

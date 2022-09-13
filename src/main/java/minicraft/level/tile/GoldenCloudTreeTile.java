@@ -130,7 +130,7 @@ public class GoldenCloudTreeTile extends Tile {
 
         level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
         if (damage >= treeHealth) {
-            level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Wood"));
+            level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Oak Wood"));
             level.setTile(x, y, Tiles.get("Sky High Grass"));
             
             AchievementsDisplay.setAchievement("minicraft.achievement.woodcutter", true);

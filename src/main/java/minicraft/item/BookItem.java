@@ -8,8 +8,8 @@ import minicraft.entity.mob.Player;
 import minicraft.gfx.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
-import minicraft.screen.BookData;
 import minicraft.screen.BookDisplay;
+import minicraft.util.BookData;
 
 public class BookItem extends Item {
 

@@ -35,7 +35,7 @@ public class Tnt extends Furniture implements ActionListener {
 	private Timer explodeTimer;
 	private Level levelSave;
 
-	private final String[] explosionBlacklist = new String[] { "hard rock", "obsidian wall", "raw obsidian", "stairs up", "stairs down" };
+	private final String[] explosionBlacklist = new String[] { "hard rock", "obsidian wall", "raw obsidian", "stairs up", "stairs down", "infinite fall"};
 
 	/**
 	 * Creates a new tnt furniture.
@@ -145,16 +145,16 @@ public class Tnt extends Furniture implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		explodeTimer.stop();
 		int xt = x >> 4;
-				int yt = (y - 2) >> 4;
+		int yt = (y - 2) >> 4;
 
-				if (levelSave.depth != 1 && levelSave.depth != 2) {
-					levelSave.setAreaTiles(xt, yt, 1, Tiles.get("hole"), 0, explosionBlacklist);
+		if (levelSave.depth != 1 && levelSave.depth != 2) {
+			levelSave.setAreaTiles(xt, yt, 1, Tiles.get("hole"), 0, explosionBlacklist);
 
-				} else {
-					levelSave.setAreaTiles(xt, yt, 1, Tiles.get("Infinite Fall"), 0, explosionBlacklist);
-				}
+		} else {
+			levelSave.setAreaTiles(xt, yt, 1, Tiles.get("Ferrosite"), 0, explosionBlacklist);
+		}
 
-				levelSave = null;
+		levelSave = null;
 	}
 
 	@Override

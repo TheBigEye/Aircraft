@@ -28,7 +28,7 @@ public class SnowTile extends Tile {
         steppedOn_sprite = new Sprite(pixels);
     }
 
-    private ConnectorSprite sprite = new ConnectorSprite(SnowTile.class, new Sprite(0, 10, 3, 3, 1, 3), normal_sprite) {
+    private ConnectorSprite sprite = new ConnectorSprite(SnowTile.class, new Sprite(0, 10, 3, 3, 1), normal_sprite) {
 
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) {

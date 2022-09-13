@@ -17,6 +17,7 @@ import minicraft.core.Game;
 import minicraft.core.Renderer;
 import minicraft.core.World;
 import minicraft.core.io.InputHandler;
+import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
 import minicraft.gfx.Color;
 import minicraft.gfx.Font;
@@ -28,6 +29,7 @@ import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.LinkEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.tutorial.TutorialDisplay;
+import minicraft.util.BookData;
 
 public class TitleDisplay extends Display {
 	private static final Random random = new Random();
@@ -259,7 +261,7 @@ public class TitleDisplay extends Display {
 			}
 
 			// Show the author's name below the options
-			Font.draw("Mod by TheBigEye", screen, 300, Screen.h - 10, Color.WHITE);
+			Font.draw(Localization.getLocalized("Mod by TheBigEye"), screen, 298, Screen.h - 10, Color.WHITE);
 		}
 
 		for (int x = 0; x < 200; x++) { // Loop however many times depending on the width (It's divided by 3 because the pixels are scaled up by 3)

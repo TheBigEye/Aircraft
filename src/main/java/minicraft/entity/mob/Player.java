@@ -156,6 +156,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public int shirtColor = Color.get(1, 51, 51, 0); // Player shirt color.
 
 	public boolean isFishing = false;
+	public boolean isMoving = false;
 	public int maxFishingTicks = 120;
 	public int fishingTicks = maxFishingTicks;
 	public int fishingLevel;
@@ -344,7 +345,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         
         if (rainTickCount == 0) isRaining = false;
 
-		if (nightTickCount == 16000) nightCount +=1;
+		if (nightTickCount == 16000) { 
+			nightCount +=1;
+		}
         
         if (nightCount == 4) isNiceNight = true;
 		if (nightCount < 4) isNiceNight = false;
@@ -424,7 +427,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		}
 
 		if (isSwimming()) {
-			if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
+			if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true) && isMoving) {
 
 				int randX = rnd.nextInt(10);
 				int randY = rnd.nextInt(9);
@@ -441,14 +444,14 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 		// Display Ferrosite cloud particles when walk
 		if (level.getTile(x / 16, y / 16) == Tiles.get("Ferrosite")) {
-			if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
-				int randX = rnd.nextInt(12);
-				int randY = rnd.nextInt(12);
+			if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true) && isMoving) {
+                int randX = random.nextInt(10);
+                int randY = random.nextInt(9);
 				level.add(new FerrositeParticle(x - 8 + randX, y - 8 + randY));
 			}
-			moveSpeed = 3;
+			moveSpeed = 2;
 		} else {
-
+			// Avoid the speed potions effects when the player is in Ferrosite cloud
 			if (potioneffects.containsKey(PotionType.Speed) || potioneffects.containsKey(PotionType.xSpeed)) {
 				moveSpeed = 2;
 			} else {
@@ -457,10 +460,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		}
 
 		if (level.getTile(x / 16, y / 16) == Tiles.get("Cloud")) {
-
-			if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
-				int randX = rnd.nextInt(12);
-				int randY = rnd.nextInt(12);
+			if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true) && isMoving) {
+                int randX = random.nextInt(10);
+                int randY = random.nextInt(9);
 				level.add(new CloudParticle(x - 8 + randX, y - 8 + randY));
 			}
 		}
@@ -658,10 +660,21 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
         	// Move while we are not falling.
         	if (onFallDelay <= 0) {
+        		
+        		// Get the key and move the player
         		if (input.getKey("move-up").down) vec.y--;
         		if (input.getKey("move-down").down) vec.y++;
         		if (input.getKey("move-left").down) vec.x--;
         		if (input.getKey("move-right").down) vec.x++;
+        		
+        		// Check if the player is in movement
+        		if (input.getKey("move-up").down) isMoving = true; 
+        		else if (input.getKey("move-down").down) isMoving = true; 
+        		else if (input.getKey("move-left").down) isMoving = true; 
+        		else if (input.getKey("move-right").down) isMoving = true;
+        		else {
+        			isMoving = false;
+        		}
         	}
 
         	// Executes if not saving; and... essentially halves speed if out of stamina.

@@ -35,40 +35,40 @@ public class WallTile extends Tile {
 
         this.type = type;
         switch (type) {
-	        case Wood:
+	        case Oak:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		 new Sprite(0, 14, 3, 3, 1, 3),
-	            		 new Sprite(3, 14, 2, 2, 1, 3),
+	            		 new Sprite(0, 14, 3, 3, 1),
+	            		 new Sprite(3, 14, 2, 2, 1),
 	                     new Sprite(1, 15, 2, 2, 1, 0, true));
 	            break;
 	        case Stone:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		 new Sprite(10, 14, 3, 3, 1, 3),
-	            		 new Sprite(13, 14, 2, 2, 1, 3),
+	            		 new Sprite(10, 14, 3, 3, 1),
+	            		 new Sprite(13, 14, 2, 2, 1),
 	                     new Sprite(11, 15, 2, 2, 1, 0, true));
 	            break;
 	        case Obsidian:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		 new Sprite(20, 14, 3, 3, 1, 3),
-	            		 new Sprite(23, 14, 2, 2, 1, 3),
+	            		 new Sprite(20, 14, 3, 3, 1),
+	            		 new Sprite(23, 14, 2, 2, 1),
 	                     new Sprite(21, 15, 2, 2, 1, 0, true));
 	            break;
 	        case Spruce:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		 new Sprite(30, 14, 3, 3, 1, 3),
-	            		 new Sprite(33, 14, 2, 2, 1, 3),
+	            		 new Sprite(30, 14, 3, 3, 1),
+	            		 new Sprite(33, 14, 2, 2, 1),
 	                     new Sprite(31, 15, 2, 2, 1, 0, true));
 	            break;
 	        case Birch:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		 new Sprite(40, 14, 3, 3, 1, 3),
-	            		 new Sprite(43, 14, 2, 2, 1, 3),
+	            		 new Sprite(40, 14, 3, 3, 1),
+	            		 new Sprite(43, 14, 2, 2, 1),
 	                     new Sprite(41, 15, 2, 2, 1, 0, true));
 	            break;
 	        case Holy:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		 new Sprite(50, 14, 3, 3, 1, 3),
-	            		 new Sprite(53, 14, 2, 2, 1, 3),
+	            		 new Sprite(50, 14, 3, 3, 1),
+	            		 new Sprite(53, 14, 2, 2, 1),
 	                     new Sprite(51, 15, 2, 2, 1, 0, true));
 	            break;
         }
@@ -131,7 +131,7 @@ public class WallTile extends Tile {
             String tilename = "";
 
             switch (type) {
-	            case Wood: itemName = "Plank"; tilename = "Wood Planks"; break;
+	            case Oak: itemName = "Oak Plank"; tilename = "Oak Planks"; break;
 	            case Stone: itemName = "Stone Brick"; tilename = "Stone Bricks"; break;
 	            case Obsidian: itemName = "Obsidian Brick"; tilename = "Obsidian"; break;
 	            case Spruce: itemName = "Spruce Plank"; tilename = "Spruce Planks"; break;

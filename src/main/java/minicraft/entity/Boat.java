@@ -85,7 +85,6 @@ public class Boat extends Entity {
     }
     
 
-    
     @Override
     public void tick() {
     	

@@ -6,6 +6,7 @@ import minicraft.core.io.Localization;
 import minicraft.gfx.Color;
 import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
+import minicraft.util.MapData;
 
 public class MapDisplay extends Display {
 

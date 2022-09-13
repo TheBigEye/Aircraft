@@ -1,5 +1,6 @@
 package minicraft.entity.mob.villager;
 
+import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.entity.mob.EnemyMob;
 import minicraft.gfx.MobSprite;
@@ -27,15 +28,17 @@ public class OldGolem extends EnemyMob {
     @Override
     public void tick() {
         super.tick();
+        
+        if (Game.isMode("creative")) {
+        	return;
+        }
     }
 
     public void die() {
-        if (Settings.get("diff").equals("Easy"))
-            dropItem(2, 4, Items.get("gear"));
-        if (Settings.get("diff").equals("Normal"))
-            dropItem(2, 3, Items.get("gear"));
-        if (Settings.get("diff").equals("Hard"))
-            dropItem(1, 2, Items.get("gear"));
+    	if (Settings.get("diff").equals("Peaceful")) dropItem(2, 2, Items.get("gear"));
+        if (Settings.get("diff").equals("Easy")) dropItem(2, 2, Items.get("gear"));
+        if (Settings.get("diff").equals("Normal")) dropItem(1, 2, Items.get("gear"));
+        if (Settings.get("diff").equals("Hard")) dropItem(1, 1, Items.get("gear"));
 
         if (random.nextInt(60) == 2) {
             level.dropItem(x, y, Items.get("iron"));

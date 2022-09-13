@@ -86,7 +86,7 @@ public class Cleric extends VillagerMob {
 
 		// ???
 		if (time.getMonth() == Month.MAY) {
-			ClericTrdes.add(new Recipe("Wood_16", new String[] { "Iron_1" }));
+			ClericTrdes.add(new Recipe("Oak Wood_16", new String[] { "Iron_1" }));
 			ClericTrdes.add(new Recipe("Dirt_16", new String[] { "Iron_1" }));
 			ClericTrdes.add(new Recipe("Stone_8", new String[] { "Gold_1" }));
 
@@ -125,7 +125,7 @@ public class Cleric extends VillagerMob {
 
 		// ???
 		if (time.getMonth() == Month.AUGUST) {
-			ClericTrdes.add(new Recipe("Wood_16", new String[] { "Iron_1" }));
+			ClericTrdes.add(new Recipe("Birch Wood_16", new String[] { "Iron_1" }));
 			ClericTrdes.add(new Recipe("Dirt_16", new String[] { "Iron_1" }));
 			ClericTrdes.add(new Recipe("Stone_8", new String[] { "Gold_1" }));
 
@@ -135,7 +135,7 @@ public class Cleric extends VillagerMob {
 		}
 
 		if (time.getMonth() == Month.SEPTEMBER) {
-			ClericTrdes.add(new Recipe("Wood_16", new String[] { "Iron_1" }));
+			ClericTrdes.add(new Recipe("Spruce Wood_16", new String[] { "Iron_1" }));
 			ClericTrdes.add(new Recipe("Dirt_16", new String[] { "Iron_1" }));
 			ClericTrdes.add(new Recipe("Stone_8", new String[] { "Gold_1" }));
 
@@ -145,7 +145,7 @@ public class Cleric extends VillagerMob {
 		}
 
 		if (time.getMonth() == Month.OCTOBER) {
-			ClericTrdes.add(new Recipe("Wood_16", new String[] { "Iron_1" }));
+			ClericTrdes.add(new Recipe("Oak Wood_16", new String[] { "Iron_1" }));
 			ClericTrdes.add(new Recipe("Dirt_16", new String[] { "Iron_1" }));
 			ClericTrdes.add(new Recipe("Stone_8", new String[] { "Gold_1" }));
 
@@ -155,7 +155,7 @@ public class Cleric extends VillagerMob {
 		}
 
 		if (time.getMonth() == Month.NOVEMBER) {
-			ClericTrdes.add(new Recipe("Wood_16", new String[] { "Iron_1" }));
+			ClericTrdes.add(new Recipe("Birch Wood_16", new String[] { "Iron_1" }));
 			ClericTrdes.add(new Recipe("Dirt_16", new String[] { "Iron_1" }));
 			ClericTrdes.add(new Recipe("Stone_8", new String[] { "Gold_1" }));
 
@@ -165,7 +165,7 @@ public class Cleric extends VillagerMob {
 		}
 
 		if (time.getMonth() == Month.DECEMBER) {
-			ClericTrdes.add(new Recipe("Wood_16", new String[] { "Iron_1" }));
+			ClericTrdes.add(new Recipe("Spruce Wood_16", new String[] { "Iron_1" }));
 			ClericTrdes.add(new Recipe("Dirt_16", new String[] { "Iron_1" }));
 			ClericTrdes.add(new Recipe("Stone_8", new String[] { "Gold_1" }));
 

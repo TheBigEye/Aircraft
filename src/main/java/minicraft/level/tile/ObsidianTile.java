@@ -13,7 +13,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class ObsidianTile extends Tile {
-    private static ConnectorSprite sprite = new ConnectorSprite(ObsidianTile.class, new Sprite(30, 6, 3, 3, 1, 3), new Sprite(33, 6, 2, 2, 1)) {
+    private static ConnectorSprite sprite = new ConnectorSprite(ObsidianTile.class, new Sprite(30, 6, 3, 3, 1), new Sprite(33, 6, 2, 2, 1)) {
         public boolean connectsTo(Tile tile, boolean isSide) {
             if (!isSide) {
                 return true;
@@ -50,12 +50,16 @@ public class ObsidianTile extends Tile {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
                     Sound.Tile_generic_hurt.play();
                     return true;
+                } else {
+                	Sound.Tile_generic_hurt.play();
                 }
             }
             if (tool.type == ToolType.Hoe) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
                     Sound.Tile_generic_hurt.play();
                     return true;
+                } else {
+                	Sound.Tile_generic_hurt.play();
                 }
             }
             if (tool.type == ToolType.Pickaxe && tool.level != 4) {

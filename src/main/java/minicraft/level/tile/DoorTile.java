@@ -22,7 +22,7 @@ public class DoorTile extends Tile {
         super(type.name() + " Door", (Sprite) null);
         this.type = type;
         switch (type) {
-	        case Wood:
+	        case Oak:
 	            closedSprite = new Sprite(5, 16, 2, 2, 1);
 	            openSprite = new Sprite(3, 16, 2, 2, 1);
 	            break;

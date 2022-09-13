@@ -117,12 +117,12 @@ public class World extends Game {
 		Logger.trace("Initializing world non-client...");
 
 		if (WorldSelectDisplay.hasLoadedWorld()) {
-			Load loader = new Load(WorldSelectDisplay.getWorldName());
+			new Load(WorldSelectDisplay.getWorldName());
 		} else {
 
 			worldSize = (Integer) Settings.get("size");
 
-            seed = WorldGenDisplay.getSeed();
+            seed = WorldGenDisplay.getSeed().orElse(new Random().nextLong());
 			random = new Random(seed);
 
 			float loadingInc = 100f / (maxLevelDepth - minLevelDepth + 1); // The .002 is for floating point errors, in case they occur.
@@ -145,7 +145,7 @@ public class World extends Game {
 
 			Level level = levels[currentLevel]; // Sets level to the current level (3; surface)
 			Updater.pastDay1 = false;
-			player.findStartPos(level, WorldGenDisplay.getSeed()); // Finds the start level for the player
+			player.findStartPos(level, seed); // Finds the start level for the player
 			level.add(player);
 		}
 
@@ -184,7 +184,6 @@ public class World extends Game {
 			onChangeAction = null;
 		}
 
-
 		levels[currentLevel].remove(player); // Removes the player from the current level.
 
 		int nextLevel = currentLevel + dir;
@@ -197,7 +196,6 @@ public class World extends Game {
 		player.y = (player.y >> 4) * 16 + 8; // Sets the player's y coord (to center yourself on the stairs)
 
 		levels[currentLevel].add(player); // Adds the player to the level.
-
 
 		if (!Game.isMode("creative")) {
 			if (currentLevel == 0) {

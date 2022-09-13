@@ -1,6 +1,6 @@
 5,steak,6
 5,cooked pork,6
-4,wood,20
+4,oak wood,20
 4,wool,12
 2,coal,4
 5,gem,7

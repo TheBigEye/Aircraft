@@ -18,6 +18,7 @@ import minicraft.gfx.Color;
 import minicraft.gfx.Font;
 import minicraft.gfx.Screen;
 import minicraft.screen.Menu.Builder;
+import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.InputEntry;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
@@ -70,8 +71,9 @@ public class WorldEditDisplay extends Display {
 				}, false) {
 					@Override
 					public int getColor(boolean isSelected) {
-						if (isSelected)
+						if (isSelected) {
 							return action.color;
+						}
 						return super.getColor(false);
 					}
 				});
@@ -174,9 +176,10 @@ public class WorldEditDisplay extends Display {
 		ArrayList<ListEntry> entries = new ArrayList<>();
 		if (action == Action.Delete) {
 			entries.addAll(Arrays.asList(
-					new StringEntry("Are you sure you want to delete", action.color),
-					new StringEntry("\"" + worldName + "\"?", Color.tint(action.color, 1, true)),
-					new StringEntry("This can not be undone!", action.color)
+				new StringEntry(Localization.getLocalized("Are you sure you want to delete"), action.color),
+				new StringEntry("\"" + worldName + "\"?", Color.tint(action.color, 1, true)),
+				new StringEntry(Localization.getLocalized("This can not be undone!"), action.color),
+				new BlankEntry()
 			));
 		} else {
 			List<String> names = WorldSelectDisplay.getWorldNames();
@@ -185,14 +188,14 @@ public class WorldEditDisplay extends Display {
 				names.remove(worldName);
 			}
 
-			entries.add(new StringEntry("New World Name:", action.color));
+			entries.add(new StringEntry(Localization.getLocalized("New World Name:"), action.color));
 			entries.add(WorldGenDisplay.makeWorldNameInput("", names, worldName));
 		}
 
 		entries.addAll(Arrays.asList(StringEntry.useLines(Color.WHITE, "",
-				Game.input.getMapping("select") + " to confirm",
-				Game.input.getMapping("exit") + " to cancel"
-		)));
+				Game.input.getMapping("select") + Localization.getLocalized(" to confirm"),
+				Game.input.getMapping("exit") + Localization.getLocalized(" to cancel"))
+		));
 
 		return entries;
 	}

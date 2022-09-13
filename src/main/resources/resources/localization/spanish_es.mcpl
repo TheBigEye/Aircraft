@@ -137,10 +137,10 @@ Come todo lo sea comestible.
 
 # AchievementsDisplay.java
 Earned!
-Ganado!
+Obtenido!
 
 Not Earned
-No Ganado
+No Obtenido
 
 Achievements Score:
 Puntaje:
@@ -253,45 +253,45 @@ Libro del Aire
 # BucketItem.java
 
 Empty Bucket
-Cubo vacio
+Cubeta vacia
 
 Water Bucket
-Cubo de Agua
+Cubeta de Agua
 
 Lava Bucket
-Cubo de Lava
+Cubeta de Lava
 
  Bucket
- Cubo
+ Cubeta
  
 # ClothingItem.java
 
 Red Clothes
-Ropa Roja
+Traje Rojo
 
 Blue Clothes
-Ropa Azul
+Traje Azul
 
 Green Clothes
-Ropa Verde
+Traje Verde
 
 Yellow Clothes
-Ropa Amarilla
+Traje Amarillo
 
 Black Clothes
-Ropa Negra
+Traje Negro
 
 Orange Clothes
-Ropa Anaranjada
+Traje Anaranjada
 
 Purple Clothes
-Ropa Morado
+Traje Morado
 
 Cyan Clothes
-Ropa Turquesa
+Traje Turquesa
 
 Reg Clothes
-Ropa Regular
+Traje Regular
 
 # FoodItem.java
 
@@ -561,8 +561,8 @@ Tijeras
 
 # StackableItem.java
 
-Wood
-Madera
+Oak Wood
+Madera de Roble
 
 Spruce Wood
 Madera de Abeto
@@ -585,8 +585,8 @@ Trigo
 Key
 Llave
 
-arrow
-flecha
+Arrow
+Flecha
 
 Icicle
 Carambano
@@ -597,13 +597,13 @@ Palo
 Bowl
 Tazon
 
-string
-cuerda
+String
+Cuerda
 
-feather
+Feather
 Pluma
 
-egg
+Egg
 Huevo
 
 Stone
@@ -705,17 +705,17 @@ Polvora
 Slime
 Slime
 
-glass
+Glass
 Vidrio
 
-cloth
-tela
+Cloth
+Tela
 
-gem
-gema
+Gem
+Gema
 
-emerald
-esmeralda
+Emerald
+Esmeralda
 
 Scale
 Escama
@@ -803,8 +803,8 @@ Piedra natural
 Natural Hard Rock
 Piedra natural dura
 
-Plank
-Tablon
+Oak Plank
+Tablon de Roble
 
 Spruce Plank
 Tablon de Abeto
@@ -812,8 +812,8 @@ Tablon de Abeto
 Birch Plank
 Tablon de Abedul
 
-Plank Wall
-Muro de Tablon
+Oak Wall
+Muro de Roble
 
 Spruce Wall
 Muro de Abeto
@@ -821,8 +821,8 @@ Muro de Abeto
 Birch Wall
 Muro de Abedul
 
-Wood Door
-Puerta de Madera
+Oak Door
+Puerta de Roble
 
 Spruce Door
 Puerta de Abeto
@@ -1014,7 +1014,7 @@ FishingRod
 Caña De Pescar
 
 Claymore
-Casa antigua
+Claymore
 
 Shears
 Tijeras
@@ -1038,14 +1038,14 @@ Antorcha
 Gem Ore
 Mena de Gema
 
-Wood Planks
-Tablón de Madera
+Oak Planks
+Tablon de roble
 
 Spruce Planks
-Tablón de abeto
+Tablon de abeto
 
 Birch Planks
-Tablón de abedul
+Tablon de abedul
 
 Stone Bricks
 Ladrillo de piedra
@@ -1053,8 +1053,8 @@ Ladrillo de piedra
 Obsidian
 Obsidiana
 
-Wood Wall
-Muro de Madera
+Oak Wall
+Muro de roble
 
 Spruce Wall
 Muro de abeto
@@ -1063,7 +1063,7 @@ Birch Wall
 Muro de abedul
 
 Grass
-Pasto
+Cesped
 
 Mycelium
 Micelio
@@ -1093,7 +1093,7 @@ Tree
 Arbol
 
 Tree Sapling
-Arbol joven
+Brote de Arbol
 
 Sand
 Arena
@@ -1102,7 +1102,7 @@ Cactus
 Cactus
 
 Cactus Sapling
-Cactus Joven
+Brote de Cactus
 
 Lava
 Lava
@@ -1132,7 +1132,7 @@ Cloud
 Nube
 
 Cloud Cactus
-Nubes de Cactus
+Cactus de Nube
 
 # OreTile.java
 
@@ -1160,7 +1160,7 @@ Mena
 # MinicraftClient.java
 
 host not found
-alojamiento no encontrado
+Host no encontrado
 
 unable to get localhost address
 incapaz de obtener la direccion localhost
@@ -1196,7 +1196,7 @@ There is nothing of use here.
 No hay nada de uso aqui.
 
 Still nothing... :P
-Todavía nada... :P
+Todavia nada... :P
 
 # CraftingMenu.java
 
@@ -1335,6 +1335,9 @@ Mundo
 May take a while, be patient
 Puede tardar un poco, tenga paciencia
 
+Level 2
+Nivel 2
+
 Level 1
 Nivel 1
 
@@ -1431,14 +1434,17 @@ Presione
 
 # OptionsMenu.java
 
-Change Key Bindings
-Cambiar Atajos
-
 Options
 Opciones
 
+Change Key Bindings
+Atajos de teclas
+
 Change language
 Cambiar idioma
+
+Video options
+Opciones de video
 
 Texture packs
 Paquetes de texturas
@@ -1446,19 +1452,13 @@ Paquetes de texturas
 Open Game Folder
 Abrir carpeta del juego
 
-# PauseMenu.java
+# PauseDisplay.java
 
 Return to Game
 Regresar al Juego
 
 Options
 Opciones
-
-Info
-Informacion
-
-Make World Multiplayer
-Hacer Mundo Multijugador
 
 Achievements
 Logros
@@ -1484,13 +1484,23 @@ Pausado
 Main Menu
 Menu Principal
 
-# PauseDisplay.java
-
 Yes
 Si
 
 No
 No
+
+Cancel
+Cancelar
+
+Are you sure you want to exit the game?
+¿Estas seguro de que quieres salir del juego?
+
+All unsaved progress will be lost
+Todo el progreso no guardado se perdera
+
+Quit without saving
+Salir sin guardar
 
 # PlayerInvMenu.java
 
@@ -1500,7 +1510,7 @@ Inventario
 to search.
 para buscar
 
-# TitleMenu.java
+# TitleDisplay.java
 
 Singleplayer
 Un jugador
@@ -1550,13 +1560,13 @@ Salir
 Mod by TheBigEye
 Mod por TheBigEye
 
-# WorldEditMenu.java
+# WorldEditDisplay.java
 
 New World Name:
 Nuevo Nombre del Mundo:
 
 Are you sure you want to delete
-Estas seguro que quieres eliminarlo
+Estas seguro que quieres eliminar
 
 This can not be undone!
 ¡Esto no se puede deshacer!
@@ -1567,7 +1577,10 @@ This can not be undone!
  to cancel
  para cancelar
 
-# WorldGenMenu.java
+# WorldGenDisplay.java
+
+New World
+Mundo Nuevo
 
 World Seed
 Semilla
@@ -1587,7 +1600,7 @@ Crear Mundo
 World Gen Options
 Opciones de Generador de Mundo
 
-# WorldSelectMenu.java
+# WorldSelectDisplay.java
 
 Name:
 Nombre:
@@ -1609,7 +1622,7 @@ Semilla:
  
  to return
  para regresar
- 
+
 Select World
 Seleccionar Mundo
 
@@ -1621,9 +1634,6 @@ Seleccione un mundo para renombrar
 
 Select a World to Copy
 Seleccione un mundo para copiar
-
-Select a World to
-Selecionar un Mundo para
 
 Higher version, cannot load world!
 ¡Versión superior, no se puede cargar el mundo!
@@ -1676,7 +1686,7 @@ Creative
 Creativo
 
 Hardcore
-Hardcore
+Extremo
 
 Score
 Puntos
@@ -1692,6 +1702,24 @@ Autoguardado
 
 Ambient
 Ambiente
+
+Particles
+Particulas
+
+Shadows
+Sombras
+
+Bossbar type
+Barra de vida
+
+On screen
+En pantalla
+
+On entity
+En entidad
+
+Percent
+Porcentaje
 
 World Size
 Tamaño del Mundo
@@ -1731,6 +1759,9 @@ Irregular
 
 Wear Suit
 Usar traje
+
+Cheats
+Trucos
 
 # TutorialDisplay.java
 

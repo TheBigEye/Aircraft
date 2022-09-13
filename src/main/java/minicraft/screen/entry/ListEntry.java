@@ -48,8 +48,13 @@ public abstract class ListEntry {
      * @param isSelected true if the entry is selected, false otherwise
      */
     public void render(Screen screen, int x, int y, boolean isSelected) {
-        if (visible)
-            Font.draw(toString(), screen, x, y, getColor(isSelected));
+        if (visible) {
+			if (toString().contains(String.valueOf(Color.COLOR_CHAR))) {
+				Font.drawColor(Color.toStringCode(getColor(isSelected)) + toString(), screen, x, y);
+			} else {
+				Font.draw(toString(), screen, x, y, getColor(isSelected));
+			}
+        }
     }
 
     /**

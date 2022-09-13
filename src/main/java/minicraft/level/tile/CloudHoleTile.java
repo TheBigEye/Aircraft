@@ -6,22 +6,21 @@ import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.level.Level;
 
-public class HoleTile extends Tile {
-    private static ConnectorSprite sprite = new ConnectorSprite(HoleTile.class, new Sprite(24, 6, 3, 3, 1),
-            new Sprite(27, 6, 2, 2, 1)) {
+public class CloudHoleTile extends Tile {
+    private static ConnectorSprite sprite = new ConnectorSprite(CloudHoleTile.class, new Sprite(24, 9, 3, 3, 1), new Sprite(27, 9, 2, 2, 1)) {
         public boolean connectsTo(Tile tile, boolean isSide) {
             return tile.connectsToLiquid();
         }
     };
 
-    protected HoleTile(String name) {
+    protected CloudHoleTile(String name) {
         super(name, sprite);
         connectsToSand = false;
         connectsToFluid = true;
     }
 
     public void render(Screen screen, Level level, int x, int y) {
-        sprite.sparse.color = DirtTile.dCol(level.depth);
+    	Tiles.get("Cloud").render(screen, level, x, y);
         sprite.render(screen, level, x, y);
     }
 

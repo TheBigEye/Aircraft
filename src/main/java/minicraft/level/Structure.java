@@ -218,7 +218,7 @@ public class Structure {
         skyDungeon.addFurniture(0, 0, new Crafter(Crafter.Type.Enchanter));
 
         villageCrops = new Structure();
-        villageCrops.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass,O:Path,C:potato,Z:wheat,X:Water",
+        villageCrops.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass,O:Path,C:potato,Z:wheat,X:Water",
             "WWWWW**O**WWWWW\n" + 
             "WFFFW**O**WFFFW\n" + 
             "WFFFDOOOOODFFFW\n" + 
@@ -238,7 +238,7 @@ public class Structure {
         villageCrops.addFurniture(0, 0, new ZombieStatue());
 
         villageHouseNormal2 = new Structure();
-        villageHouseNormal2.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass,O:Path",
+        villageHouseNormal2.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass,O:Path",
             "WWWWW**O**WWWWW\n" + 
             "WFFFW**O**WFFFW\n" + 
             "WFFFW**O**WFFFW\n" + 
@@ -258,15 +258,15 @@ public class Structure {
         villageHouseNormal2.addFurniture(0, 0, new SkeletonStatue());
 
         villageHouseTwoDoor = new Structure();
-        villageHouseTwoDoor.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass",
+        villageHouseTwoDoor.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass",
                 "WWWWW\n" + "WFFFW\n" + "DFFFW\n" + "WFFFW\n" + "WWDWW");
 
         villageRuinedOverlay1 = new Structure();
-        villageRuinedOverlay1.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass",
+        villageRuinedOverlay1.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass",
                 "WWWWW\n" + "WFFFW\n" + "WFFFD\n" + "WFFFW\n" + "WWWWW");
 
         villageRuinedOverlay2 = new Structure();
-        villageRuinedOverlay2.setData("F:Wood Planks,W:Wood Wall,D:Wood Door,G:Grass",
+        villageRuinedOverlay2.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass",
                 "WWWWW\n" + "WFFFW\n" + "DFFFW\n" + "WFFFW\n" + "WWDWW");
     }
 }

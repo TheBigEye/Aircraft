@@ -26,32 +26,36 @@ public class TileItem extends StackableItem {
 		items.add(new TileItem("Fir Cone", (new Sprite(18, 3, 0)), "fir Sapling", "snow"));
 		items.add(new TileItem("Pine Cone", (new Sprite(19, 3, 0)), "pine Sapling", "snow"));
 		items.add(new TileItem("Dirt", (new Sprite(0, 0, 0)), "dirt", "hole", "water", "lava"));
-		items.add(new TileItem("Sky dirt", (new Sprite(0, 44, 0)), "Sky dirt", "Cloud"));
+		items.add(new TileItem("Sky dirt", (new Sprite(0, 44, 0)), "Sky dirt", "Cloud Hole"));
+		
+		items.add(new TileItem("Ice", (new Sprite(15, 21, 0)), "Ice", "hole", "water"));
+
+		// Creative mode available tiles:
 		items.add(new TileItem("Natural Rock", (new Sprite(2, 0, 0)), "rock", "hole", "dirt", "sand", "path", "grass"));
 		// items.add(new TileItem("Natural Hard Rock", (new Sprite(2, 0, 0)), "Hard
 		// rock", "hole", "dirt", "sand", "path", "grass"));
 
-		items.add(new TileItem("Plank", (new Sprite(0, 5, 0)), "Wood Planks", "hole", "water", "cloud", "lava"));
-		items.add(new TileItem("Plank Wall", (new Sprite(1, 5, 0)), "Wood Wall", "Wood Planks"));
-		items.add(new TileItem("Wood Door", (new Sprite(2, 5, 0)), "Wood Door", "Wood Planks"));
+		items.add(new TileItem("Oak Plank", (new Sprite(0, 5, 0)), "Oak Planks", "hole", "water", "cloud hole", "lava"));
+		items.add(new TileItem("Oak Wall", (new Sprite(1, 5, 0)), "Oak Wall", "Oak Planks"));
+		items.add(new TileItem("Oak Door", (new Sprite(2, 5, 0)), "Oak Door", "Oak Planks"));
 
-		items.add(new TileItem("Spruce Plank", (new Sprite(9, 5, 0)), "Spruce Planks", "hole", "water", "cloud", "lava"));
+		items.add(new TileItem("Spruce Plank", (new Sprite(9, 5, 0)), "Spruce Planks", "hole", "water", "cloud hole", "lava"));
 		items.add(new TileItem("Spruce Wall", (new Sprite(10, 5, 0)), "Spruce Wall", "Spruce Planks"));
 		items.add(new TileItem("Spruce Door", (new Sprite(11, 5, 0)), "Spruce Door", "Spruce Planks"));
 
-		items.add(new TileItem("Birch Plank", (new Sprite(12, 5, 0)), "Birch Planks", "hole", "water", "cloud", "lava"));
+		items.add(new TileItem("Birch Plank", (new Sprite(12, 5, 0)), "Birch Planks", "hole", "water", "cloud hole", "lava"));
 		items.add(new TileItem("Birch Wall", (new Sprite(13, 5, 0)), "Birch Wall", "Birch Planks"));
 		items.add(new TileItem("Birch Door", (new Sprite(14, 5, 0)), "Birch Door", "Birch Planks"));
 
-		items.add(new TileItem("Stone Brick", (new Sprite(3, 5, 0)), "Stone Bricks", "hole", "water", "cloud", "lava"));
+		items.add(new TileItem("Stone Brick", (new Sprite(3, 5, 0)), "Stone Bricks", "hole", "water", "cloud hole", "lava"));
 		items.add(new TileItem("Stone Wall", (new Sprite(4, 5, 0)), "Stone Wall", "Stone Bricks"));
 		items.add(new TileItem("Stone Door", (new Sprite(5, 5, 0)), "Stone Door", "Stone Bricks"));
 
-		items.add(new TileItem("Holy Brick", (new Sprite(3, 5, 0)), "Holy Bricks", "hole", "water", "cloud", "lava"));
+		items.add(new TileItem("Holy Brick", (new Sprite(3, 5, 0)), "Holy Bricks", "hole", "water", "cloud hole", "lava"));
 		items.add(new TileItem("Holy Wall", (new Sprite(4, 5, 0)), "Holy Wall", "Holy Bricks"));
 		items.add(new TileItem("Holy Door", (new Sprite(5, 5, 0)), "Holy Door", "Holy Bricks"));
 
-		items.add(new TileItem("Obsidian Brick", (new Sprite(6, 5, 0)), "Obsidian", "hole", "water", "cloud", "lava", "Raw Obsidian"));
+		items.add(new TileItem("Obsidian Brick", (new Sprite(6, 5, 0)), "Obsidian", "hole", "water", "cloud hole", "lava", "Raw Obsidian"));
 		items.add(new TileItem("Obsidian Wall", (new Sprite(7, 5, 0)), "Obsidian Wall", "Obsidian", "Raw Obsidian"));
 		items.add(new TileItem("Obsidian Door", (new Sprite(8, 5, 0)), "Obsidian Door", "Obsidian", "Raw Obsidian"));
 

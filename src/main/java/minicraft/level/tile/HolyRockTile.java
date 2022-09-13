@@ -22,8 +22,7 @@ import minicraft.level.Level;
 /// this is the typical stone you see underground and on the surface, that gives coal.
 
 public class HolyRockTile extends Tile {
-    private ConnectorSprite sprite = new ConnectorSprite(HolyRockTile.class, new Sprite(37, 6, 3, 3, 1, 3),
-            new Sprite(40, 8, 2, 2, 1, 3), new Sprite(40, 6, 2, 2, 1, 3));
+    private ConnectorSprite sprite = new ConnectorSprite(HolyRockTile.class, new Sprite(37, 6, 3, 3, 1), new Sprite(40, 8, 2, 2, 1), new Sprite(40, 6, 2, 2, 1));
 
     private int coalLvl = 0;
 
@@ -35,9 +34,9 @@ public class HolyRockTile extends Tile {
     }
 
     public void render(Screen screen, Level level, int x, int y) {
-        Tiles.get("Sky high grass").render(screen, level, x, y);
-        // sprite.sparse.color = SandTile.sCol(level.depth);
+        Tiles.get("Sky High grass").render(screen, level, x, y);
         sprite.render(screen, level, x, y);
+        
     }
 
     public boolean mayPass(Level level, int x, int y, Entity e) {
