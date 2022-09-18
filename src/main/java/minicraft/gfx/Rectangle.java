@@ -17,8 +17,7 @@ public class Rectangle {
     } // 0 all.
 
     public Rectangle(int x, int y, int x1, int y1, int type) {
-        if (type < 0 || type > 2)
-            type = 0;
+        if (type < 0 || type > 2) type = 0;
 
         if (type != CENTER_DIMS) { // x and y are the coords of the top left corner.
             this.x = x;

@@ -39,8 +39,11 @@ class InventoryMenu extends ItemListMenu {
 
 		if (getNumOptions() > 0 && (dropOne || input.getKey("drop-stack").clicked)) {
 			ItemEntry entry = ((ItemEntry) getCurEntry());
-			if (entry == null)
+			
+			if (entry == null) {
 				return;
+			}
+			
 			Item invItem = entry.getItem();
 			Item drop = invItem.clone();
 
@@ -50,8 +53,9 @@ class InventoryMenu extends ItemListMenu {
 				((StackableItem) invItem).count--;
 			} else {
 				// drop the whole item.
-				if (!Game.isMode("creative") || !(holder instanceof Player))
+				if (!Game.isMode("Creative") || !(holder instanceof Player)) {
 					removeSelectedEntry();
+				}
 			}
 
 			if (holder.getLevel() != null) {

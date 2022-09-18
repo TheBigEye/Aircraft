@@ -104,7 +104,7 @@ public class CraftingDisplay extends Display {
 			Recipe selectedRecipe = recipes[recipeMenu.getSelection()];
 			if (selectedRecipe.getCanCraft()) {
 				
-				if (!Game.isMode("creative"))  {
+				if (!Game.isMode("Creative"))  {
 					if (selectedRecipe.getProduct().equals(Items.get("Workbench"))){
 						AchievementsDisplay.setAchievement("minicraft.achievement.benchmarking",true);
 					}

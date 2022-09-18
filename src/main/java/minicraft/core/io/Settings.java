@@ -31,7 +31,7 @@ public class Settings {
 		options.put("cheats", new BooleanEntry("Cheats", true));
 		
 		options.put("size", new ArrayEntry<>("World Size", 128, 256, 512, 1024));
-		options.put("theme", new ArrayEntry<>("World Theme", "Normal", "Forest", "Desert", "Plain", "Hell"));
+		options.put("theme", new ArrayEntry<>("World Theme", "Normal", "Forest", "Desert", "Plain", "Hell", "Snow"));
 		options.put("type", new ArrayEntry<>("Terrain Type", "Island", "Box", "Mountain", "Irregular"));
 
 		options.put("unlockedskin", new BooleanEntry("Wear Suit", false));

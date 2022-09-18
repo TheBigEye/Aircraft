@@ -142,14 +142,15 @@ public class GiantBossMob extends MobAi {
     public static boolean checkStartPos(Level level, int x, int y) { // Find a place to spawn the mob
         int r = (level.depth == -4 ? (Game.isMode("score") ? 22 : 15) : 13);
 
-        if (!MobAi.checkStartPos(level, x, y, 60, r))
+        if (!MobAi.checkStartPos(level, x, y, 60, r)) {
             return false;
+        }
 
         x = x >> 4;
         y = y >> 4;
 
         Tile tile = level.getTile(x >> 4, y >> 4);
-        return tile == Tiles.get("grass") || tile == Tiles.get("flower");
+        return tile == Tiles.get("Grass") || tile == Tiles.get("Flower");
 
     }
 

@@ -41,8 +41,9 @@ public class DefenderMob extends MobAi {
     @Override
     protected void touchedBy(Entity entity) {
 
-        if (Settings.get("diff").equals("Peaceful"))
+        if (Settings.get("diff").equals("Peaceful"))  {
             return;
+        }
 
         super.touchedBy(entity);
         if (entity instanceof Zombie) {
@@ -81,22 +82,23 @@ public class DefenderMob extends MobAi {
      */
     public static boolean checkStartPos(Level level, int x, int y) {
 
-        int r = (Game.isMode("score") ? 22 : 15) + (Updater.getTime() == Updater.Time.Night ? 0 : 10); // get no-mob
-                                                                                                       // radius by
-
-        if (!MobAi.checkStartPos(level, x, y, 16, r))
+    	// get no-mob radius by
+        int r = (Game.isMode("score") ? 22 : 15) + (Updater.getTime() == Updater.Time.Night ? 0 : 10);
+     
+        if (!MobAi.checkStartPos(level, x, y, 16, r)) {
             return false;
+        }
 
         Tile tile = level.getTile(x >> 4, y >> 4);
-        if (tile != Tiles.get("Oak Planks") && tile != Tiles.get("oak planks") && tile != Tiles.get("Path")
-                && tile != Tiles.get("path")) {
+        if (tile != Tiles.get("Oak Planks") && tile != Tiles.get("Path")) {
             return false;
         } else if (tile != Tiles.get("Grass") && tile != Tiles.get("Sand") && tile != Tiles.get("Snow")
-                && tile != Tiles.get("Birch tree") && tile != Tiles.get("Oak tree") && tile != Tiles.get("flower")
-                && tile != Tiles.get("water") && tile != Tiles.get("wheat") && tile != Tiles.get("farmland")) {
+                && tile != Tiles.get("Birch tree") && tile != Tiles.get("Oak tree") && tile != Tiles.get("Flower")
+                && tile != Tiles.get("Water") && tile != Tiles.get("Wheat") && tile != Tiles.get("Farmland")) {
             return true;
-        } else
+        } else {
             return false;
+        }
     }
 
     @Override

@@ -166,8 +166,9 @@ public abstract class Entity implements Tickable {
      * @return true if the move was successful, false if not.
      */
     protected boolean move2(int xd, int yd) {
-        if (xd == 0 && yd == 0)
+        if (xd == 0 && yd == 0) {
             return true; // Was not stopped
+        }
 
         boolean interact = true;// !Game.isValidClient() || this instanceof ClientTickable;
 

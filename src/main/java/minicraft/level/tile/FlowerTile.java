@@ -38,15 +38,15 @@ public class FlowerTile extends Tile {
 			yn += random.nextInt(2) * 2 - 1;
 		}
 
-		if (level.getTile(xn, yn) == Tiles.get("dirt")) {
-			level.setTile(xn, yn, Tiles.get("grass"));
+		if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
+			level.setTile(xn, yn, Tiles.get("Grass"));
 		}
 		return false;
 	}
 
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
-		Tiles.get("grass").render(screen, level, x, y);
+		Tiles.get("Grass").render(screen, level, x, y);
 
 		int data = level.getData(x, y);
 		int shape = (data / 16) % 2;
@@ -64,7 +64,7 @@ public class FlowerTile extends Tile {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(2 - tool.level) && tool.payDurability()) {
-					level.setTile(x, y, Tiles.get("grass"));
+					level.setTile(x, y, Tiles.get("Grass"));
 					Sound.Tile_generic_hurt.play();
 					level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Flower"));
 					level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Rose"));
@@ -79,7 +79,7 @@ public class FlowerTile extends Tile {
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Flower"));
 		level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Rose"));
-		level.setTile(x, y, Tiles.get("grass"));
+		level.setTile(x, y, Tiles.get("Grass"));
 		return true;
 	}
 }

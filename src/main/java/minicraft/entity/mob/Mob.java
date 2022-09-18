@@ -64,8 +64,8 @@ public abstract class Mob extends Entity {
         if (isRemoved()) {
             return;
         }
-        if (level != null && level.getTile(x >> 4, y >> 4) == Tiles.get("lava")) { // If we are trying to swim in lava
-            hurt(Tiles.get("lava"), x, y, 4); // Inflict 4 damage to ourselves, sourced from the lava Tile, with the direction as the opposite of ours.
+        if (level != null && level.getTile(x >> 4, y >> 4) == Tiles.get("Lava")) { // If we are trying to swim in lava
+            hurt(Tiles.get("Lava"), x, y, 4); // Inflict 4 damage to ourselves, sourced from the lava Tile, with the direction as the opposite of ours.
         }
         if (health <= 0) {
             die(); // die if no health
@@ -160,18 +160,16 @@ public abstract class Mob extends Entity {
     public boolean isSwimming() {
         if (level == null) return false;
         Tile tile = level.getTile(x >> 4, y >> 4); // Get the tile the mob is standing on (at x/16, y/16)
-        return tile == Tiles.get("water") || tile == Tiles.get("lava"); // Check if the tile is liquid, and return true if so
+        return tile == Tiles.get("Water") || tile == Tiles.get("Lava"); // Check if the tile is liquid, and return true if so
     }
 
     public void hurt(Tile tile, int x, int y, int damage) { // Hurt the mob, when the source of damage is a tile
     	// Set attackDir to our own direction, inverted. XORing it with 1 flips the rightmost bit in the variable, this effectively adds one when even, and subtracts one when odd.
         Direction attackDir = Direction.getDirection(dir.getDir() ^ 1);
-        if (!(tile == Tiles.get("lava") && this instanceof Player &&
-        	((Player) this).potioneffects.containsKey(PotionType.Lava)))
-            doHurt(damage, tile.mayPass(level, x, y, this) ? Direction.NONE : attackDir); // Call the method that
-                                                                                          // actually performs damage,
-                                                                                          // and set it to no particular
-                                                                                          // direction
+        if (!(tile == Tiles.get("Lava") && this instanceof Player && ((Player) this).potioneffects.containsKey(PotionType.Lava))) {
+        	// Call the method that actually performs damage, and set it to no particular direction
+            doHurt(damage, tile.mayPass(level, x, y, this) ? Direction.NONE : attackDir); 
+        }
     }
 
     public void hurt(Mob mob, int damage) {
@@ -180,10 +178,11 @@ public abstract class Mob extends Entity {
 
     // Hurt the mob, when the source is another mob
     public void hurt(Mob mob, int damage, Direction attackDir) { 
-        if (mob instanceof Player && Game.isMode("creative") && mob != this)
+        if (mob instanceof Player && Game.isMode("Creative") && mob != this) {
             doHurt(health, attackDir); // kill the mob instantly
-        else
+        } else {
             doHurt(damage, attackDir); // Call the method that actually performs damage, and use our provided attackDir
+        }
     }
 
 	/**

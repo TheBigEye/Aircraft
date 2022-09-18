@@ -70,9 +70,11 @@ public class Sprite {
 		sheetLoc = new Rectangle(sx, sy, sw, sh);
 
 		spritePixels = new Pixel[sh][sw];
-		for (int r = 0; r < sh; r++)
-			for (int c = 0; c < sw; c++)
+		for (int r = 0; r < sh; r++) {
+			for (int c = 0; c < sw; c++) {
 				spritePixels[r][c] = new Px(sx + (onepixel ? 0 : c), sy + (onepixel ? 0 : r), mirror, sheet);
+			}
+		}
 	}
 
 	public Sprite(int sx, int sy, int sw, int sh, int sheet, boolean onepixel, int[][] mirrors) {
@@ -100,7 +102,6 @@ public class Sprite {
 
 	public void render(Screen screen, int x, int y) {
 		/// here, x and y are screen coordinates.
-
 		for (int row = 0; row < spritePixels.length; row++) { // loop down through each row
 			renderRow(row, screen, x, y + row * 8);
 		}
@@ -174,9 +175,11 @@ public class Sprite {
 
 	public String toString() {
 		StringBuilder out = new StringBuilder(getClass().getName().replace("minicraft.gfx.", "") + "; pixels:");
-		for (Pixel[] row : spritePixels)
-			for (Pixel pixel : row)
+		for (Pixel[] row : spritePixels) {
+			for (Pixel pixel : row) {
 				out.append("\n").append(pixel.toString());
+			}
+		}
 		out.append("\n");
 
 		return out.toString();

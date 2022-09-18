@@ -8,7 +8,7 @@ public class SplashParticle extends Particle {
 	private int frame = 0;
 
 	/**
-	 * Creates a new particle at the given position. It has a lifetime of 30 ticks
+	 * Creates a new particle at the given position. It has a lifetime of 40 ticks
 	 * and a splash looking sprite.
 	 * 
 	 * @param x X map position

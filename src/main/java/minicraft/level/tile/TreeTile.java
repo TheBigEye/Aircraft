@@ -23,8 +23,6 @@ import minicraft.screen.AchievementsDisplay;
 
 public class TreeTile extends Tile {
 	
-	private TreeType type;
-
 	public enum TreeType {
 		Oak(0, 1, 0, 1, 2, 3, "Grass", new String[] {"Oak Wood", "Oak Wood", "Acorn"}, 20),
 		Birch(0, 1, 28, 29, 30, 31, "Grass", new String[] {"Birch Wood", "Leaf", "Birch cone"}, 25),
@@ -58,6 +56,8 @@ public class TreeTile extends Tile {
 		}
 	}
 
+	private TreeType type;
+
     protected TreeTile(TreeType type) {
         super((type == TreeTile.TreeType.Red_mushroom ? "Red mushroom" : type.name() + " Tree"), (ConnectorSprite) null);
     	this.type = type;
@@ -74,6 +74,67 @@ public class TreeTile extends Tile {
         }
     }
     
+    @Override
+    public void hurt(Level level, int x, int y, int dmg) {
+        if (random.nextInt(100) == 50) {
+            level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Apple"));
+        }
+
+        int damage = level.getData(x, y) + dmg;
+        int treeHealth = type.health;
+        if (Game.isMode("Creative")) {
+            dmg = damage = treeHealth;
+        }
+
+        level.add(new SmashParticle(x * 16, y * 16));
+        Sound.Tile_generic_hurt.play();
+
+        level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
+        if (damage >= treeHealth) {
+        	
+        	level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get(type.loot[0]));
+            level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get(type.loot[1]));
+            level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get(type.loot[2]));
+            
+            level.setTile(x, y, Tiles.get(type.baseTile));
+            
+			if (!Game.isMode("Creative")) {
+				AchievementsDisplay.setAchievement("minicraft.achievement.woodcutter", true);
+			}
+			
+        } else {
+            level.setData(x, y, damage);
+        }
+    }
+
+    @Override
+    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+        hurt(level, x, y, dmg);
+        return true;
+    }
+
+    @Override
+    public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
+        if (Game.isMode("Creative")) {
+            return false; // Go directly to hurt method
+        }
+        if (item instanceof ToolItem) {
+            ToolItem tool = (ToolItem) item;
+            if (tool.type == ToolType.Axe) {
+				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+					hurt(level, xt, yt, tool.getDamage());
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean mayPass(Level level, int x, int y, Entity e) {
+        return e instanceof Firefly;
+    }
+
     @Override
     public void render(Screen screen, Level level, int x, int y) {
         Tiles.get(type.baseTile).render(screen, level, x, y);
@@ -117,66 +178,5 @@ public class TreeTile extends Tile {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean mayPass(Level level, int x, int y, Entity e) {
-        return e instanceof Firefly;
-    }
-
-    @Override
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-        hurt(level, x, y, dmg);
-        return true;
-    }
-
-    @Override
-    public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (Game.isMode("Creative")) {
-            return false; // Go directly to hurt method
-        }
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
-            if (tool.type == ToolType.Axe) {
-				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					hurt(level, xt, yt, tool.getDamage());
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public void hurt(Level level, int x, int y, int dmg) {
-        if (random.nextInt(100) == 50) {
-            level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Apple"));
-        }
-
-        int damage = level.getData(x, y) + dmg;
-        int treeHealth = type.health;
-        if (Game.isMode("Creative")) {
-            dmg = damage = treeHealth;
-        }
-
-        level.add(new SmashParticle(x * 16, y * 16));
-        Sound.Tile_generic_hurt.play();
-
-        level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
-        if (damage >= treeHealth) {
-        	
-        	level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get(type.loot[0]));
-            level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get(type.loot[1]));
-            level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get(type.loot[2]));
-            
-            level.setTile(x, y, Tiles.get(type.baseTile));
-            
-			if (!Game.isMode("creative")) {
-				AchievementsDisplay.setAchievement("minicraft.achievement.woodcutter", true);
-			}
-			
-        } else {
-            level.setData(x, y, damage);
-        }
     } 
 }

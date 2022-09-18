@@ -55,7 +55,7 @@ public class PassiveMob extends MobAi {
 
         if (isBurn == true) {
         	if (tickTime / 16 % 4 == 0 && burnTime < 128) {
-                if (Settings.get("particles").equals(true)) {
+                if (Settings.get("Particles").equals(true)) {
                     int randX = random.nextInt(10);
                     int randY = random.nextInt(9);
 
@@ -65,7 +65,7 @@ public class PassiveMob extends MobAi {
                 burnTime++;
         	}
             
-        	if (level.getTile(x / 16, y / 16) == Tiles.get("water")) {
+        	if (level.getTile(x / 16, y / 16) == Tiles.get("Water")) {
             	burnTime = 0;
             	isBurn = false;
         	}
@@ -129,15 +129,15 @@ public class PassiveMob extends MobAi {
      */
     public static boolean checkStartPos(Level level, int x, int y) {
 
-        int r = (Game.isMode("score") ? 22 : 15) + (Updater.getTime() == Updater.Time.Night ? 0 : 5); // get no-mob
-                                                                                                      // radius by
+    	// get no-mob radius by
+        int r = (Game.isMode("score") ? 22 : 15) + (Updater.getTime() == Updater.Time.Night ? 0 : 5); 
 
-        if (!MobAi.checkStartPos(level, x, y, 80, r))
+        if (!MobAi.checkStartPos(level, x, y, 80, r)) {
             return false;
+        }
 
         Tile tile = level.getTile(x >> 4, y >> 4);
-        return tile == Tiles.get("grass") || tile == Tiles.get("flower");
-
+        return tile == Tiles.get("Grass") || tile == Tiles.get("Flower");
     }
 
     @Override

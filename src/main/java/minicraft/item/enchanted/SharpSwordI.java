@@ -47,7 +47,7 @@ public class SharpSwordI extends Item {
     public boolean payDurability() {
         if (dur <= 0)
             return false;
-        if (!Game.isMode("creative"))
+        if (!Game.isMode("Creative"))
             dur--;
         return true;
     }

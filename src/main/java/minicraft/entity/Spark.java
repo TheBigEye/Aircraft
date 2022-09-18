@@ -36,14 +36,14 @@ public class Spark extends Entity {
 
 		lifeTime = durTime;
 	}
-	
+
 	private void SparkCloud(int damage) {
 		durTime = 15 * 13 + random.nextInt(30);
 
 		// Move the spark:
 		xx += xa; x = (int) xx;
 		yy += ya; y = (int) yy;
-		
+
 		if (getClosestPlayer() != null) { // Avoid NullPointer if player dies
 			Player player = getClosestPlayer();
 			if (player != null) {
@@ -74,7 +74,7 @@ public class Spark extends Entity {
 			}
 		}
 	}
-	
+
 	private void SparkRain(int damage) {
 		durTime = 25 * 10 + random.nextInt(20);
 
@@ -89,7 +89,7 @@ public class Spark extends Entity {
 			}
 		}
 	}
-	
+
 	private void SparkSpiralRain(int damage) {
 		durTime = 30 * 10 + random.nextInt(30);
 
@@ -119,7 +119,7 @@ public class Spark extends Entity {
 		}
 	}
 
-	
+
 	@Override /** Can this entity block you? Nope. */
 	public boolean isSolid() {
 		return false;
@@ -131,7 +131,6 @@ public class Spark extends Entity {
 
 		// If we are in a menu, or we are on a server.
 		if (Game.getDisplay() == null) {
-
 			// The blinking effect.
 			if (time >= lifeTime - 6 * 20) {
 				if (time / 6 % 2 == 0) {
@@ -142,8 +141,8 @@ public class Spark extends Entity {
 		}
 
 		if ((boolean) Settings.get("shadows")  == true) {
-            screen.render(x - 4, y - 4 + 2, 0 + 20 * 32, randmirror, 2, -1, false, Color.BLACK); // renders the shadow on the ground
-        }        
+			screen.render(x - 4, y - 4 + 2, 0 + 20 * 32, randmirror, 2, -1, false, Color.BLACK); // renders the shadow on the ground
+		}        
 		screen.render(x - 4, y - 4 - 2, 0 + 20 * 32, randmirror, 2); // renders the spark
 	}
 

@@ -173,7 +173,7 @@ public class FurnitureItem extends Item {
 			furniture.x = xt * 16 + 8;
 			furniture.y = yt * 16 + 8;
 			level.add(furniture); // adds the furniture to the world
-			if (Game.isMode("creative")) {
+			if (Game.isMode("Creative")) {
 				furniture = furniture.clone();
 			} else {
 				placed = true; // the value becomes true, which removes it from the player's active item

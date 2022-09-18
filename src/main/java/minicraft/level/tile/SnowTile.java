@@ -29,7 +29,6 @@ public class SnowTile extends Tile {
     }
 
     private ConnectorSprite sprite = new ConnectorSprite(SnowTile.class, new Sprite(0, 10, 3, 3, 1), normal_sprite) {
-
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) {
             if (!isSide) {
@@ -47,6 +46,22 @@ public class SnowTile extends Tile {
     }
 
     @Override
+    public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
+        if (item instanceof ToolItem) {
+            ToolItem tool = (ToolItem) item;
+            if (tool.type == ToolType.Shovel) {
+                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                    level.setTile(xt, yt, Tiles.get("Dirt"));
+                    Sound.Tile_snow_3.play();
+                    level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 2, Items.get("Snow Ball"));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void render(Screen screen, Level level, int x, int y) {
         boolean steppedOn = level.getData(x, y) > 0;
 
@@ -58,16 +73,6 @@ public class SnowTile extends Tile {
 
         csprite.sparse.color = DirtTile.dCol(level.depth);
         csprite.render(screen, level, x, y);
-    }
-
-    @Override
-    public boolean tick(Level level, int x, int y) {
-        int damage = level.getData(x, y);
-        if (damage > 0) {
-            level.setData(x, y, damage - 1);
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -94,17 +99,11 @@ public class SnowTile extends Tile {
     }
 
     @Override
-    public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
-            if (tool.type == ToolType.Shovel) {
-                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    level.setTile(xt, yt, Tiles.get("Dirt"));
-                    Sound.Tile_snow_3.play();
-                    level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 2, Items.get("Snow Ball"));
-                    return true;
-                }
-            }
+    public boolean tick(Level level, int x, int y) {
+        int damage = level.getData(x, y);
+        if (damage > 0) {
+            level.setData(x, y, damage - 1);
+            return true;
         }
         return false;
     }

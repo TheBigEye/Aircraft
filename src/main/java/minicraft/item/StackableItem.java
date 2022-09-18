@@ -34,7 +34,7 @@ public class StackableItem extends Item {
 		// Elements
 		items.add(new StackableItem("Obsidian", new Sprite(17, 3, 0)));
 		items.add(new StackableItem("Stone", new Sprite(2, 0, 0)));
-		items.add(new StackableItem("Holy stone", new Sprite(3, 44, 0)));
+		items.add(new StackableItem("Holy Stone", new Sprite(3, 44, 0)));
 
 		items.add(new StackableItem("Andesite", new Sprite(0, 38, 0)));
 		items.add(new StackableItem("Diorite", new Sprite(1, 38, 0)));
@@ -44,7 +44,6 @@ public class StackableItem extends Item {
 		items.add(new StackableItem("Quartzite", new Sprite(5, 38, 0)));
 
 		// Dyes
-		items.add(new StackableItem("Bone powder", new Sprite(0, 22, 0)));
 		items.add(new StackableItem("Light gray dye", new Sprite(1, 22, 0)));
 		items.add(new StackableItem("Gray dye", new Sprite(2, 22, 0)));
 		items.add(new StackableItem("Ink sac", new Sprite(3, 22, 0)));
@@ -118,8 +117,9 @@ public class StackableItem extends Item {
 	/// this is used by (most) subclasses, to standardize the count decrement
 	/// behavior. This is not the normal interactOn method.
 	protected boolean interactOn(boolean subClassSuccess) {
-		if (subClassSuccess && !Game.isMode("creative"))
+		if (subClassSuccess && !Game.isMode("Creative")) {
 			count--;
+		}
 		return subClassSuccess;
 	}
 

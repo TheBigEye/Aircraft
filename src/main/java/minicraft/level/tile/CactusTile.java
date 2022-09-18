@@ -33,8 +33,11 @@ public class CactusTile extends Tile {
     public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
         int damage = level.getData(x, y) + dmg;
         int cHealth = 10;
-        if (Game.isMode("creative"))
+        
+        if (Game.isMode("Creative")) {
             dmg = damage = cHealth;
+        }
+        
         level.add(new SmashParticle(x * 16, y * 16));
         level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
 

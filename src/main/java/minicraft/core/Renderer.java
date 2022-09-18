@@ -272,7 +272,7 @@ public class Renderer extends Game {
 					screen.render(x + xb * 8, y, 3 + 21 * 32, 0, 3);
 				}
 
-				if (isMode("creative") || ac >= 10000) {
+				if (isMode("Creative") || ac >= 10000) {
 					Font.drawTransparentBackground(" x" + "∞", screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
 				} else {
 					Font.drawTransparentBackground(" x" + ac, screen, 184 - player.activeItem.arrAdjusted, Screen.h - 24);
@@ -455,7 +455,7 @@ public class Renderer extends Game {
 		}
 
 		// This is the status icons, like health hearts, stamina bolts, and hunger "burger".
-		if (!isMode("creative")) {
+		if (!isMode("Creative")) {
 			for (int i = 0; i < Player.maxStat; i++) {
 
 				// Renders armor

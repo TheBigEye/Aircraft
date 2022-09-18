@@ -214,5 +214,4 @@ public class Recipes {
 		breweryRecipes.add(new Recipe("xHealth Potion_1", "health potion_2", "Sky wart_5"));
 
 	}
-
 }

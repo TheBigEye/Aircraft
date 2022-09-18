@@ -35,14 +35,14 @@ public class LawnTile extends Tile {
         else
             yn += random.nextInt(2) * 2 - 1;
 
-        if (level.getTile(xn, yn) == Tiles.get("dirt")) {
-            level.setTile(xn, yn, Tiles.get("grass"));
+        if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
+            level.setTile(xn, yn, Tiles.get("Grass"));
         }
         return false;
     }
 
     public void render(Screen screen, Level level, int x, int y) {
-        Tiles.get("grass").render(screen, level, x, y);
+        Tiles.get("Grass").render(screen, level, x, y);
 
         int data = level.getData(x, y);
         int shape = (data / 16) % 2;
@@ -59,7 +59,7 @@ public class LawnTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(2 - tool.level) && tool.payDurability()) {
-                    level.setTile(x, y, Tiles.get("grass"));
+                    level.setTile(x, y, Tiles.get("Grass"));
                     Sound.Tile_generic_hurt.play();
 
                     if (random.nextInt(3) == 1) { // 28% chance to drop Seeds
@@ -79,7 +79,7 @@ public class LawnTile extends Tile {
             level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Seeds"));
         }
 
-        level.setTile(x, y, Tiles.get("grass"));
+        level.setTile(x, y, Tiles.get("Grass"));
         return true;
     }
 }

@@ -9,8 +9,8 @@ import minicraft.screen.entry.StringEntry;
 
 public class CharsTestDisplay extends Display {
 
-    public CharsTestDisplay() {
-        super(true);
+	public CharsTestDisplay() {
+		super(true);
 
         Menu charsList = new Menu.Builder(false, 6, RelPos.LEFT,
             new BlankEntry(),
@@ -33,16 +33,16 @@ public class CharsTestDisplay extends Display {
         };
     }
     
-    @Override
-    public void tick(InputHandler input) {
-    	if (input.getKey("exit").clicked) {
-            Game.exitDisplay(); 
-        }
-    }
-
-    @Override
+	@Override
 	public void render(Screen screen) {
 		super.render(screen);
+	}
+
+	@Override
+	public void tick(InputHandler input) {
+		if (input.getKey("exit").clicked) {
+			Game.exitDisplay(); 
+		}
 	}
 }
 

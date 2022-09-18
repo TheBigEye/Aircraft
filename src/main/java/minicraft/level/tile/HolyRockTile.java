@@ -65,7 +65,7 @@ public class HolyRockTile extends Tile {
     public void hurt(Level level, int x, int y, int dmg) {
         int damage = level.getData(x, y) + dmg;
         int rockHealth = 50;
-        if (Game.isMode("creative")) {
+        if (Game.isMode("Creative")) {
             dmg = damage = rockHealth;
             coalLvl = 1;
         }
@@ -76,10 +76,10 @@ public class HolyRockTile extends Tile {
         if (damage >= rockHealth) {
             int count = random.nextInt(1) + 0;
             if (coalLvl == 0) {
-                level.dropItem(x * 16 + 8, y * 16 + 8, 1, 4, Items.get("Holy stone"));
+                level.dropItem(x * 16 + 8, y * 16 + 8, 1, 4, Items.get("Holy Stone"));
             }
             if (coalLvl == 1) {
-                level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Holy stone"));
+                level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Holy Stone"));
                 int mincoal = 0, maxcoal = 1;
                 if (!Settings.get("diff").equals("Hard")) {
                     mincoal++;

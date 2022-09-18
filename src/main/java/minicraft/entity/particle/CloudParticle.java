@@ -13,6 +13,6 @@ public class CloudParticle extends Particle {
 	 * @param y Y map position
 	 */
 	public CloudParticle(int x, int y) {
-		super(x, y, 30, new Sprite(12, 2, 3));
+		super(x, y, 24, new Sprite(12, 2, 3));
 	}
 }

@@ -32,8 +32,9 @@ public class SkyFernTile extends Tile {
     @Override
     public boolean tick(Level level, int xt, int yt) {
 
-        if (random.nextInt(30) != 0)
+        if (random.nextInt(30) != 0) {
             return false;
+        }
 
         int xn = xt;
         int yn = yt;
@@ -44,20 +45,21 @@ public class SkyFernTile extends Tile {
         
         fernAttackTick++;
         
-        if (random.nextBoolean())
+        if (random.nextBoolean()) {
             xn += random.nextInt(2) * 2 - 1;
-        else
+        } else {
             yn += random.nextInt(2) * 2 - 1;
+        }
 
-        if (level.getTile(xn, yn) == Tiles.get("dirt")) {
-            level.setTile(xn, yn, Tiles.get("sky high grass"));
+        if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
+            level.setTile(xn, yn, Tiles.get("Sky High Grass"));
         }
         return false;
     }
 
     @Override
     public void render(Screen screen, Level level, int x, int y) {
-        Tiles.get("sky high grass").render(screen, level, x, y);
+        Tiles.get("Sky High Grass").render(screen, level, x, y);
         
         if (stepped == true) {
             if (fernAttackTick / 16 % 2 == 0) {
@@ -107,7 +109,7 @@ public class SkyFernTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(2 - tool.level) && tool.payDurability()) {
-                    level.setTile(x, y, Tiles.get("sky high grass"));
+                    level.setTile(x, y, Tiles.get("Sky High Grass"));
                     Sound.Tile_generic_hurt.play();
 
                     if (random.nextInt(20) == 1) { // 20% chance to drop sky seeds
@@ -126,7 +128,7 @@ public class SkyFernTile extends Tile {
         if (random.nextInt(12) == 1) { // 20% chance to drop sky seeds
             level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));
         }
-        level.setTile(x, y, Tiles.get("sky high grass"));
+        level.setTile(x, y, Tiles.get("Sky High Grass"));
         return true;
     }
 }

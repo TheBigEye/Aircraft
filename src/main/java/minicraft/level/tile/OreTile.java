@@ -20,8 +20,6 @@ import minicraft.screen.AchievementsDisplay;
 
 /// this is all the spikey stuff (except "cloud cactus")
 public class OreTile extends Tile {
-	private OreType type;
-
 	public enum OreType {
 		Iron(24, 25, 0, 1, 2, 3, Items.get("Iron Ore"), 0),
 		Lapis(26, 27, 0, 1, 2, 3, Items.get("Lapis"), 2),
@@ -49,13 +47,77 @@ public class OreTile extends Tile {
 		}
 	}
 
+	private OreType type;
+
 	protected OreTile(OreType o) {
 		super((o == OreTile.OreType.Lapis ? "Lapis" : o.name() + " Ore"), (ConnectorSprite) null);
 		this.type = o;
 	}
 
+	public void bumpedInto(Level level, int x, int y, Entity entity) {
+		/// this was used at one point to hurt the player if they touched the ore;
+		/// that's probably why the sprite is so spikey-looking.
+	}
+
+	public Item getOre() {
+		return type.getOre();
+	}
+
+	public void hurt(Level level, int x, int y, int dmg) {
+		int damage = level.getData(x, y) + 1;
+		int oreHealth = random.nextInt(10) * 4 + 20;
+		if (Game.isMode("Creative")) {
+			dmg = damage = oreHealth;
+		}
+
+		level.add(new SmashParticle(x * 16, y * 16));
+		Sound.Tile_generic_hurt.play();
+
+		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
+		if (dmg > 0) {
+			int count = random.nextInt(2) + 0;
+			if (damage >= oreHealth) {
+				level.setTile(x, y, Tiles.get("Dirt"));
+				count += 2;
+			} else {
+				level.setData(x, y, damage);
+			}			
+
+			if (type.drop.equals(Items.get("Gem")) && !Game.isMode("Creative")){
+				AchievementsDisplay.setAchievement("minicraft.achievement.find_gem", true);
+			}
+
+			level.dropItem(x * 16 + 8, y * 16 + 8, count, type.getOre());
+		}
+	}
+
+	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+		hurt(level, x, y, 0);
+		return true;
+	}
+
+	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
+		if (Game.isMode("Creative")) {
+			return false; // go directly to hurt method
+		}
+		if (item instanceof ToolItem) {
+			ToolItem tool = (ToolItem) item;
+			if (tool.type == ToolType.Pickaxe) {
+				if (player.payStamina(6 - tool.level) && tool.payDurability()) {
+					hurt(level, xt, yt, tool.getDamage());
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean mayPass(Level level, int x, int y, Entity e) {
+		return false;
+	}
+
 	public void render(Screen screen, Level level, int x, int y) {
-		Tiles.get("dirt").render(screen, level, x, y);
+		Tiles.get("Dirt").render(screen, level, x, y);
 
         boolean u = level.getTile(x, y - 1) == this;
         boolean l = level.getTile(x - 1, y) == this;
@@ -86,67 +148,5 @@ public class OreTile extends Tile {
         } else {
             screen.render(x * 16 + 8, y * 16 + 8, type.sprite_x2 + type.sprite_y4 * 32, 0, 1); // y4
         }
-	}
-
-	public boolean mayPass(Level level, int x, int y, Entity e) {
-		return false;
-	}
-
-	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-		hurt(level, x, y, 0);
-		return true;
-	}
-
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-		if (Game.isMode("creative")) {
-			return false; // go directly to hurt method
-		}
-		if (item instanceof ToolItem) {
-			ToolItem tool = (ToolItem) item;
-			if (tool.type == ToolType.Pickaxe) {
-				if (player.payStamina(6 - tool.level) && tool.payDurability()) {
-					hurt(level, xt, yt, tool.getDamage());
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public Item getOre() {
-		return type.getOre();
-	}
-
-	public void hurt(Level level, int x, int y, int dmg) {
-		int damage = level.getData(x, y) + 1;
-		int oreHealth = random.nextInt(10) * 4 + 20;
-		if (Game.isMode("creative")) {
-			dmg = damage = oreHealth;
-		}
-
-		level.add(new SmashParticle(x * 16, y * 16));
-		Sound.Tile_generic_hurt.play();
-
-		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
-		if (dmg > 0) {
-			int count = random.nextInt(2) + 0;
-			if (damage >= oreHealth) {
-				level.setTile(x, y, Tiles.get("dirt"));
-				count += 2;
-			} else {
-				level.setData(x, y, damage);
-			}			
-
-			if (type.drop.equals(Items.get("gem")) && !Game.isMode("creative")){
-				AchievementsDisplay.setAchievement("minicraft.achievement.find_gem", true);
-			}
-
-			level.dropItem(x * 16 + 8, y * 16 + 8, count, type.getOre());
-		}
-	}
-
-	public void bumpedInto(Level level, int x, int y, Entity entity) {
-		/// this was used at one point to hurt the player if they touched the ore;
-		/// that's probably why the sprite is so spikey-looking.
 	}
 }

@@ -19,19 +19,12 @@ public class Point {
         y = model.y;
     }
 
-    public void translate(int xoff, int yoff) {
-        x += xoff;
-        y += yoff;
-    }
-
-    public String toString() {
-        return "(" + x + "," + y + ")";
-    }
-
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Point))
+        if (!(other instanceof Point)) {
             return false;
+        }
+        
         Point o = (Point) other;
         return x == o.x && y == o.y;
     }
@@ -39,5 +32,14 @@ public class Point {
     @Override
     public int hashCode() {
         return x * 71 + y;
+    }
+
+    public String toString() {
+        return "(" + x + "," + y + ")";
+    }
+
+    public void translate(int xoff, int yoff) {
+        x += xoff;
+        y += yoff;
     }
 }

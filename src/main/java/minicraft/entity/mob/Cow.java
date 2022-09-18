@@ -42,16 +42,15 @@ public class Cow extends PassiveMob {
             int yd = player.y - y;
 
             /// if player is less than 6.25 tiles away, then set move dir towards player
-            int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and
-                          // down.
+            int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
             xa = ya = 0;
+
             if (xd < sig0) xa = -1;
             if (xd > sig0) xa = +1;
             if (yd < sig0) ya = -1;
             if (yd > sig0) ya = +1;
+
         } else {
-            // if the Pet was following the player, but has now lost it, it stops moving.
-            // *that would be nice, but I'll just make it move randomly instead.
             randomizeWalkDir(false);
         }
     }

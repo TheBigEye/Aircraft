@@ -131,7 +131,6 @@ public class EnemyMob extends MobAi {
                     if (Settings.get("particles").equals(true)) {
                         int randX = random.nextInt(10);
                         int randY = random.nextInt(9);
-
                         level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
                     }
                     this.hurt(this, 1);

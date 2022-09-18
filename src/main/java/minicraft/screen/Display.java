@@ -18,20 +18,14 @@ public class Display {
 	private final boolean canExit;
 	private final boolean clearScreen;
 
+	private boolean setParent = false;
+
 	public Display() {
 		this(new Menu[0]);
 	}
 
-	public Display(Menu... menus) {
-		this(false, true, menus);
-	}
-
 	public Display(boolean clearScreen) {
 		this(clearScreen, true, new Menu[0]);
-	}
-
-	public Display(boolean clearScreen, Menu... menus) {
-		this(clearScreen, true, menus);
 	}
 
 	public Display(boolean clearScreen, boolean canExit) {
@@ -45,7 +39,17 @@ public class Display {
 		selection = 0;
 	}
 
-	private boolean setParent = false;
+	public Display(boolean clearScreen, Menu... menus) {
+		this(clearScreen, true, menus);
+	}
+
+	public Display(Menu... menus) {
+		this(false, true, menus);
+	}
+
+	public Display getParent() {
+		return parent;
+	}
 
 	// called during setMenu()
 	public void init(@Nullable Display parent) {
@@ -56,61 +60,6 @@ public class Display {
 	}
 
 	public void onExit() {
-	}
-
-	public Display getParent() {
-		return parent;
-	}
-
-	public void tick(InputHandler input) {
-
-		if (canExit && input.getKey("exit").clicked) {
-			Game.exitDisplay();
-			return;
-		}
-
-		if (menus.length == 0) {
-			return;
-		}
-
-		boolean changedSelection = false;
-
-		// if menu set is unselectable, it must have been intentional, so prevent the user from setting it back.
-		if (menus.length > 1 && menus[selection].isSelectable()) { 
-			int prevSel = selection;
-
-			String shift = menus[selection].getCurEntry() instanceof ArrayEntry ? "shift-" : "";
-			
-			if (input.getKey(shift + "left").clicked) {
-				selection--;
-			}
-			if (input.getKey(shift + "right").clicked) {
-				selection++;
-			}
-
-			if (prevSel != selection) {
-				Sound.Menu_select.play();
-
-				int delta = selection - prevSel;
-				selection = prevSel;
-				do {
-					selection += delta;
-					if (selection < 0)
-						selection = menus.length - 1;
-					selection = selection % menus.length;
-				} while (!menus[selection].isSelectable() && selection != prevSel);
-
-				changedSelection = prevSel != selection;
-			}
-
-			if (changedSelection) {
-				onSelectionChange(prevSel, selection);
-			}
-		}
-
-		if (!changedSelection) {
-			menus[selection].tick(input);
-		}
 	}
 
 	protected void onSelectionChange(int oldSel, int newSel) {
@@ -138,6 +87,57 @@ public class Display {
 				menus[idx].render(screen);
 			}
 		} while (idx != selection);
+	}
+
+	public void tick(InputHandler input) {
+
+		if (canExit && input.getKey("exit").clicked) {
+			Game.exitDisplay();
+			return;
+		}
+		if (menus.length == 0) {
+			return;
+		}
+
+		boolean changedSelection = false;
+
+		// if menu set is unselectable, it must have been intentional, so prevent the user from setting it back.
+		if (menus.length > 1 && menus[selection].isSelectable()) { 
+			int prevSel = selection;
+
+			String shift = menus[selection].getCurEntry() instanceof ArrayEntry ? "shift-" : "";
+
+			if (input.getKey(shift + "left").clicked) {
+				selection--;
+			}
+			if (input.getKey(shift + "right").clicked) {
+				selection++;
+			}
+
+			if (prevSel != selection) {
+				Sound.Menu_select.play();
+
+				int delta = selection - prevSel;
+				selection = prevSel;
+				do {
+					selection += delta;
+					if (selection < 0) {
+						selection = menus.length - 1;
+					}
+					selection = selection % menus.length;
+				} while (!menus[selection].isSelectable() && selection != prevSel);
+
+				changedSelection = prevSel != selection;
+			}
+
+			if (changedSelection) {
+				onSelectionChange(prevSel, selection);
+			}
+		}
+
+		if (!changedSelection) {
+			menus[selection].tick(input);
+		}
 	}
 
 }

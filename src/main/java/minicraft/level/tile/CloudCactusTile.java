@@ -39,7 +39,7 @@ public class CloudCactusTile extends Tile {
 
     @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (Game.isMode("creative"))
+        if (Game.isMode("Creative"))
             return false; // go directly to hurt method
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
@@ -57,7 +57,7 @@ public class CloudCactusTile extends Tile {
     public void hurt(Level level, int x, int y, int dmg) {
         int damage = level.getData(x, y) + dmg;
         int health = 10;
-        if (Game.isMode("creative"))
+        if (Game.isMode("Creative"))
             dmg = damage = health;
         level.add(new SmashParticle(x * 16, y * 16));
         Sound.Tile_generic_hurt.play();
@@ -65,14 +65,14 @@ public class CloudCactusTile extends Tile {
         level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
         if (damage >= health) {
             level.setTile(x, y, Tiles.get(baseTile));
-        } else
+        } else {
             level.setData(x, y, damage);
+        }
     }
 
     @Override
     public void render(Screen screen, Level level, int x, int y) {
         Tiles.get(baseTile).render(screen, level, x, y);
-
         sprite.render(screen, x << 4, y << 4);
     }
 

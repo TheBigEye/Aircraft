@@ -54,14 +54,14 @@ public class DungeonChest extends Chest {
     public boolean use(Player player) {
         if (isLocked) {
             boolean activeKey = player.activeItem != null && player.activeItem.equals(Items.get("Key"));
-            boolean invKey = player.getInventory().count(Items.get("key")) > 0;
+            boolean invKey = player.getInventory().count(Items.get("Key")) > 0;
             if (activeKey || invKey) { // if the player has a key...
-                if (!Game.isMode("creative")) { // remove the key unless on creative mode.
+                if (!Game.isMode("Creative")) { // remove the key unless on creative mode.
                     if (activeKey) { // remove activeItem
                         StackableItem key = (StackableItem) player.activeItem;
                         key.count--;
                     } else { // remove from inv
-                        player.getInventory().removeItem(Items.get("key"));
+                        player.getInventory().removeItem(Items.get("Key"));
                     }
                 }
 
@@ -85,10 +85,10 @@ public class DungeonChest extends Chest {
 
                 return super.use(player); // the player unlocked the chest.
             }
-
             return false; // the chest is locked, and the player has no key.
-        } else
+        } else {
             return super.use(player); // the chest was already unlocked.
+        }
     }
 
     /**
@@ -115,14 +115,16 @@ public class DungeonChest extends Chest {
     /** what happens if the player tries to push a Dungeon Chest. */
     @Override
     protected void touchedBy(Entity entity) {
-        if (!isLocked) // can only be pushed if unlocked.
+        if (!isLocked) { // can only be pushed if unlocked. 
             super.touchedBy(entity);
+        }
     }
 
     @Override
     public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
-        if (!isLocked)
+        if (!isLocked) {
             return super.interact(player, item, attackDir);
+        }
         return false;
     }
 }

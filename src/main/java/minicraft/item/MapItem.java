@@ -11,33 +11,33 @@ import minicraft.screen.MapDisplay;
 
 public class MapItem extends Item {
 
-    public MapItem() {
-        super("Map book", new Sprite(4, 8, 0));
-    }
+	public MapItem() {
+		super("Map book", new Sprite(4, 8, 0));
+	}
 
-    @Override
-    public Item clone() {
-        return new MapItem();
-    }
+	@Override
+	public boolean canAttack() {
+		return false;
+	}
 
-    @Override
-    public boolean interact(Player player, Entity entity, Direction attackDir) {
-        Game.setDisplay(new MapDisplay());
-        return false;
-    }
+	@Override
+	public Item clone() {
+		return new MapItem();
+	}
 
-    @Override
-    public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
-        return this.interact(player, (Entity) null, attackDir);
-    }
+	@Override
+	public boolean interact(Player player, Entity entity, Direction attackDir) {
+		Game.setDisplay(new MapDisplay());
+		return false;
+	}
 
-    @Override
-    public boolean interactsWithWorld() {
-        return false;
-    }
+	@Override
+	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
+		return this.interact(player, (Entity) null, attackDir);
+	}
 
-    @Override
-    public boolean canAttack() {
-        return false;
-    }
+	@Override
+	public boolean interactsWithWorld() {
+		return false;
+	}
 }

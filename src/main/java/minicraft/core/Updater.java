@@ -94,8 +94,8 @@ public class Updater extends Game {
 		Info.getInfo();
 
 		// move the player -1 level for testing...
-		if (isMode("creative") && input.getKey("SHIFT-S").clicked ) Game.setDisplay(new LevelTransitionDisplay(-1));
-		if (isMode("creative") && input.getKey("SHIFT-W").clicked ) Game.setDisplay(new LevelTransitionDisplay(1));
+		if (isMode("Creative") && input.getKey("SHIFT-S").clicked ) Game.setDisplay(new LevelTransitionDisplay(-1));
+		if (isMode("Creative") && input.getKey("SHIFT-W").clicked ) Game.setDisplay(new LevelTransitionDisplay(1));
 
 		if (input.getKey("FULLSCREEN").clicked) {
 			Updater.FULLSCREEN = !Updater.FULLSCREEN;
@@ -232,22 +232,22 @@ public class Updater extends Game {
 
 					/*
 					String prevMode = (String)Settings.get("mode");
-					if (input.getKey("creative").clicked) {
-						Settings.set("mode", "creative");
+					if (input.getKey("Creative").clicked) {
+						Settings.set("mode", "Creative");
 						Items.fillCreativeInv(player.getInventory(), false);
                     }
 
 					if (input.getKey("survival").clicked) Settings.set("mode", "survival");
 					 */
 
-					if (input.getKey("shift-t").clicked) Settings.set("mode", "score");
+					if (input.getKey("SHIFT-T").clicked) Settings.set("mode", "score");
 
-					if (isMode("score") && input.getKey("ctrl-t").clicked) {
+					if (isMode("score") && input.getKey("CTRL-T").clicked) {
 						scoreTime = normSpeed * 5; // 5 seconds
 					}
 
 					//float prevSpeed = gamespeed;
-					if (input.getKey("shift-0").clicked) {
+					if (input.getKey("SHIFT-0").clicked) {
 						gamespeed = 1;
                     }
 

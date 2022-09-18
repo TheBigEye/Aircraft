@@ -17,14 +17,14 @@ public class FloorTile extends Tile {
 
 	protected FloorTile(Material type) {
 		super((
-				type == Material.Oak ? "Oak Planks" : 
-				type == Material.Spruce ? "Spruce Planks" : 
-				type == Material.Birch ? "Birch Planks" : 
-				type == Material.Holy ? "Holy Bricks" : 
-				type == Material.Obsidian ? "Obsidian" : 
-				type.name() + " Bricks"),
+			type == Material.Oak ? "Oak Planks" : 
+			type == Material.Spruce ? "Spruce Planks" : 
+			type == Material.Birch ? "Birch Planks" : 
+			type == Material.Holy ? "Holy Bricks" : 
+			type == Material.Obsidian ? "Obsidian" : 
+			type.name() + " Bricks"),
 
-				(Sprite) null
+			(Sprite) null
 		);
 
 		connectsToSkyGrass = true;
@@ -59,10 +59,10 @@ public class FloorTile extends Tile {
 
 					Item drop;
 					switch (type) {
-					case Oak: drop = Items.get("Oak Plank"); break;
-					case Spruce: drop = Items.get("Spruce Plank"); break;
-					case Birch: drop = Items.get("Birch Plank"); break;
-					default: drop = Items.get(type.name() + " Brick"); break;
+						case Oak: drop = Items.get("Oak Plank"); break;
+						case Spruce: drop = Items.get("Spruce Plank"); break;
+						case Birch: drop = Items.get("Birch Plank"); break;
+						default: drop = Items.get(type.name() + " Brick"); break;
 					}
 
 					Sound.Tile_generic_hurt.play();

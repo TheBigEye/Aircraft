@@ -46,13 +46,11 @@ public class Goat extends FrostMob {
         }
 
         Tile tile = level.getTile(x >> 4, y >> 4);
-        if (tile == Tiles.get("grass") || tile == Tiles.get("sand") || tile == Tiles.get("lawn")
-                || tile == Tiles.get("flower")) {
+        if (tile == Tiles.get("Grass") || tile == Tiles.get("Sand") || tile == Tiles.get("Lawn") || tile == Tiles.get("Flower")) {
             remove();
             level.add(new Sheep(), x, y);
 
         }
-
     }
 
     public void die() {
@@ -76,7 +74,7 @@ public class Goat extends FrostMob {
             max = 1;
         }
 
-        dropItem(min, max, Items.get("leather"));
+        dropItem(min, max, Items.get("Leather"));
 
         super.die();
     }

@@ -16,200 +16,192 @@ import minicraft.item.Items;
 import minicraft.level.tile.Tiles;
 
 public class Creeper extends EnemyMob {
-    private static MobSprite[][][] sprites;
-    static {
-        sprites = new MobSprite[4][1][2];
-        for (int i = 0; i < 4; i++) {
-            MobSprite[] list = MobSprite.compileSpriteList(4, 0 + (i * 2), 2, 2, 0, 2);
-            sprites[i][0] = list;
-        }
-    }
-    
-    private int light;
+	private static MobSprite[][][] sprites;
+	static {
+		sprites = new MobSprite[4][1][2];
+		for (int i = 0; i < 4; i++) {
+			MobSprite[] list = MobSprite.compileSpriteList(4, 0 + (i * 2), 2, 2, 0, 2);
+			sprites[i][0] = list;
+		}
+	}
 
-    private static final int MAX_FUSE_TIME = 60;
-    private static final int TRIGGER_RADIUS = 64;
-    private static final int BLAST_DAMAGE = 50;
+	private int light;
 
-    private int fuseTime = 0;
-    private boolean fuseLit = false;
-    
-    private final String[] explosionBlacklist = new String[] { "hard rock", "obsidian wall", "raw obsidian"};
+	private static final int MAX_FUSE_TIME = 60;
+	private static final int TRIGGER_RADIUS = 64;
+	private static final int BLAST_DAMAGE = 50;
 
-    public Creeper(int lvl) {
-        super(lvl, sprites, 10, 50);
-    }
+	private int fuseTime = 0;
+	private boolean fuseLit = false;
 
-    @Override
-    public boolean move(int xa, int ya) {
-        boolean result = super.move(xa, ya);
-        dir = Direction.DOWN;
-        if (xa == 0 && ya == 0) {
-            walkDist = 0;
-        }
-        return result;
-    }
+	private final String[] explosionBlacklist = new String[] { "hard rock", "obsidian wall", "raw obsidian"};
 
-    @Override
-    public void tick() {
-        super.tick();
+	public Creeper(int lvl) {
+		super(lvl, sprites, 10, 50);
+	}
 
-        if (Settings.get("diff").equals("Peaceful") || Game.isMode("creative")) {
-            return; // Creeper should not explode if player is in passive mode
-        }
+	@Override
+	public boolean move(int xa, int ya) {
+		boolean result = super.move(xa, ya);
+		dir = Direction.DOWN;
+		if (xa == 0 && ya == 0) {
+			walkDist = 0;
+		}
+		return result;
+	}
 
-        if (fuseTime > 0) {
-            fuseTime--; // fuse getting shorter...
-            xa = ya = 0;
-            light = 2;
-            
-        } else if (fuseLit) { // fuseLit is set to true when fuseTime is set to max, so this happens after fuseTime hits zero, while fuse is lit.
-            xa = ya = 0;
-            light = 0;
+	@Override
+	public void tick() {
+		super.tick();
 
-            boolean playerInRange = false; // tells if any players are within the blast
+		// Creepers should not explode if player is in passive mode
+		if (Settings.get("diff").equals("Peaceful") || Game.isMode("Creative")) {
+			return; 
+		}
 
-            // Find if the player is in range and store it in playerInRange.
-            for (Entity e : level.getEntitiesOfClass(Mob.class)) {
-                Mob mob = (Mob) e;
-                int pdx = Math.abs(mob.x - x);
-                int pdy = Math.abs(mob.y - y);
-                if (pdx < TRIGGER_RADIUS && pdy < TRIGGER_RADIUS) {
-                    if (mob instanceof Player) {
-                        playerInRange = true;
-                    }
-                }
-            }
+		if (fuseTime > 0) {
+			fuseTime--; // fuse getting shorter...
+			xa = ya = 0;
+			light = 2;
+
+		} else if (fuseLit) { // fuseLit is set to true when fuseTime is set to max, so this happens after fuseTime hits zero, while fuse is lit.
+			xa = ya = 0;
+			light = 0;
+
+			boolean playerInRange = false; // tells if any players are within the blast
+
+			// Find if the player is in range and store it in playerInRange.
+			for (Entity e : level.getEntitiesOfClass(Mob.class)) {
+				Mob mob = (Mob) e;
+				int pdx = Math.abs(mob.x - x);
+				int pdy = Math.abs(mob.y - y);
+				if (pdx < TRIGGER_RADIUS && pdy < TRIGGER_RADIUS) {
+					if (mob instanceof Player) {
+						playerInRange = true;
+					}
+				}
+			}
 
 			// Handles what happens when it blows up.
 			// It will only blow up if there are any players nearby.
-            if (playerInRange) {
+			if (playerInRange) {
             	
             	// Play explosion sound
-                if (random.nextInt(3) == 0) {
-                    Sound.Mob_creeper_explode.play();
-                }
-                if (random.nextInt(3) == 1) {
-                    Sound.Mob_creeper_explode_4.play();
-                }
-                if (random.nextInt(3) == 2) {
-                    Sound.Mob_creeper_explode.play();
-                }
-                if (random.nextInt(3) == 3) {
-                    Sound.Mob_creeper_explode_4.play();
-                }
+				switch (random.nextInt(1)) {
+					case 0: Sound.Mob_creeper_explode.play(); break;
+					case 1: Sound.Mob_creeper_explode_4.play(); break;
+					default: Sound.Mob_creeper_explode.play(); break;
+				}
 
-                // figure out which tile the mob died on
-                int xt = x >> 4;
-                int yt = (y - 2) >> 4;
+				// figure out which tile the mob died on
+				int xt = x >> 4;
+				int yt = (y - 2) >> 4;
 
-                // used for calculations
-                int radius = lvl;
+				// used for calculations
+				int radius = lvl;
 
-                // The total amount of damage we want to apply.
-                int lvlDamage = BLAST_DAMAGE * lvl;
+				// The total amount of damage we want to apply.
+				int lvlDamage = BLAST_DAMAGE * lvl;
 
-                // hurt all the entities
-                List<Entity> entitiesInRange = level.getEntitiesInTiles(xt, yt, radius);
-                List<Entity> spawners = new ArrayList<>();
+				// hurt all the entities
+				List<Entity> entitiesInRange = level.getEntitiesInTiles(xt, yt, radius);
+				List<Entity> spawners = new ArrayList<>();
 
-                for (Entity entity : entitiesInRange) {
-                    if (entity instanceof Mob) {
-                        Mob mob = (Mob) entity;
-                        int distx = Math.abs(mob.x - x);
-                        int disty = Math.abs(mob.y - y);
-                        float distDiag = (float) Math.sqrt(distx ^ 2 + disty ^ 2);
-                        mob.hurt(this, (int) (lvlDamage * (1 / (distDiag + 1)) + Settings.getIdx("diff")));
-                    } else if (entity instanceof Spawner) {
-                        spawners.add(entity);
-                    }
-                }
+				for (Entity entity : entitiesInRange) {
+					if (entity instanceof Mob) {
+						Mob mob = (Mob) entity;
+						int distx = Math.abs(mob.x - x);
+						int disty = Math.abs(mob.y - y);
+						float distDiag = (float) Math.sqrt(distx ^ 2 + disty ^ 2);
+						mob.hurt(this, (int) (lvlDamage * (1 / (distDiag + 1)) + Settings.getIdx("diff")));
+					} else if (entity instanceof Spawner) {
+						spawners.add(entity);
+					}
+				}
 
-                Point[] tilePositions = level.getAreaTilePositions(xt, yt, radius);
-                for (Point tilePosition : tilePositions) {
-                    boolean hasSpawner = false;
-                    for (Entity spawner : spawners) {
-                        if (spawner.x >> 4 == tilePosition.x && spawner.y >> 4 == tilePosition.y) {
-                            hasSpawner = true;
-                            break;
-                        }
-                    }
-                    if (!hasSpawner) {
-                        if (level.depth != 1) {
-                            level.setAreaTiles(tilePosition.x, tilePosition.y, 0, Tiles.get("hole"), 0, explosionBlacklist);
-                        } else {
-                            level.setAreaTiles(tilePosition.x, tilePosition.y, 0, Tiles.get("Infinite Fall"), 0, explosionBlacklist);
-                        }
+				Point[] tilePositions = level.getAreaTilePositions(xt, yt, radius);
+				for (Point tilePosition : tilePositions) {
+					boolean hasSpawner = false;
+					for (Entity spawner : spawners) {
+						if (spawner.x >> 4 == tilePosition.x && spawner.y >> 4 == tilePosition.y) {
+							hasSpawner = true;
+							break;
+						}
+					}
+					if (!hasSpawner) {
+						if (level.depth != 1) {
+							level.setAreaTiles(tilePosition.x, tilePosition.y, 0, Tiles.get("hole"), 0, explosionBlacklist);
+						} else {
+							level.setAreaTiles(tilePosition.x, tilePosition.y, 0, Tiles.get("Infinite Fall"), 0, explosionBlacklist);
+						}
 
-                    }
-                }
+					}
+				}
 
-                for (Entity entity : entitiesInRange) { // This is repeated because of tilePositions need to be calculated
-                    if (entity == this)
-                        continue;
-                    Point ePos = new Point(entity.x >> 4, entity.y >> 4);
-                    for (Point p : tilePositions) {
-                        if (!p.equals(ePos))
-                            continue;
-                        if (!level.getTile(p.x, p.y).mayPass(level, p.x, p.y, entity))
-                            entity.die();
-                    }
-                }
+				for (Entity entity : entitiesInRange) { // This is repeated because of tilePositions need to be calculated
+					if (entity == this) {
+						continue;
+					}
 
-                die(); // dying now kind of kills everything. the super class will take care of it.
-            } else {
-                fuseTime = 0;
-                fuseLit = false;
-            }
-        }
-    }
+					Point ePos = new Point(entity.x >> 4, entity.y >> 4);
+					for (Point p : tilePositions) {
+						if (!p.equals(ePos)) {
+							continue;
+						}
+						if (!level.getTile(p.x, p.y).mayPass(level, p.x, p.y, entity)) {
+							entity.die();
+						}
+					}
+				}
 
-    @Override
-    public void render(Screen screen) {
-        /*
-         * if (fuseLit && fuseTime % 6 == 0) { super.lvlcols[lvl-1] = Color.get(-1,
-         * 252); } else super.lvlcols[lvl-1] = Creeper.lvlcols[lvl-1];
-         * 
-         * sprites[0] = walkDist == 0 ? standing : walking;
-         */
+				die(); // dying now kind of kills everything. the super class will take care of it.
+			} else {
+				fuseTime = 0;
+				fuseLit = false;
+			}
+		}
+	}
 
-        super.render(screen);
-    }
+	@Override
+	public void render(Screen screen) {
+		super.render(screen);
+	}
 
-    @Override
-    protected void touchedBy(Entity entity) {
+	@Override
+	protected void touchedBy(Entity entity) {
 
-        if (Settings.get("diff").equals("Peaceful"))
-            return;
-        
-        if (Game.isMode("creative"))
-        	return;
+		if (Settings.get("diff").equals("Peaceful")) {
+			return;
+		}
 
-        if (entity instanceof Player) {
-            if (fuseTime == 0 && !fuseLit) {
-                Sound.Mob_creeper_fuse.play();
-                fuseTime = MAX_FUSE_TIME;
-                fuseLit = true;
-            }
-            ((Player) entity).hurt(this, 1);
-        }
-    }
+		if (Game.isMode("Creative")) {
+			return;
+		}
 
-    public boolean canWool() {
-        return false;
-    }
+		if (entity instanceof Player) {
+			if (fuseTime == 0 && !fuseLit) {
+				Sound.Mob_creeper_fuse.play();
+				fuseTime = MAX_FUSE_TIME;
+				fuseLit = true;
+			}
+			((Player) entity).hurt(this, 1);
+		}
+	}
 
-    public void die() {
-        // Only drop items if the creeper has not exploded
-        if (!fuseLit) {
-            dropItem(1, 4 - Settings.getIdx("diff"), Items.get("Gunpowder"));
-        }
-        super.die();
-    }
-    
+	public boolean canWool() {
+		return false;
+	}
+
+	public void die() {
+		// Only drop items if the creeper has not exploded
+		if (!fuseLit) {
+			dropItem(1, 4 - Settings.getIdx("diff"), Items.get("Gunpowder"));
+		}
+		super.die();
+	}
+
 	@Override
 	public int getLightRadius() {
 		return light;
 	}
-    
 }

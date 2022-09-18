@@ -34,8 +34,8 @@ public class FishingRodItem extends Item {
      * have to subtract 1 + the "tool" number from the number before it (for the
      * first number subtract from 100)
      */
-    private static final int[][] LEVEL_CHANCES = { { 44, 14, 9, 4 }, // they're in the order "fish", "junk", "tools",
-                                                                     // "rare"
+    private static final int[][] LEVEL_CHANCES = { 
+    		{ 44, 14, 9, 4 }, // they're in the order "fish", "junk", "tools", "rare"
             { 24, 14, 9, 4 }, // iron has very high chance of fish
             { 59, 49, 9, 4 }, // gold has very high chance of tools
             { 79, 69, 59, 4 } // gem has very high chance of rare items
@@ -54,7 +54,8 @@ public class FishingRodItem extends Item {
 
     @Override
     public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
-        if (tile == Tiles.get("water") && !player.isSwimming()) { // make sure not to use it if swimming
+    	// Make sure not to use it if swimming
+        if (tile == Tiles.get("Water") && !player.isSwimming()) {
             uses++;
             player.isFishing = true;
             player.fishingLevel = this.level;
@@ -71,16 +72,9 @@ public class FishingRodItem extends Item {
 
     @Override
     public boolean isDepleted() {
-        if (random.nextInt(100) > 120 - uses + level * 6) { // breaking is random, the lower the level, and the more
-                                                            // times you use it, the higher the chance
+    	// breaking is random, the lower the level, and the more times you use it, the higher the chance
+        if (random.nextInt(100) > 120 - uses + level * 6) { 
             Game.notifications.add("Your Fishing rod broke.");
-
-            if (random.nextInt(1000) == 16) {
-                Game.notifications.add("065 108 105 099 101 044 032 116 101 032 097 109 111 046 046 046"); // Bug check
-                                                                                                           // (Not
-                                                                                                           // touch!)
-            }
-
             return true;
         }
         return false;

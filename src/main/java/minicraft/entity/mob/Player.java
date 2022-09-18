@@ -199,7 +199,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		inventory = new Inventory() {
 			@Override
 			public void add(int idx, Item item) {
-				if (Game.isMode("creative")) {
+				if (Game.isMode("Creative")) {
 					if (count(item) > 0) return;
 
 					item = item.clone();
@@ -210,7 +210,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 			@Override
 			public Item remove(int idx) {
-				if (Game.isMode("creative")) {
+				if (Game.isMode("Creative")) {
 					Item cur = get(idx);
 					if (cur instanceof StackableItem) ((StackableItem) cur).count = 1;
 					if (count(cur) == 1) {
@@ -243,7 +243,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		hungerStamCnt = maxHungerStams[Settings.getIdx("diff")];
 		stamHungerTicks = maxHungerTicks;
 
-		if (Game.isMode("creative")) {
+		if (Game.isMode("Creative")) {
 			Items.fillCreativeInv(inventory);
 		}
 
@@ -380,7 +380,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                 if (Settings.get("particles").equals(true)) {
                     int randX = random.nextInt(10);
                     int randY = random.nextInt(9);
-
                     level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
                 }
                 
@@ -394,7 +393,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		}
 
 		// if touch water extinguish the fire
-		if (level.getTile(x / 16, y / 16) == Tiles.get("water")) {
+		if (level.getTile(x / 16, y / 16) == Tiles.get("Water")) {
 			burnTime = 0;
 			playerBurning = false;
 		}
@@ -410,7 +409,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		if (!potioneffects.isEmpty() && !Bed.inBed(this)) {
 
 			// Add potion particles...
-            if (Settings.get("particles").equals(true)) {
+            if (Settings.get("Particles").equals(true)) {
                 int randY = rnd.nextInt(9);
                 if (random.nextInt(18) == 9) {
                     level.add(new PotionParticle(x - 1, y - 23 + randY));
@@ -427,16 +426,16 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		}
 
 		if (isSwimming()) {
-			if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true) && isMoving) {
+			if (tickTime / 8 % 2 == 0 && Settings.get("Particles").equals(true) && isMoving) {
 
 				int randX = rnd.nextInt(10);
 				int randY = rnd.nextInt(9);
 
 				// Add water particles and fire particles when the player swim
-				if (level.getTile(x / 16, y / 16) == Tiles.get("water") ) { 
+				if (level.getTile(x / 16, y / 16) == Tiles.get("Water") ) { 
 					level.add(new SplashParticle(x - 8 + randX, y - 8 + randY));    
 				} 
-                else if (level.getTile(x / 16, y / 16) == Tiles.get("lava")) { 
+                else if (level.getTile(x / 16, y / 16) == Tiles.get("Lava")) { 
 					level.add(new FireParticle(x - 8 + randX, y - 8 + randY)); 
 				}
 			}
@@ -444,10 +443,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 		// Display Ferrosite cloud particles when walk
 		if (level.getTile(x / 16, y / 16) == Tiles.get("Ferrosite")) {
-			if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true) && isMoving) {
+			if (tickTime / 8 % 2 == 0 && Settings.get("Particles").equals(true) && isMoving) {
                 int randX = random.nextInt(10);
                 int randY = random.nextInt(9);
-				level.add(new FerrositeParticle(x - 8 + randX, y - 8 + randY));
+				level.add(new FerrositeParticle(x - 8 + randX, y - 6 + randY));
 			}
 			moveSpeed = 2;
 		} else {
@@ -463,7 +462,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true) && isMoving) {
                 int randX = random.nextInt(10);
                 int randY = random.nextInt(9);
-				level.add(new CloudParticle(x - 8 + randX, y - 8 + randY));
+				level.add(new CloudParticle(x - 8 + randX, y - 6 + randY));
 			}
 		}
 
@@ -510,7 +509,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			onStairDelay--; 
 		}
 
-		if (onTile == Tiles.get("Infinite Fall") && !Game.isMode("creative") && tickTime / 4 % 2 == 0) {
+		if (onTile == Tiles.get("Infinite Fall") && !Game.isMode("Creative") && tickTime / 4 % 2 == 0) {
 
 			if (tickTime / 4 % 2 == 0 && fallWarn == true) {
 				if (onFallDelay <= 0) {
@@ -528,7 +527,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		}
         
 
-        if (Game.isMode("creative")) {
+        if (Game.isMode("Creative")) {
             // Prevent stamina/hunger decay in creative mode.
             stamina = maxStamina;
             hunger = maxHunger;
@@ -709,7 +708,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         			// Drop one from stack
         			((StackableItem) activeItem).count--;
         			((StackableItem) drop).count = 1;
-        		} else if (!Game.isMode("creative")) {
+        		} else if (!Game.isMode("Creative")) {
         			activeItem = null; // Remove it from the "inventory"
         		}
 
@@ -792,7 +791,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		// if you are now holding something other than a power glove...
 		if (!(activeItem instanceof PowerGloveItem)) { 
 			// and you had a previous item that we should care about...
-			if (prevItem != null && !Game.isMode("creative")) 
+			if (prevItem != null && !Game.isMode("Creative")) 
 				// then add that previous item to your inventory so it isn't lost.
 				// if something other than a power glove is being held, but the previous item is
 				// null, then nothing happens; nothing added to inventory, and current item
@@ -831,8 +830,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     	if (activeItem != null && !activeItem.interactsWithWorld()) {
     		attackDir = dir; // make the attack direction equal the current direction
     		attackItem = activeItem; // make attackItem equal activeItem
-    		activeItem.interactOn(Tiles.get("rock"), level, 0, 0, this, attackDir);
-    		if (!Game.isMode("creative") && activeItem.isDepleted()) {
+    		activeItem.interactOn(Tiles.get("Rock"), level, 0, 0, this, attackDir);
+    		if (!Game.isMode("Creative") && activeItem.isDepleted()) {
     			activeItem = null;
     		}
     		return;
@@ -851,14 +850,14 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     			ToolItem tool = (ToolItem) activeItem;
     			if (tool.type == ToolType.Bow && tool.dur > 0 && inventory.count(Items.arrowItem) > 0) {
 
-    				if (!Game.isMode("creative")) inventory.removeItem(Items.arrowItem);
+    				if (!Game.isMode("Creative")) inventory.removeItem(Items.arrowItem);
     				level.add(new Arrow(this, attackDir, tool.level));
     				attackTime = 10;
 
-    				if (!Game.isMode("creative")) tool.dur--;
+    				if (!Game.isMode("Creative")) tool.dur--;
 
     				// Bow down to me, achievement
-    				if (!Game.isMode("creative")) {
+    				if (!Game.isMode("Creative")) {
     					AchievementsDisplay.setAchievement("minicraft.achievement.bow",true);
     				}
     				return;
@@ -890,7 +889,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     				}
     			}
 
-    			if (!Game.isMode("creative") && activeItem.isDepleted()) {
+    			if (!Game.isMode("Creative") && activeItem.isDepleted()) {
     				// If the activeItem has 0 items left, then "destroy" it.
     				activeItem = null;
     			}
@@ -976,7 +975,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     				} else {
 
     					// Go Fish achievement
-    					if (Items.get(itemData).equals(Items.get("Raw Fish")) && !Game.isMode("creative")) {
+    					if (Items.get(itemData).equals(Items.get("Raw Fish")) && !Game.isMode("Creative")) {
     						AchievementsDisplay.setAchievement("minicraft.achievement.fish",true);
     					}
 
@@ -1117,7 +1116,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         	yo += 4; // y offset is moved up by 4
       
 
-        	if (level.getTile(x / 16, y / 16) == Tiles.get("water")) {
+        	if (level.getTile(x / 16, y / 16) == Tiles.get("Water")) {
         		
         		// animation effect
         		if (tickTime / 8 % 2 == 0) {           		
@@ -1128,7 +1127,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         			screen.render(xo + 8, yo + 3, 13 + 2 * 32, 1, 3);
         		}
 
-        	} else if (level.getTile(x / 16, y / 16) == Tiles.get("lava")) {
+        	} else if (level.getTile(x / 16, y / 16) == Tiles.get("Lava")) {
 
         		// BURN THE PLAYER
         		playerBurning = true;
@@ -1258,7 +1257,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     	itemEntity.remove();
     	addScore(1);
 
-    	if (Game.isMode("creative")) {
+    	if (Game.isMode("Creative")) {
     		return; // We shall not bother the inventory on creative mode.
     	}
 
@@ -1303,7 +1302,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     public void findStartPos(Level level, boolean setSpawn) {
         Point spawnPos;
 
-        List<Point> spawnTilePositions = level.getMatchingTiles(Tiles.get("grass"));
+        List<Point> spawnTilePositions = level.getMatchingTiles(Tiles.get("Grass"));
 
         if (spawnTilePositions.size() == 0) {
             spawnTilePositions.addAll(level.getMatchingTiles((t, x, y) -> t.maySpawn()));
@@ -1316,7 +1315,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         // There are no tiles in the entire map which the player is allowed to stand on. not likely.
         if (spawnTilePositions.size() == 0) {
             spawnPos = new Point(random.nextInt(level.w / 4) + level.w * 3 / 8, random.nextInt(level.h / 4) + level.h * 3 / 8);
-            level.setTile(spawnPos.x, spawnPos.y, Tiles.get("grass"));
+            level.setTile(spawnPos.x, spawnPos.y, Tiles.get("Grass"));
         } else { // Gets random valid spawn tile position.
             spawnPos = spawnTilePositions.get(random.nextInt(spawnTilePositions.size()));
         }
@@ -1427,7 +1426,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     /** What happens when the player is hurt */
     @Override
     protected void doHurt(int damage, Direction attackDir) {
-    	if (Game.isMode("creative") || hurtTime > 0 || Bed.inBed(this)) {
+    	if (Game.isMode("Creative") || hurtTime > 0 || Bed.inBed(this)) {
     		return; // Can't get hurt in creative, hurt cooldown, or while someone is in bed
     	}
 
@@ -1474,7 +1473,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
      * @param attackDir The direction of attack.
      */
     private void directHurt(int damage, Direction attackDir) {
-    	if (Game.isMode("creative") || hurtTime > 0 || Bed.inBed(this)) {
+    	if (Game.isMode("Creative") || hurtTime > 0 || Bed.inBed(this)) {
     		return; // Can't get hurt in creative, hurt cooldown, or while someone is in bed
     	}
 

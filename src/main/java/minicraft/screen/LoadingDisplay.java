@@ -47,10 +47,10 @@ public class LoadingDisplay extends Display {
 		t.setRepeats(false);
 	}
 
-    public void tick(InputHandler input) {
-        super.tick(input);
-        step++;
-    }
+	public void tick(InputHandler input) {
+		super.tick(input);
+		step++;
+	}
 
 	@Override
 	public void init(Display parent) {

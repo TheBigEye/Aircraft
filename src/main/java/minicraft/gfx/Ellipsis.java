@@ -45,10 +45,11 @@ public abstract class Ellipsis {
 			StringBuilder dots = new StringBuilder();
 			int ePos = getInterval();
 			for (int i = 0; i < getIntervalCount(); i++) {
-				if (ePos == i)
+				if (ePos == i) {
 					dots.append(".");
-				else
+				} else {
 					dots.append(" ");
+				}
 			}
 
 			return dots.toString();
@@ -58,7 +59,6 @@ public abstract class Ellipsis {
 	public static class SmoothEllipsis extends Ellipsis {
 
 		private static final String dotString = "   ";
-
 		private final char[] dots = dotString.toCharArray();
 
 		public SmoothEllipsis() {
@@ -91,7 +91,6 @@ public abstract class Ellipsis {
 		private int counter;
 
 		private Ellipsis ellipsis = null;
-
 		private boolean started = false;
 
 		protected DotUpdater(int countPerCycle) {
@@ -117,9 +116,11 @@ public abstract class Ellipsis {
 		}
 
 		private void incInterval(int amt) {
-			if (ellipsis != null)
-				for (int i = curInterval + 1; i <= curInterval + amt; i++)
+			if (ellipsis != null) {
+				for (int i = curInterval + 1; i <= curInterval + amt; i++) {
 					ellipsis.nextInterval(i % intervalCount);
+				}
+			}
 
 			curInterval += amt;
 			curInterval %= intervalCount;

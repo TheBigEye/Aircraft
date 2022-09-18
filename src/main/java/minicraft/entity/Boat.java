@@ -156,7 +156,7 @@ public class Boat extends Entity {
     		Sound.Mob_generic_hurt.play();
     		remove();
 
-    		if (!Game.isMode("creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem)) {
+    		if (!Game.isMode("Creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem)) {
     			// put whatever item the player is holding into their inventory
     			player.getInventory().add(0, player.activeItem); 
     		}

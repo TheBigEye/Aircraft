@@ -29,29 +29,29 @@ public class OldGolem extends EnemyMob {
     public void tick() {
         super.tick();
         
-        if (Game.isMode("creative")) {
+        if (Game.isMode("Creative")) {
         	return;
         }
     }
 
     public void die() {
-    	if (Settings.get("diff").equals("Peaceful")) dropItem(2, 2, Items.get("gear"));
-        if (Settings.get("diff").equals("Easy")) dropItem(2, 2, Items.get("gear"));
-        if (Settings.get("diff").equals("Normal")) dropItem(1, 2, Items.get("gear"));
-        if (Settings.get("diff").equals("Hard")) dropItem(1, 1, Items.get("gear"));
+    	if (Settings.get("diff").equals("Peaceful")) dropItem(2, 2, Items.get("Gear"));
+        if (Settings.get("diff").equals("Easy")) dropItem(2, 2, Items.get("Gear"));
+        if (Settings.get("diff").equals("Normal")) dropItem(1, 2, Items.get("Gear"));
+        if (Settings.get("diff").equals("Hard")) dropItem(1, 1, Items.get("Gear"));
 
         if (random.nextInt(60) == 2) {
-            level.dropItem(x, y, Items.get("iron"));
+            level.dropItem(x, y, Items.get("Iron"));
         }
 
         if (random.nextInt(40) == 19) {
             int rand = random.nextInt(3);
             if (rand == 0) {
-                level.dropItem(x, y, Items.get("iron"));
+                level.dropItem(x, y, Items.get("Iron"));
             } else if (rand == 1) {
-                level.dropItem(x, y, Items.get("gold"));
+                level.dropItem(x, y, Items.get("Gold"));
             } else if (rand == 2) {
-                level.dropItem(x, y, Items.get("gem"));
+                level.dropItem(x, y, Items.get("Gem"));
             }
         }
 

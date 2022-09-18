@@ -23,7 +23,7 @@ public class UpRockTile extends Tile {
 
     private ConnectorSprite sprite = new ConnectorSprite(UpRockTile.class, new Sprite(58, 6, 3, 3, 1), new Sprite(61, 8, 2, 2, 1), new Sprite(61, 6, 2, 2, 1)) {
         public boolean connectsTo(Tile tile, boolean isSide) {
-            return tile != Tiles.get("rock") && tile == Tiles.get("up rock");
+            return tile != Tiles.get("Rock") && tile == Tiles.get("Up Rock");
         }
     };
 
@@ -39,8 +39,7 @@ public class UpRockTile extends Tile {
 
     @Override
     public void render(Screen screen, Level level, int x, int y) {
-
-        Tiles.get("rock").render(screen, level, x, y);
+        Tiles.get("Rock").render(screen, level, x, y);
         sprite.render(screen, level, x, y);
     }
 
@@ -77,7 +76,7 @@ public class UpRockTile extends Tile {
         dropCoal = false; // Can only be reached when player hits w/o pickaxe, so remove ability to get coal
         damage = level.getData(x, y) + dmg;
 
-        if (Game.isMode("creative")) {
+        if (Game.isMode("Creative")) {
             dmg = damage = maxHealth;
             dropCoal = true;
         }
@@ -98,7 +97,7 @@ public class UpRockTile extends Tile {
             } else {
                 level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Stone"));
             }
-            level.setTile(x, y, Tiles.get("dirt"));
+            level.setTile(x, y, Tiles.get("Dirt"));
         } else {
             level.setData(x, y, damage);
         }

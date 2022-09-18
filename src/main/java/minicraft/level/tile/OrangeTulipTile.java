@@ -14,64 +14,69 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class OrangeTulipTile extends Tile {
-    private static Sprite sprite = new Sprite(4, 9, 1);
+	private static Sprite sprite = new Sprite(4, 9, 1);
 
-    protected OrangeTulipTile(String name) {
-        super(name, (ConnectorSprite) null);
-        connectsToGrass = true;
-        maySpawn = true;
-    }
+	protected OrangeTulipTile(String name) {
+		super(name, (ConnectorSprite) null);
+		connectsToGrass = true;
+		maySpawn = true;
+	}
 
-    public boolean tick(Level level, int xt, int yt) {
-        // TODO revise this method.
-        if (random.nextInt(30) != 0)
-            return false;
+	@Override
+	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+		level.dropItem(x * 16 + 8, y * 16 + 8, 1, 1, Items.get("Orange Tulip"));
+		level.setTile(x, y, Tiles.get("Grass"));
+		return true;
+	}
 
-        int xn = xt;
-        int yn = yt;
+	@Override
+	public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
+		if (item instanceof ToolItem) {
+			ToolItem tool = (ToolItem) item;
+			if (tool.type == ToolType.Shovel) {
+				if (player.payStamina(2 - tool.level) && tool.payDurability()) {
+					level.setTile(x, y, Tiles.get("Grass"));
+					Sound.Tile_generic_hurt.play();
+					level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Orange Tulip"));
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
-        if (random.nextBoolean())
-            xn += random.nextInt(2) * 2 - 1;
-        else
-            yn += random.nextInt(2) * 2 - 1;
+	@Override
+	public void render(Screen screen, Level level, int x, int y) {
+		Tiles.get("Grass").render(screen, level, x, y);
 
-        if (level.getTile(xn, yn) == Tiles.get("dirt")) {
-            level.setTile(xn, yn, Tiles.get("grass"));
-        }
-        return false;
-    }
+		int data = level.getData(x, y);
+		int shape = (data / 16) % 2;
 
-    public void render(Screen screen, Level level, int x, int y) {
-        Tiles.get("grass").render(screen, level, x, y);
+		x = x << 4;
+		y = y << 4;
 
-        int data = level.getData(x, y);
-        int shape = (data / 16) % 2;
+		sprite.render(screen, x + 8 * shape, y);
+		sprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
+	}
 
-        x = x << 4;
-        y = y << 4;
+	@Override
+	public boolean tick(Level level, int xt, int yt) {
+		if (random.nextInt(30) != 0) {
+			return false;
+		}
 
-        sprite.render(screen, x + 8 * shape, y);
-        sprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
-    }
+		int xn = xt;
+		int yn = yt;
 
-    public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
-            if (tool.type == ToolType.Shovel) {
-                if (player.payStamina(2 - tool.level) && tool.payDurability()) {
-                    level.setTile(x, y, Tiles.get("grass"));
-                    Sound.Tile_generic_hurt.play();
-                    level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Orange Tulip"));
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+		if (random.nextBoolean()) {
+			xn += random.nextInt(2) * 2 - 1;
+		} else {
+			yn += random.nextInt(2) * 2 - 1;
+		}
 
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-        level.dropItem(x * 16 + 8, y * 16 + 8, 1, 1, Items.get("Orange Tulip"));
-        level.setTile(x, y, Tiles.get("grass"));
-        return true;
-    }
+		if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
+			level.setTile(xn, yn, Tiles.get("Grass"));
+		}
+		return false;
+	}
 }

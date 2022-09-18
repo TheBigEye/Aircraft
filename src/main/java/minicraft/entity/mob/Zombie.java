@@ -42,14 +42,10 @@ public class Zombie extends EnemyMob {
     }
 
     public void die() {
-        if (Settings.get("diff").equals("Peaceful"))
-            dropItem(2, 4, Items.get("cloth"));
-        if (Settings.get("diff").equals("Easy"))
-            dropItem(2, 4, Items.get("cloth"));
-        if (Settings.get("diff").equals("Normal"))
-            dropItem(1, 3, Items.get("cloth"));
-        if (Settings.get("diff").equals("Hard"))
-            dropItem(1, 2, Items.get("cloth"));
+        if (Settings.get("diff").equals("Peaceful")) dropItem(2, 4, Items.get("cloth"));
+        if (Settings.get("diff").equals("Easy")) dropItem(2, 4, Items.get("cloth"));
+        if (Settings.get("diff").equals("Normal")) dropItem(1, 3, Items.get("cloth"));
+        if (Settings.get("diff").equals("Hard")) dropItem(1, 2, Items.get("cloth"));
 
         if (random.nextInt(60) == 2) {
             level.dropItem(x, y, Items.get("iron"));
@@ -69,8 +65,7 @@ public class Zombie extends EnemyMob {
                 case 0: level.dropItem(x, y, Items.get("green clothes")); break;
                 case 1: level.dropItem(x, y, Items.get("red clothes")); break;
                 case 2: level.dropItem(x, y, Items.get("blue clothes")); break;
-                default:
-                    break;
+                default: break;
             }
         }
         

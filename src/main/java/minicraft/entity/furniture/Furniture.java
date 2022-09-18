@@ -80,8 +80,8 @@ public class Furniture extends Entity {
             multiPushTime = 0;
         }
         
-        if (level.getTile(x >> 4,y >> 4) == Tiles.get("lava") && !(this instanceof Spawner) && !(this instanceof DeathChest) && !(this instanceof Tnt)) {
-			for(int i = 0; i < 1 + random.nextInt(3); i++) {
+        if (level.getTile(x >> 4,y >> 4) == Tiles.get("Lava") && !(this instanceof Spawner) && !(this instanceof DeathChest) && !(this instanceof Tnt)) {
+			for (int i = 0; i < 1 + random.nextInt(3); i++) {
 				int randX = random.nextInt(16);
 				int randY = random.nextInt(12);
 				level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
@@ -122,7 +122,7 @@ public class Furniture extends Entity {
             Sound.Mob_generic_hurt.play();
                 remove();
                 
-                if (!Game.isMode("creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem)) {
+                if (!Game.isMode("Creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem)) {
                 	// put whatever item the player is holding into their inventory
                 	player.getInventory().add(0, player.activeItem); 
                 }

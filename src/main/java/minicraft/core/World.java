@@ -197,7 +197,7 @@ public class World extends Game {
 
 		levels[currentLevel].add(player); // Adds the player to the level.
 
-		if (!Game.isMode("creative")) {
+		if (!Game.isMode("Creative")) {
 			if (currentLevel == 0) {
 				AchievementsDisplay.setAchievement("minicraft.achievement.lowest_caves", true);
 			} else if (currentLevel == 6) {

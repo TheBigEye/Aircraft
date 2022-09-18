@@ -27,7 +27,7 @@ public class RockTile extends Tile {
 	private ConnectorSprite sprite = new ConnectorSprite(RockTile.class, new Sprite(18, 6, 3, 3, 1), new Sprite(21, 8, 2, 2, 1), new Sprite(21, 6, 2, 2, 1)) {
 
 		public boolean connectsTo(Tile tile, boolean isSide) {
-			return tile == Tiles.get("rock") || tile == Tiles.get("up rock");
+			return tile == Tiles.get("Rock") || tile == Tiles.get("Up Rock");
 		}
 	};
 
@@ -42,46 +42,9 @@ public class RockTile extends Tile {
 	}
 
 	@Override
-	public void render(Screen screen, Level level, int x, int y) {
-		sprite.sparse.color = DirtTile.dCol(level.depth);
-		sprite.render(screen, level, x, y);
-	}
-
-	@Override
-	public boolean mayPass(Level level, int x, int y, Entity e) {
-		return e instanceof Firefly;
-	}
-
-	@Override
-	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-		dropCoal = false; // Can only be reached when player hits w/o pickaxe, so remove ability to get coal
-		hurt(level, x, y, dmg);
-		return true;
-	}
-
-	@Override
-	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-
-		// creative mode can just act like survival here
-		if (item instanceof ToolItem) {
-			ToolItem tool = (ToolItem) item;
-			if (tool.type == ToolType.Pickaxe && player.payStamina(4 - tool.level) && tool.payDurability()) {
-
-                AchievementsDisplay.setAchievement("minicraft.achievement.mine_stone", true);
-                
-				// Drop coal since we use a pickaxe.
-				dropCoal = true;
-				hurt(level, xt, yt, tool.getDamage());
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
 	public void hurt(Level level, int x, int y, int dmg) {
 		damage = level.getData(x, y) + dmg;
-		if (Game.isMode("creative")) {
+		if (Game.isMode("Creative")) {
 			dmg = damage = maxHealth;
 			dropCoal = true;
 		}
@@ -107,6 +70,43 @@ public class RockTile extends Tile {
 		} else {
 			level.setData(x, y, damage);
 		}
+	}
+
+	@Override
+	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+		dropCoal = false; // Can only be reached when player hits w/o pickaxe, so remove ability to get coal
+		hurt(level, x, y, dmg);
+		return true;
+	}
+
+	@Override
+	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
+
+		// creative mode can just act like survival here
+		if (item instanceof ToolItem) {
+			ToolItem tool = (ToolItem) item;
+			if (tool.type == ToolType.Pickaxe && player.payStamina(4 - tool.level) && tool.payDurability()) {
+
+				AchievementsDisplay.setAchievement("minicraft.achievement.mine_stone", true);
+
+				// Drop coal since we use a pickaxe.
+				dropCoal = true;
+				hurt(level, xt, yt, tool.getDamage());
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean mayPass(Level level, int x, int y, Entity e) {
+		return e instanceof Firefly;
+	}
+
+	@Override
+	public void render(Screen screen, Level level, int x, int y) {
+		sprite.sparse.color = DirtTile.dCol(level.depth);
+		sprite.render(screen, level, x, y);
 	}
 
 	@Override

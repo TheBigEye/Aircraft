@@ -20,11 +20,6 @@ public class DirtTile extends Tile {
         levelSprite[2] = new Sprite(10, 2, 2, 2, 1);
     }
 
-    protected DirtTile(String name) {
-        super(name, levelSprite[0]);
-        maySpawn = true;
-    }
-
     public static int dCol(int depth) {
         switch (depth) {
 			case 1: return Color.get(1, 194, 194, 194); // Sky.
@@ -43,9 +38,9 @@ public class DirtTile extends Tile {
         }
     }
 
-    @Override
-    public void render(Screen screen, Level level, int x, int y) {
-        levelSprite[dIdx(level.depth)].render(screen, x * 16, y * 16, 0);
+    protected DirtTile(String name) {
+        super(name, levelSprite[0]);
+        maySpawn = true;
     }
 
     @Override
@@ -54,12 +49,12 @@ public class DirtTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    level.setTile(xt, yt, Tiles.get("hole"));
+                    level.setTile(xt, yt, Tiles.get("Hole"));
                     Sound.Tile_generic_hurt.play();
-                    level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("dirt"));
+                    level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Dirt"));
 
                     if (random.nextInt(64) == 0) { // 2% chance to drop bones
-                        level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("bone"));
+                        level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Bone"));
                     }
 
                     return true;
@@ -67,12 +62,17 @@ public class DirtTile extends Tile {
             }
             if (tool.type == ToolType.Hoe) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    level.setTile(xt, yt, Tiles.get("farmland"));
+                    level.setTile(xt, yt, Tiles.get("Farmland"));
                     Sound.Tile_generic_hurt.play();
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    @Override
+    public void render(Screen screen, Level level, int x, int y) {
+        levelSprite[dIdx(level.depth)].render(screen, x * 16, y * 16, 0);
     }
 }

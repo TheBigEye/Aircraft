@@ -82,7 +82,7 @@ public class WallTile extends Tile {
 
     @Override
     public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-        if (Game.isMode("creative") || level.depth != -3 || type != Material.Obsidian || AirWizard.beaten) {
+        if (Game.isMode("Creative") || level.depth != -3 || type != Material.Obsidian || AirWizard.beaten) {
             hurt(level, x, y, random.nextInt(6) / 6 * dmg / 2);
             return true;
         } else {
@@ -93,7 +93,7 @@ public class WallTile extends Tile {
 
     @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (Game.isMode("creative")) {
+        if (Game.isMode("Creative")) {
             return false; // go directly to hurt method
         }
         if (item instanceof ToolItem) {
@@ -117,7 +117,7 @@ public class WallTile extends Tile {
         int damage = level.getData(x, y) + dmg;
         int sbwHealth = 100;
 
-        if (Game.isMode("creative")) {
+        if (Game.isMode("Creative")) {
             dmg = damage = sbwHealth;
         }
 

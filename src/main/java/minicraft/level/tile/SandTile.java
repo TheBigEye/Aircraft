@@ -31,8 +31,15 @@ public class SandTile extends Tile {
         steppedOn_sprite = new Sprite(pixels);
     }
 
-    private ConnectorSprite sprite = new ConnectorSprite(SandTile.class, new Sprite(6, 6, 3, 3, 1), normal_sprite) {
+    protected static int sCol(int depth) {
+        switch (depth) {
+	        case 0: return Color.get(1, 237, 190, 82); // surface.
+	        case -4: return Color.get(1, 237, 190, 82); // dungeons.
+	        default: return Color.get(1, 237, 190, 82); // caves.
+        }
+    }
 
+    private ConnectorSprite sprite = new ConnectorSprite(SandTile.class, new Sprite(6, 6, 3, 3, 1), normal_sprite) {
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) {
             if (!isSide) {
@@ -49,12 +56,20 @@ public class SandTile extends Tile {
         maySpawn = true;
     }
 
-    protected static int sCol(int depth) {
-        switch (depth) {
-	        case 0: return Color.get(1, 237, 190, 82); // surface.
-	        case -4: return Color.get(1, 237, 190, 82); // dungeons.
-	        default: return Color.get(1, 237, 190, 82); // caves.
+    @Override
+    public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
+        if (item instanceof ToolItem) {
+            ToolItem tool = (ToolItem) item;
+            if (tool.type == ToolType.Shovel) {
+                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                    level.setTile(xt, yt, Tiles.get("Dirt"));
+                    Sound.Tile_generic_hurt.play();
+                    level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Sand"));
+                    return true;
+                }
+            }
         }
+        return false;
     }
 
     @Override
@@ -72,16 +87,6 @@ public class SandTile extends Tile {
     }
 
     @Override
-    public boolean tick(Level level, int x, int y) {
-        int damage = level.getData(x, y);
-        if (damage > 0) {
-            level.setData(x, y, damage - 1);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public void steppedOn(Level level, int x, int y, Entity entity) {
         if (entity instanceof Mob) {
             level.setData(x, y, 10);
@@ -92,17 +97,11 @@ public class SandTile extends Tile {
     }
 
     @Override
-    public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
-            if (tool.type == ToolType.Shovel) {
-                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    level.setTile(xt, yt, Tiles.get("dirt"));
-                    Sound.Tile_generic_hurt.play();
-                    level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("sand"));
-                    return true;
-                }
-            }
+    public boolean tick(Level level, int x, int y) {
+        int damage = level.getData(x, y);
+        if (damage > 0) {
+            level.setData(x, y, damage - 1);
+            return true;
         }
         return false;
     }

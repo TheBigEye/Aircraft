@@ -88,7 +88,7 @@ public class MushroomTreeTile extends Tile {
 	
 	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-		if(Game.isMode("creative"))
+		if(Game.isMode("Creative"))
 			return false; // go directly to hurt method
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
@@ -108,7 +108,7 @@ public class MushroomTreeTile extends Tile {
 		
 		int damage = level.getData(x, y) + dmg;
 		int treeHealth = 20;
-		if (Game.isMode("creative")) dmg = damage = treeHealth;
+		if (Game.isMode("Creative")) dmg = damage = treeHealth;
 		
 		level.add(new SmashParticle(x*16, y*16));
 		//Sound.monsterHurt.play();

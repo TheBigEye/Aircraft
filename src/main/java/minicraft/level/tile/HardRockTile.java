@@ -38,8 +38,10 @@ public class HardRockTile extends Tile {
     }
 
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (Game.isMode("creative"))
+        if (Game.isMode("Creative")) {
             return false; // go directly to hurt method
+        }
+        
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Pickaxe && tool.level == 4) {
@@ -48,11 +50,9 @@ public class HardRockTile extends Tile {
                     return true;
                 }
             } else {
-
                 if (random.nextInt(4) == 2) {
                     Game.notifications.add("Gem Pickaxe Required.");
                 }
-
                 fail(level, xt, yt);
             }
         }
@@ -66,18 +66,20 @@ public class HardRockTile extends Tile {
     public void hurt(Level level, int x, int y, int dmg) {
         int damage = level.getData(x, y) + dmg;
         int hrHealth = 200;
-        if (Game.isMode("creative"))
+        
+        if (Game.isMode("Creative")) {
             dmg = damage = hrHealth;
+        }
+        
         level.add(new SmashParticle(x * 16, y * 16));
         Sound.Tile_generic_hurt.play();
 
-
-        	level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
+        level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
 
         if (damage >= hrHealth) {
-            level.setTile(x, y, Tiles.get("dirt"));
+            level.setTile(x, y, Tiles.get("Dirt"));
             level.dropItem(x * 16 + 8, y * 16 + 8, 1, 3, Items.get("Stone"));
-            level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("coal"));
+            level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Coal"));
         } else {
             level.setData(x, y, damage);
         }

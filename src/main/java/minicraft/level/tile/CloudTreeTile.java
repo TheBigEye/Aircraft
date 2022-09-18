@@ -84,7 +84,7 @@ public class CloudTreeTile extends Tile {
 
     @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (Game.isMode("creative"))
+        if (Game.isMode("Creative"))
             return false; // go directly to hurt method
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;

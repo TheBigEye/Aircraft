@@ -33,17 +33,17 @@ public class InfiniteFallTile extends Tile {
     public boolean mayPass(Level level, int x, int y, Entity e) {
         return e instanceof AirWizard || e instanceof AirWizardPhase2 || e instanceof AirWizardPhase3
                 || e instanceof Arrow || e instanceof Player && (((Player) e).skinon 
-                || Game.isMode("creative") ||
+                || Game.isMode("Creative") ||
                 
                 // Make un-solid when trigger the fall warning in survival
-                !Game.isMode("creative") && Game.player.fallWarn == true); 
+                !Game.isMode("Creative") && Game.player.fallWarn == true); 
     }
     
     @Override
     public void bumpedInto(Level level, int x, int y, Entity entity) {
         if (entity instanceof Player) {
 	        Player p = (Player) entity;
-	        if (Game.player.fallWarn == false && !Game.isMode("creative")) {
+	        if (Game.player.fallWarn == false && !Game.isMode("Creative")) {
 	        	Updater.notifyAll("Watch out so you won't slip and fall!");
 	        	p.hurt(this, x, y, 1);
 	            Game.player.fallWarn = true;

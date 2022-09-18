@@ -28,15 +28,13 @@ public class KeyInputDisplay extends Display {
 
 	public KeyInputDisplay() {
 		super(true);
+		
 		builder = new Menu.Builder(true, 1, RelPos.CENTER, getEntries()).setTitle("Controls").setPositioning(new Point(Screen.w / 2, Screen.h - Font.textHeight() * 4), RelPos.TOP);
-
 		Menu.Builder popupBuilder = new Menu.Builder(true, 4, RelPos.CENTER).setShouldRender(false).setSelectable(false);
 
 		menus = new Menu[] { builder.createMenu(),
-
-				popupBuilder.setEntries(StringEntry.useLines(Color.YELLOW, "Press the desired", "key sequence")).createMenu(),
-
-				popupBuilder.setEntries(StringEntry.useLines(Color.RED, "Are you sure you want to reset all key bindings to the default keys?", "enter to confirm", "escape to cancel")).setTitle("Confirm Action").createMenu() 
+			popupBuilder.setEntries(StringEntry.useLines(Color.YELLOW, "Press the desired", "key sequence")).createMenu(),
+			popupBuilder.setEntries(StringEntry.useLines(Color.RED, "Are you sure you want to reset all key bindings to the default keys?", "enter to confirm", "escape to cancel")).setTitle("Confirm Action").createMenu() 
 		};
 
 		listeningForBind = false;
@@ -94,7 +92,13 @@ public class KeyInputDisplay extends Display {
 		super.render(screen);
 
 		if (!listeningForBind && !confirmReset) {
-			String[] lines = { "Press C/Enter to change key binding", "Press A to add key binding", "Shift-D to reset all keys to default", Game.input.getMapping("exit") + " to Return to menu" };
+			String[] lines = { 
+					"Press C/Enter to change key binding",
+					"Press A to add key binding",
+					"Shift-D to reset all keys to default",
+					Game.input.getMapping("exit") + " to Return to menu" 
+			};
+			
 			for (int i = 0; i < lines.length; i++) {
 				Font.drawCentered(lines[i], screen, Screen.h - Font.textHeight() * (4 - i), Color.WHITE);
 			}

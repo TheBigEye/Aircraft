@@ -230,7 +230,7 @@ public class Level {
 
 						} else {
 							// Any other level, the up-stairs should have dirt on all sides.
-							setAreaTiles(x, y, 1, Tiles.get("dirt"), 0);
+							setAreaTiles(x, y, 1, Tiles.get("Dirt"), 0);
 						}
 
 						setTile(x, y, Tiles.get("Stairs Up")); // Set a stairs up tile in the same position on the current level
@@ -648,12 +648,12 @@ public class Level {
 
 		for (int y = yo - r; y <= h + yo + r; y++) {
 			for (int x = xo - r; x <= w + xo + r; x++) {
-				if (x < 0 || y < 0 || x >= this.w || y >= this.h)
+				if (x < 0 || y < 0 || x >= this.w || y >= this.h) {
 					continue;
+				}
 
 				int lr = getTile(x, y).getLightRadius(this, x, y);
-				if (lr > 0)
-					screen.renderLight(x * 16 + 8, y * 16 + 8, lr * brightness);
+				if (lr > 0) screen.renderLight(x * 16 + 8, y * 16 + 8, lr * brightness);
 			}
 		}
 		screen.setOffset(0, 0);
@@ -663,21 +663,22 @@ public class Level {
 		list.sort(spriteSorter);
 		for (int i = 0; i < list.size(); i++) {
 			Entity e = list.get(i);
-			if (e.getLevel() == this && !e.isRemoved())
+			if (e.getLevel() == this && !e.isRemoved()) {
 				e.render(screen);
-			else
+			} else {
 				remove(e);
+			}
 		}
 	}
 
 	public Tile getTile(int x, int y) {
-		// if (x < 0 || y < 0 || x >= w || y >= h/* || (x + y * w) >= tiles.length*/)
-		// return Tiles.get("rock");
-		if (x < 0 || y < 0 || x >= w || y >= h /* || (x + y * w) >= tiles.length */ )
-			return Tiles.get("connector tile");
+		if (x < 0 || y < 0 || x >= w || y >= h) {
+			return Tiles.get("Connector Tile");
+		}
+		
 		int id = tiles[x + y * w];
-		if (id < 0)
-			id += 256;
+		if (id < 0) id += 256;
+		
 		return Tiles.get(id);
 	}
 
@@ -894,7 +895,7 @@ public class Level {
 		for (Entity e: getEntityArray()) {
 			if (e instanceof EnemyMob) {
 				// don't remove the airwizard bosses! Unless in creative, since you can spawn more.
-				if (!(e instanceof AirWizard) || Game.isMode("creative")) {
+				if (!(e instanceof AirWizard) || Game.isMode("Creative")) {
 					e.remove();
 				}
 			}
@@ -1130,10 +1131,11 @@ public class Level {
 	}
 
 	public boolean isLight(int x, int y) {
-		for (Tile t: getAreaTiles(x, y, 3))
-			if (t instanceof TorchTile)
+		for (Tile t: getAreaTiles(x, y, 3)) {
+			if (t instanceof TorchTile) {
 				return true;
-
+			}
+		}
 		return false;
 	}
 
@@ -1161,19 +1163,19 @@ public class Level {
 			Spawner sp = new Spawner(m);
 			int x3 = random.nextInt(16 * w) / 16;
 			int y3 = random.nextInt(16 * h) / 16;
-			if (getTile(x3, y3) == Tiles.get("dirt")) {
+			if (getTile(x3, y3) == Tiles.get("Dirt")) {
 				boolean xaxis2 = random.nextBoolean();
 
 				if (xaxis2) {
 					for (int s2 = x3; s2 < w - s2; s2++) {
-						if (getTile(s2, y3) == Tiles.get("rock")) {
+						if (getTile(s2, y3) == Tiles.get("Rock")) {
 							sp.x = s2 * 16 - 24;
 							sp.y = y3 * 16 - 24;
 						}
 					}
 				} else {
 					for (int s2 = y3; s2 < y3 - s2; s2++) {
-						if (getTile(x3, s2) == Tiles.get("rock")) {
+						if (getTile(x3, s2) == Tiles.get("Rock")) {
 							sp.x = x3 * 16 - 24;
 							sp.y = s2 * 16 - 24;
 						}
@@ -1185,29 +1187,30 @@ public class Level {
 					sp.y = y3 * 16 - 8;
 				}
 
-				if (getTile(sp.x / 16, sp.y / 16) == Tiles.get("rock")) {
-					setTile(sp.x / 16, sp.y / 16, Tiles.get("dirt"));
+				if (getTile(sp.x / 16, sp.y / 16) == Tiles.get("Rock")) {
+					setTile(sp.x / 16, sp.y / 16, Tiles.get("Dirt"));
 				}
 
 				Structure.mobDungeonCenter.draw(this, sp.x / 16, sp.y / 16);
 
-				if (getTile(sp.x / 16, sp.y / 16 - 4) == Tiles.get("dirt")) {
+				if (getTile(sp.x / 16, sp.y / 16 - 4) == Tiles.get("Dirt")) {
 					Structure.mobDungeonNorth.draw(this, sp.x / 16, sp.y / 16 - 5);
 				}
-				if (getTile(sp.x / 16, sp.y / 16 + 4) == Tiles.get("dirt")) {
+				if (getTile(sp.x / 16, sp.y / 16 + 4) == Tiles.get("Dirt")) {
 					Structure.mobDungeonSouth.draw(this, sp.x / 16, sp.y / 16 + 5);
 				}
-				if (getTile(sp.x / 16 + 4, sp.y / 16) == Tiles.get("dirt")) {
+				if (getTile(sp.x / 16 + 4, sp.y / 16) == Tiles.get("Dirt")) {
 					Structure.mobDungeonEast.draw(this, sp.x / 16 + 5, sp.y / 16);
 				}
-				if (getTile(sp.x / 16 - 4, sp.y / 16) == Tiles.get("dirt")) {
+				if (getTile(sp.x / 16 - 4, sp.y / 16) == Tiles.get("Dirt")) {
 					Structure.mobDungeonWest.draw(this, sp.x / 16 - 5, sp.y / 16);
 				}
 
 				add(sp);
 				for (int rpt = 0; rpt < 2; rpt++) {
-					if (random.nextInt(2) != 0)
+					if (random.nextInt(2) != 0) {
 						continue;
+					}
 					Chest c = new Chest();
 					int chance = -depth;
 
@@ -1218,8 +1221,7 @@ public class Level {
 			}
 
 		}
-		if (Game.debug)
-			System.out.println("Spawner dungeon generated!");
+		if (Game.debug) System.out.println("Spawner dungeon generated!");
 	}
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1260,7 +1262,7 @@ public class Level {
 				int y = random.nextInt(h);
 
 				// makes sure the village isn't to close to the previous village
-				if (getTile(x, y) == Tiles.get("grass") && (Math.abs(x - lastVillageX) > 28 && Math.abs(y - lastVillageY) > 28)) {
+				if (getTile(x, y) == Tiles.get("Grass") && (Math.abs(x - lastVillageX) > 28 && Math.abs(y - lastVillageY) > 28)) {
 					lastVillageX = x;
 					lastVillageY = y;
 

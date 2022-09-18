@@ -39,7 +39,7 @@ public class Skeleton extends EnemyMob {
             return;
         }
         
-        if (Game.isMode("creative")) {
+        if (Game.isMode("Creative")) {
         	return;
         }
         

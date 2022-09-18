@@ -58,6 +58,7 @@ public class Chicken extends PassiveMob {
 
             int sig0 = 1;
             xa = ya = 0;
+
             if (xd < sig0) xa = -1;
             if (xd > sig0) xa = +1;
             if (yd < sig0) ya = -1;
@@ -69,7 +70,8 @@ public class Chicken extends PassiveMob {
     }
 
     public void die() {
-        int min = 0, max = 0;
+		int min = 0;
+		int max = 0;
 
         if (Settings.get("diff").equals("Passive")) {min = 1; max = 2;}
         if (Settings.get("diff").equals("Easy")) {min = 1; max = 2;}

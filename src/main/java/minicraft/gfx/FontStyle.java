@@ -74,9 +74,11 @@ public class FontStyle {
 
 		/// for the shadow
 		char[] sides = shadowType.toCharArray();
-		for (int i = 0; i < 8 && i < sides.length; i++)
-			if (sides[i] == '1')
+		for (int i = 0; i < 8 && i < sides.length; i++) {
+			if (sides[i] == '1') {
 				Font.draw(msg, screen, xPos + shadowPosMap[i], yPos + shadowPosMap[i + 8], shadowColor);
+			}
+		}
 
 		/// the main drawing of the text:
 		Font.draw(msg, screen, xPos, yPos, mainColor);

@@ -55,8 +55,8 @@ public class SkyGrassTile extends Tile {
 
     @Override
     public void render(Screen screen, Level level, int x, int y) {
-        if (Tiles.get("cloud") != null) {
-            Tiles.get("cloud").render(screen, level, x, y);
+        if (Tiles.get("Cloud") != null) {
+            Tiles.get("Cloud").render(screen, level, x, y);
         } else {
             Tiles.get("Ferrosite").render(screen, level, x, y);
         }

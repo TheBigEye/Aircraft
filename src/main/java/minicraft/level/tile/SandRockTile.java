@@ -63,10 +63,12 @@ public class SandRockTile extends Tile {
     public void hurt(Level level, int x, int y, int dmg) {
         int damage = level.getData(x, y) + dmg;
         int rockHealth = 50;
-        if (Game.isMode("creative")) {
+        
+        if (Game.isMode("Creative")) {
             dmg = damage = rockHealth;
             coalLvl = 1;
         }
+        
         level.add(new SmashParticle(x * 16, y * 16));
         Sound.Tile_generic_hurt.play();
 
@@ -83,9 +85,9 @@ public class SandRockTile extends Tile {
                     mincoal++;
                     maxcoal++;
                 }
-                level.dropItem(x * 16 + 8, y * 16 + 8, mincoal, maxcoal, Items.get("coal"));
+                level.dropItem(x * 16 + 8, y * 16 + 8, mincoal, maxcoal, Items.get("Coal"));
             }
-            level.setTile(x, y, Tiles.get("sand"));
+            level.setTile(x, y, Tiles.get("Sand"));
         } else {
             level.setData(x, y, damage);
         }

@@ -83,7 +83,7 @@ public class BlueCloudTreeTile extends Tile {
 
     @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (Game.isMode("creative"))
+        if (Game.isMode("Creative"))
             return false; // go directly to hurt method
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
@@ -104,7 +104,7 @@ public class BlueCloudTreeTile extends Tile {
 
         int damage = level.getData(x, y) + dmg;
         int treeHealth = 20;
-        if (Game.isMode("creative"))
+        if (Game.isMode("Creative"))
             dmg = damage = treeHealth;
 
         level.add(new SmashParticle(x * 16, y * 16));
@@ -114,7 +114,7 @@ public class BlueCloudTreeTile extends Tile {
         if (damage >= treeHealth) {
             level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Oak Wood"));
             level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Leaf"));
-            level.setTile(x, y, Tiles.get("Sky grass"));
+            level.setTile(x, y, Tiles.get("Sky Grass"));
         } else {
             level.setData(x, y, damage);
         }

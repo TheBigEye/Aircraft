@@ -79,7 +79,7 @@ public class XpOrb extends Entity {
 			return;
 		}
 
-		if (level != null && level.getTile(x >> 4, y >> 4) == Tiles.get("lava")) {
+		if (level != null && level.getTile(x >> 4, y >> 4) == Tiles.get("Lava")) {
 			remove();
 		}
 

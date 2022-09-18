@@ -46,7 +46,7 @@ public class GuiMan extends FrostMob {
         }
 
         Tile tile = level.getTile(x >> 4, y >> 4);
-        if (tile == Tiles.get("grass") || tile == Tiles.get("sand")) {
+        if (tile == Tiles.get("Grass") || tile == Tiles.get("Sand")) {
             remove();
         }
 
@@ -73,7 +73,7 @@ public class GuiMan extends FrostMob {
             max = 1;
         }
 
-        dropItem(min, max, Items.get("feather"));
+        dropItem(min, max, Items.get("Feather"));
 
         super.die();
     }

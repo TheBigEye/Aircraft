@@ -147,7 +147,7 @@ public class Load {
 			loadInventory("Inventory", Game.player.getInventory());
 			loadPlayer("Player", Game.player);
 
-			if (Game.isMode("creative")) {
+			if (Game.isMode("Creative")) {
 				Items.fillCreativeInv(Game.player.getInventory(), false);
 			}
 		}

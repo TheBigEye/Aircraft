@@ -30,7 +30,7 @@ public class Tnt extends Furniture implements ActionListener {
 
 	private int damage = 0;
 	private int light;
-	private int ftik = 0;
+	private int fuseTick = 0;
 	private boolean fuseLit = false;
 	private Timer explodeTimer;
 	private Level levelSave;
@@ -43,7 +43,7 @@ public class Tnt extends Furniture implements ActionListener {
 	public Tnt() {
 		super("Tnt", new Sprite(28, 24, 2, 2, 2), 3, 2);
 		fuseLit = false;
-		ftik = 0;
+		fuseTick = 0;
 
 		explodeTimer = new Timer(300, this);
 	}
@@ -51,23 +51,23 @@ public class Tnt extends Furniture implements ActionListener {
 	@Override
 	public void tick() {
 		super.tick();
-		
+
 		// Ignite the TNT when touch lava :)
-		if (level.getTile(x >> 4,y >> 4) == Tiles.get("lava") && fuseLit == false) {
+		if (level.getTile(x >> 4,y >> 4) == Tiles.get("Lava") && fuseLit == false) {
+			fuseLit = true;
 			for (int i = 0; i < 1 + random.nextInt(3); i++) {
 				int randX = random.nextInt(16);
 				int randY = random.nextInt(12);
 				level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
 			}
-			fuseLit = true;
 		}
 
 		if (fuseLit) {
-			ftik++;
+			fuseTick++;
 
 			light = 2;
 
-			if (ftik >= FUSE_TIME) {
+			if (fuseTick >= FUSE_TIME) {
 				// blow up
 				List<Entity> entitiesInRange = level.getEntitiesInRect(new Rectangle(x, y, BLAST_RADIUS * 2, BLAST_RADIUS * 2, Rectangle.CENTER_DIMS));
 
@@ -86,7 +86,7 @@ public class Tnt extends Furniture implements ActionListener {
 						if (!tnt.fuseLit) {
 							tnt.fuseLit = true;
 							Sound.Furniture_tnt_fuse.echo(x);
-							tnt.ftik = FUSE_TIME * 2 / 3;
+							tnt.fuseTick = FUSE_TIME * 2 / 3;
 						}
 
 					}
@@ -116,13 +116,13 @@ public class Tnt extends Furniture implements ActionListener {
 					default: Sound.Furniture_tnt_explode.echo(x); break;
 				}
 
-				level.setAreaTiles(xt, yt, 1, Tiles.get("explode"), 0, explosionBlacklist);
+				level.setAreaTiles(xt, yt, 1, Tiles.get("Explode"), 0, explosionBlacklist);
 
 				levelSave = level;
 				explodeTimer.start();
 				super.remove();
 
-				if (!Game.isMode("creative")) {
+				if (!Game.isMode("Creative")) {
 					AchievementsDisplay.setAchievement("minicraft.achievement.demolition", true);
 				}
 
@@ -133,7 +133,7 @@ public class Tnt extends Furniture implements ActionListener {
 	@Override
 	public void render(Screen screen) {
 		if (fuseLit) {
-			int colFctr = 100 * ((ftik % 15) / 5) + 200;
+			int colFctr = 100 * ((fuseTick % 15) / 5) + 200;
 			col = Color.get(-1, colFctr, colFctr + 100, 555);
 		}
 		super.render(screen);
@@ -149,7 +149,6 @@ public class Tnt extends Furniture implements ActionListener {
 
 		if (levelSave.depth != 1 && levelSave.depth != 2) {
 			levelSave.setAreaTiles(xt, yt, 1, Tiles.get("hole"), 0, explosionBlacklist);
-
 		} else {
 			levelSave.setAreaTiles(xt, yt, 1, Tiles.get("Ferrosite"), 0, explosionBlacklist);
 		}
