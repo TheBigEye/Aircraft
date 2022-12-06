@@ -235,27 +235,28 @@ public class Font {
     }
     
     public static void drawBar(Screen screen, int x, int y, int length, String title) {
-		int max_bar_length = 25;
-		int bar_length = length; // Bossbar size.
+		int max_bar_length = 16;
+		int bar_length = (int)(length / 6); // Bossbar size.
 
-		int INACTIVE_BOSSBAR = 24; // sprite x position
-		int ACTIVE_BOSSBAR = 25; // sprite x position
+		int INACTIVE_BOSSBAR = 24; // sprite y position
+		int ACTIVE_BOSSBAR = 25; // sprite y position
 
 
 		screen.render(x + (max_bar_length * 2) , y , 0 + INACTIVE_BOSSBAR * 32, 1, 3); // left corner
 
-		// The middle
+		// Inactive bossbar center
 		for (int bx = 0; bx < max_bar_length; bx++) {
 			for (int by = 0; by < 1; by++) {
-				screen.render(x + bx * 2, y + by * 8, 3 + INACTIVE_BOSSBAR * 32, 0, 3);
+				screen.render(x + bx * 2, y + by * 8, 1 + INACTIVE_BOSSBAR * 32, 0, 3);
 			}
 		}  
 
 		screen.render(x - 5 , y , 0 + ACTIVE_BOSSBAR * 32, 0, 3); // right corner
-
+		
+		// Active bossbar center
 		for (int bx = 0; bx < bar_length; bx++) {
 			for (int by = 0; by < 1; by++) {
-				screen.render(x + bx * 2, y + by * 8, 3 + ACTIVE_BOSSBAR * 32, 0, 3);
+				screen.render(x + bx * 2, y + by * 2, 1 + ACTIVE_BOSSBAR * 32, 0, 3);
 			}
 		}
 

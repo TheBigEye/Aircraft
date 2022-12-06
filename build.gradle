@@ -9,8 +9,9 @@ mainClassName = 'minicraft.core.Game'
 
 repositories {
     mavenCentral()
-
-    maven { url 'https://jitpack.io' }
+    maven { 
+        url 'https://jitpack.io' 
+    }
 }
 
 dependencies {
@@ -41,7 +42,7 @@ shadowJar {
         attributes(
                 'Main-Class': mainClassName,
                 'Implementation-Title': project.name,
-                'Implementation-Version': project.version,
-                'SplashScreen-Image': "Minicraft_Splash_Screen_1.png")
+                'Implementation-Version': project.version
+        )
     }
 }

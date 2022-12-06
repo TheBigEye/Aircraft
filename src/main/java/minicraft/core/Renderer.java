@@ -29,6 +29,7 @@ import minicraft.gfx.Ellipsis.SmoothEllipsis;
 import minicraft.gfx.Font;
 import minicraft.gfx.FontStyle;
 import minicraft.gfx.Screen;
+import minicraft.gfx.Sprite;
 import minicraft.gfx.SpriteSheet;
 import minicraft.item.Items;
 import minicraft.item.PotionType;
@@ -135,7 +136,8 @@ public class Renderer extends Game {
 		
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		screen.pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-
+		
+		Initializer.startCanvasRendering();
 		canvas.createBufferStrategy(3);
 		canvas.requestFocus();
 	}
@@ -240,6 +242,8 @@ public class Renderer extends Game {
 	 */
 	@SuppressWarnings("unchecked")
 	private static void renderGui() {
+		
+		Random rnd = new Random();
 
 		// ARROWS COUNT STATUS
 		if (player.activeItem instanceof ToolItem) {
@@ -394,9 +398,12 @@ public class Renderer extends Game {
 
 		/// This renders the potions overlay
 		if (player.showpotioneffects && !player.potioneffects.isEmpty()) {
-			Map.Entry < PotionType, Integer > [] effects = player.potioneffects.entrySet().toArray(new Map.Entry[0]);
-
+			Map.Entry <PotionType, Integer> [] effects = player.potioneffects.entrySet().toArray(new Map.Entry[0]);
+				
+			String title = "(" + input.getMapping("potionEffects") + " to hide)";
+			
 			PotionType pType;
+			Sprite pIcon = new Sprite(0, 7, 0);
 
 			int pxx = 0; // the width of the box
 			int pyy = 0; // the height of the box
@@ -407,13 +414,11 @@ public class Renderer extends Game {
 
 			for (int i = 0; i < effects.length; i++) {
 				pType = effects[i].getKey();
-				int pTime = effects[i].getValue() / Updater.normSpeed;
-
-				pxx = (Screen.w - Font.textWidth(pType.name + pTime)) / 2 + px; // the width of the box
-				pw = pType.name.length() + 2; // length of message in characters.
+				
+				pxx = (Screen.w - 118) / 2 + px; // the width of the box
+				pw = 16; // length of message in characters.
 				pyy = (HEIGHT - 8) / 2 + py; // the height of the box
 				ph = effects.length;
-
 			}
 
 			// Renders the four corners of the box
@@ -440,18 +445,27 @@ public class Renderer extends Game {
 					screen.render(pxx + x * 8, pyy + y * 8, 3 + 21 * 32, 0, 3);
 				}
 			}
+			
 
 			for (int i = 0; i < effects.length; i++) {
 				pType = effects[i].getKey();
 				int pTime = effects[i].getValue() / Updater.normSpeed;
+				
+				pIcon.color = pType.dispColor;
                 
 				int minutes = pTime / 60;
 				int seconds = pTime % 60;
-
-				Font.drawTransparentBackground("(" + input.getMapping("potionEffects") + " to hide!)", screen, 300, 8);
-				Font.drawTransparentBackground(pType + " (" + minutes + ":" + (seconds < 10? "0" + seconds:seconds) + ")", screen, 300, 17 + i * Font.textHeight(), pType.dispColor);
+				
+				// Title background
+				for (int j = 0; j < title.length(); j++) {
+					screen.render(310 + j * 8, 9, 3 + 21 * 32, 0, 3);
+				}
+				Font.draw(title, screen, 310, 9, Color.YELLOW);
+				
+				Font.drawTransparentBackground(pType + " ", screen, 300 , 17 + i * Font.textHeight(), pType.dispColor);
+				Font.drawTransparentBackground("(" + minutes + ":" + (seconds < 10? "0" + seconds:seconds) + ")", screen, 373 , 17 + i * Font.textHeight(), pType.dispColor);
+				pIcon.render(screen, 290, 17 + i * Font.textHeight());
 			}
-
 		}
 
 		// This is the status icons, like health hearts, stamina bolts, and hunger "burger".
@@ -464,11 +478,45 @@ public class Renderer extends Game {
 					screen.render(i * 8, Screen.h - 24, (player.curArmor.level - 1) + 9 * 32, 0, 0);
 				}
 
-				// Renders your current red hearts, or black hearts for damaged health.
-				if (i < player.health) {
-					screen.render(i * 8, Screen.h - 16, 0 + 2 * 32, 0, 3);
-				} else {
-					screen.render(i * 8, Screen.h - 16, 0 + 3 * 32, 0, 3);
+				/// Renders your current red hearts, hardcore hearts, or black hearts for damaged health.
+				if (!isMode("Hardcore")) { // Survival hearts
+					if (i < player.health) {
+						
+						// wobbling hearts if the player health is less than 5
+						if (player.health < 5) {
+							int blinking = (rnd.nextInt(2) - rnd.nextInt(2));
+							screen.render(i * 8, Screen.h - (16 + blinking), 0 + 2 * 32, 0, 3);
+						} else { // normal hearts if more than 4
+							screen.render(i * 8, Screen.h - 16, 0 + 2 * 32, 0, 3);
+						}
+					} else { // hearts cotainer
+						if (player.health < 5) {
+							int blinking = (rnd.nextInt(2) - rnd.nextInt(2));
+							screen.render(i * 8, Screen.h - (16 + blinking), 0 + 3 * 32, 0, 3); // wobbling hearts cotainer
+						} else {
+							screen.render(i * 8, Screen.h - 16 , 0 + 3 * 32, 0, 3); // nomral hearts container
+						}
+					}
+				
+				} else { // Hardcore hearts
+					
+					// the same that the survival hearts, but with hardcore spirtes
+					if (i < player.health) {
+						if (player.health < 6) {
+							int blinking = (rnd.nextInt(2) - rnd.nextInt(2));
+							screen.render(i * 8, Screen.h - (16 + blinking), 7 + 2 * 32, 0, 3);
+						} else {
+							screen.render(i * 8, Screen.h - 16, 7 + 2 * 32, 0, 3);
+						}
+					
+				} else { // hearts cotainer
+						if (player.health < 5) {
+							int blinking = (rnd.nextInt(2) - rnd.nextInt(2));
+							screen.render(i * 8, Screen.h - (16 + blinking), 7 + 3 * 32, 0, 3); // wobbling hearts cotainer
+						} else {
+							screen.render(i * 8, Screen.h - 16 , 7 + 3 * 32, 7, 3); // nomral hearts container
+						}
+					}
 				}
 
 				if (player.staminaRechargeDelay > 0) {
@@ -552,8 +600,8 @@ public class Renderer extends Game {
 		int max_bar_length = 100;
 		int bar_length = length; // Bossbar size.
 
-		int INACTIVE_BOSSBAR = 24; // sprite x position
-		int ACTIVE_BOSSBAR = 25; // sprite x position
+		int INACTIVE_BOSSBAR = 24; // sprite y position
+		int ACTIVE_BOSSBAR = 25; // sprite y position
 
 
 		screen.render(x + (max_bar_length * 2) , y , 0 + INACTIVE_BOSSBAR * 32, 1, 3); // left corner
@@ -561,7 +609,7 @@ public class Renderer extends Game {
 		// The middle
 		for (int bx = 0; bx < max_bar_length; bx++) {
 			for (int by = 0; by < 1; by++) {
-				screen.render(x + bx * 2, y + by * 8, 3 + INACTIVE_BOSSBAR * 32, 0, 3);
+				screen.render(x + bx * 2, y + by * 8, 1 + INACTIVE_BOSSBAR * 32, 0, 3);
 			}
 		}  
 
@@ -569,11 +617,11 @@ public class Renderer extends Game {
 
 		for (int bx = 0; bx < bar_length; bx++) {
 			for (int by = 0; by < 1; by++) {
-				screen.render(x + bx * 2, y + by * 8, 3 + ACTIVE_BOSSBAR * 32, 0, 3);
+				screen.render(x + bx * 2, y + by * 8, 1 + ACTIVE_BOSSBAR * 32, 0, 3);
 			}
 		}
 
-		Font.drawCentered(title, screen, y + 8, Color.WHITE);
+		Font.drawCentered(title, screen, y + 8, Color.GRAY);
 	}
 
 	private static final LocalDateTime time = LocalDateTime.now();

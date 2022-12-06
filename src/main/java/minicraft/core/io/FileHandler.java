@@ -43,11 +43,8 @@ public class FileHandler extends Game {
 
 		if (Game.debug) {
 			System.out.println("OS name: \"" + OS + "\"");
-		}
-		if (Game.debug) {
 			System.out.println("System game dir: " + systemGameDir);
 		}
-
 	}
 
 	public static String getSystemGameDir() {
@@ -160,5 +157,4 @@ public class FileHandler extends Game {
 			deleteFolder(origFolder.toFile());
 		}
 	}
-
 }

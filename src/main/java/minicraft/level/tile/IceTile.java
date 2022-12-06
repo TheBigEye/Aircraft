@@ -2,7 +2,12 @@ package minicraft.level.tile;
 
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
+import minicraft.entity.Entity;
+import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
+import minicraft.entity.mob.boss.AirWizard;
+import minicraft.entity.mob.boss.AirWizardPhase2;
+import minicraft.entity.mob.boss.AirWizardPhase3;
 import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
@@ -16,7 +21,7 @@ public class IceTile extends Tile {
 
 		@Override
 		public boolean connectsTo(Tile tile, boolean isSide) {
-			if(!isSide) {
+			if (!isSide) {
 				return true;
 			}
 			return tile.connectsToIce;
@@ -82,5 +87,20 @@ public class IceTile extends Tile {
 
 		return false;
 	}
-
+	
+	public void steppedOn(Level level, int x, int y, Entity entity) {
+		if (entity instanceof Mob && (!(entity instanceof AirWizard)  && !(entity instanceof AirWizardPhase2) && !(entity instanceof AirWizardPhase3))) {
+			
+			// Get the tiles from a 3x3 area from the tile center
+			Tile[] areaTiles = level.getAreaTiles(x, y, 1);
+			
+			// Break the ice if the player walks on and the tile its close to water
+			for (Tile t : areaTiles) {
+				if ((t == Tiles.get("Water")) && (random.nextInt(512) == 256)) {
+					level.setTile(x, y, Tiles.get("Water"));
+				}
+			}
+		}
+	}
+	
 }

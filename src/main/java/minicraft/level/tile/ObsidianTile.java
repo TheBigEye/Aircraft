@@ -67,7 +67,7 @@ public class ObsidianTile extends Tile {
             }
             else {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    level.setTile(xt, yt, Tiles.get("hole"));
+                    level.setTile(xt, yt, Tiles.get("Hole"));
                     level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 3, Items.get("Obsidian"));
                     Sound.Tile_generic_hurt.play();
                 }

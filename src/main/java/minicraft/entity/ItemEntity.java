@@ -19,6 +19,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 
 	// solely for multiplayer use.
 	private boolean pickedUp = false;
+	@SuppressWarnings("unused")
 	private long pickupTimestamp;
 
 	/**

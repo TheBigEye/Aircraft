@@ -37,7 +37,7 @@ public class PlayerDeathDisplay extends Display {
 		));
 
 		// Sets the menu to nothing
-		if(!Game.isMode("hardcore")) {
+		if (!Game.isMode("Hardcore")) {
 			entries.add(new SelectEntry("Respawn", () -> {
 				World.resetGame();
 				Game.setDisplay(null); 

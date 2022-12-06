@@ -5,6 +5,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.util.HashMap;
 
+import minicraft.core.Game;
 import minicraft.screen.entry.ArrayEntry;
 import minicraft.screen.entry.BooleanEntry;
 import minicraft.screen.entry.RangeEntry;
@@ -31,6 +32,8 @@ public class Settings {
 		options.put("cheats", new BooleanEntry("Cheats", true));
 		
 		options.put("size", new ArrayEntry<>("World Size", 128, 256, 512, 1024));
+		options.get("size").setSelection(1);
+		
 		options.put("theme", new ArrayEntry<>("World Theme", "Normal", "Forest", "Desert", "Plain", "Hell", "Snow"));
 		options.put("type", new ArrayEntry<>("Terrain Type", "Island", "Box", "Mountain", "Irregular"));
 
@@ -42,8 +45,16 @@ public class Settings {
 
 		options.get("mode").setChangeAction(value -> options.get("scoretime").setVisible("Score".equals(value)));
 
-		options.get("unlockedskin").setChangeAction(value -> options.get("skinon").setVisible((boolean) value));
+		options.get("unlockedskin").setChangeAction(value -> 
+			options.get("skinon").setVisible((boolean) value)
+		);
 
+		options.get("skinon").setChangeAction(value -> {
+			if (Game.player != null) {
+				Game.player.suitOn = (boolean) value;
+			}
+		});
+		
 		options.put("textures", new ArrayEntry<>("Textures", "Original", "Custom"));
 		options.get("textures").setSelection(0);
         

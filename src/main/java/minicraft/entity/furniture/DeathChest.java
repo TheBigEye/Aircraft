@@ -88,7 +88,7 @@ public class DeathChest extends Chest {
 
 	@Override
 	public void touchedBy(Entity other) {
-		if(other instanceof Player) {
+		if (other instanceof Player) {
 			((Player)other).getInventory().addAll(getInventory());
 			remove();
 			Game.notifications.add("Death chest retrieved!");

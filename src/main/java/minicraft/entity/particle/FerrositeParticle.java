@@ -13,6 +13,6 @@ public class FerrositeParticle extends Particle {
 	 * @param y Y map position
 	 */
 	public FerrositeParticle(int x, int y) {
-		super(x, y, 24, new Sprite(11, 2, 3));
+		super(x, y, 8, new Sprite(6, 14, 3));
 	}
 }

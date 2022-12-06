@@ -47,6 +47,7 @@ public abstract class Tile {
 	public short id;
 
 	public boolean connectsToGrass = false;
+	public boolean connectsToMycelium = false;
 	public boolean connectsToCloud = false;
 	public boolean connectsToUpRock = false;
 	public boolean connectsToSand = false;

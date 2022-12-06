@@ -29,11 +29,12 @@ public class TileItem extends StackableItem {
 		items.add(new TileItem("Sky Dirt", (new Sprite(0, 44, 0)), "Sky Dirt", "Cloud Hole"));
 		
 		items.add(new TileItem("Ice", (new Sprite(15, 21, 0)), "Ice", "Hole", "Water"));
+		items.add(new TileItem("Brown Mushroom", (new Sprite(25, 0, 0)), "Brown Mushroom", "Mycelium"));
+		items.add(new TileItem("Red Mushroom", (new Sprite(24, 0, 0)), "Red Mushroom", "Mycelium"));
 
 		// Creative mode available tiles:
 		items.add(new TileItem("Natural Rock", (new Sprite(2, 0, 0)), "Rock", "Hole", "Dirt", "Sand", "Path", "Grass"));
-		// items.add(new TileItem("Natural Hard Rock", (new Sprite(2, 0, 0)), "Hard
-		// rock", "hole", "dirt", "sand", "path", "grass"));
+		// items.add(new TileItem("Natural Hard Rock", (new Sprite(2, 0, 0)), "Hard rock", "hole", "dirt", "sand", "path", "grass"));
 
 		items.add(new TileItem("Oak Plank", (new Sprite(0, 5, 0)), "Oak Planks", "Hole", "Water", "Cloud Hole", "Lava"));
 		items.add(new TileItem("Oak Wall", (new Sprite(1, 5, 0)), "Oak Wall", "Oak Planks"));

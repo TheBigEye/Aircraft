@@ -220,4 +220,8 @@ public class Sound { // Creates sounds from their respective files
     public void stop() { // This stops the clip
         clip.stop();
     }
+    
+    public Clip getClip() {
+    	return clip;
+    }
 }

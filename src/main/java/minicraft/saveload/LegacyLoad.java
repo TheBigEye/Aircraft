@@ -77,8 +77,9 @@ public class LegacyLoad {
         if (!testFile.exists()) {
             worldVer = new Version("1.8");
             oldSave = true;
-        } else
+        } else {
             testFile.delete(); // we don't care about it anymore anyway.
+        }
 
         // this is used in loadInventory().
 
@@ -301,10 +302,11 @@ public class LegacyLoad {
         String[] color = colors.split(";");
         player.shirtColor = Integer.parseInt(color[0] + color[1] + color[2]);
 
-        if (!oldSave)
-            player.skinon = Boolean.parseBoolean(data.get(12));
-        else
-            player.skinon = false;
+        if (!oldSave) {
+            player.suitOn = Boolean.parseBoolean(data.get(12));
+        } else {
+            player.suitOn = false;
+        }
     }
 
     public void loadInventory(String filename, Inventory inventory) {

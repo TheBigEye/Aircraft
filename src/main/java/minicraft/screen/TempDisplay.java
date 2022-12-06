@@ -1,7 +1,7 @@
 package minicraft.screen;
 
 import minicraft.core.Game;
-import minicraft.util.MyUtils;
+import minicraft.util.Utils;
 
 public class TempDisplay extends Display {
 
@@ -41,7 +41,7 @@ public class TempDisplay extends Display {
         super.init(parent);
 
         new Thread(() -> {
-            MyUtils.sleep(milliDelay);
+            Utils.sleep(milliDelay);
             if (Game.getDisplay() == TempDisplay.this)
                 Game.exitDisplay();
         }).start();

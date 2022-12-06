@@ -29,11 +29,8 @@ import minicraft.entity.furniture.Furniture;
 import minicraft.entity.furniture.Tnt;
 import minicraft.entity.mob.villager.Cleric;
 import minicraft.entity.mob.villager.Librarian;
-import minicraft.entity.particle.CloudParticle;
-import minicraft.entity.particle.FerrositeParticle;
 import minicraft.entity.particle.FireParticle;
 import minicraft.entity.particle.Particle;
-import minicraft.entity.particle.PotionParticle;
 import minicraft.entity.particle.SplashParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
@@ -94,10 +91,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	// These 2 ints are ints saved from the first spawn - this way the spawn pos is always saved.
 	public int spawnx = 0, spawny = 0; // these are stored as tile coordinates, not entity coordinates.
 	// public boolean bedSpawn = false;
-
-	// private boolean hasSetHome = false;
-	public boolean skinon;
-	// private int homeSetX, homeSetY;
+	
+	public boolean suitOn;
 
 	// The maximum stats that the player can have.
 	public static final int maxStat = 10;
@@ -156,7 +151,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public int shirtColor = Color.get(1, 51, 51, 0); // Player shirt color.
 
 	public boolean isFishing = false;
-	public boolean isMoving = false;
+
 	public int maxFishingTicks = 120;
 	public int fishingTicks = maxFishingTicks;
 	public int fishingLevel;
@@ -164,7 +159,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public boolean playerBurning = false;
 	public boolean fallWarn = false;
 	private int burnTime = 0;
-	private int fallTime = 0;
 	
 	// RAIN STUFF
 	public boolean isRaining = false; // Is raining?
@@ -251,6 +245,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			spawnx = previousInstance.spawnx;
 			spawny = previousInstance.spawny;
 		}
+		
+		suitOn = (boolean) Settings.get("skinon");
 	}
 
 	public int getMultiplier() {
@@ -315,6 +311,41 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public HashMap<PotionType, Integer> getPotionEffects() {
 		return potioneffects;
 	}
+	
+	private void tileTickEvents() {
+		if (isSwimming()) {
+			// Renders water or lava particles if the player is in movement and have particles activated
+			if (tickTime / 8 % 2 == 0 && (Settings.get("Particles").equals(true) && inMovement())) {
+
+				int randX = rnd.nextInt(10);
+				int randY = rnd.nextInt(9);
+
+				// Add water particles and fire particles when the player swim
+				if (level.getTile(x / 16, y / 16) == Tiles.get("Water") ) { 
+					level.add(new SplashParticle(x - 8 + randX, y - 8 + randY));    
+					
+				} else if (level.getTile(x / 16, y / 16) == Tiles.get("Lava")) { 
+					level.add(new FireParticle(x - 8 + randX, y - 8 + randY)); 
+				}
+			}
+		}
+		
+		if (inMovement()) {
+			// If the player is steppeing Ferrosite, incsrease move speed to 2
+			if (level.getTile(x / 16, y / 16) == Tiles.get("Ferrosite")) {
+				moveSpeed = 2;
+			} else { // If stepping other tile...
+				// If have a speed potion effect, restore the move speed
+				if (potioneffects.containsKey(PotionType.Speed) || potioneffects.containsKey(PotionType.xSpeed)) {
+					moveSpeed = 2;
+				} else {
+					moveSpeed = 1;
+				}
+			}
+		}
+		
+		
+	}
 
 	@Override
 	public void tick() {
@@ -362,7 +393,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                     
                     if (Settings.get("particles").equals(true)) {
                         for (int i = 0; i < 6; i++) {
-                            level.add(new SplashParticle(Game.player.x, Game.player.y), Game.player.x + rnd.nextInt(256) - rnd.nextInt(256), Game.player.y + rnd.nextInt(256) - rnd.nextInt(256));
+                            level.add(new SplashParticle(x, y), x + (rnd.nextInt(level.w) - rnd.nextInt(level.h)), y + (rnd.nextInt(level.w) - rnd.nextInt(level.h)));
                         }
                     }
 				}
@@ -407,15 +438,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		tickMultiplier();
 
 		if (!potioneffects.isEmpty() && !Bed.inBed(this)) {
-
-			// Add potion particles...
-            if (Settings.get("Particles").equals(true)) {
-                int randY = rnd.nextInt(9);
-                if (random.nextInt(18) == 9) {
-                    level.add(new PotionParticle(x - 1, y - 23 + randY));
-                }
-            }
-
 			for (PotionType potionType : potioneffects.keySet().toArray(new PotionType[0])) {
 				if (potioneffects.get(potionType) <= 1) { // if time is zero (going to be set to 0 in a moment)...
 					PotionItem.applyPotion(this, potionType, false); // Automatically removes this potion effect.
@@ -425,46 +447,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			}
 		}
 
-		if (isSwimming()) {
-			if (tickTime / 8 % 2 == 0 && Settings.get("Particles").equals(true) && isMoving) {
-
-				int randX = rnd.nextInt(10);
-				int randY = rnd.nextInt(9);
-
-				// Add water particles and fire particles when the player swim
-				if (level.getTile(x / 16, y / 16) == Tiles.get("Water") ) { 
-					level.add(new SplashParticle(x - 8 + randX, y - 8 + randY));    
-				} 
-                else if (level.getTile(x / 16, y / 16) == Tiles.get("Lava")) { 
-					level.add(new FireParticle(x - 8 + randX, y - 8 + randY)); 
-				}
-			}
-		}
-
-		// Display Ferrosite cloud particles when walk
-		if (level.getTile(x / 16, y / 16) == Tiles.get("Ferrosite")) {
-			if (tickTime / 8 % 2 == 0 && Settings.get("Particles").equals(true) && isMoving) {
-                int randX = random.nextInt(10);
-                int randY = random.nextInt(9);
-				level.add(new FerrositeParticle(x - 8 + randX, y - 6 + randY));
-			}
-			moveSpeed = 2;
-		} else {
-			// Avoid the speed potions effects when the player is in Ferrosite cloud
-			if (potioneffects.containsKey(PotionType.Speed) || potioneffects.containsKey(PotionType.xSpeed)) {
-				moveSpeed = 2;
-			} else {
-				moveSpeed = 1;
-			}
-		}
-
-		if (level.getTile(x / 16, y / 16) == Tiles.get("Cloud")) {
-			if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true) && isMoving) {
-                int randX = random.nextInt(10);
-                int randY = random.nextInt(9);
-				level.add(new CloudParticle(x - 8 + randX, y - 6 + randY));
-			}
-		}
+		tileTickEvents();
 
 		if (isFishing) {
 			if (!Bed.inBed(this) && !isSwimming()) {
@@ -490,8 +473,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		Tile onTile = level.getTile(x >> 4, y >> 4); // Gets the current tile the player is on.
 		if (onTile == Tiles.get("Stairs Down") || onTile == Tiles.get("Stairs Up")) {
 			if (onStairDelay <= 0) { // When the delay time has passed...
-				World.scheduleLevelChange((onTile == Tiles.get("Stairs Up")) ? 1 : -1); // Decide whether to go up or
-				// down.
+				World.scheduleLevelChange((onTile == Tiles.get("Stairs Up")) ? 1 : -1); // Decide whether to go up or down.
 				onStairDelay = 10; // Resets delay, since the level has now been changed.
 
 				Sound.Mob_player_changelevel.play();
@@ -665,15 +647,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         		if (input.getKey("move-down").down) vec.y++;
         		if (input.getKey("move-left").down) vec.x--;
         		if (input.getKey("move-right").down) vec.x++;
-        		
-        		// Check if the player is in movement
-        		if (input.getKey("move-up").down) isMoving = true; 
-        		else if (input.getKey("move-down").down) isMoving = true; 
-        		else if (input.getKey("move-left").down) isMoving = true; 
-        		else if (input.getKey("move-right").down) isMoving = true;
-        		else {
-        			isMoving = false;
-        		}
         	}
 
         	// Executes if not saving; and... essentially halves speed if out of stamina.
@@ -1011,6 +984,14 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         }
         return false;
     }
+    
+    private boolean inMovement() {
+        if (Game.input.getKey("move-up").down) return true;
+        else if (Game.input.getKey("move-down").down) return true;
+        else if (Game.input.getKey("move-left").down) return true;
+        else if (Game.input.getKey("move-right").down) return true;
+        else return false;
+    }
 
     /** Same, but for interaction. */
     private boolean interact(Rectangle area) {
@@ -1054,10 +1035,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         }
         return dmg;
     }
-
-    @Override
-    public void render(Screen screen) {
-
+    
+    private void updatePlayerSkin() {
     	// Skin events
     	LocalDateTime time = LocalDateTime.now();
 
@@ -1098,13 +1077,19 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                 carrySprites = MobSprite.compileMobSpriteAnimations(0, 58);
             }
         }
+    }
+
+    @Override
+    public void render(Screen screen) {
+
+    	updatePlayerSkin();
 
         MobSprite[][] spriteSet; // The default, walking sprites.
 
         if (activeItem instanceof FurnitureItem) {
-            spriteSet = skinon ? carrySuitSprites : carrySprites;
+            spriteSet = suitOn ? carrySuitSprites : carrySprites;
         } else {
-            spriteSet = skinon ? suitSprites : sprites;
+            spriteSet = suitOn ? suitSprites : sprites;
         }
         
 
@@ -1118,13 +1103,13 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
         	if (level.getTile(x / 16, y / 16) == Tiles.get("Water")) {
         		
-        		// animation effect
+        		// Animation effect
         		if (tickTime / 8 % 2 == 0) {           		
         			screen.render(xo + 0, yo + 3, 5 + 2 * 32, 0, 3); // Render the water graphic
         			screen.render(xo + 8, yo + 3, 5 + 2 * 32, 1, 3); // Render the mirrored water graphic to the right.
         		} else {
-        			screen.render(xo + 0, yo + 3, 13 + 2 * 32, 0, 3);
-        			screen.render(xo + 8, yo + 3, 13 + 2 * 32, 1, 3);
+        			screen.render(xo + 0, yo + 3, 5 + 4 * 32, 0, 3);
+        			screen.render(xo + 8, yo + 3, 5 + 4 * 32, 1, 3);
         		}
 
         	} else if (level.getTile(x / 16, y / 16) == Tiles.get("Lava")) {
@@ -1132,12 +1117,13 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         		// BURN THE PLAYER
         		playerBurning = true;
 
+        		// Animation effect
         		if (tickTime / 8 % 2 == 0) {
         			screen.render(xo + 0, yo + 3, 6 + 2 * 32, 1, 3); // Render the water graphic
         			screen.render(xo + 8, yo + 3, 6 + 2 * 32, 0, 3); // Render the mirrored lava graphic to the right.
         		} else {
-        			screen.render(xo + 0, yo + 3, 14 + 2 * 32, 1, 3); // Render the water graphic
-        			screen.render(xo + 8, yo + 3, 14 + 2 * 32, 0, 3); // Render the mirrored lava graphic to the right.
+        			screen.render(xo + 0, yo + 3, 6 + 4 * 32, 1, 3);
+        			screen.render(xo + 8, yo + 3, 6 + 4 * 32, 0, 3);
         		}           
         	}
         }
@@ -1374,23 +1360,24 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
      */
     @Override
     public int getLightRadius() {
-    	int r = 4; // The radius of the light.
+    	int player_radius = 4; // The radius of the light.
 
     	// If the player holds a torch, he increases the radius of light that he has
     	if (activeItem != null && activeItem.name.equals("Torch")) {
-    		r = 6;
+    		player_radius = 6;
     	}
 
     	if (activeItem != null && activeItem instanceof FurnitureItem) { // If player is holding furniture
-    		int rr = ((FurnitureItem) activeItem).furniture.getLightRadius(); // Gets furniture light radius
-    		if (rr > r) {
+    		int furniture_radius = ((FurnitureItem) activeItem).furniture.getLightRadius(); // Gets furniture light radius
+    		if (furniture_radius > player_radius) {
     			// Brings player light up to furniture light, if less, since the furnture is not
     			// yet part of the level and so doesn't emit light even if it should.
-    			r = rr; 
+    			player_radius = furniture_radius; 
     		}
     	}
 
-    	return r + super.getLightRadius(); // Return light radius
+    	 // Return light radius
+    	return (player_radius + super.getLightRadius());
     }
 
     /** What happens when the player dies */

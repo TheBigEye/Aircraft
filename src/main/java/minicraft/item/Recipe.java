@@ -49,7 +49,7 @@ public class Recipe {
 		if (!Game.isMode("Creative")) {
 			// remove the cost items from the inventory.
 			for (String cost : costs.keySet().toArray(new String[0])) {
-				if(!cost.contains("ALAZIF")) player.getInventory().removeItems(Items.get(cost), costs.get(cost));
+				if (!cost.contains("ALAZIF")) player.getInventory().removeItems(Items.get(cost), costs.get(cost));
 			}
 		}
 

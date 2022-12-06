@@ -18,14 +18,14 @@ public class FireParticle extends Particle {
 		super(x, y, 40, Sprites);
 	}
 
-	// Animation
     @Override
 	public void tick() {
 		super.tick();
-
-        for (int i = 0; i < 8; i += 1){
-            frame += 1;
-            if (frame > 3) frame = 0;
+		
+		// Animation
+        for (int i = 0; i < 8; i++){
+            frame++;
+            if (frame >= 3) frame = 0;
             Sprites = new Sprite(frame, 14, 3);
         }
 	}

@@ -135,21 +135,24 @@ public final class Tiles {
 		tiles.put((short) 88, new CloudHoleTile("Cloud Hole"));
 
 		tiles.put((short) 89, new IceTile("Ice"));
+		tiles.put((short) 90, new MyceliumTile("Mycelium"));
+		tiles.put((short) 91, new MushroomTile(MushroomTile.MushroomType.Brown));
+		tiles.put((short) 92, new MushroomTile(MushroomTile.MushroomType.Red));
 
 		// tiles.put((short)?, new SandRockTile("Sand rock"));
 
 		// WARNING: don't use this tile for anything!
 		tiles.put((short)255, new ConnectTile());
 
-		for(short i = 0; i < 256; i++) {
-			if(tiles.get(i) == null) continue;
+		for (short i = 0; i < 256; i++) {
+			if (tiles.get(i) == null) continue;
 			tiles.get(i).id = (short)i;
 		}
 	}
 
 	protected static void add(int id, Tile tile) {
 		tiles.put((short)id, tile);
-		System.out.println("Adding " + tile.name + " to tile list with id " + id);
+		// System.out.println("Adding " + tile.name + " to tile list with id " + id);
 		tile.id = (short) id;
 	}
 
@@ -251,10 +254,9 @@ public final class Tiles {
 		//System.out.println("Getting from tile list: " + name);
 
 		name = name.toUpperCase();
-
 		overflowCheck++;
 
-		if(overflowCheck > 50) {
+		if (overflowCheck > 50) {
 			System.out.println("STACKOVERFLOW prevented in Tiles.get(), on: " + name);
 			System.exit(1);
 		}
@@ -264,18 +266,18 @@ public final class Tiles {
 		Tile getting = null;
 
 		boolean isTorch = false;
-		if(name.startsWith("TORCH")) {
+		if (name.startsWith("TORCH")) {
 			isTorch = true;
 			name = name.substring(6); // Cuts off torch prefix.
 		}
 
-		if(name.contains("_")) {
+		if (name.contains("_")) {
 			name = name.substring(0, name.indexOf("_"));
 		}
 
-		for(Tile t: tiles.values()) {
-			if(t == null) continue;
-			if(t.name.equals(name)) {
+		for (Tile t: tiles.values()) {
+			if (t == null) continue;
+			if (t.name.equals(name)) {
 				getting = t;
 				break;
 			}
@@ -286,7 +288,7 @@ public final class Tiles {
 			getting = tiles.get((short)0);
 		}
 
-		if(isTorch) {
+		if (isTorch) {
 			getting = TorchTile.getTorchTile(getting);
 		}
 
@@ -296,15 +298,15 @@ public final class Tiles {
 
 	public static Tile get(int id) {
 		//System.out.println("Requesting tile by id: " + id);
-		if(id < 0) id += 32768;
+		if (id < 0) id += 32768;
 
-		if(tiles.get((short)id) != null) {
+		if (tiles.get((short)id) != null) {
 			return tiles.get((short)id);
-		}
-		else if(id >= 32767) {
+
+		} else if (id >= 32767) {
 			return TorchTile.getTorchTile(get(id - 32767));
-		}
-		else {
+
+		} else {
 			System.out.println("TILES.GET: Unknown tile id requested: " + id);
 			return tiles.get((short)0);
 		}
@@ -315,7 +317,7 @@ public final class Tiles {
 	}
 
 	public static String getName(String descriptName) {
-		if(!descriptName.contains("_")) return descriptName;
+		if (!descriptName.contains("_")) return descriptName;
 		int data;
 		String[] parts = descriptName.split("_");
 		descriptName = parts[0];

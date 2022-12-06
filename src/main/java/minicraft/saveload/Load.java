@@ -75,7 +75,6 @@ import minicraft.entity.particle.CloudParticle;
 import minicraft.entity.particle.FireParticle;
 import minicraft.entity.particle.HeartParticle;
 import minicraft.entity.particle.SmashParticle;
-import minicraft.entity.particle.SmokeParticle;
 import minicraft.entity.particle.SplashParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
@@ -416,6 +415,7 @@ public class Load {
 		}
 
 		/* Start of the parsing */
+		@SuppressWarnings("unused")
 		Version prefVer = new Version(json.getString("version"));
 
 		// Settings
@@ -474,7 +474,7 @@ public class Load {
 			return;
 		}
 
-		Settings.set("unlockedskin", json.getBoolean("airskin"));
+		Settings.set("unlockedskin", json.getBoolean("unlockedAirWizardSuit"));
 
 		for (Object i : json.getJSONArray("visibleScoreTimes")) {
 			Settings.getEntry("scoretime").setValueVisibility(i, true); // Minutes
@@ -537,24 +537,26 @@ public class Load {
 						}
 					}
 					
-					if (tilename.equalsIgnoreCase("TREE") && worldVer.compareTo(new Version("2.2.0-dev1")) >= 0) {
-						tilename = "Oak Tree";
-						Logger.info("Detected old TREE tile, converting to new OAK TREE tile...");
-					}
-					
-					if (tilename.equalsIgnoreCase("WOOD PLANKS") && worldVer.compareTo(new Version("2.2.0-dev1")) >= 0) {
-						tilename = "Oak Planks";
-						Logger.info("Detected old WOOD PLANKS tile, converting to new OAK PLANKS tile...");
-					}
-					
-					if (tilename.equalsIgnoreCase("WOOD WALL") && worldVer.compareTo(new Version("2.2.0-dev1")) >= 0) {
-						tilename = "Oak Wall";
-						Logger.info("Detected old WOOD WALL tile, converting to new OAK WALL tile...");
-					}
-					
-					if (tilename.equalsIgnoreCase("WOOD DOOR") && worldVer.compareTo(new Version("2.2.0-dev1")) >= 0) {
-						tilename = "Oak Door";
-						Logger.info("Detected old WOOD DOOR tile, converting to new OAK DOOR tile...");
+					if (worldVer.compareTo(new Version("2.2.0-dev1")) >= 0) {
+						if (tilename.equalsIgnoreCase("TREE")) {
+							tilename = "Oak Tree";
+							Logger.info("Detected old TREE tile, converting to new OAK TREE tile...");
+						}
+						
+						if (tilename.equalsIgnoreCase("WOOD PLANKS")) {
+							tilename = "Oak Planks";
+							Logger.info("Detected old WOOD PLANKS tile, converting to new OAK PLANKS tile...");
+						}
+						
+						if (tilename.equalsIgnoreCase("WOOD WALL")) {
+							tilename = "Oak Wall";
+							Logger.info("Detected old WOOD WALL tile, converting to new OAK WALL tile...");
+						}
+						
+						if (tilename.equalsIgnoreCase("WOOD DOOR")) {
+							tilename = "Oak Door";
+							Logger.info("Detected old WOOD DOOR tile, converting to new OAK DOOR tile...");
+						}
 					}
 
 					if (l == World.minLevelDepth + 1 && tilename.equalsIgnoreCase("LAPIS") && worldVer.compareTo(new Version("2.0.3-dev6")) < 0) {
@@ -694,11 +696,12 @@ public class Load {
 			}
 			
 			player.shirtColor = Color.get(1, colors[0] * 51, colors[1] * 51, colors[2] * 51);
-		} else
+		} else {
 			player.shirtColor = Integer.parseInt(data.remove(0));
+		}
 
 		// This works for some reason... lol
-		Settings.set("skinon", player.skinon = Boolean.parseBoolean(data.remove(0)));
+		Settings.set("skinon", player.suitOn = Boolean.parseBoolean(data.remove(0)));
 		
 		player.isRaining = Boolean.parseBoolean(data.remove(0));
 		player.rainCount  = Integer.parseInt(data.remove(0));
@@ -814,11 +817,11 @@ public class Load {
 		for (int i = 0; i < World.levels.length; i++) {
 			World.levels[i].clearEntities();
 		}
+		
 		for (String name : data) {
 			if (name.startsWith("Player")) {
 				continue;
 			}
-
 			loadEntity(name, worldVer, true);
 		}
 
@@ -833,7 +836,6 @@ public class Load {
 		if (isLocalSave) {
 			System.out.println("Warning: Assuming version of save file is current while loading entity: " + entityData);
 		}
-
 		return Load.loadEntity(entityData, Game.VERSION, isLocalSave);
 	}
 
@@ -1020,8 +1022,9 @@ public class Load {
 		}
 
 		newEntity.eid = eid; // This will be -1 unless set earlier, so a new one will be generated when adding it to the level.
-		if (newEntity instanceof ItemEntity && eid == -1)
+		if (newEntity instanceof ItemEntity && eid == -1) {
 			System.out.println("Warning: Item entity was loaded with no eid");
+		}
 
 		int curLevel = Integer.parseInt(info.get(info.size() - 1));
 		if (World.levels[curLevel] != null) {
@@ -1090,7 +1093,6 @@ public class Load {
 	        case "Lantern": return new Lantern(Lantern.Type.NORM);
 	        case "Arrow": return new Arrow(new Skeleton(0), 0, 0, Direction.NONE, 0);
 	        case "Fireball": return new Fireball(new Skeleton(0), 0, 0, Direction.NONE, 0);
-	        case "XpOrb": return new SmokeParticle(0, 0); // Unussed, but works
 	        case "ItemEntity": return new ItemEntity(Items.get("unknown"), 0, 0);
 	
 	        // Load Particles
@@ -1099,7 +1101,6 @@ public class Load {
 	        case "HeartParticle": return new HeartParticle(0, 0);
 	        case "BrightParticle": return new BrightParticle(0, 0);
 	        case "SmashParticle": return new SmashParticle(0, 0);
-	        case "SmokeParticle": return new SmokeParticle(0, 0);
 	        case "CloudParticle": return new CloudParticle(0, 0);
 	        case "TextParticle": return new TextParticle("", 0, 0, 0);
 	

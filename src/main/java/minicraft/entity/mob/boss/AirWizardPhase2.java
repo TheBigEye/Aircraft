@@ -212,7 +212,7 @@ public class AirWizardPhase2 extends EnemyMob {
         
         // Bossbar on the the Air wizard phase 2
         if (Settings.get("bossbar").equals("On entity")) {
-            Font.drawBar(screen, (x - Screen.w / 12 + 4), y - 24, length / 4, "testificate");
+            Font.drawBar(screen, (x - Screen.w / 12 + 16), y - 24, length, "testificate");
         }
         
         // Bossbar percent

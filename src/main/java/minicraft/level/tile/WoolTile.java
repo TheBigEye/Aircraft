@@ -53,7 +53,7 @@ public class WoolTile extends Tile {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Shears) {
 				if (player.payStamina(3 - tool.level) && tool.payDurability()) {
-					level.setTile(xt, yt, Tiles.get("hole"));
+					level.setTile(xt, yt, Tiles.get("Hole"));
 					Sound.Tile_generic_hurt.play();
 					level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get(name));
 					return true;

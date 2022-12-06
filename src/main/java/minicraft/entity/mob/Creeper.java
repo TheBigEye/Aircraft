@@ -130,7 +130,7 @@ public class Creeper extends EnemyMob {
 					}
 					if (!hasSpawner) {
 						if (level.depth != 1) {
-							level.setAreaTiles(tilePosition.x, tilePosition.y, 0, Tiles.get("hole"), 0, explosionBlacklist);
+							level.setAreaTiles(tilePosition.x, tilePosition.y, 0, Tiles.get("Hole"), 0, explosionBlacklist);
 						} else {
 							level.setAreaTiles(tilePosition.x, tilePosition.y, 0, Tiles.get("Infinite Fall"), 0, explosionBlacklist);
 						}

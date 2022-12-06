@@ -77,8 +77,9 @@ public class InputHandler implements KeyListener {
 		Field[] keyEventFields = KeyEvent.class.getFields();
 		ArrayList<Field> keyConstants = new ArrayList<>();
 		for (Field field : keyEventFields) {
-			if (field.getName().contains("VK_") && (field.getType().getName().equals(int.class.getName())))
+			if (field.getName().contains("VK_") && (field.getType().getName().equals(int.class.getName()))) {
 				keyConstants.add(field);
+			}
 		}
 
 		for (Field keyConst : keyConstants) {
@@ -211,8 +212,9 @@ public class InputHandler implements KeyListener {
 		public void tick() {
 			if (absorbs < presses) { // If there are more key presses to process...
 				absorbs++; // process them!
-				if (presses - absorbs > 3) 
+				if (presses - absorbs > 3)  {
 					absorbs = presses - 3;
+				}
 				clicked = true; // make clicked true, since key presses are still being processed.
 			} else { // All key presses so far for this key have been processed.
 				if (!sticky) {
@@ -220,11 +222,10 @@ public class InputHandler implements KeyListener {
 				} else {
 					sticky = down;
 				}
-				clicked = sticky; // set clicked to false, since we're done processing; UNLESS the key has been
-				// held down for a bit, and hasn't yet been released.
+				// set clicked to false, since we're done processing; UNLESS the key has been held down for a bit, and hasn't yet been released.
+				clicked = sticky; 
 
-				// reset the presses and absorbs, to ensure they don't get too high, or
-				// something:
+				// reset the presses and absorbs, to ensure they don't get too high, or something:
 				presses = 0;
 				absorbs = 0;
 			}
@@ -325,12 +326,13 @@ public class InputHandler implements KeyListener {
 		}
 
 		synchronized ("lock") {
-			if (keytext.contains("-")) // truncate compound keys to only the base key, no modifiers
+			if (keytext.contains("-")) { // truncate compound keys to only the base key, no modifiers
 				keytext = keytext.substring(keytext.lastIndexOf("-") + 1);
+			}
 
-			if (keyboard.containsKey(keytext))
+			if (keyboard.containsKey(keytext)) {
 				key = keyboard.get(keytext); // gets the key object from keyboard, if if exists.
-			else {
+			} else {
 				// If the specified key does not yet exist in keyboard, then create a new Key,
 				// and put it there.
 				key = new Key(); // make new key
@@ -353,16 +355,13 @@ public class InputHandler implements KeyListener {
 
 		if (keytext.contains("-")) {
 			for (String keyname : keytext.split("-")) {
-				if (keyname.equals("SHIFT"))
-					foundS = true;
-				if (keyname.equals("CTRL"))
-					foundC = true;
-				if (keyname.equals("ALT"))
-					foundA = true;
+				if (keyname.equals("SHIFT")) foundS = true;
+				if (keyname.equals("CTRL")) foundC = true;
+				if (keyname.equals("ALT")) foundA = true;
 			}
 		}
-		boolean modMatch = getKey("shift").down == foundS && getKey("ctrl").down == foundC
-				&& getKey("alt").down == foundA;
+		
+		boolean modMatch = getKey("shift").down == foundS && getKey("ctrl").down == foundC && getKey("alt").down == foundA;
 
 		if (keytext.contains("-")) { // we want to return a compound key, but still care about the trigger key.
 			Key mainKey = key; // move the fetched key to a different variable
@@ -370,8 +369,9 @@ public class InputHandler implements KeyListener {
 			key = new Key(); // set up return key to have proper values
 			key.down = modMatch && mainKey.down;
 			key.clicked = modMatch && mainKey.clicked;
-		} else if (!modMatch)
+		} else if (!modMatch) {
 			key = new Key();
+		}
 
 		// if(key.clicked && Game.debug) System.out.println("Processed key: " + keytext
 		// + " is clicked; tickNum=" + ticks);
@@ -450,10 +450,11 @@ public class InputHandler implements KeyListener {
 	public String[] getKeyPrefs() {
 		ArrayList<String> keystore = new ArrayList<>(); // make a list for keys
 
-		for (String keyname : keymap.keySet()) // go though each mapping
+		for (String keyname : keymap.keySet()) { // go though each mapping
 			if (!keyname.contains("=debug") || Game.debug) {
 				keystore.add(keyname + ";" + keymap.get(keyname)); // add the mapping values as one string, seperated by  a semicolon.
 			}
+		}
 
 		return keystore.toArray(new String[0]); // return the array of encoded key preferences.
 	}

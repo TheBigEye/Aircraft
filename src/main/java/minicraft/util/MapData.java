@@ -10,7 +10,7 @@ public enum MapData {
 
     GRASS(Tiles.get("Grass").id, Color.get(1, 84, 168, 84)),
     LAWN(Tiles.get("Lawn").id, Color.get(1, 96, 165, 96)),
-    ORANGE_TULIP(Tiles.get("Orange tulip").id, Color.get(1, 96, 165, 96)),
+    ORANGE_TULIP(Tiles.get("Orange Tulip").id, Color.get(1, 96, 165, 96)),
 
     DIRT(Tiles.get("Dirt").id, Color.get(1, 131, 108, 108)),
     FLOWER(Tiles.get("Flower").id, Color.get(1, 96, 165, 96)),
@@ -70,7 +70,7 @@ public enum MapData {
     CARROT(Tiles.get("Carrot").id, Color.get(1, 242, 131, 33)),
 
     INFINITE_FALL(Tiles.get("Infinite Fall").id, Color.get(1, 0, 87, 122)),
-    CLOUD(Tiles.get("cloud").id, Color.WHITE),
+    CLOUD(Tiles.get("Cloud").id, Color.WHITE),
     CLOUD_CACTUS(Tiles.get("Cloud Cactus").id, Color.WHITE),
 
     FERROSITE(Tiles.get("Ferrosite").id, Color.get(1, 203, 197, 121)),

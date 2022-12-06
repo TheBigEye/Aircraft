@@ -34,7 +34,7 @@ public class WorldGenDisplay extends Display {
 		}
 
 		// If the seed is only numbers, just use numbers
-		if(Pattern.matches("[-]?[0-9]*", seedStr)) {
+		if (Pattern.matches("[-]?[0-9]*", seedStr)) {
 			return OptionalLong.of(Long.parseLong(seedStr));
 		} else {
 			// If the seed is some combination of numbers/letters, hash them into a floating point number
@@ -50,15 +50,15 @@ public class WorldGenDisplay extends Display {
 	}
 
 	public static InputEntry makeWorldNameInput(String prompt, List<String> takenNames, String initValue) {
-		return new InputEntry(prompt, worldNameRegex, 26, initValue, false) {
+		return new InputEntry(prompt, worldNameRegex, 28, initValue, false) {
 			@Override
 			public boolean isValid() {
 				if (!super.isValid()){
 					return false;
                 }
 				String name = getUserInput();
-				for (String other : takenNames){
-					if (other.equalsIgnoreCase(name)){
+				for (String other : takenNames) {
+					if (other.equalsIgnoreCase(name)) {
 						return false;
                     }
                 }
@@ -117,6 +117,7 @@ public class WorldGenDisplay extends Display {
                         WorldSelectDisplay.setWorldName(nameField.getUserInput(), false);
                         Game.setDisplay(new LoadingDisplay());
                     }) {
+            	
                 @Override
                 public void render(Screen screen, int x, int y, boolean isSelected) {
                     Font.draw(toString(), screen, x, y, Color.CYAN);
@@ -127,7 +128,7 @@ public class WorldGenDisplay extends Display {
             Settings.getEntry("theme"),
             Settings.getEntry("type"),
             worldSeed)
-            .setDisplayLength(8).setScrollPolicies(0.8f, false).setTitle("World Gen Options")
+            .setDisplayLength(8).setScrollPolicies(0.8F, false).setTitle("World Gen Options")
             .createMenu()
         };
 	}

@@ -82,7 +82,7 @@ public class FriendlyMob extends MobAi {
             if (t != Tiles.get("Obsidian")) {
                 return false;
             }
-        } else if (t != Tiles.get("Stone Door") && t != Tiles.get("Oak Door") && t != Tiles.get("Spruce Door") && t != Tiles.get("Birch Door") && t != Tiles.get("Obsidian Door") && t != Tiles.get("wheat") && t != Tiles.get("farmland")) {
+        } else if (t != Tiles.get("Stone Door") && t != Tiles.get("Oak Door") && t != Tiles.get("Spruce Door") && t != Tiles.get("Birch Door") && t != Tiles.get("Obsidian Door") && t != Tiles.get("Wheat") && t != Tiles.get("Farmland")) {
             // prevents mobs from spawning on lit tiles, farms, or doors (unless in the dungeons)
             return !level.isLight(x, y);
         } else {

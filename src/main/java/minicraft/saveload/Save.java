@@ -183,9 +183,11 @@ public class Save {
 		data.add(String.valueOf(Updater.tickCount));
 		data.add(String.valueOf(Updater.gameTime));
 		data.add(String.valueOf(Settings.getIdx("diff")));
+		
 		data.add(String.valueOf(AirWizard.beaten));
 		data.add(String.valueOf(AirWizardPhase2.beaten));
 		data.add(String.valueOf(AirWizardPhase3.beaten));
+		
 		data.add(String.valueOf(Settings.get("cheats")));
 
 		writeToFile(location + filename + extension, data);
@@ -198,12 +200,15 @@ public class Save {
 		json.put("diff", Settings.get("diff"));
 		json.put("sound", String.valueOf(Settings.get("sound")));
 		json.put("autosave", String.valueOf(Settings.get("autosave")));
+		
 		json.put("fps", String.valueOf(Settings.get("fps")));
         json.put("vsync", String.valueOf(Settings.get("vsync")));
         json.put("bossbar", Settings.get("bossbar"));
         json.put("particles", String.valueOf(Settings.get("particles")));
         json.put("shadows", String.valueOf(Settings.get("shadows")));
+        
 		json.put("lang", Localization.getSelectedLanguage());
+		
 		json.put("savedIP", MultiplayerDisplay.savedIP);
 		json.put("savedUUID", MultiplayerDisplay.savedUUID);
 		json.put("savedUsername", MultiplayerDisplay.savedUsername);
@@ -222,7 +227,7 @@ public class Save {
 	private void writeUnlocks() {
 		JSONObject json = new JSONObject();
 
-		json.put("airskin", (boolean) Settings.get("unlockedskin"));
+		json.put("unlockedAirWizardSuit", (boolean) Settings.get("unlockedskin"));
 
 		JSONArray scoretimes = new JSONArray();
 
@@ -310,7 +315,7 @@ public class Save {
 		data.add(subdata.toString());
 
 		data.add(String.valueOf(player.shirtColor));
-		data.add(String.valueOf(player.skinon));
+		data.add(String.valueOf(player.suitOn));
 
 		data.add(String.valueOf(player.isRaining));
 		data.add(String.valueOf(player.rainCount));

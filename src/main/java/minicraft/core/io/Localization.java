@@ -37,8 +37,9 @@ public class Localization {
 	private static String[] loadedLanguages = getLanguagesFromDirectory();
 	
 	static {
-		if (loadedLanguages == null)
+		if (loadedLanguages == null) {
 			loadedLanguages = new String[] {selectedLanguage};
+		}
 		
 		loadSelectedLanguageFile();
 	}
@@ -55,8 +56,9 @@ public class Localization {
 		String localString = localization.get(key);
 		
 		if (Game.debug && localString == null) {
-			if (!knownUnlocalizedStrings.contains(key))
+			if (!knownUnlocalizedStrings.contains(key)) {
 				Logger.tag("LOC").trace("'{}' is unlocalized.", key);
+			}
 			knownUnlocalizedStrings.add(key);
 		}
 		
@@ -102,7 +104,6 @@ public class Localization {
 	@NotNull
 	private static String getFileAsString() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(Game.class.getResourceAsStream(localizationFiles.getOrDefault(selectedLanguage, "/resources/localization/english_en-us.mcpl")), StandardCharsets.UTF_8));
-
 
 		return String.join("\n", reader.lines().toArray(String[]::new));
 		// Using getResourceAsStream since we're publishing this as a jar file.

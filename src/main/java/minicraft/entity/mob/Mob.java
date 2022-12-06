@@ -64,12 +64,15 @@ public abstract class Mob extends Entity {
         if (isRemoved()) {
             return;
         }
+        
         if (level != null && level.getTile(x >> 4, y >> 4) == Tiles.get("Lava")) { // If we are trying to swim in lava
             hurt(Tiles.get("Lava"), x, y, 4); // Inflict 4 damage to ourselves, sourced from the lava Tile, with the direction as the opposite of ours.
         }
+
         if (health <= 0) {
             die(); // die if no health
         }
+ 
         if (hurtTime > 0) {
             hurtTime--; // If a timer preventing damage temporarily is set, decrement it's value
         }
@@ -98,8 +101,11 @@ public abstract class Mob extends Entity {
         if (level == null) {
             return false; // stopped b/c there's no level to move in!
         }
-
+        
+        @SuppressWarnings("unused")
         int oldxt = x >> 4;
+        
+        @SuppressWarnings("unused")
         int oldyt = y >> 4;
 
 		// These should return true b/c the mob is still technically moving; these are just to make it move *slower*.
@@ -162,6 +168,7 @@ public abstract class Mob extends Entity {
         Tile tile = level.getTile(x >> 4, y >> 4); // Get the tile the mob is standing on (at x/16, y/16)
         return tile == Tiles.get("Water") || tile == Tiles.get("Lava"); // Check if the tile is liquid, and return true if so
     }
+   
 
     public void hurt(Tile tile, int x, int y, int damage) { // Hurt the mob, when the source of damage is a tile
     	// Set attackDir to our own direction, inverted. XORing it with 1 flips the rightmost bit in the variable, this effectively adds one when even, and subtracts one when odd.

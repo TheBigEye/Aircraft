@@ -1,7 +1,6 @@
 package minicraft.level.tile;
 
-import java.util.Random;
-
+import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
@@ -16,16 +15,13 @@ import minicraft.level.Level;
 public class TorchTile extends Tile {
     private static Sprite sprite = new Sprite(5, 3, 0);
     
-    private boolean randomLight = true;
     private static int LIGHT = 5;
     private Tile onType;
 
-    private Random rnd = new Random();
-
-    private int randX;
-    private int randY;
+    private int tickTime = 0;
     
-    private int torchLightTick;
+    int spawnX = 0;
+    int spawnY = 0;
 
     public static TorchTile getTorchTile(Tile onTile) {
 		int id = onTile.id & 0xFFFF;
@@ -62,22 +58,20 @@ public class TorchTile extends Tile {
     public void render(Screen screen, Level level, int x, int y) {
         onType.render(screen, level, x, y);
         sprite.render(screen, x * 16 + 4, y * 16 + 4);
+        
+		if (tickTime / 2 % 2 == 0 && Settings.get("particles").equals(true)) {
+			if (random.nextInt(1) == 0) {
+				level.add(new FireParticle(spawnX, spawnY));
+			}
+		}
     }
     
 	public boolean tick(Level level, int x, int y) {
-		if (randomLight) {
-			torchLightTick++;
-			
-			 if (torchLightTick / 8 % 2 == 0) {
-				LIGHT = random.nextInt(2) + 4;
-				
-				randX = rnd.nextInt(20);
-				randY = rnd.nextInt(18);
-
-				level.add(new FireParticle(x - 8 + randX, y - 8 + randY)); // Add fire particles
-			 }
-			return true;
-		}
+		tickTime++;
+		
+		spawnX  = x * 16 + 4;
+		spawnY = (y * 16) + random.nextInt(2) - random.nextInt(1);
+		
 		return false;
 	}
 

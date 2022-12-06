@@ -179,7 +179,7 @@ public class AirWizardPhase3 extends EnemyMob {
         int textwidth = Font.textWidth(h);
         // Bossbar on the the Air wizard phase 3
         if (Settings.get("bossbar").equals("On entity")) {
-            Font.drawBar(screen, (x - Screen.w / 12 + 4), y - 24, length / 4, "testificate");
+            Font.drawBar(screen, (x - Screen.w / 12 + 16), y - 24, length, "testificate");
         }
         
         // Bossbar percent

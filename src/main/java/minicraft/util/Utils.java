@@ -1,8 +1,8 @@
 package minicraft.util;
 
-public final class MyUtils {
+public final class Utils {
 
-    private MyUtils() {}
+    private Utils() {}
 
     public static int clamp(int val, int min, int max) {
         if (val > max) return max;
@@ -35,4 +35,10 @@ public final class MyUtils {
     public static <T> T fromNetworkStatus(T offline, T client, T server) {
         return offline;
     }
+	
+	public static int percentage(int current, int total) {
+		double percent = (double)(current * 100)/total;
+		int intPercent = (int) (percent + 0.5); //Adds .5 in order to round.
+		return intPercent;
+	}
 }
