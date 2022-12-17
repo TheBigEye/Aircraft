@@ -129,7 +129,7 @@ public class EyeQueenPhase2 extends EnemyMob {
         }
 
         super.die();
-        Sound.Mob_eyeBoss_changePhase.play();
+        Sound.Mob_eyeBoss_changePhase.playOnGui();
         level.add(new EyeQueenPhase3(1), x, y);
     }
 

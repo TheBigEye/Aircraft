@@ -47,7 +47,7 @@ public class SaplingTile extends Tile {
 	@Override
 	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
 		level.setTile(x, y, onType);
-		Sound.Tile_generic_hurt.play();
+		Sound.genericHurt.playOnGui();
 		return true;
 	}
 }

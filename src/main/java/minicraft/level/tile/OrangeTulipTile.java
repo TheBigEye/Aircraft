@@ -36,7 +36,7 @@ public class OrangeTulipTile extends Tile {
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(2 - tool.level) && tool.payDurability()) {
 					level.setTile(x, y, Tiles.get("Grass"));
-					Sound.Tile_generic_hurt.play();
+					Sound.genericHurt.playOnGui();
 					level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Orange Tulip"));
 					return true;
 				}

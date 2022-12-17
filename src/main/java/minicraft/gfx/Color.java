@@ -205,11 +205,17 @@ public class Color {
 	}
 
 	protected static int[] decodeRGBColor(int rgbInt) {
-		int r = (rgbInt & 0xFF_00_00) >> 16;
-		int g = (rgbInt & 0x00_FF_00) >> 8;
-		int b = (rgbInt & 0x00_00_FF);
+	    // Define named constants for the bitmasks.
+	    final int RED_MASK = 0xFF_00_00;
+	    final int GREEN_MASK = 0x00_FF_00;
+	    final int BLUE_MASK = 0x00_00_FF;
 
-		return new int[] { r, g, b };
+	    // Extract the red, green, and blue components of the color.
+	    int r = (rgbInt & RED_MASK) >> 16;
+	    int g = (rgbInt & GREEN_MASK) >> 8;
+	    int b = (rgbInt & BLUE_MASK);
+
+	    return new int[] { r, g, b };
 	}
 
 	/// this is for color testing.

@@ -81,7 +81,7 @@ public class Plant extends FarmTile {
             ((Player) entity).addScore(random.nextInt(5) + 1);
         }
         
-        Sound.Tile_generic_hurt.play();
+        Sound.genericHurt.playOnGui();
 
         level.setTile(x, y, Tiles.get("Dirt"));
     }

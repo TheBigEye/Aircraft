@@ -177,6 +177,7 @@ public class Initializer extends Game {
 		logoSplash.renderer.start();
 	}
 
+	@SuppressWarnings("serial")
 	private static class LogoSplashCanvas extends JPanel {
 		private Image logo;
 

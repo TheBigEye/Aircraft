@@ -20,12 +20,10 @@ import minicraft.level.Level;
 
 public class CloudTile extends Tile {
 	private static ConnectorSprite sprite = new ConnectorSprite(CloudTile.class, new Sprite(0, 22, 3, 3, 1), new Sprite(3, 24, 2, 2, 1), new Sprite(3, 22, 2, 2, 1)) {
-
 		@Override
 		public boolean connectsTo(Tile tile, boolean isSide) { // Cloud tile cannot connect with these tiles
 			return tile != Tiles.get("Infinite fall") && tile != Tiles.get("Ferrosite") && tile != Tiles.get("Cloud cactus");
 		}
-
 	};
 	
 	private int tickTime = 0;
@@ -49,33 +47,24 @@ public class CloudTile extends Tile {
 	}
 
 	public void steppedOn(Level level, int x, int y, Entity entity) {
-		if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
-			
-			// Spawn cloud particles under the mobs
-			if (entity instanceof Mob) {
-				if (random.nextInt(1) == 0) {
-					int spawnX  = (entity.x - 4) + random.nextInt(8) - random.nextInt(8);
-					int spawnY = (entity.y - 4) + random.nextInt(8) - random.nextInt(8);
-					
-					for (Direction dir : Direction.values()) {
-						Tile neighbour = level.getTile(x + dir.getX(), y + dir.getY());
-						if (neighbour != null) {
-							
-							// Particles only spawn on cloud tiles.
-							if (!(neighbour instanceof CloudTile)) { 
-								// Offsets
-								if (dir.getX() < 0) if ((entity.x % 16) < 8) spawnX += 8 - entity.x % 16;
-								if (dir.getX() > 0) if ((entity.x % 16) > 7) spawnX -= entity.x % 16 - 8;
-								if (dir.getY() < 0) if ((entity.y % 16) < 8) spawnY += 8 - entity.y % 16;
-								if (dir.getY() > 0) if ((entity.y % 16) > 7) spawnY -= entity.y % 16 - 8;
-							}
-						}
-					}
-	
-					level.add(new CloudParticle(spawnX, spawnY));
-				}
-			}
-		}
+	    if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
+	        if (entity instanceof Mob && random.nextInt(1) == 0) {
+	            int spawnX  = (entity.x - 4) + random.nextInt(8) - random.nextInt(8);
+	            int spawnY = (entity.y - 4) + random.nextInt(8) - random.nextInt(8);
+
+	            for (Direction dir : Direction.values()) {
+	                Tile neighbour = level.getTile(x + dir.getX(), y + dir.getY());
+	                if (neighbour != null && !(neighbour instanceof CloudTile)) {
+	                    // Offsets
+	                    if (dir.getX() < 0) if ((entity.x % 16) < 8) spawnX += 8 - entity.x % 16;
+	                    if (dir.getX() > 0) if ((entity.x % 16) > 7) spawnX -= entity.x % 16 - 8;
+	                    if (dir.getY() < 0) if ((entity.y % 16) < 8) spawnY += 8 - entity.y % 16;
+	                    if (dir.getY() > 0) if ((entity.y % 16) > 7) spawnY -= entity.y % 16 - 8;
+	                }
+	            }
+	            level.add(new CloudParticle(spawnX, spawnY));
+	        }
+	    }
 	}
 	
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
@@ -94,7 +83,7 @@ public class CloudTile extends Tile {
 					level.setTile(xt, yt, Tiles.get("Hole"));
 				}
 
-				Sound.Tile_generic_hurt.play();
+				Sound.genericHurt.playOnGui();
 				level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 3, Items.get("Cloud"));
 				return true;
 			}

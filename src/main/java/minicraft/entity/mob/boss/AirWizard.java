@@ -114,7 +114,7 @@ public class AirWizard extends EnemyMob {
             double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1); // assigns a local direction variable from the attack time.
             double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2; // speed is dependent on the attackType. (higher attackType, faster speeds)
             level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 1)); // adds a spark entity with the cosine and sine of dir times speed.
-            Sound.Particle_spark_spawn.play();
+            Sound.airWizardSpawnSpark.playOnGui();
             return; // skips the rest of the code (attackTime was > 0; ie we're attacking.)
         }
 
@@ -215,8 +215,8 @@ public class AirWizard extends EnemyMob {
                 p.addScore((secondform ? 500000 : 100000)); // give the player 100K or 500K points.
         }
 
-        // Sound.bossDeath.play(); // play boss-death sound.
-        Sound.Mob_wizard_changePhase.play();
+        // Sound.bossDeath.playOnGui(); // play boss-death sound.
+        Sound.airWizardChangePhase.playOnGui();
 
         if (!secondform) {
             level.add(new AirWizardPhase2(1), x, y);

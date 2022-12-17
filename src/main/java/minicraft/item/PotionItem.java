@@ -65,10 +65,10 @@ public class PotionItem extends StackableItem {
 		}
 
 		if (addEffect && type.duration > 0) {
-			player.potioneffects.put(type, type.duration); // add it
+			player.potionEffects.put(type, type.duration); // add it
 		}
 		else {
-			player.potioneffects.remove(type);
+			player.potionEffects.remove(type);
 		}
 
 		return true;

@@ -14,12 +14,10 @@ import minicraft.level.Level;
 
 public class SkyGrassTile extends Tile {
     private static ConnectorSprite sprite = new ConnectorSprite(SkyGrassTile.class, new Sprite(44, 6, 3, 3, 1), new Sprite(47, 8, 2, 2, 1), new Sprite(47, 6, 2, 2, 1)) {
-
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) { // Sky grass cannot connect with these tiles
         	 return tile != Tiles.get("Infinite fall") && tile != Tiles.get("Ferrosite") && tile != Tiles.get("Cloud cactus") && tile != Tiles.get("Cloud Hole");
         }
-
     };
 
     protected SkyGrassTile(String name) {
@@ -65,36 +63,41 @@ public class SkyGrassTile extends Tile {
 
     @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
+	    if (!(item instanceof ToolItem)) {
+	        return false;
+	    }
+	
+	    // This avoids repeating tools checks
+	    ToolItem tool = (ToolItem) item;
+	    ToolType toolType = tool.type;
 
-            if (tool.type == ToolType.Shovel) {
-                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    level.setTile(xt, yt, Tiles.get("Sky dirt")); // would allow you to shovel cloud, I think.
-                    Sound.Tile_generic_hurt.play();
-                    if (random.nextInt(20) == 0) { // 20% chance to drop sky seeds
-                        level.dropItem(xt * 16 + 8, yt * 16 + 8, 2, Items.get("Sky seeds"));
-                    }
-                    return true;
+        if (toolType == ToolType.Shovel) {
+            if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                level.setTile(xt, yt, Tiles.get("Sky dirt")); // would allow you to shovel cloud, I think.
+                Sound.genericHurt.playOnGui();
+                if (random.nextInt(20) == 0) { // 20% chance to drop sky seeds
+                    level.dropItem(xt * 16 + 8, yt * 16 + 8, 2, Items.get("Sky seeds"));
                 }
+                return true;
             }
-
-            if (tool.type == ToolType.Pickaxe) {
-                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    // level.setTile(xt, yt, Tiles.get("path"));
-                    Sound.Tile_generic_hurt.play();
-                }
-            }
-            
-            if (tool.type == ToolType.Hoe) {
-                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    level.setTile(xt, yt, Tiles.get("sky farmland"));
-                    Sound.Tile_generic_hurt.play();
-                    return true;
-                }
-            }
-            
         }
+
+        if (toolType == ToolType.Pickaxe) {
+            if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                // level.setTile(xt, yt, Tiles.get("path"));
+                Sound.genericHurt.playOnGui();
+                return true;
+            }
+        }
+        
+        if (toolType == ToolType.Hoe) {
+            if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                level.setTile(xt, yt, Tiles.get("sky farmland"));
+                Sound.genericHurt.playOnGui();
+                return true;
+            }
+        }
+       
         return false;
     }
 }

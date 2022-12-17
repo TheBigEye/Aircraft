@@ -24,7 +24,6 @@ public class MushroomTile extends Tile {
 
     	MushroomType(Sprite sprite, String loot) {
 			this.sprite = sprite;
-		
             this.loot = loot;
 		}
 	}
@@ -39,15 +38,19 @@ public class MushroomTile extends Tile {
   
 	@Override
 	public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
-		if (item instanceof ToolItem) {
-			ToolItem tool = (ToolItem) item;
-			if (tool.type == ToolType.Shovel) {
-				if (player.payStamina(2 - tool.level) && tool.payDurability()) {
-					level.setTile(x, y, Tiles.get("Mycelium"));
-					Sound.Tile_generic_hurt.play();
-					level.dropItem(x * 16 + 8, y * 16 + 8, Items.get(type.loot));
-					return true;
-				}
+        if (!(item instanceof ToolItem)) {
+            return false;
+        }
+
+        ToolItem tool = (ToolItem) item;
+        ToolType toolType = tool.type;
+
+		if (toolType == ToolType.Shovel) {
+			if (player.payStamina(2 - tool.level) && tool.payDurability()) {
+				level.setTile(x, y, Tiles.get("Mycelium"));
+				Sound.genericHurt.playOnGui();
+				level.dropItem(x * 16 + 8, y * 16 + 8, Items.get(type.loot));
+				return true;
 			}
 		}
 		return false;

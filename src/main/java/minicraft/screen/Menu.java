@@ -286,7 +286,7 @@ public class Menu {
                                                 // moved.
             return;
         } else
-            Sound.Menu_select.play();
+            Sound.Menu_select.playOnGui();
 
         do {
             selection += delta;

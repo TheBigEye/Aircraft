@@ -74,7 +74,7 @@ public abstract class MobAi extends Mob {
         if (getLevel() != null) {
             boolean foundPlayer = false;
             for (Player p : level.getPlayers()) {
-                if (p.isWithin(8, this) && p.potioneffects.containsKey(PotionType.Time)) {
+                if (p.isWithin(8, this) && p.potionEffects.containsKey(PotionType.Time)) {
                     foundPlayer = true;
                     break;
                 }
@@ -91,8 +91,8 @@ public abstract class MobAi extends Mob {
             ya = 0;
         }
 
-        if (random.nextInt(randomWalkChance) == 0) { // if the mob could not or did not move, or a random small chance
-                                                     // occurred...
+        // if the mob could not or did not move, or a random small chance occurred...
+        if (random.nextInt(randomWalkChance) == 0) {
             randomizeWalkDir(true); // set random walk direction.
         }
 
@@ -130,7 +130,7 @@ public abstract class MobAi extends Mob {
             int xd = player.x - x;
             int yd = player.y - y;
             if (xd * xd + yd * yd < 80 * 80) {
-                Sound.Mob_generic_hurt.play();
+                Sound.genericHurt.playOnGui();
             }
         }
         level.add(new TextParticle("" + damage, x, y, Color.RED)); // Make a text particle at this position in this

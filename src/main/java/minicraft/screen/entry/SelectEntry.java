@@ -46,7 +46,7 @@ public class SelectEntry extends ListEntry {
     @Override
     public void tick(InputHandler input) {
         if (input.getKey("select").clicked && onSelect != null) {
-            Sound.Menu_confirm.play();
+            Sound.Menu_confirm.playOnGui();
             onSelect.act();
         }
     }

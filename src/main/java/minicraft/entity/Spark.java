@@ -38,41 +38,38 @@ public class Spark extends Entity {
 	}
 
 	private void SparkCloud(int damage) {
-		durTime = 15 * 13 + random.nextInt(30);
+	    durTime = 15 * 13 + random.nextInt(30);
 
-		// Move the spark:
-		xx += xa; x = (int) xx;
-		yy += ya; y = (int) yy;
+	    // Move the spark:
+	    xx += xa; x = (int) xx;
+	    yy += ya; y = (int) yy;
 
-		if (getClosestPlayer() != null) { // Avoid NullPointer if player dies
-			Player player = getClosestPlayer();
-			if (player != null) {
+	    Player player = getClosestPlayer();
 
-				int xd = player.x - x;
-				int yd = player.y - y;
+	    if (player != null) {
+	        int xd = owner.x - x;
+	        int yd = owner.y - y;
 
-				int sig0 = 1; 
-				xa = ya = 0;
+	        int sig = 2; 
+	        xa = 0; ya = 0;
 
-				if (xd < sig0) xa = -0.5;
-				if (xd > sig0) xa = +0.6;
-				if (yd < sig0) ya = -0.5;
-				if (yd > sig0) ya = +0.6;
+	        if (xd < sig) xa -= random.nextInt(2);
+	        if (xd > sig) xa += random.nextInt(2);
+	        if (yd < sig) ya -= random.nextInt(2);
+	        if (yd > sig) ya += random.nextInt(2);
+	        
+	        if (random.nextBoolean()) {
+	        	xa -= random.nextInt(5);
+	        	ya -= random.nextInt(5);
+	        } else {
+	        	xa += random.nextInt(5);
+	        	ya += random.nextInt(5);
+	        }
 
-				// Random position
-				switch (random.nextInt(3)) {
-					case 0: xa += 1; ya += 1; break;
-					case 1: xa -= 1; ya -= 1; break;
-					case 2: xa -= 1; ya += 1; break;
-					case 3: xa += 1; ya -= 1; break;
-					default: xa += 1; ya += 1; break;
-				}
-			}
-
-			if (getClosestPlayer().isWithin(0,this)) {
-				player.hurt(owner, damage);
-			}
-		}
+	        if (player.isWithin(0, this)) {
+	            player.hurt(owner, damage);
+	        }
+	    }
 	}
 
 	private void SparkRain(int damage) {
@@ -82,9 +79,9 @@ public class Spark extends Entity {
 		xx += xa; x = (int) xx;
 		yy += ya; y = (int) yy;
 
-		if (getClosestPlayer() != null) { // Avoid NullPointer if player dies
-			Player player = getClosestPlayer();
-			if (getClosestPlayer().isWithin(0, this)) {
+		Player player = getClosestPlayer();
+		if (player != null) { // avoid NullPointer if player dies
+			if (player.isWithin(0, this)) {
 				player.hurt(owner, damage);
 			}
 		}
@@ -97,9 +94,9 @@ public class Spark extends Entity {
 		xx += xa; x = (int) xx;
 		yy += ya; y = (int) yy;
 
-		if (getClosestPlayer() != null) { // Avoid NullPointer if player dies
-			Player player = getClosestPlayer();
-			if (getClosestPlayer().isWithin(0, this)) {
+		Player player = getClosestPlayer();
+		if (player != null) { // avoid NullPointer if player dies
+			if (player.isWithin(0, this)) {
 				player.hurt(owner, damage);
 			}
 		}
@@ -109,9 +106,9 @@ public class Spark extends Entity {
 	public void tick() {
 		time++;
 
-		if (type == 1) SparkCloud(2);
-		if (type == 2) SparkRain(3);
-		if (type == 3) SparkSpiralRain(4);
+		if (type == 1) SparkCloud(1);
+		if (type == 2) SparkRain(2);
+		if (type == 3) SparkSpiralRain(3);
 
 		if (time >= lifeTime) {
 			remove(); // Remove this from the world
@@ -140,7 +137,7 @@ public class Spark extends Entity {
 			randmirror = random.nextInt(4);
 		}
 
-		if ((boolean) Settings.get("shadows")  == true) {
+		if ((boolean) Settings.get("shadows") == true) {
 			screen.render(x - 4, y - 4 + 2, 0 + 20 * 32, randmirror, 2, -1, false, Color.BLACK); // renders the shadow on the ground
 		}        
 		screen.render(x - 4, y - 4 - 2, 0 + 20 * 32, randmirror, 2); // renders the spark

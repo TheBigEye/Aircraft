@@ -51,9 +51,8 @@ public class FoodItem extends StackableItem {
     /** What happens when the player uses the item on a tile */
     public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
         boolean success = false;
-        if (count > 0 && player.hunger < Player.maxHunger && player.payStamina(staminaCost)) { // if the player has
-                                                                                               // hunger to fill, and
-                                                                                               // stamina to pay...
+        // if the player has hunger to fill, and stamina to pay...
+        if (count > 0 && player.hunger < Player.maxHunger && player.payStamina(staminaCost)) { 
             player.hunger = Math.min(player.hunger + heal, Player.maxHunger); // restore the hunger
             success = true;
         }

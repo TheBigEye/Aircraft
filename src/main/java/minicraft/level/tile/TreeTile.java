@@ -24,12 +24,12 @@ import minicraft.screen.AchievementsDisplay;
 public class TreeTile extends Tile {
 	
 	public enum TreeType {
-		Oak(0, 1, 0, 1, 2, 3, "Grass", new String[] {"Oak Wood", "Oak Wood", "Acorn"}, 20),
-		Birch(0, 1, 28, 29, 30, 31, "Grass", new String[] {"Birch Wood", "Leaf", "Birch cone"}, 25),
-		Red_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Oak Wood", "Leaf", "Acorn"}, 20),
+		Oak(0, 1, 0, 1, 2, 3, "Grass", new String[] {"Oak Wood", "Oak Wood", "Acorn"}, 22),
+		Birch(0, 1, 28, 29, 30, 31, "Grass", new String[] {"Birch Wood", "Leaf", "Birch cone"}, 28),
+		Red_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Oak Wood", "Leaf", "Acorn"}, 22),
 		Fir(4, 5, 28, 29, 30, 31, "Snow", new String[] {"Spruce wood", "Spruce wood", "Fir cone"}, 22),
 		Pine(6, 7, 28, 29, 30, 31, "Snow", new String[] {"Spruce wood", "Spruce wood", "Pine cone"}, 22),
-		Brown_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Oak Wood", "Leaf", "Acorn"}, 24);
+		Brown_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Oak Wood", "Leaf", "Acorn"}, 23);
 
 		//                   00   01
 		//X1 X2  //-- Y1  //[DD] [DD] 00 // each tree parts are 8x8 squares
@@ -37,13 +37,13 @@ public class TreeTile extends Tile {
 		//-- --  //-- Y3  // --  [BA] 02
 		//-- --  //-- Y4  // --  [BB] 03
 		
-    	private int sprite_x1, sprite_x2; 
-    	private int sprite_y1, sprite_y2; 
-    	private int sprite_y3, sprite_y4; 
-    	
-    	private String baseTile;
-    	private String[] loot;
-    	private int health;
+	    private final int sprite_x1, sprite_x2; 
+	    private final int sprite_y1, sprite_y2; 
+	    private final int sprite_y3, sprite_y4; 
+	    
+	    private final String baseTile;
+	    private final String[] loot;
+	    private final int health;
 
 		TreeType(int sprite_x1, int sprite_x2, int sprite_y1, int sprite_y2, int sprite_y3, int sprite_y4, String baseTile, String[] loot, int health) {
 			this.sprite_x1 = sprite_x1; this.sprite_x2 = sprite_x2;
@@ -75,8 +75,10 @@ public class TreeTile extends Tile {
     }
     
     @Override
-    public void hurt(Level level, int x, int y, int dmg) {
-        if (random.nextInt(100) == 50) {
+    public void hurt(Level level, int x, int y, int dmg) {   	
+    	Player player = level.getClosestPlayer(x, y);
+    	
+        if (random.nextInt(50) == 25) {
             level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Apple"));
         }
 
@@ -85,9 +87,9 @@ public class TreeTile extends Tile {
         if (Game.isMode("Creative")) {
             dmg = damage = treeHealth;
         }
-
+        
         level.add(new SmashParticle(x * 16, y * 16));
-        Sound.Tile_generic_hurt.play();
+        Sound.genericHurt.playOnWorld(x * 16, y * 16, player.x, player.y);
 
         level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
         if (damage >= treeHealth) {
@@ -139,14 +141,14 @@ public class TreeTile extends Tile {
     public void render(Screen screen, Level level, int x, int y) {
         Tiles.get(type.baseTile).render(screen, level, x, y);
 
-        boolean u = level.getTile(x, y - 1) == this;
-        boolean l = level.getTile(x - 1, y) == this;
-        boolean r = level.getTile(x + 1, y) == this;
-        boolean d = level.getTile(x, y + 1) == this;
-        boolean ul = level.getTile(x - 1, y - 1) == this;
-        boolean ur = level.getTile(x + 1, y - 1) == this;
-        boolean dl = level.getTile(x - 1, y + 1) == this;
-        boolean dr = level.getTile(x + 1, y + 1) == this;
+        boolean u = level.getTile(x, y - 1) == this; // up
+        boolean l = level.getTile(x - 1, y) == this; // left
+        boolean r = level.getTile(x + 1, y) == this; // right
+        boolean d = level.getTile(x, y + 1) == this; // down
+        boolean ul = level.getTile(x - 1, y - 1) == this; // up-left
+        boolean ur = level.getTile(x + 1, y - 1) == this; // up-right
+        boolean dl = level.getTile(x - 1, y + 1) == this; // down-left
+        boolean dr = level.getTile(x + 1, y + 1) == this; // down-right
 
         if (u && ul && l) {
             screen.render(x * 16 + 0, y * 16 + 0, type.sprite_x2 + type.sprite_y2 * 32, 0, 1); // y2
@@ -172,6 +174,7 @@ public class TreeTile extends Tile {
 
     @Override
     public boolean tick(Level level, int xt, int yt) {
+    	
         int damage = level.getData(xt, yt);
         if (damage > 0) {
             level.setData(xt, yt, damage - 1);

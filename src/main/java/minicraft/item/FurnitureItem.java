@@ -167,7 +167,7 @@ public class FurnitureItem extends Item {
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 		if (tile.mayPass(level, xt, yt, furniture)) { // If the furniture can go on the tile
 
-			Sound.Mob_player_place.play();
+			Sound.playerPlace.playOnGui();
 
 			// Placed furniture's X and Y positions
 			furniture.x = xt * 16 + 8;

@@ -116,7 +116,7 @@ public class Giant extends EnemyMob {
         }
 
         super.die();
-        Sound.Mob_eyeBoss_death.play();
+        Sound.Mob_eyeBoss_death.playOnGui();
         level.add(new EyeQueenPhase2(1), x, y);
 
         int randX = rnd.nextInt(16);

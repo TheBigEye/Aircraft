@@ -663,9 +663,9 @@ public class Load {
 			}
 		}
 
-		String potioneffects = data.remove(0);
-		if (!potioneffects.equals("PotionEffects[]")) {
-			String[] effects = potioneffects.replace("PotionEffects[", "").replace("]", "").split(":");
+		String potionEffects = data.remove(0);
+		if (!potionEffects.equals("PotionEffects[]")) {
+			String[] effects = potionEffects.replace("PotionEffects[", "").replace("]", "").split(":");
 
 			for (String s : effects) {
 				String[] effect = s.split(";");

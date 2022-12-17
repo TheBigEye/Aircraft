@@ -29,15 +29,15 @@ public class AmuletItem extends Item {
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 
 		if (random.nextInt(3) == 0) {
-			Sound.Amulet_locked.play();
+			Sound.Amulet_locked.playOnGui();
 		}
 
 		if (random.nextInt(3) == 1) {
-			Sound.Amulet_locked_2.play();
+			Sound.Amulet_locked_2.playOnGui();
 		}
 
 		if (random.nextInt(3) == 2) {
-			Sound.Amulet_sucess.play();
+			Sound.Amulet_sucess.playOnGui();
 			level.add(new EyeQueen(1), player.x, player.y);
 			Updater.notifyAll("The eye queen has awakened!");
 			Updater.setTime(600000);

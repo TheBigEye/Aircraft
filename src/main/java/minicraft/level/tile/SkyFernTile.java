@@ -60,32 +60,22 @@ public class SkyFernTile extends Tile {
     @Override
     public void render(Screen screen, Level level, int x, int y) {
         Tiles.get("Sky High Grass").render(screen, level, x, y);
-        
-        if (stepped == true) {
-            if (fernAttackTick / 16 % 2 == 0) {
-            	
-            	step+=1;
-            	
-            	if (step > 6) {
-            		step = 0;
-            	}
-            	
-            	switch (step) {
-    	        	case 0: sprite = new Sprite(27, 22, 2, 2, 1); break;
-    	        	case 1: sprite = new Sprite(29, 22, 2, 2, 1); break;
-    	        	case 2: sprite = new Sprite(31, 22, 2, 2, 1); break;
-    	        	case 3: sprite = new Sprite(33, 22, 2, 2, 1); break;
-    	        	case 4: sprite = new Sprite(31, 22, 2, 2, 1); break;
-    	        	case 5: sprite = new Sprite(29, 22, 2, 2, 1); break;
-    	        	case 6: sprite = new Sprite(27, 22, 2, 2, 1); break;
-    	        	default:
-    	        		sprite = new Sprite(27, 22, 2, 2, 1); break;
-            	}
+        if (stepped == true && fernAttackTick / 16 % 2 == 0) {
+            step++;
+            if (step > 6) step = 0;
+            switch (step) {
+                case 0: sprite = new Sprite(27, 22, 2, 2, 1); break;
+                case 1: sprite = new Sprite(29, 22, 2, 2, 1); break;
+                case 2: sprite = new Sprite(31, 22, 2, 2, 1); break;
+                case 3: sprite = new Sprite(33, 22, 2, 2, 1); break;
+                case 4: sprite = new Sprite(31, 22, 2, 2, 1); break;
+                case 5: sprite = new Sprite(29, 22, 2, 2, 1); break;
+                case 6: sprite = new Sprite(27, 22, 2, 2, 1); break;
+                default: sprite = new Sprite(27, 22, 2, 2, 1); break;
             }
         } else {
-        	step = 0;
+            step = 0;
         }
-        
         sprite.render(screen, x * 16, y * 16);
     }
 
@@ -110,7 +100,7 @@ public class SkyFernTile extends Tile {
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(2 - tool.level) && tool.payDurability()) {
                     level.setTile(x, y, Tiles.get("Sky High Grass"));
-                    Sound.Tile_generic_hurt.play();
+                    Sound.genericHurt.playOnGui();
 
                     if (random.nextInt(20) == 1) { // 20% chance to drop sky seeds
                         level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));

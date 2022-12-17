@@ -51,6 +51,8 @@ public class Tnt extends Furniture implements ActionListener {
 	@Override
 	public void tick() {
 		super.tick();
+		
+		Player player = getClosestPlayer();
 
 		// Ignite the TNT when touch lava :)
 		if (level.getTile(x >> 4,y >> 4) == Tiles.get("Lava") && fuseLit == false) {
@@ -66,7 +68,7 @@ public class Tnt extends Furniture implements ActionListener {
 			fuseTick++;
 
 			light = 2;
-
+			
 			if (fuseTick >= FUSE_TIME) {
 				// blow up
 				List<Entity> entitiesInRange = level.getEntitiesInRect(new Rectangle(x, y, BLAST_RADIUS * 2, BLAST_RADIUS * 2, Rectangle.CENTER_DIMS));
@@ -82,10 +84,9 @@ public class Tnt extends Furniture implements ActionListener {
 					// Ignite other bombs in range.
 					if (e instanceof Tnt) {
 						Tnt tnt = (Tnt) e;
-
 						if (!tnt.fuseLit) {
 							tnt.fuseLit = true;
-							Sound.Furniture_tnt_fuse.echo(x);
+							Sound.genericFuse.playOnWorld(x, y, player.x, player.y);
 							tnt.fuseTick = FUSE_TIME * 2 / 3;
 						}
 
@@ -106,15 +107,8 @@ public class Tnt extends Furniture implements ActionListener {
 
 				}
 
-				// Random explode sound
-				switch (random.nextInt(4)) {
-					case 0: Sound.Furniture_tnt_explode.echo(x); break;
-					case 1: Sound.Furniture_tnt_explode.echo(x); break;
-					case 2: Sound.Furniture_tnt_explode_2.echo(x); break;
-					case 3: Sound.Furniture_tnt_explode_3.echo(x); break;
-					case 4: Sound.Furniture_tnt_explode_4.echo(x); break;
-					default: Sound.Furniture_tnt_explode.echo(x); break;
-				}
+				// Play explosion sound
+				Sound.genericExplode.playOnWorld(x, y, player.x, player.y);
 
 				level.setAreaTiles(xt, yt, 1, Tiles.get("Explode"), 0, explosionBlacklist);
 
@@ -160,7 +154,7 @@ public class Tnt extends Furniture implements ActionListener {
 	public boolean interact(Player player, Item heldItem, Direction attackDir) {
 		if (!fuseLit) {
 			fuseLit = true;
-			Sound.Furniture_tnt_fuse.play();
+			Sound.genericFuse.playOnWorld(x, y, player.x, player.y);
 			return true;
 		}
 		return false;

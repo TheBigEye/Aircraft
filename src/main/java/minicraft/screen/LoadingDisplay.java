@@ -78,7 +78,7 @@ public class LoadingDisplay extends Display {
 			Game.notifications.clear();
 		}
 
-		Sound.Mob_player_changelevel.play();
+		Sound.playerChangeLevel.playOnGui();
 	}
 
 	public static void setPercentage(float percent) {

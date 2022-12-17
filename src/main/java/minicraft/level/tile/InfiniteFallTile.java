@@ -27,12 +27,14 @@ public class InfiniteFallTile extends Tile {
     }
 
     public boolean mayPass(Level level, int x, int y, Entity e) {
-        return e instanceof AirWizard || e instanceof AirWizardPhase2 || e instanceof AirWizardPhase3
-                || e instanceof Arrow || e instanceof Player && (((Player) e).suitOn
-                || Game.isMode("Creative") ||
-                
-                // Make un-solid when trigger the fall warning in survival
-                !Game.isMode("Creative") && Game.player.fallWarn == true); 
+        if (e instanceof AirWizard || e instanceof AirWizardPhase2 || e instanceof AirWizardPhase3 || e instanceof Arrow) {
+            return true;
+        }
+        if (e instanceof Player) {
+            Player p = (Player) e;
+            return p.suitOn || Game.isMode("Creative") || !Game.isMode("Creative") && p.fallWarn == true;
+        }
+        return false;
     }
     
     @Override

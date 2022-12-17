@@ -4,7 +4,7 @@ import java.util.Random;
 
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
-import minicraft.entity.particle.HeartParticle;
+import minicraft.core.io.Sound;
 import minicraft.gfx.MobSprite;
 import minicraft.item.Items;
 
@@ -12,6 +12,7 @@ public class Chicken extends PassiveMob {
     private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 32);
 
     private Random rnd = new Random();
+    private int tickTime = 0;
 
     /**
      * Creates a Chicken.
@@ -23,6 +24,7 @@ public class Chicken extends PassiveMob {
 
     public void tick() {
         super.tick();
+        tickTime++;
 
         // Drop eggs each 15 secs
         int min = 0;
@@ -41,7 +43,7 @@ public class Chicken extends PassiveMob {
         if (player != null && player.activeItem != null && player.activeItem.name.equals("Seeds")) {
 
             // Render heart particles
-            if (Settings.get("particles").equals(true)) {
+            /*if (Settings.get("particles").equals(true)) {
                 int randX = rnd.nextInt(10);
                 int randY = rnd.nextInt(9);
 
@@ -51,7 +53,7 @@ public class Chicken extends PassiveMob {
                 if (random.nextInt(12) == 12) {
                     level.add(new HeartParticle(x - 9 + randX, y - 12 + randY));
                 }
-            }
+            }*/
 
             int xd = player.x - x;
             int yd = player.y - y;
@@ -67,6 +69,19 @@ public class Chicken extends PassiveMob {
         } else {
             randomizeWalkDir(false);
         }
+        
+		// Chicken sounds
+		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
+			if (random.nextBoolean()) {
+				if (!random.nextBoolean()) {
+					Sound.chickenSay1.playOnWorld(x, y, player.x, player.y);
+				} else {
+					Sound.chickenSay2.playOnWorld(x, y, player.x, player.y);
+				}
+			} else {
+				Sound.chickenSay3.playOnWorld(x, y, player.x, player.y);
+			}
+		}
     }
 
     public void die() {

@@ -46,7 +46,7 @@ public class IceSpikeTile extends Tile {
 
 		if (damage >= cHealth) {
 			level.setTile(x, y, Tiles.get("Snow"));
-			Sound.Tile_generic_hurt.play();
+			Sound.genericHurt.playOnGui();
 			level.dropItem(x * 16 + 8, y * 16 + 8, 2, 4, Items.get("Icicle"));
 		} else {
 			level.setData(x, y, damage);

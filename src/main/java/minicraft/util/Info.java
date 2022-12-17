@@ -52,7 +52,7 @@ public class Info {
 		free_Memory = freeMemory / 1024L / 1024L; // Free memory (mb)
 
 		// Memory details
-		Memory_info = free_Memory_bytes + " bytes (" + free_Memory + " MB) / " + total_Memory_bytes + " bytes (" + total_Memory + " MB) up to " + max_Memory_bytes + " bytes (" + max_Memory + " MB)";
+		Memory_info = String.format("%d bytes (%d MB) / %d bytes (%d MB) up to %d bytes (%d MB)", free_Memory_bytes, free_Memory, total_Memory_bytes, total_Memory, max_Memory_bytes, max_Memory);
 
         // Os properties, Get information about the actual OS
         OS_Name = System.getProperty("os.name");

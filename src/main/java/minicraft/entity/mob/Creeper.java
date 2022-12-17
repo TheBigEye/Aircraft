@@ -85,14 +85,10 @@ public class Creeper extends EnemyMob {
 			// Handles what happens when it blows up.
 			// It will only blow up if there are any players nearby.
 			if (playerInRange) {
-            	
             	// Play explosion sound
-				switch (random.nextInt(1)) {
-					case 0: Sound.Mob_creeper_explode.play(); break;
-					case 1: Sound.Mob_creeper_explode_4.play(); break;
-					default: Sound.Mob_creeper_explode.play(); break;
-				}
-
+				Player player = level.getClosestPlayer(x, y);
+				Sound.genericExplode.playOnWorld(x, y, player.x, player.y);
+				
 				// figure out which tile the mob died on
 				int xt = x >> 4;
 				int yt = (y - 2) >> 4;
@@ -169,7 +165,6 @@ public class Creeper extends EnemyMob {
 
 	@Override
 	protected void touchedBy(Entity entity) {
-
 		if (Settings.get("diff").equals("Peaceful")) {
 			return;
 		}
@@ -180,7 +175,7 @@ public class Creeper extends EnemyMob {
 
 		if (entity instanceof Player) {
 			if (fuseTime == 0 && !fuseLit) {
-				Sound.Mob_creeper_fuse.play();
+				Sound.genericFuse.playOnWorld(x, y, ((Player) entity).x, ((Player) entity).y);
 				fuseTime = MAX_FUSE_TIME;
 				fuseLit = true;
 			}

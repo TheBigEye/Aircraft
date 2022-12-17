@@ -25,14 +25,19 @@ public class LavaBrickTile extends Tile {
 	}
 
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-		if (item instanceof ToolItem) {
-			ToolItem tool = (ToolItem) item;
-			if (tool.type == ToolType.Pickaxe) {
-				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					level.setTile(xt, yt, Tiles.get("Lava"));
-					Sound.Tile_generic_hurt.play();
-					return true;
-				}
+	    if (!(item instanceof ToolItem)) {
+	        return false;
+	    }
+
+	    // This avoids repeating tools checks
+	    ToolItem tool = (ToolItem) item;
+	    ToolType toolType = tool.type;
+	    
+		if (toolType == ToolType.Pickaxe) {
+			if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+				level.setTile(xt, yt, Tiles.get("Lava"));
+				Sound.genericHurt.playOnGui();
+				return true;
 			}
 		}
 		return false;

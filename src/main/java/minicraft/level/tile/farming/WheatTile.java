@@ -62,7 +62,7 @@ public class WheatTile extends Plant {
         }
         
         // Play sound.
-		Sound.Tile_generic_hurt.play();
+		Sound.genericHurt.playOnGui();
 
         level.setTile(x, y, Tiles.get("Dirt"));
     }

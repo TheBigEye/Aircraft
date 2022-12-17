@@ -27,38 +27,38 @@ public class WaterTile extends Tile {
 
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
-		long seed = (tickCount + (x / 2 - y) * 4311) / 10 * 54687121l + x * 3271612l + y * 3412987161l;
-		sprite.full = Sprite.randomDots(seed, 0);
-		sprite.sparse.color = DirtTile.dCol(level.depth);
-		sprite.render(screen, level, x, y);
+	    long seed = (tickCount + (x / 2 - y) * 4311) / 10 * 54687121L + x * 3271612L + y * 3412987161L;
+	    sprite.full = Sprite.randomDots(seed, 0);
+	    sprite.sparse.color = DirtTile.dCol(level.depth);
+	    sprite.render(screen, level, x, y);
 	}
 
 	@Override
 	public boolean tick(Level level, int xt, int yt) {
-		int xn = xt;
-		int yn = yt;
+	    int xn = xt;
+	    int yn = yt;
 
-		if (random.nextBoolean()) {
-			xn += random.nextInt(2) * 2 - 1;
-		} else {
-			yn += random.nextInt(2) * 2 - 1;
-		}
+	    switch (random.nextInt(2)) {
+	        case 0: xn += random.nextInt(2) * 2 - 1; break;
+	        case 1: yn += random.nextInt(2) * 2 - 1; break;
+	    }
 
-		if (level.getTile(xn, yn) == Tiles.get("Hole")) {
-			level.setTile(xn, yn, this);
-		}
+	    if (level.getTile(xn, yn) == Tiles.get("Hole")) {
+	        level.setTile(xn, yn, this);
+	    }
 
-		// these set only the non-diagonally adjacent lava tiles to raw obsidian
-		for (int x = -1; x < 2; x++) {
-			if (level.getTile(xt + x, yt) == Tiles.get("Lava")) {
-				level.setTile(xt + x, yt, Tiles.get("raw obsidian"));
-			}
-		}
-		for (int y = -1; y < 2; y++) {
-			if (level.getTile(xt, yt + y) == Tiles.get("Lava")) {
-				level.setTile(xt, yt + y, Tiles.get("raw obsidian"));
-			}
-		}
-		return false;
+	    Tile lavaTile = Tiles.get("Lava");
+	    Tile rawObsidianTile = Tiles.get("raw obsidian");
+	    for (int x = -1; x < 2; x++) {
+	        if (level.getTile(xt + x, yt) == lavaTile) {
+	            level.setTile(xt + x, yt, rawObsidianTile);
+	        }
+	    }
+	    for (int y = -1; y < 2; y++) {
+	        if (level.getTile(xt, yt + y) == lavaTile) {
+	            level.setTile(xt, yt + y, rawObsidianTile);
+	        }
+	    }
+	    return false;
 	}
 }

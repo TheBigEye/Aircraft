@@ -115,7 +115,7 @@ public class Display {
 			}
 
 			if (prevSel != selection) {
-				Sound.Menu_select.play();
+				Sound.Menu_select.playOnGui();
 
 				int delta = selection - prevSel;
 				selection = prevSel;

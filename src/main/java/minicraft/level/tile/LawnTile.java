@@ -23,17 +23,18 @@ public class LawnTile extends Tile {
     }
 
     public boolean tick(Level level, int xt, int yt) {
-        // TODO revise this method.
-        if (random.nextInt(30) != 0)
+        if (random.nextInt(30) != 0) {
             return false;
+        }
 
         int xn = xt;
         int yn = yt;
 
-        if (random.nextBoolean())
+        if (random.nextBoolean()) {
             xn += random.nextInt(2) * 2 - 1;
-        else
+        } else {
             yn += random.nextInt(2) * 2 - 1;
+        }
 
         if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
             level.setTile(xn, yn, Tiles.get("Grass"));
@@ -55,26 +56,29 @@ public class LawnTile extends Tile {
     }
 
     public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
-            if (tool.type == ToolType.Shovel) {
-                if (player.payStamina(2 - tool.level) && tool.payDurability()) {
-                    level.setTile(x, y, Tiles.get("Grass"));
-                    Sound.Tile_generic_hurt.play();
+        if (!(item instanceof ToolItem)) {
+            return false;
+        }
 
-                    if (random.nextInt(3) == 1) { // 28% chance to drop Seeds
-                        level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Seeds"));
-                    }
+        ToolItem tool = (ToolItem) item;
+        ToolType toolType = tool.type;
 
-                    return true;
+        if (toolType == ToolType.Shovel) {
+            if (player.payStamina(2 - tool.level) && tool.payDurability()) {
+                level.setTile(x, y, Tiles.get("Grass"));
+                Sound.genericHurt.playOnGui();
+
+                if (random.nextInt(3) == 1) { // 28% chance to drop Seeds
+                    level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Seeds"));
                 }
+
+                return true;
             }
         }
         return false;
     }
 
     public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-
         if (random.nextInt(6) == 1) { // 20% chance to drop sky seeds
             level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Seeds"));
         }

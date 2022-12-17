@@ -56,8 +56,7 @@ public class UpRockTile extends Tile {
 
     @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-
-        // creative mode can just act like survival here
+        // Creative mode can just act like survival here
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Pickaxe && player.payStamina(5 - tool.level) && tool.payDurability()) {
@@ -72,36 +71,37 @@ public class UpRockTile extends Tile {
     }
 
     @Override
-    public void hurt(Level level, int x, int y, int dmg) {
-        dropCoal = false; // Can only be reached when player hits w/o pickaxe, so remove ability to get coal
-        damage = level.getData(x, y) + dmg;
+	public void hurt(Level level, int x, int y, int dmg) {
+    	Player player = level.getClosestPlayer(x, y);
+    	
+		damage = level.getData(x, y) + dmg;
+		if (Game.isMode("Creative")) {
+			dmg = damage = maxHealth;
+			dropCoal = true;
+		}
 
-        if (Game.isMode("Creative")) {
-            dmg = damage = maxHealth;
-            dropCoal = true;
-        }
+		level.add(new SmashParticle(x * 16, y * 16));
+		Sound.genericHurt.playOnWorld(x * 16, y * 16, player.x, player.y);
+		
+		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.DARK_RED));
+		if (damage >= maxHealth) {
 
-        level.add(new SmashParticle(x * 16, y * 16));
-        Sound.Tile_generic_hurt.play();
+			if (dropCoal) {
+				level.dropItem(x * 16 + 8, y * 16 + 8, 1, 3, Items.get("Stone"));
+				int coal = 0;
 
-        level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.DARK_RED));
-        if (damage >= maxHealth) {
-            if (dropCoal) {
-                level.dropItem(x * 16 + 8, y * 16 + 8, 1, 3, Items.get("Stone"));
-                int coal = 0;
-
-                if (!Settings.get("diff").equals("Hard")) {
-                    coal++;
-                }
-                level.dropItem(x * 16 + 8, y * 16 + 8, coal, coal + 1, Items.get("Coal"));
-            } else {
-                level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Stone"));
-            }
-            level.setTile(x, y, Tiles.get("Dirt"));
-        } else {
-            level.setData(x, y, damage);
-        }
-    }
+				if (!Settings.get("diff").equals("Hard")) {
+					coal++;
+				}
+				level.dropItem(x * 16 + 8, y * 16 + 8, coal, coal + 1, Items.get("Coal"));
+			} else {
+				level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Stone"));
+			}
+			level.setTile(x, y, Tiles.get("Dirt"));
+		} else {
+			level.setData(x, y, damage);
+		}
+	}
 
     @Override
     public boolean tick(Level level, int xt, int yt) {

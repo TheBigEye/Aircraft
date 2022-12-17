@@ -22,7 +22,6 @@ public class SplashParticle extends Particle {
     @Override
 	public void tick() {
 		super.tick();
-        
         for (int i = 0; i < 8; i += 1){
             frame += 1;
             if (frame > 3) frame = 0;

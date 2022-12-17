@@ -108,14 +108,12 @@ public class Sprite {
 	}
 
 	public void render(Screen screen, int x, int y, int mirror) {
-
 		for (int row = 0; row < spritePixels.length; row++) {
 			renderRow(row, screen, x, y + row * 8, mirror);
 		}
 	}
 
 	public void render(Screen screen, int x, int y, int mirror, int whiteTint) {
-
 		for (int row = 0; row < spritePixels.length; row++) {
 			renderRow(row, screen, x, y + row * 8, mirror, whiteTint);
 		}
@@ -123,7 +121,6 @@ public class Sprite {
 
 
 	public void render(Screen screen, int x, int y, int mirror, int whiteTint, int color) {
-
 		for (int row = 0; row < spritePixels.length; row++) {
 			renderRow(row, screen, x, y + row * 8, mirror, whiteTint, color);
 		}

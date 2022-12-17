@@ -3,6 +3,7 @@ package minicraft.entity.mob;
 import java.util.Random;
 
 import minicraft.core.io.Settings;
+import minicraft.core.io.Sound;
 import minicraft.entity.particle.HeartParticle;
 import minicraft.gfx.MobSprite;
 import minicraft.item.Items;
@@ -11,6 +12,7 @@ public class Cow extends PassiveMob {
     private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 24);
 
     private Random rnd = new Random();
+    private int tickTime = 0;
 
     /**
      * Creates the cow with the right sprites and color.
@@ -21,6 +23,7 @@ public class Cow extends PassiveMob {
 
     public void tick() {
         super.tick();
+        tickTime++;
 
         Player player = getClosestPlayer();
         if (player != null && player.activeItem != null && player.activeItem.name.equals("Wheat")) {
@@ -53,6 +56,19 @@ public class Cow extends PassiveMob {
         } else {
             randomizeWalkDir(false);
         }
+        
+		// Cow sounds
+		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
+			if (random.nextBoolean()) {
+				if (!random.nextBoolean()) {
+					Sound.cowSay1.playOnWorld(x, y, player.x, player.y);
+				} else {
+					Sound.cowSay2.playOnWorld(x, y, player.x, player.y);
+				}
+			} else {
+				Sound.cowSay3.playOnWorld(x, y, player.x, player.y);
+			}
+		}
     }
 
     public void die() {

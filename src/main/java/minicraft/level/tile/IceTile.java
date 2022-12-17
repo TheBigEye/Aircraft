@@ -43,7 +43,7 @@ public class IceTile extends Tile {
 			if (tool.type == ToolType.Pickaxe) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("Water"));
-					Sound.Tile_generic_hurt.play();
+					Sound.genericHurt.playOnGui();
 					//level.dropItem(xt *16 + 8, yt * 16 + 8, 0, 3, Items.get("Ice"));
 					return true;
 				}

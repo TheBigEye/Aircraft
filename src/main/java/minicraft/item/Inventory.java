@@ -67,8 +67,9 @@ public class Inventory {
      * @param num  Amount of items to add.
      */
     public void add(Item item, int num) {
-        for (int i = 0; i < num; i++)
+        for (int i = 0; i < num; i++) {
             add(item.clone());
+        }
     }
 
     /**
@@ -98,8 +99,9 @@ public class Inventory {
                 }
             }
 
-            if (!added)
+            if (!added) {
                 items.add(slot, toTake);
+            }
         } else {
             items.add(slot, item); // add the item to the items list
         }
@@ -146,10 +148,11 @@ public class Inventory {
      */
     public void removeItem(Item i) {
         // if (Game.debug) System.out.println("original item: " + i);
-        if (i instanceof StackableItem)
+        if (i instanceof StackableItem) {
             removeItems(i.clone(), ((StackableItem) i).count);
-        else
+        } else {
             removeItems(i.clone(), 1);
+        }
     }
 
     /**
@@ -160,23 +163,22 @@ public class Inventory {
      * @param count Max amount of the item to remove.
      */
     public void removeItems(Item given, int count) {
-        if (given instanceof StackableItem)
+        if (given instanceof StackableItem) {
             count -= removeFromStack((StackableItem) given, count);
-        else {
+        } else {
             for (int i = 0; i < items.size(); i++) {
                 Item curItem = items.get(i);
                 if (curItem.equals(given)) {
                     remove(i);
                     count--;
-                    if (count == 0)
+                    if (count == 0) {
                         break;
+                    }
                 }
             }
         }
 
-        if (count > 0)
-            System.out.println(
-                    "WARNING: could not remove " + count + " " + given + (count > 1 ? "s" : "") + " from inventory");
+        if (count > 0) System.out.println("WARNING: could not remove " + count + " " + given + (count > 1 ? "s" : "") + " from inventory");
     }
 
     /** Returns the how many of an item you have in the inventory. */

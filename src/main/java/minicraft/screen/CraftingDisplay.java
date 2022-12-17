@@ -155,7 +155,7 @@ public class CraftingDisplay extends Display {
 
 				selectedRecipe.craft(player);
 
-				Sound.Mob_player_craft.play();
+				Sound.playerCraft.playOnGui();
 
 				refreshData();
 				for (Recipe recipe : recipes) {

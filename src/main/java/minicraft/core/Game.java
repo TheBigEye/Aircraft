@@ -95,7 +95,7 @@ public class Game {
 			Logger.warn("Game tried to exit display, but no menu is open.");
 			return;
 		}
-		Sound.Menu_back.play();
+		Sound.Menu_back.playOnGui();
 		newDisplay = display.getParent();
 	}
 

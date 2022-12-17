@@ -6,24 +6,20 @@ public class MobSprite extends Sprite {
 	 * flipping and such. It's not only the pixels, as much as the whole sprite the
 	 * flips.
 	 */
-
 	public MobSprite(int sx, int sy, int w, int h, int mirror) {
-		/// this assumes the pixels are all neatly laid out on the spreadsheet, and
-		/// should be flipped in position according to their mirroring.
-		super(new Pixel[h][w]);
+		/// this assumes the pixels are all neatly laid out on the spreadsheet, and should be flipped in position according to their mirroring.
+	    super(new Pixel[h][w]);
+	    boolean flipX = (mirror & 0x01) > 0;
+	    boolean flipY = (mirror & 0x02) > 0;
 
-		boolean flipX = (0x01 & mirror) > 0;
-		boolean flipY = (0x02 & mirror) > 0;
-
-		for (int r = 0; r < spritePixels.length; r++) { // loop down through each row
-			for (int c = 0; c < spritePixels[r].length; c++) { // loop across through each column
-				// the offsets are there to determine the pixel that will be there: the one in
-				// order, or on the opposite side.
-				int xOffset = flipX ? spritePixels[r].length - 1 - c : c;
-				int yOffset = flipY ? spritePixels.length - 1 - r : r;
-				spritePixels[r][c] = new Px(sx + xOffset, sy + yOffset, mirror, 2);
-			}
-		}
+	    for (int r = 0; r < spritePixels.length; r++) {  // loop down through each row
+	        for (int c = 0; c < spritePixels[r].length; c++) { // loop across through each column
+				// the offsets are there to determine the pixel that will be there: the one in order, or on the opposite side.
+	            int x = flipX ? w - 1 - c : c; // x offset
+	            int y = flipY ? h - 1 - r : r; // y offset
+	            spritePixels[r][c] = new Px(sx + x, sy + y, mirror, 2);
+	        }
+	    }
 	}
 
 	/**

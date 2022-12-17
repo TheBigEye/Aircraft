@@ -69,7 +69,7 @@ public class World extends Game {
 	}
 
 	public static void resetGame(boolean keepPlayer) {
-		Logger.debug("Resetting...");
+		Logger.debug("Resetting world game info ...");
 		playerDeadTime = 0;
 		currentLevel = 3;
 		Updater.asTick = 0;
@@ -96,7 +96,7 @@ public class World extends Game {
 	 * For the loading screen updates to work, it it assumed that *this* is called by a thread *other* than the one rendering the current *menu*.
 	 **/
 	public static void initWorld() { // This is a full reset; everything.
-		Logger.debug("Resetting world...");
+		Logger.debug("Resetting world game info ...");
 
 		PlayerDeathDisplay.shouldRespawn = false;
 		resetGame();
@@ -150,9 +150,7 @@ public class World extends Game {
 		}
 
 		Renderer.readyToRenderGameplay = true;
-
 		PlayerDeathDisplay.shouldRespawn = true;
-
 		Logger.trace("World initialized.");
 	}
 

@@ -43,6 +43,8 @@ public class RockTile extends Tile {
 
 	@Override
 	public void hurt(Level level, int x, int y, int dmg) {
+		Player player = level.getClosestPlayer(x, y);
+		
 		damage = level.getData(x, y) + dmg;
 		if (Game.isMode("Creative")) {
 			dmg = damage = maxHealth;
@@ -50,7 +52,7 @@ public class RockTile extends Tile {
 		}
 
 		level.add(new SmashParticle(x * 16, y * 16));
-		Sound.Tile_generic_hurt.play();
+		Sound.genericHurt.playOnWorld(x * 16, y * 16, player.x, player.y);
 
 		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
 		if (damage >= maxHealth) {
@@ -81,12 +83,10 @@ public class RockTile extends Tile {
 
 	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-
-		// creative mode can just act like survival here
+		// Creative mode can just act like survival here
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Pickaxe && player.payStamina(4 - tool.level) && tool.payDurability()) {
-
 				AchievementsDisplay.setAchievement("minicraft.achievement.mine_stone", true);
 
 				// Drop coal since we use a pickaxe.

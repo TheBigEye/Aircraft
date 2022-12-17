@@ -109,7 +109,7 @@ public class CloudTreeTile extends Tile {
             dmg = damage = treeHealth;
 
         level.add(new SmashParticle(x * 16, y * 16));
-        Sound.Tile_generic_hurt.play();
+        Sound.genericHurt.playOnGui();
 
         level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
         if (damage >= treeHealth) {

@@ -85,7 +85,7 @@ public class FerrositeTile extends Tile {
                     level.setTile(xt, yt, Tiles.get("Hole"));
                 }
 
-                Sound.Tile_generic_hurt.play();
+                Sound.genericHurt.playOnGui();
                 level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 3, Items.get("Ferrosite"));
                 return true;
             }

@@ -3,7 +3,8 @@ package minicraft.level.tile;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import minicraft.core.Game;
+import org.tinylog.Logger;
+
 import minicraft.level.tile.WoolTile.WoolType;
 import minicraft.level.tile.farming.CarrotTile;
 import minicraft.level.tile.farming.FarmTile;
@@ -22,9 +23,7 @@ public final class Tiles {
 	private static final HashMap<Short, Tile> tiles = new HashMap<>();
 
 	public static void initTileList() {
-		if (Game.debug) {
-			System.out.println("Initializing tile list...");
-		}
+		Logger.debug("Initializing tile list ...");
 
 		tiles.put((short) 0, new GrassTile("Grass"));
 		tiles.put((short) 1, new DirtTile("Dirt"));

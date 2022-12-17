@@ -15,8 +15,12 @@ import minicraft.item.Item;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
+import minicraft.level.tile.DoorTile;
+import minicraft.level.tile.MyceliumTile;
+import minicraft.level.tile.ObsidianTile;
 import minicraft.level.tile.Tile;
-import minicraft.level.tile.Tiles;
+import minicraft.level.tile.farming.FarmTile;
+import minicraft.level.tile.farming.WheatTile;
 
 public class EnemyMob extends MobAi {
 
@@ -200,7 +204,7 @@ public class EnemyMob extends MobAi {
      * @param y     Y map spawn coordinate.
      * @return true if the mob can spawn here, false if not.
      */
-    public static boolean checkStartPos(Level level, int x, int y) { // Find a place to spawn the mob
+    public static boolean checkStartPos(Level level, int x, int y) {
         int r = (level.depth == -4 ? (Game.isMode("score") ? 22 : 15) : 13);
 
         if (!MobAi.checkStartPos(level, x, y, 60, r)) {
@@ -211,15 +215,13 @@ public class EnemyMob extends MobAi {
         y = y >> 4;
 
         Tile t = level.getTile(x, y);
-        if (level.depth == -4) {
-            if (t != Tiles.get("Obsidian")) return false;
-        } else if (t != Tiles.get("Stone Door") && t != Tiles.get("Oak Door") && t != Tiles.get("Spruce Door") && t != Tiles.get("Birch Door") && t != Tiles.get("Obsidian Door") && t != Tiles.get("Wheat") && t != Tiles.get("Farmland")) {
+        if (t instanceof ObsidianTile) {
+            return true;
+        } else if (level.depth != -4 && !(t instanceof DoorTile ||t instanceof WheatTile || t instanceof FarmTile || t instanceof MyceliumTile)) {
             return !level.isLight(x, y);
         } else {
             return false;
         }
-
-        return true; // prevents mobs from spawning on lit tiles, farms, or doors (unless in the dungeons)
     }
 
     @Override

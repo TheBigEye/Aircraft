@@ -434,46 +434,46 @@ public class Level {
 
 				// Surface
 				if (random.nextInt(3) == 0 && depth == 0) { // Surface only
-					Sound.Theme_Surface.play();
+					Sound.Theme_Surface.playOnGui();
 
 				} else if (random.nextInt(3) == 1 && depth == 0 || depth == -1) { // Surface and underground
-					Sound.Theme_Cave.play();
+					Sound.Theme_Cave.playOnGui();
 
 				} else if (random.nextInt(3) == 2 && depth == 0) { // Surface only
-					Sound.Theme_Peaceful.play();
+					Sound.Theme_Peaceful.playOnGui();
 
 				} else if (random.nextInt(3) == 3 && depth == 0) { // Surface only
-					Sound.Theme_Peaceful.play();
+					Sound.Theme_Peaceful.playOnGui();
 
 				}
 
 				// Cave
 				if (random.nextInt(5) == 0 && depth == -1) { // Cave
-					Sound.Ambience1.play();
+					Sound.Ambience1.playOnGui();
 
 				} else if (random.nextInt(5) == 1 && depth == -1) { // Cave
-					Sound.Ambience2.play();
+					Sound.Ambience2.playOnGui();
 
 				} else if (random.nextInt(5) == 2 && depth == -1 || depth == -2) { // Cave and cavern
-					Sound.Ambience3.play();
+					Sound.Ambience3.playOnGui();
 
 				} else if (random.nextInt(5) == 3 && depth == -1 || depth == -2) { // Cave and cavern
-					Sound.Ambience4.play();
+					Sound.Ambience4.playOnGui();
 
 				} else if (random.nextInt(5) == 4 && depth == -2) { // Cavern
-					Sound.Theme_Cavern.play();
+					Sound.Theme_Cavern.playOnGui();
 
 				} else if (random.nextInt(5) == 5 && depth == -2) { // Cavern
-					Sound.Theme_Cavern_drip.play();
+					Sound.Theme_Cavern_drip.playOnGui();
 
 				}
 
 				// Sky
 				if (random.nextInt(1) == 0 && depth == 1) { // Sky
-					Sound.Theme_Surface.play();
+					Sound.Theme_Surface.playOnGui();
 
 				} else if (random.nextInt(1) == 1 && depth == 1) { // Sky
-					Sound.Theme_Fall.play();
+					Sound.Theme_Fall.playOnGui();
 
 				}
 
@@ -490,19 +490,19 @@ public class Level {
 			if (random.nextInt(128000) == 1) {
 
 				if (random.nextInt(8) == 0) {
-					Sound.Ambience1.play();
+					Sound.Ambience1.playOnGui();
 				}
 				if (random.nextInt(8) == 2) {
-					Sound.Ambience2.play();
+					Sound.Ambience2.playOnGui();
 				}
 				if (random.nextInt(8) == 4) {
-					Sound.Ambience3.play();
+					Sound.Ambience3.playOnGui();
 				}
 				if (random.nextInt(8) == 6) {
-					Sound.Ambience4.play();
+					Sound.Ambience4.playOnGui();
 				}
 				if (random.nextInt(8) == 8) {
-					Sound.Ambience5.play();
+					Sound.Ambience5.playOnGui();
 				}
 			}
 		}
@@ -955,29 +955,34 @@ public class Level {
 	 * @return A list of entities in the area.
 	 */
 	@SafeVarargs
-	public final List <Entity> getEntitiesInTiles(int xt0, int yt0, int xt1, int yt1, boolean includeGiven, Class < ? extends Entity > ...entityClasses) {
-		List <Entity> contained = new ArrayList <> ();
-		for (Entity e: getEntityArray()) {
-			int xt = e.x >> 4;
-				int yt = e.y >> 4;
-				if (xt >= xt0 && xt <= xt1 && yt >= yt0 && yt <= yt1) {
-					boolean matches = false;
+	public final List<Entity> getEntitiesInTiles(int xt0, int yt0, int xt1, int yt1, boolean includeGiven, Class<? extends Entity>... entityClasses) {
+	    List<Entity> contained = new ArrayList<>();
 
-					// Look through all entity classes to see if they match the current entity we are at.
-					for (int i = 0; !matches && i < entityClasses.length; i++) {
-						// If the current entity and an entity class match.
-						matches = entityClasses[i].isAssignableFrom(e.getClass());
-					}
+	    // Iterate through all entities in the game world
+	    for (Entity entity : getEntityArray()) {
+	        // Calculate the tile coordinates of the current entity
+	        int xt = entity.x >> 4;
+	        int yt = entity.y >> 4;
 
-					// Add if the current entity matches an entity class and includeGiven is true.
-					// If includeGiven is false, add if it doesn't match.
-					if (matches == includeGiven) {
-						contained.add(e);
-					}
-				}
-		}
+	        // Check if the entity is within the specified rectangular area
+	        if (xt >= xt0 && xt <= xt1 && yt >= yt0 && yt <= yt1) {
+	            // Check if the entity matches any of the given entity classes
+	            boolean matches = false;
+	            for (Class<? extends Entity> entityClass : entityClasses) {
+	                if (entityClass.isAssignableFrom(entity.getClass())) {
+	                    matches = true;
+	                    break;
+	                }
+	            }
 
-		return contained;
+	            // Add the entity to the list if it matches the criteria
+	            if (matches == includeGiven) {
+	                contained.add(entity);
+	            }
+	        }
+	    }
+
+	    return contained;
 	}
 
 

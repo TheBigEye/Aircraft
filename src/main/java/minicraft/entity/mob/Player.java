@@ -132,17 +132,17 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	private int hungerStamCnt, stamHungerTicks; // Tiers of hunger penalties before losing a burger.
 	private static final int maxHungerTicks = 400; // The cutoff value for stamHungerTicks
 
-	private static final int[] maxHungerStams = { 16, 10, 7, 5 }; // hungerStamCnt required to lose a burger.
-	private static final int[] hungerTickCount = { 160, 120, 30, 10 }; // Ticks before decrementing stamHungerTicks.
-	private static final int[] hungerStepCount = { 32, 8, 3, 1 }; // Steps before decrementing stamHungerTicks.
-	private static final int[] minStarveHealth = { 7, 5, 3, 0 }; // min hearts required for hunger to hurt you.
+	private static final int[] maxHungerStams =  { 16,  14,  12,  8  }; // hungerStamCnt required to lose a burger.
+	private static final int[] hungerTickCount = { 160, 140, 120, 80 }; // Ticks before decrementing stamHungerTicks.
+	private static final int[] hungerStepCount = { 32,  28,  24,  16  }; // Steps before decrementing stamHungerTicks.
+	private static final int[] minStarveHealth = { 8,   7,   5,   3  }; // min hearts required for hunger to hurt you.
 
 	private int stepCount; // Used to penalize hunger for movement.
 	private int hungerChargeDelay; // The delay between each time the hunger bar increases your health
 	private int hungerStarveDelay; // The delay between each time the hunger bar decreases your health
 
-	public HashMap<PotionType, Integer> potioneffects; // The potion effects currently applied to the player
-	public boolean showpotioneffects; // Whether to display the current potion effects on screen
+	public HashMap<PotionType, Integer> potionEffects; // The potion effects currently applied to the player
+	public boolean showPotionEffects; // Whether to display the current potion effects on screen
 	private int cooldowninfo; // Prevents you from toggling the info pane on and off super fast.
 	private int regentick; // Counts time between each time the regen potion effect heals you.
 	private int healtick; // Used for the heal potion healing animation
@@ -176,6 +176,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     public int nightTick = 0;
     
     private int nightTickCount = 0; // Used to get the Currrent time value
+	@SuppressWarnings("unused")
 	private int nightTime = 0; // Delay
 
 
@@ -186,8 +187,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 	public Player(@Nullable Player previousInstance, InputHandler input) {
 		super(sprites, Player.maxHealth);
-		x = 24;
-		y = 24;
+		x = 24; y = 24;
 
 		this.input = input;
 		inventory = new Inventory() {
@@ -220,8 +220,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		// if(previousInstance == null)
 		// inventory.add(Items.arrowItem, acs);
 
-		potioneffects = new HashMap<>();
-		showpotioneffects = true;
+		potionEffects = new HashMap<>();
+		showPotionEffects = true;
 
 		cooldowninfo = 0;
 		regentick = 0;
@@ -291,7 +291,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	 * @param duration How long the effect lasts.
 	 */
 	public void addPotionEffect(PotionType type, int duration) {
-		potioneffects.put(type, duration);
+		potionEffects.put(type, duration);
 	}
 
 	/**
@@ -309,7 +309,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	 * @return all potion effects on the player.
 	 */
 	public HashMap<PotionType, Integer> getPotionEffects() {
-		return potioneffects;
+		return potionEffects;
 	}
 	
 	private void tileTickEvents() {
@@ -336,7 +336,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				moveSpeed = 2;
 			} else { // If stepping other tile...
 				// If have a speed potion effect, restore the move speed
-				if (potioneffects.containsKey(PotionType.Speed) || potioneffects.containsKey(PotionType.xSpeed)) {
+				if (potionEffects.containsKey(PotionType.Speed) || potionEffects.containsKey(PotionType.xSpeed)) {
 					moveSpeed = 2;
 				} else {
 					moveSpeed = 1;
@@ -414,7 +414,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                     level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
                 }
                 
-                if (!potioneffects.containsKey(PotionType.Lava) || !potioneffects.containsKey(PotionType.xLava)) {
+                if (!potionEffects.containsKey(PotionType.Lava) || !potionEffects.containsKey(PotionType.xLava)) {
                     this.hurt(this, 1);
                 }
 				burnTime++;
@@ -437,12 +437,12 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 		tickMultiplier();
 
-		if (!potioneffects.isEmpty() && !Bed.inBed(this)) {
-			for (PotionType potionType : potioneffects.keySet().toArray(new PotionType[0])) {
-				if (potioneffects.get(potionType) <= 1) { // if time is zero (going to be set to 0 in a moment)...
+		if (!potionEffects.isEmpty() && !Bed.inBed(this)) {
+			for (PotionType potionType : potionEffects.keySet().toArray(new PotionType[0])) {
+				if (potionEffects.get(potionType) <= 1) { // if time is zero (going to be set to 0 in a moment)...
 					PotionItem.applyPotion(this, potionType, false); // Automatically removes this potion effect.
 				} else {
-					potioneffects.put(potionType, potioneffects.get(potionType) - 1); // Otherwise, replace it with one less.
+					potionEffects.put(potionType, potionEffects.get(potionType) - 1); // Otherwise, replace it with one less.
 				}
 			}
 		}
@@ -467,7 +467,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 		if (input.getKey("potionEffects").clicked && cooldowninfo == 0) {
 			cooldowninfo = 10;
-			showpotioneffects = !showpotioneffects;
+			showPotionEffects = !showPotionEffects;
 		}
 
 		Tile onTile = level.getTile(x >> 4, y >> 4); // Gets the current tile the player is on.
@@ -476,7 +476,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				World.scheduleLevelChange((onTile == Tiles.get("Stairs Up")) ? 1 : -1); // Decide whether to go up or down.
 				onStairDelay = 10; // Resets delay, since the level has now been changed.
 
-				Sound.Mob_player_changelevel.play();
+				Sound.playerChangeLevel.playOnGui();
 
 				return; // SKIPS the rest of the tick() method.
 			}
@@ -528,7 +528,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         if (staminaRechargeDelay == 0) {
             staminaRecharge++; // Ticks since last recharge, accounting for the time potion effect.
 
-            if (isSwimming() && !potioneffects.containsKey(PotionType.Swim)) {
+            if (isSwimming() && !potionEffects.containsKey(PotionType.Swim)) {
                 staminaRecharge = 0; // Don't recharge stamina while swimming.
             }
 
@@ -610,7 +610,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         }
 
         // Regen health
-        if (potioneffects.containsKey(PotionType.Regen)) {
+        if (potionEffects.containsKey(PotionType.Regen)) {
         	regentick++;
         	if (regentick > 60) {
         		regentick = 0;
@@ -620,7 +620,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         	}
         }
 
-        if (potioneffects.containsKey(PotionType.Health)) {
+        if (potionEffects.containsKey(PotionType.Health)) {
         	healtick++;
         	if (healtick > 4) {
         		healtick = 0;
@@ -651,7 +651,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
         	// Executes if not saving; and... essentially halves speed if out of stamina.
         	if ((vec.x != 0 || vec.y != 0) && (staminaRechargeDelay % 2 == 0 || isSwimming()) && !Updater.saving) {
-        		double spd = moveSpeed * (potioneffects.containsKey(PotionType.Speed) || potioneffects.containsKey(PotionType.xSpeed) ? 1.5D : 1);
+        		double spd = moveSpeed * (potionEffects.containsKey(PotionType.Speed) || potionEffects.containsKey(PotionType.xSpeed) ? 1.5D : 1);
 
         		int xd = (int) (vec.x * spd);
         		int yd = (int) (vec.y * spd);
@@ -666,7 +666,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         		if (moved) stepCount++;
         	}
 
-        	if (isSwimming() && tickTime % 60 == 0 && !potioneffects.containsKey(PotionType.Swim)) { // if drowning... :P
+        	if (isSwimming() && tickTime % 60 == 0 && !potionEffects.containsKey(PotionType.Swim)) { // if drowning... :P
         		if (stamina > 0) {
         			stamina--; // Take away stamina
         		} else {
@@ -690,7 +690,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
             // this only allows attacks or pickups when such action is possible.
             if ((activeItem == null || !activeItem.used_pending) && (input.getKey("attack").clicked || input.getKey("pickup").clicked) && stamina != 0 && onFallDelay <= 0) { 
-                if (!potioneffects.containsKey(PotionType.Energy)) {
+                if (!potionEffects.containsKey(PotionType.Energy)) {
                     stamina--;
                 }
 
@@ -742,7 +742,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
                 // Debug feature:
                 if (Game.debug && input.getKey("shift-p").clicked) { // Remove all potion effects
-                    for (PotionType potionType : potioneffects.keySet()) {
+                    for (PotionType potionType : potionEffects.keySet()) {
                         PotionItem.applyPotion(this, potionType, false);
                     }
                 }
@@ -1230,16 +1230,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     /** What happens when the player interacts with a itemEntity */
     public void pickupItem(ItemEntity itemEntity) {
 
-    	// Random pickup sound
-    	switch (random.nextInt(4)) {
-	    	case 0: Sound.Mob_player_pickup.play(); break;
-	    	case 1: Sound.Mob_player_pickup.play(); break;
-	    	case 2: Sound.Mob_player_pickup_2.play(); break;
-	    	case 3: Sound.Mob_player_pickup_3.play(); break;
-	    	case 4: Sound.Mob_player_pickup_4.play(); break;
-	    	default: Sound.Mob_player_pickup_4.play(); break;
-    	}
-
+    	Sound.playerPickup.playOnWorld(itemEntity.x, itemEntity.y, this.x, this.y);
     	itemEntity.remove();
     	addScore(1);
 
@@ -1339,7 +1330,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
      */
     public boolean payStamina(int cost) {
     	// If the player has the potion effect for infinite stamina, return true (without subtracting cost).
-    	if (potioneffects.containsKey(PotionType.Energy) || potioneffects.containsKey(PotionType.xEnergy)) {
+    	if (potionEffects.containsKey(PotionType.Energy) || potionEffects.containsKey(PotionType.xEnergy)) {
     		return true; 
     	}
     	// If the player doesn't have enough stamina, then return false; failure.
@@ -1392,7 +1383,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     	if (activeItem != null) dc.getInventory().add(activeItem);
     	if (curArmor != null) dc.getInventory().add(curArmor);
 
-    	Sound.Mob_player_death.play();
+    	Sound.playerDeath.playOnGui();
         
         // Add the death chest to the world.
     	World.levels[Game.currentLevel].add(dc);
@@ -1450,7 +1441,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     		if (this == Game.player) super.doHurt(healthDam, attackDir); // Sets knockback, and takes away health.
     	}
 
-    	Sound.Mob_player_hurt.play();
+    	Sound.playerHurt.playOnGui();
     	hurtTime = playerHurtTime;
     }
 
@@ -1474,7 +1465,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     		if (this == Game.player) super.doHurt(healthDam, attackDir); // Sets knockback, and takes away health.
     	}
 
-    	Sound.Mob_player_hurt.play();
+    	Sound.playerHurt.playOnGui();
     	hurtTime = playerHurtTime;
     }
 

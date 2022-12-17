@@ -5,6 +5,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.util.HashMap;
 
+import org.tinylog.Logger;
+
 import minicraft.core.Game;
 import minicraft.screen.entry.ArrayEntry;
 import minicraft.screen.entry.BooleanEntry;
@@ -68,11 +70,10 @@ public class Settings {
         options.put("particles", new BooleanEntry("Particles", true));
         options.put("shadows", new BooleanEntry("Shadows", true));
         
-        
-  
 	}
 
 	public static void init() {
+		Logger.debug("Initializing game settings ...");
 	}
 
 	// Returns the value of the specified option
@@ -102,21 +103,26 @@ public class Settings {
 	}
 
 	public static int getRefreshRate() {
-		if (GraphicsEnvironment.isHeadless()){
-			return 60;
-        }
+		  // If the graphics environment is headless, we cannot determine the refresh rate, so return 60
+		  if (GraphicsEnvironment.isHeadless()){
+		    return 60;
+		  }
 
-		int hz;
-		try {
-			hz = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate();
-		} catch (HeadlessException e) {
-			return 60;
-		}
+		  int hz;
+		  try {
+		    // Get the refresh rate of the default screen device
+		    hz = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate();
+		  } catch (HeadlessException e) {
+		    // If there is an error getting the refresh rate, return 60
+		    return 60;
+		  }
 
-		if (hz == DisplayMode.REFRESH_RATE_UNKNOWN) return 60;
-		if (hz > 300) return 60;
-		if (10 > hz) return 60;
-		
-		return hz;
+		  // If the refresh rate is unknown, return 60
+		  if (hz == DisplayMode.REFRESH_RATE_UNKNOWN) return 60;
+		  // If the refresh rate is greater than 300 or less than 10, return 60
+		  if (hz > 300 || hz < 10) return 60;
+		  
+		  // Otherwise, return the refresh rate
+		  return hz;
 	}
 }

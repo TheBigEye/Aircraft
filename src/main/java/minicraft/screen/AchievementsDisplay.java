@@ -178,7 +178,7 @@ public class AchievementsDisplay extends Display {
 	@Override
 	public void onExit() {
 		// Play confirm sound.
-		Sound.Menu_confirm.play();
+		Sound.Menu_confirm.playOnGui();
 		new Save();
 	}
 

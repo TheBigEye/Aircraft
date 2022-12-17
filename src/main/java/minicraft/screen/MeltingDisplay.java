@@ -113,7 +113,7 @@ public class MeltingDisplay extends Display {
             if (r.getCanCraft()) {
                 r.craft(player);
 
-                Sound.Mob_player_craft.play();
+                Sound.playerCraft.playOnGui();
 
                 refreshData();
                 for (Recipe recipe : recipes)

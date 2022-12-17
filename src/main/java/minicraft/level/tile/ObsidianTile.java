@@ -43,34 +43,41 @@ public class ObsidianTile extends Tile {
         sprite.render(screen, level, x, y);
     }
 
+    @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
-            if (tool.type == ToolType.Shovel) {
-                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    Sound.Tile_generic_hurt.play();
-                    return true;
-                } else {
-                	Sound.Tile_generic_hurt.play();
-                }
+        if (!(item instanceof ToolItem)) {
+            return false;
+        }
+
+        ToolItem tool = (ToolItem) item;
+        ToolType toolType = tool.type;
+    	
+        if (toolType == ToolType.Shovel) {
+            if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                Sound.genericHurt.playOnGui();
+                return true;
+            } else {
+            	Sound.genericHurt.playOnGui();
             }
-            if (tool.type == ToolType.Hoe) {
-                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    Sound.Tile_generic_hurt.play();
-                    return true;
-                } else {
-                	Sound.Tile_generic_hurt.play();
-                }
+        }
+        
+        if (toolType == ToolType.Hoe) {
+            if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                Sound.genericHurt.playOnGui();
+                return true;
+            } else {
+            	Sound.genericHurt.playOnGui();
             }
-            if (tool.type == ToolType.Pickaxe && tool.level != 4) {
-                Sound.Tile_generic_hurt.play();
-            }
-            else {
-                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    level.setTile(xt, yt, Tiles.get("Hole"));
-                    level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 3, Items.get("Obsidian"));
-                    Sound.Tile_generic_hurt.play();
-                }
+        }
+        
+        if (toolType == ToolType.Pickaxe && tool.level != 4) {
+            Sound.genericHurt.playOnGui();
+        } else {
+            if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                level.setTile(xt, yt, Tiles.get("Hole"));
+                level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 3, Items.get("Obsidian"));
+                Sound.genericHurt.playOnGui();
+                return true;
             }
         }
         return false;

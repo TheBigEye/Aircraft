@@ -118,7 +118,7 @@ public class TileItem extends StackableItem {
 			if (tile.matches(level.getData(xt, yt), tilename)) {
 				level.setTile(xt, yt, model); // TODO maybe data should be part of the saved tile..?
 
-				Sound.Mob_player_place.play();
+				Sound.playerPlace.playOnGui();
 
 				return super.interactOn(true);
 			}

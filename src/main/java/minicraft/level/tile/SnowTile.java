@@ -47,17 +47,22 @@ public class SnowTile extends Tile {
 
     @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
-            if (tool.type == ToolType.Shovel) {
-                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                    level.setTile(xt, yt, Tiles.get("Dirt"));
-                    Sound.Tile_snow_3.play();
-                    level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 2, Items.get("Snow Ball"));
-                    return true;
-                }
+        if (!(item instanceof ToolItem)) {
+            return false;
+        }
+
+        ToolItem tool = (ToolItem) item;
+        ToolType toolType = tool.type;
+
+        if (toolType == ToolType.Shovel) {
+            if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                level.setTile(xt, yt, Tiles.get("Dirt"));
+                Sound.Tile_snow_3.playOnGui();
+                level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 2, Items.get("Snow Ball"));
+                return true;
             }
         }
+
         return false;
     }
 
@@ -84,15 +89,15 @@ public class SnowTile extends Tile {
         if (entity instanceof Player) {
             level.setData(x, y, 10);
             
-            if (random.nextInt(16) == 0) {
+            if (random.nextInt(2) == 1) {
             	// Random snow walking sound
             	switch (random.nextInt(4)) {
-            		case 0: Sound.Tile_snow.play(); break;
-            		case 1: Sound.Tile_snow.play(); break;
-            		case 2: Sound.Tile_snow_2.play(); break;
-            		case 3: Sound.Tile_snow_3.play(); break;
-            		case 4: Sound.Tile_snow_4.play(); break;
-            		default: Sound.Tile_snow_4.play(); break;
+            		case 0: Sound.Tile_snow.playOnGui(); break;
+            		case 1: Sound.Tile_snow.playOnGui(); break;
+            		case 2: Sound.Tile_snow_2.playOnGui(); break;
+            		case 3: Sound.Tile_snow_3.playOnGui(); break;
+            		case 4: Sound.Tile_snow_4.playOnGui(); break;
+            		default: Sound.Tile_snow_4.playOnGui(); break;
             	}    
             }
         }

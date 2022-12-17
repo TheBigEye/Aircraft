@@ -38,7 +38,7 @@ public class CarrotTile extends Plant {
 		}
 
 		// Play sound.
-		Sound.Tile_generic_hurt.play();
+		Sound.genericHurt.playOnGui();
 
 		level.setTile(x, y, Tiles.get("Dirt"));
 	}
@@ -68,7 +68,7 @@ public class CarrotTile extends Plant {
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					level.setTile(xt, yt, Tiles.get("Dirt"));
-					Sound.Tile_generic_hurt.play();
+					Sound.genericHurt.playOnGui();
 					return true;
 				}
 			}

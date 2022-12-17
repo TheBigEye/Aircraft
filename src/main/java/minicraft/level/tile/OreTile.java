@@ -65,13 +65,13 @@ public class OreTile extends Tile {
 
 	public void hurt(Level level, int x, int y, int dmg) {
 		int damage = level.getData(x, y) + 1;
-		int oreHealth = random.nextInt(10) * 4 + 20;
+		int oreHealth = random.nextInt(4) * 4 + 20;
 		if (Game.isMode("Creative")) {
 			dmg = damage = oreHealth;
 		}
 
 		level.add(new SmashParticle(x * 16, y * 16));
-		Sound.Tile_generic_hurt.play();
+		Sound.genericHurt.playOnGui();
 
 		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
 		if (dmg > 0) {

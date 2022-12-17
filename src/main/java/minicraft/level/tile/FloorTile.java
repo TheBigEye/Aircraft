@@ -65,7 +65,7 @@ public class FloorTile extends Tile {
 						default: drop = Items.get(type.name() + " Brick"); break;
 					}
 
-					Sound.Tile_generic_hurt.play();
+					Sound.genericHurt.playOnGui();
 					level.dropItem(xt * 16 + 8, yt * 16 + 8, drop);
 					return true;
 				}

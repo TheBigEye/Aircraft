@@ -301,12 +301,12 @@ public class Save {
 
 		StringBuilder subdata = new StringBuilder("PotionEffects[");
 
-		for (java.util.Map.Entry<PotionType, Integer> potion : player.potioneffects.entrySet()) {
+		for (java.util.Map.Entry<PotionType, Integer> potion : player.potionEffects.entrySet()) {
 			subdata.append(potion.getKey()).append(";").append(potion.getValue()).append(":");
 		}
 
 		// Cuts off extra ":" and appends "]"
-		if (player.potioneffects.size() > 0) {
+		if (player.potionEffects.size() > 0) {
 			subdata = new StringBuilder(subdata.substring(0, subdata.length() - (1)) + "]");
 		} else {
 			subdata.append("]");

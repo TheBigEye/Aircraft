@@ -24,17 +24,16 @@ public class FlowerTile extends Tile {
 
 	@Override
 	public boolean tick(Level level, int xt, int yt) {
-
-		if (random.nextInt(30) != 0)
+		if (random.nextInt(30) != 0) {
 			return false;
+		}
 
 		int xn = xt;
 		int yn = yt;
 
 		if (random.nextBoolean()) {
 			xn += random.nextInt(2) * 2 - 1;
-		}
-		else {
+		} else {
 			yn += random.nextInt(2) * 2 - 1;
 		}
 
@@ -60,16 +59,21 @@ public class FlowerTile extends Tile {
 
 	@Override
 	public boolean interact(Level level, int x, int y, Player player, Item item, Direction attackDir) {
-		if (item instanceof ToolItem) {
-			ToolItem tool = (ToolItem) item;
-			if (tool.type == ToolType.Shovel) {
-				if (player.payStamina(2 - tool.level) && tool.payDurability()) {
-					level.setTile(x, y, Tiles.get("Grass"));
-					Sound.Tile_generic_hurt.play();
-					level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Flower"));
-					level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Rose"));
-					return true;
-				}
+	    if (!(item instanceof ToolItem)) {
+	        return false;
+	    }
+
+	    // This avoids repeating tools checks
+	    ToolItem tool = (ToolItem) item;
+	    ToolType toolType = tool.type;
+	    
+		if (toolType == ToolType.Shovel) {
+			if (player.payStamina(2 - tool.level) && tool.payDurability()) {
+				level.setTile(x, y, Tiles.get("Grass"));
+				Sound.genericHurt.playOnGui();
+				level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Flower"));
+				level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Rose"));
+				return true;
 			}
 		}
 		return false;

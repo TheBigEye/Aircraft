@@ -150,7 +150,7 @@ public class WorldEditDisplay extends Display {
 				}
 
 				confirm = false;
-				Sound.Menu_select.play();
+				Sound.Menu_select.playOnGui();
 				if (!WorldSelectDisplay.getWorldNames().isEmpty()) {
 					Game.setDisplay(new WorldSelectDisplay());
 				} else {

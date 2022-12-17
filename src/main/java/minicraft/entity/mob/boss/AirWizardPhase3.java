@@ -206,7 +206,7 @@ public class AirWizardPhase3 extends EnemyMob {
                 p.addScore((secondform ? 500000 : 100000)); // Give the player 100K or 500K points.
         }
 
-        Sound.Mob_wizard_death.play(); // Play the boss-death sound when dies.
+        Sound.airWizardDeath.playOnGui(); // Play the boss-death sound when dies.
         level.dropItem(x, y, Items.get("AlAzif"));
 
         if (!secondform) {

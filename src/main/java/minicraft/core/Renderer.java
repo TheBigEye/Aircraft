@@ -219,20 +219,22 @@ public class Renderer extends Game {
 			lightScreen.clear(0); 
 
 			// Brightens all
-			int brightnessMultiplier = player.potioneffects.containsKey(PotionType.Light) ? 12 : 8; 
+			int brightnessMultiplier = player.potionEffects.containsKey(PotionType.Light) ? 12 : 8; 
 
 			// Light sources by a factor of 1.5 when the player has the Light potion effect. (8 above is normal)
 			level.renderLight(lightScreen, xScroll, yScroll, brightnessMultiplier); // Finds (and renders) all the light from objects (like the player, lanterns, and lava).
 			screen.overlay(lightScreen, currentLevel, xScroll, yScroll); // Overlays the light screen over the main screen.
 		}
-
-		if (player != null && player.isNiceNight == false && currentLevel == 3 && !Game.isMode("Creative") || player != null && player.isNiceNight == false && currentLevel == 4 && !Game.isMode("Creative")) {
-			lightScreen.clear(0); 
-
-			// Brightens all
-			int brightnessMultiplier = player.potioneffects.containsKey(PotionType.Light) ? 12 : 8; 
-			level.renderLight(lightScreen, xScroll, yScroll, brightnessMultiplier); // Finds (and renders) all the light from objects (like the player, lanterns, and lava).
-			screen.darkness(lightScreen, currentLevel, xScroll, yScroll);
+		
+		if (player != null && !Game.isMode("Creative")) {
+			if (!player.isNiceNight && currentLevel == 3 || !player.isNiceNight && currentLevel == 4) {
+				lightScreen.clear(0); 
+	
+				// Brightens all
+				int brightnessMultiplier = player.potionEffects.containsKey(PotionType.Light) ? 12 : 8; 
+				level.renderLight(lightScreen, xScroll, yScroll, brightnessMultiplier); // Finds (and renders) all the light from objects (like the player, lanterns, and lava).
+				screen.darkness(lightScreen, currentLevel, xScroll, yScroll);
+			}
 		}
 	}
 
@@ -244,6 +246,8 @@ public class Renderer extends Game {
 	private static void renderGui() {
 		
 		Random rnd = new Random();
+		
+		renderRain();
 
 		// ARROWS COUNT STATUS
 		if (player.activeItem instanceof ToolItem) {
@@ -397,8 +401,8 @@ public class Renderer extends Game {
 		}
 
 		/// This renders the potions overlay
-		if (player.showpotioneffects && !player.potioneffects.isEmpty()) {
-			Map.Entry <PotionType, Integer> [] effects = player.potioneffects.entrySet().toArray(new Map.Entry[0]);
+		if (player.showPotionEffects && !player.potionEffects.isEmpty()) {
+			Map.Entry <PotionType, Integer> [] effects = player.potionEffects.entrySet().toArray(new Map.Entry[0]);
 				
 			String title = "(" + input.getMapping("potionEffects") + " to hide)";
 			
@@ -544,7 +548,7 @@ public class Renderer extends Game {
 			}
 		}
 
-		renderRain();
+
 
         // AirWizard bossbar
 		if (/*currentLevel == 4 &&*/ isMode("survival") && !player.isRemoved()){
@@ -559,37 +563,25 @@ public class Renderer extends Game {
 	}
 	
 	public static void renderRain() {
-		// THIS IS THE PROGRAMMER-HELL (ok no, this render the rain)
+		// Check if it is raining and the current level is 3
 		if (currentLevel == 3 && player.isRaining == true) {
-			if (renderRain) {
-				for (int x = 0; x < 200; x++) { // Loop however many times depending on the width (It's divided by 3 because the pixels are scaled up by 3)
-					for (int y = 0; y < 75; y++) { // Loop however many times depending on the height (It's divided by 3 because the pixels are scaled up by 3)
-						int dd = (y + x % 2 * 2 + x / 3) - player.rainTick * 2; // Used as part of the positioning.
-						if (dd < 0 && dd > -140) {
-							Random rnd = new Random();
-							screen.render(x * 16 - rnd.nextInt(8), y * 16 - rnd.nextInt(8), 14 + 24 * 32, 0, 3); // If the direction is upwards then render the squares going up
-						} else {
-							Random rnd = new Random();
-							screen.render(x * 16 - rnd.nextInt(12), y * 16 - rnd.nextInt(12), 14 + 24 * 32, 0, 3); // If the direction is upwards then render the squares going up
-						}
-					}
-				}
-			} else { // Makes a second rain layer for avoid visual issues with the screen refresh
-				for (int x = 0; x < 200; x++) {
-					for (int y = 0; y < 75; y++) {
-						int dd = (y + x % 2 * 2 + x / 3) - player.rainTick * 2;
-						if (dd < 0 && dd > -140) {
-							Random rnd = new Random();
-							screen.render(x * 16 - rnd.nextInt(12), y * 16 - rnd.nextInt(12), 14 + 24 * 32, 0, 3);
-						} else {
-							Random rnd = new Random();
-							screen.render(x * 16 - rnd.nextInt(8), y * 16 - rnd.nextInt(8), 14 + 24 * 32, 0, 3);
-						}
-					}
-				}
-			}
+		    Random rnd = new Random(); // Create a Random object to generate random numbers
+
+		    // Loop through the screen width
+		    for (int x = 0; x < 200; x++) {
+		    	// Loop through the screen height
+		    	for (int y = 0; y < 75; y++) {
+		    	  	int dd = (y + x % 2 * 2 + x / 3) - player.rainTick * 2; // Used as part of the positioning.
+
+		        	// Check if the rain should be rendered upwards or downwards
+		        	if (dd < 0 && dd > -140) {
+		        		screen.render(x * 16 - rnd.nextInt(8), y * 16 - rnd.nextInt(8), 14 + 24 * 32, 0, 3); // Render the rain upwards
+		        	} else {
+		        		screen.render(x * 16 - rnd.nextInt(12), y * 16 - rnd.nextInt(12), 14 + 24 * 32, 0, 3); // Render the rain downwards
+		        	}
+		      	}
+		    }
 		}
-		
 	}
 
 	public static void renderBossbar(int length, String title) {

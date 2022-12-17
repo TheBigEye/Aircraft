@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
+import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
@@ -23,6 +24,8 @@ public class Sheep extends PassiveMob {
 	// Cut
 	public boolean isCut = false;
 	private int ageWhenCut = 0;
+	
+	private int tickTime = 0;
 
 	/**
 	 * Creates a sheep entity.
@@ -48,6 +51,7 @@ public class Sheep extends PassiveMob {
 
 	public void tick() {
 		super.tick();
+		tickTime++;
 
 		if (age - ageWhenCut > WOOL_GROW_TIME) {
 			isCut = false;
@@ -78,6 +82,20 @@ public class Sheep extends PassiveMob {
 			remove();
 			level.add(new Goat(), x, y);
 		}
+		
+		// Sheep sounds
+		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
+			if (random.nextBoolean()) {
+				if (!random.nextBoolean()) {
+					Sound.sheepSay1.playOnWorld(x, y, player.x, player.y);
+				} else {
+					Sound.sheepSay2.playOnWorld(x, y, player.x, player.y);
+				}
+			} else {
+				Sound.sheepSay3.playOnWorld(x, y, player.x, player.y);
+			}
+		}
+		
 	}
 
 	public boolean interact(Player player, @Nullable Item item, Direction attackDir) {

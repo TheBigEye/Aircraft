@@ -16,6 +16,7 @@ import minicraft.gfx.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
+import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class WallTile extends Tile {
@@ -96,24 +97,32 @@ public class WallTile extends Tile {
         if (Game.isMode("Creative")) {
             return false; // go directly to hurt method
         }
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
-            if (tool.type == type.getRequiredTool()) {
-                if (level.depth != -3 || type != Material.Obsidian || AirWizardPhase3.beaten) {
-                    if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-						hurt(level, xt, yt, tool.getDamage());
-                        return true;
-                    }
-                } else {
-                    Game.notifications.add(obsidianBricksMsg);
+        
+	    if (!(item instanceof ToolItem)) {
+	        return false;
+	    }
+        
+	    ToolItem tool = (ToolItem) item;
+	    ToolType toolType = tool.type;
+
+        if (toolType == type.getRequiredTool()) {
+            if (level.depth != -3 || type != Material.Obsidian || AirWizardPhase3.beaten) {
+                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+					hurt(level, xt, yt, tool.getDamage());
+                    return true;
                 }
+            } else {
+                Game.notifications.add(obsidianBricksMsg);
             }
         }
+        
         return false;
     }
 
     @Override
     public void hurt(Level level, int x, int y, int dmg) {
+    	Player player = level.getClosestPlayer(x, y);
+    	
         int damage = level.getData(x, y) + dmg;
         int sbwHealth = 100;
 
@@ -122,7 +131,7 @@ public class WallTile extends Tile {
         }
 
         level.add(new SmashParticle(x * 16, y * 16));
-        Sound.Tile_generic_hurt.play();
+        Sound.genericHurt.playOnWorld(x * 16, y * 16, player.x, player.y);
 
         level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
         if (damage >= sbwHealth) {

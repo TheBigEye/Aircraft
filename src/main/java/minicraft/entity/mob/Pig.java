@@ -1,11 +1,13 @@
 package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
+import minicraft.core.io.Sound;
 import minicraft.gfx.MobSprite;
 import minicraft.item.Items;
 
 public class Pig extends PassiveMob {
     private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 30);
+    private int tickTime = 0;
 
     /**
      * Creates a pig.
@@ -16,27 +18,36 @@ public class Pig extends PassiveMob {
 
     public void tick() {
         super.tick();
+        tickTime++;
 
         Player player = getClosestPlayer();
-        if (player != null && player.activeItem != null && player.activeItem.name.equals("Carrot")) { // This function will make the entity follow the player directly
+        if (player != null && player.activeItem != null && player.activeItem.name.equals("Carrot")) {
             int xd = player.x - x;
             int yd = player.y - y;
 
-            /// if player is less than 6.25 tiles away, then set move dir towards player
-            int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
+            int sig = 1;
             xa = ya = 0;
 
-            if (xd < sig0) xa = -1;
-            if (xd > sig0) xa = +1;
-            if (yd < sig0) ya = -1;
-            if (yd > sig0) ya = +1;
-
+            if (xd < sig) xa = -1;
+            if (xd > sig) xa = +1;
+            if (yd < sig) ya = -1;
+            if (yd > sig) ya = +1;
         } else {
-            // if the Pet was following the player, but has now lost it, it stops moving.
-            // *that would be nice, but I'll just make it move randomly instead.
-
             randomizeWalkDir(false);
         }
+        
+		// Pig sounds
+		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
+			if (random.nextBoolean()) {
+				if (!random.nextBoolean()) {
+					Sound.pigSay1.playOnWorld(x, y, player.x, player.y);
+				} else {
+					Sound.pigSay2.playOnWorld(x, y, player.x, player.y);
+				}
+			} else {
+				Sound.pigSay3.playOnWorld(x, y, player.x, player.y);
+			}
+		}
     }
 
     public void die() {

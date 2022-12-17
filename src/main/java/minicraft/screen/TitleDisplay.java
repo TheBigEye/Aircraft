@@ -116,12 +116,12 @@ public class TitleDisplay extends Display {
 		LocalDateTime time = LocalDateTime.now();
 		if (time.getMonth() != Month.OCTOBER) {
 			switch (random.nextInt(4)) {
-				case 0: Sound.Theme_Cave.play(); break;
-				case 1: Sound.Theme_Surface.play(); break;
-				case 2: Sound.Theme_Fall.play(); break;
-				case 3: Sound.Theme_Peaceful.play(); break;
-				case 4: Sound.Theme_Surface.play(); break;
-				default: Sound.Theme_Fall.play(); break;
+				case 0: Sound.Theme_Cave.playOnGui(); break;
+				case 1: Sound.Theme_Surface.playOnGui(); break;
+				case 2: Sound.Theme_Fall.playOnGui(); break;
+				case 3: Sound.Theme_Peaceful.playOnGui(); break;
+				case 4: Sound.Theme_Surface.playOnGui(); break;
+				default: Sound.Theme_Fall.playOnGui(); break;
 			}
 		}
 
@@ -153,8 +153,8 @@ public class TitleDisplay extends Display {
 		}
 
 		if (time.getMonth() == Month.OCTOBER) {
-			if (time.getDayOfMonth() == 8) Sound.Theme_Cavern.play();
-			if (time.getDayOfMonth() == 16) Sound.Theme_Cavern_drip.play();
+			if (time.getDayOfMonth() == 8) Sound.Theme_Cavern.playOnGui();
+			if (time.getDayOfMonth() == 16) Sound.Theme_Cavern_drip.playOnGui();
 		}
 
 		if (time.getMonth() == Month.AUGUST) {

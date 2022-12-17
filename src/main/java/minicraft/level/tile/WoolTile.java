@@ -49,17 +49,22 @@ public class WoolTile extends Tile {
 
 	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-		if (item instanceof ToolItem) {
-			ToolItem tool = (ToolItem) item;
-			if (tool.type == ToolType.Shears) {
-				if (player.payStamina(3 - tool.level) && tool.payDurability()) {
-					level.setTile(xt, yt, Tiles.get("Hole"));
-					Sound.Tile_generic_hurt.play();
-					level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get(name));
-					return true;
-				}
+	    if (!(item instanceof ToolItem)) {
+	        return false;
+	    }
+
+	    ToolItem tool = (ToolItem) item;
+	    ToolType toolType = tool.type;
+	    
+		if (toolType == ToolType.Shears) {
+			if (player.payStamina(3 - tool.level) && tool.payDurability()) {
+				level.setTile(xt, yt, Tiles.get("Hole"));
+				Sound.genericHurt.playOnGui();
+				level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get(name));
+				return true;
 			}
 		}
+		
 		return false;
 	}
 
