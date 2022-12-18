@@ -15,6 +15,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.tinylog.Logger;
 
+import minicraft.core.Game;
+import minicraft.entity.mob.Player;
+
 // Creates sounds from their respective files
 public class Sound { 
 
@@ -59,6 +62,11 @@ public class Sound {
 	public static final Sound Mob_eyeBoss_death = new Sound("/resources/sounds/entities/EyeQueen/eyedeath.wav");
 	public static final Sound Mob_eyeBoss_changePhase = new Sound("/resources/sounds/entities/EyeQueen/changephase.wav");
 
+	// Dungeon chest
+	public static final Sound dungeonChest1 = new Sound("/resources/sounds/furniture/dungeonchest/dungeonchest1.wav");
+	public static final Sound dungeonChest2 = new Sound("/resources/sounds/furniture/dungeonchest/dungeonchest2.wav");
+	public static final Sound dungeonChest3 = new Sound("/resources/sounds/furniture/dungeonchest/dungeonchest3.wav");
+	
 	// Spawner
 	public static final Sound Furniture_spawner_destroy = new Sound("/resources/sounds/entities/Spawner/destroy.wav");
 	public static final Sound Furniture_spawner_destroy_2 = new Sound("/resources/sounds/entities/Spawner/destroy 2.wav");
@@ -107,6 +115,11 @@ public class Sound {
 	public static final Sound Theme_Cave = new Sound("/resources/sounds/music/cave.wav");
 	public static final Sound Theme_Cavern = new Sound("/resources/sounds/music/cavern.wav");
 	public static final Sound Theme_Cavern_drip = new Sound("/resources/sounds/music/cavern drip.wav");
+	
+	// Rain sounds
+	public static final Sound rainThunder1 			= new Sound("/resources/sounds/ambient/weather/thunder1.wav");
+	public static final Sound rainThunder2 			= new Sound("/resources/sounds/ambient/weather/thunder2.wav");
+	public static final Sound rainThunder3 			= new Sound("/resources/sounds/ambient/weather/thunder3.wav");
 	
 	// Generic hurt sound
 	public static final Sound genericExplode 		= new Sound("/resources/sounds/genericExplode.wav");
@@ -180,17 +193,23 @@ public class Sound {
     }
     
     // NOTE, this is a headcache, try not play lot sounds with this at same time ._.
-    public void playOnWorld(int x, int y, int playerX, int playerY) {
-        if (!(boolean) Settings.get("sound")) {
+    public void playOnWorld(int x, int y) {
+    	Player player = Game.levels[Game.currentLevel].getClosestPlayer(x, y);
+    	
+        if (!(boolean) Settings.get("sound") || player == null) {
             return;
+        }
+        
+        if (clip.isRunning() || clip.isActive()) {
+            clip.stop();
         }
 
         // Calculate the distance between the sound and the player
-        double distance = Math.sqrt(Math.pow(x - playerX, 2) + Math.pow(y - playerY, 2));
+        double distance = Math.sqrt(Math.pow(x - player.x, 2) + Math.pow(y - player.y, 2));
 
         // Set the volume based on the distance from the player
         float minVolume = volumeControl.getMinimum();
-        float volume = 1.0f - (float) distance / 21.0f; // Start to fade after of 28 (distance)
+        float volume = 1.0f - (float) distance / 20.0f; // Start to fade after of 28 (distance)
         if (volume < minVolume) { // CHECK
             volume = minVolume;
         }
@@ -219,8 +238,6 @@ public class Sound {
         });
         fadeThread.start();
     }
-
-
 
     public void playOnGui() {
         if (!(boolean) Settings.get("sound") || clip == null) {

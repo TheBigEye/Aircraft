@@ -32,7 +32,6 @@ public class MobSprite extends Sprite {
 		for (int i = 0; i < sprites.length; i++) {
 			sprites[i] = new MobSprite(sheetX + width * i, sheetY, width, height, mirror);
 		}
-
 		return sprites;
 	}
 

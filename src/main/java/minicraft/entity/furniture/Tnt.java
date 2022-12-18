@@ -51,16 +51,12 @@ public class Tnt extends Furniture implements ActionListener {
 	@Override
 	public void tick() {
 		super.tick();
-		
-		Player player = getClosestPlayer();
 
 		// Ignite the TNT when touch lava :)
 		if (level.getTile(x >> 4,y >> 4) == Tiles.get("Lava") && fuseLit == false) {
 			fuseLit = true;
-			for (int i = 0; i < 1 + random.nextInt(3); i++) {
-				int randX = random.nextInt(16);
-				int randY = random.nextInt(12);
-				level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
+			for (int i = 0; i < (1 + random.nextInt(3)); i++) {
+				level.add(new FireParticle(x - 8 + random.nextInt(16), y - 6 + random.nextInt(12)));
 			}
 		}
 
@@ -86,7 +82,7 @@ public class Tnt extends Furniture implements ActionListener {
 						Tnt tnt = (Tnt) e;
 						if (!tnt.fuseLit) {
 							tnt.fuseLit = true;
-							Sound.genericFuse.playOnWorld(x, y, player.x, player.y);
+							Sound.genericFuse.playOnWorld(x, y);
 							tnt.fuseTick = FUSE_TIME * 2 / 3;
 						}
 
@@ -108,7 +104,7 @@ public class Tnt extends Furniture implements ActionListener {
 				}
 
 				// Play explosion sound
-				Sound.genericExplode.playOnWorld(x, y, player.x, player.y);
+				Sound.genericExplode.playOnWorld(x, y);
 
 				level.setAreaTiles(xt, yt, 1, Tiles.get("Explode"), 0, explosionBlacklist);
 
@@ -154,7 +150,7 @@ public class Tnt extends Furniture implements ActionListener {
 	public boolean interact(Player player, Item heldItem, Direction attackDir) {
 		if (!fuseLit) {
 			fuseLit = true;
-			Sound.genericFuse.playOnWorld(x, y, player.x, player.y);
+			Sound.genericFuse.playOnWorld(x, y);
 			return true;
 		}
 		return false;

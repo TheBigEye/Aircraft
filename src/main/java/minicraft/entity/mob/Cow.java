@@ -61,12 +61,12 @@ public class Cow extends PassiveMob {
 		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
 			if (random.nextBoolean()) {
 				if (!random.nextBoolean()) {
-					Sound.cowSay1.playOnWorld(x, y, player.x, player.y);
+					Sound.cowSay1.playOnWorld(x, y);
 				} else {
-					Sound.cowSay2.playOnWorld(x, y, player.x, player.y);
+					Sound.cowSay2.playOnWorld(x, y);
 				}
 			} else {
-				Sound.cowSay3.playOnWorld(x, y, player.x, player.y);
+				Sound.cowSay3.playOnWorld(x, y);
 			}
 		}
     }

@@ -82,9 +82,7 @@ public class Furniture extends Entity {
         
         if (level.getTile(x >> 4,y >> 4) == Tiles.get("Lava") && !(this instanceof Spawner) && !(this instanceof DeathChest) && !(this instanceof Tnt)) {
 			for (int i = 0; i < 1 + random.nextInt(3); i++) {
-				int randX = random.nextInt(16);
-				int randY = random.nextInt(12);
-				level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
+				level.add(new FireParticle(x - 8 + random.nextInt(16), y - 6 + random.nextInt(12)));
 			}
 			this.die();
 		}

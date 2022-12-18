@@ -74,12 +74,12 @@ public class Chicken extends PassiveMob {
 		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
 			if (random.nextBoolean()) {
 				if (!random.nextBoolean()) {
-					Sound.chickenSay1.playOnWorld(x, y, player.x, player.y);
+					Sound.chickenSay1.playOnWorld(x, y);
 				} else {
-					Sound.chickenSay2.playOnWorld(x, y, player.x, player.y);
+					Sound.chickenSay2.playOnWorld(x, y);
 				}
 			} else {
-				Sound.chickenSay3.playOnWorld(x, y, player.x, player.y);
+				Sound.chickenSay3.playOnWorld(x, y);
 			}
 		}
     }

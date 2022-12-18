@@ -16,7 +16,7 @@ public class FoodItem extends StackableItem {
         items.add(new FoodItem("Bread", new Sprite(7, 0, 0), 2));
         items.add(new FoodItem("Apple", new Sprite(16, 0, 0), 1));
         items.add(new FoodItem("Frozen palette", new Sprite(31, 0, 0), 4));
-        // items.add(new FoodItem("Mushroom Soup", new Sprite(27, 0, 0), 2));
+        items.add(new FoodItem("Mushroom Soup", new Sprite(27, 0, 0), 2));
         items.add(new FoodItem("Carrot Soup", new Sprite(28, 0, 0), 3));
         items.add(new FoodItem("Raw Chicken", new Sprite(29, 0, 0), 1));
         items.add(new FoodItem("Raw Pork", new Sprite(10, 0, 0), 1));

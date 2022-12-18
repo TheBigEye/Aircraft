@@ -84,7 +84,6 @@ public class Font {
             if (ix >= 0) {
                 // render the black background
                 screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, 12 + 24 * 32, 0, 3);
-
                 screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, ix + CHAR_SHEET_Y * 32, 0, 4, whiteTint);
             }
         }

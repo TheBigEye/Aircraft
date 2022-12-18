@@ -75,15 +75,15 @@ public class AirWizard extends EnemyMob {
         
         length = health / (maxHealth / 100);
 
-        if (Game.isMode("Creative"))
+        if (Game.isMode("Creative")) {
             return; // Should not attack if player is in creative
+        }
 
         if (attackDelay > 0) {
             xa = ya = 0;
             int dir = (attackDelay - 45) / 4 % 4; // the direction of attack.
             dir = (dir * 2 % 4) + (dir / 2); // direction attack changes
-            if (attackDelay < 45)
-                dir = 0; // direction is reset, if attackDelay is less than 45; prepping for attack.
+            if (attackDelay < 45) dir = 0; // direction is reset, if attackDelay is less than 45; prepping for attack.
 
             this.dir = Direction.getDirection(dir);
 
@@ -210,27 +210,39 @@ public class AirWizard extends EnemyMob {
     /** What happens when the air wizard dies */
     public void die() {
         Player[] players = level.getPlayers();
-        if (players.length > 0) { // if the player is still here
-            for (Player p : players)
-                p.addScore((secondform ? 500000 : 100000)); // give the player 100K or 500K points.
+
+        // If there is at least one player in the level
+        if (players.length > 0) {
+            for (Player p : players) {
+                // Give the player 10K or 50K points
+                p.addScore(secondform ? 50000 : 10000); 
+            }
+
+            // Play sound on the world at the position of the Air Wizard
+            Sound.airWizardChangePhase.playOnWorld(x, y);
         }
 
-        // Sound.bossDeath.playOnGui(); // play boss-death sound.
-        Sound.airWizardChangePhase.playOnGui();
-
+        // If the Air Wizard is in its first form
         if (!secondform) {
+            // Add a new instance of AirWizardPhase2 with 1 life remaining
             level.add(new AirWizardPhase2(1), x, y);
             Updater.notifyAll("Phase II");
+
+            // If the Air Wizard has not been beaten yet, notify all with "Phase II" after 200 milliseconds
             if (!beaten) Updater.notifyAll("Phase II", 200);
             beaten = true;
             active = false;
-
-        } else {
+        } 
+ 
+        // If the Air Wizard is in its second form
+        else {
+            // Add a new instance of AirWizardPhase2 that has been defeated
             level.add(new AirWizardPhase2(true), x, y);
             Updater.notifyAll("Phase II");
         }
 
-        super.die(); // calls the die() method in EnemyMob.java
+        // Call the die() method in EnemyMob.java
+        super.die();
     }
 
     public int getMaxLevel() {

@@ -35,15 +35,7 @@ public class Skeleton extends EnemyMob {
     public void tick() {
         super.tick();
 
-        if (skipTick()) {
-            return;
-        }
-        
-        if (Game.isMode("Creative")) {
-        	return;
-        }
-        
-        if (Settings.get("diff").equals("Peaceful")) {
+        if (skipTick() || Game.isMode("Creative") || Settings.get("diff").equals("Peaceful")) {
             return;
         }
 

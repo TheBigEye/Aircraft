@@ -21,15 +21,20 @@ public class PathTile extends Tile {
 	}
 
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
-		if (item instanceof ToolItem) {
-			ToolItem tool = (ToolItem) item;
-			if (tool.type == ToolType.Shovel) {
-				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					level.setTile(xt, yt, Tiles.get("Hole"));
-					Sound.genericHurt.playOnGui();
-					level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Dirt"));
-					return true;
-				}
+	    if (!(item instanceof ToolItem)) {
+	        return false;
+	    }
+
+	    // This avoids repeating tools checks
+	    ToolItem tool = (ToolItem) item;
+	    ToolType toolType = tool.type;
+		
+		if (toolType == ToolType.Shovel) {
+			if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+				level.setTile(xt, yt, Tiles.get("Hole"));
+				Sound.genericHurt.playOnWorld(xt * 16, yt * 16);
+				level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Dirt"));
+				return true;
 			}
 		}
 		return false;

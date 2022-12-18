@@ -6,11 +6,10 @@ public class HeartParticle extends Particle {
 	/// This is used for lovely mobs.
 
 	private static Sprite Sprites = new Sprite(0, 16, 3);
-
-	private int animFrame = 0;
+	private int frame = 0;
 
 	/**
-	 * Creates a new particle at the given position. It has a lifetime of 30 ticks
+	 * Creates a new particle at the given position. It has a lifetime of 16 ticks
 	 * and a heart looking sprite.
 	 * 
 	 * @param x X map position
@@ -24,24 +23,8 @@ public class HeartParticle extends Particle {
 	public void tick() {
 		super.tick();
 
-		animFrame++;
-
-		if (animFrame >= 8) {
-			animFrame = 0;
-		}
-
-		if (animFrame == 0) {
-			Sprites = new Sprite(0, 16, 3);
-		}
-		if (animFrame == 2) {
-			Sprites = new Sprite(1, 16, 3);
-		}
-		if (animFrame == 4) {
-			Sprites = new Sprite(2, 16, 3);
-		}
-		if (animFrame == 6) {
-			Sprites = new Sprite(3, 16, 3);
-		}
-
+        // Animation
+        frame = (frame + 1) % 4;
+        Sprites = new Sprite(frame, 16, 3);
 	}
 }

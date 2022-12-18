@@ -22,8 +22,8 @@ public class BoatItem extends Item {
 		if (level.getTile(xt, yt) == Tiles.get("Water")) {
 			Boat boat = new Boat();
 
-			boat.x = xt * 16 + 8;
-			boat.y = yt * 16 + 8;
+			boat.x = (xt * 16) + 8;
+			boat.y = (yt * 16) + 8;
 
 			level.add(boat);
 			if (Game.isMode("Creative")) {

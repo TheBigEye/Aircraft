@@ -33,10 +33,12 @@ public class Sprite {
 	}
 
 	public static Sprite randomDots(long seed, int offset) {
-		ran.setSeed(seed);
-		return ConnectorSprite.makeSprite(2, 2, ran.nextInt(4), 1, false, (2 + ran.nextInt(4)) + offset * 32,
-				(2 + ran.nextInt(4)) + offset * 32, (2 + ran.nextInt(4)) + offset * 32,
-				(2 + ran.nextInt(4)) + offset * 32);
+	    ran.setSeed(seed);
+	    int[] values = new int[4];
+	    for (int i = 0; i < 4; i++) {
+	        values[i] = 2 + ran.nextInt(4) + offset * 32;
+	    }
+	    return ConnectorSprite.makeSprite(2, 2, ran.nextInt(4), 1, false, values[0], values[1], values[2], values[3]);
 	}
 
 	protected Pixel[][] spritePixels;

@@ -40,37 +40,28 @@ public class Pig extends PassiveMob {
 		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
 			if (random.nextBoolean()) {
 				if (!random.nextBoolean()) {
-					Sound.pigSay1.playOnWorld(x, y, player.x, player.y);
+					Sound.pigSay1.playOnWorld(x, y);
 				} else {
-					Sound.pigSay2.playOnWorld(x, y, player.x, player.y);
+					Sound.pigSay2.playOnWorld(x, y);
 				}
 			} else {
-				Sound.pigSay3.playOnWorld(x, y, player.x, player.y);
+				Sound.pigSay3.playOnWorld(x, y);
 			}
 		}
     }
 
     public void die() {
         int min = 0, max = 0;
-        if (Settings.get("diff").equals("Peaceful")) {
-            min = 1;
-            max = 3;
+        String difficulty = (String) Settings.get("diff");
+        
+        if (difficulty == "Peaceful" || difficulty == "Easy") { 
+        	min = 1; max = 3; 
+        } else if (difficulty == "Normal") { 
+        	min = 1; max = 2; 
+        } else if (difficulty == "Hard") { 
+        	min = 0; max = 2; 
         }
-        if (Settings.get("diff").equals("Easy")) {
-            min = 1;
-            max = 3;
-        }
-        if (Settings.get("diff").equals("Normal")) {
-            min = 1;
-            max = 2;
-        }
-        if (Settings.get("diff").equals("Hard")) {
-            min = 0;
-            max = 2;
-        }
-
-        // level.add(new XpOrb(random.nextInt(17), x, y), x, y);
-
+        
         if (isBurn) dropItem(min, max, Items.get("Cooked pork")); // if isBurn.. drop Cooked food
         if (!isBurn) dropItem(min, max, Items.get("raw pork")); // else, drop normal food
 

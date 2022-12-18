@@ -1,5 +1,6 @@
 package minicraft.level.tile;
 
+import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
@@ -59,7 +60,7 @@ public class TorchTile extends Tile {
         onType.render(screen, level, x, y);
         sprite.render(screen, x * 16 + 4, y * 16 + 4);
         
-		if (tickTime / 2 % 2 == 0 && Settings.get("particles").equals(true)) {
+		if (!Updater.paused && tickTime / 2 % 2 == 0 && Settings.get("particles").equals(true)) {
 			if (random.nextInt(1) == 0) {
 				level.add(new FireParticle(spawnX, spawnY));
 			}
@@ -84,7 +85,7 @@ public class TorchTile extends Tile {
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
         if (item instanceof PowerGloveItem) {
             level.setTile(xt, yt, this.onType);
-            Sound.genericHurt.playOnWorld(xt * 16, yt * 16, player.x, player.y);
+            Sound.genericHurt.playOnWorld(xt * 16, yt * 16);
             level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Torch"));
             return true;
         } else {

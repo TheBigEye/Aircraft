@@ -50,7 +50,6 @@ public class Slime extends EnemyMob {
         if (jumpTime > 0) {
             return; // direction cannot be changed if slime is already jumping.
         }
-
         super.randomizeWalkDir(byChance);
     }
 
@@ -78,17 +77,6 @@ public class Slime extends EnemyMob {
 
     public void die() {
         dropItem(1, Game.isMode("score") ? 2 : 4 - Settings.getIdx("diff"), Items.get("slime"));
-
-        super.die(); // Parent death call
-
-        if (random.nextInt(10) == 0) {
-            level.add(new Slime(1), x, y);
-        }
-        if (random.nextInt(10) == 5) {
-            level.add(new Keeper(1), x, y);
-        }
-        if (random.nextInt(10) == 10) {
-            level.add(new Keeper(1), x, y);
-        }
+        super.die();
     }
 }

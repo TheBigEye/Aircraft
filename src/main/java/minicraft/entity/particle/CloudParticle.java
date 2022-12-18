@@ -15,5 +15,4 @@ public class CloudParticle extends Particle {
 	public CloudParticle(int x, int y) {
 		super(x, y, 16, new Sprite(5, 14, 3));
 	}
-	
 }

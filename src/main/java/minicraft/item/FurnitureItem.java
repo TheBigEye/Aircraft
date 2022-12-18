@@ -167,11 +167,12 @@ public class FurnitureItem extends Item {
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 		if (tile.mayPass(level, xt, yt, furniture)) { // If the furniture can go on the tile
 
-			Sound.playerPlace.playOnGui();
-
 			// Placed furniture's X and Y positions
-			furniture.x = xt * 16 + 8;
-			furniture.y = yt * 16 + 8;
+			furniture.x = (xt * 16) + 8;
+			furniture.y = (yt * 16) + 8;
+			
+			Sound.playerPlace.playOnWorld(furniture.x, furniture.y);
+			
 			level.add(furniture); // adds the furniture to the world
 			if (Game.isMode("Creative")) {
 				furniture = furniture.clone();

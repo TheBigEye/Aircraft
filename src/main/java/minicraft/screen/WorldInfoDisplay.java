@@ -40,7 +40,7 @@ public class WorldInfoDisplay extends Display {
 
 	public void render(Screen screen) {
 		super.render(screen);
-		Font.draw(Localization.getLocalized("Name:") + " " + WorldSelectDisplay.getWorldName() + "", screen, 120, 90, Color.GREEN);
+		Font.draw(Localization.getLocalized("Name:") + " " + WorldSelectDisplay.getWorldName(), screen, 120, 90, Color.GREEN);
 		Font.draw(Localization.getLocalized("Seed:") + " " + Game.levels[selection].getSeed(), screen, 120, 100, Color.GREEN);
 
 		Font.draw(Settings.getEntry("size") + "", screen, 120, 115, Color.GRAY);

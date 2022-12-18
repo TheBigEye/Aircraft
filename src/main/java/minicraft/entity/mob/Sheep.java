@@ -84,15 +84,15 @@ public class Sheep extends PassiveMob {
 		}
 		
 		// Sheep sounds
-		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
+		if (tickTime / 8 % 24 == 0 && random.nextInt(8) == 4) {
 			if (random.nextBoolean()) {
 				if (!random.nextBoolean()) {
-					Sound.sheepSay1.playOnWorld(x, y, player.x, player.y);
+					Sound.sheepSay1.playOnWorld(x, y);
 				} else {
-					Sound.sheepSay2.playOnWorld(x, y, player.x, player.y);
+					Sound.sheepSay2.playOnWorld(x, y);
 				}
 			} else {
-				Sound.sheepSay3.playOnWorld(x, y, player.x, player.y);
+				Sound.sheepSay3.playOnWorld(x, y);
 			}
 		}
 		

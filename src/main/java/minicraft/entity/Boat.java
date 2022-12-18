@@ -41,8 +41,6 @@ public class Boat extends Entity {
 
     @Override
     public void render(Screen screen) {
-    	//boatSprite.render(screen, x - 8, y - 8);
-    	
         int xo = x - 4; // Horizontal
         int yo = y - 8; // Vertical
 
@@ -119,7 +117,6 @@ public class Boat extends Entity {
             if (Settings.get("particles").equals(true)) {
                 int randX = rnd.nextInt(10);
                 int randY = rnd.nextInt(9);
-
                 level.add(new SplashParticle(x - 8 + randX, y - 8 + randY));
             }
 
@@ -141,7 +138,6 @@ public class Boat extends Entity {
             exitTimer = 10;
             return true;
         }
-
         return false;
     }
 
@@ -194,7 +190,7 @@ public class Boat extends Entity {
             return true; // was not stopped
         }
 
-        boolean interact = true;// !Game.isValidClient() || this instanceof ClientTickable;
+        boolean interact = true;
 
         // gets the tile coordinate of each direction from the sprite...
         int xto0 = ((x) - 1) >> 4; // to the left
@@ -231,27 +227,27 @@ public class Boat extends Entity {
         List<Entity> isInside = level.getEntitiesInRect(new Rectangle(x + (int) xa, y + (int) ya, xr * 2, yr * 2, Rectangle.CENTER_DIMS)); 
         for (int i = 0; interact && i < isInside.size(); i++) {
             /// cycles through entities about to be touched, and calls touchedBy(this) for each of them.
-            Entity e = isInside.get(i);
-            if (e == this) {
-                continue; // touching yourself doesn't count.
+            Entity entity = isInside.get(i);
+            if (entity == this) {
+                continue; // touching yourself doesn't count XD
             }
 
-            if (e instanceof Player) {
-                touchedBy(e);
+            if (entity instanceof Player) {
+                touchedBy(entity);
             } else {
-                e.touchedBy(this); // call the method. ("touch" the entity)
+                entity.touchedBy(this); // call the method. ("touch" the entity)
             }
         }
 
         isInside.removeAll(wasInside); // remove all the entities that this one is already touching before moving.
         for (int i = 0; i < isInside.size(); i++) {
-            Entity e = isInside.get(i);
+            Entity entity = isInside.get(i);
 
-            if (e == this) {
-                continue; // can't interact with yourself
+            if (entity == this) {
+                continue; // can't interact with yourself LOL
             }
 
-            if (e.blocks(this)) {
+            if (entity.blocks(this)) {
                 return false; // if the entity prevents this one from movement, don't move.
             }
         }

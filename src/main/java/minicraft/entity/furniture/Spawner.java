@@ -99,10 +99,10 @@ public class Spawner extends Furniture {
 		}
 
 		// Fire particles
-		if (tickTime / 2 % 8 == 0 && Settings.get("particles").equals(true)) {
-			int randX = rnd.nextInt(14);
-			int randY = rnd.nextInt(12);
-			level.add(new FireParticle(x - 10 + randX, y - 8 + randY));
+		if (tickTime / 2 % 8 == 0) {
+			if (Settings.get("particles").equals(true)) {
+				level.add(new FireParticle(x - 10 + random.nextInt(14), y - 8 + random.nextInt(12)));
+			}
 		}  else {
 			frame = rnd.nextInt(2) * 2;
 		}
@@ -174,14 +174,12 @@ public class Spawner extends Furniture {
 		if (Game.debug) level.printLevelLoc("Spawning new " + mob, (newmob.x >> 4), (newmob.y >> 4), "...");
 
 		level.add(newmob);
-		Sound.Furniture_spawner_spawn.playOnWorld(x, y, player.x, player.y);
+		Sound.Furniture_spawner_spawn.playOnWorld(x, y);
 
 		// Fire particles when spawn a mob
 		if (Settings.get("particles").equals(true)) {
 			for (int i = 0; i < 3; i++) {
-				int randX = rnd.nextInt(16);
-				int randY = rnd.nextInt(12);
-				level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
+				level.add(new FireParticle(x - 8 + random.nextInt(16), y - 6 + random.nextInt(12)));
 			}
 		}
 	}
@@ -191,7 +189,7 @@ public class Spawner extends Furniture {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
 
-			Sound.Furniture_spawner_hurt.playOnGui();
+			Sound.genericHurt.playOnWorld(x, y);
 
 			int dmg;
 			if (Game.isMode("Creative")) {

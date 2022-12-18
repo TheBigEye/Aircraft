@@ -33,17 +33,25 @@ public class WheatTile extends Plant {
     @Override
     protected boolean IfWater(Level level, int xs, int ys) {
         Tile[] areaTiles = level.getAreaTiles(xs, ys, 3);
-        for (Tile t : areaTiles)
-            if (t == Tiles.get("Water"))
+        for (Tile t : areaTiles) {
+            if (t == Tiles.get("Water")) {
                 return true;
+            }
+        }
 
         return false;
     }
 
     @Override
     protected void harvest(Level level, int x, int y, Entity entity) {
-        if (entity instanceof ItemEntity || entity instanceof VillagerMob)
+        if (entity instanceof ItemEntity || entity instanceof VillagerMob) {
             return;
+        }
+        
+        if (entity instanceof Player) {
+        	return;
+        }
+
         int age = level.getData(x, y);
 
         level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("seeds"));

@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.World;
+import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Player;
@@ -26,6 +27,7 @@ public class DungeonChest extends Chest {
 
     public Random random = new Random();
     private boolean isLocked;
+    private int tickTime = 0;
 
     /**
      * Creates a custom chest with the name Dungeon Chest.
@@ -49,6 +51,25 @@ public class DungeonChest extends Chest {
     public Furniture clone() {
         return new DungeonChest(false, !this.isLocked);
     }
+    
+	@Override
+	public void tick() {
+		super.tick();
+		tickTime++;
+		
+		// Dungeon chest proximity sound
+		if (tickTime / 8 % 8 == 0 && random.nextInt(8) == 4) {
+			if (random.nextBoolean()) {
+				if (!random.nextBoolean()) {
+					Sound.dungeonChest1.playOnWorld(x, y);
+				} else {
+					Sound.dungeonChest2.playOnWorld(x, y);
+				}
+			} else {
+				Sound.dungeonChest3.playOnWorld(x, y);
+			}
+		}
+	}
 
     @Override
     public boolean use(Player player) {
@@ -72,10 +93,12 @@ public class DungeonChest extends Chest {
                 level.add(new TextParticle("-1 key", x, y, Color.RED));
                 level.chestCount--;
                 if (level.chestCount == 0) { // if this was the last chest...
+                	player.isRaining = true; // Starts to rain
+                	Sound.rainThunder2.playOnGui();
+                	
                     level.dropItem(x, y, 5, Items.get("Gold Apple"));
 
-                    Updater.notifyAll("You hear a noise from the surface!", -100); // notify the player of the
-                                                                                   // developments
+                    Updater.notifyAll("You hear a noise from the surface!", -100); // notify the player of the developments
                     // add a level 2 airwizard to the middle surface level.
                     AirWizard wizard = new AirWizard(true);
                     wizard.x = World.levels[World.lvlIdx(0)].w / 2;

@@ -296,6 +296,7 @@ public class Level {
 				}
 			}
 
+			// if not found the Air Wizard, add then again
 			if (!found) {
 				AirWizard aw = new AirWizard(false);
 				add(aw, w / 2, h / 2, true);
@@ -567,6 +568,12 @@ public class Level {
 		}
 	}
 
+	/**
+	 * Determine if an entity is near any of the players.
+	 * 
+	 * @param entity The entity to check.
+	 * @return True if the entity is within 128 units of the x coordinate and 76 units of the y coordinate of any player, false otherwise.
+	 */
 	public boolean entityNearPlayer(Entity entity) {
 		for (Player player : players) {
 			if (Math.abs(player.x - entity.x) < 128 && Math.abs(player.y - entity.y) < 76) {
@@ -621,14 +628,14 @@ public class Level {
 
 	public void renderSprites(Screen screen, int xScroll, int yScroll) {
 		int xo = xScroll >> 4; // latches to the nearest tile coordinate
-			int yo = yScroll >> 4;
-			int w = (Screen.w + 15) >> 4;
-			int h = (Screen.h + 15) >> 4;
+		int yo = yScroll >> 4;
+		int w = (Screen.w + 15) >> 4;
+		int h = (Screen.h + 15) >> 4;
 
-			screen.setOffset(xScroll, yScroll);
-			sortAndRender(screen, getEntitiesInTiles(xo - 1, yo - 1, xo + w + 1, yo + h + 1));
+		screen.setOffset(xScroll, yScroll);
+		sortAndRender(screen, getEntitiesInTiles(xo - 1, yo - 1, xo + w + 1, yo + h + 1));
 
-			screen.setOffset(0, 0);
+		screen.setOffset(0, 0);
 	}
 
 	public void renderLight(Screen screen, int xScroll, int yScroll, int brightness) {
@@ -661,14 +668,14 @@ public class Level {
 		screen.setOffset(0, 0);
 	}
 
-	private void sortAndRender(Screen screen, List < Entity > list) {
+	private void sortAndRender(Screen screen, List <Entity> list) {
 		list.sort(spriteSorter);
 		for (int i = 0; i < list.size(); i++) {
-			Entity e = list.get(i);
-			if (e.getLevel() == this && !e.isRemoved()) {
-				e.render(screen);
+			Entity entity = list.get(i);
+			if (entity.getLevel() == this && !entity.isRemoved()) {
+				entity.render(screen);
 			} else {
-				remove(e);
+				remove(entity);
 			}
 		}
 	}
@@ -719,11 +726,11 @@ public class Level {
 		data[x + y * w] = (short) val;
 	}
 
-	public void add(Entity e) {
-		if (e == null) {
+	public void add(Entity entity) {
+		if (entity == null) {
 			return;
 		}
-		add(e, e.x, e.y);
+		add(entity, entity.x, entity.y);
 	}
 
 	public void add(Entity entity, int x, int y) {
@@ -892,11 +899,11 @@ public class Level {
 	}
 
 	public void removeAllEnemies() {
-		for (Entity e: getEntityArray()) {
-			if (e instanceof EnemyMob) {
+		for (Entity entity: getEntityArray()) {
+			if (entity instanceof EnemyMob) {
 				// don't remove the airwizard bosses! Unless in creative, since you can spawn more.
-				if (!(e instanceof AirWizard) || Game.isMode("Creative")) {
-					e.remove();
+				if (!(entity instanceof AirWizard) || Game.isMode("Creative")) {
+					entity.remove();
 				}
 			}
 		}
@@ -1171,17 +1178,17 @@ public class Level {
 		for (int i = 0; i < 18 / -depth * (w / 128); i++) {
 
 			/// for generating spawner dungeons
-			MobAi m;
+			MobAi mob;
 			int r = random.nextInt(5);
 			if (r == 1) {
-				m = new Skeleton(-depth);
+				mob = new Skeleton(-depth);
 			} else if (r == 2 || r == 0) {
-				m = new Slime(-depth);
+				mob = new Slime(-depth);
 			} else {
-				m = new Zombie(-depth);
+				mob = new Zombie(-depth);
 			}
 
-			Spawner sp = new Spawner(m);
+			Spawner spawner = new Spawner(mob);
 			int x3 = random.nextInt(16 * w) / 16;
 			int y3 = random.nextInt(16 * h) / 16;
 			if (getTile(x3, y3) == Tiles.get("Dirt")) {
@@ -1190,54 +1197,54 @@ public class Level {
 				if (xaxis2) {
 					for (int s2 = x3; s2 < w - s2; s2++) {
 						if (getTile(s2, y3) == Tiles.get("Rock")) {
-							sp.x = s2 * 16 - 24;
-							sp.y = y3 * 16 - 24;
+							spawner.x = s2 * 16 - 24;
+							spawner.y = y3 * 16 - 24;
 						}
 					}
 				} else {
 					for (int s2 = y3; s2 < y3 - s2; s2++) {
 						if (getTile(x3, s2) == Tiles.get("Rock")) {
-							sp.x = x3 * 16 - 24;
-							sp.y = s2 * 16 - 24;
+							spawner.x = x3 * 16 - 24;
+							spawner.y = s2 * 16 - 24;
 						}
 					}
 				}
 
-				if (sp.x == 0 && sp.y == 0) {
-					sp.x = x3 * 16 - 8;
-					sp.y = y3 * 16 - 8;
+				if (spawner.x == 0 && spawner.y == 0) {
+					spawner.x = x3 * 16 - 8;
+					spawner.y = y3 * 16 - 8;
 				}
 
-				if (getTile(sp.x / 16, sp.y / 16) == Tiles.get("Rock")) {
-					setTile(sp.x / 16, sp.y / 16, Tiles.get("Dirt"));
+				if (getTile(spawner.x / 16, spawner.y / 16) == Tiles.get("Rock")) {
+					setTile(spawner.x / 16, spawner.y / 16, Tiles.get("Dirt"));
 				}
 
-				Structure.mobDungeonCenter.draw(this, sp.x / 16, sp.y / 16);
+				Structure.mobDungeonCenter.draw(this, spawner.x / 16, spawner.y / 16);
 
-				if (getTile(sp.x / 16, sp.y / 16 - 4) == Tiles.get("Dirt")) {
-					Structure.mobDungeonNorth.draw(this, sp.x / 16, sp.y / 16 - 5);
+				if (getTile(spawner.x / 16, spawner.y / 16 - 4) == Tiles.get("Dirt")) {
+					Structure.mobDungeonNorth.draw(this, spawner.x / 16, spawner.y / 16 - 5);
 				}
-				if (getTile(sp.x / 16, sp.y / 16 + 4) == Tiles.get("Dirt")) {
-					Structure.mobDungeonSouth.draw(this, sp.x / 16, sp.y / 16 + 5);
+				if (getTile(spawner.x / 16, spawner.y / 16 + 4) == Tiles.get("Dirt")) {
+					Structure.mobDungeonSouth.draw(this, spawner.x / 16, spawner.y / 16 + 5);
 				}
-				if (getTile(sp.x / 16 + 4, sp.y / 16) == Tiles.get("Dirt")) {
-					Structure.mobDungeonEast.draw(this, sp.x / 16 + 5, sp.y / 16);
+				if (getTile(spawner.x / 16 + 4, spawner.y / 16) == Tiles.get("Dirt")) {
+					Structure.mobDungeonEast.draw(this, spawner.x / 16 + 5, spawner.y / 16);
 				}
-				if (getTile(sp.x / 16 - 4, sp.y / 16) == Tiles.get("Dirt")) {
-					Structure.mobDungeonWest.draw(this, sp.x / 16 - 5, sp.y / 16);
+				if (getTile(spawner.x / 16 - 4, spawner.y / 16) == Tiles.get("Dirt")) {
+					Structure.mobDungeonWest.draw(this, spawner.x / 16 - 5, spawner.y / 16);
 				}
 
-				add(sp);
+				add(spawner);
 				for (int rpt = 0; rpt < 2; rpt++) {
 					if (random.nextInt(2) != 0) {
 						continue;
 					}
-					Chest c = new Chest();
+					Chest chest = new Chest();
 					int chance = -depth;
 
-					c.populateInvRandom("minidungeon", chance);
+					chest.populateInvRandom("minidungeon", chance);
 
-					add(c, sp.x - 16 + rpt * 32, sp.y - 16);
+					add(chest, spawner.x - 16 + rpt * 32, spawner.y - 16);
 				}
 			}
 

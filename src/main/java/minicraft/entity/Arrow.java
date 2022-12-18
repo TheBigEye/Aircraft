@@ -49,14 +49,17 @@ public class Arrow extends Entity implements ClientTickable {
 
 	@Override
 	public void tick() {
+		// Check if the projectile is out of bounds
 		if (x < 0 || x >> 4 > level.w || y < 0 || y >> 4 > level.h) {
-			remove(); // Remove when out of bounds
+			remove();
 			return;
 		}
 
+		// Update position based on direction and speed
 		x += dir.getX() * speed;
 		y += dir.getY() * speed;
 
+		// Check if the projectile collides with any entities
 		List<Entity> entitylist = level.getEntitiesInRect(new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS));
 		boolean criticalHit = random.nextInt(11) < 9;
 
@@ -65,13 +68,16 @@ public class Arrow extends Entity implements ClientTickable {
 				Mob mob = (Mob) hit;
 				int extradamage = (hit instanceof Player ? 0 : 3) + (criticalHit ? 0 : 1);
 				mob.hurt(owner, damage + extradamage, dir);
-			}
-
-			if (!level.getTile(x / 16, y / 16).mayPass(level, x / 16, y / 16, this) && !level.getTile(x / 16, y / 16).connectsToFluid && level.getTile(x / 16, y / 16).id != 16) {
-				this.remove();
+				break; // No need to check other entities
 			}
 		}
 
+		// Check if the projectile collides with a solid block
+		if (!level.getTile(x / 16, y / 16).mayPass(level, x / 16, y / 16, this) &&
+			!level.getTile(x / 16, y / 16).connectsToFluid &&
+			level.getTile(x / 16, y / 16).id != 16) {
+			remove();
+		}
 	}
 
 	@Override

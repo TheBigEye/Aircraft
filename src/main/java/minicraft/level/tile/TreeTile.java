@@ -76,8 +76,6 @@ public class TreeTile extends Tile {
     
     @Override
     public void hurt(Level level, int x, int y, int dmg) {   	
-    	Player player = level.getClosestPlayer(x, y);
-    	
         if (random.nextInt(50) == 25) {
             level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Apple"));
         }
@@ -89,7 +87,7 @@ public class TreeTile extends Tile {
         }
         
         level.add(new SmashParticle(x * 16, y * 16));
-        Sound.genericHurt.playOnWorld(x * 16, y * 16, player.x, player.y);
+        Sound.genericHurt.playOnWorld(x * 16, y * 16);
 
         level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
         if (damage >= treeHealth) {

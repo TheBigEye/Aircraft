@@ -12,12 +12,12 @@ public class InfoDisplay extends Display {
 	public InfoDisplay() {
 		// noinspection SuspiciousNameCombination
 		super(new Menu.Builder(true, 2, RelPos.LEFT, StringEntry.useLines(
-				"----------------------------",
-				"Time Played: " + getTimeString(),
-				"Current Score: " + Game.player.getScore(),
-				"----------------------------",
-				
-				Game.input.getMapping("select") + "/" + Game.input.getMapping("exit") + ":Exit")
+			"----------------------------",
+			"Time Played: " + getTimeString(),
+			"Current Score: " + Game.player.getScore(),
+			"----------------------------",
+			
+			Game.input.getMapping("select") + "/" + Game.input.getMapping("exit") + ":Exit")
 				
 		).setTitle("Player Stats")
 		.setTitlePos(RelPos.TOP_LEFT)
@@ -40,9 +40,9 @@ public class InfoDisplay extends Display {
 
 		String timeString;
 		if (hours > 0) {
-			timeString = hours + "h" + (minutes < 10 ? "0" : "") + minutes + "m";
+			timeString = hours + "h " + (minutes < 10 ? "0" : "") + minutes + "m ";
 		} else {
-			timeString = minutes + "m " + (seconds < 10 ? "0" : "") + seconds + "s";
+			timeString = minutes + "m " + (seconds < 10 ? "0" : "") + seconds + "s ";
 		}
 
 		return timeString;

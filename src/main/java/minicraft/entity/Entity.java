@@ -170,7 +170,7 @@ public abstract class Entity implements Tickable {
             return true; // Was not stopped
         }
 
-        boolean interact = true;// !Game.isValidClient() || this instanceof ClientTickable;
+        boolean interact = true;
 
         // Gets the tile coordinate of each direction from the sprite...
         int xto0 = ((x) - xr) >> 4; // To the left
@@ -187,12 +187,15 @@ public abstract class Entity implements Tickable {
         // boolean blocked = false; // If the next tile can block you.
         for (int yt = yt0; yt <= yt1; yt++) { // Cycles through y's of tile after movement
             for (int xt = xt0; xt <= xt1; xt++) { // Cycles through x's of tile after movement
-                if (xt >= xto0 && xt <= xto1 && yt >= yto0 && yt <= yto1)
+                if (xt >= xto0 && xt <= xto1 && yt >= yto0 && yt <= yto1) {
                     continue; // Skip this position if this entity's sprite is touching it
-                // Tile positions that make it here are the ones that the entity will be in, but
-                // are not in now.
-                if (interact)
+                }
+                
+                // Tile positions that make it here are the ones that the entity will be in, but are not in now.
+                if (interact) {
                     level.getTile(xt, yt).bumpedInto(level, xt, yt, this); // Used in tiles like cactus
+                }
+                
                 if (!level.getTile(xt, yt).mayPass(level, xt, yt, this)) { // If the entity can't pass this tile...
                     // blocked = true; // Then the entity is blocked
                     return false;
@@ -201,37 +204,36 @@ public abstract class Entity implements Tickable {
         }
 
         // These lists are named as if the entity has already moved-- it hasn't, though.
-        List<Entity> wasInside = level.getEntitiesInRect(getBounds()); // Gets all of the entities that are inside this
-                                                                       // entity (aka: colliding) before moving.
-
+        List<Entity> wasInside = level.getEntitiesInRect(getBounds()); // Gets all of the entities that are inside this entity (aka: colliding) before moving.
         int xr = this.xr;
         int yr = this.yr;
 
-
         List<Entity> isInside = level.getEntitiesInRect(new Rectangle(x + xd, y + yd, xr * 2, yr * 2, Rectangle.CENTER_DIMS)); // Gets the entities                                                                                        // moved.
         if (interact) {
-            for (Entity e : isInside) {
+            for (Entity entity : isInside) {
                 /// Cycles through entities about to be touched, and calls touchedBy(this) for each of them.
-                if (e == this) {
+                if (entity == this) {
                     continue; // Touching yourself doesn't count.
                 }
 
-                if (e instanceof Player) {
+                if (entity instanceof Player) {
                     if (!(this instanceof Player)) {
-                        touchedBy(e);
+                        touchedBy(entity);
                     }
                 } else {
-                    e.touchedBy(this);// Call the method. ("touch" the entity)
+                    entity.touchedBy(this);// Call the method. ("touch" the entity)
                 } 
             }
         }
 
         isInside.removeAll(wasInside); // Remove all the entities that this one is already touching before moving.
-        for (Entity e : isInside) {
-            if (e == this)
+        for (Entity entity : isInside) {
+            if (entity == this) {
                 continue; // Can't interact with yourself
-            if (e.blocks(this))
+            }
+            if (entity.blocks(this)) {
                 return false; // If the entity prevents this one from movement, don't move.
+            }
         }
 
         // Finally, the entity moves!
@@ -254,14 +256,15 @@ public abstract class Entity implements Tickable {
     /** Removes the entity from the level. */
     public void remove() {
         if (removed && !(this instanceof ItemEntity)) // Apparently this happens fairly often with item entities.
-            // System.out.println("Note: remove() called on removed entity: " + this);
+        // System.out.println("Note: remove() called on removed entity: " + this);
 
-            removed = true;
+        removed = true;
 
-        if (level == null)
+        if (level == null) {
             System.out.println("Note: remove() called on entity with no level reference: " + getClass());
-        else
+        } else {
             level.remove(this);
+        }
     }
 
     /**
@@ -270,9 +273,7 @@ public abstract class Entity implements Tickable {
      */
     public void remove(Level level) {
         if (level != this.level) {
-            if (Game.debug)
-                System.out.println("Tried to remove entity " + this + " from level it is not in: " + level
-                        + "; in level " + this.level);
+            if (Game.debug) System.out.println("Tried to remove entity " + this + " from level it is not in: " + level + "; in level " + this.level);
         } else {
             removed = true; // Should already be set.
             this.level = null;
@@ -334,7 +335,6 @@ public abstract class Entity implements Tickable {
         }
 
         if (level == null) return null;
-
         return level.getClosestPlayer(x, y);
     }
 

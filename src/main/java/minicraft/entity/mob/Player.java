@@ -10,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 import org.tinylog.Logger;
 
 import minicraft.core.Game;
-import minicraft.core.Renderer;
 import minicraft.core.Updater;
 import minicraft.core.World;
 import minicraft.core.io.InputHandler;
@@ -386,34 +385,43 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 		if (isRaining == true) {
 			if (!Updater.paused && Game.currentLevel == 3) {
+				
+				// Thunder sound
+				if (this != null && tickTime / 8 % 32 == 0 && random.nextInt(8) == 4) {
+					if (random.nextBoolean()) {
+						if (!random.nextBoolean()) {
+							Sound.rainThunder1.playOnGui();
+						} else {
+							Sound.rainThunder2.playOnGui();
+						}
+					} else {
+						Sound.rainThunder3.playOnGui();
+					}
+				}
 
 				if (rainTime /24 %2 == 0) {
-					Random rnd = new Random();
 					rainTick++;
                     
                     if (Settings.get("particles").equals(true)) {
                         for (int i = 0; i < 6; i++) {
-                            level.add(new SplashParticle(x, y), x + (rnd.nextInt(level.w) - rnd.nextInt(level.h)), y + (rnd.nextInt(level.w) - rnd.nextInt(level.h)));
+                            level.add(new SplashParticle(x, y), x + (random.nextInt(level.w) - random.nextInt(level.h)), y + (random.nextInt(level.w) - random.nextInt(level.h)));
                         }
                     }
 				}
 				if (rainTick > 56) rainTick = 0;
 			}
 
-			if (rainTime /2 %2 == 0) {
+			/*if (rainTime /2 %2 == 0) {
 				Renderer.renderRain = !Renderer.renderRain;
-			}
+			}*/
 		}
 
 		// PLAYER BURNING
 		if (playerBurning == true) {
 			if (tickTime / 16 % 4 == 0 && burnTime != 120) {
                 if (Settings.get("particles").equals(true)) {
-                    int randX = random.nextInt(10);
-                    int randY = random.nextInt(9);
-                    level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
+                    level.add(new FireParticle(x - 4 + random.nextInt(10), y - 4 + random.nextInt(9)));
                 }
-                
                 if (!potionEffects.containsKey(PotionType.Lava) || !potionEffects.containsKey(PotionType.xLava)) {
                     this.hurt(this, 1);
                 }
@@ -1229,13 +1237,16 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
     /** What happens when the player interacts with a itemEntity */
     public void pickupItem(ItemEntity itemEntity) {
-
-    	Sound.playerPickup.playOnWorld(itemEntity.x, itemEntity.y, this.x, this.y);
+    	// pickup sound
+    	Sound.playerPickup.playOnWorld(itemEntity.x, itemEntity.y);
+    	
+    	// remove the picked-up item
     	itemEntity.remove();
     	addScore(1);
 
+    	// We shall not bother the inventory on creative mode.
     	if (Game.isMode("Creative")) {
-    		return; // We shall not bother the inventory on creative mode.
+    		return; 
     	}
 
     	// Picked up item equals the one in your hand

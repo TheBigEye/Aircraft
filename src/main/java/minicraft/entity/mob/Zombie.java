@@ -30,23 +30,22 @@ public class Zombie extends EnemyMob {
         super.tick();
 
         if (random.nextInt(5) == 1) {
-
-            if (random.nextInt(2) == 0) {
-                DAMAGE = 2;
-            }
-            if (random.nextInt(2) == 1) {
-                DAMAGE = 1;
-            }
+            DAMAGE = random.nextInt(2) + 1;
         }
-
     }
 
     public void die() {
-        if (Settings.get("diff").equals("Peaceful")) dropItem(2, 4, Items.get("cloth"));
-        if (Settings.get("diff").equals("Easy")) dropItem(2, 4, Items.get("cloth"));
-        if (Settings.get("diff").equals("Normal")) dropItem(1, 3, Items.get("cloth"));
-        if (Settings.get("diff").equals("Hard")) dropItem(1, 2, Items.get("cloth"));
+    	int min = 0; int max = 0;
+        String difficulty = (String) Settings.get("diff");
 
+        if (difficulty == "Peaceful" || difficulty == "Easy") {
+        	min = 2; max = 4;
+        } else if (difficulty == "Normal") {
+        	min = 1; max = 3;
+        } else if (difficulty == "Hard") {
+        	min = 1; max = 2;
+        }
+       
         if (random.nextInt(60) == 2) {
             level.dropItem(x, y, Items.get("iron"));
         }
@@ -55,12 +54,14 @@ public class Zombie extends EnemyMob {
             level.dropItem(x, y, Items.get("Potato"));
         }
 
-        if (random.nextInt(255) < 4) {
+        if (random.nextInt(200) < 4) {
             level.dropItem(x, y, Items.get("Carrot"));
         }
+        
+        dropItem(min, max, Items.get("cloth"));
 
+        int rand = random.nextInt(3);
         if (random.nextInt(40) == 19) {
-            int rand = random.nextInt(3);
             switch (rand) {
                 case 0: level.dropItem(x, y, Items.get("green clothes")); break;
                 case 1: level.dropItem(x, y, Items.get("red clothes")); break;

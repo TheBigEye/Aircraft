@@ -73,38 +73,32 @@ public class AirWizardPhase2 extends EnemyMob {
         
         length = health / (maxHealth / 100);
 
-        if (Game.isMode("Creative"))
+        if (Game.isMode("Creative")) {
             return; // Should not attack if player is in creative
+        }
 
         if (attackDelay > 0) {
             xa = ya = 0;
             int dir = (attackDelay - 45) / 4 % 4; // the direction of attack.
             dir = (dir * 2 % 4) + (dir / 2); // direction attack changes
-            if (attackDelay < 45)
-                dir = 0; // direction is reset, if attackDelay is less than 45; prepping for attack.
+            if (attackDelay < 45) dir = 0; // direction is reset, if attackDelay is less than 45; prepping for attack.
 
             this.dir = Direction.getDirection(dir);
 
             attackDelay--;
             if (attackDelay == 0) {
-                // attackType = 0; // attack type is set to 0, as the default.
-                if (health < maxHealth / 2)
-                    attackType = 1; // if at 1000 health (50%) or lower, attackType = 1
-                if (health < maxHealth / 10)
-                    attackType = 2; // if at 200 health (10%) or lower, attackType = 2
-                if (random.nextInt(3) == 0) {
-                    attackTime = 60 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default
-                                                            // 60 ticks/sec)
+                // attackType is set to 0 by default
+                attackType = 0;
+                if (health < maxHealth / 2) {
+                    attackType = 1;
                 }
-                if (random.nextInt(3) == 1) {
-                    attackTime = 46 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default
-                                                            // 60 ticks/sec)
-                }
-                if (random.nextInt(3) == 2) {
-                    attackTime = 25 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default
-                                                            // 60 ticks/sec)
+                if (health < maxHealth / 10) {
+                    attackType = 2;
                 }
 
+                // Select a random attack time
+                int attackTimeOptions[] = {60, 46, 25};
+                attackTime = attackTimeOptions[random.nextInt(3)] * (secondform ? 3 : 2);
             }
             return; // skips the rest of the code (attackDelay must have been > 0)
         }
@@ -125,19 +119,13 @@ public class AirWizardPhase2 extends EnemyMob {
             int yd = player.y - y; // the vertical distance between the player and the air wizard.
             if (xd * xd + yd * yd < 16 * 16 * 2 * 2) {
                 /// Move away from the player if less than 2 blocks away
-
                 xa = 0; // accelerations
                 ya = 0;
-                // these four statements basically just find which direction is away from the
-                // player:
-                if (xd < 0)
-                    xa = +1;
-                if (xd > 0)
-                    xa = -1;
-                if (yd < 0)
-                    ya = +1;
-                if (yd > 0)
-                    ya = -1;
+                // these four statements basically just find which direction is away from the player:
+                if (xd < 0) xa = +1;
+                if (xd > 0) xa = -1;
+                if (yd < 0) ya = +1;
+                if (yd > 0) ya = -1;
             } else if (xd * xd + yd * yd > 16 * 16 * 15 * 15) {// 15 squares away
                 /// drags the airwizard to the player, maintaining relative position.
                 double hypot = Math.sqrt(xd * xd + yd * yd);
@@ -151,27 +139,7 @@ public class AirWizardPhase2 extends EnemyMob {
         if (player != null && randomWalkTime == 0) {
             int xd = player.x - x; // x dist to player
             int yd = player.y - y; // y dist to player
-            if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) { // if a
-                                                                                                                // random
-                                                                                                                // number,
-                                                                                                                // 0-3,
-                                                                                                                // equals
-                                                                                                                // 0,
-                                                                                                                // and
-                                                                                                                // the
-                                                                                                                // player
-                                                                                                                // is
-                                                                                                                // less
-                                                                                                                // than
-                                                                                                                // 50
-                                                                                                                // blocks
-                                                                                                                // away,
-                                                                                                                // and
-                                                                                                                // attackDelay
-                                                                                                                // and
-                                                                                                                // attackTime
-                                                                                                                // equal
-                                                                                                                // 0...
+            if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) {
                 attackDelay = 60 * 2; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
             }
         }
@@ -230,29 +198,39 @@ public class AirWizardPhase2 extends EnemyMob {
     /** What happens when the air wizard dies */
     public void die() {
         Player[] players = level.getPlayers();
-        Sound.airWizardChangePhase.playOnGui();
-        if (players.length > 0) { // if the player is still here
-            for (Player p : players)
-                p.addScore((secondform ? 500000 : 100000)); // give the player 100K or 500K points.
+
+        // If there is at least one player in the level
+        if (players.length > 0) {
+            for (Player p : players) {
+                // Give the player 10K or 50K points
+                p.addScore(secondform ? 50000 : 10000); 
+            }
+
+            // Play sound on the world at the position of the Air Wizard
+            Sound.airWizardChangePhase.playOnWorld(x, y);
         }
 
-        Sound.airWizardChangePhase.playOnGui();
-
-        
-        
+        // If the Air Wizard is in its first form
         if (!secondform) {
+            // Add a new instance of AirWizardPhase3 with 1 life remaining
             level.add(new AirWizardPhase3(1), x, y);
             Updater.notifyAll("Phase III");
+
+            // If the Air Wizard has not been beaten yet, notify all with "Phase III" after 200 milliseconds
             if (!beaten) Updater.notifyAll("Phase III", 200);
             beaten = true;
             active = false;
-
-        } else {
+        } 
+ 
+        // If the Air Wizard is in its second form
+        else {
+            // Add a new instance of AirWizardPhase3 that has been defeated
             level.add(new AirWizardPhase3(true), x, y);
             Updater.notifyAll("Phase III");
         }
 
-        super.die(); // calls the die() method in EnemyMob.java
+        // Call the die() method in EnemyMob.java
+        super.die();
     }
 
     public int getMaxLevel() {

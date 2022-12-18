@@ -76,28 +76,28 @@ public class AirWizardPhase3 extends EnemyMob {
         
         length = health / (maxHealth / 100);
 
-        if (Game.isMode("Creative"))
+        if (Game.isMode("Creative")) {
             return; // Should not attack if player is in creative
+        }
 
         if (attackDelay > 0) {
             xa = ya = 0;
             int dir = (attackDelay - 45) / 4 % 4; // The direction of attack.
             dir = (dir * 2 % 4) + (dir / 2); // Direction attack changes
-            if (attackDelay < 45) {
-                dir = 0; // Direction is reset, if attackDelay is less than 45; prepping for attack.
-            }
-
+            if (attackDelay < 45) dir = 0; // Direction is reset, if attackDelay is less than 45; prepping for attack.
+            
             this.dir = Direction.getDirection(dir);
 
             attackDelay--;
             if (attackDelay == 0) {
                 // attackType = 0; // Attack type is set to 0, as the default.
-                if (health < maxHealth / 2)
+                if (health < maxHealth / 2) {
                     attackType = 1; // If at 1000 health (50%) or lower, attackType = 1
-                if (health < maxHealth / 10)
+                }
+                if (health < maxHealth / 10) {
                     attackType = 2; // If at 200 health (10%) or lower, attackType = 2
-                attackTime = 60 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default 60
-                                                        // ticks/sec)
+                }
+                attackTime = 60 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default 60 ticks/sec)
             }
             return; // Skips the rest of the code (attackDelay must have been > 0)
         }
@@ -201,12 +201,15 @@ public class AirWizardPhase3 extends EnemyMob {
     /** What happens when the air wizard dies */
     public void die() {
         Player[] players = level.getPlayers();
-        if (players.length > 0) { // If the player is still here
-            for (Player p : players)
-                p.addScore((secondform ? 500000 : 100000)); // Give the player 100K or 500K points.
+        
+        // If the player is still here
+        if (players.length > 0) {
+            for (Player player : players) {
+                player.addScore((secondform ? 50000 : 10000)); // Give the player 10K or 50K points.
+            }
         }
 
-        Sound.airWizardDeath.playOnGui(); // Play the boss-death sound when dies.
+        Sound.airWizardChangePhase.playOnWorld(x, y);
         level.dropItem(x, y, Items.get("AlAzif"));
 
         if (!secondform) {

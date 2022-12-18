@@ -71,56 +71,57 @@ public class Initializer extends Game {
 	 * command to render out the screen.
 	 */
 	static void run(Core discordCore) {
-		long lastTick = System.nanoTime();
-		long lastRender = System.nanoTime();
-		double unprocessed = 0;
-		int frames = 0;
-		int ticks = 0;
-		long lastTimer1 = System.currentTimeMillis();
+	    long lastTick = System.nanoTime();
+	    long lastRender = System.nanoTime();
+	    double unprocessed = 0;
+	    int frames = 0;
+	    int ticks = 0;
+	    long lastTimer1 = System.currentTimeMillis();
 
-		while (running) {
-			long now = System.nanoTime();
-			double nsPerTick = 1E9D / Updater.normSpeed; // nanosecs per sec divided by ticks per sec = nanosecs per tick
+	    // calculate nanoseconds per tick
+	    double nsPerTick = 1E9D / Updater.normSpeed;
+	    if (display == null) {
+	        nsPerTick /= Updater.gamespeed;
+	    }
 
-			if (display == null) {
-				nsPerTick /= Updater.gamespeed;
-			}
+	    // main loop
+	    while (running) {
+	        long now = System.nanoTime();
+	        unprocessed += (now - lastTick) / nsPerTick;
+	        lastTick = now;
 
-			unprocessed += (now - lastTick) / nsPerTick; // figures out the unprocessed time between now and lastTick.
-			lastTick = now;
+	        // update game state
+	        while (unprocessed >= 1) {
+	            ticks++;
+	            Updater.tick();
+	            unprocessed--;
+	        }
+	        
+		/*try {
+			Thread.sleep(2); // Makes a small pause for 2 milliseconds
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}*/
 
-			while (unprocessed >= 1) { // If there is unprocessed time, then tick.
-				ticks++;
-				Updater.tick(); // calls the tick method (in which it calls the other tick methods throughout the code.
-
-				unprocessed--;
-			}
-
-			try {
-				Thread.sleep(2); // Makes a small pause for 2 milliseconds
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
-			if ((now - lastRender) / 1.0E9 > 1.0 / MAX_FPS) {
-				frames++;
-				lastRender = System.nanoTime();
-				Renderer.render();
-			}
-
-			if (discordCore != null) {
-				discordCore.runCallbacks();
-			}
-
-			if (System.currentTimeMillis() - lastTimer1 > 1000) { // updates every 1 second
-				lastTimer1 += 1000; // adds a second to the timer
-
-				fra = frames; // saves total frames in last second
-				tik = ticks; // saves total ticks in last second
-				frames = 0; // resets frames
-				ticks = 0; // resets ticks; ie, frames and ticks only are per second
-			}
+		if ((now - lastRender) / 1.0E9 > 1.0 / MAX_FPS) {
+			frames++;
+			lastRender = System.nanoTime();
+			Renderer.render();
 		}
+
+		if (discordCore != null) {
+			discordCore.runCallbacks();
+		}
+
+		if (System.currentTimeMillis() - lastTimer1 > 1000) { // updates every 1 second
+			lastTimer1 += 1000; // adds a second to the timer
+
+			fra = frames; // saves total frames in last second
+			tik = ticks; // saves total ticks in last second
+			frames = 0; // resets frames
+			ticks = 0; // resets ticks; ie, frames and ticks only are per second
+		}
+	    }
 	}
 
 	/// Creates and displays the JFrame window that the game appears in.

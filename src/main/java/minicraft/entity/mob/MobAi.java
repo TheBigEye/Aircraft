@@ -83,8 +83,7 @@ public abstract class MobAi extends Mob {
             slowtick = foundPlayer;
         }
 
-        if (skipTick())
-            return;
+        if (skipTick()) return;
 
         if (!move(xa * speed, ya * speed)) {
             xa = 0;
@@ -96,8 +95,9 @@ public abstract class MobAi extends Mob {
             randomizeWalkDir(true); // set random walk direction.
         }
 
-        if (randomWalkTime > 0)
+        if (randomWalkTime > 0) {
             randomWalkTime--;
+        }
     }
 
     @Override
@@ -120,23 +120,21 @@ public abstract class MobAi extends Mob {
 
     @Override
     public void doHurt(int damage, Direction attackDir) {
-        if (isRemoved() || hurtTime > 0)
+        if (isRemoved() || hurtTime > 0) {
             return; // If the mob has been hurt recently and hasn't cooled down, don't continue
+        }
 
         Player player = getClosestPlayer();
         if (player != null) { // If there is a player in the level
-            /// play the hurt sound only if the player is less than 80 entity coordinates
-            /// away; or 5 tiles away.
+            /// play the hurt sound only if the player is less than 80 entity coordinates away; or 5 tiles away.
             int xd = player.x - x;
             int yd = player.y - y;
             if (xd * xd + yd * yd < 80 * 80) {
-                Sound.genericHurt.playOnGui();
+                Sound.genericHurt.playOnWorld(x, y);
             }
         }
-        level.add(new TextParticle("" + damage, x, y, Color.RED)); // Make a text particle at this position in this
-                                                                   // level, bright red and displaying the damage
-                                                                   // inflicted
-
+        // Make a text particle at this position in this level, bright red and displaying the damage inflicted
+        level.add(new TextParticle("" + damage, x, y, Color.RED)); 
         super.doHurt(damage, attackDir);
     }
 
@@ -151,10 +149,10 @@ public abstract class MobAi extends Mob {
      * @param byChance true if the mob should always get a new direction to walk,
      *                 false if there should be a chance that the mob moves.
      */
-    public void randomizeWalkDir(boolean byChance) { // boolean specifies if this method, from where it's called, is
-                                                     // called every tick, or after a random chance.
-        if (!byChance && random.nextInt(randomWalkChance) != 0)
+    public void randomizeWalkDir(boolean byChance) { // boolean specifies if this method, from where it's called, is called every tick, or after a random chance.
+        if (!byChance && random.nextInt(randomWalkChance) != 0) {
             return;
+        }
 
         randomWalkTime = randomWalkDuration; // set the mob to walk about in a random direction for a time
 
@@ -172,8 +170,9 @@ public abstract class MobAi extends Mob {
      */
     protected void dropItem(int mincount, int maxcount, Item... items) {
         int count = random.nextInt(maxcount - mincount + 1) + mincount;
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++) {
             level.dropItem(x, y, items);
+        }
     }
 
     /**
@@ -193,15 +192,17 @@ public abstract class MobAi extends Mob {
             int xd = player.x - x;
             int yd = player.y - y;
 
-            if (xd * xd + yd * yd < playerDist * playerDist)
+            if (xd * xd + yd * yd < playerDist * playerDist) {
                 return false;
+            }
         }
 
         int r = level.monsterDensity * soloRadius; // get no-mob radius
 
         // noinspection SimplifiableIfStatement
-        if (level.getEntitiesInRect(new Rectangle(x, y, r * 2, r * 2, Rectangle.CENTER_DIMS)).size() > 0)
+        if (level.getEntitiesInRect(new Rectangle(x, y, r * 2, r * 2, Rectangle.CENTER_DIMS)).size() > 0) {
             return false;
+        }
 
         return level.getTile(x >> 4, y >> 4).maySpawn(); // the last check.
     }
@@ -220,8 +221,9 @@ public abstract class MobAi extends Mob {
     protected void die(int points, int multAdd) {
         for (Player p : level.getPlayers()) {
             p.addScore(points); // add score for mob death
-            if (multAdd != 0)
+            if (multAdd != 0) {
                 p.addMultiplier(multAdd);
+            }
         }
 
         super.die();

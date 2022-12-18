@@ -41,31 +41,27 @@ public class SlimyWizard extends EnemyMob {
             if (yd < sig0) ya = -1;
             if (yd > sig0) ya = +1;
         }
-
     }
 
     public void die() {
-        if (Settings.get("diff").equals("Peaceful")) dropItem(2, 30, Items.get("slime"));
-        if (Settings.get("diff").equals("Easy")) dropItem(2, 30, Items.get("slime"));
-        if (Settings.get("diff").equals("Normal")) dropItem(2, 20, Items.get("slime"));
-        if (Settings.get("diff").equals("Hard")) dropItem(1, 10, Items.get("slime"));
+    	int min = 0; int max = 0;
+        String difficulty = (String) Settings.get("diff");
 
-        level.dropItem(x, y, Items.get("Sticky essence"));
-        level.dropItem(x, y, Items.get("Sticky essence"));
-        level.dropItem(x, y, Items.get("Sticky essence"));
-        level.dropItem(x, y, Items.get("green clothes"));
-
-        if (random.nextInt(40) == 19) {
-            int rand = random.nextInt(3);
-            switch (rand) {
-                case 0: level.dropItem(x, y, Items.get("green clothes")); break;
-                case 1: level.dropItem(x, y, Items.get("green clothes")); break;
-                case 2: level.dropItem(x, y, Items.get("slime")); break;
-                default:
-                    break;
-            }
+        if (difficulty == "Peaceful" || difficulty == "Easy") {
+        	min = 2; max = 30;
+        } else if (difficulty == "Normal") {
+        	min = 2; max = 20;
+        } else if (difficulty == "Hard") {
+        	min = 1; max = 10;
         }
-
+        
+        for (int i= 0; i < 5; i++) {
+        	level.dropItem(x, y, Items.get("Sticky essence"));
+        }
+     
+        level.dropItem(x, y, Items.get("green clothes"));
+        dropItem(min, max, Items.get("slime"));
+        
         super.die();
     }
 }

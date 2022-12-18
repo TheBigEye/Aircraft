@@ -56,7 +56,6 @@ public class Crafter extends Furniture {
 	@Override
 	public boolean use(Player player) {
 		if (type.melt) {
-			//Game.setDisplay(new MeltingDisplay(type, player));
 			AchievementsDisplay.setAchievement("minicraft.achievement.smelt_iron", true);
 			Game.setDisplay(new CraftingDisplay(type.recipes, type.name(), player));
 		} else {

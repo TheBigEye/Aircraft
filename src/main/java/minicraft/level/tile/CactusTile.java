@@ -42,9 +42,8 @@ public class CactusTile extends Tile {
         level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
 
         if (damage >= cHealth) {
-            // int count = random.nextInt(2) + 2;
             level.setTile(x, y, Tiles.get(baseTile));
-            Sound.genericHurt.playOnGui();
+            Sound.genericHurt.playOnWorld(x * 16, y * 16);
             level.dropItem(x * 16 + 8, y * 16 + 8, 2, 4, Items.get("Cactus"));
         } else {
             level.setData(x, y, damage);

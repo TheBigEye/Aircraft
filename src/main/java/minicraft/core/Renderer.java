@@ -62,8 +62,6 @@ public class Renderer extends Game {
 	public static boolean readyToRenderGameplay = false;
 	public static boolean showDebugInfo = false;
 	public static boolean renderRain = false;
-	
-	public static final String resourcesFolder = "/resources";
 
 	@SuppressWarnings("unused")
 	private static Ellipsis ellipsis = new SmoothEllipsis(new TickUpdater());
@@ -72,12 +70,12 @@ public class Renderer extends Game {
 		SpriteSheet itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background;
 		try {
 			// These set the sprites to be used.
-			itemSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/items.png"))));
-			tileSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/tiles.png"))));
-			entitySheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/entities.png"))));
-			guiSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/gui.png"))));
-			iconsSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/icons.png"))));
-			background = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/background.png"))));
+			itemSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/items.png"))));
+			tileSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/tiles.png"))));
+			entitySheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/entities.png"))));
+			guiSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/gui.png"))));
+			iconsSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/icons.png"))));
+			background = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/background.png"))));
 
 		} catch (NullPointerException e) {
 			// If a provided InputStream has no name. (in practice meaning it cannot be found.)
@@ -102,12 +100,12 @@ public class Renderer extends Game {
 	public static SpriteSheet[] loadLegacySpriteSheets() {
 		SpriteSheet itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background;
 		try {
-			itemSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/legacy/items.png"))));
-			tileSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/legacy/tiles.png"))));
-			entitySheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/legacy/entities.png"))));
-			guiSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/legacy/gui.png"))));
-			iconsSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/legacy/icons.png"))));
-			background = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(resourcesFolder + "/textures/legacy/background.png"))));
+			itemSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/items.png"))));
+			tileSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/tiles.png"))));
+			entitySheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/entities.png"))));
+			guiSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/gui.png"))));
+			iconsSheet = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/icons.png"))));
+			background = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/textures/legacy/background.png"))));
 
 		} catch (NullPointerException e) {
 			e.printStackTrace();
@@ -247,7 +245,7 @@ public class Renderer extends Game {
 		
 		Random rnd = new Random();
 		
-		renderRain();
+		/*renderRain();*/
 
 		// ARROWS COUNT STATUS
 		if (player.activeItem instanceof ToolItem) {
@@ -333,7 +331,7 @@ public class Renderer extends Game {
 			player.activeItem.renderHUD(screen, 20 * 8, Screen.h - 8, Color.GRAY);
 		}
 
-		ArrayList <String> permStatus = new ArrayList <> ();
+		ArrayList <String> permStatus = new ArrayList<>();
 
 		if (Updater.saving) {
 			permStatus.add("Saving... " + Math.round(LoadingDisplay.getPercentage()) + "%");
@@ -562,7 +560,7 @@ public class Renderer extends Game {
 		renderDebugInfo();
 	}
 	
-	public static void renderRain() {
+	/*public static void renderRain() {
 		// Check if it is raining and the current level is 3
 		if (currentLevel == 3 && player.isRaining == true) {
 		    Random rnd = new Random(); // Create a Random object to generate random numbers
@@ -582,7 +580,7 @@ public class Renderer extends Game {
 		      	}
 		    }
 		}
-	}
+	}*/
 
 	public static void renderBossbar(int length, String title) {
 
@@ -676,9 +674,9 @@ public class Renderer extends Game {
 			}
 
 			/// Displays number of chests left, if on dungeon level.
-			if (levels[currentLevel] != null && currentLevel == 5) {
-				if (levels[5].chestCount > 0) {
-					info.add("Chests: " + levels[5].chestCount);
+			if (levels[currentLevel] != null && currentLevel == 6) {
+				if (levels[6].chestCount > 0) {
+					info.add("Chests: " + levels[6].chestCount);
 				} else {
 					info.add("Chests: Complete!");
 				}

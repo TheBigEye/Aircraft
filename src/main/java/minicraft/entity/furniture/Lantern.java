@@ -55,14 +55,11 @@ public class Lantern extends Furniture {
 	@Override
 	public void tick() {
 		super.tick();
-		
 		tickTime++;
 
 		// Add bright particles
 		if (tickTime / 2 % 6 == 0 && Settings.get("particles").equals(true)) {
-			int randX = rnd.nextInt(14);
-			int randY = rnd.nextInt(12);
-			level.add(new BrightParticle(x - 10 + randX, y - 9 + randY));
+			level.add(new BrightParticle(x - 10 + rnd.nextInt(14), y - 9 + rnd.nextInt(12)));
 		}
 	}
 }
