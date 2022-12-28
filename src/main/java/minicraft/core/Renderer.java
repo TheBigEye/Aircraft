@@ -8,6 +8,7 @@ import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
@@ -17,17 +18,18 @@ import javax.imageio.ImageIO;
 import org.tinylog.Logger;
 
 import minicraft.core.io.Settings;
+import minicraft.entity.Entity;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.boss.AirWizard;
-import minicraft.entity.mob.boss.AirWizardPhase2;
-import minicraft.entity.mob.boss.AirWizardPhase3;
+import minicraft.entity.mob.boss.EyeQueen;
 import minicraft.gfx.Color;
 import minicraft.gfx.Ellipsis;
 import minicraft.gfx.Ellipsis.DotUpdater.TickUpdater;
 import minicraft.gfx.Ellipsis.SmoothEllipsis;
 import minicraft.gfx.Font;
 import minicraft.gfx.FontStyle;
+import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.gfx.SpriteSheet;
@@ -63,7 +65,6 @@ public class Renderer extends Game {
 	public static boolean showDebugInfo = false;
 	public static boolean renderRain = false;
 
-	@SuppressWarnings("unused")
 	private static Ellipsis ellipsis = new SmoothEllipsis(new TickUpdater());
 
 	public static SpriteSheet[] loadDefaultSpriteSheets() {
@@ -338,12 +339,12 @@ public class Renderer extends Game {
 		}
 
 		if (Bed.sleeping()) {
-			permStatus.add("Sleeping...");
+			permStatus.add("Sleeping" + ellipsis.updateAndGet());
 		}
 
-		if (Bed.inBed(Game.player)) {
+		/*if (Bed.inBed(Game.player)) {
 			permStatus.add("Press " + input.getMapping("exit") + " to cancel");
-		}
+		}*/
 
 		if (!permStatus.isEmpty()) {
 			FontStyle style = new FontStyle(Color.WHITE).setYPos(Screen.h / 2 - 25).setRelTextPos(RelPos.TOP).setShadowType(Color.DARK_GRAY, false);
@@ -357,7 +358,7 @@ public class Renderer extends Game {
 				notifications = notifications.subList(notifications.size() - 3, notifications.size());
 			}
 
-			if (Updater.notetick > 120) { // Display time per notification.
+			if (Updater.notetick > 100) { // Display time per notification.
 				notifications.remove(0);
 				Updater.notetick = 0;
 			}
@@ -476,8 +477,8 @@ public class Renderer extends Game {
 
 				// Renders armor
 				int armor = player.armor * Player.maxStat / Player.maxArmor;
-				if (i <= armor && player.curArmor != null) {
-					screen.render(i * 8, Screen.h - 24, (player.curArmor.level - 1) + 9 * 32, 0, 0);
+				if (i <= armor && player.currentArmor != null) {
+					screen.render(i * 8, Screen.h - 24, (player.currentArmor.level - 1) + 9 * 32, 0, 0);
 				}
 
 				/// Renders your current red hearts, hardcore hearts, or black hearts for damaged health.
@@ -545,18 +546,35 @@ public class Renderer extends Game {
 				}
 			}
 		}
-
-
-
-        // AirWizard bossbar
-		if (/*currentLevel == 4 &&*/ isMode("survival") && !player.isRemoved()){
-            if (Settings.get("bossbar").equals("On screen")) {
-                if (AirWizard.active && (player.getLevel().depth == 1)) renderBossbar(AirWizard.length, "Air wizard");
-                else if (AirWizardPhase2.active && (player.getLevel().depth == 1)) renderBossbar(AirWizardPhase2.length, "Phase II");
-                else if (AirWizardPhase3.active && (player.getLevel().depth == 1)) renderBossbar(AirWizardPhase3.length, "Phase III");
+		
+        // Render the bosses health bar on screen
+		if (!player.isRemoved() && Settings.get("bossbar").equals("On screen")){
+			// Check if are a boss close to the player in the current level
+			List<Entity> entitiesInRange = Game.levels[Game.currentLevel].getEntitiesInRect(new Rectangle(player.x, player.y, 360 * 2, 360 * 2, Rectangle.CENTER_DIMS));
+			
+			if (AirWizard.active) {
+            	AirWizard boss = AirWizard.entity;
+            	for (Entity entity: entitiesInRange) { 
+            		if (entity instanceof AirWizard) {
+            			if (boss.secondform) {
+            				renderBossbar((int) ((((float) boss.health) / boss.maxHealth) * 100), "Air Wizard II");
+            			} else {
+            				renderBossbar((int) ((((float) boss.health) / boss.maxHealth) * 100), "Air Wizard");
+            			}
+            		}
+            	}    
+            	
+            } 
+			if (EyeQueen.active) {
+            	EyeQueen boss = EyeQueen.entity;
+            	for (Entity entity: entitiesInRange) {
+            		if (entity instanceof EyeQueen) {
+            			renderBossbar((int) ((((float) boss.health) / boss.maxHealth) * 100), "Eye Queen");
+            		}
+            	}           	
             }
 		}
-
+		
 		renderDebugInfo();
 	}
 	
@@ -593,37 +611,33 @@ public class Renderer extends Game {
 		int INACTIVE_BOSSBAR = 24; // sprite y position
 		int ACTIVE_BOSSBAR = 25; // sprite y position
 
-
-		screen.render(x + (max_bar_length * 2) , y , 0 + INACTIVE_BOSSBAR * 32, 1, 3); // left corner
-
-		// The middle
-		for (int bx = 0; bx < max_bar_length; bx++) {
-			for (int by = 0; by < 1; by++) {
-				screen.render(x + bx * 2, y + by * 8, 1 + INACTIVE_BOSSBAR * 32, 0, 3);
+		if (bar_length > 1) {
+			screen.render(x + (max_bar_length * 2) , y , 0 + INACTIVE_BOSSBAR * 32, 1, 3); // left corner
+	
+			// The middle
+			for (int bx = 0; bx < max_bar_length; bx++) {
+				for (int by = 0; by < 1; by++) {
+					screen.render(x + bx * 2, y + by * 8, 1 + INACTIVE_BOSSBAR * 32, 0, 3);
+				}
+			}  
+	
+			screen.render(x - 5 , y , 0 + ACTIVE_BOSSBAR * 32, 0, 3); // right corner
+	
+			for (int bx = 0; bx < bar_length; bx++) {
+				for (int by = 0; by < 1; by++) {
+					screen.render(x + bx * 2, y + by * 8, 1 + ACTIVE_BOSSBAR * 32, 0, 3);
+				}
 			}
-		}  
-
-		screen.render(x - 5 , y , 0 + ACTIVE_BOSSBAR * 32, 0, 3); // right corner
-
-		for (int bx = 0; bx < bar_length; bx++) {
-			for (int by = 0; by < 1; by++) {
-				screen.render(x + bx * 2, y + by * 8, 1 + ACTIVE_BOSSBAR * 32, 0, 3);
-			}
+	
+			Font.drawCentered(title, screen, y + 8, Color.GRAY);
 		}
-
-		Font.drawCentered(title, screen, y + 8, Color.GRAY);
 	}
 
 	private static final LocalDateTime time = LocalDateTime.now();
 
 	// Renders show debug info on the screen.
 	private static void renderDebugInfo() { 
-
-		int textcol;
-
-		if (debug) textcol = Color.YELLOW;
-		else if (dev) textcol = Color.ORANGE;
-		else textcol = Color.WHITE;
+		int textColor = Color.WHITE;
 
 		if (showDebugInfo) {
 			ArrayList <String> info = new ArrayList <> ();
@@ -664,9 +678,9 @@ public class Renderer extends Game {
 					case 0: levelName = "Surface"; break;
 					case -1: levelName = "Caves"; break;
 					case -2: levelName = "Caverns"; break;
-					case -3: levelName = "Core"; break;
+					case -3: levelName = "Hell"; break;
 					case -4: levelName = "Dungeon"; break;
-					case -5: levelName = "Hell"; break;
+					case -5: levelName = "Void"; break;
 					default: levelName = "Secret dimension"; break;
 				}
 
@@ -696,8 +710,8 @@ public class Renderer extends Game {
 				info.add("Music factor: " + (levels[currentLevel].randomMusic / 1000) + "/16");
 			}
 
-			FontStyle style = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(1).setYPos(1);
-			FontStyle substyle = new FontStyle(textcol).setShadowType(Color.BLACK, true).setXPos(Screen.w - 116).setYPos(1);
+			FontStyle style = new FontStyle(textColor).setShadowType(Color.BLACK, true).setXPos(1).setYPos(1);
+			FontStyle substyle = new FontStyle(textColor).setShadowType(Color.BLACK, true).setXPos(Screen.w - 116).setYPos(1);
 
 			Font.drawParagraph(info, screen, style, 2);
 			Font.drawParagraph(subinfo, screen, substyle, 2);

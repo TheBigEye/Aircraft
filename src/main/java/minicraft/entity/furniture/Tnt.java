@@ -41,7 +41,7 @@ public class Tnt extends Furniture implements ActionListener {
 	 * Creates a new tnt furniture.
 	 */
 	public Tnt() {
-		super("Tnt", new Sprite(28, 24, 2, 2, 2), 3, 2);
+		super("Tnt", new Sprite(26, 30, 2, 2, 2), 3, 2);
 		fuseLit = false;
 		fuseTick = 0;
 
@@ -69,17 +69,17 @@ public class Tnt extends Furniture implements ActionListener {
 				// blow up
 				List<Entity> entitiesInRange = level.getEntitiesInRect(new Rectangle(x, y, BLAST_RADIUS * 2, BLAST_RADIUS * 2, Rectangle.CENTER_DIMS));
 
-				for (Entity e : entitiesInRange) {
-					float dist = (float) Math.hypot(e.x - x, e.y - y);
+				for (Entity entity : entitiesInRange) {
+					float dist = (float) Math.hypot(entity.x - x, entity.y - y);
 					damage = (int) (BLAST_DAMAGE * (1 - (dist / BLAST_RADIUS))) + 1;
 
-					if (e instanceof Mob && damage > 0) {
-						((Mob) e).onExploded(this, damage);
+					if (entity instanceof Mob && damage > 0) {
+						((Mob) entity).onExploded(this, damage);
 					}
 
 					// Ignite other bombs in range.
-					if (e instanceof Tnt) {
-						Tnt tnt = (Tnt) e;
+					if (entity instanceof Tnt) {
+						Tnt tnt = (Tnt) entity;
 						if (!tnt.fuseLit) {
 							tnt.fuseLit = true;
 							Sound.genericFuse.playOnWorld(x, y);
@@ -123,8 +123,8 @@ public class Tnt extends Furniture implements ActionListener {
 	@Override
 	public void render(Screen screen) {
 		if (fuseLit) {
-			int colFctr = 100 * ((fuseTick % 15) / 5) + 200;
-			col = Color.get(-1, colFctr, colFctr + 100, 555);
+			int colorFactor = 100 * ((fuseTick % 15) / 5) + 200;
+			color = Color.get(-1, colorFactor, colorFactor + 100, 555);
 		}
 		super.render(screen);
 	}

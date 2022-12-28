@@ -53,8 +53,8 @@ public class DoorTile extends Tile {
     @Override
     public void render(Screen screen, Level level, int x, int y) {
         boolean closed = level.getData(x, y) == 0;
-        Sprite curSprite = closed ? closedSprite : openSprite;
-        curSprite.render(screen, x * 16, y * 16);
+        Sprite currentSprite = closed ? closedSprite : openSprite;
+        currentSprite.render(screen, x * 16, y * 16);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class DoorTile extends Tile {
     }
 
     @Override
-    public boolean mayPass(Level level, int x, int y, Entity e) {
+    public boolean mayPass(Level level, int x, int y, Entity entity) {
         boolean closed = level.getData(x, y) == 0;
         return !closed;
     }

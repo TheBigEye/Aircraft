@@ -43,7 +43,7 @@ public class LavaBrickTile extends Tile {
 		return false;
 	}
 
-	public boolean mayPass(Level level, int x, int y, Entity e) {
-		return e.canWool();
+	public boolean mayPass(Level level, int x, int y, Entity entity) {
+		return entity.canWool();
 	}
 }

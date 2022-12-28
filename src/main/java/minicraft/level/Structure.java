@@ -6,8 +6,7 @@ import java.util.HashSet;
 import minicraft.entity.furniture.Crafter;
 import minicraft.entity.furniture.Furniture;
 import minicraft.entity.furniture.Lantern;
-import minicraft.entity.furniture.statue.SkeletonStatue;
-import minicraft.entity.furniture.statue.ZombieStatue;
+import minicraft.entity.furniture.Statue;
 import minicraft.gfx.Point;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
@@ -23,9 +22,9 @@ public class Structure {
         furniture = new HashMap<>();
     }
 
-    public Structure(Structure struct) {
-        this.tiles = struct.tiles;
-        this.furniture = struct.furniture;
+    public Structure(Structure structure) {
+        this.tiles = structure.tiles;
+        this.furniture = structure.furniture;
     }
 
     public void setTile(int x, int y, Tile tile) {
@@ -37,16 +36,19 @@ public class Structure {
     }
 
     public void draw(Level level, int xt, int yt) {
-        for (TilePoint p : tiles)
-            level.setTile(xt + p.x, yt + p.y, p.t);
+        for (TilePoint point : tiles) {
+            level.setTile(xt + point.x, yt + point.y, point.t);
+        }
 
-        for (Point p : furniture.keySet())
-            level.add(furniture.get(p).clone(), xt + p.x, yt + p.y, true);
+        for (Point point : furniture.keySet()) {
+            level.add(furniture.get(point).clone(), xt + point.x, yt + point.y, true);
+        }
     }
 
     public void draw(short[] map, int xt, int yt, int mapWidth) {
-        for (TilePoint p : tiles)
-            map[(xt + p.x) + (yt + p.y) * mapWidth] = p.t.id;
+        for (TilePoint point : tiles) {
+            map[(xt + point.x) + (yt + point.y) * mapWidth] = point.t.id;
+        }
     }
 
     public void setData(String keys, String data) {
@@ -87,11 +89,12 @@ public class Structure {
         }
 
         @Override
-        public boolean equals(Object o) {
-            if (!(o instanceof TilePoint))
+        public boolean equals(Object object) {
+            if (!(object instanceof TilePoint)) {
                 return false;
-            TilePoint p = (TilePoint) o;
-            return x == p.x && y == p.y && t.id == p.t.id;
+            }
+            TilePoint point = (TilePoint) object;
+            return x == point.x && y == point.y && t.id == point.t.id;
         }
 
         @Override
@@ -127,7 +130,11 @@ public class Structure {
     static {
         dungeonGate = new Structure();
         dungeonGate.setData("O:Obsidian,D:Obsidian Door,W:Obsidian Wall",
-                "WWDWW\n" + "WOOOW\n" + "DOOOD\n" + "WOOOW\n" + "WWDWW");
+             "WWDWW\n" +
+             "WOOOW\n" + 
+             "DOOOD\n" + 
+             "WOOOW\n" + 
+             "WWDWW");
         dungeonGate.addFurniture(-1, -1, new Lantern(Lantern.Type.IRON));
 
         dungeonLock = new Structure();
@@ -235,7 +242,7 @@ public class Structure {
             "WFFFW**O**ZZXCC\n" + 
             "WWWWW**O**ZZXCC\n"
         );
-        villageCrops.addFurniture(0, 0, new ZombieStatue());
+        villageCrops.addFurniture(0, 0, new Statue(Statue.Type.Zombie));
 
         villageHouseNormal2 = new Structure();
         villageHouseNormal2.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass,O:Path",
@@ -255,7 +262,7 @@ public class Structure {
             "WFFFW**O**WFFFW\n" + 
             "WWWWW**O**WWWWW\n"
         );
-        villageHouseNormal2.addFurniture(0, 0, new SkeletonStatue());
+        villageHouseNormal2.addFurniture(0, 0, new Statue(Statue.Type.Skeleton));
 
         villageHouseTwoDoor = new Structure();
         villageHouseTwoDoor.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass",

@@ -42,7 +42,7 @@ public abstract class Entity implements Tickable {
 
 	private boolean removed; // If the entity is to be removed from the level.
 	protected Level level; // The level that the entity is on.
-    public int col; // current color.
+    public int color; // current color.
 
     public int eid; 
 
@@ -60,7 +60,7 @@ public abstract class Entity implements Tickable {
 		
 		level = null;
 		removed = true;
-		col = 0;
+		color = 0;
 
 		eid = -1;
     }
@@ -107,8 +107,8 @@ public abstract class Entity implements Tickable {
     } // most entities are solid
 
     /** Determines if the given entity should prevent this entity from moving. */
-    public boolean blocks(Entity e) {
-        return isSolid() && e.isSolid();
+    public boolean blocks(Entity entity) {
+        return isSolid() && entity.isSolid();
     }
 
     /** Determines if the entity can swim (extended in sub-classes)*/

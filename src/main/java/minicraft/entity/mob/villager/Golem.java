@@ -6,7 +6,7 @@ import minicraft.gfx.MobSprite;
 import minicraft.item.Items;
 
 public class Golem extends DefenderMob {
-    private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(24, 2);
+    private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(30, 2);
 
     /**
      * Creates a golem.

@@ -8,11 +8,9 @@ public class Rectangle {
     public static final int CORNERS = 1;
     public static final int CENTER_DIMS = 2;
 
-    private int x;
-    private int y;
-    private int w;
-    private int h;
-
+    private int x, y;
+    private int w, h;
+    
     public Rectangle() {
     } // 0 all.
 

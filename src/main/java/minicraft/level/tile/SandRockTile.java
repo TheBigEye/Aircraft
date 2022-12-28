@@ -37,7 +37,7 @@ public class SandRockTile extends Tile {
         sprite.render(screen, level, x, y);
     }
 
-    public boolean mayPass(Level level, int x, int y, Entity e) {
+    public boolean mayPass(Level level, int x, int y, Entity entity) {
         return false;
     }
 

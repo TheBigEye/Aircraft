@@ -240,7 +240,6 @@ public class Font {
 		int INACTIVE_BOSSBAR = 24; // sprite y position
 		int ACTIVE_BOSSBAR = 25; // sprite y position
 
-
 		screen.render(x + (max_bar_length * 2) , y , 0 + INACTIVE_BOSSBAR * 32, 1, 3); // left corner
 
 		// Inactive bossbar center

@@ -38,7 +38,7 @@ public class PotionItem extends StackableItem {
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 
 		// Hot affairs achievement
-		if (type.equals(PotionType.Lava) && !Game.isMode("Creative")) {
+		if ((type.equals(PotionType.Lava) || type.equals(PotionType.xLava)) && !Game.isMode("Creative")) {
 			AchievementsDisplay.setAchievement("minicraft.achievement.lava",true);
 		}
 

@@ -12,10 +12,8 @@ import minicraft.entity.furniture.DungeonChest;
 import minicraft.entity.furniture.Furniture;
 import minicraft.entity.furniture.Lantern;
 import minicraft.entity.furniture.Spawner;
+import minicraft.entity.furniture.Statue;
 import minicraft.entity.furniture.Tnt;
-import minicraft.entity.furniture.statue.SkeletonStatue;
-import minicraft.entity.furniture.statue.SlimeStatue;
-import minicraft.entity.furniture.statue.ZombieStatue;
 import minicraft.entity.mob.Cat;
 import minicraft.entity.mob.Chicken;
 import minicraft.entity.mob.Cow;
@@ -95,9 +93,9 @@ public class FurnitureItem extends Item {
 		items.add(new FurnitureItem(new Tnt()));
 		items.add(new FurnitureItem(new Bed()));
 
-		items.add(new FurnitureItem(new SlimeStatue()));
-		items.add(new FurnitureItem(new ZombieStatue()));
-		items.add(new FurnitureItem(new SkeletonStatue()));
+		for (Statue.Type type : Statue.Type.values()) {
+			items.add(new FurnitureItem(new Statue(type)));
+		}
 
 		return items;
 	}
@@ -109,7 +107,7 @@ public class FurnitureItem extends Item {
 	private static int getSpritePos(int fpos) {
 		int x = fpos % 32;
 		int y = fpos / 32;
-		return ((x - 8) / 2) + y * 32;
+		return (x / 2) + y * 32;
 	}
 
 	private static Sprite getFurnitureSprite(Furniture furniture) {

@@ -71,8 +71,8 @@ public class Creeper extends EnemyMob {
 			boolean playerInRange = false; // tells if any players are within the blast
 
 			// Find if the player is in range and store it in playerInRange.
-			for (Entity e : level.getEntitiesOfClass(Mob.class)) {
-				Mob mob = (Mob) e;
+			for (Entity entity : level.getEntitiesOfClass(Mob.class)) {
+				Mob mob = (Mob) entity;
 				int pdx = Math.abs(mob.x - x);
 				int pdy = Math.abs(mob.y - y);
 				if (pdx < TRIGGER_RADIUS && pdy < TRIGGER_RADIUS) {
@@ -164,11 +164,8 @@ public class Creeper extends EnemyMob {
 
 	@Override
 	protected void touchedBy(Entity entity) {
-		if (Settings.get("diff").equals("Peaceful")) {
-			return;
-		}
-
-		if (Game.isMode("Creative")) {
+		// not explode if the difficulty is peaceful or game mode is crative
+		if (Settings.get("diff").equals("Peaceful") || Game.isMode("Creative")) {
 			return;
 		}
 

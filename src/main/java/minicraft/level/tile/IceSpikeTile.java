@@ -54,7 +54,7 @@ public class IceSpikeTile extends Tile {
 		return true;
 	}
 
-	public boolean mayPass(Level level, int x, int y, Entity e) {
+	public boolean mayPass(Level level, int x, int y, Entity entity) {
 		return false;
 	}
 

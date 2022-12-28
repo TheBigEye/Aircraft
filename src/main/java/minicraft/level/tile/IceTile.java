@@ -6,8 +6,6 @@ import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.boss.AirWizard;
-import minicraft.entity.mob.boss.AirWizardPhase2;
-import minicraft.entity.mob.boss.AirWizardPhase3;
 import minicraft.gfx.ConnectorSprite;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
@@ -89,7 +87,7 @@ public class IceTile extends Tile {
 	}
 	
 	public void steppedOn(Level level, int x, int y, Entity entity) {
-		if (entity instanceof Mob && (!(entity instanceof AirWizard)  && !(entity instanceof AirWizardPhase2) && !(entity instanceof AirWizardPhase3))) {
+		if (entity instanceof Mob && (!(entity instanceof AirWizard))) {
 			
 			// Get the tiles from a 3x3 area from the tile center
 			Tile[] areaTiles = level.getAreaTiles(x, y, 1);

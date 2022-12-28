@@ -1,7 +1,5 @@
 package minicraft.entity.mob;
 
-import java.util.Random;
-
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -9,9 +7,7 @@ import minicraft.gfx.MobSprite;
 import minicraft.item.Items;
 
 public class Chicken extends PassiveMob {
-    private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 32);
-
-    private Random rnd = new Random();
+    private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 40);
     private int tickTime = 0;
 
     /**

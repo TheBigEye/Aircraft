@@ -47,15 +47,15 @@ public class AchievementsDisplay extends Display {
 
 	                // Load json.
 					JSONObject json = new JSONObject(achievementJson);
-					JSONArray jsonArr = json.getJSONArray("achievements");
-	                for (Object object : jsonArr) {
+					JSONArray jsonArray = json.getJSONArray("achievements");
+	                for (Object object : jsonArray) {
 	                    JSONObject obj = (JSONObject) object;
 
 	                    // Create an achievement with the data.
 	                    Achievement a = new Achievement(
-	                            Localization.getLocalized(obj.getString("id")),
-	                            obj.getString("description"),
-	                            obj.getInt("score")
+                            Localization.getLocalized(obj.getString("id")),
+                            obj.getString("description"),
+                            obj.getInt("score")
 	                    );
 
 	                    achievements.put(obj.getString("id"), a);
@@ -69,12 +69,19 @@ public class AchievementsDisplay extends Display {
 	        } catch (JSONException e) {
 	            Logger.error("Achievements json contains invalid json.");
 	        }
-	    }
+	  }
 
 	public AchievementsDisplay() {
 		super(true, true,
-				new Menu.Builder(true, 2,RelPos.CENTER, getAchievemensAsEntries()).setSize(218, 96).setPositioning(new Point(Screen.w / 2, Screen.h / 2 - 64), RelPos.BOTTOM).createMenu(),
-				new Menu.Builder(true, 2, RelPos.BOTTOM, new StringEntry("")).setSize(218, 48).setPositioning(new Point(Screen.w / 2, Screen.h / 2 + 32), RelPos.BOTTOM).createMenu()
+			new Menu.Builder(true, 2, RelPos.CENTER, getAchievemensAsEntries())
+			.setSize(220, 96)
+			.setPositioning(new Point((Screen.w / 2) - 1, Screen.h / 2 - 64), RelPos.BOTTOM)
+			.createMenu(),
+			
+			new Menu.Builder(true, 2, RelPos.BOTTOM, new StringEntry(""))
+			.setSize(220, 48)
+			.setPositioning(new Point((Screen.w / 2) - 1, Screen.h / 2 + 32), RelPos.BOTTOM)
+			.createMenu()
 		);
 	}
 
@@ -98,7 +105,6 @@ public class AchievementsDisplay extends Display {
 	@Override
 	public void tick(InputHandler input) {
 		super.tick(input);
-
         ListEntry curEntry = menus[0].getCurEntry();
         if (curEntry instanceof SelectEntry) {
             selectedAchievement = achievements.get(((SelectEntry) curEntry).getText());
@@ -136,7 +142,6 @@ public class AchievementsDisplay extends Display {
 		// Add or subtract from score
 		if (unlocked) {
 			achievementScore += achievement.score;
-
 		} else {
 			achievementScore -= achievement.score;
 		}
@@ -159,20 +164,27 @@ public class AchievementsDisplay extends Display {
 		Font.drawCentered(Localization.getLocalized("Achievements Score:") + " " + achievementScore, screen, 32, Color.GRAY);
 
 		if (selectedAchievement != null) {
-		
-		// Render Achievement Info.
-		if (selectedAchievement.getUnlocked()){
-			Font.drawCentered(Localization.getLocalized("Earned!"), screen, 48, Color.GREEN);
-		} else {
-			Font.drawCentered(Localization.getLocalized("Not Earned"), screen, 48, Color.RED);
-		}
-
-		// Achievement description.
-		menus[1].setEntries(StringEntry.useLines(Font.getLines(Localization.getLocalized(selectedAchievement.description), menus[1].getBounds().getSize().width, menus[1].getBounds().getSize().height, 2)));
+			
+			// Render Achievement Info.
+			if (selectedAchievement.getUnlocked()){
+				Font.drawCentered(Localization.getLocalized("Earned!"), screen, 48, Color.GREEN);
+			} else {
+				Font.drawCentered(Localization.getLocalized("Not Earned"), screen, 48, Color.RED);
+			}
+	
+			// Achievement description.
+			menus[1].setEntries(StringEntry.useLines(Color.GRAY, Font.getLines(
+				Localization.getLocalized(selectedAchievement.description), 
+				menus[1].getBounds()
+				.getSize().width,
+				
+				menus[1].getBounds()
+				.getSize().height, 4)
+			));
 		}
 
 		// Help text.
-		Font.drawCentered("Use " + Game.input.getMapping("cursor-down") + " and " + Game.input.getMapping("cursor-up") + " to move.", screen, Screen.h - 8, Color.DARK_GRAY);
+		Font.drawCentered("Use " + Game.input.getMapping("cursor-down") + " and " + Game.input.getMapping("cursor-up") + " to move.", screen, Screen.h - 16, Color.DARK_GRAY);
 	}
 
 	@Override
@@ -209,7 +221,7 @@ public class AchievementsDisplay extends Display {
                     if (achievements.get(id).getUnlocked()) {
                         return Color.GREEN;
                     } else {
-                        return Color.WHITE;
+                        return Color.GRAY;
                     }
                 }
             });

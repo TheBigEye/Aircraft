@@ -11,7 +11,7 @@ import minicraft.item.Recipe;
 import minicraft.screen.CraftingDisplay;
 
 public class Cleric extends VillagerMob {
-	private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 46);
+	private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 50);
 
 	public static final ArrayList<Recipe> ClericTrdes = new ArrayList<>();
 

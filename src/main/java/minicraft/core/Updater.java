@@ -90,7 +90,6 @@ public class Updater extends Game {
 	// VERY IMPORTANT METHOD!! Makes everything keep happening.
 	// In the end, calls menu.tick() if there's a menu, or level.tick() if no menu.
 	public static void tick() {
-
 		Info.getInfo();
 
 		// move the player -1 level for testing...
@@ -124,8 +123,8 @@ public class Updater extends Game {
 				pastDay1 = true;
 				tickCount = 0;
 			}
-			if (tickCount <= sleepStartTime && tickCount >= sleepEndTime) { // it has reached morning.
-				Logger.trace("Reached morning, getting out of bed.");
+			if (tickCount <= sleepStartTime && tickCount >= sleepEndTime || input.getKey("exit").clicked) { // it has reached morning.
+				Logger.trace("Getting out of bed.");
 				gamespeed = 1;
 				Bed.restorePlayers();
 			}

@@ -19,8 +19,8 @@ public class HoleTile extends Tile {
 		connectsToFluid = true;
 	}
 
-	public boolean mayPass(Level level, int x, int y, Entity e) {
-		return e.canSwim();
+	public boolean mayPass(Level level, int x, int y, Entity entity) {
+		return entity.canSwim();
 	}
 
 	public void render(Screen screen, Level level, int x, int y) {

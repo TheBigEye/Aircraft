@@ -16,7 +16,7 @@ public class ExplodedTile extends Tile {
 	};
 
 	private boolean light = true;
-	private int r;
+	private int r = 3;
 
 	protected ExplodedTile(String name) {
 		super(name, sprite);
@@ -33,7 +33,7 @@ public class ExplodedTile extends Tile {
 	}
 
 	@Override
-	public boolean mayPass(Level level, int x, int y, Entity e) {
+	public boolean mayPass(Level level, int x, int y, Entity entity) {
 		return true;
 	}
 	

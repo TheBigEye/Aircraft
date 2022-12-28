@@ -52,8 +52,8 @@ public class ArmorItem extends StackableItem {
 
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 		boolean success = false;
-		if (player.curArmor == null && player.payStamina(staminaCost)) {
-			player.curArmor = this; // set the current armor being worn to this.
+		if (player.currentArmor == null && player.payStamina(staminaCost)) {
+			player.currentArmor = this; // set the current armor being worn to this.
 			player.armor = (int) (armor * Player.maxArmor); // armor is how many hits are left
 			success = true;
 		}

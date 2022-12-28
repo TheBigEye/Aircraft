@@ -36,31 +36,28 @@ public class MobSprite extends Sprite {
 	}
 
 	public static MobSprite[][] compileMobSpriteAnimations(int sheetX, int sheetY) {
-		MobSprite[][] sprites = new MobSprite[4][2];
-		// dir numbers: 0=down, 1=up, 2=left, 3=right.
-		/// On the spritesheet, most mobs have 4 sprites there, first facing down, then
-		// up, then right 1, then right 2. The first two get flipped to animate them,
-		// but the last two get flipped to change direction.
+	    // Create a two-dimensional array to hold the sprite animations
+	    MobSprite[][] sprites = new MobSprite[4][2];
 
-		// contents: down 1, up 1, right 1, right 2
-		MobSprite[] set1 = MobSprite.compileSpriteList(sheetX, sheetY, 2, 2, 0, 4);
-		// contents: down 2, up 2, left 1, left 2
-		MobSprite[] set2 = MobSprite.compileSpriteList(sheetX, sheetY, 2, 2, 1, 4);
+	    // Load in the sprite sheet and divide it into four sets of sprites
+	    MobSprite[] set1 = MobSprite.compileSpriteList(sheetX, sheetY, 2, 2, 0, 4); // down, up, right 1, right 2
+	    MobSprite[] set2 = MobSprite.compileSpriteList(sheetX, sheetY, 2, 2, 1, 4); // down, up, left 1, left 2
 
-		// down
-		sprites[0][0] = set1[0];
-		sprites[0][1] = set2[0];
-		// up
-		sprites[1][0] = set1[1];
-		sprites[1][1] = set2[1];
-		// left
-		sprites[2][0] = set2[2];
-		sprites[2][1] = set2[3];
-		// right
-		sprites[3][0] = set1[2];
-		sprites[3][1] = set1[3];
+	    // Populate the array with the appropriate sprites for each direction and frame
+	    sprites[0][0] = set1[0]; // down, first frame
+	    sprites[0][1] = set2[0]; // down, second frame
+	    
+	    sprites[1][0] = set1[1]; // up, first frame
+	    sprites[1][1] = set2[1]; // up, second frame
+	    
+	    sprites[2][0] = set2[2]; // left, first frame
+	    sprites[2][1] = set2[3]; // left, second frame
+	    
+	    sprites[3][0] = set1[2]; // right, first frame
+	    sprites[3][1] = set1[3]; // right, second frame
 
-		return sprites;
+	    // Return the array of sprites
+	    return sprites;
 	}
 
 	public void render(Screen screen, int x, int y, boolean fullbright) {

@@ -11,7 +11,7 @@ public class OldGolem extends EnemyMob {
     static {
         sprites = new MobSprite[4][4][2];
         for (int i = 0; i < 4; i++) {
-            MobSprite[][] list = MobSprite.compileMobSpriteAnimations(24, 0);
+            MobSprite[][] list = MobSprite.compileMobSpriteAnimations(30, 0);
             sprites[i] = list;
         }
     }

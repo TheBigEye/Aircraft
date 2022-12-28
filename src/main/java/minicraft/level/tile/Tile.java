@@ -115,7 +115,7 @@ public abstract class Tile {
 	}
 
 	/** Returns if the player can walk on it, overrides in sub-classes */
-	public boolean mayPass(Level level, int x, int y, Entity e) {
+	public boolean mayPass(Level level, int x, int y, Entity entity) {
 		return true;
 	}
 

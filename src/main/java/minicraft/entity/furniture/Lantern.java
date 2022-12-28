@@ -13,9 +13,10 @@ public class Lantern extends Furniture {
 		IRON("Iron Lantern", 12, 2),
 		GOLD("Gold Lantern", 15, 4);
 
+		protected String title;
 		protected int light;
 		protected int offset;
-		protected String title;
+		
 
 		Type(String title, int light, int offset) {
 			this.title = title;
@@ -35,7 +36,7 @@ public class Lantern extends Furniture {
 	 * @param type Type of lantern.
 	 */
 	public Lantern(Lantern.Type type) {
-		super(type.title, new Sprite(18 + type.offset, 24, 2, 2, 2), 3, 2);
+		super(type.title, new Sprite(16 + type.offset, 30, 2, 2, 2), 3, 2);
 		this.type = type;
 	}
 
@@ -58,7 +59,7 @@ public class Lantern extends Furniture {
 		tickTime++;
 
 		// Add bright particles
-		if (tickTime / 2 % 6 == 0 && Settings.get("particles").equals(true)) {
+		if (tickTime / 6 % 2 == 0 && Settings.get("particles").equals(true)) {
 			level.add(new BrightParticle(x - 10 + rnd.nextInt(14), y - 9 + rnd.nextInt(12)));
 		}
 	}

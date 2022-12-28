@@ -27,22 +27,22 @@ public class WorldGenDisplay extends Display {
 			"instead of moving the cursor, hold the shift key while typing.";
 
 	public static OptionalLong getSeed() {
-		String seedStr = worldSeed.getUserInput();
+		String seedString = worldSeed.getUserInput();
 
-		if (seedStr.length() == 0) {
+		if (seedString.length() == 0) {
 			return OptionalLong.empty();
 		}
 
 		// If the seed is only numbers, just use numbers
-		if (Pattern.matches("[-]?[0-9]*", seedStr)) {
-			return OptionalLong.of(Long.parseLong(seedStr));
+		if (Pattern.matches("[-]?[0-9]*", seedString)) {
+			return OptionalLong.of(Long.parseLong(seedString));
 		} else {
 			// If the seed is some combination of numbers/letters, hash them into a floating point number
 			long seed = 1125899906842597L; // rather large prime number
-			int len = seedStr.length();
+			int len = seedString.length();
 
 			for (int i = 0; i < len; i++) {
-				seed = 31*seed + seedStr.charAt(i);
+				seed = 31 * seed + seedString.charAt(i);
 			}
 
 			return OptionalLong.of(seed);
@@ -74,11 +74,10 @@ public class WorldGenDisplay extends Display {
 
 	public WorldGenDisplay() {
 		super(true);
-
+		
 		InputEntry nameField = makeWorldNameInput("- ", WorldSelectDisplay.getWorldNames(), Localization.getLocalized("New World"));
-
+		
 		SelectEntry nameHelp = new SelectEntry("Trouble with world name?", () -> Game.setDisplay(new BookDisplay(worldNameHelp))) {
-                    
 			@Override
 			public int getColor(boolean isSelected) {
 				return Color.get(1, 204);

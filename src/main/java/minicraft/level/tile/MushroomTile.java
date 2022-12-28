@@ -68,7 +68,7 @@ public class MushroomTile extends Tile {
 		Tiles.get("Mycelium").render(screen, level, x, y);
 
 		int data = level.getData(x, y);
-		int shape = (data / 16) % 2;
+		int shape = (50 / 16) % 2;
 
 		x = x << 4;
 		y = y << 4;

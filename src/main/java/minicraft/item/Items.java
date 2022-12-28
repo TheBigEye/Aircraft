@@ -47,10 +47,6 @@ public class Items {
         addAll(TileItem.getAllInstances());
         addAll(FishingRodItem.getAllInstances());
         addAll(ToolItem.getAllInstances());
-        // addAll(ShearItem.getAllInstances());
-        // addAll(Enchanted.getAllInstances());
-        // addAll(SharpSwordI.getAllInstances());
-        // addAll(SharpSwordII.getAllInstances());
         addAll(FoodItem.getAllInstances());
         addAll(StackableItem.getAllInstances());
         addAll(ClothingItem.getAllInstances());

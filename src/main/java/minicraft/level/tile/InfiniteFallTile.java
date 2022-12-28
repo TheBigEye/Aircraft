@@ -6,8 +6,6 @@ import minicraft.entity.Arrow;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.boss.AirWizard;
-import minicraft.entity.mob.boss.AirWizardPhase2;
-import minicraft.entity.mob.boss.AirWizardPhase3;
 import minicraft.gfx.Sprite;
 import minicraft.level.Level;
 
@@ -26,13 +24,13 @@ public class InfiniteFallTile extends Tile {
         return false;
     }
 
-    public boolean mayPass(Level level, int x, int y, Entity e) {
-        if (e instanceof AirWizard || e instanceof AirWizardPhase2 || e instanceof AirWizardPhase3 || e instanceof Arrow) {
+    public boolean mayPass(Level level, int x, int y, Entity entity) {
+        if (entity instanceof AirWizard || entity instanceof Arrow) {
             return true;
         }
-        if (e instanceof Player) {
-            Player p = (Player) e;
-            return p.suitOn || Game.isMode("Creative") || !Game.isMode("Creative") && p.fallWarn == true;
+        if (entity instanceof Player) {
+            Player player = (Player) entity;
+            return player.suitOn || Game.isMode("Creative") || !Game.isMode("Creative") && player.fallWarn == true;
         }
         return false;
     }

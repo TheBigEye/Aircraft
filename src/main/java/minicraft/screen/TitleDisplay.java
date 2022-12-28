@@ -54,14 +54,12 @@ public class TitleDisplay extends Display {
 				JSONObject json = new JSONObject(splashesJson);
 
 				JSONArray splashes = json.getJSONArray("splashes");
-
 				List<String> list = new ArrayList<>();
-
 				for (Object obj : splashes) {
 					String s = (String) obj;
 					list.add(s);
 				}
-
+				
 				TitleDisplay.splashes = list;
 			}
 		} catch (Exception e) {
@@ -71,40 +69,40 @@ public class TitleDisplay extends Display {
 
 	public TitleDisplay() {
 		super(false, false, new Menu.Builder(true, 1, RelPos.CENTER,
-				new SelectEntry("Singleplayer", () -> {
-					// if there are no worlds, it redirects to WorldGenDisplay()
-					if (!WorldSelectDisplay.getWorldNames().isEmpty()) {
-						Game.setDisplay(new Display(true, new Menu.Builder(false, 2, RelPos.CENTER,
-								new SelectEntry("Load World", () -> Game.setDisplay(new WorldSelectDisplay())),
-								new SelectEntry("New World", () -> Game.setDisplay(new WorldGenDisplay()))
-							)
-							.createMenu()
-						));
-					} else {
-						Game.setDisplay(new WorldGenDisplay());
-					}
-				}),
+			new SelectEntry("Singleplayer", () -> {
+				// if there are no worlds, it redirects to WorldGenDisplay()
+				if (!WorldSelectDisplay.getWorldNames().isEmpty()) {
+					Game.setDisplay(new Display(true, new Menu.Builder(false, 2, RelPos.CENTER,
+							new SelectEntry("Load World", () -> Game.setDisplay(new WorldSelectDisplay())),
+							new SelectEntry("New World", () -> Game.setDisplay(new WorldGenDisplay()))
+						)
+						.createMenu()
+					));
+				} else {
+					Game.setDisplay(new WorldGenDisplay());
+				}
+			}),
 
-				new SelectEntry("Options", () -> Game.setDisplay(new OptionsDisplay())),
-				new SelectEntry("Credits", () -> Game.setDisplay(new EndGameCreditsDisplay())),
-				new SelectEntry("Help", () -> Game.setDisplay(new Display(true, new Menu.Builder(true, 2, RelPos.CENTER,
-						new BlankEntry(),
-						new LinkEntry(Color.CYAN, "Minicraft discord", "https://discord.me/minicraft"),
-						new BlankEntry(),
-						new SelectEntry("Instructions", () -> Game.setDisplay(new BookDisplay(BookData.instructions))),
-						new SelectEntry("Story guide", () -> Game.setDisplay(new BookDisplay(BookData.storylineGuide))),
-						new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
-						new SelectEntry("About", () -> Game.setDisplay(new BookDisplay(BookData.about))),
-						new BlankEntry()
-					)
-					.setTitle("Help")
-					.createMenu()
-				))),
-				new SelectEntry("Exit", Game::quit)
-			)
-			.setPositioning(new Point(Screen.w / 2, Screen.h * 3 / 5), RelPos.CENTER)
-			.setShouldRender(false)
-			.createMenu()
+			new SelectEntry("Options", () -> Game.setDisplay(new OptionsDisplay())),
+			new SelectEntry("Credits", () -> Game.setDisplay(new EndGameCreditsDisplay())),
+			new SelectEntry("Help", () -> Game.setDisplay(new Display(true, new Menu.Builder(true, 2, RelPos.CENTER,
+					new BlankEntry(),
+					new LinkEntry(Color.CYAN, "Minicraft discord", "https://discord.me/minicraft"),
+					new BlankEntry(),
+					new SelectEntry("Instructions", () -> Game.setDisplay(new BookDisplay(BookData.instructions))),
+					new SelectEntry("Story guide", () -> Game.setDisplay(new BookDisplay(BookData.storylineGuide))),
+					new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
+					new SelectEntry("About", () -> Game.setDisplay(new BookDisplay(BookData.about))),
+					new BlankEntry()
+				)
+				.setTitle("Help")
+				.createMenu()
+			))),
+			new SelectEntry("Exit", Game::quit)
+		)
+		.setPositioning(new Point(Screen.w / 2, Screen.h * 3 / 5), RelPos.CENTER)
+		.setShouldRender(false)
+		.createMenu()
 		);
 	}
 
@@ -240,14 +238,14 @@ public class TitleDisplay extends Display {
 		}
 
 		/// This isn't as complicated as it looks. It just gets a color based off of count, which oscilates between 0 and 25.
-		int bcol = 5 - count / 5; // this number ends up being between 1 and 5, inclusive.
+		int textColor = 5 - count / 5; // this number ends up being between 1 and 5, inclusive.
 		int splashColor =
 			isblue ? Color.BLUE :
 			isRed ? Color.RED :
 			isGreen ? Color.GREEN :
 			isOrange ? Color.ORANGE :
 			isYellow ? Color.YELLOW :
-		Color.get(1, bcol * 51, bcol * 51, bcol * 25);
+		Color.get(1, textColor * 51, textColor * 51, textColor * 25);
 
 		if (shouldRender == true) {
 			Font.drawCentered(splashes.get(rand), screen, 100, splashColor);

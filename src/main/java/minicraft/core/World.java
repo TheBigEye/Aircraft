@@ -29,6 +29,9 @@ public class World extends Game {
 
 	static int playerDeadTime; // The time after you die before the dead menu shows up.
 	static int pendingLevelChange; // Used to determine if the player should change levels or not.
+	
+	private static long lastWorldExitTime = 0; // When the world exited.
+	private static long lastWorldEnterTime = 0; // When the world entered.
 
     private static long seed;
 	private static Random random;
@@ -203,4 +206,11 @@ public class World extends Game {
 			}
 		}
 	}
+	
+	public static void onWorldExits() {
+		lastWorldExitTime = System.currentTimeMillis();
+	}
+	
+	public static long getLastWorldExitTime() { return lastWorldExitTime; }
+	public static long getLastWorldEnterTime() { return lastWorldEnterTime; }
 }

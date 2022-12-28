@@ -80,11 +80,11 @@ public class WorldEditDisplay extends Display {
 			}
 
 			menus = new Menu[] {
-					new Menu.Builder(false, 0, RelPos.CENTER, entries)
-					.setDisplayLength(7)
-					.setScrollPolicies(1, true)
-					.createMenu(),
-					new Menu.Builder(true, 0, RelPos.CENTER).setShouldRender(false).createMenu()
+				new Menu.Builder(false, 0, RelPos.CENTER, entries)
+				.setDisplayLength(7)
+				.setScrollPolicies(1, true)
+				.createMenu(),
+				new Menu.Builder(true, 0, RelPos.CENTER).setShouldRender(false).createMenu()
 			};
 		}
 	}
@@ -99,54 +99,48 @@ public class WorldEditDisplay extends Display {
 				File world = new File(worldsDir + worldName);
 
 				// Do the action.
-				switch (action) {
-					case Delete:
-						Logger.debug("Deleting world: " + world);
-						File[] list = world.listFiles();
-						for (File file : list) {
-							file.delete();
-						}
-						world.delete();
-						break;
-	
-					case Copy:
-						entry = (InputEntry) menus[1].getCurEntry();
-						if (!entry.isValid()) {
-							break;
-						}
-	
-						// user hits enter with a valid new name; copy is created here.
-						String newname = entry.getUserInput();
-						File newworld = new File(worldsDir + newname);
-						newworld.mkdirs();
-	
-						Logger.debug("Copying world {} to world {}.", world, newworld);
-	
-						// walk file tree
-						try {
-							FileHandler.copyFolderContents(new File(worldsDir + worldName).toPath(), newworld.toPath(), FileHandler.REPLACE_EXISTING, false);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						break;
-	
-					case Rename:
-						entry = (InputEntry) menus[1].getCurEntry();
-						if (!entry.isValid()) {
-							break;
-						}
-	
-						// User hits enter with a vaild new name; name is set here:
-						String name = entry.getUserInput();
-	
-						// Try to rename the file, if it works, return
-						if (world.renameTo(new File(worldsDir + name))) {
-							Logger.debug("Renaming world {} to new name: {}", world, name);
-							WorldSelectDisplay.updateWorlds();
-						} else {
-							Logger.error("Rename failed in WorldEditDisplay.");
-						}
-						break;
+				if (action == Action.Delete) {
+					Logger.debug("Deleting world: " + world);
+					File[] list = world.listFiles();
+					for (File file : list) {
+						file.delete();
+					}
+					world.delete();
+				} else if (action == Action.Copy) {
+					entry = (InputEntry) menus[1].getCurEntry();
+					if (!entry.isValid()) {
+						return;
+					}
+
+					// user hits enter with a valid new name; copy is created here.
+					String newname = entry.getUserInput();
+					File newworld = new File(worldsDir + newname);
+					newworld.mkdirs();
+
+					Logger.debug("Copying world {} to world {}.", world, newworld);
+
+					// walk file tree
+					try {
+						FileHandler.copyFolderContents(new File(worldsDir + worldName).toPath(), newworld.toPath(), FileHandler.REPLACE_EXISTING, false);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} else if (action == Action.Rename) {
+					entry = (InputEntry) menus[1].getCurEntry();
+					if (!entry.isValid()) {
+						return;
+					}
+
+					// User hits enter with a vaild new name; name is set here:
+					String name = entry.getUserInput();
+
+					// Try to rename the file, if it works, return
+					if (world.renameTo(new File(worldsDir + name))) {
+						Logger.debug("Renaming world {} to new name: {}", world, name);
+						WorldSelectDisplay.updateWorlds();
+					} else {
+						Logger.error("Rename failed in WorldEditDisplay.");
+					}
 				}
 
 				confirm = false;
@@ -193,8 +187,8 @@ public class WorldEditDisplay extends Display {
 		}
 
 		entries.addAll(Arrays.asList(StringEntry.useLines(Color.WHITE, "",
-				Game.input.getMapping("select") + Localization.getLocalized(" to confirm"),
-				Game.input.getMapping("exit") + Localization.getLocalized(" to cancel"))
+			Game.input.getMapping("select") + Localization.getLocalized(" to confirm"),
+			Game.input.getMapping("exit") + Localization.getLocalized(" to cancel"))
 		));
 
 		return entries;

@@ -249,7 +249,7 @@ public class LegacyLoad {
                 if (worldVer == null)
                     worldVer = new Version("1.9.1-pre1");
                 player.armorDamageBuffer = Integer.parseInt(data.get(13));
-                player.curArmor = (ArmorItem) Items.get(data.get(14));
+                player.currentArmor = (ArmorItem) Items.get(data.get(14));
             } else
                 player.armor = 0;
 
@@ -361,27 +361,18 @@ public class LegacyLoad {
         }
 
         for (int i = 0; i < data.size(); i++) {
-            List<String> info = Arrays
-                    .asList(data.get(i).substring(data.get(i).indexOf("[") + 1, data.get(i).indexOf("]")).split(":")); // this
-                                                                                                                       // gets
-                                                                                                                       // everything
-                                                                                                                       // inside
-                                                                                                                       // the
-                                                                                                                       // "[...]"
-                                                                                                                       // after
-                                                                                                                       // the
-                                                                                                                       // entity
-                                                                                                                       // name.
+        	// this gets everything inside the "[...]" after the entity name.
+            List<String> info = Arrays.asList(data.get(i).substring(data.get(i).indexOf("[") + 1, data.get(i).indexOf("]")).split(":")); 
 
-            String entityName = data.get(i).substring(0, data.get(i).indexOf("[")).replace("bed", "Bed").replace("II",
-                    ""); // this gets the text before "[", which is the entity name.
+            String entityName = data.get(i).substring(0, data.get(i).indexOf("[")).replace("bed", "Bed").replace("II", ""); // this gets the text before "[", which is the entity name.
             int x = Integer.parseInt(info.get(0));
             int y = Integer.parseInt(info.get(1));
 
             int mobLvl = 0;
             try {
-                if (Class.forName("EnemyMob").isAssignableFrom(Class.forName(entityName)))
+                if (Class.forName("EnemyMob").isAssignableFrom(Class.forName(entityName))) {
                     mobLvl = Integer.parseInt(info.get(info.size() - 2));
+                }
             } catch (ClassNotFoundException ignored) {
             }
 
@@ -410,16 +401,14 @@ public class LegacyLoad {
                     }
 
                     if (isDeathChest) {
-                        ((DeathChest) chest).time = Integer
-                                .parseInt(chestInfo.get(chestInfo.size() - 1).replace("tl;", "")); // "tl;" is only for
-                                                                                                   // old save support
+                    	// "tl;" is only for old save support
+                        ((DeathChest) chest).time = Integer.parseInt(chestInfo.get(chestInfo.size() - 1).replace("tl;", "")); 
                     } else if (isDungeonChest) {
                         ((DungeonChest) chest).setLocked(Boolean.parseBoolean(chestInfo.get(chestInfo.size() - 1)));
                     }
 
                     currentlevel = Integer.parseInt(info.get(info.size() - 1));
-                    World.levels[currentlevel].add(chest instanceof DeathChest ? (DeathChest) chest
-                            : chest instanceof DungeonChest ? (DungeonChest) chest : chest, x, y);
+                    World.levels[currentlevel].add(chest instanceof DeathChest ? (DeathChest) chest : chest instanceof DungeonChest ? (DungeonChest) chest : chest, x, y);
                 } else if (newEntity instanceof Spawner) {
                     Spawner egg = new Spawner((MobAi) getEntity(info.get(2), player, Integer.parseInt(info.get(3))));
                     currentlevel = Integer.parseInt(info.get(info.size() - 1));
@@ -434,61 +423,35 @@ public class LegacyLoad {
 
     public Entity getEntity(String string, Player player, int moblvl) {
         switch (string) {
-        case "Player":
-            return player;
-        case "Cow":
-            return new Cow();
-        case "Sheep":
-            return new Sheep();
-        case "Pig":
-            return new Pig();
-        case "Zombie":
-            return new Zombie(moblvl);
-        case "Slime":
-            return new Slime(moblvl);
-        case "Creeper":
-            return new Creeper(moblvl);
-        case "Skeleton":
-            return new Skeleton(moblvl);
-        case "Knight":
-            return new Knight(moblvl);
-        case "Snake":
-            return new Snake(moblvl);
-        case "AirWizard":
-            return new AirWizard(moblvl > 1);
-        case "Spawner":
-            return new Spawner(new Zombie(1));
-        case "Workbench":
-            return new Crafter(Crafter.Type.Workbench);
-        case "Chest":
-            return new Chest();
-        case "DeathChest":
-            return new DeathChest();
-        case "DungeonChest":
-            return new DungeonChest(false);
-        case "Anvil":
-            return new Crafter(Crafter.Type.Anvil);
-        case "Enchanter":
-            return new Crafter(Crafter.Type.Enchanter);
-        case "Loom":
-            return new Crafter(Crafter.Type.Loom);
-        case "Furnace":
-            return new Crafter(Crafter.Type.Furnace);
-        case "Oven":
-            return new Crafter(Crafter.Type.Oven);
-        case "Bed":
-            return new Bed();
-        case "Tnt":
-            return new Tnt();
-        case "Lantern":
-            return new Lantern(Lantern.Type.NORM);
-        case "IronLantern":
-            return new Lantern(Lantern.Type.IRON);
-        case "GoldLantern":
-            return new Lantern(Lantern.Type.GOLD);
-        default:
-            System.out.println("LEGACYLOAD: Unknown or outdated entity requested: " + string);
-            return null;
+	        case "Player": return player;
+	        case "Cow": return new Cow();
+	        case "Sheep": return new Sheep();
+	        case "Pig": return new Pig();
+	        case "Zombie": return new Zombie(moblvl);
+	        case "Slime": return new Slime(moblvl);
+	        case "Creeper": return new Creeper(moblvl);
+	        case "Skeleton": return new Skeleton(moblvl);
+	        case "Knight": return new Knight(moblvl);
+	        case "Snake": return new Snake(moblvl);
+	        case "AirWizard": return new AirWizard(moblvl > 1);
+	        case "Spawner": return new Spawner(new Zombie(1));
+	        case "Workbench": return new Crafter(Crafter.Type.Workbench);
+	        case "Chest": return new Chest();
+	        case "DeathChest": return new DeathChest();
+	        case "DungeonChest": return new DungeonChest(false);
+	        case "Anvil": return new Crafter(Crafter.Type.Anvil);
+	        case "Enchanter": return new Crafter(Crafter.Type.Enchanter);
+	        case "Loom": return new Crafter(Crafter.Type.Loom);
+	        case "Furnace": return new Crafter(Crafter.Type.Furnace);
+	        case "Oven": return new Crafter(Crafter.Type.Oven);
+	        case "Bed": return new Bed();
+	        case "Tnt": return new Tnt();
+	        case "Lantern": return new Lantern(Lantern.Type.NORM);
+	        case "IronLantern": return new Lantern(Lantern.Type.IRON);
+	        case "GoldLantern": return new Lantern(Lantern.Type.GOLD);
+	        default:
+	            System.err.println("LEGACYLOAD ERROR: unknown or outdated entity requested: " + string);
+	            return null;
         }
     }
 }

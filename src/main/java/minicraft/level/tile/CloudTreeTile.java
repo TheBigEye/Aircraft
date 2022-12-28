@@ -72,8 +72,8 @@ public class CloudTreeTile extends Tile {
     }
 
     @Override
-    public boolean mayPass(Level level, int x, int y, Entity e) {
-        return e instanceof AirWizard;
+    public boolean mayPass(Level level, int x, int y, Entity entity) {
+        return entity instanceof AirWizard;
     }
 
     @Override

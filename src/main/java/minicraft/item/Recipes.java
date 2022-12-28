@@ -150,10 +150,10 @@ public class Recipes {
 		anvilRecipes.add(new Recipe("Gem Pickaxe_1", "Stick_4", "gem_50"));
 		anvilRecipes.add(new Recipe("Gem Shovel_1", "Stick_4", "gem_50"));
 		anvilRecipes.add(new Recipe("Gem Bow_1", "Stick_6", "gem_50", "string_3"));
-		anvilRecipes.add(new Recipe("Sharp I Sword_1", "Sharp I_1", "Gold Sword_1"));
+		/*anvilRecipes.add(new Recipe("Sharp I Sword_1", "Sharp I_1", "Gold Sword_1"));
 		anvilRecipes.add(new Recipe("Sharp I Claymore_1", "Sharp I_1", "Gold Claymore_1"));
 		anvilRecipes.add(new Recipe("Sharp II Sword_1", "Sharp II_1", "Gold Sword_1"));
-		anvilRecipes.add(new Recipe("Sharp II Claymore_1", "Sharp II_1", "Gold Claymore_1"));
+		anvilRecipes.add(new Recipe("Sharp II Claymore_1", "Sharp II_1", "Gold Claymore_1"));*/
 
 		furnaceRecipes.add(new Recipe("iron_1", "iron Ore_4", "coal_1"));
 		furnaceRecipes.add(new Recipe("gold_1", "gold Ore_4", "coal_1"));
@@ -167,21 +167,20 @@ public class Recipes {
 		ovenRecipes.add(new Recipe("baked potato_1", "potato_1", "coal_1"));
 		ovenRecipes.add(new Recipe("bread_1", "wheat_4"));
 		ovenRecipes.add(new Recipe("cooked chicken_1", "raw chicken_1", "coal_1"));
-		// ovenRecipes.add(new Recipe("Mushroom Soup_3", "Bowl_3", "Red Mushroom_3",
-		// "Brown Mushroom_3"));
+		ovenRecipes.add(new Recipe("Mushroom Soup_3", "Bowl_3", "Red Mushroom_3", "Brown Mushroom_3"));
 		ovenRecipes.add(new Recipe("Carrot Soup_3", "Bowl_3", "Carrot_3"));
 
 		enchantRecipes.add(new Recipe("Eye Amulet_1", "gold_8", "AlAzif_1", "Sticky essence_2"));
 		enchantRecipes.add(new Recipe("Gold Apple_1", "apple_1", "gold_8"));
 		enchantRecipes.add(new Recipe("Gold Carrot_1", "carrot_1", "gold_8"));
 		enchantRecipes.add(new Recipe("potion_1", "glass_1", "Lapis_3"));
-		enchantRecipes.add(new Recipe("speed potion_1", "potion_1", "Cactus_5"));
-		enchantRecipes.add(new Recipe("light potion_1", "potion_1", "slime_5"));
-		enchantRecipes.add(new Recipe("swim potion_1", "potion_1", "raw fish_5"));
-		enchantRecipes.add(new Recipe("haste potion_1", "potion_1", "Oak Wood_5", "Stone_5"));
-		enchantRecipes.add(new Recipe("lava potion_1", "potion_1", "Lava Bucket_1"));
-		enchantRecipes.add(new Recipe("energy potion_1", "potion_1", "gem_25"));
-		enchantRecipes.add(new Recipe("regen potion_1", "potion_1", "Gold Apple_1"));
+		enchantRecipes.add(new Recipe("Speed potion_1", "potion_1", "Cactus_5"));
+		enchantRecipes.add(new Recipe("Light potion_1", "potion_1", "slime_5"));
+		enchantRecipes.add(new Recipe("Swim potion_1", "potion_1", "raw fish_5"));
+		enchantRecipes.add(new Recipe("Haste potion_1", "potion_1", "Oak Wood_5", "Stone_5"));
+		enchantRecipes.add(new Recipe("Lava potion_1", "potion_1", "Lava Bucket_1"));
+		enchantRecipes.add(new Recipe("Energy potion_1", "potion_1", "gem_25"));
+		enchantRecipes.add(new Recipe("Regen potion_1", "potion_1", "Gold Apple_1"));
 		enchantRecipes.add(new Recipe("Health Potion_1", "potion_1", "GunPowder_2", "Leather Armor_1"));
 		enchantRecipes.add(new Recipe("Escape Potion_1", "potion_1", "GunPowder_3", "Lapis_7"));
 
@@ -193,9 +192,9 @@ public class Recipes {
 		stonecutterRecipes.add(new Recipe("Stone Door_1", "Stone Brick_5"));
 		stonecutterRecipes.add(new Recipe("Obsidian Wall_1", "Obsidian Brick_3"));
 		stonecutterRecipes.add(new Recipe("Obsidian Door_1", "Obsidian Brick_5"));
-		stonecutterRecipes.add(new Recipe("SlimeStatue_1", "Andesite_2", "Basalt_3", "Slime_3"));
-		stonecutterRecipes.add(new Recipe("ZombieStatue_1", "Andesite_3", "Basalt_3", "cloth_5"));
-		stonecutterRecipes.add(new Recipe("SkeletonStatue_1", "Diorite_3", "Quartzite_3", "bone_3"));
+		stonecutterRecipes.add(new Recipe("Slime Statue_1", "Andesite_2", "Basalt_3", "Slime_3"));
+		stonecutterRecipes.add(new Recipe("Zombie Statue_1", "Andesite_3", "Basalt_3", "cloth_5"));
+		stonecutterRecipes.add(new Recipe("Skeleton Statue_1", "Diorite_3", "Quartzite_3", "bone_3"));
 		stonecutterRecipes.add(new Recipe("Sand_3", "Silicon_3", "coal_1"));
 		stonecutterRecipes.add(new Recipe("Andesite_3", "Stone_3", "coal_1"));
 		stonecutterRecipes.add(new Recipe("Diorite_3", "Stone_3", "coal_1"));
@@ -205,13 +204,13 @@ public class Recipes {
 		stonecutterRecipes.add(new Recipe("Quartzite_3", "Stone_3", "coal_1"));
 		stonecutterRecipes.add(new Recipe("Flint_3", "Stone_3", "coal_1"));
 
-		breweryRecipes.add(new Recipe("xSpeed Potion_1", "speed potion_2", "Sky wart_5"));
-		breweryRecipes.add(new Recipe("xLight Potion_1", "light potion_2", "Sky wart_4"));
-		breweryRecipes.add(new Recipe("xSwim Potion_1", "swim potion_2", "Sky wart_5"));
-		breweryRecipes.add(new Recipe("xLava Potion_1", "lava potion_2", "Sky wart_6"));
-		breweryRecipes.add(new Recipe("xEnergy Potion_1", "energy potion_2", "Sky wart_6"));
-		breweryRecipes.add(new Recipe("xRegen Potion_1", "regen potion_2", "Sky wart_5"));
-		breweryRecipes.add(new Recipe("xHealth Potion_1", "health potion_2", "Sky wart_5"));
+		breweryRecipes.add(new Recipe("xSpeed Potion_1", "Speed potion_2", "Sky wart_5"));
+		breweryRecipes.add(new Recipe("xLight Potion_1", "Light potion_2", "Sky wart_4"));
+		breweryRecipes.add(new Recipe("xSwim Potion_1", "Swim potion_2", "Sky wart_5"));
+		breweryRecipes.add(new Recipe("xLava Potion_1", "Lava potion_2", "Sky wart_6"));
+		breweryRecipes.add(new Recipe("xEnergy Potion_1", "Energy potion_2", "Sky wart_6"));
+		breweryRecipes.add(new Recipe("xRegen Potion_1", "Regen potion_2", "Sky wart_5"));
+		breweryRecipes.add(new Recipe("xHealth Potion_1", "Health potion_2", "Sky wart_5"));
 
 	}
 }

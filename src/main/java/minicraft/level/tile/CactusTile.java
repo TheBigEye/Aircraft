@@ -25,7 +25,7 @@ public class CactusTile extends Tile {
     private final String baseTile = "Sand";
 
     @Override
-    public boolean mayPass(Level level, int x, int y, Entity e) {
+    public boolean mayPass(Level level, int x, int y, Entity entity) {
         return false;
     }
 

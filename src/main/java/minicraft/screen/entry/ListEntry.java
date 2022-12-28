@@ -9,8 +9,8 @@ import minicraft.gfx.Screen;
 
 public abstract class ListEntry {
 
-    public static final int COL_UNSLCT = Color.GRAY;
-    public static final int COL_SLCT = Color.WHITE;
+    public static final int COLOR_UNSELECTED = Color.GRAY;
+    public static final int COLOR_SELECTED = Color.WHITE;
 
     private boolean selectable = true;
     private boolean visible = true;
@@ -64,7 +64,7 @@ public abstract class ListEntry {
      * @return the current entry color
      */
     public int getColor(boolean isSelected) {
-        return isSelected ? COL_SLCT : COL_UNSLCT;
+        return isSelected ? COLOR_SELECTED : COLOR_UNSELECTED;
     }
 
     /**

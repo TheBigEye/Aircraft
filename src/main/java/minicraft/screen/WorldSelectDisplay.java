@@ -37,40 +37,46 @@ public class WorldSelectDisplay extends Display {
 	
 	@Override
 	public void init(Display parent) {
-		if (parent instanceof WorldEditDisplay && parent.getParent() != null) {
-			// this should get original parent when World Select Display changed to World Edit Display
-			super.init(parent.getParent().getParent());
-		} else {
-			super.init(parent);
-		}
+	    // If the parent is a WorldEditDisplay and it has a parent itself, set the super class' parent to be the grandparent of the parent
+	    if (parent instanceof WorldEditDisplay && parent.getParent() != null) {
+	        super.init(parent.getParent().getParent());
+	    } else {
+	        // Otherwise, just set the super class' parent to be the parent
+	        super.init(parent);
+	    }
 
-		worldName = "";
-		loadedWorld = true;
+	    // Initialize instance variables
+	    worldName = "";
+	    loadedWorld = true;
 
-		// Update world list
-		updateWorlds();
-		
-		SelectEntry[] entries = new SelectEntry[worldNames.size()];
-		
-		for (int i = 0; i < entries.length; i++) {
-			final String name = worldNames.get(i);
-			final Version version = worldVersions.get(i);
-			entries[i] = new SelectEntry(name, () -> {
-				// Executed when we select a world.
-				if (version.compareTo(Game.VERSION) > 0) {
-					return; // cannot load a game saved by a higher version!
-				}
-				worldName = name;
-				Game.setDisplay(new LoadingDisplay());
-			}, false);
-		}
+	    // Update the list of available worlds
+	    updateWorlds();
+	    
+	    // Create a new array of SelectEntry objects to be used in the menu
+	    SelectEntry[] entries = new SelectEntry[worldNames.size()];
+	    
+	    // Iterate through each world and create a SelectEntry object for it
+	    for (int i = 0; i < entries.length; i++) {
+	        final String name = worldNames.get(i);
+	        final Version version = worldVersions.get(i);
+	        entries[i] = new SelectEntry(name, () -> {
+	            // If the selected world was saved by a version of the game that is newer than the current version, return without doing anything
+	            if (version.compareTo(Game.VERSION) > 0) {
+	                return;
+	            }
+	            // Otherwise, set the worldName variable to the name of the selected world and switch to a loading screen
+	            worldName = name;
+	            Game.setDisplay(new LoadingDisplay());
+	        }, false);
+	    }
 
-		menus = new Menu[] {
-			new Menu.Builder(false, 0, RelPos.CENTER, entries)
-			.setDisplayLength(7)
-			.setScrollPolicies(1, true)
-			.createMenu()
-		};
+	    // Create a new menu with the SelectEntry array and set its display length and scrolling behavior
+	    menus = new Menu[] {
+	        new Menu.Builder(false, 0, RelPos.CENTER, entries)
+	        .setDisplayLength(7)
+	        .setScrollPolicies(1, true)
+	        .createMenu()
+	    };
 	}
 	
 	@Override
@@ -91,15 +97,15 @@ public class WorldSelectDisplay extends Display {
 		
 		Font.drawCentered(Localization.getLocalized("Select World"), screen, 0, Color.WHITE);
 		
-		int sel = menus[0].getSelection();
-		if (sel >= 0 && sel < worldVersions.size()) {
-			Version version = worldVersions.get(sel);
-			int col = Color.WHITE;
+		int currentSelection = menus[0].getSelection();
+		if (currentSelection >= 0 && currentSelection < worldVersions.size()) {
+			Version version = worldVersions.get(currentSelection);
+			int textColor = Color.WHITE;
 			if (version.compareTo(Game.VERSION) > 0) {
-				col = Color.RED;
-				Font.drawCentered(Localization.getLocalized("Higher version, cannot load world!"), screen, Font.textHeight() * 5, col);
+				textColor = Color.RED;
+				Font.drawCentered(Localization.getLocalized("Higher version, cannot load world!"), screen, Font.textHeight() * 5, textColor);
 			}
-			Font.drawCentered(Localization.getLocalized("World Version:") + " " + (version.compareTo(new Version("1.9.2")) <= 0 ? "~" : "") + version, screen, Font.textHeight() * 7/2, col);
+			Font.drawCentered(Localization.getLocalized("World Version:") + " " + (version.compareTo(new Version("1.9.2")) <= 0 ? "~" : "") + version, screen, Font.textHeight() * 7 / 2,textColor);
 		}
 		
 		Font.drawCentered(Game.input.getMapping("select") + Localization.getLocalized(" to confirm"), screen, Screen.h - 60, Color.GRAY);
@@ -144,9 +150,9 @@ public class WorldSelectDisplay extends Display {
 		for (File file : worlds) {
 			if (file.isDirectory()) {
 				String path = worldsDir + file.getName() + "/";
-				File folder2 = new File(path);
-				folder2.mkdirs();
-				String[] files = folder2.list();
+				File folder = new File(path);
+				folder.mkdirs();
+				String[] files = folder.list();
 				if (files != null && files.length > 0 && files[0].endsWith(Save.extension)) {
 					String name = file.getName();
 					worldNames.add(name);

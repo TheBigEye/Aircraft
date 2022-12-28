@@ -26,7 +26,7 @@ public class Fireball extends Entity implements ClientTickable {
 		this.dir = dir;
 
 		damage = dmg;
-		col = Color.get(-1, 111, 222, 430);
+		color = Color.get(-1, 111, 222, 430);
 
 		if (damage > 3) speed = 3;
 		else if (damage >= 0) speed = 2;

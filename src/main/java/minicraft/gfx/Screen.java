@@ -145,7 +145,6 @@ public class Screen {
 	    int yLimit = yp + 8;
 	    int xLimit = xp + 8;
 	    int[] pixels = this.pixels;
-	    int w = this.w;
 	    int[] sheetPixels = currentSheet.pixels;
 
 	    for (int y = yp; y < yLimit; y++) {
@@ -171,13 +170,13 @@ public class Screen {
 	            }
 
 	            // Gets the color of the current pixel from the value stored in the sheet.
-	            int col = sheetPixels[toffs + xs + ys * currentSheet.width];
+	            int spriteColor = sheetPixels[toffs + xs + ys * currentSheet.width];
 
 	            // Check if the pixel is transparent
-	            if ((col >> 24) != 0) {
+	            if ((spriteColor >> 24) != 0) {
 	                int position = x + y * w;
 
-	                if (whiteTint != -1 && col == 0x1FFFFFF) {
+	                if (whiteTint != -1 && spriteColor == 0x1FFFFFF) {
 	                    // if this is white, write the whiteTint over it
 	                    pixels[position] = Color.upgrade(whiteTint);
 	                } else {
@@ -188,7 +187,7 @@ public class Screen {
 	                        if (color != 0) { // full sprite color
 	                            pixels[position] = color;
 	                        } else {
-	                            pixels[position] = Color.upgrade(col);
+	                            pixels[position] = Color.upgrade(spriteColor);
 	                        }
 	                    }
 	                }
@@ -247,10 +246,10 @@ public class Screen {
 			double relTime = (Updater.tickCount % transTime) * 1.0 / transTime;
 
 			switch (Updater.getTime()) {
-			case Morning: tintFactor = Updater.pastDay1 ? (1 - relTime) * MAXDARK : 0; break;
-			case Day: tintFactor = 0; break;
-			case Evening: tintFactor = relTime * MAXDARK; break;
-			case Night: tintFactor = MAXDARK; break;
+				case Morning: tintFactor = Updater.pastDay1 ? (1 - relTime) * MAXDARK : 0; break;
+				case Day: tintFactor = 0; break;
+				case Evening: tintFactor = relTime * MAXDARK; break;
+				case Night: tintFactor = MAXDARK; break;
 			}
 
 			if (currentLevel > 3) {

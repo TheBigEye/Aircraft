@@ -16,8 +16,8 @@ import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class Sheep extends PassiveMob {
-	private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 26);
-	private static final MobSprite[][] cutSprites = MobSprite.compileMobSpriteAnimations(0, 28);
+	private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 42);
+	private static final MobSprite[][] cutSprites = MobSprite.compileMobSpriteAnimations(0, 44);
 
 	private static final int WOOL_GROW_TIME = 3 * 60 * Updater.normSpeed; // Three minutes
 
@@ -41,11 +41,11 @@ public class Sheep extends PassiveMob {
 
 		MobSprite[][] curAnim = isCut ? cutSprites : sprites;
 
-		MobSprite curSprite = curAnim[dir.getDir()][(walkDist >> 3) % curAnim[dir.getDir()].length];
+		MobSprite currentSprite = curAnim[dir.getDir()][(walkDist >> 3) % curAnim[dir.getDir()].length];
 		if (hurtTime > 0) {
-			curSprite.render(screen, xo, yo, true);
+			currentSprite.render(screen, xo, yo, true);
 		} else {
-			curSprite.render(screen, xo, yo);
+			currentSprite.render(screen, xo, yo);
 		}
 	}
 

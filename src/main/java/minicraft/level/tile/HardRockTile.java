@@ -28,8 +28,8 @@ public class HardRockTile extends Tile {
     }
 
     @Override
-    public boolean mayPass(Level level, int x, int y, Entity e) {
-        return e instanceof Firefly;
+    public boolean mayPass(Level level, int x, int y, Entity entity) {
+        return entity instanceof Firefly;
     }
 
     public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {

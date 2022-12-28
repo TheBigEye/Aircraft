@@ -17,7 +17,7 @@ public class Bed extends Furniture {
 	 * Creates a new furniture with the name Bed and the bed sprite and color.
 	 */
 	public Bed() {
-		super("Bed", new Sprite(30, 24, 2, 2, 2), 3, 2);
+		super("Bed", new Sprite(28, 30, 2, 2, 2), 3, 2);
 	}
 
 	/** Called when the player attempts to get in bed. */
@@ -92,9 +92,9 @@ public class Bed extends Furniture {
 
 	// client should not call this.
 	public static void restorePlayers() {
-		for (Player p : sleepingPlayers.keySet()) {
-			Bed bed = sleepingPlayers.get(p);
-			bed.getLevel().add(p);
+		for (Player player : sleepingPlayers.keySet()) {
+			Bed bed = sleepingPlayers.get(player);
+			bed.getLevel().add(player);
 		}
 
 		sleepingPlayers.clear();

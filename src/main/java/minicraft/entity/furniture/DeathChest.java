@@ -11,8 +11,8 @@ import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 
 public class DeathChest extends Chest {
-	private static Sprite normalSprite = new Sprite(10, 24, 2, 2, 2);
-	private static Sprite redSprite = new Sprite(2, 20, 2, 2, 2);
+	private static Sprite normalSprite = new Sprite(6, 30, 2, 2, 2);
+	private static Sprite redSprite = new Sprite(0, 30, 2, 2, 2);
 
 	public int time; // time passed (used for death chest despawn)
 	private int redtick = 0; // this is used to determine the shade of red when the chest is about to expire.
@@ -24,12 +24,14 @@ public class DeathChest extends Chest {
 	public DeathChest() {
 		super("Death Chest");
 		this.sprite = normalSprite;
+		
+		String difficulty = (String) Settings.get("diff");
 
 		/// set the expiration time based on the world difficulty.
-		if (Settings.get("diff").equals("Peaceful")) time = 300 * Updater.normSpeed;
-		else if (Settings.get("diff").equals("Easy")) time = 200 * Updater.normSpeed;
-		else if (Settings.get("diff").equals("Normal")) time = 120 * Updater.normSpeed;
-		else if (Settings.get("diff").equals("Hard")) time = 30 * Updater.normSpeed;
+		if (difficulty == "Peaceful") time = 300 * Updater.normSpeed;
+		else if (difficulty =="Easy") time = 200 * Updater.normSpeed;
+		else if (difficulty =="Normal") time = 120 * Updater.normSpeed;
+		else if (difficulty =="Hard") time = 30 * Updater.normSpeed;
 	}
 
 	public DeathChest(Player player) {

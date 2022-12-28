@@ -13,23 +13,49 @@ import minicraft.gfx.Color;
 import minicraft.gfx.Font;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
+import minicraft.item.Items;
+import minicraft.saveload.Save;
+import minicraft.screen.AchievementsDisplay;
 
 public class AirWizard extends EnemyMob {
 
-    private static MobSprite[][][] sprites;
+	private static MobSprite[][][] spritesMain;
 
+    private static MobSprite[][][] spritesFirstPahse;
+    private static MobSprite[][][] spritesSecondPhase;
+    private static MobSprite[][][] spritesThirdPhase;
+    
     static {
-        sprites = new MobSprite[2][4][2];
-        for (int i = 0; i < 2; i++) {
-            MobSprite[][] list = MobSprite.compileMobSpriteAnimations(8, 20 + (i * 2));
-            sprites[i] = list;
+    	// FIXME: The Air Wizard skin sprites should change beetween phases
+    	spritesMain = new MobSprite[2][4][2];
+        spritesFirstPahse = new MobSprite[2][4][2];
+        spritesSecondPhase = new MobSprite[2][4][2];
+        spritesThirdPhase = new MobSprite[2][4][2];
+        
+        for (int i = 0; i < 2; i++) { // Normal wizard
+            MobSprite[][] list = MobSprite.compileMobSpriteAnimations(20, 10 + (i * 2));
+            spritesFirstPahse[i] = list;
         }
+        
+        for (int i = 0; i < 2; i++) { // Angry wizard
+            MobSprite[][] list = MobSprite.compileMobSpriteAnimations(20, 14 + (i * 2));
+            spritesSecondPhase[i] = list;
+        }
+        
+        for (int i = 0; i < 2; i++) { // Furius wizard
+            MobSprite[][] list = MobSprite.compileMobSpriteAnimations(30, 10 + (i * 2));
+            spritesThirdPhase[i] = list;
+        }
+        
+        spritesMain = spritesFirstPahse; // Start on first phase
     }
 
     public static boolean beaten = false;
     public static boolean active = true;
+    public static AirWizard entity = null;
 
     public boolean secondform;
+    private int currentPhase = 0;
     private int attackDelay = 0;
     private int attackTime = 0;
     private int attackType = 0;
@@ -50,13 +76,18 @@ public class AirWizard extends EnemyMob {
      * @param secondform determines if the wizard should be level 2 or 1.
      */
     public AirWizard(boolean secondform) {
-        super(secondform ? 2 : 1, sprites, secondform ? 6000 : 3500, false, 16 * 8, -1, 10, 50);
+        super(secondform ? 2 : 1, spritesMain, secondform ? 18000 : 10500, false, 16 * 8, -1, 10, 50);
         
         active = true;
+        entity = this;
+        currentPhase = 1;
 
         this.secondform = secondform;
         if (secondform) speed = 3;
-        if (!secondform) speed = 2;
+        if (!secondform) {
+        	beaten = false; // <- needed for new worlds :(
+        	speed = 2;
+        }
         
         walkTime = 2;
     }
@@ -74,9 +105,24 @@ public class AirWizard extends EnemyMob {
         super.tick();
         
         length = health / (maxHealth / 100);
-
+        
         if (Game.isMode("Creative")) {
-            return; // Should not attack if player is in creative
+            return; // Should not attack if game mode is creative
+        }
+       
+        // Change phases by health
+        if (health < (secondform ? 12000 : 7000) && currentPhase == 1) {
+        	// change to phase 2
+        	Sound.airWizardChangePhase.playOnWorld(x, y);
+        	spritesMain = spritesSecondPhase;
+        	currentPhase = 2;
+        }
+        
+        if (health < (secondform ? 6000 : 3500) && currentPhase == 2) {
+        	// change to phase 3
+        	Sound.airWizardChangePhase.playOnWorld(x, y);
+        	spritesMain = spritesThirdPhase;
+        	currentPhase = 3;
         }
 
         if (attackDelay > 0) {
@@ -89,43 +135,61 @@ public class AirWizard extends EnemyMob {
 
             attackDelay--;
             if (attackDelay == 0) {
-                // attackType = 0; // attack type is set to 0, as the default.
-                if (health < maxHealth / 2) {
-                    attackType = 1; // if at 1000 health (50%) or lower, attackType = 1
-                }
-                if (health < maxHealth / 10) {
-                    attackType = 2; // if at 200 health (10%) or lower, attackType = 2
-                }
+                // attackType is set to 0 by default
+                attackType = 0;
+                if (health < maxHealth / 2) attackType = 1;
+                if (health < maxHealth / 10) attackType = 2;
                 
-                switch (random.nextInt(2)) {
-                	case 0: attackTime = 80 * (secondform ? 3 : 2); break;
-                	case 1: attackTime = 50 * (secondform ? 3 : 2); break;
-                	case 2: attackTime = 30 * (secondform ? 3 : 2); break;
-                	default: attackTime = 80 * (secondform ? 3 : 2); // attackTime set to 120 or 180 (2 or 3 seconds, at default 60 ticks/sec)
-                }
-                
+                // Select a random attack time based on phase
+                int attackTimeOptions[][] = {
+                    {60, 46, 25},
+                    {80, 50, 30},
+                    {120, 80, 50}
+                };
+                attackTime = attackTimeOptions[currentPhase - 1][random.nextInt(3)] * (secondform ? 3 : 2);
             }
             return; // skips the rest of the code (attackDelay must have been > 0)
         }
 
-        if (attackTime > 0) {
+        // First phase sparks attack
+        if (attackTime > 0 && currentPhase == 1) {
             xa = ya = 0;
             attackTime = (int) (attackTime * 0.92); // attackTime will decrease by 7% every time.
             double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1); // assigns a local direction variable from the attack time.
             double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2; // speed is dependent on the attackType. (higher attackType, faster speeds)
             level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 1)); // adds a spark entity with the cosine and sine of dir times speed.
-            Sound.airWizardSpawnSpark.playOnGui();
+            Sound.airWizardSpawnSpark.playOnWorld(x, y);
             return; // skips the rest of the code (attackTime was > 0; ie we're attacking.)
+        }
+        
+        // Second phase sparks attack
+        if (attackTime > 0 && currentPhase == 2) {
+            xa = ya = 0;
+            attackTime = (int) (attackTime * 0.92);
+            double dir = attackTime;
+            double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2;
+            level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 2));
+            Sound.airWizardSpawnSpark.playOnWorld(x, y);
+            return;
+        }
+        
+        // Third phase sparks attack
+        if (attackTime > 0 && currentPhase == 3) {
+            xa = ya = 0;
+            attackTime *= 0.92;
+            double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1);
+            double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2;
+            level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 3));
+            Sound.airWizardSpawnSpark.playOnWorld(x, y);
+            return;
         }
 
         Player player = getClosestPlayer();
-
         if (player != null && randomWalkTime == 0) { // if there is a player around, and the walking is not random
-        	
             int xd = player.x - x; // the horizontal distance between the player and the air wizard.
             int yd = player.y - y; // the vertical distance between the player and the air wizard.
             
-            if (xd * xd + yd * yd < 16 * 16 * 2 * 2) {
+            if (xd * xd + yd * yd < 16*16 * 2*2) {
                 /// Move away from the player if less than 2 blocks away
                 xa = 0; // accelerations
                 ya = 0;
@@ -136,7 +200,7 @@ public class AirWizard extends EnemyMob {
                 if (yd < 0) ya = +1;
                 if (yd > 0) ya = -1;
                 
-            } else if (xd * xd + yd * yd > 16 * 16 * 15 * 15) { // 15 squares away
+            } else if (xd * xd + yd * yd > 16*16 * 15*15) { // 15 squares away
                 /// drags the airwizard to the player, maintaining relative position.
                 double hypot = Math.sqrt(xd * xd + yd * yd);
                 int newxd = (int) (xd * Math.sqrt(16 * 16 * 15 * 15) / hypot);
@@ -150,7 +214,11 @@ public class AirWizard extends EnemyMob {
             int xd = player.x - x; // x dist to player
             int yd = player.y - y; // y dist to player
             if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) {
-                attackDelay = 60 * 4; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
+            	if (currentPhase == 1) {
+            		attackDelay = 60 * 4; // ...then set attackDelay to 240 (4 seconds at default 60 ticks/sec)
+            	} else {
+            		attackDelay = 60 * 2; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
+            	}
             }
         }
     }
@@ -159,16 +227,17 @@ public class AirWizard extends EnemyMob {
     public void doHurt(int damage, Direction attackDir) {
         super.doHurt(damage, attackDir);
         if (attackDelay == 0 && attackTime == 0) {
-            attackDelay = 60 * 2;
+            attackDelay = 60 * (currentPhase + 1);
         }
     }
+
 
     @Override
     public void render(Screen screen) {
         super.render(screen);
 
-        int textcol = Color.get(1, 0, 204, 0);
-        int textcol2 = Color.get(1, 0, 51, 0);
+        int textColor = Color.get(1, 0, 204, 0);
+        int textColor2 = Color.get(1, 0, 51, 0);
         int percent = health / (maxHealth / 100);
         String h = percent + "%";
 
@@ -177,12 +246,11 @@ public class AirWizard extends EnemyMob {
         }
 
         if (percent < 16) {
-            textcol = Color.get(1, 204, 0, 0);
-            textcol2 = Color.get(1, 51, 0, 0);
-            
+            textColor = Color.get(1, 204, 0, 0);
+            textColor2 = Color.get(1, 51, 0, 0);
         } else if (percent < 51) {
-            textcol = Color.get(1, 204, 204, 9);
-            textcol2 = Color.get(1, 51, 51, 0);
+            textColor = Color.get(1, 204, 204, 9);
+            textColor2 = Color.get(1, 51, 51, 0);
         }
         
         int textwidth = Font.textWidth(h);
@@ -191,11 +259,11 @@ public class AirWizard extends EnemyMob {
         if (Settings.get("bossbar").equals("On entity")) {
             Font.drawBar(screen, (x - Screen.w / 12 + 16), y - 24, length, "testificate");
         }
-        
+
         // Bossbar percent
         if (Settings.get("bossbar").equals("Percent")) {
-            Font.draw(h, screen, (x - textwidth / 2) + 1, y - 17, textcol2);
-            Font.draw(h, screen, (x - textwidth / 2), y - 18, textcol);
+            Font.draw(h, screen, (x - textwidth / 2) + 1, y - 17, textColor2);
+            Font.draw(h, screen, (x - textwidth / 2), y - 18, textColor);
         }
     }
 
@@ -210,39 +278,50 @@ public class AirWizard extends EnemyMob {
     /** What happens when the air wizard dies */
     public void die() {
         Player[] players = level.getPlayers();
-
-        // If there is at least one player in the level
+        
+        // If the player is still here
         if (players.length > 0) {
-            for (Player p : players) {
-                // Give the player 10K or 50K points
-                p.addScore(secondform ? 50000 : 10000); 
+            for (Player player : players) {
+            	// Give the player 100K or 500K points.
+                player.addScore((secondform ? 500000 : 100000));
             }
-
-            // Play sound on the world at the position of the Air Wizard
-            Sound.airWizardChangePhase.playOnWorld(x, y);
         }
 
-        // If the Air Wizard is in its first form
-        if (!secondform) {
-            // Add a new instance of AirWizardPhase2 with 1 life remaining
-            level.add(new AirWizardPhase2(1), x, y);
-            Updater.notifyAll("Phase II");
+        Sound.airWizardDeath.playOnWorld(x, y);
+        level.dropItem(x, y, Items.get("AlAzif"));
 
-            // If the Air Wizard has not been beaten yet, notify all with "Phase II" after 200 milliseconds
-            if (!beaten) Updater.notifyAll("Phase II", 200);
+        if (!secondform) {  
+			// Kill first Air wizard achievement
+			AchievementsDisplay.setAchievement("minicraft.achievement.airwizard", true);
+			
+            if (!beaten) {
+            	Updater.notifyAll("Unlocked Dungeons!", 200);
+            } else {
+            	Updater.notifyAll("Well played!", 200);
+            }
+            
             beaten = true;
             active = false;
-        } 
- 
-        // If the Air Wizard is in its second form
-        else {
-            // Add a new instance of AirWizardPhase2 that has been defeated
-            level.add(new AirWizardPhase2(true), x, y);
-            Updater.notifyAll("Phase II");
-        }
+            entity = null;
 
-        // Call the die() method in EnemyMob.java
-        super.die();
+        } else {
+			// Kill second Air wizard achievement
+			AchievementsDisplay.setAchievement("minicraft.achievement.second_airwizard", true);
+			
+            if (!(boolean) Settings.get("unlockedskin")) {
+                Updater.notifyAll("A costume lies on the ground...", -200);
+            } else {
+            	Updater.notifyAll("Well played!", 200);
+            }
+            
+            active = false;
+            entity = null;
+            
+            // Unlock the Air wizard suit :D
+            Settings.set("unlockedskin", true);
+        }
+        new Save();
+        super.die(); // Calls the die() method in EnemyMob.java
     }
 
     public int getMaxLevel() {

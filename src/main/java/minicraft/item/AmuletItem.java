@@ -17,7 +17,7 @@ public class AmuletItem extends Item {
 	private static Random random = new Random();
 
 	public AmuletItem() {
-		super("Eye Amulet", new Sprite(4, 33, 0));
+		super("Eye Amulet", new Sprite(11, 38, 0));
 	}
 
 	@Override

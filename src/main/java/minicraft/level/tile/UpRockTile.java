@@ -44,7 +44,7 @@ public class UpRockTile extends Tile {
     }
 
     @Override
-    public boolean mayPass(Level level, int x, int y, Entity e) {
+    public boolean mayPass(Level level, int x, int y, Entity entity) {
         return false;
     }
 

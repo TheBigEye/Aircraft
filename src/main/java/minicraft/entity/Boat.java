@@ -19,7 +19,7 @@ import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
 
 public class Boat extends Entity {
-    private static Sprite boatSprite = new Sprite(1, 30, 2, 2, 0);
+    private static Sprite boatSprite = new Sprite(4, 34, 2, 2, 2);
 
     public Player playerInBoat = null;
     private Random rnd = new Random();
@@ -47,31 +47,31 @@ public class Boat extends Entity {
         if (Game.player.equals(playerInBoat)) {
         	switch (Game.player.dir) {
         	case UP: // if currently attacking upwards...
-        		screen.render(xo + 4, yo, 3 + 30 * 32, 1, 0);
-        		screen.render(xo - 4, yo, 4 + 30 * 32, 1, 0);
-        		screen.render(xo + 4, yo + 8, 3 + 31 * 32, 1, 0);
-        		screen.render(xo - 4, yo + 8, 4 + 31 * 32, 1, 0);
+        		screen.render(xo + 4, yo, 2 + 34 * 32, 1, 2);
+        		screen.render(xo - 4, yo, 3 + 34 * 32, 1, 2);
+        		screen.render(xo + 4, yo + 8, 2 + 35 * 32, 1, 2);
+        		screen.render(xo - 4, yo + 8, 3 + 35 * 32, 1, 2);
         		break;
 
         	case LEFT: // Attacking to the left... (Same as above)
-        		screen.render(xo + 4, yo, 7 + 30 * 32, 1, 0);
-        		screen.render(xo - 4, yo, 8 + 30 * 32, 1, 0);
-        		screen.render(xo + 4, yo + 8, 7 + 31 * 32, 1, 0);
-        		screen.render(xo - 4, yo + 8, 8 + 31 * 32, 1, 0);
+        		screen.render(xo + 4, yo, 6 + 34 * 32, 1, 2);
+        		screen.render(xo - 4, yo, 7 + 34 * 32, 1, 2);
+        		screen.render(xo + 4, yo + 8, 6 + 35 * 32, 1, 2);
+        		screen.render(xo - 4, yo + 8, 7 + 35 * 32, 1, 2);
         		break;
 
         	case RIGHT: // Attacking to the right (Same as above)
-        		screen.render(xo + 4, yo, 1 + 30 * 32, 1, 0);
-        		screen.render(xo - 4, yo, 2 + 30 * 32, 1, 0);
-        		screen.render(xo + 4, yo + 8, 1 + 31 * 32, 1, 0);
-        		screen.render(xo - 4, yo + 8, 2 + 31 * 32, 1, 0);
+        		screen.render(xo + 4, yo, 0 + 34 * 32, 1, 2);
+        		screen.render(xo - 4, yo, 1 + 34 * 32, 1, 2);
+        		screen.render(xo + 4, yo + 8, 0 + 35 * 32, 1, 2);
+        		screen.render(xo - 4, yo + 8, 1 + 35 * 32, 1, 2);
         		break;
 
         	case DOWN: // Attacking downwards (Same as above)
-        		screen.render(xo + 4, yo, 5 + 30 * 32, 1, 0);
-        		screen.render(xo - 4, yo, 6 + 30 * 32, 1, 0);
-        		screen.render(xo + 4, yo + 8, 5 + 31 * 32, 1, 0);
-        		screen.render(xo - 4, yo + 8, 6 + 31 * 32, 1, 0);
+        		screen.render(xo + 4, yo, 4 + 34 * 32, 1, 2);
+        		screen.render(xo - 4, yo, 5 + 34 * 32, 1, 2);
+        		screen.render(xo + 4, yo + 8, 4 + 35 * 32, 1, 2);
+        		screen.render(xo - 4, yo + 8, 5 + 35 * 32, 1, 2);
         		break;
 
         	case NONE:
@@ -142,7 +142,7 @@ public class Boat extends Entity {
     }
 
     @Override
-    public boolean blocks(Entity e) {
+    public boolean blocks(Entity entity) {
         return true;
     }
 

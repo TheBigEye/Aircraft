@@ -25,7 +25,9 @@ import minicraft.screen.entry.ListEntry;
 
 public class Menu {
 
-    private int bg_sprite = 21;
+    private int bgSpritePos = 21;
+    
+    
     private static final int LIMIT_TYPING_SEARCHER = 21;
 
     @NotNull
@@ -97,7 +99,7 @@ public class Menu {
         listSearcher = new ArrayList<>();
         listPositionSearcher = 0;
         typingSearcher = "";
-        bg_sprite = m.bg_sprite;
+        bgSpritePos = m.bgSpritePos;
     }
 
     public void init() {
@@ -138,8 +140,8 @@ public class Menu {
         doScroll();
     }
     
-    void setBackground(int bg_sprite){
-        this.bg_sprite = bg_sprite;
+    void setBackground(int bgSpritePos) {
+        this.bgSpritePos = bgSpritePos;
     }
 
     int getSelection() {
@@ -244,8 +246,7 @@ public class Menu {
                 }
 
                 // check if word was updated
-                if (typingSearcher.length() <= Menu.LIMIT_TYPING_SEARCHER
-                        && typingSearcher.length() != this.typingSearcher.length()) {
+                if (typingSearcher.length() <= Menu.LIMIT_TYPING_SEARCHER && typingSearcher.length() != this.typingSearcher.length()) {
                     this.typingSearcher = typingSearcher;
                     listSearcher.clear();
                     listPositionSearcher = 0;
@@ -282,26 +283,25 @@ public class Menu {
         int delta = selection - prevSel;
         selection = prevSel;
         if (delta == 0) {
-            entries.get(selection).tick(input); // only ticks the entry on a frame where the selection cursor has not
-                                                // moved.
+            entries.get(selection).tick(input); // only ticks the entry on a frame where the selection cursor has not moved.
             return;
-        } else
+        } else {
             Sound.Menu_select.playOnGui();
+        }
 
         do {
             selection += delta;
-            if (selection < 0)
+            if (selection < 0) {
                 selection = entries.size() - 1;
+            }
             selection = selection % entries.size();
         } while (!entries.get(selection).isSelectable() && selection != prevSel);
 
         // update offset and selection displayed
         dispSelection += selection - prevSel;
 
-        if (dispSelection < 0)
-            dispSelection = 0;
-        if (dispSelection >= displayLength)
-            dispSelection = displayLength - 1;
+        if (dispSelection < 0) dispSelection = 0;
+        if (dispSelection >= displayLength) dispSelection = displayLength - 1;
 
         doScroll();
     }
@@ -319,8 +319,7 @@ public class Menu {
         }
 
         // for scrolling down
-        while ((displayLength - dispSelection <= padding || !wrap && offset < 0)
-                && (wrap || offset + displayLength < entries.size())) {
+        while ((displayLength - dispSelection <= padding || !wrap && offset < 0) && (wrap || offset + displayLength < entries.size())) {
             offset++;
             dispSelection--;
         }
@@ -341,14 +340,14 @@ public class Menu {
             if (drawVertically) {
                 for (int i = 0; i < title.length(); i++) {
                     if (hasFrame)
-                        screen.render(titleLoc.x, titleLoc.y + i * Font.textHeight(), 3 + 21 * bg_sprite, 0, 3);
+                        screen.render(titleLoc.x, titleLoc.y + i * Font.textHeight(), 3 + 21 * bgSpritePos, 0, 3);
                     Font.draw(title.substring(i, i + 1), screen, titleLoc.x, titleLoc.y + i * Font.textHeight(),
                             titleColor);
                 }
             } else {
                 for (int i = 0; i < title.length(); i++) {
                     if (hasFrame)
-                        screen.render(titleLoc.x + i * Font.textWidth(" "), titleLoc.y, 3 + bg_sprite * 32, 0, 3);
+                        screen.render(titleLoc.x + i * Font.textWidth(" "), titleLoc.y, 3 + bgSpritePos * 32, 0, 3);
                     Font.draw(title.substring(i, i + 1), screen, titleLoc.x + i * Font.textWidth(" "), titleLoc.y,
                             titleColor);
                 }
@@ -368,7 +367,7 @@ public class Menu {
 
             for (int i = 0; i < typingSearcher.length() + 4; i++) {
                 if (hasFrame) {
-                    screen.render(xSearcherBar + spaceWidth * i - leading, titleLoc.y - 8, 3 + bg_sprite * 32, 0, 3);
+                    screen.render(xSearcherBar + spaceWidth * i - leading, titleLoc.y - 8, 3 + bgSpritePos * 32, 0, 3);
                 }
 
                 Font.draw("> " + typingSearcher + " <", screen, xSearcherBar - leading, titleLoc.y - 8, typingSearcher.length() < Menu.LIMIT_TYPING_SEARCHER ? Color.YELLOW : Color.RED);
@@ -383,28 +382,31 @@ public class Menu {
             int extra = diff * (ListEntry.getHeight() + spacing) / 2;
             y += extra;
         }
-        for (int i = offset; i < (wrap ? offset + displayLength
-                : Math.min(offset + displayLength, entries.size())); i++) {
-            if (special && i - offset >= entries.size())
+        for (int i = offset; i < (wrap ? offset + displayLength : Math.min(offset + displayLength, entries.size())); i++) {
+            if (special && i - offset >= entries.size()) {
                 break;
+            }
 
             int idx = i % entries.size();
             ListEntry entry = entries.get(idx);
 
             if (!(entry instanceof BlankEntry)) {
-                Point pos = entryPos.positionRect(new Dimension(entry.getWidth(), ListEntry.getHeight()),
-                        new Rectangle(entryBounds.getLeft(), y, entryBounds.getWidth(), ListEntry.getHeight(),
-                                Rectangle.CORNER_DIMS));
+                Point pos = entryPos.positionRect(
+            		new Dimension(entry.getWidth(), ListEntry.getHeight()), 
+            		new Rectangle(entryBounds.getLeft(), y, entryBounds.getWidth(), ListEntry.getHeight(), Rectangle.CORNER_DIMS)
+                );
+                
                 boolean selected = idx == selection;
                 if (searcherBarActive && useSearcherBar) {
                     entry.render(screen, pos.x, pos.y, selected, typingSearcher, Color.YELLOW);
                 } else {
                     entry.render(screen, pos.x, pos.y, selected);
                 }
+                
                 if (selected && entry.isSelectable()) {
                     // draw the arrows
-                    Font.draw("> ", screen, pos.x - Font.textWidth("> "), y, ListEntry.COL_SLCT);
-                    Font.draw(" <", screen, pos.x + entry.getWidth(), y, ListEntry.COL_SLCT);
+                    Font.draw("> ", screen, pos.x - Font.textWidth("> "), y, ListEntry.COLOR_SELECTED);
+                    Font.draw(" <", screen, pos.x + entry.getWidth(), y, ListEntry.COLOR_SELECTED);
                 }
             }
 
@@ -417,17 +419,16 @@ public class Menu {
     }
 
     void updateEntry(int idx, ListEntry newEntry) {
-        if (idx >= 0 && idx < entries.size())
+        if (idx >= 0 && idx < entries.size()) {
             entries.set(idx, newEntry);
+        }
     }
 
     public void removeSelectedEntry() {
         entries.remove(selection);
 
-        if (selection >= entries.size())
-            selection = entries.size() - 1;
-        if (selection < 0)
-            selection = 0;
+        if (selection >= entries.size()) selection = entries.size() - 1;
+        if (selection < 0) selection = 0;
 
         doScroll();
     }
@@ -437,29 +438,31 @@ public class Menu {
     }
 
     private void renderFrame(Screen screen) {
-        if (!hasFrame)
+        if (!hasFrame) {
             return;
+        }
 
         int bottom = bounds.getBottom() - SpriteSheet.boxWidth;
         int right = bounds.getRight() - SpriteSheet.boxWidth;
 
         for (int y = bounds.getTop(); y <= bottom; y += SpriteSheet.boxWidth) { // loop through the height of the bounds
-            for (int x = bounds.getLeft(); x <= right; x += SpriteSheet.boxWidth) { // loop through the width of the
-                                                                                    // bounds
+            for (int x = bounds.getLeft(); x <= right; x += SpriteSheet.boxWidth) { // loop through the width of the bounds
 
                 boolean xend = x == bounds.getLeft() || x == right;
                 boolean yend = y == bounds.getTop() || y == bottom;
                 int spriteoffset = (xend && yend ? 0 : (yend ? 1 : (xend ? 2 : 3))); // determines which sprite to use
                 int mirrors = (x == right ? 1 : 0) + (y == bottom ? 2 : 0); // gets mirroring
 
-                screen.render(x, y, spriteoffset + bg_sprite * 32, mirrors, 3);
+                screen.render(x, y, spriteoffset + bgSpritePos * 32, mirrors, 3);
 
-                if (x < right && x + SpriteSheet.boxWidth > right)
+                if (x < right && x + SpriteSheet.boxWidth > right) {
                     x = right - SpriteSheet.boxWidth;
+                }
             }
 
-            if (y < bottom && y + SpriteSheet.boxWidth > bottom)
+            if (y < bottom && y + SpriteSheet.boxWidth > bottom) {
                 y = bottom - SpriteSheet.boxWidth;
+            }
         }
     }
 
@@ -577,8 +580,12 @@ public class Menu {
             return this;
         }
         
-        public Builder setBackground(int bg_sprite){
-            menu.bg_sprite = bg_sprite;
+        /**
+         * Change the menu backgound and frame sprites
+         * @param sy    the Y sprites axys in the GUI spritesheet
+         */
+        public Builder setBackground(int sy){
+            menu.bgSpritePos = sy;
             return this;
         }
 
@@ -740,35 +747,34 @@ public class Menu {
                 menu.displayLength = (entrySize.height + menu.spacing) / (ListEntry.getHeight() + menu.spacing);
             }
 
-            // based on the menu centering, and the anchor, determine the upper-left point
-            // from which to draw the menu.
-            menu.bounds = menuPos.positionRect(menuSize, anchor, new Rectangle()); // reset to a value that is actually
-                                                                                   // useful to the menu
+            // based on the menu centering, and the anchor, determine the upper-left point from which to draw the menu.
+            menu.bounds = menuPos.positionRect(menuSize, anchor, new Rectangle()); // reset to a value that is actually useful to the menu
 
             menu.entryBounds = border.subtractFrom(menu.bounds);
-
             menu.titleLoc = titlePos.positionRect(titleDim, menu.bounds);
 
-            if (titlePos.xIndex == 0 && titlePos.yIndex != 1)
+            if (titlePos.xIndex == 0 && titlePos.yIndex != 1) {
                 menu.titleLoc.x += SpriteSheet.boxWidth;
-            if (titlePos.xIndex == 2 && titlePos.yIndex != 1)
+            }
+            
+            if (titlePos.xIndex == 2 && titlePos.yIndex != 1) {
                 menu.titleLoc.x -= SpriteSheet.boxWidth;
+            }
 
             // set the menu title color
             if (menu.title.length() > 0) {
-                if (fullTitleColor)
+                if (fullTitleColor) {
                     menu.titleColor = titleCol;
-                else {
-                    if (!setTitleColor)
+                } else {
+                    if (!setTitleColor) {
                         titleCol = menu.hasFrame ? Color.YELLOW : Color.WHITE;
+                    }
                     menu.titleColor = titleCol; // make it match the frame color, or be transparent
                 }
             }
 
-            if (padding < 0)
-                padding = 0;
-            if (padding > 1)
-                padding = 1;
+            if (padding < 0) padding = 0;
+            if (padding > 1) padding = 1;
             menu.padding = (int) Math.floor(padding * menu.displayLength / 2);
 
             menu.useSearcherBar = searcherBar;

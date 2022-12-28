@@ -68,9 +68,9 @@ public class InputEntry extends ListEntry {
 
 	public void render(Screen screen, int x, int y, boolean isSelected) {
 		if (colon == true) {
-			Font.draw(toString(), screen, x, y, isValid() ? isSelected ? Color.DARK_GREEN : COL_UNSLCT : Color.DARK_RED);
+			Font.draw(toString(), screen, x, y, isValid() ? isSelected ? Color.DARK_GREEN : COLOR_UNSELECTED : Color.DARK_RED);
 		} else {
-			Font.draw(toString().replace(": ", " "), screen, x, y, isValid() ? isSelected ? Color.GREEN : COL_UNSLCT : Color.DARK_RED);
+			Font.draw(toString().replace(": ", " "), screen, x, y, isValid() ? isSelected ? Color.GREEN : COLOR_UNSELECTED : Color.DARK_RED);
 		}
 	}
 

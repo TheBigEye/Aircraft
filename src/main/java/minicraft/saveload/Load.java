@@ -35,10 +35,8 @@ import minicraft.entity.furniture.DeathChest;
 import minicraft.entity.furniture.DungeonChest;
 import minicraft.entity.furniture.Lantern;
 import minicraft.entity.furniture.Spawner;
+import minicraft.entity.furniture.Statue;
 import minicraft.entity.furniture.Tnt;
-import minicraft.entity.furniture.statue.SkeletonStatue;
-import minicraft.entity.furniture.statue.SlimeStatue;
-import minicraft.entity.furniture.statue.ZombieStatue;
 import minicraft.entity.mob.Cat;
 import minicraft.entity.mob.Chicken;
 import minicraft.entity.mob.Cow;
@@ -61,8 +59,6 @@ import minicraft.entity.mob.Slime;
 import minicraft.entity.mob.Snake;
 import minicraft.entity.mob.Zombie;
 import minicraft.entity.mob.boss.AirWizard;
-import minicraft.entity.mob.boss.AirWizardPhase2;
-import minicraft.entity.mob.boss.AirWizardPhase3;
 import minicraft.entity.mob.boss.EyeQueen;
 import minicraft.entity.mob.boss.EyeQueenPhase2;
 import minicraft.entity.mob.boss.EyeQueenPhase3;
@@ -306,11 +302,7 @@ public class Load {
 		}
 
 		Settings.setIdx("diff", diffIdx);
-
 		AirWizard.beaten = Boolean.parseBoolean(data.remove(0));
-		AirWizardPhase2.beaten = Boolean.parseBoolean(data.remove(0));
-		AirWizardPhase3.beaten = Boolean.parseBoolean(data.remove(0));
-		
 		Settings.set("Cheats", Boolean.parseBoolean(data.remove(0)));
 
 		// Check if the AirWizard was beaten in versions prior to 2.1.0
@@ -625,11 +617,11 @@ public class Load {
 		if (worldVer.compareTo(new Version("2.0.5-dev5")) >= 0 || player.armor > 0 || worldVer.compareTo(new Version("2.0.5-dev4")) == 0 && data.size() > 5) {
 			if (worldVer.compareTo(new Version("2.0.4-dev7")) < 0) {
 				// Reverse order b/c we are taking from the end
-				player.curArmor = (ArmorItem) Items.get(data.remove(data.size() - 1));
+				player.currentArmor = (ArmorItem) Items.get(data.remove(data.size() - 1));
 				player.armorDamageBuffer = Integer.parseInt(data.remove(data.size() - 1));
 			} else {
 				player.armorDamageBuffer = Integer.parseInt(data.remove(0));
-				player.curArmor = (ArmorItem) Items.get(data.remove(0), true);
+				player.currentArmor = (ArmorItem) Items.get(data.remove(0), true);
 			}
 		}
 		player.setScore(Integer.parseInt(data.remove(0)));
@@ -683,9 +675,9 @@ public class Load {
 				cols[i] = Integer.parseInt(color[i]) / 50;
 			}
 
-			String col = "" + cols[0] + cols[1] + cols[2];
-			System.out.println("Getting color as " + col);
-			player.shirtColor = Integer.parseInt(col);
+			String spriteColor = "" + cols[0] + cols[1] + cols[2];
+			System.out.println("Getting color as " + spriteColor);
+			player.shirtColor = Integer.parseInt(spriteColor);
 
 		} else if (worldVer.compareTo(new Version("2.0.6-dev4")) < 0) {
 			String color = data.remove(0);
@@ -872,7 +864,6 @@ public class Load {
 				Game.levels[Game.currentLevel].add(existing);
 				return null;
 			}
-
 		}
 
 		Entity newEntity = null;
@@ -883,13 +874,6 @@ public class Load {
 			
 			if (sparkOwner instanceof AirWizard) {
 				newEntity = new Spark((AirWizard) sparkOwner, x, y, 1);
-			
-			} else if  (sparkOwner instanceof AirWizardPhase2) {
-				newEntity = new Spark((AirWizardPhase2) sparkOwner, x, y, 2);
-				
-			} else if (sparkOwner instanceof AirWizardPhase3) {
-				newEntity = new Spark((AirWizardPhase3) sparkOwner, x, y, 3);
-				
 			} else {
 				System.err.println("failed to load spark; owner id doesn't point to a correct entity");
 				return null;
@@ -986,21 +970,21 @@ public class Load {
 		if (!isLocalSave) {
 			if (newEntity instanceof Arrow) {
 				int ownerID = Integer.parseInt(info.get(2));
-				Mob m = (Mob) Network.getEntity(ownerID);
+				Mob mob = (Mob) Network.getEntity(ownerID);
 
-				if (m != null) {
+				if (mob != null) {
 					Direction dir = Direction.values[Integer.parseInt(info.get(3))];
 					int dmg = Integer.parseInt(info.get(5));
-					newEntity = new Arrow(m, x, y, dir, dmg);
+					newEntity = new Arrow(mob, x, y, dir, dmg);
 				}
 			}
 			if (newEntity instanceof Fireball) {
 				int ownerID = Integer.parseInt(info.get(2));
-				Mob m = (Mob)Network.getEntity(ownerID);
-				if (m != null) {
+				Mob mob = (Mob)Network.getEntity(ownerID);
+				if (mob != null) {
 					Direction dir = Direction.values[Integer.parseInt(info.get(3))];
 					int dmg = Integer.parseInt(info.get(5));
-					newEntity = new Fireball(m, x, y, dir, dmg);
+					newEntity = new Fireball(mob, x, y, dir, dmg);
 				}
 			}
 			if (newEntity instanceof ItemEntity) {
@@ -1014,16 +998,16 @@ public class Load {
 				newEntity = new ItemEntity(item, x, y, zz, lifetime, timeleft, xa, ya, za);
 			}
 			if (newEntity instanceof TextParticle) {
-				int textcol = Integer.parseInt(info.get(3));
-				newEntity = new TextParticle(info.get(2), x, y, textcol);
+				int textColor = Integer.parseInt(info.get(3));
+				newEntity = new TextParticle(info.get(2), x, y, textColor);
 
-				// if (Game.debug) System.out.println("Loaded text particle; color: "+ Color.toString(textcol)+", text: " + info.get(2));
+				// if (Game.debug) System.out.println("Loaded text particle; color: "+ Color.toString(textColor)+", text: " + info.get(2));
 			}
 		}
 
 		newEntity.eid = eid; // This will be -1 unless set earlier, so a new one will be generated when adding it to the level.
 		if (newEntity instanceof ItemEntity && eid == -1) {
-			System.out.println("Warning: Item entity was loaded with no eid");
+			Logger.warn("Item entity was loaded with no eid");
 		}
 
 		int curLevel = Integer.parseInt(info.get(info.size() - 1));
@@ -1066,8 +1050,6 @@ public class Load {
 	        case "DeepGuardian": return new Keeper(moblvl);
 	        case "Keeper": return new Keeper(moblvl);
 	        case "AirWizard": return new AirWizard(moblvl > 1);
-	        case "AirWizardPhase2": return new AirWizardPhase2(moblvl > 1);
-	        case "AirWizardPhase3": return new AirWizardPhase3(moblvl > 1);
 	        case "Firefly": return new Firefly();
 	
 	        // Load Furniture entities
@@ -1086,9 +1068,9 @@ public class Load {
 	        case "Furnace": return new Crafter(Crafter.Type.Furnace);
 	        case "Oven": return new Crafter(Crafter.Type.Oven);
 	        case "Bed": return new Bed();
-	        case "SlimeStatue": return new SlimeStatue();
-	        case "ZombieStatue": return new ZombieStatue();
-	        case "SkeletonStatue": return new SkeletonStatue();
+	        case "SlimeStatue": return new Statue(Statue.Type.Slime);
+	        case "ZombieStatue": return new Statue(Statue.Type.Zombie);
+	        case "SkeletonStatue": return new Statue(Statue.Type.Skeleton);
 	        case "Tnt": return new Tnt();
 	        case "Lantern": return new Lantern(Lantern.Type.NORM);
 	        case "Arrow": return new Arrow(new Skeleton(0), 0, 0, Direction.NONE, 0);

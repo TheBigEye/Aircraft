@@ -9,7 +9,7 @@ public class SlimyWizard extends EnemyMob {
     static {
         sprites = new MobSprite[4][4][2];
         for (int i = 0; i < 4; i++) {
-            MobSprite[][] list = MobSprite.compileMobSpriteAnimations(16, 20 + (i * 2));
+            MobSprite[][] list = MobSprite.compileMobSpriteAnimations(30, 14 + (i * 2));
             sprites[i] = list;
         }
     }

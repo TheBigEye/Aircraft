@@ -10,7 +10,7 @@ public class Snake extends EnemyMob {
     static {
         sprites = new MobSprite[4][4][2];
         for (int i = 0; i < 4; i++) {
-            MobSprite[][] list = MobSprite.compileMobSpriteAnimations(8, 8 + (i * 2));
+            MobSprite[][] list = MobSprite.compileMobSpriteAnimations(10, 10 + (i * 2));
             sprites[i] = list;
         }
     }

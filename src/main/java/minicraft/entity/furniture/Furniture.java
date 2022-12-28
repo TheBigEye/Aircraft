@@ -55,7 +55,7 @@ public class Furniture extends Entity {
         super(xr, yr);
         this.name = name;
         this.sprite = sprite;
-        col = sprite.color;
+        color = sprite.color;
     }
 
     @Override
@@ -99,7 +99,7 @@ public class Furniture extends Entity {
     }
 
     @Override
-    public boolean blocks(Entity e) {
+    public boolean blocks(Entity entity) {
         return true; // furniture blocks all entities, even non-solid ones like arrows.
     }
 

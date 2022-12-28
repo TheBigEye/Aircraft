@@ -21,8 +21,8 @@ public class WaterTile extends Tile {
 	}
 
 	@Override
-	public boolean mayPass(Level level, int x, int y, Entity e) {
-		return e.canSwim();
+	public boolean mayPass(Level level, int x, int y, Entity entity) {
+		return entity.canSwim();
 	}
 
 	@Override

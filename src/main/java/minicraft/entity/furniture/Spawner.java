@@ -46,7 +46,7 @@ public class Spawner extends Furniture {
 	 */
 	private void initMob(MobAi m) {
 		mob = m;
-		sprite.color = col = mob.col;
+		sprite.color = color = mob.color;
 
 		if (m instanceof EnemyMob) {
 			lvl = ((EnemyMob) mob).lvl;
@@ -67,7 +67,7 @@ public class Spawner extends Furniture {
 	 * @param m Mob which will be spawned.
 	 */
 	public Spawner(MobAi m) {
-		super(getClassName(m.getClass()) + " Spawner", new Sprite(8, 26 + frame, 2, 2, 2), 7, 2);
+		super(getClassName(m.getClass()) + " Spawner", new Sprite(0 + frame, 32, 2, 2, 2), 7, 2);
 		health = 100;
 		initMob(m);
 		resetSpawnInterval();
@@ -104,7 +104,7 @@ public class Spawner extends Furniture {
 				level.add(new FireParticle(x - 10 + random.nextInt(14), y - 8 + random.nextInt(12)));
 			}
 		}  else {
-			frame = rnd.nextInt(2) * 2;
+			frame = rnd.nextInt(3) * 2;
 		}
 
 		if (Settings.get("diff").equals("Peaceful")) {

@@ -48,7 +48,6 @@ import minicraft.entity.mob.Slime;
 import minicraft.entity.mob.Snake;
 import minicraft.entity.mob.Zombie;
 import minicraft.entity.mob.boss.AirWizard;
-import minicraft.entity.mob.boss.AirWizardPhase3;
 import minicraft.entity.mob.villager.Cleric;
 import minicraft.entity.mob.villager.Librarian;
 import minicraft.entity.mob.villager.OldGolem;
@@ -144,8 +143,7 @@ public class Level {
 
 	public void printLevelLoc(String prefix, int x, int y, String suffix) {
 		String levelName = getLevelName(depth);
-
-		System.out.println(prefix + " on " + levelName + " level (" + x + "," + y + ")" + suffix);
+		Logger.debug(prefix + " on " + levelName + " level (" + x + ", " + y + ")" + suffix);
 	}
 
 	public void printTileLocs(Tile t) {
@@ -167,7 +165,7 @@ public class Level {
 			}
 		}
 
-		System.out.println("Found " + numfound + " entities in level of depth " + depth);
+		Logger.debug("Found " + numfound + " entities in level of depth " + depth);
 	}
 
 	private void updateMobCap() {
@@ -197,7 +195,7 @@ public class Level {
 			return;
 		}
 
-		Logger.debug("Making level " + level + "...");
+		Logger.debug("Generating level " + level + "...");
 
 		maps = LevelGen.createAndValidateMap(w, h, level, seed);
 		if (maps == null) {
@@ -221,7 +219,7 @@ public class Level {
 				for (int x = 0; x < w; x++) { // Loop through width
 					if (parentLevel.getTile(x, y) == Tiles.get("Stairs Down")) { // If the tile in the level above the current one is a stairs down then...
 						if (level == -4) { /// Make the obsidian wall formation around the stair in the dungeon level
-							Structure.dungeonGate.draw(this, x, y);
+							Structure.dungeonGate.draw(this, w / 2, h / 2);
 
 						} else if (level == 0) { // Surface
 							// Surround the sky stairs with hard rock
@@ -248,13 +246,11 @@ public class Level {
 				Structure.skyDungeon.draw(this, x, y);
 				placedSkyDungeon = true;
 
-				Logger.debug("Placed Sky dungeon!");
-
+				Logger.debug("Placed Sky dungeon structure!");
 			}
 		}
 
 		checkChestCount(false);
-
 		checkAirWizard();
 
 		if (Game.debug) {
@@ -316,13 +312,13 @@ public class Level {
 		int numChests = 0;
 
 		if (check) {
-			for (Entity e: entitiesToAdd) {
-				if (e instanceof DungeonChest) {
+			for (Entity entity: entitiesToAdd) {
+				if (entity instanceof DungeonChest) {
 					numChests++;
 				}
 			}
-			for (Entity e: entities) {
-				if (e instanceof DungeonChest) {
+			for (Entity entity: entities) {
+				if (entity instanceof DungeonChest) {
 					numChests++;
 				}
 			}
@@ -361,9 +357,6 @@ public class Level {
 						d.x = x2 * 16 - 8;
 						d.y = y2 * 16 - 8;
 					}
-					if (getTile(d.x / 16, d.y / 16) == Tiles.get("Obsidian Wall")) {
-						setTile(d.x / 16, d.y / 16, Tiles.get("Obsidian"));
-					}
 					add(d);
 					chestCount++;
 					addedchest = true;
@@ -399,7 +392,7 @@ public class Level {
 			boolean inLevel = entities.contains(entity);
 
 			if (!inLevel) {
-				// if (Game.debug) printEntityStatus("Adding ", entity, "furniture.DungeonChest", "mob.AirWizard", "mob.Player");
+				if (Game.debug) printEntityStatus("Adding ", entity, "furniture.DungeonChest", "mob.boss.AirWizard", "mob.Player");
 
 				synchronized (entityLock) {
 					if (entity instanceof Spark) {
@@ -545,7 +538,7 @@ public class Level {
 		while (entitiesToRemove.size() > 0) {
 			Entity entity = entitiesToRemove.get(0);
 
-			// if (Game.debug) printEntityStatus("Removing ", entity, "mob.Player");
+			if (Game.debug) printEntityStatus("Removing ", entity, "mob.Player");
 
 			entity.remove(this); // this will safely fail if the entity's level doesn't match this one.
 
@@ -582,34 +575,50 @@ public class Level {
 		}
 		return false;
 	}
+	
+	public void printEntityStatus(String entityMessage, Entity entity, String... searching) {
+		// "searching" can contain any number of class names I want to print when found.
+		String entityClass = entity.getClass().getCanonicalName();
+		entityClass = entityClass.substring(entityClass.lastIndexOf(".")+1);
+		for (String search: searching) {
+			try {
+				if (Class.forName("minicraft.entity." + search).isAssignableFrom(entity.getClass())) {
+					printLevelLoc(entityMessage + entityClass, entity.x >> 4, entity.y >> 4, ": " + entity);
+					break;
+				}
+			} catch (ClassNotFoundException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
 
 	public void dropItem(int x, int y, int mincount, int maxcount, Item...items) {
 		dropItem(x, y, mincount + random.nextInt(maxcount - mincount + 1), items);
 	}
 
 	public void dropItem(int x, int y, int count, Item...items) {
-		for (int i = 0; i < count; i++)
+		for (int i = 0; i < count; i++) {
 			dropItem(x, y, items);
+		}
 	}
 
 	public void dropItem(int x, int y, Item...items) {
-		for (Item i: items)
+		for (Item i: items) {
 			dropItem(x, y, i);
+		}
 	}
 
 	public ItemEntity dropItem(int x, int y, Item i) {
-
-		int ranx;
-		int rany;
+		int ranx, rany;
 
 		do {
 			ranx = x + random.nextInt(11) - 5;
 			rany = y + random.nextInt(11) - 5;
 		} while (ranx >> 4 != x >> 4 || rany >> 4 != y >> 4);
 
-		ItemEntity ie = new ItemEntity(i, ranx, rany);
-		add(ie);
-		return ie;
+		ItemEntity itemEntity = new ItemEntity(i, ranx, rany);
+		add(itemEntity);
+		return itemEntity;
 	}
 
 	public void renderBackground(Screen screen, int xScroll, int yScroll) {
@@ -648,10 +657,10 @@ public class Level {
 		int r = 4;
 
 		List <Entity> entities = getEntitiesInTiles(xo - r, yo - r, w + xo + r, h + yo + r);
-		for (Entity e: entities) {
-			int lr = e.getLightRadius();
-			if (lr > 0) {
-				screen.renderLight(e.x - 1, e.y - 4, lr * brightness);
+		for (Entity entity: entities) {
+			int lightRadius = entity.getLightRadius();
+			if (lightRadius > 0) {
+				screen.renderLight(entity.x - 1, entity.y - 4, lightRadius * brightness);
 			}
 		}
 
@@ -661,8 +670,8 @@ public class Level {
 					continue;
 				}
 
-				int lr = getTile(x, y).getLightRadius(this, x, y);
-				if (lr > 0) screen.renderLight(x * 16 + 8, y * 16 + 8, lr * brightness);
+				int lightRadius = getTile(x, y).getLightRadius(this, x, y);
+				if (lightRadius > 0) screen.renderLight(x * 16 + 8, y * 16 + 8, lightRadius * brightness);
 			}
 		}
 		screen.setOffset(0, 0);
@@ -755,10 +764,10 @@ public class Level {
 		}
 	}
 
-	public void remove(Entity e) {
-		entitiesToAdd.remove(e);
-		if (!entitiesToRemove.contains(e)) {
-			entitiesToRemove.add(e);
+	public void remove(Entity entity) {
+		entitiesToAdd.remove(entity);
+		if (!entitiesToRemove.contains(entity)) {
+			entitiesToRemove.add(entity);
 		}
 	}
 
@@ -876,7 +885,7 @@ public class Level {
 			// they will spawn hostile mobs, if instead, it is defeated they will
 			// spawn peaceful mobs
 			if (depth == 1 && SkyMob.checkStartPos(this, nx, ny)) {
-				if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33) && AirWizardPhase3.beaten == true) { // Spawns passive sky mobs.
+				if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33) && AirWizard.beaten) { // Spawns passive sky mobs.
 					add((new Phyg()), nx, ny);
 					add((new Sheepuff()), nx, ny);
 				} else { // Spawns hostile sky mobs.

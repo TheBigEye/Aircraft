@@ -9,27 +9,29 @@ import minicraft.gfx.Screen;
 
 public class Keeper extends EnemyMob {
     private static final MobSprite[][][] sprites = new MobSprite[2][2][2];
-
     static {
         sprites[0][0][0] = new MobSprite(52, 0, 6, 6, 0);
     }
+    
+    private int slimeSpawnRate = 0;
+    private int tickTime = 0;
 
     public Keeper(int lvl) {
-        super(5, sprites, 9, 100);
+    	super(5, sprites, 12000, false, 16 * 8, -1, 10, 50);
     }
 
     public void tick() {
         super.tick();
+        tickTime++;
 
-        // if (Game.isMode("Creative")) return; // Should not attack if player is in
-        // creative
-
-        if (random.nextInt(1500) == 1) {
+        /*slimeSpawnRate++;
+        if (slimeSpawnRate >= 1500) {
             getLevel().add(new Slime(0), x, y + 5);
             getLevel().add(new Slime(0), x, y - 5);
             getLevel().add(new Slime(0), x + 5, y);
             getLevel().add(new Slime(0), x - 5, y);
-        }
+            slimeSpawnRate = 0;
+        }*/
 
         Player player = getClosestPlayer();
         if (player != null) {
@@ -37,27 +39,32 @@ public class Keeper extends EnemyMob {
             int yd = player.y - y;
 
             int sig0 = 1;
-
             xa = ya = 0;
 
             if (xd < sig0) xa = -1;
-            if (xd > sig0) xa = +1;
+            else if (xd > sig0) xa = 1;
             if (yd < sig0) ya = -1;
-            if (yd > sig0) ya = +1;
+            else if (yd > sig0) ya = 1;
 
             // texture phases
-            if (yd > sig0) { // up
-                sprites[0][0][0] = new MobSprite(52, 0, 6, 6, 0);
-            }
-            if (yd < sig0) { // down
-                sprites[0][0][0] = new MobSprite(52, 6, 6, 6, 0);
+            if (yd > 1) { // up
+            	if (tickTime /12 %2 == 0) {
+            		sprites[0][0][0] = new MobSprite(64, 13, 4, 4, 0); // up 1
+            	} else {
+            		sprites[0][0][0] = new MobSprite(64, 13, 4, 4, 1); // up 2
+            	}
+            } else if (yd < 1) { // down
+            	if (tickTime /12 %2 == 0) {
+            		sprites[0][0][0] = new MobSprite(68, 13, 4, 4, 0); // down 1
+            	} else {
+            		sprites[0][0][0] = new MobSprite(68, 13, 4, 4, 1); // down 2
+            	}
             }
 
-            if (xd > sig0) { // right
-                sprites[0][0][0] = new MobSprite(52, 12, 6, 6, 0);
-            }
-            if (xd < sig0) { // left
-                sprites[0][0][0] = new MobSprite(52, 18, 6, 6, 0);
+            if (xd > 1) { // right
+            	sprites[0][0][0] = new MobSprite(72, 13, 4, 4, 0);
+            } else if (xd < 1) { // left
+            	sprites[0][0][0] = new MobSprite(72, 13, 4, 4, 1);
             }
 
         } else {
@@ -69,15 +76,15 @@ public class Keeper extends EnemyMob {
 
     @Override
     public void render(Screen screen) {
-        sprites[0][0][0].render(screen, x - 25, y - 34);
+        sprites[0][0][0].render(screen, x - 16, y - 24);
 
-        int textcol = Color.get(-1, Color.rgb(255, 0, 0));
-        int textcol2 = Color.get(-1, Color.rgb(200, 0, 0));
+        int textColor = Color.get(-1, Color.rgb(255, 0, 0));
+        int textColor2 = Color.get(-1, Color.rgb(200, 0, 0));
         String h = health + "/" + maxHealth;
 
         int textwidth = Font.textWidth(h);
-        Font.draw(h, screen, (x - textwidth / 2) + 1, y - 40, textcol2);
-        Font.draw(h, screen, (x - textwidth / 2), y - 41, textcol);
+        Font.draw(h, screen, (x - textwidth / 2) + 1, y - 40, textColor2);
+        Font.draw(h, screen, (x - textwidth / 2), y - 41, textColor);
 
         String txt = "";
         int w = Font.textWidth(txt) / 2;

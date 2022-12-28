@@ -24,7 +24,7 @@ public class CloudHoleTile extends Tile {
         sprite.render(screen, level, x, y);
     }
 
-    public boolean mayPass(Level level, int x, int y, Entity e) {
-        return e.canSwim();
+    public boolean mayPass(Level level, int x, int y, Entity entity) {
+        return entity.canSwim();
     }
 }

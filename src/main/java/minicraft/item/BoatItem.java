@@ -10,7 +10,7 @@ import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class BoatItem extends Item {
-	private static final Sprite boatSprite = new Sprite(0, 31, 0);
+	private static final Sprite boatSprite = new Sprite(0, 32, 0);
 
 	private boolean placed = false;
 

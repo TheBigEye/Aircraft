@@ -110,7 +110,6 @@ public class FileHandler extends Game {
 
 		Files.walkFileTree(origFolder, new FileVisitor<Path>() {
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
-
 				String newFilename = newFolder.resolve(origFolder.relativize(file)).toString();
 
 				if (new File(newFilename).exists()) {

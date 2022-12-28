@@ -76,7 +76,7 @@ public class Initializer extends Game {
 	    double unprocessed = 0;
 	    int frames = 0;
 	    int ticks = 0;
-	    long lastTimer1 = System.currentTimeMillis();
+	    long lastTimer = System.currentTimeMillis();
 
 	    // calculate nanoseconds per tick
 	    double nsPerTick = 1E9D / Updater.normSpeed;
@@ -97,30 +97,30 @@ public class Initializer extends Game {
 	            unprocessed--;
 	        }
 	        
-		/*try {
-			Thread.sleep(2); // Makes a small pause for 2 milliseconds
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
-
-		if ((now - lastRender) / 1.0E9 > 1.0 / MAX_FPS) {
-			frames++;
-			lastRender = System.nanoTime();
-			Renderer.render();
-		}
-
-		if (discordCore != null) {
-			discordCore.runCallbacks();
-		}
-
-		if (System.currentTimeMillis() - lastTimer1 > 1000) { // updates every 1 second
-			lastTimer1 += 1000; // adds a second to the timer
-
-			fra = frames; // saves total frames in last second
-			tik = ticks; // saves total ticks in last second
-			frames = 0; // resets frames
-			ticks = 0; // resets ticks; ie, frames and ticks only are per second
-		}
+			/*try {
+				Thread.sleep(2); // Makes a small pause for 2 milliseconds
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}*/
+	
+			if ((now - lastRender) / 1.0E9 > 1.0 / MAX_FPS) {
+				frames++;
+				lastRender = System.nanoTime();
+				Renderer.render();
+			}
+	
+			if (discordCore != null) {
+				discordCore.runCallbacks();
+			}
+	
+			if (System.currentTimeMillis() - lastTimer > 1000) { // updates every 1 second
+				lastTimer += 1000; // adds a second to the timer
+	
+				fra = frames; // saves total frames in last second
+				tik = ticks; // saves total ticks in last second
+				frames = 0; // resets frames
+				ticks = 0; // resets ticks; ie, frames and ticks only are per second
+			}
 	    }
 	}
 

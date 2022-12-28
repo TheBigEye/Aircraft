@@ -82,12 +82,9 @@ public class SkyFernTile extends Tile {
     @Override
     public void steppedOn(Level level, int x, int y, Entity entity) {
         if (entity instanceof Player) {
-
-            Player p = (Player) entity;
-            p.hurt(this, x, y, random.nextInt(3));
-            
+            Player player = (Player) entity;
+            player.hurt(this, x, y, random.nextInt(3));   
             stepped = true;
-            
         } else {
         	stepped = false;
         }

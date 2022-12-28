@@ -73,8 +73,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 	// Attack static variables
 	private static final int playerHurtTime = 30;
-	private static final int INTERACT_DIST = 12;
-	private static final int ATTACK_DIST = 20;
+	private static final int playerInteractDistance = 12;
+	private static final int playerAttackDistance = 20;
 
 	// Score static variables
 	private static final int mtm = 300; // time given to increase multiplier before it goes back to 1.
@@ -101,16 +101,16 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public static final int maxArmor = 100;
 
 	// Player sprite variables
-	public static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 16); // Normal player sprites
-	private static MobSprite[][] carrySprites = MobSprite.compileMobSpriteAnimations(0, 18); // The sprites while carrying something.
-	private static MobSprite[][] suitSprites = MobSprite.compileMobSpriteAnimations(8, 16); // The "airwizard suit" sprites.
-	private static MobSprite[][] carrySuitSprites = MobSprite.compileMobSpriteAnimations(8, 18); // The "airwizard suit" sprites.
+	public static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 20); // Normal player sprites
+	private static MobSprite[][] carrySprites = MobSprite.compileMobSpriteAnimations(0, 22); // The sprites while carrying something.
+	private static MobSprite[][] suitSprites = MobSprite.compileMobSpriteAnimations(0, 24); // The "airwizard suit" sprites.
+	private static MobSprite[][] carrySuitSprites = MobSprite.compileMobSpriteAnimations(0, 26); // The "airwizard suit" sprites.
 
 	private Inventory inventory;
 
-	public Item activeItem;
+	public Item activeItem; // Holds the player current item in hand
+	private Item previousItem; // Holds the item held before using the POW glove.
 	Item attackItem; // attackItem is useful again b/c of the power glove.
-	private Item prevItem; // Holds the item held before using the POW glove.
 
 	int attackTime;
 	public Direction attackDir;
@@ -122,7 +122,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public int armorDamageBuffer;
 
 	@Nullable
-	public ArmorItem curArmor; // The color/type of armor to be displayed.
+	public ArmorItem currentArmor; // The color/type of armor to be displayed.
 
 	private int staminaRecharge; // The ticks before charging a bolt of the player's stamina
 	private static final int maxStaminaRecharge = 10; // Cutoff value for staminaRecharge
@@ -133,7 +133,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 	private static final int[] maxHungerStams =  { 16,  14,  12,  8  }; // hungerStamCnt required to lose a burger.
 	private static final int[] hungerTickCount = { 160, 140, 120, 80 }; // Ticks before decrementing stamHungerTicks.
-	private static final int[] hungerStepCount = { 32,  28,  24,  16  }; // Steps before decrementing stamHungerTicks.
+	private static final int[] hungerStepCount = { 32,  28,  24,  16 }; // Steps before decrementing stamHungerTicks.
 	private static final int[] minStarveHealth = { 8,   7,   5,   3  }; // min hearts required for hunger to hurt you.
 
 	private int stepCount; // Used to penalize hunger for movement.
@@ -177,12 +177,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     private int nightTickCount = 0; // Used to get the Currrent time value
 	@SuppressWarnings("unused")
 	private int nightTime = 0; // Delay
-
-
-	// Note: the player's health & max health are inherited from Mob.java
-	public String getDebugHunger() {
-		return hungerStamCnt + "_" + stamHungerTicks;
-	}
 
 	public Player(@Nullable Player previousInstance, InputHandler input) {
 		super(sprites, Player.maxHealth);
@@ -228,7 +222,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 		attackDir = dir;
 		armor = 0;
-		curArmor = null;
+		currentArmor = null;
 		armorDamageBuffer = 0;
 		stamina = maxStamina;
 		hunger = maxHunger;
@@ -422,7 +416,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                 if (Settings.get("particles").equals(true)) {
                     level.add(new FireParticle(x - 4 + random.nextInt(10), y - 4 + random.nextInt(9)));
                 }
-                if (!potionEffects.containsKey(PotionType.Lava) || !potionEffects.containsKey(PotionType.xLava)) {
+                if (!(potionEffects.containsKey(PotionType.Lava) || potionEffects.containsKey(PotionType.xLava))) {
                     this.hurt(this, 1);
                 }
 				burnTime++;
@@ -536,7 +530,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         if (staminaRechargeDelay == 0) {
             staminaRecharge++; // Ticks since last recharge, accounting for the time potion effect.
 
-            if (isSwimming() && !potionEffects.containsKey(PotionType.Swim)) {
+            if (isSwimming() && !(potionEffects.containsKey(PotionType.Swim) || potionEffects.containsKey(PotionType.xSwim))) {
                 staminaRecharge = 0; // Don't recharge stamina while swimming.
             }
 
@@ -674,11 +668,13 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         		if (moved) stepCount++;
         	}
 
-        	if (isSwimming() && tickTime % 60 == 0 && !potionEffects.containsKey(PotionType.Swim)) { // if drowning... :P
-        		if (stamina > 0) {
-        			stamina--; // Take away stamina
-        		} else {
-        			directHurt(1, Direction.NONE); // If no stamina, take damage.
+        	if (isSwimming() && tickTime % 60 == 0) { // if drowning... :P
+        		if (!(potionEffects.containsKey(PotionType.Swim) || potionEffects.containsKey(PotionType.xSwim))) {
+	        		if (stamina > 0) {
+	        			stamina--; // Take away stamina
+	        		} else {
+	        			directHurt(1, Direction.NONE); // If no stamina, take damage.
+	        		}
         		}
         	}
 
@@ -697,16 +693,16 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         	}
 
             // this only allows attacks or pickups when such action is possible.
-            if ((activeItem == null || !activeItem.used_pending) && (input.getKey("attack").clicked || input.getKey("pickup").clicked) && stamina != 0 && onFallDelay <= 0) { 
-                if (!potionEffects.containsKey(PotionType.Energy)) {
+            if ((activeItem == null || !activeItem.usedPending) && (input.getKey("attack").clicked || input.getKey("pickup").clicked) && stamina != 0 && onFallDelay <= 0) { 
+                if (!(potionEffects.containsKey(PotionType.Energy) || potionEffects.containsKey(PotionType.xEnergy))) {
                     stamina--;
                 }
 
                 staminaRecharge = 0;
 
-                if (input.getKey("pickup").clicked && (activeItem == null || !activeItem.used_pending)) {
+                if (input.getKey("pickup").clicked && (activeItem == null || !activeItem.usedPending)) {
                     if (!(activeItem instanceof PowerGloveItem)) { // if you are not already holding a power glove (aka in the middle of a separate interaction)...
-                        prevItem = activeItem; // Then save the current item...
+                        previousItem = activeItem; // Then save the current item...
                         activeItem = new PowerGloveItem(); // and replace it with a power glove.
                     }
                     attack(); // Attack (with the power glove)
@@ -772,18 +768,18 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		// if you are now holding something other than a power glove...
 		if (!(activeItem instanceof PowerGloveItem)) { 
 			// and you had a previous item that we should care about...
-			if (prevItem != null && !Game.isMode("Creative")) 
+			if (previousItem != null && !Game.isMode("Creative")) 
 				// then add that previous item to your inventory so it isn't lost.
 				// if something other than a power glove is being held, but the previous item is
 				// null, then nothing happens; nothing added to inventory, and current item
 				// remains as the new one.
-				inventory.add(0, prevItem); 
+				inventory.add(0, previousItem); 
 		} else {
 			// otherwise, if you're holding a power glove, then the held item didn't change, so we can remove the power glove and make it what it was before.
-			activeItem = prevItem; 
+			activeItem = previousItem; 
 		}
 
-        prevItem = null; // this is no longer of use.
+        previousItem = null; // this is no longer of use.
 
         // if, for some odd reason, you are still holding a power glove at this point, then null it because it's useless and shouldn't remain in hand.
         if (activeItem instanceof PowerGloveItem) {
@@ -793,7 +789,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
     /* This actually ends up calling another use method down below. */
     private boolean use() {
-        return use(getInteractionBox(INTERACT_DIST));
+        return use(getInteractionBox(playerInteractDistance));
     }
 
     /**
@@ -845,7 +841,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     			}
     		}
     		// If the interaction between you and an entity is successful, then return.
-    		if (interact(getInteractionBox(INTERACT_DIST))) return;
+    		if (interact(getInteractionBox(playerInteractDistance))) return;
 
     		// Attempt to interact with the tile.
     		Point t = getInteractionTile();
@@ -881,7 +877,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		if (activeItem == null || activeItem.canAttack()) { // If there is no active item, OR if the item can be used to attack...
 			attackTime = 5;
 			// Attacks the enemy in the appropriate direction.
-			boolean used = hurt(getInteractionBox(ATTACK_DIST));
+			boolean used = hurt(getInteractionBox(playerAttackDistance));
 			
 			// Attempts to hurt the tile in the appropriate direction.
 			Point t = getInteractionTile();
@@ -918,23 +914,23 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         int x = this.x;
         int y = this.y - 2;
 
-        x += dir.getX() * INTERACT_DIST;
-        y += dir.getY() * INTERACT_DIST;
+        x += dir.getX() * playerInteractDistance;
+        y += dir.getY() * playerInteractDistance;
 
         return new Point(x >> 4, y >> 4);
     }
 
     private void goFishing() {
-    	int fcatch = random.nextInt(100);
+    	int fishCatch = random.nextInt(100);
 
     	boolean caught = false;
 
     	// Figure out which table to roll for
     	List<String> data = null;
-    	if (fcatch > FishingRodItem.getChance(0, fishingLevel)) data = FishingData.fishData;
-    	else if (fcatch > FishingRodItem.getChance(1, fishingLevel)) data = FishingData.junkData;
-    	else if (fcatch > FishingRodItem.getChance(2, fishingLevel)) data = FishingData.toolData;
-    	else if (fcatch >= FishingRodItem.getChance(3, fishingLevel)) data = FishingData.rareData;
+    	if (fishCatch > FishingRodItem.getChance(0, fishingLevel)) data = FishingData.fishData;
+    	else if (fishCatch > FishingRodItem.getChance(1, fishingLevel)) data = FishingData.junkData;
+    	else if (fishCatch > FishingRodItem.getChance(2, fishingLevel)) data = FishingData.toolData;
+    	else if (fishCatch >= FishingRodItem.getChance(3, fishingLevel)) data = FishingData.rareData;
 
     	if (data != null) { // If you've caught something
     		for (String line : data) {
@@ -982,13 +978,13 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
      */
     private boolean use(Rectangle area) {
         List<Entity> entities = level.getEntitiesInRect(area); // Gets the entities within the 4 points
-        for (Entity e : entities) {
+        for (Entity entity : entities) {
 
         	// If the entity is not the player, then call it's use method, and return the result. Only
-            if (e instanceof Furniture && ((Furniture) e).use(this)) return true; 
-            else if (e instanceof Boat && ((Boat) e).use(this)) return true;
-            else if (e instanceof Cleric && ((Cleric) e).use(this)) return true;
-            else if (e instanceof Librarian && ((Librarian) e).use(this)) return true;
+            if (entity instanceof Furniture && ((Furniture) entity).use(this)) return true; 
+            else if (entity instanceof Boat && ((Boat) entity).use(this)) return true;
+            else if (entity instanceof Cleric && ((Cleric) entity).use(this)) return true;
+            else if (entity instanceof Librarian && ((Librarian) entity).use(this)) return true;
         }
         return false;
     }
@@ -1005,9 +1001,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     private boolean interact(Rectangle area) {
     	List<Entity> entities = level.getEntitiesInRect(area);
     	for (int i = 0; i < entities.size(); i++) {
-    		Entity e = entities.get(i);
-    		if (e != this && e.interact(this, activeItem, attackDir))
+    		Entity entity = entities.get(i);
+    		if (entity != this && entity.interact(this, activeItem, attackDir)) {
     			return true; // This is the ONLY place that the Entity.interact method is actually called.
+    		}
     	}
     	return false;
     }
@@ -1017,14 +1014,14 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     	List<Entity> entities = level.getEntitiesInRect(area);
     	int maxDmg = 0;
     	for (int i = 0; i < entities.size(); i++) {
-    		Entity e = entities.get(i);
-    		if (e != this && e instanceof Mob) {
-    			int dmg = getAttackDamage(e);
+    		Entity entity = entities.get(i);
+    		if (entity != this && entity instanceof Mob) {
+    			int dmg = getAttackDamage(entity);
     			maxDmg = Math.max(dmg, maxDmg);
-    			((Mob) e).hurt(this, dmg, attackDir); // Note: this really only does something for mobs.
+    			((Mob) entity).hurt(this, dmg, attackDir); // Note: this really only does something for mobs.
     		}
-    		if (e != this && e instanceof Furniture) {
-    			e.interact(this, null, attackDir); // Note: this really only does something for mobs.
+    		if (entity != this && entity instanceof Furniture) {
+    			entity.interact(this, null, attackDir); // Note: this really only does something for mobs.
     		}
     	}
     	return maxDmg > 0;
@@ -1036,55 +1033,37 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
      * @param e Entity being attacked.
      * @return How much damage the player does.
      */
-    private int getAttackDamage(Entity e) {
-        int dmg = random.nextInt(2) + 1;
+    private int getAttackDamage(Entity entity) {
+        int damage = random.nextInt(2) + 1;
         if (activeItem != null && activeItem instanceof ToolItem) {
-            dmg += ((ToolItem) activeItem).getAttackDamageBonus(e); // sword/axe are more effective at dealing damage.
+            damage += ((ToolItem) activeItem).getAttackDamageBonus(entity); // sword/axe are more effective at dealing damage.
         }
-        return dmg;
+        return damage;
     }
     
     private void updatePlayerSkin() {
     	// Skin events
     	LocalDateTime time = LocalDateTime.now();
-
-    	// Halloween skin
-    	if (Game.IS_Halloween == true) {
-    		sprites = MobSprite.compileMobSpriteAnimations(0, 60);
-    		carrySprites = MobSprite.compileMobSpriteAnimations(0, 62);
-    	}
-
-    	// Me??
-    	if (time.getMonth() == Month.JULY) {
-    		if (time.getDayOfMonth() == 30) {
-    			sprites = MobSprite.compileMobSpriteAnimations(0, 64);
-    			carrySprites = MobSprite.compileMobSpriteAnimations(0, 66);
-    		}
-    		if (time.getDayOfMonth() == 29) {
-    			sprites = MobSprite.compileMobSpriteAnimations(0, 64);
-    			carrySprites = MobSprite.compileMobSpriteAnimations(0, 66);
-    		}
-    		if (time.getDayOfMonth() == 28) {
-    			sprites = MobSprite.compileMobSpriteAnimations(0, 64);
-    			carrySprites = MobSprite.compileMobSpriteAnimations(0, 66);
-    		}
-    	}
-
-        // Markus skin
+    	
+        // Notch skin
         if (time.getMonth() == Month.JUNE) {
-            if (time.getDayOfMonth() == 1) {
-                sprites = MobSprite.compileMobSpriteAnimations(0, 56);
-                carrySprites = MobSprite.compileMobSpriteAnimations(0, 58);
-            }
-            if (time.getDayOfMonth() == 2) {
-                sprites = MobSprite.compileMobSpriteAnimations(0, 56);
-                carrySprites = MobSprite.compileMobSpriteAnimations(0, 58);
-            }
-            if (time.getDayOfMonth() == 3) {
-                sprites = MobSprite.compileMobSpriteAnimations(0, 56);
-                carrySprites = MobSprite.compileMobSpriteAnimations(0, 58);
+            if (time.getDayOfMonth() == 1 ||time.getDayOfMonth() == 2 || time.getDayOfMonth() == 3) {
+        		sprites = MobSprite.compileMobSpriteAnimations(10, 20);
+        		carrySprites = MobSprite.compileMobSpriteAnimations(10, 22);
+        		suitSprites = MobSprite.compileMobSpriteAnimations(10, 24);
+        		carrySuitSprites = MobSprite.compileMobSpriteAnimations(10, 26);
             }
         }
+
+    	// Halloween skin
+    	if (time.getMonth() == Month.OCTOBER) {
+    		if (time.getDayOfMonth() == 28 ||time.getDayOfMonth() == 29 || time.getDayOfMonth() == 30) {
+	    		sprites = MobSprite.compileMobSpriteAnimations(20, 20);
+	    		carrySprites = MobSprite.compileMobSpriteAnimations(20, 22);
+	    		suitSprites = MobSprite.compileMobSpriteAnimations(20, 24);
+	    		carrySuitSprites = MobSprite.compileMobSpriteAnimations(20, 26);
+    		}
+    	}
     }
 
     @Override
@@ -1153,26 +1132,26 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
         // Makes the player white if they have just gotten hurt
         if (hurtTime > playerHurtTime - 10) {
-            col = Color.WHITE; // make the sprite white.
+            color = Color.WHITE; // make the sprite white.
         }
 
-        MobSprite curSprite;
+        MobSprite currentSprite;
         if (onFallDelay > 0) {
             // What this does is make falling look really cool
             float spriteToUse = onFallDelay / 2f;
             while (spriteToUse > spriteSet.length - 1) {
                 spriteToUse -= 4;
             }
-            curSprite = spriteSet[Math.round(spriteToUse)][(walkDist >> 3) & 1];
+            currentSprite = spriteSet[Math.round(spriteToUse)][(walkDist >> 3) & 1];
         } else {
-            curSprite = spriteSet[dir.getDir()][(walkDist >> 3) & 1]; // Gets the correct sprite to render.
+            currentSprite = spriteSet[dir.getDir()][(walkDist >> 3) & 1]; // Gets the correct sprite to render.
         }
 
         // Render each corner of the sprite
         if (!isSwimming()) { // Don't render the bottom half if swimming.
-            curSprite.render(screen, xo, yo - 4 * onFallDelay, -1, shirtColor);
+            currentSprite.render(screen, xo, yo - 4 * onFallDelay, -1, shirtColor);
         } else {
-            curSprite.renderRow(0, screen, xo, yo, -1, shirtColor);
+            currentSprite.renderRow(0, screen, xo, yo, -1, shirtColor);
         }
 
         // Renders slashes:
@@ -1362,24 +1341,24 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
      */
     @Override
     public int getLightRadius() {
-    	int player_radius = 4; // The radius of the light.
+    	int playerLightRadius = 4; // The radius of the light.
 
     	// If the player holds a torch, he increases the radius of light that he has
     	if (activeItem != null && activeItem.name.equals("Torch")) {
-    		player_radius = 6;
+    		playerLightRadius = 6;
     	}
 
     	if (activeItem != null && activeItem instanceof FurnitureItem) { // If player is holding furniture
-    		int furniture_radius = ((FurnitureItem) activeItem).furniture.getLightRadius(); // Gets furniture light radius
-    		if (furniture_radius > player_radius) {
+    		int furnitureLightRadius = ((FurnitureItem) activeItem).furniture.getLightRadius(); // Gets furniture light radius
+    		if (furnitureLightRadius > playerLightRadius) {
     			// Brings player light up to furniture light, if less, since the furnture is not
     			// yet part of the level and so doesn't emit light even if it should.
-    			player_radius = furniture_radius; 
+    			playerLightRadius = furnitureLightRadius; 
     		}
     	}
 
     	 // Return light radius
-    	return (player_radius + super.getLightRadius());
+    	return (playerLightRadius + super.getLightRadius());
     }
 
     /** What happens when the player dies */
@@ -1389,23 +1368,23 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     	resetMultiplier();
 
     	// Make death chest
-    	DeathChest dc = new DeathChest(this);
+    	DeathChest deathChest = new DeathChest(this);
 
-    	if (activeItem != null) dc.getInventory().add(activeItem);
-    	if (curArmor != null) dc.getInventory().add(curArmor);
+    	if (activeItem != null) deathChest.getInventory().add(activeItem);
+    	if (currentArmor != null) deathChest.getInventory().add(currentArmor);
 
     	Sound.playerDeath.playOnGui();
         
         // Add the death chest to the world.
-    	World.levels[Game.currentLevel].add(dc);
+    	World.levels[Game.currentLevel].add(deathChest);
         
     	super.die(); // Calls the die() Method in Mob.java
     }
 
     @Override
-    public void onExploded(Tnt tnt, int dmg) {
-    	super.onExploded(tnt, dmg);
-    	payStamina(dmg * 2);
+    public void onExploded(Tnt tnt, int damage) {
+    	super.onExploded(tnt, damage);
+    	payStamina(damage * 2);
     }
 
     public void hurt(int damage, Direction attackDir) {
@@ -1419,37 +1398,39 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     		return; // Can't get hurt in creative, hurt cooldown, or while someone is in bed
     	}
 
-    	int healthDam = 0, armorDam = 0;
+    	int healthDamage = 0; 
+    	int armorDamage = 0;
+    	
     	if (this == Game.player) {
-    		if (curArmor == null) { // No armor
-    			healthDam = damage; // Subtract that amount
+    		if (currentArmor == null) { // No armor
+    			healthDamage = damage; // Subtract that amount
 
     		} else { // Has armor
     			armorDamageBuffer += damage;
-    			armorDam += damage;
+    			armorDamage += damage;
 
-    			while (armorDamageBuffer >= curArmor.level+1) {
-    				armorDamageBuffer -= curArmor.level+1;
-    				healthDam++;				
+    			while (armorDamageBuffer >= currentArmor.level+1) {
+    				armorDamageBuffer -= currentArmor.level+1;
+    				healthDamage++;				
     			}
     		}
 
     		// Adds a text particle telling how much damage was done to the player, and the armor.
-    		if (armorDam > 0) {
+    		if (armorDamage > 0) {
     			level.add(new TextParticle("" + damage, x, y, Color.GRAY));
-    			armor -= armorDam;
+    			armor -= armorDamage;
     			if (armor <= 0) {
-    				healthDam -= armor; // Adds armor damage overflow to health damage (minus b/c armor would be negative)
+    				healthDamage -= armor; // Adds armor damage overflow to health damage (minus b/c armor would be negative)
     				armor = 0;
     				armorDamageBuffer = 0; // Ensures that new armor doesn't inherit partial breaking from this armor.
-    				curArmor = null; // Removes armor
+    				currentArmor = null; // Removes armor
     			}
     		}
     	}
 
-    	if (healthDam > 0 || this != Game.player) {
+    	if (healthDamage > 0 || this != Game.player) {
     		level.add(new TextParticle("" + damage, x, y, Color.get(-1, 504)));
-    		if (this == Game.player) super.doHurt(healthDam, attackDir); // Sets knockback, and takes away health.
+    		if (this == Game.player) super.doHurt(healthDamage, attackDir); // Sets knockback, and takes away health.
     	}
 
     	Sound.playerHurt.playOnGui();
@@ -1466,14 +1447,14 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     		return; // Can't get hurt in creative, hurt cooldown, or while someone is in bed
     	}
 
-    	int healthDam = 0;
+    	int healthDamage = 0;
     	if (this == Game.player) {
-    		healthDam = damage; // Subtract that amount
+    		healthDamage = damage; // Subtract that amount
     	}
 
-    	if (healthDam > 0 || this != Game.player) {
+    	if (healthDamage > 0 || this != Game.player) {
     		level.add(new TextParticle("" + damage, x, y, Color.get(-1, 504)));
-    		if (this == Game.player) super.doHurt(healthDam, attackDir); // Sets knockback, and takes away health.
+    		if (this == Game.player) super.doHurt(healthDamage, attackDir); // Sets knockback, and takes away health.
     	}
 
     	Sound.playerHurt.playOnGui();
@@ -1491,5 +1472,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     public Inventory getInventory() {
     	return inventory;
     }
-
+    
+	// Note: the player's health & max health are inherited from Mob.java
+	public String getDebugHunger() {
+		return hungerStamCnt + "_" + stamHungerTicks;
+	}
+    
 }

@@ -2,11 +2,12 @@ package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
+import minicraft.entity.particle.HeartParticle;
 import minicraft.gfx.MobSprite;
 import minicraft.item.Items;
 
 public class Pig extends PassiveMob {
-    private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 30);
+    private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 38);
     private int tickTime = 0;
 
     /**
@@ -20,21 +21,31 @@ public class Pig extends PassiveMob {
         super.tick();
         tickTime++;
 
-        Player player = getClosestPlayer();
-        if (player != null && player.activeItem != null && player.activeItem.name.equals("Carrot")) {
-            int xd = player.x - x;
-            int yd = player.y - y;
+	    Player player = getClosestPlayer();
+	    boolean holdingCarrot = player != null && player.activeItem != null && player.activeItem.name.equals("Carrot");
 
-            int sig = 1;
-            xa = ya = 0;
+	    // Render heart particles
+	    if (Settings.get("particles").equals(true) && holdingCarrot && random.nextInt(6) == 0) {
+	        int randX = random.nextInt(10);
+	        int randY = random.nextInt(9);
+	        level.add(new HeartParticle(x - 9 + randX, y - 12 + randY));
+	    }
 
-            if (xd < sig) xa = -1;
-            if (xd > sig) xa = +1;
-            if (yd < sig) ya = -1;
-            if (yd > sig) ya = +1;
-        } else {
-            randomizeWalkDir(false);
-        }
+	    if (holdingCarrot) {
+	        int xd = player.x - x;
+	        int yd = player.y - y;
+
+	        /// if player is less than 6.25 tiles away, then set move dir towards player
+	        int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
+	        xa = ya = 0;
+
+	        if (xd < sig0) xa = -1;
+	        else if (xd > sig0) xa = 1;
+	        if (yd < sig0) ya = -1;
+	        else if (yd > sig0) ya = 1;
+	    } else {
+	        randomizeWalkDir(false);
+	    }
         
 		// Pig sounds
 		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {

@@ -81,11 +81,11 @@ public class Giant extends EnemyMob {
         sprites[0][0][0].render(screen, x - 25, y - 34);
 
         /*
-         * int textcol = Color.get(-1, Color.rgb(255, 0, 0)); int textcol2 =
+         * int textColor = Color.get(-1, Color.rgb(255, 0, 0)); int textColor2 =
          * Color.get(-1, Color.rgb(200, 0, 0)); String h = health + "/" + maxHealth;
          * 
          * int textwidth = Font.textWidth(h); Font.draw(h, screen, (x - textwidth/2) +
-         * 1, y -40, textcol2); Font.draw(h, screen, (x - textwidth/2), y -41, textcol);
+         * 1, y -40, textColor2); Font.draw(h, screen, (x - textwidth/2), y -41, textColor);
          */
     }
 

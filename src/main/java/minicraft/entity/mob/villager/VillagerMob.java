@@ -30,7 +30,7 @@ public class VillagerMob extends MobAi {
 	 *                     difficulty and then added with 5.
 	 */
 	public VillagerMob(MobSprite[][] sprites, int healthFactor) {
-		super(sprites, 5 + healthFactor * Settings.getIdx("diff"), 5 * 60 * Updater.normSpeed, 45, 40);
+		super(sprites, 5 + healthFactor * Settings.getIdx("diff"), -1, 45, 40);
 	}
 
 	public void tick() {

@@ -89,11 +89,11 @@ public class ToolItem extends Item {
 	}
 
 	/** Gets the attack damage bonus from an item/tool (sword/axe) */
-	public int getAttackDamageBonus(Entity e) {
+	public int getAttackDamageBonus(Entity entity) {
 		if (!payDurability())
 			return 0;
 
-		if (e instanceof Mob) {
+		if (entity instanceof Mob) {
             AchievementsDisplay.setAchievement("minicraft.achievement.monsters", true);
 			if (type == ToolType.Axe) {
 				return (level + 1) * 2 + random.nextInt(4); // Wood axe damage: 2-5; gem axe damage: 10-13.

@@ -1,7 +1,5 @@
 package minicraft.entity.mob;
 
-import java.util.Random;
-
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.particle.HeartParticle;
@@ -9,9 +7,8 @@ import minicraft.gfx.MobSprite;
 import minicraft.item.Items;
 
 public class Cow extends PassiveMob {
-    private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 24);
+    private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 40);
 
-    private Random rnd = new Random();
     private int tickTime = 0;
 
     /**
@@ -26,21 +23,16 @@ public class Cow extends PassiveMob {
         tickTime++;
 
         Player player = getClosestPlayer();
-        if (player != null && player.activeItem != null && player.activeItem.name.equals("Wheat")) {
+        boolean holdingWheat = player != null && player.activeItem != null && player.activeItem.name.equals("Wheat");
 
-            // Render heart particles
-            if (Settings.get("particles").equals(true)) {
-                int randX = rnd.nextInt(10);
-                int randY = rnd.nextInt(9);
+        // Render heart particles
+        if (Settings.get("particles").equals(true) && holdingWheat && random.nextInt(6) == 0) {
+            int randX = random.nextInt(10);
+            int randY = random.nextInt(9);
+            level.add(new HeartParticle(x - 9 + randX, y - 12 + randY));
+        }
 
-                if (random.nextInt(12) == 0) {
-                    level.add(new HeartParticle(x - 9 + randX, y - 12 + randY));
-                }
-                if (random.nextInt(12) == 12) {
-                    level.add(new HeartParticle(x - 9 + randX, y - 12 + randY));
-                }
-            }
-
+        if (holdingWheat) {
             int xd = player.x - x;
             int yd = player.y - y;
 
@@ -49,16 +41,15 @@ public class Cow extends PassiveMob {
             xa = ya = 0;
 
             if (xd < sig0) xa = -1;
-            if (xd > sig0) xa = +1;
+            else if (xd > sig0) xa = 1;
             if (yd < sig0) ya = -1;
-            if (yd > sig0) ya = +1;
-
+            else if (yd > sig0) ya = 1;
         } else {
             randomizeWalkDir(false);
         }
         
 		// Cow sounds
-		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
+		if (tickTime /8 %16 == 0 && random.nextInt(8) == 4) {
 			if (random.nextBoolean()) {
 				if (!random.nextBoolean()) {
 					Sound.cowSay1.playOnWorld(x, y);

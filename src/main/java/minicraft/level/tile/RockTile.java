@@ -97,8 +97,8 @@ public class RockTile extends Tile {
 	}
 
 	@Override
-	public boolean mayPass(Level level, int x, int y, Entity e) {
-		return e instanceof Firefly;
+	public boolean mayPass(Level level, int x, int y, Entity entity) {
+		return entity instanceof Firefly;
 	}
 
 	@Override

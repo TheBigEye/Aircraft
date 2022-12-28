@@ -24,12 +24,12 @@ import minicraft.screen.AchievementsDisplay;
 public class TreeTile extends Tile {
 	
 	public enum TreeType {
-		Oak(0, 1, 0, 1, 2, 3, "Grass", new String[] {"Oak Wood", "Oak Wood", "Acorn"}, 22),
-		Birch(0, 1, 28, 29, 30, 31, "Grass", new String[] {"Birch Wood", "Leaf", "Birch cone"}, 28),
-		Red_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Oak Wood", "Leaf", "Acorn"}, 22),
-		Fir(4, 5, 28, 29, 30, 31, "Snow", new String[] {"Spruce wood", "Spruce wood", "Fir cone"}, 22),
-		Pine(6, 7, 28, 29, 30, 31, "Snow", new String[] {"Spruce wood", "Spruce wood", "Pine cone"}, 22),
-		Brown_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Oak Wood", "Leaf", "Acorn"}, 23);
+		Oak(0, 1, 0, 1, 2, 3, "Grass", new String[] {"Oak Wood", "Oak Wood", "Acorn"}, 32),
+		Birch(0, 1, 28, 29, 30, 31, "Grass", new String[] {"Birch Wood", "Leaf", "Birch cone"}, 38),
+		Red_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Oak Wood", "Leaf", "Acorn"}, 32),
+		Fir(4, 5, 28, 29, 30, 31, "Snow", new String[] {"Spruce wood", "Spruce wood", "Fir cone"}, 32),
+		Pine(6, 7, 28, 29, 30, 31, "Snow", new String[] {"Spruce wood", "Spruce wood", "Pine cone"}, 32),
+		Brown_mushroom(2, 3, 28, 29, 30, 31, "Dirt", new String[] {"Oak Wood", "Leaf", "Acorn"}, 34);
 
 		//                   00   01
 		//X1 X2  //-- Y1  //[DD] [DD] 00 // each tree parts are 8x8 squares
@@ -131,8 +131,8 @@ public class TreeTile extends Tile {
     }
 
     @Override
-    public boolean mayPass(Level level, int x, int y, Entity e) {
-        return e instanceof Firefly;
+    public boolean mayPass(Level level, int x, int y, Entity entity) {
+        return entity instanceof Firefly;
     }
 
     @Override
@@ -172,7 +172,6 @@ public class TreeTile extends Tile {
 
     @Override
     public boolean tick(Level level, int xt, int yt) {
-    	
         int damage = level.getData(xt, yt);
         if (damage > 0) {
             level.setData(xt, yt, damage - 1);

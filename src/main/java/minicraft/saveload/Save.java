@@ -28,13 +28,12 @@ import minicraft.entity.furniture.DeathChest;
 import minicraft.entity.furniture.DungeonChest;
 import minicraft.entity.furniture.Lantern;
 import minicraft.entity.furniture.Spawner;
+import minicraft.entity.furniture.Statue;
 import minicraft.entity.mob.EnemyMob;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.Sheep;
 import minicraft.entity.mob.boss.AirWizard;
-import minicraft.entity.mob.boss.AirWizardPhase2;
-import minicraft.entity.mob.boss.AirWizardPhase3;
 import minicraft.entity.particle.Particle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.item.Inventory;
@@ -176,18 +175,13 @@ public class Save {
 	}
 
 	private void writeGame(String filename) {
-
 		data.add(String.valueOf(Game.VERSION));
         data.add(String.valueOf(World.getWorldSeed()));
 		data.add(Settings.getIdx("mode") + (Game.isMode("score") ? ";" + Updater.scoreTime + ";" + Settings.get("scoretime") : ""));
 		data.add(String.valueOf(Updater.tickCount));
 		data.add(String.valueOf(Updater.gameTime));
 		data.add(String.valueOf(Settings.getIdx("diff")));
-		
 		data.add(String.valueOf(AirWizard.beaten));
-		data.add(String.valueOf(AirWizardPhase2.beaten));
-		data.add(String.valueOf(AirWizardPhase3.beaten));
-		
 		data.add(String.valueOf(Settings.get("cheats")));
 
 		writeToFile(location + filename + extension, data);
@@ -295,7 +289,7 @@ public class Save {
 		data.add(String.valueOf(player.hunger));
 		data.add(String.valueOf(player.armor));
 		data.add(String.valueOf(player.armorDamageBuffer));
-		data.add(String.valueOf(player.curArmor == null ? "NULL" : player.curArmor.getName()));
+		data.add(String.valueOf(player.currentArmor == null ? "NULL" : player.currentArmor.getName()));
 		data.add(String.valueOf(player.getScore()));
 		data.add(String.valueOf(Game.currentLevel));
 
@@ -346,8 +340,8 @@ public class Save {
 	private void writeEntities(String filename) {
 		LoadingDisplay.setMessage("Entities");
 		for (int l = 0; l < World.levels.length; l++) {
-			for (Entity e : World.levels[l].getEntitiesToSave()) {
-				String saved = writeEntity(e, true);
+			for (Entity entity : World.levels[l].getEntitiesToSave()) {
+				String saved = writeEntity(entity, true);
 				if (saved.length() > 0) {
 					data.add(saved);
 				}
@@ -357,8 +351,8 @@ public class Save {
 		writeToFile(location + filename + extension, data);
 	}
 
-	public static String writeEntity(Entity e, boolean isLocalSave) {
-		String name = e.getClass().getName();
+	public static String writeEntity(Entity entity, boolean isLocalSave) {
+		String name = entity.getClass().getName();
 		name = name.substring(name.lastIndexOf('.') + 1);
 		StringBuilder extradata = new StringBuilder();
 
@@ -369,30 +363,30 @@ public class Save {
 		// If (e instanceof Particle) return "";
 
 		// wirte these only when sending a world, not writing
-		if (isLocalSave && (e instanceof ItemEntity || e instanceof Arrow || e instanceof Spark || e instanceof Particle)) {
+		if (isLocalSave && (entity instanceof ItemEntity || entity instanceof Arrow || entity instanceof Spark || entity instanceof Particle)) {
 			return "";
 		}
 
 		if (!isLocalSave) {
-			extradata.append(":").append(e.eid);
+			extradata.append(":").append(entity.eid);
 		}
 
-		if (e instanceof Mob) {
-			Mob m = (Mob) e;
-			extradata.append(":").append(m.health);
+		if (entity instanceof Mob) {
+			Mob mob = (Mob) entity;
+			extradata.append(":").append(mob.health);
 
-			if (e instanceof EnemyMob) {
-				extradata.append(":").append(((EnemyMob) m).lvl);
+			if (entity instanceof EnemyMob) {
+				extradata.append(":").append(((EnemyMob) mob).lvl);
 			}
 
 			// Saves if the sheep is cut. If not, we could reload the save and the wool would regenerate.
-			else if (e instanceof Sheep) {
-				extradata.append(":").append(((Sheep) m).isCut);
+			else if (entity instanceof Sheep) {
+				extradata.append(":").append(((Sheep) mob).isCut);
 			}
 		}
 
-		if (e instanceof Chest) {
-			Chest chest = (Chest) e;
+		if (entity instanceof Chest) {
+			Chest chest = (Chest) entity;
 
 			for (int ii = 0; ii < chest.getInventory().invSize(); ii++) {
 				Item item = chest.getInventory().get(ii);
@@ -403,39 +397,43 @@ public class Save {
 			if (chest instanceof DungeonChest) extradata.append(":").append(((DungeonChest) chest).isLocked());
 		}
 
-		if (e instanceof Spawner) {
-			Spawner egg = (Spawner) e;
+		if (entity instanceof Spawner) {
+			Spawner egg = (Spawner) entity;
 			String mobname = egg.mob.getClass().getName();
 			mobname = mobname.substring(mobname.lastIndexOf(".") + 1);
 			extradata.append(":").append(mobname).append(":").append(egg.mob instanceof EnemyMob ? ((EnemyMob) egg.mob).lvl : 1);
 		}
 
-		if (e instanceof Lantern) {
-			extradata.append(":").append(((Lantern) e).type.ordinal());
+		if (entity instanceof Lantern) {
+			extradata.append(":").append(((Lantern) entity).type.ordinal());
 		}
 
-		if (e instanceof Crafter) {
-			name = ((Crafter) e).type.name();
+		if (entity instanceof Crafter) {
+			name = ((Crafter) entity).type.name();
+		}
+		
+		if (entity instanceof Statue) {
+			name = ((Statue) entity).type.name() + "Statue";
 		}
 
 		if (!isLocalSave) {
-			if (e instanceof ItemEntity) extradata.append(":").append(((ItemEntity) e).getData());
-			if (e instanceof Arrow) extradata.append(":").append(((Arrow) e).getData());
-			if (e instanceof Spark) extradata.append(":").append(((Spark) e).getData());
-			if (e instanceof TextParticle) extradata.append(":").append(((TextParticle) e).getData());
-			if (e instanceof Fireball) extradata.append(":").append(((Fireball) e).getData());
+			if (entity instanceof ItemEntity) extradata.append(":").append(((ItemEntity) entity).getData());
+			if (entity instanceof Arrow) extradata.append(":").append(((Arrow) entity).getData());
+			if (entity instanceof Spark) extradata.append(":").append(((Spark) entity).getData());
+			if (entity instanceof TextParticle) extradata.append(":").append(((TextParticle) entity).getData());
+			if (entity instanceof Fireball) extradata.append(":").append(((Fireball) entity).getData());
 		}
 		// else // is a local save
 
 		int depth = 0;
-		if (e.getLevel() == null) {
-			System.out.println("WARNING: Saving entity with no level reference: " + e + "; setting level to surface");
+		if (entity.getLevel() == null) {
+			Logger.warn("Saving entity with no level reference: {}; setting level to surface", entity);
 		} else {
-			depth = e.getLevel().depth;
+			depth = entity.getLevel().depth;
 		}
 
 		extradata.append(":").append(World.lvlIdx(depth));
 
-		return name + "[" + e.x + ":" + e.y + extradata + "]";
+		return name + "[" + entity.x + ":" + entity.y + extradata + "]";
 	}
 }

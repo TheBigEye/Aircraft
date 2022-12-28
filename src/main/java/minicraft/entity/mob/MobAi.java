@@ -73,8 +73,8 @@ public abstract class MobAi extends Mob {
 
         if (getLevel() != null) {
             boolean foundPlayer = false;
-            for (Player p : level.getPlayers()) {
-                if (p.isWithin(8, this) && p.potionEffects.containsKey(PotionType.Time)) {
+            for (Player player : level.getPlayers()) {
+                if (player.isWithin(8, this) && player.potionEffects.containsKey(PotionType.Time)) {
                     foundPlayer = true;
                     break;
                 }
@@ -105,11 +105,11 @@ public abstract class MobAi extends Mob {
         int xo = x - 8;
         int yo = y - 11;
 
-        MobSprite curSprite = sprites[dir.getDir()][(walkDist >> 3) % sprites[dir.getDir()].length];
+        MobSprite currentSprite = sprites[dir.getDir()][(walkDist >> 3) % sprites[dir.getDir()].length];
         if (hurtTime > 0) {
-            curSprite.render(screen, xo, yo, true);
+            currentSprite.render(screen, xo, yo, true);
         } else {
-            curSprite.render(screen, xo, yo);
+            currentSprite.render(screen, xo, yo);
         }
     }
 
@@ -219,10 +219,10 @@ public abstract class MobAi extends Mob {
     }
 
     protected void die(int points, int multAdd) {
-        for (Player p : level.getPlayers()) {
-            p.addScore(points); // add score for mob death
+        for (Player player : level.getPlayers()) {
+            player.addScore(points); // add score for mob death
             if (multAdd != 0) {
-                p.addMultiplier(multAdd);
+                player.addMultiplier(multAdd);
             }
         }
 
