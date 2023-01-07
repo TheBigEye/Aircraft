@@ -2,6 +2,7 @@ package minicraft.entity.mob;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -177,6 +178,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     private int nightTickCount = 0; // Used to get the Currrent time value
 	@SuppressWarnings("unused")
 	private int nightTime = 0; // Delay
+	
+	public List<String> chatMessages = new ArrayList<String>();
 
 	public Player(@Nullable Player previousInstance, InputHandler input) {
 		super(sprites, Player.maxHealth);
@@ -305,20 +308,21 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		return potionEffects;
 	}
 	
+	public void sendMessage(String message) {
+		chatMessages.add(message);
+    }
+	
 	private void tileTickEvents() {
 		if (isSwimming()) {
 			// Renders water or lava particles if the player is in movement and have particles activated
-			if (tickTime / 8 % 2 == 0 && (Settings.get("Particles").equals(true) && inMovement())) {
-
-				int randX = rnd.nextInt(10);
-				int randY = rnd.nextInt(9);
+			if (tickTime / 8 % 2 == 0 && (Settings.get("Particles").equals(true))) {
 
 				// Add water particles and fire particles when the player swim
 				if (level.getTile(x / 16, y / 16) == Tiles.get("Water") ) { 
-					level.add(new SplashParticle(x - 8 + randX, y - 8 + randY));    
+					level.add(new SplashParticle(x - 4 , y - 4));    
 					
-				} else if (level.getTile(x / 16, y / 16) == Tiles.get("Lava")) { 
-					level.add(new FireParticle(x - 8 + randX, y - 8 + randY)); 
+				} else if (level.getTile(x / 16, y / 16) == Tiles.get("Lava") && inMovement()) { 
+					level.add(new FireParticle(x - 8 + rnd.nextInt(10), y - 8 + rnd.nextInt(9))); 
 				}
 			}
 		}
@@ -336,8 +340,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				}
 			}
 		}
-		
-		
 	}
 
 	@Override

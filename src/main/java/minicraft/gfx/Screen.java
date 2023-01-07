@@ -105,16 +105,68 @@ public class Screen {
 		render(xp, yp, pixel.getX(), pixel.getY(), bits, pixel.getIndex(), whiteTint, fullbright, color);
 	}
 	
+	/**
+	 * Renders a solid color rectangle on a pixel array.
+	 * @param xp 		The x coordinate of the top-left corner of the rectangle.
+	 * @param yp 		The y coordinate of the top-left corner of the rectangle.
+	 * @param width 	The width of the rectangle.
+	 * @param height 	The height of the rectangle.
+	 * @param color 	The color of the rectangle.
+	*/
 	public void renderColor(int xp, int yp, int width, int height, int color) {
+		// Subtract the xOffset and yOffset values from the coordinates to account for scrolling
 		xp -= xOffset;
 		yp -= yOffset;
 
+		// Loop through each pixel in the rectangle
 		for (int x = 0; x < width; x++) {
-			if (x + width < 0 || x + width > w) continue;
+			// Skip any pixels that fall outside the bounds of the pixel array
+			if (x + width < 0 || x + width > w) {
+				continue;
+			}
+			
 			for (int y = 0; y < height; y++) {
-				if (y + height < 0 || y + height > h) continue;
+				if (y + height < 0 || y + height > h) {
+					continue;
+				}
 
+				// Calculate the index of the pixel in the pixel array and set its color
 				pixels[(x + xp) + (y + yp) * w] = color;
+			}
+		}
+	}
+	
+	/**
+	 * Renders a solid color rectangle on a pixel array with a specified opacity.
+	 * @param xp 		The x coordinate of the top-left corner of the rectangle.
+	 * @param yp 		The y coordinate of the top-left corner of the rectangle.
+	 * @param width 	The width of the rectangle.
+	 * @param height 	The height of the rectangle.
+	 * @param color 	The color of the rectangle.
+	 * @param opacity 	The opacity of the rectangle, specified as a float value between 0 and 1, where 0 is fully transparent and 1 is fully opaque.
+	*/
+	public void renderColor(int xp, int yp, int width, int height, int color, float opacity) {
+		// Subtract the xOffset and yOffset values from the coordinates to account for scrolling
+		xp -= xOffset;
+		yp -= yOffset;
+
+		for (int x = 0; x < width; x++) { // Loop through each pixel in the rectangle
+			
+			// Skip any pixels that fall outside the bounds of the pixel array
+			if (x + width < 0 || x + width > w) {
+				continue;
+			}
+			
+			for (int y = 0; y < height; y++) {
+				if (y + height < 0 || y + height > h) {
+					continue;
+				}
+
+				int index = (x + xp) + (y + yp) * w; // Calculate the index of the pixel in the pixel array
+				int pixelColor = pixels[index];
+				
+				// Set the pixel color in the pixel array
+				pixels[index] = blendColors(color, pixelColor, opacity);
 			}
 		}
 	}
@@ -389,4 +441,30 @@ public class Screen {
 			pixels[xp + yp * w] = color;
 		}
 	}
+	
+	private int blendColors(int color, int bottomColor, float opacity) {
+		// Extract the alpha, red, green, and blue channel values from the color integer
+		int alpha = (int)((color >> 24) & 0xff);
+		int red = (int)((color >> 16) & 0xff);
+		int green = (int)((color >> 8) & 0xff);
+		int blue = (int)(color & 0xff);
+		
+		// Calculate the index of the pixel in the pixel array
+		int pixelAlpha = (bottomColor >> 24) & 0xff;
+		int pixelRed = (bottomColor >> 16) & 0xff;
+		int pixelGreen = (bottomColor >> 8) & 0xff;
+		int pixelBlue = bottomColor & 0xff;
+
+		// Blend the two colors using the alpha compositing formula
+		int newAlpha = (int)((alpha * opacity) + (pixelAlpha * (1 - opacity)));
+		int newRed = (int)((red * opacity) + (pixelRed * (1 - opacity)));
+		int newGreen = (int)((green * opacity) + (pixelGreen * (1 - opacity)));
+		int newBlue = (int)((blue * opacity) + (pixelBlue * (1 - opacity)));
+
+		// Combine the channels back into a single integer color value
+		int newColor = (newAlpha << 24) | (newRed << 16) | (newGreen << 8) | newBlue;
+		
+		return newColor; 
+	}
+	
 }

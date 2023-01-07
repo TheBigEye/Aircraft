@@ -145,7 +145,7 @@ public class InputHandler implements KeyListener {
 		// toggle inventory searcher bar
 		keymap.put("SEARCHER-BAR", "SHIFT-F");
 		
-		keymap.put("COMMANDS", "G"); // Toggle player stats display
+		keymap.put("COMMANDS", "T"); // Command input chat
 
 		// seek for next/previous match in inventory searcher bar
 		keymap.put("PAGE-UP", "PAGE_UP");

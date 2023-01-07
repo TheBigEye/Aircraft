@@ -1,6 +1,7 @@
 package minicraft.core.io;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -24,6 +25,7 @@ public class FileHandler extends Game {
 	static final String OS;
 	private static final String localGameDir;
 	static final String systemGameDir;
+	static final String systemTempDir;
 
 	static {
 		OS = System.getProperty("os.name").toLowerCase();
@@ -31,9 +33,11 @@ public class FileHandler extends Game {
 
 		if (OS.contains("windows")) { // Windows filesystem
 			systemGameDir = System.getenv("APPDATA");
+			systemTempDir = System.getenv("TEMP");
 
 		} else {
 			systemGameDir = System.getProperty("user.home");
+			systemTempDir = System.getProperty("java.io.tmpdir");
 			if (!OS.contains("mac")) { // Linux and Mac filesystem
 				local = "." + local;
 			}
@@ -42,8 +46,9 @@ public class FileHandler extends Game {
 		localGameDir = "/" + local;
 
 		if (Game.debug) {
-			System.out.println("OS name: \"" + OS + "\"");
-			System.out.println("System game dir: " + systemGameDir);
+			Logger.debug("OS name: \"" + OS + "\"");
+			Logger.debug("System game dir: " + systemGameDir);
+			Logger.debug("System temp dir: " + systemTempDir);
 		}
 	}
 
@@ -59,7 +64,7 @@ public class FileHandler extends Game {
 		gameDir = saveDir + localGameDir;
 
 		if (debug) {
-			System.out.println("Determined gameDir: " + gameDir);
+			Logger.debug("Determined game directory: {}",  gameDir);
 		}
 
 		File testFile = new File(gameDir);
@@ -155,5 +160,34 @@ public class FileHandler extends Game {
 		if (deleteOriginal) {
 			deleteFolder(origFolder.toFile());
 		}
+	}
+	
+	
+	/**
+	 * Remove all the natives files downloaded
+	 */
+	public static void cleanNativesFiles() {
+	    // Remove these native libraries
+	    String[] folderNames = {
+	    		"java-discord"
+	    };
+	    
+	    File tempDirFile = new File(systemTempDir);
+	    File[] nativeFolders = tempDirFile.listFiles(new FilenameFilter() {
+	        @Override
+	        public boolean accept(File dir, String name) {
+	            for (String folderName : folderNames) {
+	                if (name.startsWith(folderName)) {
+	                    return true;
+	                }
+	            }
+	            return false;
+	        }
+	    });
+
+	    // Delete the native folders found
+	    for (File nativeFolder : nativeFolders) {
+	        deleteFolder(nativeFolder);
+	    }
 	}
 }

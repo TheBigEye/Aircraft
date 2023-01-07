@@ -39,27 +39,11 @@ public class LoadingDisplay extends Display {
 	
 	public LoadingDisplay() {
 		super(true, false);
-		t = new Timer(500, e -> new Thread(() -> {
-			try {
-				World.initWorld();
-				msg = Localization.getLocalized("Rendering");
-				Game.setDisplay(null);
-			} catch (RuntimeException ex) {
-				Throwable t = ex.getCause();
-				if (t instanceof InterruptedException) {
-					Game.exitDisplay();
-					World.onWorldExits();
-					try { // Wait for exiting display
-						Thread.sleep(50);
-					} catch (InterruptedException ignored) {}
-					Game.exitDisplay();
-					try { // Wait for exiting display
-						Thread.sleep(50);
-					} catch (InterruptedException ignored) {}
-				} else
-					throw ex;
-			}
-		}, "World Initialization Thread").start());
+		t = new Timer(500, e -> {
+			World.initWorld();
+			msg = Localization.getLocalized("Rendering");
+			Game.setDisplay(null);
+		});
 		t.setRepeats(false);
 	}
 

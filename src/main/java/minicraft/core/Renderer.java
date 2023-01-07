@@ -563,8 +563,8 @@ public class Renderer extends Game {
             			}
             		}
             	}    
-            	
             } 
+			
 			if (EyeQueen.active) {
             	EyeQueen boss = EyeQueen.entity;
             	for (Entity entity: entitiesInRange) {

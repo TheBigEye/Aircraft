@@ -20,7 +20,7 @@ import minicraft.entity.mob.Player;
 
 // Creates sounds from their respective files
 public class Sound { 
-
+	
 	// Player
 	public static final Sound playerHurt 			= new Sound("/resources/sounds/mob/player/hurt.wav");
 	public static final Sound playerDeath 			= new Sound("/resources/sounds/mob/player/death.wav");
@@ -135,7 +135,7 @@ public class Sound {
     }
     
     private Sound(String name) {
-    	Logger.debug("Loading sound clip: {}", name);
+    	if (Game.debug) Logger.debug("Loading sound clip: {} ...", name);
     	
         try {
             URL url = getClass().getResource(name);

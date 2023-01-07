@@ -676,7 +676,7 @@ public class Level {
 		}
 		screen.setOffset(0, 0);
 	}
-
+	
 	private void sortAndRender(Screen screen, List <Entity> list) {
 		list.sort(spriteSorter);
 		for (int i = 0; i < list.size(); i++) {
@@ -1055,6 +1055,10 @@ public class Level {
 
 	public Player[] getPlayers() {
 		return players.toArray(new Player[players.size()]);
+	}
+	
+	public Entity[] getEntities() {
+		return entities.toArray(new Entity[entities.size()]);
 	}
 
 	public Player getClosestPlayer(int x, int y) {

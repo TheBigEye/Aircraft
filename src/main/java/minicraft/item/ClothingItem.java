@@ -27,25 +27,32 @@ public class ClothingItem extends StackableItem {
         return items;
     }
 
-    private int playerCol;
+    private int playerShirtColor;
     private Sprite sprite;
 
     private ClothingItem(String name, Sprite sprite, int pcol) {
         this(name, 1, sprite, pcol);
     }
 
-    private ClothingItem(String name, int count, Sprite sprite, int pcol) {
+    private ClothingItem(String name, int count, Sprite sprite, int color) {
         super(name, sprite, count);
-        playerCol = pcol;
+        playerShirtColor = color;
         this.sprite = sprite;
     }
 
     // put on clothes
     public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
-        if (player.shirtColor == playerCol) {
+        if (player.shirtColor == playerShirtColor) {
             return false;
         } else {
-            player.shirtColor = playerCol;
+			ClothingItem lastClothing = (ClothingItem) getAllInstances().stream().filter(i -> i instanceof ClothingItem && ((ClothingItem) i).playerShirtColor == player.shirtColor).findAny().orElse(null);
+			if (lastClothing == null) {
+				lastClothing = (ClothingItem) Items.get("Reg Clothes");
+			}
+			lastClothing = lastClothing.clone();
+			lastClothing.count = 1;
+			player.getLevel().dropItem(player.x, player.y, lastClothing);
+            player.shirtColor = playerShirtColor;
             return super.interactOn(true);
         }
     }
@@ -56,6 +63,6 @@ public class ClothingItem extends StackableItem {
     }
 
     public ClothingItem clone() {
-        return new ClothingItem(getName(), count, sprite, playerCol);
+        return new ClothingItem(getName(), count, sprite, playerShirtColor);
     }
 }

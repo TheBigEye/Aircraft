@@ -1,23 +1,33 @@
 package minicraft.screen;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import minicraft.core.Game;
-import minicraft.core.Updater;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
-import minicraft.core.io.Settings;
+import minicraft.core.io.Sound;
+import minicraft.gfx.Color;
+import minicraft.gfx.Font;
 import minicraft.gfx.Point;
 import minicraft.gfx.Screen;
 import minicraft.gfx.SpriteSheet;
 import minicraft.screen.entry.InputEntry;
+import minicraft.util.Command;
 
 public class CommandsDisplay extends Display {
-    public static InputEntry command = new InputEntry("Command", "[a-zA-Z0-9 ]+", 39, true);
+	
+	private static final int CHAT_BACKGOUND_COLOR = Color.BLACK;
+	private static final int CHAT_FOREGOUND_COLOR = Color.GRAY;
+	private static final float CHAT_OPACITY = 0.6F;
+	
+    public static InputEntry command = new InputEntry("", ".*", 48, false);
     
     public CommandsDisplay() {
         super(new Menu.Builder(false, 3, RelPos.LEFT, command)
             .setTitle("")
             .setTitlePos(RelPos.TOP_LEFT)
-            .setPositioning(new Point(SpriteSheet.boxWidth,  Screen.h - 20), RelPos.BOTTOM_RIGHT)
+            .setPositioning(new Point(SpriteSheet.boxWidth,  Screen.h - 12), RelPos.BOTTOM_RIGHT)
             .createMenu()
         );
         command.userInput = "";
@@ -32,99 +42,106 @@ public class CommandsDisplay extends Display {
     	}
         
     	if (input.getKey("select").clicked) {
-    		String CommandStr = command.getUserInput().toLowerCase(Localization.getSelectedLocale());
-    		String[] CommandArguments = CommandStr.split(" ");
-    		switch (CommandArguments[0]) {
-	    		case "help":
-	    			Game.notifications.add("gamemode survival | creative");
-	    			Game.notifications.add("time set day | morning | evening | night");
-	    			Game.notifications.add("time add 1000");
-	    			Game.notifications.add("say something");
-	    			break;
-	    		case "gamemode":
-	    			switch (CommandArguments[1]) {
-	    			case "creative": Settings.set("mode", "creative"); break;
-	    			case "survival": Settings.set("mode", "survival"); break;
-	    			case "c": Settings.set("mode", "creative"); break;
-	    			case "s": Settings.set("mode", "survival"); break;
-	    			default:
-	    				Game.notifications.add("Unknown Gamemode.");
-	    				break;
-	    			}
-	    			break;
-	    		case "weather":
-	    			switch (CommandArguments[1]) {
-	    			case "rain": Game.player.isRaining = true; break;
-	    			case "clear": Game.player.isRaining = false; break;
-	    			default:
-	    				Game.notifications.add("Unknown weather status.");
-	    				break;
-	    			}
-	    			break;
-	    		case "time":
-	    			switch (CommandArguments[1]) {
-	    			case "set":
-	    				switch (CommandArguments[2]) {
-	    				case "morning": Updater.changeTimeOfDay(Updater.Time.Morning); break;
-	    				case "day": Updater.changeTimeOfDay(Updater.Time.Day); break;
-	    				case "evening": Updater.changeTimeOfDay(Updater.Time.Evening); break;
-	    				case "night": Updater.changeTimeOfDay(Updater.Time.Night); break;
-	    				default:
-	    					Game.notifications.add("Unknown time status.");
-	    					break;
-	    				}
-	    				break;
-	    			case "add": 
-	    				Updater.tickCount += Integer.parseInt(CommandArguments[2]); break;
-	    			default:
-	    				Game.notifications.add("Unknown time modifier.");
-	    				break;
-	    			}
-	    		case "say":       
-	    			String sayStr = command.getUserInput().toLowerCase(Localization.getSelectedLocale()).replace("say ", "");
-	    			Game.notifications.add(sayStr);
-	    			break;
-                case "kill":       
-	    			Game.player.die();
-	    			Game.notifications.add("ooof!");
-	    			break;
-	    		default:
-	    			Game.notifications.add("Unknown Command.");
-	    			break;
+    		String commandString = command.getUserInput().toLowerCase(Localization.getSelectedLocale());
+    		String[] commandArguments = commandString.split(" ");
+    		boolean recognizedCommand = true; // Assume the command is recognized unless proven otherwise
+    		
+    		if (commandArguments[0].startsWith("/", 0)) {
+    			switch (commandArguments[0]) {
+    				case "/gamemode": Command.gamemodeCommand(commandArguments); break;
+    				case "/time": 	 Command.timeCommand(commandArguments); 	break;
+    				case "/kill": 	 Command.killCommand(commandArguments); 	break;
+    			
+    				case "/say":       
+    					String messageString = command.getUserInput().toLowerCase(Localization.getSelectedLocale()).replace("/say ", "");
+    					Game.player.sendMessage(messageString);
+    					break;
+    				
+    				default:
+    					Game.notifications.add("-- Unknown Command --"); 
+    					recognizedCommand = false; // The command is not recognized
+    					break;
+    			}
+			} else {
+				String messageString = command.getUserInput().toLowerCase(Localization.getSelectedLocale());
+				Game.player.sendMessage("<Amy> " + messageString);
+			}
+    		
+    		command.clearUserInput();
+    		
+    		// Play the sound effect if the command was recognized
+    		if (recognizedCommand) {
+    			Sound.Menu_loaded.playOnGui();
     		}
-    		Game.exitDisplay();
     	}
     }
 
     @Override
     public void render(Screen screen) {
-        int x = 12; // box x pos
-        int y = (Screen.h - 20); // box y pos
-        int w = command.userInput.length() + 12; // length of message in characters.
+    	int CHAT_WIDTH = 52;
+    	int CHAT_HEIGHT = 8;
+    	
+    	int CHAT_INPUT_WIDTH = 52;
+    	int CHAT_INPUT_HEIGHT = 1;
+    	
+        int x = 8; // box x pos
+        int y = (Screen.h - 12); // box y pos
+        
+        int w = 52; // length of message in characters.
         int h = 1; // box height
-
-        // Renders the four corners of the box
-        screen.render(x - 8, y - 8, 0 + 21 * 32, 0, 3);
-        screen.render(x + w * 8, y - 8, 0 + 21 * 32, 1, 3);
-        screen.render(x - 8, y + 8, 0 + 21 * 32, 2, 3);
-        screen.render(x + w * 8, y + 8, 0 + 21 * 32, 3, 3);
-
-        // Renders each part of the box...
-        for (int xb = 0; xb < w; xb++) {
-            screen.render(x + xb * 8, y - 8, 1 + 21 * 32, 0, 3); // ...top part
-            screen.render(x + xb * 8, y + 8, 1 + 21 * 32, 2, 3); // ...bottom part
+        
+        // RENDER THE CHAT BACKGROUND
+        for (int xb = 0; xb < CHAT_WIDTH; xb++) {
+        	for (int yb = 0; yb < CHAT_HEIGHT; yb++) {
+        		screen.renderColor(x + xb * 8, y - yb * 8 - 14, 8, 8, CHAT_BACKGOUND_COLOR, CHAT_OPACITY);
+        	}
         }
-        for (int yb = 0; yb < h; yb++) {
-            screen.render(x - 8, y + yb * 8, 2 + 21 * 32, 0, 3); // ...left part
-            screen.render(x + w * 8, y + yb * 8, 2 + 21 * 32, 1, 3); // ...right part
-        }
-
-        // The middle
-        for (int xb = 0; xb < w; xb++) {
-            screen.render(x + xb * 8, y, 3 + 21 * 32, 0, 3);
+        
+        // RENDER THE MESSAGES
+        List<String> msgs = new ArrayList<String>();
+        for (int i = 0; i < Game.player.chatMessages.size() && i <= Game.player.chatMessages.size() - 1; i++) {
+            String msg = Game.player.chatMessages.get(i);
+            String chopped = "";
+            if (msg.length() * 8 > 400) {
+              int il = 0;
+              for (int k = 0; k < msg.length(); k++) {
+                if (k * 8 > 400 * (il + 1)) {
+                  chopped = String.valueOf(chopped) + "&" + msg.charAt(k);
+                  il++;
+                } else {
+                  chopped = String.valueOf(chopped) + msg.charAt(k);
+                } 
+              } 
+            } 
+            if ((chopped.split("&")).length > 1) {
+              for (int k = 0; k < (chopped.split("&")).length; k++)
+                msgs.add(chopped.split("&")[k]); 
+            } else {
+              msgs.add(msg);
+            } 
+          } 
+          int line = 0;
+          for (int j = (msgs.size() > 7) ? (msgs.size() - 7) : 0; j < msgs.size(); j++) {
+            if (j > msgs.size())
+              break; 
+            Font.drawTransparentBackground(msgs.get(j), screen, 12, line * 8 + 211, CHAT_FOREGOUND_COLOR);
+            line++;
+          } 
+        
+        // RENDER THE INPUT ENTRY BACKGROUND
+        /*for (int xb = 0; xb < w; xb++) {
+            screen.renderColor(x + xb * 8, y - 2, 8, 11, CHAT_BACKGOUND_COLOR, CHAT_OPACITY);
+            
+        }*/
+        
+        for (int xb = 0; xb < CHAT_INPUT_WIDTH; xb++) {
+        	for (int yb = 0; yb < CHAT_INPUT_HEIGHT; yb++) {
+        		screen.renderColor(x + xb * 8, y - yb * 8 - 2, 8, 8 + 3, CHAT_BACKGOUND_COLOR, CHAT_OPACITY);
+        	}
         }
         
         // render the entryes in the top
         super.render(screen);
+        
     }
 }

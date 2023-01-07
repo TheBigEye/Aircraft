@@ -121,7 +121,7 @@ public class EnemyMob extends MobAi {
                     // *that would be nice, but I'll just make it move randomly instead.
                     randomizeWalkDir(false);
                 }
-            }
+            }  
         }
 
         if (isBurn == true) {

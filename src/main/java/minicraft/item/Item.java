@@ -173,7 +173,7 @@ public abstract class Item {
 
     // returns the String that should be used to display this item in a menu or list.
     public String getDisplayName() {
-        return " " + Localization.getLocalized(getName());
+        return Localization.getLocalized(getName());
     }
 
     public boolean interactsWithWorld() {

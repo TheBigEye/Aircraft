@@ -1,6 +1,11 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
+// System specifications
+println(' Java: ' + System.getProperty('java.version') +
+        ' JVM: '  + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ')' +
+        ' Arch: ' + System.getProperty('os.arch'))
+
 project.version = '0.5'
 
 sourceCompatibility = 8
@@ -40,9 +45,9 @@ shadowJar {
 
     manifest {
         attributes(
-                'Main-Class': mainClassName,
-                'Implementation-Title': project.name,
-                'Implementation-Version': project.version
+            'Main-Class': mainClassName,
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version
         )
     }
 }

@@ -127,8 +127,8 @@ public class AirWizard extends EnemyMob {
 
         if (attackDelay > 0) {
             xa = ya = 0;
-            int dir = (attackDelay - 45) / 4 % 4; // the direction of attack.
-            dir = (dir * 2 % 4) + (dir / 2); // direction attack changes
+            int dir = ((attackDelay - 45) / 4) % 4; // the direction of attack.
+            dir = ((dir * 2) % 4) + (dir / 2); // direction attack changes
             if (attackDelay < 45) dir = 0; // direction is reset, if attackDelay is less than 45; prepping for attack.
 
             this.dir = Direction.getDirection(dir);
@@ -142,17 +142,15 @@ public class AirWizard extends EnemyMob {
                 
                 // Select a random attack time based on phase
                 int attackTimeOptions[][] = {
-                    {60, 46, 25},
-                    {80, 50, 30},
-                    {120, 80, 50}
+                    {160, 146, 125},
+                    {1080, 1050, 1030},
+                    {2120, 2200, 2400}
                 };
                 attackTime = attackTimeOptions[currentPhase - 1][random.nextInt(3)] * (secondform ? 3 : 2);
             }
             return; // skips the rest of the code (attackDelay must have been > 0)
-        }
-
-        // First phase sparks attack
-        if (attackTime > 0 && currentPhase == 1) {
+            
+        } else if (attackTime > 0 && currentPhase == 1) { // First phase sparks attack
             xa = ya = 0;
             attackTime = (int) (attackTime * 0.92); // attackTime will decrease by 7% every time.
             double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1); // assigns a local direction variable from the attack time.
@@ -163,7 +161,7 @@ public class AirWizard extends EnemyMob {
         }
         
         // Second phase sparks attack
-        if (attackTime > 0 && currentPhase == 2) {
+        else if (attackTime > 0 && currentPhase == 2) {
             xa = ya = 0;
             attackTime = (int) (attackTime * 0.92);
             double dir = attackTime;
@@ -174,16 +172,16 @@ public class AirWizard extends EnemyMob {
         }
         
         // Third phase sparks attack
-        if (attackTime > 0 && currentPhase == 3) {
+        else if (attackTime > 0 && currentPhase == 3) {
             xa = ya = 0;
             attackTime *= 0.92;
-            double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1);
+            double dir = ((double) attackTime) * 0.25d * ((double) (((attackTime % 2) * 2) - 1)); 
             double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2;
             level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 3));
             Sound.airWizardSpawnSpark.playOnWorld(x, y);
             return;
         }
-
+        
         Player player = getClosestPlayer();
         if (player != null && randomWalkTime == 0) { // if there is a player around, and the walking is not random
             int xd = player.x - x; // the horizontal distance between the player and the air wizard.
@@ -209,25 +207,33 @@ public class AirWizard extends EnemyMob {
                 y = player.y - newyd;
             }
         }
-
-        if (player != null && randomWalkTime == 0) {
-            int xd = player.x - x; // x dist to player
-            int yd = player.y - y; // y dist to player
-            if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) {
-            	if (currentPhase == 1) {
-            		attackDelay = 60 * 4; // ...then set attackDelay to 240 (4 seconds at default 60 ticks/sec)
-            	} else {
-            		attackDelay = 60 * 2; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
-            	}
-            }
+        
+        if (tickTime % 4 != 0 && currentPhase == 3) {
+            speed = 1;
         }
+
+        if (randomWalkTime > 0) {
+            randomWalkTime--;
+	        if (player != null && randomWalkTime == 0) {
+	            int xd = player.x - x; // x dist to player
+	            int yd = player.y - y; // y dist to player
+	            if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) {
+	            	if (currentPhase == 1) {
+	            		attackDelay = 60 * 4; // ...then set attackDelay to 240 (4 seconds at default 60 ticks/sec)
+	            	} else {
+	            		attackDelay = 60 * 2; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
+	            	}
+	            }
+	        }
+        }
+        
     }
 
     @Override
     public void doHurt(int damage, Direction attackDir) {
         super.doHurt(damage, attackDir);
         if (attackDelay == 0 && attackTime == 0) {
-            attackDelay = 60 * (currentPhase + 1);
+            attackDelay = 60 * 2 / (currentPhase + 1);
         }
     }
 

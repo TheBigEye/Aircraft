@@ -121,7 +121,9 @@ public class EyeQueen extends EnemyMob {
 
     @Override
     public void render(Screen screen) {
-        sprites[0][0][0].render(screen, x - 16, y - 24);
+        int pupilColor = (int)((length) * 2.55f);
+    	
+        sprites[0][0][0].render(screen, x - 16, y - 24, -1, Color.get(1, 255 - pupilColor, pupilColor, 0));
 
         int textColor = Color.get(1, 0, 204, 0);
         int textColor2 = Color.get(1, 0, 51, 0);

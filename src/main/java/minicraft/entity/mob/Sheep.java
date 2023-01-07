@@ -57,25 +57,8 @@ public class Sheep extends PassiveMob {
 			isCut = false;
 		}
 
-		Player player = getClosestPlayer();
-		if (player != null && player.activeItem != null && player.activeItem.name.equals("Wheat")) {
-			int xd = player.x - x;
-			int yd = player.y - y;
-
-			/// if player is less than 6.25 tiles away, then set move dir towards player
-			int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
-			xa = ya = 0;
-
-			if (xd < sig0) xa = -1;
-			if (xd > sig0) xa = +1;
-			if (yd < sig0) ya = -1;
-			if (yd > sig0) ya = +1;
-
-		} else {
-			// if the Pet was following the player, but has now lost it, it stops moving.
-			// *that would be nice, but I'll just make it move randomly instead.
-			randomizeWalkDir(false);
-		}
+		// follows to the player if holds wheat
+		followOnHold(3, "Wheat", false);
 
 		Tile tile = level.getTile(x >> 4, y >> 4);
 		if (tile == Tiles.get("Snow")) {

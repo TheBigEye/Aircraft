@@ -97,7 +97,7 @@ public class Boat extends Entity {
     	
         if (playerInBoat != null) {
             exitTimer--;
-
+            
             if (exitTimer <= 0 && Game.input.getKey("SHIFT").down) {
                 if (Game.player.equals(playerInBoat)) {
                     playerInBoat = null;

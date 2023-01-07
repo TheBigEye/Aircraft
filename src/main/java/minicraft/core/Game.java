@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.UnknownHostException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -22,7 +23,9 @@ import org.tinylog.Logger;
 
 import de.jcm.discordgamesdk.Core;
 import de.jcm.discordgamesdk.CreateParams;
+import de.jcm.discordgamesdk.GameSDKException;
 import de.jcm.discordgamesdk.activity.Activity;
+import minicraft.core.io.FileHandler;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -52,6 +55,7 @@ public class Game {
 
 	public static boolean in_dev = false; // development version?
 
+	// TODO: remove these vars, are redoundants :d
 	// Game events (Shhhh is seeeecret)
 	public static boolean IS_Christmas = false;
 	public static boolean IS_Halloween = false;
@@ -72,14 +76,15 @@ public class Game {
 	// Crash splashes
 	private static final String[] Splash = {
 		"Who has put TNT?",
-		"An error has occurred again??",
+		"An error has occurred!",
 		"A nice cup of coffee?",
-		"Unexpected error again??",
+		"Unexpected error!",
 		"Oh. That hurts :(",
 		"Sorry for the crash :(",
 		"You can play our brother game, Minitale",
-		"F, crash again??", "Interesting, hmmmmm...",
-		"ok, i messed it up"
+		"F, the game was crashed!",
+		"Interesting, hmmmmm...",
+		"Ok, i messed it up"
 	};
 
 	//--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -211,10 +216,13 @@ public class Game {
 
 		// Start events ------------------------------------------------------------------------------------------------------------------------------------
 
+		// Clean previously downloaded native files
+		FileHandler.cleanNativesFiles();
+		
         // Discord rich presence
         Core discordCore = null;
 		try {
-			Core.initDownload();
+			Core.initDownload(); // download java-discord SDK
 			CreateParams params = new CreateParams();
 			params.setClientID(981764521616093214L); // Discord APP ID
 			params.setFlags(CreateParams.getDefaultFlags());
@@ -229,9 +237,12 @@ public class Game {
 			activity.timestamps().setStart(Instant.now()); // Start timer
 
 			discordCore.activityManager().updateActivity(activity);
+			Logger.debug("Initializing discord rich presence ...");
 		} catch(Exception e) {
 			e.printStackTrace();
-		}
+			if (e instanceof UnknownHostException) Logger.error("Failed to download Discord SDK, no internet connection!");
+			if (e instanceof GameSDKException) Logger.error("Failed to initialize Discord SDK, no discord detected!");
+		} 
 
 		Initializer.parseArgs(args); // Parses the command line arguments
 
@@ -270,7 +281,7 @@ public class Game {
 		// Exit events -------------------------------------------------------------------------------------------------------------------------------------
 
 		Logger.debug("Main game loop ended; Terminating application...");
-
+		
 		System.exit(0);
 	}
 }

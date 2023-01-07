@@ -61,6 +61,10 @@ public class InputEntry extends ListEntry {
 	public String getUserInput() {
 		return userInput; 
 	}
+	
+	public void clearUserInput() {
+		userInput = "";
+	}
 
 	public String toString() {
 		return Localization.getLocalized(prompt) + (prompt.length() == 0 ? "" : ": ") + userInput;

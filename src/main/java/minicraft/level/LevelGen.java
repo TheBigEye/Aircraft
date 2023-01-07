@@ -47,7 +47,7 @@ public class LevelGen {
 		}
 
 		int stepSize = featureSize;
-		double scale = (1.3 / w);
+		double scale = (1.3 / ((double) w));
 		double scaleMod = 1.0;
 
 		do {
@@ -1225,7 +1225,7 @@ public class LevelGen {
 					int x = xs + random.nextInt(32) - 8 + random.nextInt(4);
 					int y = ys + random.nextInt(32) - 8 + random.nextInt(4);
 					
-					for (int j = 0; j < 100; j++) {
+					for (int j = 0; j < 75; j++) {
 						int xo = x + random.nextInt(5) - random.nextInt(4);
 						
 						int yo = y + random.nextInt(5) - random.nextInt(4);
@@ -1827,7 +1827,7 @@ public class LevelGen {
 			int lvl = maplvls[idx++ % maplvls.length];
 			if (lvl > 2 || lvl < -4) continue;
 
-			short[][] fullmap = LevelGen.createAndValidateMap(w, h, -4, random.nextLong());
+			short[][] fullmap = LevelGen.createAndValidateMap(w, h, -1, random.nextLong());
 
 			if (fullmap == null) continue;
 			

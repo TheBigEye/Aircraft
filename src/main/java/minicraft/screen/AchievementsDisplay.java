@@ -137,7 +137,6 @@ public class AchievementsDisplay extends Display {
 
 		// Make the achievement unlocked in memory.
 		achievement.setUnlocked(unlocked);
-		Logger.debug("Updating {} achievement data...", id);
 
 		// Add or subtract from score
 		if (unlocked) {
@@ -235,7 +234,13 @@ public class AchievementsDisplay extends Display {
      * @param unlockedAchievements An array of all the achievements we want to load, ids.
      */
     public static void unlockAchievements(JSONArray unlockedAchievements) {
+    	if (!Game.debug) Logger.debug("Updating achievements data ...");
         for (Object id : unlockedAchievements.toList()) {
+        	
+    		if (Game.debug) {
+    			Logger.debug("Updating {} achievement data ...", id);
+    		}
+        	
             if (!setAchievement(id.toString(), true, false)) {
                 Logger.warn("Could not load unlocked achievement with name {}.", id.toString());
             }

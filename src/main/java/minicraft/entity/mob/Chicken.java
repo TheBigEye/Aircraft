@@ -35,36 +35,8 @@ public class Chicken extends PassiveMob {
             dropItem(min, max, Items.get("egg"));
         }
 
-        Player player = getClosestPlayer();
-        if (player != null && player.activeItem != null && player.activeItem.name.equals("Seeds")) {
-
-            // Render heart particles
-            /*if (Settings.get("particles").equals(true)) {
-                int randX = rnd.nextInt(10);
-                int randY = rnd.nextInt(9);
-
-                if (random.nextInt(12) == 0) {
-                    level.add(new HeartParticle(x - 9 + randX, y - 12 + randY));
-                }
-                if (random.nextInt(12) == 12) {
-                    level.add(new HeartParticle(x - 9 + randX, y - 12 + randY));
-                }
-            }*/
-
-            int xd = player.x - x;
-            int yd = player.y - y;
-
-            int sig0 = 1;
-            xa = ya = 0;
-
-            if (xd < sig0) xa = -1;
-            if (xd > sig0) xa = +1;
-            if (yd < sig0) ya = -1;
-            if (yd > sig0) ya = +1;
-            
-        } else {
-            randomizeWalkDir(false);
-        }
+        // follows to the player if holds seeds
+        followOnHold(2, "Seeds", false);
         
 		// Chicken sounds
 		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {

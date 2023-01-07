@@ -7,6 +7,7 @@ import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.entity.Direction;
 import minicraft.entity.particle.FireParticle;
+import minicraft.entity.particle.HeartParticle;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
 import minicraft.item.Item;
@@ -88,6 +89,36 @@ public class PassiveMob extends MobAi {
         }
 
         return lightRadius;
+    }
+    
+    public void followOnHold(int followRadius, String item, boolean heartParticles) {
+    	Player player = level.getClosestPlayer(x, y);
+    	// This is true if the player isnt null, the active item also isnt null, the player is holding the item and within the followRadius
+    	boolean holdingItem = player != null && player.activeItem != null && player.activeItem.name.equals(item) && player.isWithin(followRadius, this);
+    	
+    	if (holdingItem) {
+    		// get player walk direction
+	        int xd = player.x - x;
+	        int yd = player.y - y;
+
+	        int dir = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
+	        xa = ya = 0;
+	        
+	        // follow to the player
+	        if (xd < dir) xa = -1;
+	        else if (xd > dir) xa = 1;
+	        if (yd < dir) ya = -1;
+	        else if (yd > dir) ya = 1;
+	    } else {
+	        randomizeWalkDir(false);
+	    }
+    	
+    	if (heartParticles) {
+		    if (Settings.get("particles").equals(true) && tickTime /8 %12 == 0) {
+		        int randX = random.nextInt(8);
+		        level.add(new HeartParticle(x - 2 + randX, y - 16));
+		    }
+    	}
     }
 
     public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
