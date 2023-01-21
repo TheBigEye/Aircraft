@@ -26,24 +26,25 @@ public class Items {
      */
     private static ArrayList<Item> items = new ArrayList<>();
 
-    private static void add(Item i) {
-        items.add(i);
+    private static void add(Item item) {
+        items.add(item);
     }
 
     private static void addAll(ArrayList<Item> items) {
-        for (Item i : items)
-            add(i);
+        for (Item item : items) {
+            add(item);
+    	}
     }
 
     static {
         add(new PowerGloveItem());
         addAll(FurnitureItem.getAllInstances());
-        add(new BoatItem("Boat"));
+        // add(new BoatItem("Boat")); Disabled to b0.6 fixes
         addAll(TorchItem.getAllInstances());
         addAll(BucketItem.getAllInstances());
         addAll(BookItem.getAllInstances());
         add(new MapItem());
-        add(new AmuletItem());
+        addAll(AmuletItem.getAllInstances());
         addAll(TileItem.getAllInstances());
         addAll(FishingRodItem.getAllInstances());
         addAll(ToolItem.getAllInstances());
@@ -57,10 +58,11 @@ public class Items {
     /** fetches an item from the list given its name. */
     @NotNull
     public static Item get(String name) {
-        Item i = get(name, false);
-        if (i == null)
+        Item item = get(name, false);
+        if (item == null) {
             return new UnknownItem("NULL"); // technically shouldn't ever happen
-        return i;
+        }
+        return item;
     }
 
     @Nullable
@@ -88,9 +90,9 @@ public class Items {
         }
 
         if (name.equalsIgnoreCase("NULL")) {
-            if (allowNull)
+            if (allowNull) {
                 return null;
-            else {
+            } else {
             	Logger.warn("Items.get passed argument \"null\" when null is not allowed; returning UnknownItem.");
                 return new UnknownItem("NULL");
             }
@@ -99,21 +101,23 @@ public class Items {
         if (name.equals("UNKNOWN"))
             return new UnknownItem("BLANK");
 
-        Item i = null;
-        for (Item cur : items) {
-            if (cur.getName().equalsIgnoreCase(name)) {
-                i = cur;
+        Item item = null;
+        for (Item currentItem : items) {
+            if (currentItem.getName().equalsIgnoreCase(name)) {
+                item = currentItem;
                 break;
             }
         }
 
-        if (i != null) {
-            i = i.clone();
-            if (i instanceof StackableItem)
-                ((StackableItem) i).count = data;
-            if (i instanceof ToolItem && hadUnderscore)
-                ((ToolItem) i).dur = data;
-            return i;
+        if (item != null) {
+            item = item.clone();
+            if (item instanceof StackableItem) {
+                ((StackableItem) item).count = data;
+            }
+            if (item instanceof ToolItem && hadUnderscore) {
+                ((ToolItem) item).durability = data;
+            }
+            return item;
         } else {
 			Logger.error("Requested invalid item with name: '{}'", name);
             return new UnknownItem(name);
@@ -122,18 +126,16 @@ public class Items {
 
     public static Item arrowItem = get("arrow");
 
-    public static void fillCreativeInv(Inventory inv) {
-        fillCreativeInv(inv, true);
+    public static void fillCreativeInventory(Inventory inv) {
+        fillCreativeInventory(inv, true);
     }
 
-    public static void fillCreativeInv(Inventory inv, boolean addAll) {
+    public static void fillCreativeInventory(Inventory inv, boolean addAll) {
         for (Item item : items) {
-            if (item instanceof PowerGloveItem) {
-                continue;
-            }
-            if (addAll || inv.count(item) == 0) {
-                inv.add(item.clone());
+            if (!(item instanceof PowerGloveItem) && (addAll || inv.count(item) == 0)) {
+            	inv.add(item.clone());
             }
         }
     }
+    
 }

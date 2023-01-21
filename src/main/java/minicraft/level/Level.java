@@ -1,10 +1,9 @@
 package minicraft.level;
 
-import static minicraft.core.Game.player;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -77,15 +76,9 @@ import minicraft.level.tile.TorchTile;
 public class Level {
 	private final Random random;
 
-	private static final String[] levelNames = {"The Void", "Heaven", "Surface", "Iron", "Gold", "Lava", "Dungeon"};
-
-	public static String getLevelName(int depth) {
-		return levelNames[-1 * depth + 2];
-	}
-
-	public static String getDepthString(int depth) {
-		return "Level " + (depth < 0 ? "B" + (-depth) : depth);
-	}
+	private static final String[] levelNames = {
+		"The Void", "Heaven", "Surface", "Iron", "Gold", "Lava", "Dungeon"
+	};
 
 	// the chance of a mob actually trying to spawn when trySpawn is
 	// called equals: mobCount / maxMobCount * MOB_SPAWN_FACTOR. so, it
@@ -103,6 +96,14 @@ public class Level {
 
 	// Depth level of the level
 	public final int depth;
+	
+	public static String getLevelName(int depth) {
+		return levelNames[-1 * depth + 2];
+	}
+
+	public static String getDepthString(int depth) {
+		return "Level " + (depth < 0 ? "B" + (-depth) : depth);
+	}
 
 	// Affects the number of monsters that are on the level, bigger the number the less monsters spawn.
 	public int monsterDensity = 8;
@@ -146,30 +147,29 @@ public class Level {
 		Logger.debug(prefix + " on " + levelName + " level (" + x + ", " + y + ")" + suffix);
 	}
 
-	public void printTileLocs(Tile t) {
+	public void printTileLocs(Tile tile) {
 		for (int x = 0; x < w; x++) {
 			for (int y = 0; y < h; y++) {
-				if (getTile(x, y).id == t.id) {
-					printLevelLoc(t.name, x, y);
+				if (getTile(x, y).id == tile.id) {
+					printLevelLoc(tile.name, x, y);
 				}
 			}
 		}
 	}
 
-	public void printEntityLocs(Class < ? extends Entity > c) {
+	public void printEntityLocs(Class <? extends Entity> entityClass) {
 		int numfound = 0;
 		for (Entity entity: getEntityArray()) {
-			if (c.isAssignableFrom(entity.getClass())) {
+			if (entityClass.isAssignableFrom(entity.getClass())) {
 				printLevelLoc(entity.toString(), entity.x >> 4, entity.y >> 4);
 				numfound++;
 			}
 		}
-
-		Logger.debug("Found " + numfound + " entities in level of depth " + depth);
+		Logger.debug("Found {} entities in level of depth {}", numfound, depth);
 	}
 
 	private void updateMobCap() {
-		maxMobCount = 140 + 140 * Settings.getIdx("diff");
+		maxMobCount = 140 + 140 * Settings.getIndex("diff");
 		if (depth == 1) maxMobCount /= 2;
 		if (depth == 0 || depth == -4) maxMobCount = maxMobCount * 2 / 3;
 	}
@@ -195,7 +195,7 @@ public class Level {
 			return;
 		}
 
-		Logger.debug("Generating level " + level + "...");
+		Logger.debug("Generating level {} ...", level);
 
 		maps = LevelGen.createAndValidateMap(w, h, level, seed);
 		if (maps == null) {
@@ -223,7 +223,7 @@ public class Level {
 
 						} else if (level == 0) { // Surface
 							// Surround the sky stairs with hard rock
-							Logger.trace("Setting tiles around " + x + "," + y + " to hard rock");
+							Logger.trace("Setting tiles around {}, {} to hard rock ...", x, y);
 							setAreaTiles(x, y, 1, Tiles.get("Hard Rock"), 0);
 
 						} else {
@@ -294,8 +294,8 @@ public class Level {
 
 			// if not found the Air Wizard, add then again
 			if (!found) {
-				AirWizard aw = new AirWizard(false);
-				add(aw, w / 2, h / 2, true);
+				AirWizard airWizard = new AirWizard(false);
+				add(airWizard, w / 2, h / 2, true);
 			}
 		}
 
@@ -323,7 +323,7 @@ public class Level {
 				}
 			}
 
-			if (Game.debug) System.out.println("Found " + numChests + " chests.");
+			if (Game.debug) Logger.info("Found {} dungeon chests", numChests);
 		}
 
 		/// Make DungeonChests!
@@ -420,85 +420,17 @@ public class Level {
 
 		// this play random music in game
 		if (Settings.get("ambient").equals("Nice")) {
-
-			randomMusic++;
-
-			if (randomMusic >= 16000) {
-				randomMusic = 0;
-
-				// Surface
-				if (random.nextInt(3) == 0 && depth == 0) { // Surface only
-					Sound.Theme_Surface.playOnGui();
-
-				} else if (random.nextInt(3) == 1 && depth == 0 || depth == -1) { // Surface and underground
-					Sound.Theme_Cave.playOnGui();
-
-				} else if (random.nextInt(3) == 2 && depth == 0) { // Surface only
-					Sound.Theme_Peaceful.playOnGui();
-
-				} else if (random.nextInt(3) == 3 && depth == 0) { // Surface only
-					Sound.Theme_Peaceful.playOnGui();
-
-				}
-
-				// Cave
-				if (random.nextInt(5) == 0 && depth == -1) { // Cave
-					Sound.Ambience1.playOnGui();
-
-				} else if (random.nextInt(5) == 1 && depth == -1) { // Cave
-					Sound.Ambience2.playOnGui();
-
-				} else if (random.nextInt(5) == 2 && depth == -1 || depth == -2) { // Cave and cavern
-					Sound.Ambience3.playOnGui();
-
-				} else if (random.nextInt(5) == 3 && depth == -1 || depth == -2) { // Cave and cavern
-					Sound.Ambience4.playOnGui();
-
-				} else if (random.nextInt(5) == 4 && depth == -2) { // Cavern
-					Sound.Theme_Cavern.playOnGui();
-
-				} else if (random.nextInt(5) == 5 && depth == -2) { // Cavern
-					Sound.Theme_Cavern_drip.playOnGui();
-
-				}
-
-				// Sky
-				if (random.nextInt(1) == 0 && depth == 1) { // Sky
-					Sound.Theme_Surface.playOnGui();
-
-				} else if (random.nextInt(1) == 1 && depth == 1) { // Sky
-					Sound.Theme_Fall.playOnGui();
-
-				}
-
-			}
-		}
-
-		if (Settings.get("ambient").equals("Normal")) {
-			/*
-			 * if (random.nextInt(256000) == 1) { }
-			 */
-		}
-
-		if (Settings.get("ambient").equals("Scary")) {
-			if (random.nextInt(128000) == 1) {
-
-				if (random.nextInt(8) == 0) {
-					Sound.Ambience1.playOnGui();
-				}
-				if (random.nextInt(8) == 2) {
-					Sound.Ambience2.playOnGui();
-				}
-				if (random.nextInt(8) == 4) {
-					Sound.Ambience3.playOnGui();
-				}
-				if (random.nextInt(8) == 6) {
-					Sound.Ambience4.playOnGui();
-				}
-				if (random.nextInt(8) == 8) {
-					Sound.Ambience5.playOnGui();
-				}
-			}
+		    randomMusic++;
+		    if (randomMusic >= 16000) {
+		        randomMusic = 0;
+		        playRandomMusic(depth);
+		    }
+		} else if (Settings.get("ambient").equals("Scary")) {
+		    randomMusic++;
+		    if (randomMusic >= 16000) {
+		        randomMusic = 0;
+		        playRandomMusic(depth);
+		    }
 		}
 
 		if (fullTick) {
@@ -512,9 +444,9 @@ public class Level {
 
 			// entity loop
 
-			for (Entity e: entities) {
-				tickEntity(e);
-				if (e instanceof Mob) {
+			for (Entity entity: entities) {
+				tickEntity(entity);
+				if (entity instanceof Mob) {
 					count++;
 				}
 			}
@@ -603,12 +535,12 @@ public class Level {
 	}
 
 	public void dropItem(int x, int y, Item...items) {
-		for (Item i: items) {
-			dropItem(x, y, i);
+		for (Item item: items) {
+			dropItem(x, y, item);
 		}
 	}
 
-	public ItemEntity dropItem(int x, int y, Item i) {
+	public ItemEntity dropItem(int x, int y, Item item) {
 		int ranx, rany;
 
 		do {
@@ -616,7 +548,7 @@ public class Level {
 			rany = y + random.nextInt(11) - 5;
 		} while (ranx >> 4 != x >> 4 || rany >> 4 != y >> 4);
 
-		ItemEntity itemEntity = new ItemEntity(i, ranx, rany);
+		ItemEntity itemEntity = new ItemEntity(item, ranx, rany);
 		add(itemEntity);
 		return itemEntity;
 	}
@@ -654,7 +586,7 @@ public class Level {
 		int h = (Screen.h + 15) >> 4;
 
 		screen.setOffset(xScroll, yScroll);
-		int r = 4;
+		int r = 8;
 
 		List <Entity> entities = getEntitiesInTiles(xo - r, yo - r, w + xo + r, h + yo + r);
 		for (Entity entity: entities) {
@@ -671,7 +603,7 @@ public class Level {
 				}
 
 				int lightRadius = getTile(x, y).getLightRadius(this, x, y);
-				if (lightRadius > 0) screen.renderLight(x * 16 + 8, y * 16 + 8, lightRadius * brightness);
+				if (lightRadius > 0) screen.renderLight((x << 4) + 8, (y << 4) + 8, lightRadius * brightness);
 			}
 		}
 		screen.setOffset(0, 0);
@@ -710,14 +642,14 @@ public class Level {
 		setTile(x, y, Tiles.get(name), data);
 	}
 
-	public void setTile(int x, int y, Tile t) {
-		setTile(x, y, t, t.getDefaultData());
+	public void setTile(int x, int y, Tile tile) {
+		setTile(x, y, tile, tile.getDefaultData());
 	}
 
-	public void setTile(int x, int y, Tile t, int dataVal) {
+	public void setTile(int x, int y, Tile tile, int dataVal) {
 		if (x < 0 || y < 0 || x >= w || y >= h) return;
 
-		tiles[x + y * w] = t.id;
+		tiles[x + y * w] = tile.id;
 		data[x + y * w] = (short) dataVal;
 	}
 
@@ -728,11 +660,11 @@ public class Level {
 		return data[x + y * w] & 0xff;
 	}
 
-	public void setData(int x, int y, int val) {
+	public void setData(int x, int y, int value) {
 		if (x < 0 || y < 0 || x >= w || y >= h) {
 			return;
 		}
-		data[x + y * w] = (short) val;
+		data[x + y * w] = (short) value;
 	}
 
 	public void add(Entity entity) {
@@ -752,8 +684,8 @@ public class Level {
 		}
 		
 		if (tileCoords) {
-			x = x * 16 + 8;
-			y = y * 16 + 8;
+			x <<= 4 + 8;
+			y <<= 4 + 8;
 		}
 
 		entity.setLevel(this, x, y);
@@ -787,11 +719,11 @@ public class Level {
 			if (depth > 0) minLevel = maxLevel = 4;
 			
 			int lvl = random.nextInt(maxLevel - minLevel + 1) + minLevel;
-			int rnd = random.nextInt(100);
-			int nx = random.nextInt(w) * 16 + 8;
-			int ny = random.nextInt(h) * 16 + 8;
+			int spawnChance = random.nextInt(100);
+			int nx = (random.nextInt(w) * 16) + 8;
+			int ny = (random.nextInt(h) * 16) + 8;
 
-			// System.out.println("trySpawn on level " + depth + " of lvl " + lvl + " mob w/rand " + rnd + " at tile " + nx + "," + ny);
+			// System.out.println("trySpawn on level " + depth + " of lvl " + lvl + " mob w/rand " + random + " at tile " + nx + "," + ny);
 
 			// spawns the enemy mobs; first part prevents enemy mob spawn on surface and the sky on first day, more or less.
 			if (!Settings.get("diff").equals("Peaceful")) {
@@ -799,32 +731,32 @@ public class Level {
 					if (depth != -4) { // normal mobs
 						if (depth == 0) {
                             if (Updater.getTime() == Updater.Time.Night) {
-                                if (player.isNiceNight == false) {
-                                    if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
-                                    else if (rnd >= 85) add((new Skeleton(lvl)), nx, ny);
+                                if (Game.player.isNiceNight == false) {
+                                    if (spawnChance <= 75) add((new Zombie(lvl)), nx, ny);
+                                    else if (spawnChance >= 85) add((new Skeleton(lvl)), nx, ny);
                                     else add((new Creeper(lvl)), nx, ny);
                                 }
                             }
 						} else {
-							if (rnd <= 40) add((new Slime(lvl)), nx, ny);
-							else if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
-							else if (rnd >= 85) add((new OldGolem(lvl)), nx, ny);
-							else if (rnd >= 85) add((new Skeleton(lvl)), nx, ny);
+							if (spawnChance <= 40) add((new Slime(lvl)), nx, ny);
+							else if (spawnChance <= 75) add((new Zombie(lvl)), nx, ny);
+							else if (spawnChance >= 85) add((new OldGolem(lvl)), nx, ny);
+							else if (spawnChance >= 82) add((new Skeleton(lvl)), nx, ny);
 							else add((new Creeper(lvl)), nx, ny);
 						}
 
 					} else { // special dungeon mobs
-						if (rnd <= 40) add((new Snake(lvl)), nx, ny);
-						else if (rnd <= 75) add((new Knight(lvl)), nx, ny);
-						else if (rnd >= 85) add((new Snake(lvl)), nx, ny);
+						if (spawnChance <= 40) add((new Snake(lvl)), nx, ny);
+						else if (spawnChance <= 75) add((new Knight(lvl)), nx, ny);
+						else if (spawnChance >= 85) add((new Snake(lvl)), nx, ny);
 						else add((new Knight(lvl)), nx, ny);
 					}
 
                     if (depth == -3) {
-                        if (rnd <= 40) add((new Slime(lvl)), nx, ny);
-						else if (rnd <= 75) add((new Zombie(lvl)), nx, ny);
-						else if (rnd >= 85) add((new OldGolem(lvl)), nx, ny);
-						else if (rnd >= 85) add((new Skeleton(lvl)), nx, ny);
+                        if (spawnChance <= 40) add((new Slime(lvl)), nx, ny);
+						else if (spawnChance <= 75) add((new Zombie(lvl)), nx, ny);
+						else if (spawnChance >= 85) add((new OldGolem(lvl)), nx, ny);
+						else if (spawnChance >= 82) add((new Skeleton(lvl)), nx, ny);
 						else add((new Creeper(lvl)), nx, ny);
                     }
 
@@ -835,67 +767,66 @@ public class Level {
 			}
 
 			if (depth == 2 && EnemyMob.checkStartPos(this, nx, ny)) { // if nether
-				if (rnd <= 40) add((new Skeleton(1)), nx, ny);
+				if (spawnChance <= 40) add((new Skeleton(1)), nx, ny);
 				spawned = true;
 			}
 
-			if (player.isNiceNight == true) {
-				if (depth == 0 && Updater.getTime() == Updater.Time.Night && FlyMob.checkStartPos(this, nx, ny)) {
-					// Spawns the friendly mobs.
-					if (rnd < 75) {
-						add((new Firefly()), nx, ny);
+			// Spawn mobs on day light
+			if ((depth == 0) && (Updater.getTime() != Updater.Time.Night) && (Updater.getTime() != Updater.Time.Evening)) {
+				//int spawnChance = random.nextInt(100); // This is global only for peaceful mobs
+				
+				// Spawns passive mobs
+				if (PassiveMob.checkStartPos(this, nx, ny)) {
+					PassiveMob[] mobs = { new Cow(), new Chicken(), new Pig(), new Sheep() }; // Store all the passive mobs
+					if (spawnChance >= 64) {
+						add(mobs[0], nx, ny);
+					} else if (spawnChance >= 56) {
+						add(mobs[1], nx, ny);
+					} else if (spawnChance >= 50) {
+						add(mobs[2], nx, ny);
 					} else {
-						add((new Firefly()), nx, ny);
+						add(mobs[3], nx, ny);
 					}
-
 					spawned = true;
 				}
-			}
-
-			if (depth == 0 && Updater.getTime() != Updater.Time.Night && Updater.getTime() != Updater.Time.Evening && PassiveMob.checkStartPos(this, nx, ny)) {
-				// Spawns the friendly mobs.
-				if (rnd >= 60) {
-					add((new Cow()), nx, ny);
-				} else if (rnd >= 68) {
-					add((new Chicken()), nx, ny);
-				} else if (rnd >= 50) {
-					add((new Pig()), nx, ny);
-				} else {
-					add((new Sheep()), nx, ny);
+				
+				// Spawn frost mobs
+				if (FrostMob.checkStartPos(this, nx, ny)) {
+					FrostMob[] mobs = { new GuiMan(), new Goat() };
+					if (spawnChance <= 50) {
+						add(mobs[0], nx, ny);
+					} else {
+						add(mobs[1], nx, ny);
+					}
+					spawned = true;
 				}
-
-				spawned = true;
-			}
-
-			if (depth == 0 && FrostMob.checkStartPos(this, nx, ny)) {
-				// Spawns the villagers.
-				if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33)) {
-					add((new GuiMan()), nx, ny);
-				} else {
-					add((new GuiMan()), nx, ny);
+				
+			// Spawn mobs on nigth moon light
+			} else if (depth == 0 && Updater.getTime() == Updater.Time.Night) {
+				// Spawns a firefly
+				if (Game.player.isNiceNight && FlyMob.checkStartPos(this, nx, ny)) {
+					if (spawnChance <= 75) {
+						add(new Firefly(), nx, ny);
+					}
+					spawned = true;
 				}
-				if (rnd <= 75) {
-					add((new Goat()), nx, ny);
-				}
-
-				spawned = true;
 			}
 
 			// This generates mobs from the sky, if the Air Wizard is not defeated
 			// they will spawn hostile mobs, if instead, it is defeated they will
 			// spawn peaceful mobs
 			if (depth == 1 && SkyMob.checkStartPos(this, nx, ny)) {
-				if (rnd <= (Updater.getTime() == Updater.Time.Night ? 22 : 33) && AirWizard.beaten) { // Spawns passive sky mobs.
+				if (spawnChance <= (Updater.getTime() == Updater.Time.Night ? 22 : 33) && AirWizard.beaten) { // Spawns passive sky mobs.
 					add((new Phyg()), nx, ny);
 					add((new Sheepuff()), nx, ny);
 				} else { // Spawns hostile sky mobs.
-					if (rnd <= 40) {
+					if (spawnChance <= 40) {
 						add((new Slime(lvl)), nx, ny);
-					} else if (rnd <= 75) {
+					} else if (spawnChance <= 75) {
 						add((new Zombie(lvl)), nx, ny);
-					} else if (rnd >= 85) {
+					} else if (spawnChance >= 85) {
 						add((new OldGolem(lvl)), nx, ny);
-					} else if (rnd >= 85) {
+					} else if (spawnChance >= 82) {
 						add((new Skeleton(lvl)), nx, ny);
 					} else {
 						add((new Creeper(lvl)), nx, ny);
@@ -923,17 +854,10 @@ public class Level {
 	}
 
 	public Entity[] getEntityArray() {
-		Entity[] entityArray = new Entity[entities.size() + sparks.size()];
-		int index = 0;
-
-		for (Entity entity: entities) {
-			entityArray[index++] = entity;
-		}
-		for (Spark spark: sparks) {
-			entityArray[index++] = spark;
-		}
-
-		return entityArray;
+	    ArrayList<Entity> entitiesList = new ArrayList<Entity>();
+	    entitiesList.addAll(entities);
+	    entitiesList.addAll(sparks);
+	    return entitiesList.toArray(new Entity[entitiesList.size()]);
 	}
 
 	public List <Entity> getEntitiesInTiles(int xt, int yt, int radius) {
@@ -1009,30 +933,31 @@ public class Level {
 	 * @return True if there is an entity on the tile.
 	 */
 	public final boolean isEntityOnTile(int x, int y) {
-		for (Entity e: getEntityArray()) {
-			int xt = e.x >> 4;
-			int yt = e.y >> 4;
-
-			if (xt == x && yt == y) {
-				return true;
-			}
-		}
-		return false;
+	    boolean found = false;
+	    HashMap<String, Entity> entitiesMap = new HashMap<String, Entity>();
+	    for (Entity entity: getEntityArray()) {
+	        int xt = entity.x >> 4;
+	        int yt = entity.y >> 4;
+	        entitiesMap.put(xt + "," + yt, entity);
+	    }
+	    if (entitiesMap.containsKey(x + "," + y)){
+	        found = true;
+	    }
+	    return found;
 	}
 
-
-	public List <Entity> getEntitiesInRect(Rectangle area) {
-		List <Entity> result = new ArrayList<>();
-		for (Entity e: getEntityArray()) {
-			if (e.isTouching(area)) {
-				result.add(e);
+	public List<Entity> getEntitiesInRect(Rectangle area) {
+		List<Entity> result = new ArrayList<>();
+		for (Entity entity: getEntityArray()) {
+			if (entity.isTouching(area)) {
+				result.add(entity);
 			}
 		}
 		return result;
 	}
 
-	public List <Entity> getEntitiesInRect(Predicate <Entity> filter, Rectangle area) {
-		List <Entity> result = new LinkedList<>();
+	public List<Entity> getEntitiesInRect(Predicate <Entity> filter, Rectangle area) {
+		List<Entity> result = new LinkedList<>();
 		for (Entity entity: entities) {
 			if (filter.test(entity) && entity.isTouching(area)) {
 				result.add(entity);
@@ -1073,7 +998,7 @@ public class Level {
 		for (int i = 1; i < players.length; i++) {
 			int curxd = players[i].x - x;
 			int curyd = players[i].y - y;
-			if (xd * xd + yd * yd > curxd * curxd + curyd * curyd) {
+			if (((xd * xd) + (yd * yd)) > ((curxd * curxd) + (curyd * curyd))) {
 				closest = players[i];
 				xd = curxd;
 				yd = curyd;
@@ -1088,16 +1013,19 @@ public class Level {
 	}
 
 	public Point[] getAreaTilePositions(int x, int y, int rx, int ry) {
-		ArrayList <Point> local = new ArrayList<>();
-		for (int yp = y - ry; yp <= y + ry; yp++) {
-			for (int xp = x - rx; xp <= x + rx; xp++) {
-				if (xp >= 0 && xp < w && yp >= 0 && yp < h) {
-					local.add(new Point(xp, yp));
-				}
-			}
-		}
-	
-		return local.toArray(new Point[local.size()]);
+	    Point[] positions = new Point[(rx*2+1)*(ry*2+1)];
+	    int index = 0;
+	    Point point = new Point(0,0);
+	    for (int yp = y - ry; yp <= y + ry; yp++) {
+	        for (int xp = x - rx; xp <= x + rx; xp++) {
+	            if (xp >= 0 && xp < w && yp >= 0 && yp < h) {
+	                point.x = xp;
+	                point.y = yp;
+	                positions[index++] = point;
+	            }
+	        }
+	    }
+	    return positions;
 	}
 
 	public Tile[] getAreaTiles(int x, int y, int r) {
@@ -1106,11 +1034,11 @@ public class Level {
 
 	public Tile[] getAreaTiles(int x, int y, int rx, int ry) {
 		ArrayList <Tile> local = new ArrayList<>();
-
-		for (Point p: getAreaTilePositions(x, y, rx, ry)) {
-			local.add(getTile(p.x, p.y));
+		
+		for (Point point: getAreaTilePositions(x, y, rx, ry)) {
+			local.add(getTile(point.x, point.y));
 		}
-
+		
 		return local.toArray(new Tile[local.size()]);
 	}
 
@@ -1140,7 +1068,7 @@ public class Level {
 
 	@FunctionalInterface
 	public interface TileCheck {
-		boolean check(Tile t, int x, int y);
+		boolean check(Tile tile, int x, int y);
 	}
 
 	public List <Point> getMatchingTiles(Tile search) {
@@ -1186,7 +1114,7 @@ public class Level {
 	}
 
 	private void generateSpawnerStructures() {
-		if (Game.debug) System.out.println("Trying to generate a spawner dungeon...");
+		if (Game.debug) Logger.info("Generating a spawner dungeons ...");
 
 		for (int i = 0; i < 18 / -depth * (w / 128); i++) {
 
@@ -1228,23 +1156,23 @@ public class Level {
 					spawner.y = y3 * 16 - 8;
 				}
 
-				if (getTile(spawner.x / 16, spawner.y / 16) == Tiles.get("Rock")) {
-					setTile(spawner.x / 16, spawner.y / 16, Tiles.get("Dirt"));
+				if (getTile(spawner.x >> 4, spawner.y >> 4) == Tiles.get("Rock")) {
+					setTile(spawner.x >> 4, spawner.y >> 4, Tiles.get("Dirt"));
 				}
 
-				Structure.mobDungeonCenter.draw(this, spawner.x / 16, spawner.y / 16);
+				Structure.mobDungeonCenter.draw(this, spawner.x >> 4, spawner.y >> 4);
 
-				if (getTile(spawner.x / 16, spawner.y / 16 - 4) == Tiles.get("Dirt")) {
-					Structure.mobDungeonNorth.draw(this, spawner.x / 16, spawner.y / 16 - 5);
+				if (getTile(spawner.x >> 4, (spawner.y >> 4) - 4) == Tiles.get("Dirt")) {
+					Structure.mobDungeonNorth.draw(this, spawner.x >> 4, (spawner.y >> 4) - 5);
 				}
-				if (getTile(spawner.x / 16, spawner.y / 16 + 4) == Tiles.get("Dirt")) {
-					Structure.mobDungeonSouth.draw(this, spawner.x / 16, spawner.y / 16 + 5);
+				if (getTile(spawner.x >> 4, (spawner.y >> 4) + 4) == Tiles.get("Dirt")) {
+					Structure.mobDungeonSouth.draw(this, spawner.x >> 4, (spawner.y >> 4) + 5);
 				}
-				if (getTile(spawner.x / 16 + 4, spawner.y / 16) == Tiles.get("Dirt")) {
-					Structure.mobDungeonEast.draw(this, spawner.x / 16 + 5, spawner.y / 16);
+				if (getTile((spawner.x >> 4) + 4, spawner.y >> 4) == Tiles.get("Dirt")) {
+					Structure.mobDungeonEast.draw(this, (spawner.x >> 4) + 5, spawner.y >> 4);
 				}
-				if (getTile(spawner.x / 16 - 4, spawner.y / 16) == Tiles.get("Dirt")) {
-					Structure.mobDungeonWest.draw(this, spawner.x / 16 - 5, spawner.y / 16);
+				if (getTile((spawner.x >> 4) - 4, spawner.y >> 4) == Tiles.get("Dirt")) {
+					Structure.mobDungeonWest.draw(this, (spawner.x >> 4) - 5, spawner.y >> 4);
 				}
 
 				add(spawner);
@@ -1262,7 +1190,6 @@ public class Level {
 			}
 
 		}
-		if (Game.debug) System.out.println("Spawner dungeon generated!");
 	}
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1292,6 +1219,8 @@ public class Level {
 	private void generateVillages() {
 		int lastVillageX = 8;
 		int lastVillageY = 8;
+		
+		if (Game.debug) Logger.info("Generating villages on surface");
 
 		// makes 2-8 villages based on world size
 		for (int i = 0; i < w / 128 * 4; i++) {
@@ -1318,7 +1247,7 @@ public class Level {
 						xo += random.nextInt(8);
 						yo += random.nextInt(8);
 
-						Logger.debug("Generating a village at ({} {}) ...", x, y);
+						
 
 						// generate the villages an villagers
 						if (hasCrops && getTile(x, y) != Tiles.get("Rock") && getTile(x, y) != Tiles.get("Up Rock")) {
@@ -1347,11 +1276,12 @@ public class Level {
 
 						// add chests to some of the houses
 						if (true) {
-							Chest c1 = new Chest(), c2 = new Chest();
-							c1.populateInvRandom("villagehouse", 1);
-							c2.populateInvRandom("villagehouse", random.nextInt(10));
-							add(c1, (x + xo + 5) * 16, (y + yo - 6) * 16); // up
-							add(c2, (x + xo - 5) * 16, (y + yo + 4) * 16); // down
+							Chest firstChest = new Chest();
+							Chest secondChest = new Chest();
+							firstChest.populateInvRandom("villagehouse", 1);
+							secondChest.populateInvRandom("villagehouse", random.nextInt(10));
+							add(firstChest, (x + xo + 5) * 16, (y + yo - 6) * 16); // up
+							add(secondChest, (x + xo - 5) * 16, (y + yo + 4) * 16); // down
 						}
 					}
 
@@ -1359,8 +1289,43 @@ public class Level {
 				}
 			}
 		}
-
-		if (Game.debug) System.out.println("Village generated!");
+	}
+	
+	private void playRandomMusic(int depth) {
+	    int randomNum = random.nextInt(8);
+	    if (depth == 0) {
+	        if (randomNum == 0) {
+	            Sound.Theme_Surface.playOnGui();
+	        } else if (randomNum == 1) {
+	            Sound.Theme_Cave.playOnGui();
+	        } else if (randomNum == 2) {
+	            Sound.Theme_Peaceful.playOnGui();
+	        } else if (randomNum == 3) {
+	            Sound.Theme_Peaceful.playOnGui();
+	        }
+	    } else if (depth == -1) {
+	        if (randomNum == 0) {
+	            Sound.Ambience1.playOnGui();
+	        } else if (randomNum == 1) {
+	            Sound.Ambience2.playOnGui();
+	        } else if (randomNum == 2) {
+	            Sound.Ambience3.playOnGui();
+	        } else if (randomNum == 3) {
+	            Sound.Ambience4.playOnGui();
+	        }
+	    } else if (depth == -2) {
+	        if (randomNum == 0) {
+	            Sound.Theme_Cavern.playOnGui();
+	        } else if (randomNum == 1) {
+	            Sound.Theme_Cavern_drip.playOnGui();
+	        }
+	    } else if (depth == 1) {
+	        if (randomNum == 0) {
+	            Sound.Theme_Surface.playOnGui();
+	        } else if (randomNum == 1) {
+	            Sound.Theme_Fall.playOnGui();
+	        }
+	    }
 	}
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------

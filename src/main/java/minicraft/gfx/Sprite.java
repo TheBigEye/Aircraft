@@ -14,7 +14,7 @@ public class Sprite {
 	 * repetitions of the above group there are.
 	 */
 
-	static Random ran = new Random();
+	private static Random random = new Random();
 
 	public static Sprite missingTexture(int w, int h) {
 		return new Sprite(6, 44, w, h, 1);
@@ -33,12 +33,12 @@ public class Sprite {
 	}
 
 	public static Sprite randomDots(long seed, int offset) {
-	    ran.setSeed(seed);
+	    random.setSeed(seed);
 	    int[] values = new int[4];
 	    for (int i = 0; i < 4; i++) {
-	        values[i] = 2 + ran.nextInt(4) + offset * 32;
+	        values[i] = 2 + random.nextInt(4) + offset * 32;
 	    }
-	    return ConnectorSprite.makeSprite(2, 2, ran.nextInt(4), 1, false, values[0], values[1], values[2], values[3]);
+	    return ConnectorSprite.makeSprite(2, 2, random.nextInt(4), 1, false, values[0], values[1], values[2], values[3]);
 	}
 
 	protected Pixel[][] spritePixels;

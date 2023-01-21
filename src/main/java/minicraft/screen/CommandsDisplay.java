@@ -19,7 +19,7 @@ public class CommandsDisplay extends Display {
 	
 	private static final int CHAT_BACKGOUND_COLOR = Color.BLACK;
 	private static final int CHAT_FOREGOUND_COLOR = Color.GRAY;
-	private static final float CHAT_OPACITY = 0.6F;
+	private static final float CHAT_OPACITY = 0.8F;
 	
     public static InputEntry command = new InputEntry("", ".*", 48, false);
     
@@ -87,8 +87,9 @@ public class CommandsDisplay extends Display {
         int x = 8; // box x pos
         int y = (Screen.h - 12); // box y pos
         
-        int w = 52; // length of message in characters.
-        int h = 1; // box height
+        // Rrender the backgound box (TODO: Make an option to disable or enaable this)
+        Font.drawBox(screen, 4, y - 70, 53, 16);
+        
         
         // RENDER THE CHAT BACKGROUND
         for (int xb = 0; xb < CHAT_WIDTH; xb++) {

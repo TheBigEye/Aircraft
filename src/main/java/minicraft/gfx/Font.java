@@ -8,7 +8,7 @@ import minicraft.core.io.Localization;
 
 public class Font {
     
-    private static final int CHAR_SHEET_Y = 2;
+    private static final int CHAR_SHEET_Y = 0;
     
     // These are all the characters that will be translated to the screen. (The spaces and the UTF8 incoding are important)
     private static final String chars =
@@ -260,4 +260,31 @@ public class Font {
 
 		Font.drawCentered(title, screen, y + 8, Color.WHITE);
 	}
+    
+    public static void drawBox(Screen screen, int x, int y, int w, int h) {
+		// Renders the four corners of the box	
+		screen.render(x - 8, y - 8, 0 + 21 * 32, 0, 3);
+		screen.render(x + w * 8, y - 8, 0 + 21 * 32, 1, 3);
+		screen.render(x - 8, y + 8 * h, 0 + 21 * 32, 2, 3);
+		screen.render(x + w * 8, y + 8 * h, 0 + 21 * 32, 3, 3);
+
+
+		// Renders each part of the box...
+		for (int xb = 0; xb < w; xb++) {
+			screen.render(x + xb * 8, y - 8, 1 + 21 * 32, 0, 3); // ...top part
+			screen.render(x + xb * 8, y + 8 * h, 1 + 21 * 32, 2, 3); // ...bottom part
+		}
+		for (int yb = 0; yb < h; yb++) {
+			screen.render(x - 8, y + yb * 8, 2 + 21 * 32, 0, 3); // ...left part
+			screen.render(x + w * 8, y + yb * 8, 2 + 21 * 32, 1, 3); // ...right part
+		}
+
+		// The middle
+		for (int xb = 0; xb < w; xb++) {
+			for (int yb = 0; yb < h; yb++) {
+				screen.render(x + xb * 8, y + yb * 8, 3 + 21 * 32, 0, 3);
+			}
+		}
+    }
+    
 }

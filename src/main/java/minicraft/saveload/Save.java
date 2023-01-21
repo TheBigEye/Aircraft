@@ -34,6 +34,7 @@ import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.Sheep;
 import minicraft.entity.mob.boss.AirWizard;
+import minicraft.entity.mob.boss.EyeQueen;
 import minicraft.entity.particle.Particle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.item.Inventory;
@@ -53,7 +54,7 @@ public class Save {
 	private static final int indent = 4;
 
 	// Save files extension
-	public static String extension = ".miniplussave";
+	public static final String extension = ".miniplussave";
 
 	List<String> data;
 
@@ -177,11 +178,12 @@ public class Save {
 	private void writeGame(String filename) {
 		data.add(String.valueOf(Game.VERSION));
         data.add(String.valueOf(World.getWorldSeed()));
-		data.add(Settings.getIdx("mode") + (Game.isMode("score") ? ";" + Updater.scoreTime + ";" + Settings.get("scoretime") : ""));
+		data.add(Settings.getIndex("mode") + (Game.isMode("score") ? ";" + Updater.scoreTime + ";" + Settings.get("scoretime") : ""));
 		data.add(String.valueOf(Updater.tickCount));
 		data.add(String.valueOf(Updater.gameTime));
-		data.add(String.valueOf(Settings.getIdx("diff")));
+		data.add(String.valueOf(Settings.getIndex("diff")));
 		data.add(String.valueOf(AirWizard.beaten));
+		data.add(String.valueOf(EyeQueen.beaten));
 		data.add(String.valueOf(Settings.get("cheats")));
 
 		writeToFile(location + filename + extension, data);
@@ -213,15 +215,15 @@ public class Save {
 		// Save preferences to json file
 		try {
 			writeJSONToFile(location + "Preferences.json", json.toString(indent));
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException exception) {
+			exception.printStackTrace();
 		}
 	}
 
 	private void writeUnlocks() {
 		JSONObject json = new JSONObject();
 
-		json.put("unlockedAirWizardSuit", (boolean) Settings.get("unlockedskin"));
+		json.put("unlockedAirWizardSuit", Settings.getBoolean("unlockedskin"));
 
 		JSONArray scoretimes = new JSONArray();
 
@@ -238,8 +240,8 @@ public class Save {
 		// Save unlocks to json file
 		try {
 			writeJSONToFile(location + "Unlocks.json", json.toString(indent));
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException exception) {
+			exception.printStackTrace();
 		}
 	}
 
@@ -381,7 +383,7 @@ public class Save {
 
 			// Saves if the sheep is cut. If not, we could reload the save and the wool would regenerate.
 			else if (entity instanceof Sheep) {
-				extradata.append(":").append(((Sheep) mob).isCut);
+				extradata.append(":").append(((Sheep) mob).sheared);
 			}
 		}
 

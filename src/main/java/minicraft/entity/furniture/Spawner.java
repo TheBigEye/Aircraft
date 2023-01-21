@@ -1,7 +1,6 @@
 package minicraft.entity.furniture;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
@@ -24,7 +23,6 @@ import minicraft.item.ToolType;
 
 public class Spawner extends Furniture {
 
-	private Random rnd = new Random();
 	private static int frame = 0;
 
 	private static final int ACTIVE_RADIUS = 8 * 16;
@@ -104,7 +102,7 @@ public class Spawner extends Furniture {
 				level.add(new FireParticle(x - 10 + random.nextInt(14), y - 8 + random.nextInt(12)));
 			}
 		}  else {
-			frame = rnd.nextInt(3) * 2;
+			frame = random.nextInt(3) * 2;
 		}
 
 		if (Settings.get("diff").equals("Peaceful")) {
@@ -116,18 +114,16 @@ public class Spawner extends Furniture {
 	 * Resets the spawner so it can spawn another mob.
 	 */
 	private void resetSpawnInterval() {
-		spawnTick = rnd.nextInt(maxSpawnInterval - minSpawnInterval + 1) + minSpawnInterval;
+		spawnTick = random.nextInt(maxSpawnInterval - minSpawnInterval + 1) + minSpawnInterval;
 	}
 
 	/**
 	 * Tries to spawn a new mob.
 	 */
 	private void trySpawn() {
-		if (level == null) return;
-		if (level.mobCount >= level.maxMobCount) {
-			return; // can't spawn more entities
-		}
-
+		if (level == null) return; // if no level, so we cannot do anything
+		if (level.mobCount >= level.maxMobCount) return; // can't spawn more entities
+		
 		Player player = getClosestPlayer();
 		if (player == null) {
 			return;
@@ -191,23 +187,23 @@ public class Spawner extends Furniture {
 
 			Sound.genericHurt.playOnWorld(x, y);
 
-			int dmg;
+			int toolDamage;
 			if (Game.isMode("Creative")) {
-				dmg = health;
+				toolDamage = health;
 			} else {
-				dmg = tool.level + random.nextInt(2);
+				toolDamage = tool.level + random.nextInt(2);
 
 				if (tool.type == ToolType.Pickaxe) {
-					dmg += random.nextInt(5) + 2;
+					toolDamage += random.nextInt(5) + 2;
 				}
 
 				if (player.potionEffects.containsKey(PotionType.Haste)) {
-					dmg *= 2;
+					toolDamage *= 2;
 				}
 			}
 
-			health -= dmg;
-			level.add(new TextParticle("" + dmg, x, y, Color.get(-1, 200, 300, 400)));
+			health -= toolDamage;
+			level.add(new TextParticle("" + toolDamage, x, y, Color.get(-1, 200, 300, 400)));
 			if (health <= 0) {
 				level.remove(this);
                 

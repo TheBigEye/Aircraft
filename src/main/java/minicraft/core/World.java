@@ -20,12 +20,12 @@ public class World extends Game {
 	private World() {}
 
     /// This is to map the level depths to each level's index in Game's levels array. This must ALWAYS be the same length as the levels array, of course.
-	public static final int[] idxToDepth = {-3, -2, -1, 0, 1, 2, -4};
+	public static final int[] indexToDepth = {-3, -2, -1, 0, 1, 2, -4};
 	public static final int minLevelDepth, maxLevelDepth;
 
     static int worldSize = 128; // The size of the world
-	public static int lvlw = worldSize; // The width of the world
-	public static int lvlh = worldSize; // The height of the world
+	public static int worldWidth = worldSize; // The width of the world
+	public static int worldHeight = worldSize; // The height of the world
 
 	static int playerDeadTime; // The time after you die before the dead menu shows up.
 	static int pendingLevelChange; // Used to determine if the player should change levels or not.
@@ -41,8 +41,8 @@ public class World extends Game {
 
 	static {
 		int min, max;
-		min = max = idxToDepth[0];
-		for (int depth: idxToDepth) {
+		min = max = indexToDepth[0];
+		for (int depth: indexToDepth) {
 			if (depth < min) {
 				min = depth;
             }
@@ -60,7 +60,6 @@ public class World extends Game {
 	public static int lvlIdx(int depth) {
 		if (depth > maxLevelDepth) return lvlIdx(minLevelDepth);
 		if (depth < minLevelDepth) return lvlIdx(maxLevelDepth);
-
 		if (depth < -3) return Math.abs(depth) + maxLevelDepth;
 
 		return depth + 3;
@@ -113,17 +112,15 @@ public class World extends Game {
 
 		levels = new Level[7];
 
-		Updater.scoreTime = (Integer) Settings.get("scoretime") * 60 * Updater.normSpeed;
-
+		Updater.scoreTime = (((int) Settings.get("scoretime")) * 60) * Updater.normalSpeed;
 		LoadingDisplay.setPercentage(0); // This actually isn't necessary, I think; it's just in case.
-
 		Logger.trace("Initializing world non-client...");
 
 		if (WorldSelectDisplay.hasLoadedWorld()) {
 			new Load(WorldSelectDisplay.getWorldName());
 		} else {
 
-			worldSize = (Integer) Settings.get("size");
+			worldSize = (int) Settings.get("size");
 
             seed = WorldGenDisplay.getSeed().orElse(new Random().nextLong());
 			random = new Random(seed);
@@ -132,13 +129,13 @@ public class World extends Game {
 			for (int i = maxLevelDepth; i >= minLevelDepth; i--) {
 				// i = level depth; the array starts from the top because the parent level is used as a reference, so it should be constructed first. It is expected that the highest level will have a null parent.
 
-				Logger.trace("Loading level " + i + "...");
+				Logger.trace("Loading level {} ..." , i);
 
 				LoadingDisplay.setMessage(Level.getDepthString(i));
 				if (i > 0) {
 					levels[lvlIdx(i)] = new Level(worldSize, worldSize, random.nextLong(), i, null, !WorldSelectDisplay.hasLoadedWorld());
 				} else {
-					levels[lvlIdx(i)] = new Level(worldSize, worldSize, random.nextLong(), i, levels[lvlIdx(i+1)], !WorldSelectDisplay.hasLoadedWorld());
+					levels[lvlIdx(i)] = new Level(worldSize, worldSize, random.nextLong(), i, levels[lvlIdx(i + 1)], !WorldSelectDisplay.hasLoadedWorld());
 				}
 
 				LoadingDisplay.progress(loadingInc);
@@ -193,8 +190,8 @@ public class World extends Game {
 		Logger.trace("Setting level from {} to {}", currentLevel, nextLevel);
 		currentLevel = nextLevel;
 
-		player.x = (player.x >> 4) * 16 + 8; // Sets the player's x coord (to center yourself on the stairs)
-		player.y = (player.y >> 4) * 16 + 8; // Sets the player's y coord (to center yourself on the stairs)
+		player.x = ((player.x >> 4) << 4) + 8; // Sets the player's x coord (to center yourself on the stairs)
+		player.y = ((player.y >> 4) << 4) + 8; // Sets the player's y coord (to center yourself on the stairs)
 
 		levels[currentLevel].add(player); // Adds the player to the level.
 
@@ -211,6 +208,11 @@ public class World extends Game {
 		lastWorldExitTime = System.currentTimeMillis();
 	}
 	
-	public static long getLastWorldExitTime() { return lastWorldExitTime; }
-	public static long getLastWorldEnterTime() { return lastWorldEnterTime; }
+	public static long getLastWorldExitTime() {
+		return lastWorldExitTime; 
+	}
+	
+	public static long getLastWorldEnterTime() {
+		return lastWorldEnterTime; 
+	}
 }

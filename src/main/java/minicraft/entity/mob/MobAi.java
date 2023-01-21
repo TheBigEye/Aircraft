@@ -14,7 +14,7 @@ import minicraft.level.Level;
 
 public abstract class MobAi extends Mob {
 
-    protected int randomWalkTime;
+    protected int randomWalkTime = 0;
     protected int randomWalkChance;
     protected int randomWalkDuration;
     protected int xa;
@@ -35,12 +35,11 @@ public abstract class MobAi extends Mob {
      * @param rwChance  The chance of this mob will walk in a random direction
      *                  (random walk chance)
      */
-    protected MobAi(MobSprite[][] sprites, int maxHealth, int lifetime, int rwTime, int rwChance) {
+    protected MobAi(MobSprite[][] sprites, int maxHealth, int lifetime, int randomWalkTime, int randomWalkChance) {
         super(sprites, maxHealth);
         this.lifetime = lifetime;
-        randomWalkTime = 0;
-        randomWalkDuration = rwTime;
-        randomWalkChance = rwChance;
+        this.randomWalkDuration = randomWalkTime;
+        this.randomWalkChance = randomWalkChance;
         xa = 0;
         ya = 0;
         walkTime = 2;
@@ -149,12 +148,14 @@ public abstract class MobAi extends Mob {
      * @param byChance true if the mob should always get a new direction to walk,
      *                 false if there should be a chance that the mob moves.
      */
-    public void randomizeWalkDir(boolean byChance) { // boolean specifies if this method, from where it's called, is called every tick, or after a random chance.
+    public void randomizeWalkDir(boolean byChance) {
+    	// boolean specifies if this method, from where it's called, is called every tick, or after a random chance.
         if (!byChance && random.nextInt(randomWalkChance) != 0) {
             return;
         }
 
-        randomWalkTime = randomWalkDuration; // set the mob to walk about in a random direction for a time
+        // set the mob to walk about in a random direction for a time
+        randomWalkTime = randomWalkDuration; 
 
         // set the random direction; randir is from -1 to 1.
         xa = (random.nextInt(3) - 1);
@@ -218,14 +219,14 @@ public abstract class MobAi extends Mob {
         die(points, 0);
     }
 
-    protected void die(int points, int multAdd) {
+    protected void die(int points, int scoreMultiplier) {
         for (Player player : level.getPlayers()) {
             player.addScore(points); // add score for mob death
-            if (multAdd != 0) {
-                player.addMultiplier(multAdd);
+            if (scoreMultiplier != 0) {
+                player.addMultiplier(scoreMultiplier);
             }
         }
-
         super.die();
     }
+
 }

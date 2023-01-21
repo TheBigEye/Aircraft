@@ -204,16 +204,10 @@ public class Color {
 		return comps[0] << 16 | comps[1] << 8 | comps[2];
 	}
 
-	protected static int[] decodeRGBColor(int rgbInt) {
-	    // Define named constants for the bitmasks.
-	    final int RED_MASK = 0xFF_00_00;
-	    final int GREEN_MASK = 0x00_FF_00;
-	    final int BLUE_MASK = 0x00_00_FF;
-
-	    // Extract the red, green, and blue components of the color.
-	    int r = (rgbInt & RED_MASK) >> 16;
-	    int g = (rgbInt & GREEN_MASK) >> 8;
-	    int b = (rgbInt & BLUE_MASK);
+	public static int[] decodeRGBColor(int rgbInt) {
+	    int r = (rgbInt & 0xFF0000) >> 16;
+	    int g = (rgbInt & 0x00FF00) >> 8;
+	    int b = (rgbInt & 0x0000FF);
 
 	    return new int[] { r, g, b };
 	}
@@ -230,7 +224,7 @@ public class Color {
 
 		System.out.println(rgb(r, g, b));
 	}
-
+	
 	/// for sprite colors
 	public static String toString(int col) {
 		return java.util.Arrays.toString(Color.separateEncodedSprite(col, true));

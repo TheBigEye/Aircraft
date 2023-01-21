@@ -47,7 +47,7 @@ public class InputEntry extends ListEntry {
 		if (input.getKey("CTRL-V").clicked) {
 			userInput = userInput + clipboardHandler.getClipboardContents();
 		}
-		if (!userInput.equals("")) {
+		if (userInput.length() != 0) {
 			if (input.getKey("CTRL-C").clicked) {
 				clipboardHandler.setClipboardContents(userInput);
 			}

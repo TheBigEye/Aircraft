@@ -74,7 +74,7 @@ public class DoorTile extends Tile {
     }
 
     @Override
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+    public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
         if (source instanceof Player) {
             boolean closed = level.getData(x, y) == 0;
             level.setData(x, y, closed ? 1 : 0);

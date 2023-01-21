@@ -13,7 +13,7 @@ public class Keeper extends EnemyMob {
         sprites[0][0][0] = new MobSprite(52, 0, 6, 6, 0);
     }
     
-    private int slimeSpawnRate = 0;
+    // private int slimeSpawnRate = 0;
     private int tickTime = 0;
 
     public Keeper(int lvl) {

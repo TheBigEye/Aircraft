@@ -13,8 +13,8 @@ import minicraft.item.PowerGloveItem;
 import minicraft.level.Level;
 
 public class StairsTile extends Tile {
-	private static Sprite down_sprite = new Sprite(21, 0, 2, 2, 1, 0);
-	private static Sprite up_sprite = new Sprite(19, 0, 2, 2, 1, 0);
+	private static final Sprite down_sprite = new Sprite(21, 0, 2, 2, 1, 0);
+	private static final Sprite up_sprite = new Sprite(19, 0, 2, 2, 1, 0);
 
 	protected StairsTile(String name, boolean leadsUp) {
 		super(name, leadsUp ? up_sprite : down_sprite);

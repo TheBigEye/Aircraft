@@ -4,10 +4,11 @@ import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.gfx.MobSprite;
+import minicraft.item.Item;
 import minicraft.item.Items;
 
 public class Chicken extends PassiveMob {
-    private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 40);
+    private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 40);
     private int tickTime = 0;
 
     /**
@@ -55,15 +56,16 @@ public class Chicken extends PassiveMob {
     public void die() {
 		int min = 0;
 		int max = 0;
+		
+		String difficulty = (String) Settings.get("diff");
 
-        if (Settings.get("diff").equals("Passive")) {min = 1; max = 2;}
-        if (Settings.get("diff").equals("Easy")) {min = 1; max = 2;}
-        if (Settings.get("diff").equals("Normal")) {min = 1; max = 1;}
-        if (Settings.get("diff").equals("Hard")) {min = 0; max = 1;}
-
-        if (isBurn) dropItem(min, max, Items.get("Cooked Chicken"));
-        if (!isBurn) dropItem(min, max, Items.get("raw chicken"));
-        if (!isBurn) dropItem(min, max, Items.get("feather"));
+        if (difficulty == "Peaceful" || difficulty == "Easy") { min = 1; max = 2; }
+        if (difficulty == "Normal") { min = 1; max = 1; }
+        if (difficulty == "Hard") { min = 0; max = 1; }
+        
+        dropItem(min, max, new Item[] {
+        		Items.get("raw chicken"), Items.get("feather") 
+        });
 
         super.die();
     }

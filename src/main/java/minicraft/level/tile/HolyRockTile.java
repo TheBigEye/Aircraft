@@ -28,7 +28,7 @@ public class HolyRockTile extends Tile {
 
     protected HolyRockTile(String name) {
         super(name, (ConnectorSprite) null);
-        csprite = sprite;
+        connectorSprite = sprite;
         connectsToSkyHighGrass = true;
         connectsToSkyGrass = true;
     }
@@ -43,8 +43,8 @@ public class HolyRockTile extends Tile {
         return false;
     }
 
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-        hurt(level, x, y, 1);
+    public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
+        hurt(level, x, y, hurtDamage);
         return true;
     }
 
@@ -61,31 +61,30 @@ public class HolyRockTile extends Tile {
         return false;
     }
 
-    @SuppressWarnings("unused")
-    public void hurt(Level level, int x, int y, int dmg) {
-        int damage = level.getData(x, y) + dmg;
-        int rockHealth = 50;
+    public void hurt(Level level, int x, int y, int hurtDamage) {
+        int damage = level.getData(x, y) + hurtDamage;
+        int holyrockHealth = 50;
         if (Game.isMode("Creative")) {
-            dmg = damage = rockHealth;
+        	hurtDamage = damage = holyrockHealth;
             coalLvl = 1;
         }
-        level.add(new SmashParticle(x * 16, y * 16));
-        Sound.genericHurt.playOnGui();
-
-        level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
-        if (damage >= rockHealth) {
-            int count = random.nextInt(1) + 0;
+        
+        level.add(new SmashParticle(x << 4, y << 4));
+        Sound.genericHurt.playOnWorld(x << 4, y << 4);
+        level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
+        
+        if (damage >= holyrockHealth) {
             if (coalLvl == 0) {
-                level.dropItem(x * 16 + 8, y * 16 + 8, 1, 4, Items.get("Holy Stone"));
+                level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 4, Items.get("Holy Stone"));
             }
             if (coalLvl == 1) {
-                level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Holy Stone"));
+                level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 2, Items.get("Holy Stone"));
                 int mincoal = 0, maxcoal = 1;
                 if (!Settings.get("diff").equals("Hard")) {
                     mincoal++;
                     maxcoal++;
                 }
-                level.dropItem(x * 16 + 8, y * 16 + 8, mincoal, maxcoal, Items.get("coal"));
+                level.dropItem((x << 4) + 8, (y << 4) + 8, mincoal, maxcoal, Items.get("coal"));
             }
             level.setTile(x, y, Tiles.get("Sky High grass"));
         } else {

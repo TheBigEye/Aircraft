@@ -66,7 +66,7 @@ public class AchievementsDisplay extends Display {
 	        } catch (IOException ex) {
 	            Logger.error("Could not read achievements from json file.");
 	            ex.printStackTrace();
-	        } catch (JSONException e) {
+	        } catch (JSONException exception) {
 	            Logger.error("Achievements json contains invalid json.");
 	        }
 	  }

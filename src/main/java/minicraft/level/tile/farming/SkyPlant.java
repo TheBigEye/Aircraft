@@ -33,33 +33,37 @@ public class SkyPlant extends SkyFarmTile {
     }
 
     @Override
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+    public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
         harvest(level, x, y, source);
         return true;
     }
 
     @Override
     public boolean tick(Level level, int xt, int yt) {
-        if (random.nextInt(2) == 0)
+        if (random.nextInt(2) == 0) {
             return false;
+        }
 
         int age = level.getData(xt, yt);
         if (age < maxAge) {
-            if (!IfCloud(level, xt, yt))
+            if (!ifCloud(level, xt, yt)) {
                 level.setData(xt, yt, age + 1);
-            else if (IfCloud(level, xt, yt))
+            } else if (ifCloud(level, xt, yt)) {
                 level.setData(xt, yt, age + 2);
+            }
             return true;
         }
 
         return false;
     }
 
-    protected boolean IfCloud(Level level, int xs, int ys) {
+    protected boolean ifCloud(Level level, int xs, int ys) {
         Tile[] areaTiles = level.getAreaTiles(xs, ys, 1);
-        for (Tile t : areaTiles)
-            if (t == Tiles.get("Cloud"))
+        for (Tile tile : areaTiles) {
+            if (tile == Tiles.get("Cloud")) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -80,7 +84,7 @@ public class SkyPlant extends SkyFarmTile {
             count = random.nextInt(2) + 1;
         }
 
-        level.dropItem(x * 16 + 8, y * 16 + 8, count, Items.get(name));
+        level.dropItem((x << 4) + 8, (y << 4) + 8, count, Items.get(name));
 
         if (age >= maxAge && entity instanceof Player) {
             ((Player) entity).addScore(random.nextInt(5) + 1);

@@ -22,7 +22,7 @@ public class SkyGrassTile extends Tile {
 
     protected SkyGrassTile(String name) {
     	super(name, (ConnectorSprite) null);
-        //csprite.sides = csprite.sparse;
+        //connectorSprite.sides = connectorSprite.sparse;
         connectsToSkyGrass = true;
         //connectsToFerrosite = true;
         maySpawn = true;

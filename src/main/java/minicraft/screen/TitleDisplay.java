@@ -3,11 +3,9 @@ package minicraft.screen;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
@@ -30,9 +28,9 @@ import minicraft.screen.entry.LinkEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.tutorial.TutorialDisplay;
 import minicraft.util.BookData;
+import minicraft.util.TimeData;
 
 public class TitleDisplay extends Display {
-	private static final Random random = new Random();
 
 	private int rand;
 	private int count = 0; // this and reverse are for the logo; they produce the fade-in/out effect.
@@ -62,8 +60,8 @@ public class TitleDisplay extends Display {
 				
 				TitleDisplay.splashes = list;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		}
 	}
 
@@ -111,8 +109,7 @@ public class TitleDisplay extends Display {
 		super.init(null); // The TitleScreen never has a parent.
 		Renderer.readyToRenderGameplay = false;
 
-		LocalDateTime time = LocalDateTime.now();
-		if (time.getMonth() != Month.OCTOBER) {
+		if (TimeData.month() != Month.OCTOBER) {
 			switch (random.nextInt(4)) {
 				case 0: Sound.Theme_Cave.playOnGui(); break;
 				case 1: Sound.Theme_Surface.playOnGui(); break;
@@ -123,41 +120,41 @@ public class TitleDisplay extends Display {
 			}
 		}
 
-		if (time.getMonth() == Month.DECEMBER) {
-			if (time.getDayOfMonth() == 19) rand = 1;
-			if (time.getDayOfMonth() == 25) rand = 2;
+		if (TimeData.month() == Month.DECEMBER) {
+			if (TimeData.day() == 19) rand = 1;
+			if (TimeData.day() == 25) rand = 2;
 		} else {
 			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
 
-		if (time.getMonth() == Month.FEBRUARY) {
-			if (time.getDayOfMonth() == 14) rand = 0;
-			if (time.getDayOfMonth() == 15) rand = 0;
-			if (time.getDayOfMonth() == 16) rand = 0;
+		if (TimeData.month() == Month.FEBRUARY) {
+			if (TimeData.day() == 14) rand = 0;
+			if (TimeData.day() == 15) rand = 0;
+			if (TimeData.day() == 16) rand = 0;
 		} else {
 			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
 
-		if (time.getMonth() == Month.JULY) {
-			if (time.getDayOfMonth() == 6) rand = 3;
+		if (TimeData.month() == Month.JULY) {
+			if (TimeData.day() == 6) rand = 3;
 		} else {
 			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
 
-		if (time.getMonth() == Month.SEPTEMBER) {
-			if (time.getDayOfMonth() == 18) rand = 4;
+		if (TimeData.month() == Month.SEPTEMBER) {
+			if (TimeData.day() == 18) rand = 4;
 		} else {
 			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
 
-		if (time.getMonth() == Month.OCTOBER) {
-			if (time.getDayOfMonth() == 8) Sound.Theme_Cavern.playOnGui();
-			if (time.getDayOfMonth() == 16) Sound.Theme_Cavern_drip.playOnGui();
+		if (TimeData.month() == Month.OCTOBER) {
+			if (TimeData.day() == 8) Sound.Theme_Cavern.playOnGui();
+			if (TimeData.day() == 16) Sound.Theme_Cavern_drip.playOnGui();
 		}
 
-		if (time.getMonth() == Month.AUGUST) {
-			if (time.getDayOfMonth() == 29) rand = 5;
-			if (time.getDayOfMonth() == 10) rand = 6;
+		if (TimeData.month() == Month.AUGUST) {
+			if (TimeData.day() == 29) rand = 5;
+			if (TimeData.day() == 10) rand = 6;
 		} else {
 			rand = random.nextInt(splashes.size() - 3) + 3;
 		}
@@ -174,12 +171,12 @@ public class TitleDisplay extends Display {
 	public void tick(InputHandler input) {
 		if (input.getKey("r").clicked) rand = random.nextInt(splashes.size() - 3) + 3;
         if (input.getKey("shift-c").clicked) Game.setDisplay(new CharsTestDisplay());
-
+      
 		super.tick(input);
 
 		if (shouldRender) menus[0].shouldRender = true;
 		if (time > 72) shouldRender = true;
-		if (tickTime /3 %1 == 0) time++;
+		if (tickTime /4 %2 == 0) time++;
 
 		tickTime++;
 	}
@@ -249,15 +246,10 @@ public class TitleDisplay extends Display {
 
 		if (shouldRender == true) {
 			Font.drawCentered(splashes.get(rand), screen, 100, splashColor);
-
-			// In case the game has the "in_dev" mode set to true it will show the version as in "Development"
-			// In case it is false, it will show the numerical version of the game
-			if (Game.in_dev == true) {
-				Font.draw("Pre " + Game.BUILD, screen, 1, Screen.h - 10, Color.WHITE);
-			} else {
-				Font.draw(Game.BUILD, screen, 1, Screen.h - 10, Color.WHITE);
-			}
-
+			
+			// Show the version number
+			Font.draw(Game.BUILD, screen, 1, Screen.h - 10, Color.WHITE);
+			
 			// Show the author's name below the options
 			Font.draw(Localization.getLocalized("Mod by TheBigEye"), screen, 298, Screen.h - 10, Color.WHITE);
 		}

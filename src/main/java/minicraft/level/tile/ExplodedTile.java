@@ -15,21 +15,10 @@ public class ExplodedTile extends Tile {
 		}
 	};
 
-	private boolean light = true;
-	private int r = 3;
-
 	protected ExplodedTile(String name) {
 		super(name, sprite);
 		connectsToSand = true;
 		connectsToFluid = true;
-	}
-
-	public boolean tick(Level level, int xt, int yt) {
-		if (light) {
-			r = 3;
-			return true;
-		}
-		return false;
 	}
 
 	@Override
@@ -50,6 +39,6 @@ public class ExplodedTile extends Tile {
 
 	@Override
 	public int getLightRadius(Level level, int x, int y) {
-		return r;
+		return 3;
 	}
 }

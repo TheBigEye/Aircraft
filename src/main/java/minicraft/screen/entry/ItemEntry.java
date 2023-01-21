@@ -41,6 +41,6 @@ public class ItemEntry extends ListEntry {
     // intended left, because it is auto-positioned to the left side.
     @Override
     public String toString() {
-        return " " + item.getDisplayName();
+        return item.getDisplayName();
     }
 }

@@ -7,8 +7,12 @@ import minicraft.entity.Entity;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
 import minicraft.level.Level;
+import minicraft.level.tile.DoorTile;
+import minicraft.level.tile.MyceliumTile;
 import minicraft.level.tile.Tile;
-import minicraft.level.tile.Tiles;
+import minicraft.level.tile.WallTile;
+import minicraft.level.tile.farming.FarmTile;
+import minicraft.level.tile.farming.Plant;
 
 public class FriendlyMob extends MobAi {
 
@@ -16,7 +20,7 @@ public class FriendlyMob extends MobAi {
     public int lvl;
 
     public FriendlyMob(MobSprite[][] sprites, int healthFactor) {
-        super(sprites, 5 + healthFactor * Settings.getIdx("diff"), 5 * 60 * Updater.normSpeed, 45, 40);
+        super(sprites, 5 + healthFactor * Settings.getIndex("diff"), 5 * 60 * Updater.normalSpeed, 45, 40);
     }
 
     public void tick() {
@@ -69,22 +73,16 @@ public class FriendlyMob extends MobAi {
             return false;
         }
 
-        x = x >> 4;
-        y = y >> 4;
+        Tile tile = level.getTile(x >> 4, y >> 4);
 
-        Tile t = level.getTile(x, y);
-        if (level.depth == -4) {
-            if (t != Tiles.get("Obsidian")) {
+        // Check for depth to avoid unnecessary checks
+        if (level.depth != -4) {
+            if (tile instanceof DoorTile || tile instanceof WallTile|| tile instanceof Plant || tile instanceof FarmTile || tile instanceof MyceliumTile) {
                 return false;
             }
-        } else if (t != Tiles.get("Stone Door") && t != Tiles.get("Oak Door") && t != Tiles.get("Spruce Door") && t != Tiles.get("Birch Door") && t != Tiles.get("Obsidian Door") && t != Tiles.get("Wheat") && t != Tiles.get("Farmland")) {
-            // prevents mobs from spawning on lit tiles, farms, or doors (unless in the dungeons)
-            return !level.isLight(x, y);
-        } else {
-            return false;
+            return !level.isLight(x >> 4, x >> 4);
         }
-
-        return true;
+        return false;
     }
 
     public int getMaxLevel() {

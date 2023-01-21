@@ -9,7 +9,11 @@ import org.jetbrains.annotations.Nullable;
 import minicraft.entity.furniture.Furniture;
 
 public class Inventory {
+	
+	/** Random values used only for inventory **/
     private final Random random = new Random();
+    
+    
     private final List<Item> items = new ArrayList<>(); // The list of items that is in the inventory.
 
     /**
@@ -207,14 +211,16 @@ public class Inventory {
      * @return String representation of all the items in the inventory.
      */
     public String getItemData() {
-        StringBuilder itemdata = new StringBuilder();
-        for (Item i : items)
-            itemdata.append(i.getData()).append(":");
+        String itemdata = "";
+        for (Item item : items) {
+            itemdata += item.getData() + ":";
+        }
 
-        if (itemdata.length() > 0)
-            itemdata = new StringBuilder(itemdata.substring(0, itemdata.length() - 1)); // remove extra ",".
+        if (itemdata.length() > 0) {
+            itemdata = itemdata.substring(0, itemdata.length() - 1); // remove extra ",".
+        }
 
-        return itemdata.toString();
+        return itemdata;
     }
 
     /**

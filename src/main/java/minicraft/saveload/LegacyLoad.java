@@ -185,7 +185,7 @@ public class LegacyLoad {
                 if (worldVer.compareTo(new Version("1.9.2-dev2")) >= 0)
                     AirWizard.beaten = Boolean.parseBoolean(data.get(5));
             } else { // this is 1.9.2 official or after
-                Settings.setIdx("diff", Integer.parseInt(data.get(3)));
+                Settings.setIndex("diff", Integer.parseInt(data.get(3)));
                 AirWizard.beaten = Boolean.parseBoolean(data.get(4));
             }
         } else {
@@ -211,24 +211,24 @@ public class LegacyLoad {
         for (int l = 0; l < World.levels.length; l++) {
             loadFromFile(location + filename + l + extension);
 
-            int lvlw = Integer.parseInt(data.get(0));
-            int lvlh = Integer.parseInt(data.get(1));
+            int worldWidth = Integer.parseInt(data.get(0));
+            int worldHeight = Integer.parseInt(data.get(1));
             int lvldepth = Integer.parseInt(data.get(2));
-            Settings.set("size", lvlw);
+            Settings.set("size", worldWidth);
 
-            short[] tiles = new short[lvlw * lvlh];
-			short[] tdata = new short[lvlw * lvlh];
+            short[] tiles = new short[worldWidth * worldHeight];
+			short[] tdata = new short[worldWidth * worldHeight];
 
-            for (int x = 0; x < lvlw - 1; x++) {
-                for (int y = 0; y < lvlh - 1; y++) {
-                    int tileArrIdx = y + x * lvlw;
-                    int tileidx = x + y * lvlw; // the tiles are saved with x outer loop, and y inner loop, meaning that the list reads down, then right one, rather than right, then down one.
+            for (int x = 0; x < worldWidth - 1; x++) {
+                for (int y = 0; y < worldHeight - 1; y++) {
+                    int tileArrIdx = y + x * worldWidth;
+                    int tileidx = x + y * worldWidth; // the tiles are saved with x outer loop, and y inner loop, meaning that the list reads down, then right one, rather than right, then down one.
                     tiles[tileArrIdx] = Tiles.get(Tiles.oldids.get(Integer.parseInt(data.get(tileidx + 3)))).id;
 					tdata[tileArrIdx] = Short.parseShort(extradata.get(tileidx));
                 }
             }
 
-            World.levels[l] = new Level(lvlw, lvlh, lvldepth, null, false);
+            World.levels[l] = new Level(worldWidth, worldHeight, lvldepth, null, false);
             World.levels[l].tiles = tiles;
             World.levels[l].data = tdata;
         }
@@ -276,7 +276,7 @@ public class LegacyLoad {
                 Updater.scoreTime = 300;
         }
 
-        Settings.setIdx("mode", mode);
+        Settings.setIndex("mode", mode);
 
         boolean hasEffects;
         int potionIdx = 10;
@@ -394,9 +394,11 @@ public class LegacyLoad {
                     int endIdx = chestInfo.size() - (isDeathChest || isDungeonChest ? 1 : 0);
                     for (int idx = 0; idx < endIdx; idx++) {
                         String itemData = chestInfo.get(idx);
-                        if (worldVer.compareTo(new Version("1.9.1")) < 0) // if this world is before 1.9.1
-                            if (itemData.equals(""))
+                        if (worldVer.compareTo(new Version("1.9.1")) < 0) { // if this world is before 1.9.1
+                            if (itemData.length() == 0) {
                                 continue; // this skips any null items
+                            }
+                        }
                         loadItemToInventory(itemData, chest.getInventory());
                     }
 

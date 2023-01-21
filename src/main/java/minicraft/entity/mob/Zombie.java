@@ -6,7 +6,6 @@ import minicraft.item.Items;
 
 public class Zombie extends EnemyMob {
     private static MobSprite[][][] sprites;
-    private static int DAMAGE = 1;
 
     static {
         sprites = new MobSprite[4][4][2];
@@ -22,16 +21,12 @@ public class Zombie extends EnemyMob {
      * @param lvl Zombie's level.
      */
     public Zombie(int lvl) {
-        super(lvl, sprites, DAMAGE, 100);
+        super(lvl, sprites, 14, 100);
     }
 
     @Override
     public void tick() {
         super.tick();
-
-        if (random.nextInt(5) == 1) {
-            DAMAGE = random.nextInt(2) + 1;
-        }
     }
 
     public void die() {

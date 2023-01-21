@@ -37,7 +37,7 @@ public class Recipes {
 		workbenchRecipes.add(new Recipe("Lantern_1", "Oak Wood_8", "slime_4", "glass_3"));
 		workbenchRecipes.add(new Recipe("Paper_3", "Leaf_3", "Oak Wood_3"));
 		workbenchRecipes.add(new Recipe("Book_1", "Leather_5", "Paper_5"));
-		workbenchRecipes.add(new Recipe("Boat_1", "Oak Wood_30", "Leather_5", "Wood Shovel_2"));
+		// workbenchRecipes.add(new Recipe("Boat_1", "Oak Wood_30", "Leather_5", "Wood Shovel_2"));
 		workbenchRecipes.add(new Recipe("Bowl_3", "Oak Wood_15"));
 		workbenchRecipes.add(new Recipe("Frozen palette_2", "Stick_4", "Apple_4", "icicle_4"));
 		workbenchRecipes.add(new Recipe("Oven_1", "Stone_15"));

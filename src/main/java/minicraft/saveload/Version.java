@@ -37,7 +37,7 @@ public class Version implements Comparable<Version> {
 				minor = Integer.parseInt(mindev[0]);
 				dev = Integer.parseInt(mindev[1].replace("pre", "").replace("dev", ""));
 			} else {
-				if (!min.equals("")) {
+				if (min.length() != 0) {
 					minor = Integer.parseInt(min);
 				} else {
 					minor = 0;

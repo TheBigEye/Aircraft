@@ -33,7 +33,7 @@ public abstract class Ellipsis {
 
 	public static class SequentialEllipsis extends Ellipsis {
 		public SequentialEllipsis() {
-			this(new CallUpdater(Updater.normSpeed * 2 / 3));
+			this(new CallUpdater(Updater.normalSpeed * 2 / 3));
 		}
 
 		public SequentialEllipsis(DotUpdater updater) {
@@ -148,7 +148,7 @@ public abstract class Ellipsis {
 			private int lastTick;
 
 			public TickUpdater() {
-				this(Updater.normSpeed);
+				this(Updater.normalSpeed);
 			}
 
 			public TickUpdater(int ticksPerCycle) {

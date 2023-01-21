@@ -111,14 +111,14 @@ public class AirWizard extends EnemyMob {
         }
        
         // Change phases by health
-        if (health < (secondform ? 12000 : 7000) && currentPhase == 1) {
+        if (health <= (secondform ? 12000 : 7000) && currentPhase == 1) {
         	// change to phase 2
         	Sound.airWizardChangePhase.playOnWorld(x, y);
         	spritesMain = spritesSecondPhase;
         	currentPhase = 2;
         }
         
-        if (health < (secondform ? 6000 : 3500) && currentPhase == 2) {
+        if (health <= (secondform ? 6000 : 3500) && currentPhase == 2) {
         	// change to phase 3
         	Sound.airWizardChangePhase.playOnWorld(x, y);
         	spritesMain = spritesThirdPhase;
@@ -208,12 +208,11 @@ public class AirWizard extends EnemyMob {
             }
         }
         
-        if (tickTime % 4 != 0 && currentPhase == 3) {
+        if (tickTime % 4 != 0 && currentPhase != 1) {
             speed = 1;
         }
 
-        if (randomWalkTime > 0) {
-            randomWalkTime--;
+
 	        if (player != null && randomWalkTime == 0) {
 	            int xd = player.x - x; // x dist to player
 	            int yd = player.y - y; // y dist to player
@@ -225,8 +224,8 @@ public class AirWizard extends EnemyMob {
 	            	}
 	            }
 	        }
-        }
         
+       
     }
 
     @Override
@@ -314,7 +313,7 @@ public class AirWizard extends EnemyMob {
 			// Kill second Air wizard achievement
 			AchievementsDisplay.setAchievement("minicraft.achievement.second_airwizard", true);
 			
-            if (!(boolean) Settings.get("unlockedskin")) {
+            if (!Settings.getBoolean("unlockedskin")) {
                 Updater.notifyAll("A costume lies on the ground...", -200);
             } else {
             	Updater.notifyAll("Well played!", 200);

@@ -141,7 +141,7 @@ public class Spark extends Entity {
 			randmirror = random.nextInt(4);
 		}
 
-		if ((boolean) Settings.get("shadows") == true) {
+		if (Settings.getBoolean("shadows")) {
 			screen.render(x - 4, y - 4 + 2, 0 + 62 * 32, randmirror, 2, -1, false, Color.BLACK); // renders the shadow on the ground
 		}        
 		screen.render(x - 4, y - 4 - 2, 0 + 62 * 32, randmirror, 2); // renders the spark

@@ -93,10 +93,10 @@ public class MultiplayerDisplay extends Display {
 			}
 
 			@Override
-			public void failed(UnirestException e) {
-				System.err.println("Website ping failed: "+e.getMessage());
-				if (!e.getMessage().equalsIgnoreCase("connection reset by peer")) {
-					e.printStackTrace();
+			public void failed(UnirestException exception) {
+				System.err.println("Website ping failed: "+ exception.getMessage());
+				if (!exception.getMessage().equalsIgnoreCase("connection reset by peer")) {
+					exception.printStackTrace();
 				}
 				cancelled();
 			}
@@ -127,8 +127,8 @@ public class MultiplayerDisplay extends Display {
 
 		try {
 			response = Unirest.post(apiDomain + "/fetch-name").field("uuid", savedUUID).asJson();
-		} catch (UnirestException e) {
-			e.printStackTrace();
+		} catch (UnirestException exception) {
+			exception.printStackTrace();
 		}
 
 		if (response != null) {

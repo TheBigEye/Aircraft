@@ -16,8 +16,13 @@ import minicraft.level.Level;
 
 public abstract class Tile {
 	public static int tickCount = 0; // A global tickCount used in the Lava & water tiles.
-	protected Random random = new Random();
+	
+	/** Random values used for all the tiles instances **/
+	protected static final Random random = new Random();
 
+	public final String name;
+	public short id;
+	
 	/**
 	 * This is used by wall tiles to get what material they're made of.
 	 */
@@ -42,44 +47,30 @@ public abstract class Tile {
 		}
 	}
 
-	public final String name;
-
-	public short id;
-
-	public boolean connectsToGrass = false;
-	public boolean connectsToMycelium = false;
-	public boolean connectsToCloud = false;
-	public boolean connectsToUpRock = false;
-	public boolean connectsToSand = false;
-	public boolean connectsToFluid = false;
+	protected boolean connectsToGrass = false;
+	protected boolean connectsToMycelium = false;
+	protected boolean connectsToCloud = false;
+	protected boolean connectsToUpRock = false;
+	protected boolean connectsToSand = false;
+	protected boolean connectsToFluid = false;
 	protected boolean connectsToLava = false;
 	protected boolean connectsToRock = false;
-
-	public int light;
-	protected boolean maySpawn;
-
-	protected Sprite sprite;
-	protected ConnectorSprite csprite;
+	
 	protected boolean connectsToSnow = false;
-	
 	protected boolean connectsToIce = false;
-	
 	protected boolean connectsToObsidian = false;
-
-	public boolean connectsToSkyGrass = false;
+	protected boolean connectsToSkyGrass = false;
 	protected boolean connectsToSkyDirt = false;
-	public boolean connectsToSkyHighGrass = false;
-	public boolean connectsToFerrosite = false;
-	public boolean connectsToDirt = false;
+	protected boolean connectsToSkyHighGrass = false;
+	protected boolean connectsToFerrosite = false;
+	protected boolean connectsToDirt = false;
+	protected boolean connectsToJungleGrass = false;
 
-	public boolean connectsToJungleGrass = false;
+	public int light = 1;
+	protected boolean maySpawn = false;
 
-	{
-		light = 1;
-		maySpawn = false;
-		sprite = null;
-		csprite = null;
-	}
+	protected Sprite sprite = null;
+	protected ConnectorSprite connectorSprite = null;
 
 	protected Tile(String name, Sprite sprite) {
 		this.name = name.toUpperCase();
@@ -88,7 +79,7 @@ public abstract class Tile {
 
 	protected Tile(String name, ConnectorSprite sprite) {
 		this.name = name.toUpperCase();
-		csprite = sprite;
+		connectorSprite = sprite;
 	}
 
 	/**
@@ -105,8 +96,8 @@ public abstract class Tile {
 		if (sprite != null) {
 			sprite.render(screen, x << 4, y << 4);
 		}
-		if (csprite != null) {
-			csprite.render(screen, level, x, y);
+		if (connectorSprite != null) {
+			connectorSprite.render(screen, level, x, y);
 		}
 	}
 
@@ -139,7 +130,7 @@ public abstract class Tile {
 	 * @param attackDir The direction of the player hitting.
 	 * @return If the damage was applied.
 	 */
-	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+	public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
 		return false;
 	}
 
@@ -151,7 +142,7 @@ public abstract class Tile {
 	 * @param y     Y position of the tile.
 	 * @param dmg   The damage taken.
 	 */
-	public void hurt(Level level, int x, int y, int dmg) {
+	public void hurt(Level level, int x, int y, int hurtDamage) {
 	}
 
 	/** What happens when you run into the tile (ex: run into a cactus) */
@@ -216,15 +207,16 @@ public abstract class Tile {
 
 			return lvlidx + ";" + pos + ";" + tileid + ";" + tiledata;
 		} catch (NullPointerException | IndexOutOfBoundsException ignored) {
+			return "";
 		}
-
-		return "";
 	}
 
 	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof Tile))
+		if (!(other instanceof Tile)) {
 			return false;
+		}
+		
 		Tile o = (Tile) other;
 		return name.equals(o.name);
 	}

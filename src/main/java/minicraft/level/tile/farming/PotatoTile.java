@@ -26,23 +26,26 @@ public class PotatoTile extends Plant {
         screen.render(x * 16 + 0, y * 16 + 0, 13 + 2 * 32 + icon, 0, 1);
         screen.render(x * 16 + 8, y * 16 + 0, 13 + 2 * 32 + icon, 0, 1);
         screen.render(x * 16 + 0, y * 16 + 8, 13 + 2 * 32 + icon, 1, 1);
-        screen.render(x * 16 + 8, y * 16 + 8, 13 + 2 * 32 + icon, 1, 1);
+        screen.render((x << 4) + 8, (y << 4) + 8, 13 + 2 * 32 + icon, 1, 1);
     }
 
     @Override
-    protected boolean IfWater(Level level, int xs, int ys) {
+    protected boolean ifWater(Level level, int xs, int ys) {
         Tile[] areaTiles = level.getAreaTiles(xs, ys, 1);
-        for (Tile t : areaTiles)
-            if (t == Tiles.get("Water"))
+        for (Tile tile : areaTiles) {
+            if (tile == Tiles.get("Water")) {
                 return true;
-
+            }
+        }
         return false;
     }
 
     @Override
     protected void harvest(Level level, int x, int y, Entity entity) {
-        if (entity instanceof ItemEntity || entity instanceof VillagerMob)
+        if (entity instanceof ItemEntity || entity instanceof VillagerMob) {
             return;
+        }
+        
         int age = level.getData(x, y);
 
         int count = 0;
@@ -52,7 +55,7 @@ public class PotatoTile extends Plant {
             count = random.nextInt(2);
         }
 
-        level.dropItem(x * 16 + 8, y * 16 + 8, count, Items.get("Potato"));
+        level.dropItem((x << 4) + 8, (y << 4) + 8, count, Items.get("Potato"));
 
         if (age >= maxAge && entity instanceof Player) {
             ((Player) entity).addScore(random.nextInt(4) + 1);

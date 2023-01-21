@@ -30,7 +30,7 @@ public class DefenderMob extends MobAi {
      *                     difficulty and then added with 5.
      */
     public DefenderMob(MobSprite[][] sprites, int healthFactor) {
-        super(sprites, 5 + healthFactor * Settings.getIdx("diff"), 5 * 60 * Updater.normSpeed, 45, 40);
+        super(sprites, 5 + healthFactor * Settings.getIndex("diff"), 5 * 60 * Updater.normalSpeed, 45, 40);
     }
 
     @Override

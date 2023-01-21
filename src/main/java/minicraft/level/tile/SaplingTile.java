@@ -27,17 +27,15 @@ public class SaplingTile extends Tile {
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		onType.render(screen, level, x, y);
-		sprite.render(screen, x * 16, y * 16);
+		sprite.render(screen, (x << 4) + 4, (y << 4) + 4);
 	}
 
 	@Override
 	public boolean tick(Level level, int x, int y) {
 		int age = level.getData(x, y) + 1;
-		if (age > 100) {
-			// Don't grow if there is an entity on this tile.
-			if (!level.isEntityOnTile(x, y)) { // TODO: add grow sound
-				level.setTile(x, y, growsTo);
-			}
+		// Don't grow if there is an entity on this tile.
+		if (age > 100 && !level.isEntityOnTile(x, y)) {
+			level.setTile(x, y, growsTo); // TODO: add grow sound
 		} else {
 			level.setData(x, y, age);
 		}
@@ -45,9 +43,9 @@ public class SaplingTile extends Tile {
 	}
 
 	@Override
-	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+	public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
 		level.setTile(x, y, onType);
-		Sound.genericHurt.playOnGui();
+		Sound.genericHurt.playOnWorld(x, y);
 		return true;
 	}
 }

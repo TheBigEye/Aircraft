@@ -14,7 +14,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class LawnTile extends Tile {
-    private static Sprite sprite = new Sprite(4, 8, 1);
+    private static final Sprite sprite = new Sprite(4, 8, 1);
 
     protected LawnTile(String name) {
         super(name, (ConnectorSprite) null);
@@ -31,9 +31,9 @@ public class LawnTile extends Tile {
         int yn = yt;
 
         if (random.nextBoolean()) {
-            xn += random.nextInt(2) * 2 - 1;
+            xn += (random.nextInt(2) * 2) - 1;
         } else {
-            yn += random.nextInt(2) * 2 - 1;
+            yn += (random.nextInt(2) * 2) - 1;
         }
 
         if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
@@ -46,10 +46,10 @@ public class LawnTile extends Tile {
         Tiles.get("Grass").render(screen, level, x, y);
 
         int data = level.getData(x, y);
-        int shape = (data / 16) % 2;
+        int shape = (data >> 4) % 2;
 
-        x = x << 4;
-        y = y << 4;
+        x <<= 4;
+        y <<= 4;
 
         sprite.render(screen, x + 8 * shape, y);
         sprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
@@ -69,7 +69,7 @@ public class LawnTile extends Tile {
                 Sound.genericHurt.playOnGui();
 
                 if (random.nextInt(3) == 1) { // 28% chance to drop Seeds
-                    level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Seeds"));
+                    level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Seeds"));
                 }
 
                 return true;
@@ -78,9 +78,9 @@ public class LawnTile extends Tile {
         return false;
     }
 
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+    public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
         if (random.nextInt(6) == 1) { // 20% chance to drop sky seeds
-            level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Seeds"));
+            level.dropItem((x << 4) + 8, (y << 4) + 8, 0, 1, Items.get("Seeds"));
         }
 
         level.setTile(x, y, Tiles.get("Grass"));

@@ -27,4 +27,6 @@ public class BookData {
 
         return book;
     }
+    
+    public static void saveBook(String bookTitle) {}
 }

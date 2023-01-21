@@ -7,7 +7,7 @@ import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class Goat extends FrostMob {
-    private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 42);
+    private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 42);
 
     /**
      * Creates the cow with the right sprites and color.

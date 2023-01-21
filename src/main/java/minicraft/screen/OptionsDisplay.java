@@ -19,7 +19,7 @@ import minicraft.screen.entry.StringEntry;
 
 public class OptionsDisplay extends Display {
 	
-    boolean originalSound = (boolean) Settings.get("sound");
+    boolean originalSound = Settings.getBoolean("sound");
 
 	public OptionsDisplay() {
         super(true);
@@ -39,9 +39,9 @@ public class OptionsDisplay extends Display {
             new SelectEntry("Open Game Folder", () -> {
                 try {
                     Desktop.getDesktop().open(new File(Game.gameDir));
-                } catch (IOException e) {
-                    Logger.error(e, "Could not find the program requested for this action");
-                    e.printStackTrace();
+                } catch (IOException exception) {
+                    Logger.error(exception, "Could not find the program requested for this action");
+                    exception.printStackTrace();
                 }
             })
         )
@@ -84,7 +84,7 @@ public class OptionsDisplay extends Display {
         }
 
         // If exit key is pressed, then display the popup menu if changes requiring a restart have been made
-        if (input.getKey("exit").clicked && originalSound != (boolean) Settings.get("sound")) {
+        if (input.getKey("exit").clicked && originalSound != Settings.getBoolean("sound")) {
             menus[1].shouldRender = true;
             return;
         }

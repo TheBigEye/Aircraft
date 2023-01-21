@@ -1,17 +1,17 @@
 package minicraft.screen.entry;
 
 public class RangeEntry extends ArrayEntry<Integer> {
+	
+    @SuppressWarnings("unused")
+    private int min, max;
 
     private static Integer[] getIntegerArray(int min, int max) {
         Integer[] ints = new Integer[max - min + 1];
         for (int i = 0; i < ints.length; i++) {
-            ints[i] = min + i;
+            ints[i] = Integer.valueOf(min + i);
         }
         return ints;
     }
-
-    @SuppressWarnings("unused")
-    private int min, max;
 
     public RangeEntry(String label, int min, int max, int initial) {
         super(label, false, getIntegerArray(min, max));
@@ -19,14 +19,14 @@ public class RangeEntry extends ArrayEntry<Integer> {
         this.min = min;
         this.max = max;
 
-        setValue(initial);
+        setValue(Integer.valueOf(initial));
     }
 
     @Override
-    public void setValue(Object o) {
-        if (!(o instanceof Integer)) {
+    public void setValue(Object object) {
+        if (!(object instanceof Integer)) {
             return;
         }
-        setSelection(((Integer) o) - min);
+        setSelection(((int) object) - min);
     }
 }

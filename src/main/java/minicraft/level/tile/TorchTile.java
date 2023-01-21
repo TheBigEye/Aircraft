@@ -1,5 +1,7 @@
 package minicraft.level.tile;
 
+import org.tinylog.Logger;
+
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -30,7 +32,7 @@ public class TorchTile extends Tile {
         if (id < 16384) {
             id += 16384;
         } else {
-            System.out.println("tried to place torch on torch tile...");
+            Logger.info("Tried to place torch on torch tile ...");
         }
 
         if (Tiles.containsTile(id)) {
@@ -60,7 +62,7 @@ public class TorchTile extends Tile {
         onType.render(screen, level, x, y);
         sprite.render(screen, x * 16 + 4, y * 16 + 4);
         
-		if (!Updater.paused && tickTime / 2 % 2 == 0 && Settings.get("particles").equals(true)) {
+		if (!Updater.paused && tickTime / 2 % 2 == 0 && Settings.getBoolean("particles")) {
 			if (random.nextInt(1) == 0) {
 				level.add(new FireParticle(spawnX, spawnY));
 			}

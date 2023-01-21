@@ -1,7 +1,5 @@
 package minicraft.entity.mob.boss;
 
-import java.util.Random;
-
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.mob.EnemyMob;
@@ -16,8 +14,6 @@ public class Giant extends EnemyMob {
     static {
         sprites[0][0][0] = new MobSprite(58, 0, 6, 6, 0);
     }
-
-    private Random rnd = new Random();
 
     public Giant(int lvl) {
         super(5, sprites, 9, 100);
@@ -119,8 +115,8 @@ public class Giant extends EnemyMob {
         Sound.Mob_eyeBoss_death.playOnGui();
         level.add(new EyeQueenPhase2(1), x, y);
 
-        int randX = rnd.nextInt(16);
-        int randY = rnd.nextInt(16);
+        int randX = random.nextInt(16);
+        int randY = random.nextInt(16);
         level.add(new FireParticle(x - 0 + randX, y - 0 + randY));
         level.add(new FireParticle(x - 32 + randX, y - 24 + randY));
         level.add(new FireParticle(x - 26 + randX, y - 14 + randY));

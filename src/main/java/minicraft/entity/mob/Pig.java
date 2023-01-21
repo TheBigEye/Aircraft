@@ -3,10 +3,11 @@ package minicraft.entity.mob;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.gfx.MobSprite;
+import minicraft.item.Item;
 import minicraft.item.Items;
 
 public class Pig extends PassiveMob {
-    private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 38);
+    private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 38);
     private int tickTime = 0;
 
     /**
@@ -41,16 +42,13 @@ public class Pig extends PassiveMob {
         int min = 0, max = 0;
         String difficulty = (String) Settings.get("diff");
         
-        if (difficulty == "Peaceful" || difficulty == "Easy") { 
-        	min = 1; max = 3; 
-        } else if (difficulty == "Normal") { 
-        	min = 1; max = 2; 
-        } else if (difficulty == "Hard") { 
-        	min = 0; max = 2; 
-        }
+        if (difficulty == "Peaceful" || difficulty == "Easy") { min = 1; max = 3; }
+        if (difficulty == "Normal") { min = 1; max = 2; }
+        if (difficulty == "Hard") { min = 0; max = 2; }
         
-        if (isBurn) dropItem(min, max, Items.get("Cooked pork")); // if isBurn.. drop Cooked food
-        if (!isBurn) dropItem(min, max, Items.get("raw pork")); // else, drop normal food
+        dropItem(min, max, new Item[] {
+        		Items.get("raw pork")
+        });
 
         super.die();
     }

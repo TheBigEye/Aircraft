@@ -7,7 +7,7 @@ import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class GuiMan extends FrostMob {
-    private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 44);
+    private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 44);
 
     /**
      * Creates a Penguin Man.

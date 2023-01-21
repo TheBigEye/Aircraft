@@ -49,7 +49,7 @@ public class MushroomTile extends Tile {
 			if (player.payStamina(2 - tool.level) && tool.payDurability()) {
 				level.setTile(x, y, Tiles.get("Mycelium"));
 				Sound.genericHurt.playOnGui();
-				level.dropItem(x * 16 + 8, y * 16 + 8, Items.get(type.loot));
+				level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get(type.loot));
 				return true;
 			}
 		}
@@ -57,8 +57,8 @@ public class MushroomTile extends Tile {
 	}
     
     @Override
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-    	level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get(type.loot));
+    public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
+    	level.dropItem((x << 4) + 8, (y << 4) + 8, 0, 1, Items.get(type.loot));
         level.setTile(x, y, Tiles.get("Mycelium"));
         return true;
     }
@@ -67,11 +67,11 @@ public class MushroomTile extends Tile {
 	public void render(Screen screen, Level level, int x, int y) {
 		Tiles.get("Mycelium").render(screen, level, x, y);
 
-		int data = level.getData(x, y);
-		int shape = (50 / 16) % 2;
+		//int data = level.getData(x, y);
+		int shape = (50 >> 4) % 2;
 
-		x = x << 4;
-		y = y << 4;
+		x <<= 4;
+		y <<= 4;
 
 		type.sprite.render(screen, x + 8 * shape, y);
 		type.sprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);

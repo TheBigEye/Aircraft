@@ -16,22 +16,20 @@ import minicraft.level.Level;
 
 public class SkyFernTile extends Tile {
     private static Sprite sprite = new Sprite(27, 22, 2, 2, 1);
+    private int spriteFrame = 0;
 
-    private boolean stepped;
-    private int step;
-    
+    private boolean playerStepped;
     private int fernAttackTick;
 
     protected SkyFernTile(String name) {
         super(name, (ConnectorSprite) null);
         connectsToSkyHighGrass = true;
         connectsToSkyGrass = true;
-        maySpawn = true;
+        maySpawn = false;
     }
 
     @Override
     public boolean tick(Level level, int xt, int yt) {
-
         if (random.nextInt(30) != 0) {
             return false;
         }
@@ -39,42 +37,27 @@ public class SkyFernTile extends Tile {
         int xn = xt;
         int yn = yt;
 
-        if (stepped == false) {
-            sprite = new Sprite(29, 22, 2, 2, 1);
-        }
-        
-        fernAttackTick++;
-        
         if (random.nextBoolean()) {
-            xn += random.nextInt(2) * 2 - 1;
+            xn += (random.nextInt(2) * 2) - 1;
         } else {
-            yn += random.nextInt(2) * 2 - 1;
+            yn += (random.nextInt(2) * 2) - 1;
         }
 
         if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
-            level.setTile(xn, yn, Tiles.get("Sky High Grass"));
+            level.setTile(xn, yn, Tiles.get("Sky Grass"));
         }
         return false;
     }
 
     @Override
     public void render(Screen screen, Level level, int x, int y) {
-        Tiles.get("Sky High Grass").render(screen, level, x, y);
-        if (stepped == true && fernAttackTick / 16 % 2 == 0) {
-            step++;
-            if (step > 6) step = 0;
-            switch (step) {
-                case 0: sprite = new Sprite(27, 22, 2, 2, 1); break;
-                case 1: sprite = new Sprite(29, 22, 2, 2, 1); break;
-                case 2: sprite = new Sprite(31, 22, 2, 2, 1); break;
-                case 3: sprite = new Sprite(33, 22, 2, 2, 1); break;
-                case 4: sprite = new Sprite(31, 22, 2, 2, 1); break;
-                case 5: sprite = new Sprite(29, 22, 2, 2, 1); break;
-                case 6: sprite = new Sprite(27, 22, 2, 2, 1); break;
-                default: sprite = new Sprite(27, 22, 2, 2, 1); break;
-            }
+    	fernAttackTick++;
+        Tiles.get("Sky Grass").render(screen, level, x, y);
+        if (playerStepped && fernAttackTick / 8 % 2 == 0) {
+            spriteFrame = (spriteFrame + 2) % 4 ;
+            sprite = new Sprite(spriteFrame + 27, 22, 2, 2, 1);
         } else {
-            step = 0;
+        	sprite = new Sprite(29, 22, 2, 2, 1);
         }
         sprite.render(screen, x * 16, y * 16);
     }
@@ -84,9 +67,9 @@ public class SkyFernTile extends Tile {
         if (entity instanceof Player) {
             Player player = (Player) entity;
             player.hurt(this, x, y, random.nextInt(3));   
-            stepped = true;
+            playerStepped = true;
         } else {
-        	stepped = false;
+        	playerStepped = false;
         }
     }
 
@@ -96,11 +79,11 @@ public class SkyFernTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(2 - tool.level) && tool.payDurability()) {
-                    level.setTile(x, y, Tiles.get("Sky High Grass"));
+                    level.setTile(x, y, Tiles.get("Sky Grass"));
                     Sound.genericHurt.playOnGui();
 
-                    if (random.nextInt(20) == 1) { // 20% chance to drop sky seeds
-                        level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));
+                    if (random.nextInt(20) == 10) { // 20% chance to drop sky seeds
+                        level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Sky Seeds"));
                     }
 
                     return true;
@@ -111,11 +94,11 @@ public class SkyFernTile extends Tile {
     }
 
     @Override
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-        if (random.nextInt(12) == 1) { // 20% chance to drop sky seeds
-            level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));
+    public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
+        if (random.nextInt(12) == 6) { // 20% chance to drop sky seeds
+            level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Sky Seeds"));
         }
-        level.setTile(x, y, Tiles.get("Sky High Grass"));
+        level.setTile(x, y, Tiles.get("Sky Grass"));
         return true;
     }
 }

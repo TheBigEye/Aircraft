@@ -1,5 +1,7 @@
 package minicraft.entity.particle;
 
+import java.util.Random;
+
 import minicraft.entity.ClientTickable;
 import minicraft.entity.Entity;
 import minicraft.gfx.Screen;
@@ -10,6 +12,9 @@ public class Particle extends Entity implements ClientTickable {
 	private int lifetime;
 
 	protected Sprite sprite;
+	
+	/** Random values used for particles instances **/
+	protected static final Random random = new Random();
 
 	/**
 	 * Creates an particle entity at the given position. The particle has a x and y

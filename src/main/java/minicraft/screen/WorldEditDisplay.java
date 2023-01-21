@@ -100,7 +100,7 @@ public class WorldEditDisplay extends Display {
 
 				// Do the action.
 				if (action == Action.Delete) {
-					Logger.debug("Deleting world: " + world);
+					Logger.debug("Deleting world {} ...", world);
 					File[] list = world.listFiles();
 					for (File file : list) {
 						file.delete();
@@ -117,13 +117,13 @@ public class WorldEditDisplay extends Display {
 					File newworld = new File(worldsDir + newname);
 					newworld.mkdirs();
 
-					Logger.debug("Copying world {} to world {}.", world, newworld);
+					Logger.debug("Copying world {} to world {} ...", world, newworld);
 
 					// walk file tree
 					try {
 						FileHandler.copyFolderContents(new File(worldsDir + worldName).toPath(), newworld.toPath(), FileHandler.REPLACE_EXISTING, false);
-					} catch (IOException e) {
-						e.printStackTrace();
+					} catch (IOException exception) {
+						exception.printStackTrace();
 					}
 				} else if (action == Action.Rename) {
 					entry = (InputEntry) menus[1].getCurEntry();

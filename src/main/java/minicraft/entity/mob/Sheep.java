@@ -16,13 +16,13 @@ import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class Sheep extends PassiveMob {
-	private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 42);
+	private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 42);
 	private static final MobSprite[][] cutSprites = MobSprite.compileMobSpriteAnimations(0, 44);
 
-	private static final int WOOL_GROW_TIME = 3 * 60 * Updater.normSpeed; // Three minutes
+	private static final int WOOL_GROW_TIME = (3 * 60) * Updater.normalSpeed; // Three minutes
 
 	// Cut
-	public boolean isCut = false;
+	public boolean sheared = false;
 	private int ageWhenCut = 0;
 	
 	private int tickTime = 0;
@@ -39,7 +39,7 @@ public class Sheep extends PassiveMob {
 		int xo = x - 8;
 		int yo = y - 11;
 
-		MobSprite[][] curAnim = isCut ? cutSprites : sprites;
+		MobSprite[][] curAnim = sheared ? cutSprites : sprites;
 
 		MobSprite currentSprite = curAnim[dir.getDir()][(walkDist >> 3) % curAnim[dir.getDir()].length];
 		if (hurtTime > 0) {
@@ -54,7 +54,7 @@ public class Sheep extends PassiveMob {
 		tickTime++;
 
 		if (age - ageWhenCut > WOOL_GROW_TIME) {
-			isCut = false;
+			sheared = false;
 		}
 
 		// follows to the player if holds wheat
@@ -82,21 +82,12 @@ public class Sheep extends PassiveMob {
 	}
 
 	public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
-		if (isCut) return false;
-		if (isBurn) return false;
+		if (sheared) return false;
 
 		if (item instanceof ToolItem) {
 			if (((ToolItem) item).type == ToolType.Shears) {
-				isCut = true;
+				sheared = true;
 				dropItem(1, 3, Items.get("Wool"));
-				((ToolItem) item).payDurability();
-				ageWhenCut = age;
-				return true;
-			}
-
-			if (((ToolItem) item).type == ToolType.Igniter) {
-				isBurn = true;
-				isCut = true;
 				((ToolItem) item).payDurability();
 				ageWhenCut = age;
 				return true;
@@ -107,26 +98,17 @@ public class Sheep extends PassiveMob {
 
 	public void die() {
 		int min = 0, max = 0;
-		if (Settings.get("diff").equals("Peaceful")) {
-			min = 1;
-			max = 3;
-		}
-		if (Settings.get("diff").equals("Easy")) {
-			min = 1;
-			max = 3;
-		}
-		if (Settings.get("diff").equals("Normal")) {
-			min = 1;
-			max = 2;
-		}
-		if (Settings.get("diff").equals("Hard")) {
-			min = 0;
-			max = 2;
-		}
+		String difficulty = (String) Settings.get("diff");
 
-		if (!isCut) dropItem(min, max, Items.get("Wool"));
-		if (isBurn) dropItem(min, max, Items.get("Steak"));
-		if (!isBurn) dropItem(min, max, Items.get("Raw Beef"));
+        if (difficulty == "Peaceful" || difficulty == "Easy") { min = 1; max = 3; }
+        if (difficulty == "Normal") { min = 1; max = 2; }
+        if (difficulty == "Hard") { min = 0; max = 2; }
+
+	    if (!sheared) {
+	        dropItem(min, max, Items.get("Wool"));
+	    }
+	    
+	    dropItem(min, max, Items.get("Raw beef"));
 
 		super.die();
 	}

@@ -128,7 +128,7 @@ public class Localization {
 				URL jar = src.getLocation();
 				ZipInputStream zip = new ZipInputStream(jar.openStream());
 				int reads = 0;
-				while(true) {
+				while (true) {
 					ZipEntry e = zip.getNextEntry();
 					
 					// e is either null if there are no entries left, or if
@@ -145,18 +145,17 @@ public class Localization {
 						String data = name.replace("resources/localization/", "").replace(".mcpl", "");
 						String lang = data.substring(0, data.indexOf('_'));
 						languages.add(lang);
-						localizationFiles.put(lang, '/'+name);
-						locales.put(lang, Locale.forLanguageTag(data.substring(data.indexOf('_')+1)));
+						localizationFiles.put(lang, '/' + name);
+						locales.put(lang, Locale.forLanguageTag(data.substring(data.indexOf('_') + 1)));
 					}
 				}
-			}
-			else {
+			} else {
 			  /* Fail... */
 				System.out.println("Failed to get code source.");
 				return null;
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException exception) {
+			exception.printStackTrace();
 			return null;
 		}
 		
@@ -183,8 +182,8 @@ public class Localization {
 				localizationFiles.put(lang, "/resources/localization/"+filename);
 				locales.put(lang, Locale.forLanguageTag(data.substring(data.indexOf('_')+1)));
 			}
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
+		} catch (IOException | URISyntaxException exception) {
+			exception.printStackTrace();
 			// Nothing to do in this menu if we can't load the languages so we
 			// just return to the title menu.
 			return null;

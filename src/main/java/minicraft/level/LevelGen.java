@@ -13,7 +13,6 @@ import org.tinylog.Logger;
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.level.tile.Tiles;
-import minicraft.util.Utils;
 
 public class LevelGen {
 
@@ -260,7 +259,7 @@ public class LevelGen {
 	short[][] createAndValidateVoidMap(int w, int h) {
 		random.setSeed(worldSeed);
 
-		Logger.debug("Genereting void level, {}x{}...", w, h);
+		Logger.debug("Genereting void level, {}x{} ...", w, h);
 
 		do {
 			short[][] result = createVoidMap(w, h);
@@ -322,9 +321,7 @@ public class LevelGen {
 				double dist = xd >= yd ? xd : yd;
 				dist = dist * dist * dist * dist;
 				dist = dist * dist * dist * dist;
-				val += 1 - dist * 20;
-				
-
+				val += 1 - dist * 16;
 				
 				// World themes logic
 				if (terrainType == "Island") {
@@ -399,7 +396,7 @@ public class LevelGen {
 		// Desert (big) biome
 		if (terrainTheme == "Desert") {
 			for (int i = 0; i < (size / 2840); i++) {
-				Logger.debug("[DESERT] Generating desert biome, {}% ...", Utils.percentage(i, (size / 2840)));
+				// Logger.debug("[DESERT] Generating desert biome, {}% ...", Utils.percentage(i, (size / 2840)));
 				
 				// Position
 				int xs = (w / 2) + random.nextInt(w / 2) + 32; // [0 0]
@@ -430,7 +427,7 @@ public class LevelGen {
 		// Tundra (big) biome
 		if (terrainTheme == "Snow") {
 			for (int i = 0; i < (size / 2840); i++) {
-				Logger.debug("[SNOW] Generating tundra biome, {}% ...", Utils.percentage(i, (size / 2840)));
+				//Logger.debug("[SNOW] Generating tundra biome, {}% ...", Utils.percentage(i, (size / 2840)));
 				
 				// Position
 				int xs = (w / 2) - random.nextInt(w / 2) - 32; // [1 0]
@@ -465,10 +462,8 @@ public class LevelGen {
 		}
 
 		if (terrainTheme != "Desert") {
-		    int maxIterations = size / 2840;
-		    for (int i = 0; i < maxIterations; i++) {
-		        Logger.debug("[NORMAL] Generating desert biome, {}% ...", Utils.percentage(i, maxIterations));
-
+			Logger.debug("[NORMAL] Generating desert biome ...");
+		    for (int i = 0; i < (size >> 11); i++) {
 		        // Position
 		        int xs = (w / 2) + random.nextInt(w / 2) + 32; // [0 0]
 		        int ys = (h / 2) + random.nextInt(h / 2) + 32; // [0 1]
@@ -498,19 +493,17 @@ public class LevelGen {
 		}
 
 		if (terrainTheme != "Snow") {
-		    int maxIterations = size / 2840;
-		    for (int i = 0; i < maxIterations; i++) {
-		        Logger.debug("[NORMAL] Generating tundra biome, {}% ...", Utils.percentage(i, maxIterations));
-
+			Logger.debug("[NORMAL] Generating tundra biome ...");
+		    for (int i = 0; i < (size >> 11); i++) {
 		        // Position
-		        int xs = (w / 2) - random.nextInt(w / 2) - 32; // [1 0]
-		        int ys = (h / 2) - random.nextInt(h / 2) - 32; // [0 0]
+		        int xs = ((w / 2) - random.nextInt(w / 2)) - 32; // [1 0]
+		        int ys = ((h / 2) - random.nextInt(h / 2)) - 32; // [0 0]
 
 		        int k = 140 + random.nextInt(8);
 		        int j = 180 - random.nextInt(8);
 		        for (int l = 0; l < k; l++) { // Size
-		            int x = xs + random.nextInt(32) - 16 + random.nextInt(8) - random.nextInt(4);
-		            int y = ys + random.nextInt(32) - 16 + random.nextInt(8) - random.nextInt(4);
+		            int x = ((xs + random.nextInt(32)) - (16 + random.nextInt(8))) - random.nextInt(4);
+		            int y = ((ys + random.nextInt(32)) - (16 + random.nextInt(8))) - random.nextInt(4);
 
 		            for (int m = 0; m < j; m++) { // Amount
 		                int xo = x + random.nextInt(10) - 5 + random.nextInt(4) + random.nextInt(3);
@@ -521,10 +514,10 @@ public class LevelGen {
 		                        if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
 		                            if (map[xx + yy * w] == Tiles.get("Grass").id || map[xx + yy * w] == Tiles.get("Sand").id) { // Snowy land
 		                                map[xx + yy * w] = Tiles.get("Snow").id;
-		                            } else if (xx > 10 * w / 128 && xx < w - 10 * w / 128 && yy > 10 * h / 128 && yy < h - 10 * w / 128) { // Ice
-		                            	if (map[xx + yy * w] == Tiles.get("Water").id) {
-		                            		map[xx + yy * w] = Tiles.get("Ice").id;
-		                            	}
+		                            } else if (xx > ((10 * w) / 128) && xx < (w - (10 * w) / 128) && yy > ((10 * h) / 128) && yy < (h - (10 * w) / 128)) { // Ice
+		                                if (map[xx + yy * w] == Tiles.get("Water").id) {
+		                                    map[xx + yy * w] = Tiles.get("Ice").id;
+		                                }
 		                            }
 		                        }
 		                    }
@@ -533,7 +526,6 @@ public class LevelGen {
 		        }
 		    }
 		}
-
 
 		if (terrainTheme == "Forest") {
 			Logger.debug("[FOREST] Generating oak forest ...");
@@ -1547,8 +1539,8 @@ public class LevelGen {
 				int yy = y + random.nextInt(5) - random.nextInt(5);
 				
 				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-					if (map[xx + yy * w] == Tiles.get("sky grass").id) {
-						map[xx + yy * w] = Tiles.get("sky lawn").id;
+					if (map[xx + yy * w] == Tiles.get("Sky grass").id) {
+						map[xx + yy * w] = Tiles.get("Sky lawn").id;
 						data[xx + yy * w] = (short) (pos + random.nextInt(4) * 16);
 					}
 				}
@@ -1565,8 +1557,8 @@ public class LevelGen {
 				int yy = y + random.nextInt(3) - random.nextInt(3);
 				
 				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-					if (map[xx + yy * w] == Tiles.get("sky high grass").id) {
-						map[xx + yy * w] = Tiles.get("sky fern").id;
+					if (map[xx + yy * w] == Tiles.get("Sky grass").id) {
+						map[xx + yy * w] = Tiles.get("Sky fern").id;
 					}
 				}
 			}
@@ -1578,13 +1570,13 @@ public class LevelGen {
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
 			
-			for (int j = 0; j < 75; j++) {
+			for (int j = 0; j < 65; j++) {
 				int xx = x + random.nextInt(14) - random.nextInt(12) + random.nextInt(4);
 				int yy = y + random.nextInt(14) - random.nextInt(12) + random.nextInt(4);
 				
 				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
 					if (map[xx + yy * w] == Tiles.get("Sky grass").id) {
-						map[xx + yy * w] = Tiles.get("Cloud tree").id;
+						map[xx + yy * w] = Tiles.get("Skyroot tree").id;
 					}
 				}
 			}
@@ -1596,13 +1588,13 @@ public class LevelGen {
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
 			
-			for (int j = 0; j < 48; j++) {
+			for (int j = 0; j < 38; j++) {
 				int xx = x + random.nextInt(14) - random.nextInt(12) + random.nextInt(4);
 				int yy = y + random.nextInt(14) - random.nextInt(12) + random.nextInt(4);
 				
 				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
 					if (map[xx + yy * w] == Tiles.get("Sky grass").id) {
-						map[xx + yy * w] = Tiles.get("Blue cloud tree").id;
+						map[xx + yy * w] = Tiles.get("Bluroot tree").id;
 					}
 				}
 			}
@@ -1613,13 +1605,13 @@ public class LevelGen {
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
 			
-			for (int j = 0; j < 75; j++) {
+			for (int j = 0; j < 65; j++) {
 				int xx = x + random.nextInt(14) - random.nextInt(12);
 				int yy = y + random.nextInt(14) - random.nextInt(12);
 				
 				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
 					if (map[xx + yy * w] == Tiles.get("Sky high grass").id) {
-						map[xx + yy * w] = Tiles.get("Golden cloud tree").id;
+						map[xx + yy * w] = Tiles.get("Goldroot tree").id;
 					}
 				}
 			}
@@ -1657,7 +1649,7 @@ public class LevelGen {
 		for (int j = 0; j < h; j++) {
 		    for (int x = 0; x < w; x++) {
 		        // Check if the current tile is a "sky" tile
-		        if (map[x + j * w] != Tiles.get("Infinite fall").id && (map[x + j * w] == Tiles.get("Holy Rock").id || map[x + j * w] == Tiles.get("Golden cloud tree").id || map[x + j * w] == Tiles.get("Sky fern").id)) {
+		        if (map[x + j * w] != Tiles.get("Infinite fall").id && (map[x + j * w] == Tiles.get("Holy Rock").id || map[x + j * w] == Tiles.get("Goldroot tree").id || map[x + j * w] == Tiles.get("Sky fern").id)) {
 		            // Check the surrounding tiles within the specified thickness to see if any of them are "Infinite fall" tiles
 		            boolean replace = false;
 		            for (int tx = x - skyIslandEdgesThickness; tx <= x + skyIslandEdgesThickness && !replace; tx++) {
@@ -1712,13 +1704,19 @@ public class LevelGen {
 	}
 
 	public static short[][] createVoidMap(int w, int h) {
+
 		// creates a bunch of value maps, some with small size...
 		LevelGen mnoise1 = new LevelGen(w, h, 16);
 		LevelGen mnoise2 = new LevelGen(w, h, 16);
 		LevelGen mnoise3 = new LevelGen(w, h, 16);
-		// ...and some with larger size.
+
+		// ...and some with larger size..
 		LevelGen noise1 = new LevelGen(w, h, 32);
 		LevelGen noise2 = new LevelGen(w, h, 32);
+
+		//LevelGen jnoise1 = new LevelGen(w, h, 8);
+		//LevelGen jnoise2 = new LevelGen(w, h, 4);
+		// LevelGen jnoise3 = new LevelGen(w, h, 8);
 
 		short[] map = new short[w * h];
 		short[] data = new short[w * h];
@@ -1778,13 +1776,15 @@ public class LevelGen {
 		 * the world generated
 		 */
 
-		LevelGen.worldSeed = 0x100; // ???
+		LevelGen.worldSeed = 0x100; // 256L
 
 		// Fixes to get this method to work
 		// AirWizard needs this in constructor
 		Game.gameDir = "";
 
-		Tiles.initTileList();
+		// Initialize the tiles
+		Tiles.init();
+		
 		// End of fixes
 
 		int idx = -1;
@@ -1795,7 +1795,6 @@ public class LevelGen {
 			for (int i = 0; i < args.length; i++) {
 				try {
 					int lvlnum = Integer.parseInt(args[i]);
-					maplvls[i] = lvlnum;
 					maplvls[i] = lvlnum;
 				} catch (NumberFormatException ex) {
 					valid = false;
@@ -1814,7 +1813,7 @@ public class LevelGen {
 		boolean hasquit = false;
 		while (!hasquit) { // stop the loop and close the program
 
-			long startTime = System.nanoTime();
+			long startNanoTime = System.nanoTime();
 			int w = 256, h = 256;
 			int mapScale = 0;
 
@@ -1827,10 +1826,9 @@ public class LevelGen {
 			int lvl = maplvls[idx++ % maplvls.length];
 			if (lvl > 2 || lvl < -4) continue;
 
-			short[][] fullmap = LevelGen.createAndValidateMap(w, h, -1, random.nextLong());
+			short[][] fullmap = LevelGen.createAndValidateMap(w, h, 0, random.nextLong());
 
 			if (fullmap == null) continue;
-			
 			short[] map = fullmap[0];
 
 			// Create the map image
@@ -1898,9 +1896,9 @@ public class LevelGen {
 					else if (map[i] == Tiles.get("Infinite Fall").id) pixels[i] = 0x255325;
 					else if (map[i] == Tiles.get("Cloud").id) pixels[i] = 0xf7f7f7;
 					else if (map[i] == Tiles.get("Cloud Cactus").id) pixels[i] = 0xfafafa;
-					else if (map[i] == Tiles.get("Cloud tree").id) pixels[i] = 0x477044;
-					else if (map[i] == Tiles.get("Golden cloud tree").id) pixels[i] = 0xBBA14F;
-					else if (map[i] == Tiles.get("Blue cloud tree").id) pixels[i] = 0x00769E;
+					else if (map[i] == Tiles.get("Skyroot tree").id) pixels[i] = 0x477044;
+					else if (map[i] == Tiles.get("Goldroot tree").id) pixels[i] = 0xBBA14F;
+					else if (map[i] == Tiles.get("Bluroot tree").id) pixels[i] = 0x00769E;
 					else if (map[i] == Tiles.get("Ferrosite").id) pixels[i] = 0xcbc579;
 					else if (map[i] == Tiles.get("Sky grass").id) pixels[i] = 0x5aab8a;
 					else if (map[i] == Tiles.get("Sky fern").id) pixels[i] = 0x5aab8a;
@@ -1915,20 +1913,11 @@ public class LevelGen {
 				}
 			}
 
-			long endTime = System.nanoTime();
-			long timeMillis = endTime - startTime;
-			long timeElapsed = timeMillis / 1000000000;
+			long endSecondsTime = (System.nanoTime() - startNanoTime) >> 30;
+			String finalGenTime = "took " + endSecondsTime + "s";
 
-			String finalGenTime;
-
-			if (timeElapsed >= 48) {
-				finalGenTime = "Time: " + timeElapsed + "s" + " | " + "WARNING: Slow gen!";
-			} else {
-				finalGenTime = "Time: " + timeElapsed + "s";
-			}
-
-			// Print the seed, the generator version, the elapsed time
-			Logger.debug("Generated: {} | Seed: {} | Gen-Version: {} | {}", lvl, worldSeed, Game.BUILD, finalGenTime);
+			// Print the seed and the elapsed time
+			Logger.debug("Generated level {}, with seed {}, {}", lvl, worldSeed, finalGenTime);
 
 			img.setRGB(0, 0, w, h, pixels, 0, w); // Sets the pixels into the image
 
@@ -1947,10 +1936,10 @@ public class LevelGen {
 				options, null
 			);
 
-			if (LevelGen.worldSeed == 0x100) {
-				LevelGen.worldSeed = 0xAAFF20;
+			if (LevelGen.worldSeed == 0x100) { // 256L
+				LevelGen.worldSeed = 0xAAFF20; // 11206432L
 			} else {
-				LevelGen.worldSeed = 0x100;
+				LevelGen.worldSeed = 0x100; // 256L
 			}
 
 			/* Now you noticed that we made the dialog an integer. This is because when you click a button it will return a number.

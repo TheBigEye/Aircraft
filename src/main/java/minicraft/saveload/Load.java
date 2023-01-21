@@ -143,7 +143,7 @@ public class Load {
 			loadPlayer("Player", Game.player);
 
 			if (Game.isMode("Creative")) {
-				Items.fillCreativeInv(Game.player.getInventory(), false);
+				Items.fillCreativeInventory(Game.player.getInventory(), false);
 			}
 		}
 	}
@@ -301,8 +301,9 @@ public class Load {
 			diffIdx--; // Account for change in difficulty
 		}
 
-		Settings.setIdx("diff", diffIdx);
+		Settings.setIndex("diff", diffIdx);
 		AirWizard.beaten = Boolean.parseBoolean(data.remove(0));
+		EyeQueen.beaten = Boolean.parseBoolean(data.remove(0));
 		Settings.set("Cheats", Boolean.parseBoolean(data.remove(0)));
 
 		// Check if the AirWizard was beaten in versions prior to 2.1.0
@@ -346,7 +347,7 @@ public class Load {
 			}
 		}
 
-		Settings.setIdx("mode", mode);
+		Settings.setIndex("mode", mode);
 	}
 
 	private void loadPrefsOld(String filename) {
@@ -485,23 +486,23 @@ public class Load {
 			int lvlidx = World.lvlIdx(l);
 			loadFromFile(location + filename + lvlidx + extension);
 
-			int lvlw = Integer.parseInt(data.get(0));
-			int lvlh = Integer.parseInt(data.get(1));
+			int worldWidth = Integer.parseInt(data.get(0));
+			int worldHeight = Integer.parseInt(data.get(1));
 			
 			boolean hasSeed = worldVer.compareTo(new Version("2.0.7-dev2")) >= 0;
 			long seed = hasSeed ? Long.parseLong(data.get(2)) : 0;
-			Settings.set("size", lvlw);
+			Settings.set("size", worldWidth);
 
-			short[] tiles = new short[lvlw * lvlh];
-			short[] tdata = new short[lvlw * lvlh];
+			short[] tiles = new short[worldWidth * worldHeight];
+			short[] tdata = new short[worldWidth * worldHeight];
 
-			for (int x = 0; x < lvlw; x++) {
-				for (int y = 0; y < lvlh; y++) {
+			for (int x = 0; x < worldWidth; x++) {
+				for (int y = 0; y < worldHeight; y++) {
 
 					// The tiles are saved with x outer loop, and y inner loop, meaning that
 					// the list reads down, then right one, rather than right, then down one.
-					int tileArrIdx = y + x * lvlw;
-					int tileidx = x + y * lvlw;
+					int tileArrIdx = y + x * worldWidth;
+					int tileidx = x + y * worldWidth;
 
 					String tilename = data.get(tileidx + (hasSeed ? 4 : 3));
 					if (worldVer.compareTo(new Version("1.9.4-dev6")) < 0) {
@@ -564,7 +565,7 @@ public class Load {
 			}
 
 			Level parent = World.levels[World.lvlIdx(l + 1)];
-			World.levels[lvlidx] = new Level(lvlw, lvlh, seed, l, parent, false);
+			World.levels[lvlidx] = new Level(worldWidth, worldHeight, seed, l, parent, false);
 
 			Level curLevel = World.levels[lvlidx];
 			curLevel.tiles = tiles;
@@ -676,7 +677,7 @@ public class Load {
 			}
 
 			String spriteColor = "" + cols[0] + cols[1] + cols[2];
-			System.out.println("Getting color as " + spriteColor);
+			Logger.debug("Getting player shirt color as " + spriteColor);
 			player.shirtColor = Integer.parseInt(spriteColor);
 
 		} else if (worldVer.compareTo(new Version("2.0.6-dev4")) < 0) {
@@ -869,13 +870,13 @@ public class Load {
 		Entity newEntity = null;
 		
 		if (entityName.equals("Spark") && !isLocalSave) {
-			int awID = Integer.parseInt(info.get(2));
-			Entity sparkOwner = Network.getEntity(awID);
+			int airWizardID = Integer.parseInt(info.get(2));
+			Entity sparkOwner = Network.getEntity(airWizardID);
 			
 			if (sparkOwner instanceof AirWizard) {
 				newEntity = new Spark((AirWizard) sparkOwner, x, y, 1);
 			} else {
-				System.err.println("failed to load spark; owner id doesn't point to a correct entity");
+				Logger.error("failed to load spark; owner id doesn't point to a correct entity");
 				return null;
 			}
 
@@ -894,8 +895,7 @@ public class Load {
 			}
 
 			if (mobLvl == 0) {
-				if (Game.debug)
-					System.out.println("Level 0 mob: " + entityName);
+				if (Game.debug) Logger.info("Level 0 mob: " + entityName);
 				mobLvl = 1;
 			}
 
@@ -915,7 +915,7 @@ public class Load {
 				if (newEntity instanceof Sheep) {
 					Sheep sheep = ((Sheep) mob);
 					if (info.get(3).equalsIgnoreCase("true")) {
-						sheep.isCut = true;
+						sheep.sheared = true;
 
 					}
 					mob = sheep;
@@ -973,18 +973,18 @@ public class Load {
 				Mob mob = (Mob) Network.getEntity(ownerID);
 
 				if (mob != null) {
-					Direction dir = Direction.values[Integer.parseInt(info.get(3))];
-					int dmg = Integer.parseInt(info.get(5));
-					newEntity = new Arrow(mob, x, y, dir, dmg);
+					Direction shootDirection = Direction.values[Integer.parseInt(info.get(3))];
+					int arrowDamage = Integer.parseInt(info.get(5));
+					newEntity = new Arrow(mob, x, y, shootDirection, arrowDamage);
 				}
 			}
 			if (newEntity instanceof Fireball) {
 				int ownerID = Integer.parseInt(info.get(2));
 				Mob mob = (Mob)Network.getEntity(ownerID);
 				if (mob != null) {
-					Direction dir = Direction.values[Integer.parseInt(info.get(3))];
-					int dmg = Integer.parseInt(info.get(5));
-					newEntity = new Fireball(mob, x, y, dir, dmg);
+					Direction shootDirection = Direction.values[Integer.parseInt(info.get(3))];
+					int fireballDamage = Integer.parseInt(info.get(5));
+					newEntity = new Fireball(mob, x, y, shootDirection, fireballDamage);
 				}
 			}
 			if (newEntity instanceof ItemEntity) {

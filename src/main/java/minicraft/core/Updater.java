@@ -18,7 +18,6 @@ import minicraft.screen.EndGameDisplay;
 import minicraft.screen.LevelTransitionDisplay;
 import minicraft.screen.PlayerDeathDisplay;
 import minicraft.screen.WorldSelectDisplay;
-import minicraft.util.Info;
 
 /*
 * Game updater
@@ -27,7 +26,7 @@ public class Updater extends Game {
 	private Updater() {}
 
 	/// TIME AND TICKS
-	public static final int normSpeed = 60; // Measured in ticks / second.
+	public static final int normalSpeed = 60; // Measured in ticks / second.
 	public static float gamespeed = 1; // Measured in MULTIPLES OF NORMSPEED.
 	public static boolean paused = true; // If the game is paused.
 
@@ -73,11 +72,15 @@ public class Updater extends Game {
 		GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 
 		if (Updater.FULLSCREEN) {
-			Initializer.frame.setUndecorated(true);
+			Initializer.frame.setUndecorated(true);	
+			Initializer.frame.setResizable(true);
+			Initializer.frame.setVisible(true);
 			device.setFullScreenWindow(Initializer.frame);
 		} else {
-			Initializer.frame.setUndecorated(false);
 			device.setFullScreenWindow(null);
+			Initializer.frame.setUndecorated(false);
+			Initializer.frame.setResizable(true);
+			Initializer.frame.setVisible(true);
 		}
 
 		// Show frame again
@@ -90,7 +93,6 @@ public class Updater extends Game {
 	// VERY IMPORTANT METHOD!! Makes everything keep happening.
 	// In the end, calls menu.tick() if there's a menu, or level.tick() if no menu.
 	public static void tick() {
-		Info.getInfo();
 
 		// move the player -1 level for testing...
 		if (isMode("Creative") && input.getKey("SHIFT-S").clicked ) Game.setDisplay(new LevelTransitionDisplay(-1));
@@ -136,7 +138,7 @@ public class Updater extends Game {
 		}
 
 		if (asTick > astime) {
-			if ((boolean) Settings.get("autosave") && !gameOver && player.health > 0) {
+			if (Settings.getBoolean("autosave") && !gameOver && player.health > 0) {
 				new Save(WorldSelectDisplay.getWorldName());
 			}
 
@@ -213,7 +215,7 @@ public class Updater extends Game {
 
 					if (input.getKey("ctrl-p").clicked) {
 						// print all players on all levels, and their coordinates.
-						System.out.println("Printing players on all levels.");
+						Logger.debug("Printing players on all levels ...");
 						for (Level value : levels) {
 							if (value == null) continue;
 							value.printEntityLocs(Player.class);
@@ -233,7 +235,7 @@ public class Updater extends Game {
 					String prevMode = (String)Settings.get("mode");
 					if (input.getKey("Creative").clicked) {
 						Settings.set("mode", "Creative");
-						Items.fillCreativeInv(player.getInventory(), false);
+						Items.fillCreativeInventory(player.getInventory(), false);
                     }
 
 					if (input.getKey("survival").clicked) Settings.set("mode", "survival");
@@ -242,7 +244,7 @@ public class Updater extends Game {
 					if (input.getKey("SHIFT-T").clicked) Settings.set("mode", "score");
 
 					if (isMode("score") && input.getKey("CTRL-T").clicked) {
-						scoreTime = normSpeed * 5; // 5 seconds
+						scoreTime = normalSpeed * 5; // 5 seconds
 					}
 
 					//float prevSpeed = gamespeed;
@@ -252,17 +254,17 @@ public class Updater extends Game {
 
 					if (input.getKey("shift-equals").clicked) {
 						if (gamespeed < 1) gamespeed *= 2;
-						else if (normSpeed*gamespeed < 2000) gamespeed++;
+						else if (normalSpeed*gamespeed < 2000) gamespeed++;
 					}
 					if (input.getKey("shift-minus").clicked) {
 						if (gamespeed > 1) gamespeed--;
-						else if (normSpeed*gamespeed > 5) gamespeed /= 2;
+						else if (normalSpeed*gamespeed > 5) gamespeed /= 2;
 					}
 
 
 					// Client-only cheats, since they are player-specific.
 					if (input.getKey("shift-g").clicked) // This should not be needed, since the inventory should not be altered.
-						Items.fillCreativeInv(player.getInventory());
+						Items.fillCreativeInventory(player.getInventory());
 
 					if (input.getKey("ctrl-h").clicked) player.health--;
 					if (input.getKey("ctrl-b").clicked) player.hunger--;
@@ -308,7 +310,7 @@ public class Updater extends Game {
 		if (t > 0 && t < times.length) {
 			changeTimeOfDay(times[t]); // it just references the other one.
 		} else {
-			System.out.println("Time " + t + " does not exist.");
+			Logger.warn("Time " + t + " does not exist.");
 		}
 	}
 

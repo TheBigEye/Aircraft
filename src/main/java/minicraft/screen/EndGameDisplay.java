@@ -2,7 +2,6 @@ package minicraft.screen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 
 import minicraft.core.Game;
 import minicraft.core.Updater;
@@ -20,12 +19,8 @@ import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
 
 public class EndGameDisplay extends Display {
-	private static String TITLE = "";
-	private static final Random random = new Random();
-
-	private static final String[] scoredItems = { "Oak Wood", "Cloth", "Slime", "Bone", "Arrow", "Gunpowder", "Antidious" };
-
-	String[] Titles = { "Game Over", "Win?", "Win!!", "Nice!", "The End!" };
+	private static final String[] scoredItems = { "Oak Wood", "Spruce Wood", "Birch Wood", "Cloth", "Slime", "Bone", "Arrow", "Gunpowder", "Antidious" };
+	private static final String[] titles = { "Game Over", "Win?", "Win!!", "Nice!", "The End!" };
 
 	private int inputDelay; // variable to delay the input of the player, so they won't skip the won menu by accident.
 	private int displayTimer;
@@ -41,11 +36,10 @@ public class EndGameDisplay extends Display {
 	public EndGameDisplay() {
 		super(false, false);
 
-		displayTimer = Updater.normSpeed; // wait 3 seconds before rendering the menu.
-		inputDelay = Updater.normSpeed / 2; // wait a half-second after rendering before allowing user input.
+		displayTimer = Updater.normalSpeed; // wait 3 seconds before rendering the menu.
+		inputDelay = Updater.normalSpeed / 2; // wait a half-second after rendering before allowing user input.
 
 		ArrayList<ListEntry> entries = new ArrayList<>();
-		EndGameDisplay.TITLE = Titles[random.nextInt(Titles.length)];
 
 		// calculate the score
 		entries.add(new StringEntry("Player Score: " + Game.player.getScore(), Color.WHITE));
@@ -65,7 +59,10 @@ public class EndGameDisplay extends Display {
 		entries.add(new SelectEntry("Exit to Menu", () -> Game.setDisplay(new TitleDisplay())));
 
 		menus = new Menu[] {
-				new Menu.Builder(true, 0, RelPos.LEFT, entries).setPositioning(new Point(SpriteSheet.boxWidth, SpriteSheet.boxWidth * 3), RelPos.BOTTOM_RIGHT).setTitle(TITLE).createMenu() 
+			new Menu.Builder(true, 0, RelPos.LEFT, entries)
+			.setPositioning(new Point(SpriteSheet.boxWidth, SpriteSheet.boxWidth * 3), RelPos.BOTTOM_RIGHT)
+			.setTitle(titles[random.nextInt(titles.length)])
+			.createMenu() 
 		};
 	}
 

@@ -61,7 +61,7 @@ public class Settings {
 		options.get("textures").setSelection(0);
         
         // Video options
-        options.put("fps", new RangeEntry("Max FPS", 10, 300, getRefreshRate()));
+        options.put("fps", new RangeEntry("Max FPS", 16, 300, getRefreshRate()));
         options.put("vsync", new BooleanEntry("V.Sync", false));
        
         options.put("bossbar", new ArrayEntry<>("Bossbar type", "On screen", "On entity", "Percent"));
@@ -81,48 +81,60 @@ public class Settings {
 		return options.get(option.toLowerCase()).getValue();
 	}
 
+	// Returns the boolean value of the specified option
+	public static boolean getBoolean(String option) {
+		return ((boolean) (options.get(option.toLowerCase())).getValue());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T getUnsafe(String option) {
+		return (T)get(option);
+	}
+
 	// Returns the index of the value in the list of values for the specified option
-	public static int getIdx(String option) {
+	public static int getIndex(String option) {
 		return options.get(option.toLowerCase()).getSelection();
 	}
 
+	@SuppressWarnings("rawtypes")
 	// Return the ArrayEntry object associated with the given option name.
-	public static ArrayEntry<?> getEntry(String option) {
+	public static ArrayEntry getEntry(String option) {
 		return options.get(option.toLowerCase());
 	}
 
-	// Sets the value of the given option name, to the given value, provided it is a
-	// valid value for that option.
+	@SuppressWarnings("rawtypes")
+	// Sets the value of the given option name, to the given value, provided it is a valid value for that option.
 	public static void set(String option, Object value) {
-		options.get(option.toLowerCase()).setValue(value);
+		((ArrayEntry) options.get(option.toLowerCase())).setValue(value);
 	}
 
+	@SuppressWarnings("rawtypes")
 	// Sets the index of the value of the given option, provided it is a valid index
-	public static void setIdx(String option, int idx) {
-		options.get(option.toLowerCase()).setSelection(idx);
+	public static void setIndex(String option, int idx) {
+		((ArrayEntry) options.get(option.toLowerCase())).setSelection(idx);
 	}
 
 	public static int getRefreshRate() {
-		  // If the graphics environment is headless, we cannot determine the refresh rate, so return 60
-		  if (GraphicsEnvironment.isHeadless()){
-		    return 60;
-		  }
+		// If the graphics environment is headless, we cannot determine the refresh rate, so return 60
+		if (GraphicsEnvironment.isHeadless()){
+			return 60;
+		}
 
-		  int hz;
-		  try {
-		    // Get the refresh rate of the default screen device
-		    hz = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate();
-		  } catch (HeadlessException e) {
-		    // If there is an error getting the refresh rate, return 60
-		    return 60;
-		  }
+		int hz;
+		try {
+			// Get the refresh rate of the default screen device
+			hz = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate();
+		} catch (HeadlessException exception) {
+			// If there is an error getting the refresh rate, return 60
+			return 60;
+		}
 
-		  // If the refresh rate is unknown, return 60
-		  if (hz == DisplayMode.REFRESH_RATE_UNKNOWN) return 60;
-		  // If the refresh rate is greater than 300 or less than 10, return 60
-		  if (hz > 300 || hz < 10) return 60;
-		  
-		  // Otherwise, return the refresh rate
-		  return hz;
+		// If the refresh rate is unknown, return 60
+		if (hz == DisplayMode.REFRESH_RATE_UNKNOWN) return 60;
+		// If the refresh rate is greater than 300 or less than 10, return 60
+		if (hz > 300 || hz < 10) return 60;
+
+		// Otherwise, return the refresh rate
+		return hz;
 	}
 }

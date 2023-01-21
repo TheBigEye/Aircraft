@@ -14,7 +14,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class FlowerTile extends Tile {
-	private static Sprite sprite = new Sprite(3, 8, 1);
+	private static final Sprite sprite = new Sprite(3, 8, 1);
 
 	protected FlowerTile(String name) {
 		super(name, (ConnectorSprite) null);
@@ -32,9 +32,9 @@ public class FlowerTile extends Tile {
 		int yn = yt;
 
 		if (random.nextBoolean()) {
-			xn += random.nextInt(2) * 2 - 1;
+			xn += (random.nextInt(2) * 2) - 1;
 		} else {
-			yn += random.nextInt(2) * 2 - 1;
+			yn += (random.nextInt(2) * 2) - 1;
 		}
 
 		if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
@@ -48,13 +48,13 @@ public class FlowerTile extends Tile {
 		Tiles.get("Grass").render(screen, level, x, y);
 
 		int data = level.getData(x, y);
-		int shape = (data / 16) % 2;
+		int shape = (data >> 4) % 2;
 
-		x = x << 4;
-		y = y << 4;
+		x <<= 4;
+		y <<= 4;
 
 		sprite.render(screen, x + 8 * shape, y);
-		sprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
+		sprite.render(screen, x + 8 * ((shape == 0) ? 1 : 0), y + 8);
 	}
 
 	@Override
@@ -71,8 +71,8 @@ public class FlowerTile extends Tile {
 			if (player.payStamina(2 - tool.level) && tool.payDurability()) {
 				level.setTile(x, y, Tiles.get("Grass"));
 				Sound.genericHurt.playOnGui();
-				level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Flower"));
-				level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Rose"));
+				level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Flower"));
+				level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Rose"));
 				return true;
 			}
 		}
@@ -80,9 +80,9 @@ public class FlowerTile extends Tile {
 	}
 
 	@Override
-	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-		level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Flower"));
-		level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Rose"));
+	public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
+		level.dropItem((x << 4) + 8, (y << 4) + 8, 0, 1, Items.get("Flower"));
+		level.dropItem((x << 4) + 8, (y << 4) + 8, 0, 1, Items.get("Rose"));
 		level.setTile(x, y, Tiles.get("Grass"));
 		return true;
 	}

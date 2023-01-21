@@ -13,7 +13,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class GrassTile extends Tile {
-	private static ConnectorSprite sprite = new ConnectorSprite(GrassTile.class, new Sprite(0, 6, 3, 3, 1), new Sprite(3, 6, 2, 2, 1)) {
+	private static final ConnectorSprite sprite = new ConnectorSprite(GrassTile.class, new Sprite(0, 6, 3, 3, 1), new Sprite(3, 6, 2, 2, 1)) {
 		@Override
 		public boolean connectsTo(Tile tile, boolean isSide) {
 			if (!isSide) {
@@ -25,7 +25,7 @@ public class GrassTile extends Tile {
 
 	protected GrassTile(String name) {
 		super(name, sprite);
-		csprite.sides = csprite.sparse;
+		connectorSprite.sides = connectorSprite.sparse;
 		connectsToGrass = true;
 		maySpawn = true;
 	}
@@ -89,7 +89,7 @@ public class GrassTile extends Tile {
 	    int yn = yt;
 
 	    switch (random.nextInt(2)) {
-	        case 0: xn += random.nextInt(2) * 2 - 1;break;
+	        case 0: xn += random.nextInt(2) * 2 - 1; break;
 	        case 1: yn += random.nextInt(2) * 2 - 1; break;
 	    }
 

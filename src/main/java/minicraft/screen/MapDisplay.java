@@ -50,7 +50,7 @@ public class MapDisplay extends Display {
 		
 		// Get a list of closest entities in player range
 		List<Entity> entitiesInRange = Game.levels[Game.currentLevel].getEntitiesInRect(
-				new Rectangle(Game.player.x, Game.player.y, ENTITIES_RADIUS, ENTITIES_RADIUS, Rectangle.CENTER_DIMS)
+			new Rectangle(Game.player.x, Game.player.y, ENTITIES_RADIUS, ENTITIES_RADIUS, Rectangle.CENTER_DIMS)
 	    );
 		
 		/*
@@ -75,14 +75,14 @@ public class MapDisplay extends Display {
 				MapData mapData = MapData.getById(Game.levels[Game.currentLevel].getTile(x + smx, y + smy).id);
 				int color = mapData != null ? mapData.color : 0;
 
-				screen.setPixel(x + menuBounds.getLeft() + 8, y + menuBounds.getTop() + 8, color);
+				screen.setPixel((x + menuBounds.getLeft()) + 8, (y + menuBounds.getTop()) + 8, color);
 			}
 		}
 		
 		/// MAP MARKERS :D
 
 		// Render the marker for the player
-		screen.render(ptx % 128 + menuBounds.getLeft() + 2, pty % 128 + menuBounds.getTop() + 2, MapDisplay.PLAYER_MARKER_SPRITE, MapDisplay.PLAYER_MARKER_COLOR, 3);
+		screen.render((ptx % 128) + menuBounds.getLeft() + 2, (pty % 128) + menuBounds.getTop() + 2, MapDisplay.PLAYER_MARKER_SPRITE, MapDisplay.PLAYER_MARKER_COLOR, 3);
 		
 		// Render the marker for the air wizard
 		if (AirWizard.active) {

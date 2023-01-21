@@ -93,9 +93,9 @@ public class CraftingDisplay extends Display {
 			return;
 		}
 
-		int prevSel = recipeMenu.getSelection();
+		int previousSelection = recipeMenu.getSelection();
 		super.tick(input);
-		if (prevSel != recipeMenu.getSelection()) {
+		if (previousSelection != recipeMenu.getSelection()) {
 			refreshData();
 		}
 

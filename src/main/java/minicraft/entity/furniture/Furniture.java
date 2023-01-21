@@ -1,5 +1,7 @@
 package minicraft.entity.furniture;
 
+import java.util.Random;
+
 import org.jetbrains.annotations.Nullable;
 
 import minicraft.core.Game;
@@ -16,16 +18,16 @@ import minicraft.item.PowerGloveItem;
 import minicraft.level.tile.Tiles;
 
 /**
- * Many furniture classes are very similar; they might not even need to be there
- * at all...
+ * Many furniture classes are very similar; they might not even need to be there at all...
  */
 
 public class Furniture extends Entity {
+	
+	/** Random value for all the furniture instances **/
+	protected static final Random random = new Random();
 
-    // time for each push; multi is for multiplayer, to make it so not so many
-    // updates are sent.
+    // time for each push; multi is for multiplayer, to make it so not so many updates are sent.
     protected int pushTime = 0;
-    protected int multiPushTime = 0;
 
     private Direction pushDir = Direction.NONE; // the direction to push the furniture
     public Sprite sprite;
@@ -62,8 +64,8 @@ public class Furniture extends Entity {
     public Furniture clone() {
         try {
         	return getClass().getDeclaredConstructor().newInstance();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception exception) {
+        	exception.printStackTrace();
         }
         return new Furniture(name, sprite);
     }
@@ -76,8 +78,6 @@ public class Furniture extends Entity {
 
         if (pushTime > 0) {
             pushTime--; // update pushTime by subtracting 1.
-        } else {
-            multiPushTime = 0;
         }
         
         if (level.getTile(x >> 4,y >> 4) == Tiles.get("Lava") && !(this instanceof Spawner) && !(this instanceof DeathChest) && !(this instanceof Tnt)) {
@@ -139,7 +139,7 @@ public class Furniture extends Entity {
 	public void tryPush(Player player) {
 		if (pushTime == 0) {
 			pushDir = player.dir; // Set pushDir to the player's dir.
-			pushTime = multiPushTime = 10; // Set pushTime to 10.
+			pushTime = 10; // Set pushTime to 10.
 		}
 	}
 

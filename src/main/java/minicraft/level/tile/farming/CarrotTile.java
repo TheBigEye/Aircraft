@@ -31,7 +31,7 @@ public class CarrotTile extends Plant {
 			count = random.nextInt(2) + 0;
 		}
 
-		level.dropItem(x * 16 + 8, y * 16 + 8, count, Items.get("Carrot"));
+		level.dropItem((x << 4) + 8, (y << 4) + 8, count, Items.get("Carrot"));
 
 		if (age >= 50 && entity instanceof Player) {
 			((Player) entity).addScore(random.nextInt(5) + 1);
@@ -44,16 +44,16 @@ public class CarrotTile extends Plant {
 	}
 
 	@Override
-	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+	public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
 		harvest(level, x, y, source);
 		return true;
 	}
 
 	@Override
-	public boolean IfWater(Level level, int xs, int ys) {
+	public boolean ifWater(Level level, int xs, int ys) {
 		Tile[] areaTiles = level.getAreaTiles(xs, ys, 2);
-		for (Tile t : areaTiles) {
-			if (t == Tiles.get("Water")) {
+		for (Tile tile : areaTiles) {
+			if (tile == Tiles.get("Water")) {
 				return true;
 			}
 		}
@@ -86,7 +86,7 @@ public class CarrotTile extends Plant {
 		screen.render(x * 16 + 0, y * 16 + 0, 13 + 1 * 32 + icon, 0, 1);
 		screen.render(x * 16 + 8, y * 16 + 0, 13 + 1 * 32 + icon, 0, 1);
 		screen.render(x * 16 + 0, y * 16 + 8, 13 + 1 * 32 + icon, 1, 1);
-		screen.render(x * 16 + 8, y * 16 + 8, 13 + 1 * 32 + icon, 1, 1);
+		screen.render((x << 4) + 8, (y << 4) + 8, 13 + 1 * 32 + icon, 1, 1);
 	}
 
 	@Override

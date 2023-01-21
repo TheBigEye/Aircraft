@@ -63,18 +63,18 @@ public class OreTile extends Tile {
 		return type.getOre();
 	}
 
-	public void hurt(Level level, int x, int y, int dmg) {
+	public void hurt(Level level, int x, int y, int hurtDamage) {
 		int damage = level.getData(x, y) + 1;
-		int oreHealth = random.nextInt(4) * 4 + 20;
+		int oreHealth = (random.nextInt(4) * 4) + 20;
 		if (Game.isMode("Creative")) {
-			dmg = damage = oreHealth;
+			hurtDamage = damage = oreHealth;
 		}
 
-		level.add(new SmashParticle(x * 16, y * 16));
+		level.add(new SmashParticle(x << 4, y << 4));
 		Sound.genericHurt.playOnGui();
 
-		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
-		if (dmg > 0) {
+		level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
+		if (damage > 0) {
 			int count = random.nextInt(2) + 0;
 			if (damage >= oreHealth) {
 				level.setTile(x, y, Tiles.get("Dirt"));
@@ -87,11 +87,11 @@ public class OreTile extends Tile {
 				AchievementsDisplay.setAchievement("minicraft.achievement.find_gem", true);
 			}
 
-			level.dropItem(x * 16 + 8, y * 16 + 8, count, type.getOre());
+			level.dropItem((x << 4) + 8, (y << 4) + 8, count, type.getOre());
 		}
 	}
 
-	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+	public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
 		hurt(level, x, y, 0);
 		return true;
 	}
@@ -144,9 +144,9 @@ public class OreTile extends Tile {
             screen.render(x * 16 + 0, y * 16 + 8, type.sprite_x1 + type.sprite_y2 * 32, 0, 1); // y2
         }
         if (d && dr && r) {
-            screen.render(x * 16 + 8, y * 16 + 8, type.sprite_x2 + type.sprite_y2 * 32, 0, 1); // y2
+            screen.render((x << 4) + 8, (y << 4) + 8, type.sprite_x2 + type.sprite_y2 * 32, 0, 1); // y2
         } else {
-            screen.render(x * 16 + 8, y * 16 + 8, type.sprite_x2 + type.sprite_y4 * 32, 0, 1); // y4
+            screen.render((x << 4) + 8, (y << 4) + 8, type.sprite_x2 + type.sprite_y4 * 32, 0, 1); // y4
         }
 	}
 }

@@ -5,6 +5,7 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.mob.Player;
+import minicraft.entity.mob.villager.VillagerMob;
 import minicraft.gfx.Screen;
 import minicraft.gfx.Sprite;
 import minicraft.item.Item;
@@ -57,15 +58,18 @@ public class FarmTile extends Tile {
 
     @Override
     public void steppedOn(Level level, int xt, int yt, Entity entity) {
-        if (entity instanceof ItemEntity) {
+        if (entity instanceof ItemEntity || entity instanceof VillagerMob) {
             return;
         }
+        
         if (random.nextInt(60) != 0) {
             return;
         }
+        
         if (level.getData(xt, yt) < 5) {
             return;
         }
+        
         level.setTile(xt, yt, Tiles.get("Dirt"));
         
         switch (random.nextInt(3)) {

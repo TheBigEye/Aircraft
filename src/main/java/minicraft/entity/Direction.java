@@ -4,10 +4,16 @@ public enum Direction {
 
 	NONE(0, 0), DOWN(0, 1), UP(0, -1), LEFT(-1, 0), RIGHT(1, 0);
 	
+	public static final Direction[] values = Direction.values();
+	
 	private final int x;
 	private final int y;
+	
+	Direction(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 
-	public static final Direction[] values = Direction.values();
 	public static Direction getDirection(int dir) {
 		return values[dir + 1];
 	}
@@ -32,10 +38,6 @@ public enum Direction {
 		}
 	}
 
-	Direction(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
 
 	public int getDir() {
 		return ordinal() - 1;

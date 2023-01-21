@@ -12,7 +12,7 @@ import minicraft.screen.entry.StringEntry;
 public class VideoOptionsDisplay extends Display {
 	
     int originalFPS = (int) Settings.get("fps");
-    boolean originalVsync = (boolean) Settings.get("vsync");
+    boolean originalVsync = Settings.getBoolean("vsync");
 
 	public VideoOptionsDisplay() {
         super(true);
@@ -74,7 +74,7 @@ public class VideoOptionsDisplay extends Display {
         }
 
         // If exit key is pressed, then display the popup menu if changes requiring a restart have been made
-        if (input.getKey("exit").clicked && originalFPS != (int) Settings.get("fps") || input.getKey("exit").clicked && originalVsync != (boolean) Settings.get("vsync")) {
+        if (input.getKey("exit").clicked && originalFPS != (int) Settings.get("fps") || input.getKey("exit").clicked && originalVsync != Settings.getBoolean("vsync")) {
             menus[1].shouldRender = true;
             return;
         }

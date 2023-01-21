@@ -51,7 +51,7 @@ public class SandTile extends Tile {
 
     protected SandTile(String name) {
         super(name, (ConnectorSprite) null);
-        csprite = sprite;
+        connectorSprite = sprite;
         connectsToSand = true;
         maySpawn = true;
     }
@@ -82,13 +82,13 @@ public class SandTile extends Tile {
         boolean steppedOn = level.getData(x, y) > 0;
 
         if (steppedOn) {
-            csprite.full = SandTile.steppedOn_sprite;
+            connectorSprite.full = SandTile.steppedOn_sprite;
         } else {
-            csprite.full = SandTile.normal_sprite;
+            connectorSprite.full = SandTile.normal_sprite;
         }
 
-        csprite.sparse.color = DirtTile.dCol(level.depth);
-        csprite.render(screen, level, x, y);
+        connectorSprite.sparse.color = DirtTile.dCol(level.depth);
+        connectorSprite.render(screen, level, x, y);
     }
 
     @Override

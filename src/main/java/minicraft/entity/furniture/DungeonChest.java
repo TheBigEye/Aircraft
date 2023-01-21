@@ -1,7 +1,5 @@
 package minicraft.entity.furniture;
 
-import java.util.Random;
-
 import org.jetbrains.annotations.Nullable;
 
 import minicraft.core.Game;
@@ -25,7 +23,6 @@ public class DungeonChest extends Chest {
     private static final Sprite openSprite = new Sprite(4, 30, 2, 2, 2);
     private static final Sprite lockSprite = new Sprite(2, 30, 2, 2, 2);
 
-    public Random random = new Random();
     private boolean isLocked;
     private int tickTime = 0;
 
@@ -89,7 +86,7 @@ public class DungeonChest extends Chest {
                 isLocked = false;
                 this.sprite = openSprite; // set to the unlocked color
 
-                level.add(new SmashParticle(x * 16, y * 16));
+                level.add(new SmashParticle(x << 4, y << 4));
                 level.add(new TextParticle("-1 key", x, y, Color.RED));
                 level.chestCount--;
                 if (level.chestCount == 0) { // if this was the last chest...

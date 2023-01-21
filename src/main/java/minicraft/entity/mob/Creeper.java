@@ -108,7 +108,7 @@ public class Creeper extends EnemyMob {
 						int distx = Math.abs(mob.x - x);
 						int disty = Math.abs(mob.y - y);
 						float distDiag = (float) Math.sqrt(distx ^ 2 + disty ^ 2);
-						mob.hurt(this, (int) (lvlDamage * (1 / (distDiag + 1)) + Settings.getIdx("diff")));
+						mob.hurt(this, (int) (lvlDamage * (1 / (distDiag + 1)) + Settings.getIndex("diff")));
 					} else if (entity instanceof Spawner) {
 						spawners.add(entity);
 					}
@@ -186,7 +186,7 @@ public class Creeper extends EnemyMob {
 	public void die() {
 		// Only drop items if the creeper has not exploded
 		if (!fuseLit) {
-			dropItem(1, 4 - Settings.getIdx("diff"), Items.get("Gunpowder"));
+			dropItem(1, 4 - Settings.getIndex("diff"), Items.get("Gunpowder"));
 		}
 		super.die();
 	}

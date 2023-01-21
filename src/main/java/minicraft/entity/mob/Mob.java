@@ -1,5 +1,7 @@
 package minicraft.entity.mob;
 
+import java.util.Random;
+
 import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
@@ -39,6 +41,9 @@ public abstract class Mob extends Entity {
     protected int walkTime;
     public int speed; // Mob walk speed
     public int tickTime = 0; // Incremented whenever tick() is called, is effectively the age in ticks
+    
+    /** Random value for all the mob instances **/
+    protected static final Random random = new Random();
 
     /**
      * Default constructor for a mob. Default x radius is 4, and y radius is 3.
@@ -77,8 +82,7 @@ public abstract class Mob extends Entity {
             hurtTime--; // If a timer preventing damage temporarily is set, decrement it's value
         }
 
-        /// The code below checks the direction of the knockback, moves the Mob
-        /// accordingly, and brings the knockback closer to 0.
+        // The code below checks the direction of the knockback, moves the Mob accordingly, and brings the knockback closer to 0.
         int xd = 0, yd = 0;
         if (xKnockback != 0) {
             xd = (int) Math.ceil(xKnockback / 2);
@@ -99,7 +103,7 @@ public abstract class Mob extends Entity {
 
     private boolean move(int xa, int ya, boolean changeDir) { // knockback shouldn't change mob direction
         if (level == null) {
-            return false; // stopped b/c there's no level to move in!
+            return false; // stopped because there's no level to move in!
         }
         
         @SuppressWarnings("unused")
@@ -108,7 +112,7 @@ public abstract class Mob extends Entity {
         @SuppressWarnings("unused")
         int oldyt = y >> 4;
 
-		// These should return true b/c the mob is still technically moving; these are just to make it move *slower*.
+		// These should return true because the mob is still technically moving; these are just to make it move *slower*.
 		if (tickTime % 2 == 0 && (isSwimming() || (!(this instanceof Player) && isWooling()))) {
 			return true;
 		}
@@ -142,7 +146,9 @@ public abstract class Mob extends Entity {
     }
 
     private boolean isWooling() { // supposed to walk at half speed on wool
-        if (level == null) return false;
+        if (level == null)  {
+        	return false;
+        }
         Tile tile = level.getTile(x >> 4, y >> 4);
         return tile == Tiles.get("wool");
     }
@@ -154,7 +160,9 @@ public abstract class Mob extends Entity {
      * @return true if the mob is on a light tile, false if not.
      */
     public boolean isLight() {
-        if (level == null) return false;
+        if (level == null) {
+        	return false;
+        }
         return level.isLight(x >> 4, y >> 4);
     }
 
@@ -197,10 +205,10 @@ public abstract class Mob extends Entity {
 	/**
 	 * Executed when a TNT bomb explodes near this mob.
 	 * @param tnt The TNT exploding.
-	 * @param dmg The amount of damage the explosion does.
+	 * @param damage The amount of damage the explosion does.
 	 */
-	public void onExploded(Tnt tnt, int dmg) {
-		doHurt(dmg, getAttackDir(tnt, this));
+	public void onExploded(Tnt tnt, int damage) {
+		doHurt(damage, getAttackDir(tnt, this));
 	}
 
 	// Actually hurt the mob, based on only damage and a direction

@@ -1,7 +1,5 @@
 package minicraft.entity.furniture;
 
-import java.util.Random;
-
 import minicraft.core.io.Settings;
 import minicraft.entity.particle.BrightParticle;
 import minicraft.gfx.Sprite;
@@ -17,7 +15,6 @@ public class Lantern extends Furniture {
 		protected int light;
 		protected int offset;
 		
-
 		Type(String title, int light, int offset) {
 			this.title = title;
 			this.offset = offset;
@@ -27,7 +24,6 @@ public class Lantern extends Furniture {
 
 	public Lantern.Type type;
 
-	private Random rnd = new Random();
 	private int tickTime;
 
 	/**
@@ -60,7 +56,7 @@ public class Lantern extends Furniture {
 
 		// Add bright particles
 		if (tickTime / 6 % 2 == 0 && Settings.get("particles").equals(true)) {
-			level.add(new BrightParticle(x - 10 + rnd.nextInt(14), y - 9 + rnd.nextInt(12)));
+			level.add(new BrightParticle(x - 10 + random.nextInt(14), y - 9 + random.nextInt(12)));
 		}
 	}
 }

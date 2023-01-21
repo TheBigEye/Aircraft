@@ -15,7 +15,7 @@ public enum RelPos {
 	// I think this way, the enums will all be constructed before this gets called,
 	// so there won't be any mishaps with number of values.
 	static {
-		for (RelPos rp : RelPos.values()) {
+		for (RelPos rp : values()) {
 			int ord = rp.ordinal();
 			rp.xIndex = ord % 3;
 			rp.yIndex = ord / 3;
@@ -37,8 +37,7 @@ public enum RelPos {
 	 * aligns it to a point rather than a rect.
 	 */
 	public Point positionRect(Dimension rectSize, Point anchor) {
-		Rectangle bounds = new Rectangle(anchor.x, anchor.y, rectSize.width * 2, rectSize.height * 2,
-				Rectangle.CENTER_DIMS);
+		Rectangle bounds = new Rectangle(anchor.x, anchor.y, rectSize.width * 2, rectSize.height * 2, Rectangle.CENTER_DIMS);
 		return positionRect(rectSize, bounds);
 	}
 

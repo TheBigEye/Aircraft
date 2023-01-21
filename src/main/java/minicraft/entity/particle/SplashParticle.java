@@ -5,7 +5,7 @@ import minicraft.gfx.Sprite;
 
 public class SplashParticle extends Particle implements ClientTickable {
 	/// This is used for boats and when the player swim in the water
-	private static Sprite Sprites = new Sprite(0, 15, 3);
+	private static Sprite sprite = new Sprite(0, 15, 3);
 	private int spriteFrame = 0;
 	
     public double xa, ya, za;
@@ -19,7 +19,7 @@ public class SplashParticle extends Particle implements ClientTickable {
 	 * @param y Y map position
 	 */
 	public SplashParticle(int x, int y) {
-		super(x, y, 32, Sprites);
+		super(x, y, 32, sprite);
 		
 		xx = x;
 		yy = y;
@@ -35,13 +35,9 @@ public class SplashParticle extends Particle implements ClientTickable {
     @Override
 	public void tick() {
 		super.tick();
-     
-        spriteFrame++;
-        if (spriteFrame > 3) {
-        	spriteFrame = 0;
-        }
-        
-        Sprites = new Sprite(spriteFrame, 15, 3);
+            
+        spriteFrame = (spriteFrame + 1) % 4;
+        sprite = new Sprite(spriteFrame, 15, 3);
         
 		// moves each coordinate by the its acceleration
 		xx += xa;

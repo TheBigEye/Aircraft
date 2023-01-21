@@ -11,7 +11,7 @@ public enum PotionType {
 
     Speed(Color.get(1, 23, 46, 23), 4200) {
         public boolean toggleEffect(Player player, boolean addEffect) {
-            player.moveSpeed += (double) (addEffect ? 1 : (player.moveSpeed > 1 ? -1 : 0));
+            player.moveSpeed += (double) (addEffect ? 1 : ((player.moveSpeed > 1) ? -1 : 0));
             return true;
         }
     },
@@ -88,8 +88,7 @@ public enum PotionType {
     }
 
     public boolean transmitEffect() {
-        return true; // any effect which could be duplicated and result poorly should not be sent to
-                     // the server.
+        return true; // any effect which could be duplicated and result poorly should not be sent to the server.
         // for the case of the Health potion, the player health is not transmitted
         // separately until after the potion effect finishes, so having it send just
         // gets the change there earlier.

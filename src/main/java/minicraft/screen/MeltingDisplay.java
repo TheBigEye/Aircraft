@@ -102,9 +102,9 @@ public class MeltingDisplay extends Display {
             return;
         }
 
-        int prevSel = recipeMenu.getSelection();
+        int previousSelection = recipeMenu.getSelection();
         super.tick(input);
-        if (prevSel != recipeMenu.getSelection())
+        if (previousSelection != recipeMenu.getSelection())
             refreshData();
 
         if ((input.getKey("select").clicked || input.getKey("attack").clicked) && recipeMenu.getSelection() >= 0) {

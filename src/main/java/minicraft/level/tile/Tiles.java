@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.tinylog.Logger;
 
+import minicraft.core.Game;
 import minicraft.level.tile.WoolTile.WoolType;
 import minicraft.level.tile.farming.CarrotTile;
 import minicraft.level.tile.farming.FarmTile;
@@ -22,7 +23,7 @@ public final class Tiles {
 	public static ArrayList<String> oldids = new ArrayList<>();
 	private static final HashMap<Short, Tile> tiles = new HashMap<>();
 
-	public static void initTileList() {
+	public static void init() {
 		Logger.debug("Initializing tile list ...");
 
 		tiles.put((short) 0, new GrassTile("Grass"));
@@ -74,7 +75,7 @@ public final class Tiles {
 		tiles.put((short) 42, new WallTile(Tile.Material.Obsidian));
 		tiles.put((short) 43, new WallTile(Tile.Material.Holy));
 
-		tiles.put((short)44, new PathTile("Path"));
+		tiles.put((short) 44, new PathTile("Path"));
 
 		// Wool tiles
 		tiles.put((short) 45, new WoolTile("Wool", WoolType.NORMAL));
@@ -111,7 +112,7 @@ public final class Tiles {
 		tiles.put((short) 71, new TreeTile(TreeTile.TreeType.Pine));
 		tiles.put((short) 72, new SaplingTile("Pine Sapling", Tiles.get("Snow"), Tiles.get("Pine tree")));
 
-		tiles.put((short) 73, new CloudTreeTile("Cloud Tree"));
+		tiles.put((short) 73, new TreeTile(TreeTile.TreeType.Skyroot));
 
 		tiles.put((short) 74, new IceSpikeTile("Ice Spike"));
 		tiles.put((short) 75, new ObsidianTile("Raw Obsidian"));
@@ -124,8 +125,8 @@ public final class Tiles {
 		tiles.put((short) 80, new FerrositeTile("Ferrosite"));
 		tiles.put((short) 81, new SkyFarmTile("Sky Farmland"));
 		tiles.put((short) 82, new HolyRockTile("Holy Rock"));
-		tiles.put((short) 83, new GoldenCloudTreeTile("Golden Cloud Tree"));
-		tiles.put((short) 84, new BlueCloudTreeTile("Blue Cloud Tree"));
+		tiles.put((short) 83, new TreeTile(TreeTile.TreeType.Goldroot));
+		tiles.put((short) 84, new TreeTile(TreeTile.TreeType.Bluroot));
 		tiles.put((short) 85, new SkyFernTile("Sky Fern"));
 		tiles.put((short) 86, new UpRockTile("Up Rock"));
 
@@ -141,7 +142,7 @@ public final class Tiles {
 		// tiles.put((short)?, new SandRockTile("Sand rock"));
 
 		// WARNING: don't use this tile for anything!
-		tiles.put((short)255, new ConnectTile());
+		tiles.put((short) 255, new ConnectTile());
 
 		for (short i = 0; i < 256; i++) {
 			if (tiles.get(i) == null) continue;
@@ -151,7 +152,7 @@ public final class Tiles {
 
 	protected static void add(int id, Tile tile) {
 		tiles.put((short)id, tile);
-		// System.out.println("Adding " + tile.name + " to tile list with id " + id);
+		if (Game.debug) Logger.info("Adding {} to tile list with id {} ...", tile.name, id);
 		tile.id = (short) id;
 	}
 
@@ -250,41 +251,40 @@ public final class Tiles {
 
 	private static int overflowCheck = 0;
 	public static Tile get(String name) {
-		//System.out.println("Getting from tile list: " + name);
+		// if (Game.debug) Logger.info("Getting from tile list: " + name);
 
 		name = name.toUpperCase();
 		overflowCheck++;
 
 		if (overflowCheck > 50) {
-			System.out.println("STACKOVERFLOW prevented in Tiles.get(), on: " + name);
+			Logger.warn("STACKOVERFLOW prevented in Tiles.get(), on: " + name);
 			System.exit(1);
 		}
 
-		//System.out.println("Fetching tile " + name);
-
-		Tile getting = null;
+		// if (Game.debug) Logger.info("Fetching tile " + name);
 
 		boolean isTorch = false;
 		if (name.startsWith("TORCH")) {
 			isTorch = true;
 			name = name.substring(6); // Cuts off torch prefix.
 		}
-
 		if (name.contains("_")) {
 			name = name.substring(0, name.indexOf("_"));
 		}
 
-		for (Tile t: tiles.values()) {
-			if (t == null) continue;
-			if (t.name.equals(name)) {
-				getting = t;
+		Tile getting = null;
+		
+		for (Tile tile: tiles.values()) {
+			if (tile == null) continue;
+			if (tile.name.equals(name)) {
+				getting = tile;
 				break;
 			}
 		}
 
 		if (getting == null) {
-			System.out.println("TILES.GET: Invalid tile requested: " + name);
-			getting = tiles.get((short)0);
+			Logger.warn("TILES.GET: Invalid tile requested: " + name);
+			getting = tiles.get((short) 0);
 		}
 
 		if (isTorch) {
@@ -306,8 +306,8 @@ public final class Tiles {
 			return TorchTile.getTorchTile(get(id - 32767));
 
 		} else {
-			System.out.println("TILES.GET: Unknown tile id requested: " + id);
-			return tiles.get((short)0);
+			Logger.warn("TILES.GET: Unknown tile id requested: " + id);
+			return tiles.get((short) 0);
 		}
 	}
 
@@ -316,11 +316,16 @@ public final class Tiles {
 	}
 
 	public static String getName(String descriptName) {
-		if (!descriptName.contains("_")) return descriptName;
-		int data;
+		if (!descriptName.contains("_")) {
+			return descriptName;
+		}
+		
 		String[] parts = descriptName.split("_");
 		descriptName = parts[0];
+		
+		int data;
 		data = Integer.parseInt(parts[1]);
+		
 		return get(descriptName).getName(data);
 	}
 }

@@ -1,26 +1,20 @@
 package minicraft.entity.mob;
 
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
-import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.furniture.Bed;
-import minicraft.entity.particle.FireParticle;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
-import minicraft.item.Item;
-import minicraft.item.ToolItem;
-import minicraft.item.ToolType;
 import minicraft.level.Level;
 import minicraft.level.tile.DoorTile;
 import minicraft.level.tile.MyceliumTile;
 import minicraft.level.tile.ObsidianTile;
 import minicraft.level.tile.Tile;
+import minicraft.level.tile.WallTile;
 import minicraft.level.tile.farming.FarmTile;
-import minicraft.level.tile.farming.WheatTile;
+import minicraft.level.tile.farming.Plant;
 
 public class EnemyMob extends MobAi {
 
@@ -50,7 +44,7 @@ public class EnemyMob extends MobAi {
      *                    (random walk chance)
      */
     public EnemyMob(int lvl, MobSprite[][][] lvlSprites, int health, boolean isFactor, int detectDist, int lifetime, int rwTime, int rwChance) {
-        super(lvlSprites[0], isFactor ? (lvl == 0 ? 1 : lvl * lvl) * (health + 2) * ((Double) (Math.pow(2, Settings.getIdx("diff")))).intValue() : health, lifetime, rwTime, rwChance);
+        super(lvlSprites[0], isFactor ? (lvl == 0 ? 1 : lvl * lvl) * (health + 2) * ((Double) (Math.pow(2, Settings.getIndex("diff")))).intValue() : health, lifetime, rwTime, rwChance);
         this.lvl = lvl == 0 ? 1 : lvl;
         this.lvlSprites = java.util.Arrays.copyOf(lvlSprites, lvlSprites.length);
         this.detectDist = detectDist;
@@ -58,7 +52,7 @@ public class EnemyMob extends MobAi {
 
     /**
      * Constructor for a hostile (enemy) mob. Lifetime will be set to 60 *
-     * Game.normSpeed.
+     * Game.normalSpeed.
      * 
      * @param lvl        The mob's level.
      * @param lvlSprites The mob's sprites (ordered by level, then direction, then
@@ -74,7 +68,7 @@ public class EnemyMob extends MobAi {
      *                   (random walk chance)
      */
     public EnemyMob(int lvl, MobSprite[][][] lvlSprites, int health, boolean isFactor, int detectDist, int rwTime, int rwChance) {
-        this(lvl, lvlSprites, health + 2, isFactor, detectDist, 60 * Updater.normSpeed, rwTime, rwChance);
+        this(lvl, lvlSprites, health + 2, isFactor, detectDist, 60 * Updater.normalSpeed, rwTime, rwChance);
     }
 
     /**
@@ -92,15 +86,11 @@ public class EnemyMob extends MobAi {
         this(lvl, lvlSprites, health + 2, true, detectDist, 60, 200);
     }
 
-    // Burn
-    public boolean isBurn = false;
-    private int burnTime = 0;
-
     @Override
     public void tick() {
         super.tick();
 
-        if (Settings.get("diff").equals("Peaceful") == false) {
+        if (Settings.get("diff").equals("Peaceful") == false && !Game.isMode("Creative")) {
             Player player = getClosestPlayer();
             
             // checks if player is on zombies level and if there is no time left on randonimity timer
@@ -124,59 +114,12 @@ public class EnemyMob extends MobAi {
             }  
         }
 
-        if (isBurn == true) {
-            burnTime++;
-            if (burnTime >= 128) {
-                burnTime = 0;
-                isBurn = false;
-            }
-            if (burnTime >= 1) {
-                if (random.nextInt(4) == 2) {
-                    if (Settings.get("particles").equals(true)) {
-                        int randX = random.nextInt(10);
-                        int randY = random.nextInt(9);
-                        level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
-                    }
-                    this.hurt(this, 1);
-                }
-            }
-        } else {
-            burnTime = 0; // Check
-        }
-    }
-
-    @Override
-    public int getLightRadius() {
-
-        int lightRadius = 0;
-
-        if (isBurn == true) {
-            lightRadius = 2;
-        } else {
-            lightRadius = 0;
-        }
-
-        return lightRadius;
     }
 
     @Override
     public void render(Screen screen) {
         sprites = lvlSprites[lvl - 1];
         super.render(screen);
-    }
-
-    public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
-        if (isBurn)
-            return false;
-
-        if (item instanceof ToolItem) {
-            if (((ToolItem) item).type == ToolType.Igniter) {
-                isBurn = true;
-                ((ToolItem) item).payDurability();
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
@@ -205,24 +148,29 @@ public class EnemyMob extends MobAi {
      * @return true if the mob can spawn here, false if not.
      */
     public static boolean checkStartPos(Level level, int x, int y) {
-        int r = (level.depth == -4 ? (Game.isMode("score") ? 22 : 15) : 13);
+        int r = level.depth == -4 ? (Game.isMode("score") ? 22 : 15) : 13;
 
+        // Move the check for start position to the beginning of the method
         if (!MobAi.checkStartPos(level, x, y, 60, r)) {
             return false;
         }
 
-        x = x >> 4;
-        y = y >> 4;
+        Tile tile = level.getTile(x >> 4, x >> 4);
 
-        Tile t = level.getTile(x, y);
-        if (t instanceof ObsidianTile) {
+        // Check for ObsidianTile first, since it is the most likely condition
+        if (tile instanceof ObsidianTile) {
             return true;
-        } else if (level.depth != -4 && !(t instanceof DoorTile ||t instanceof WheatTile || t instanceof FarmTile || t instanceof MyceliumTile)) {
-            return !level.isLight(x, y);
-        } else {
-            return false;
         }
+        // Check for depth to avoid unnecessary checks
+        if (level.depth != -4) {
+            if (tile instanceof DoorTile || tile instanceof WallTile|| tile instanceof Plant || tile instanceof FarmTile || tile instanceof MyceliumTile) {
+                return false;
+            }
+            return !level.isLight(x >> 4, x >> 4);
+        }
+        return false;
     }
+
 
     @Override
     public int getMaxLevel() {

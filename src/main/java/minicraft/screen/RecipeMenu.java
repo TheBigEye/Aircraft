@@ -22,6 +22,6 @@ class RecipeMenu extends ItemListMenu {
     }
 
     protected RecipeMenu(List<Recipe> recipes, String title, Player player) {
-        super(getAndSortRecipes(recipes, player), title);
+        super (getAndSortRecipes(recipes, player), title);
     }
 }

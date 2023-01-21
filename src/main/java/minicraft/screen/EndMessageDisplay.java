@@ -1,7 +1,6 @@
 package minicraft.screen;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import minicraft.core.Game;
 import minicraft.core.Updater;
@@ -19,24 +18,19 @@ import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
 
 public class EndMessageDisplay extends Display {
-	private static String TITLE = "";
-	private static final Random random = new Random();
+	private static final String[] titles = { "Game Over?", "You Win!", "Well played, boy!", "You Win, Awww Man", "Well played!" };
 
-	String[] Titles = { "Game Over?", "Win?", "Win??", "Win???", "The End?" };
-
-	private int inputDelay; // variable to delay the input of the player, so they won't skip the won menu by
-							// accident.
+	private int inputDelay; // variable to delay the input of the player, so they won't skip the won menu by accident.
 	private int displayTimer;
 	private int finalscore;
 
 	public EndMessageDisplay(Player player) {
 		super(false, false);
 
-		displayTimer = Updater.normSpeed; // wait 3 seconds before rendering the menu.
-		inputDelay = Updater.normSpeed / 2; // wait a half-second after rendering before allowing user input.
+		displayTimer = Updater.normalSpeed; // wait 3 seconds before rendering the menu.
+		inputDelay = Updater.normalSpeed / 2; // wait a half-second after rendering before allowing user input.
 
 		ArrayList<ListEntry> entries = new ArrayList<>();
-		EndMessageDisplay.TITLE = Titles[random.nextInt(Titles.length)];
 
 		entries.add(new StringEntry("lol", Color.GREEN));
 		entries.add(new BlankEntry());
@@ -44,7 +38,10 @@ public class EndMessageDisplay extends Display {
 		entries.add(new SelectEntry("Exit to Menu", () -> Game.setDisplay(new TitleDisplay())));
 
 		menus = new Menu[] {
-				new Menu.Builder(true, 1, RelPos.LEFT, entries).setPositioning(new Point(SpriteSheet.boxWidth, SpriteSheet.boxWidth * 4), RelPos.BOTTOM_RIGHT).setTitle(TITLE).createMenu() 
+			new Menu.Builder(true, 1, RelPos.LEFT, entries)
+			.setPositioning(new Point(SpriteSheet.boxWidth, SpriteSheet.boxWidth * 4), RelPos.BOTTOM_RIGHT)
+			.setTitle(titles[random.nextInt(titles.length)])
+			.createMenu() 
 		};
 	}
 
@@ -52,11 +49,9 @@ public class EndMessageDisplay extends Display {
 	public void tick(InputHandler input) {
 		if (displayTimer > 0) {
 			displayTimer--;
-		}
-		else if (inputDelay > 0) {
+		} else if (inputDelay > 0) {
 			inputDelay--;
-		}
-		else {
+		} else {
 			super.tick(input);
 		}
 	}
@@ -88,7 +83,7 @@ public class EndMessageDisplay extends Display {
 			entries[i] = new StringEntry("Unlocked! " + unlocks.get(i) + " Score Time");
 		}
 
-		new Save(); // writes unlocks, and preferences
+		new Save(); // writes unlocks and preferences
 
 		return entries;
 	}

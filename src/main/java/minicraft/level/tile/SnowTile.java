@@ -40,7 +40,7 @@ public class SnowTile extends Tile {
 
     protected SnowTile(String name) {
         super(name, (ConnectorSprite) null);
-        csprite = sprite;
+        connectorSprite = sprite;
         connectsToSnow = true;
         maySpawn = true;
     }
@@ -71,13 +71,13 @@ public class SnowTile extends Tile {
         boolean steppedOn = level.getData(x, y) > 0;
 
         if (steppedOn) {
-            csprite.full = SnowTile.steppedOn_sprite;
+            connectorSprite.full = SnowTile.steppedOn_sprite;
         } else {
-            csprite.full = SnowTile.normal_sprite;
+            connectorSprite.full = SnowTile.normal_sprite;
         }
 
-        csprite.sparse.color = DirtTile.dCol(level.depth);
-        csprite.render(screen, level, x, y);
+        connectorSprite.sparse.color = DirtTile.dCol(level.depth);
+        connectorSprite.render(screen, level, x, y);
     }
 
     @Override

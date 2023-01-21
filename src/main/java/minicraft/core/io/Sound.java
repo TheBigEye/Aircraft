@@ -128,7 +128,7 @@ public class Sound {
 
     private Clip clip;
     private FloatControl volumeControl;
-    private Thread fadeThread;
+    private Thread soundFadeThread;
 
     public static void init() {
     	Logger.debug("Initializing sound engine ...");
@@ -186,9 +186,9 @@ public class Sound {
                 }
             });
 
-        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException exception) {
             Logger.error("Could not load sound file " + name);
-            e.printStackTrace();
+            exception.printStackTrace();
         }
     }
     
@@ -196,7 +196,7 @@ public class Sound {
     public void playOnWorld(int x, int y) {
     	Player player = Game.levels[Game.currentLevel].getClosestPlayer(x, y);
     	
-        if (!(boolean) Settings.get("sound") || player == null) {
+        if (!Settings.getBoolean("sound") || player == null) {
             return;
         }
         
@@ -220,7 +220,7 @@ public class Sound {
         clip.start();
 
         // Start a separate thread to gradually fade the sound as the player moves away
-        fadeThread = new Thread(() -> {
+        soundFadeThread = new Thread(() -> {
             while (volumeControl.getValue() > volumeControl.getMinimum() && clip.isRunning()) {
                 // Calculate the new volume based on the current volume and the fade rate
                 float newVolume = volumeControl.getValue() - (0.1f * fadeRate);
@@ -230,17 +230,17 @@ public class Sound {
                 }
                 try {
                     Thread.sleep(2); // Adjust this value to control how often the volume is decreased
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                } catch (InterruptedException exception) {
+                    exception.printStackTrace();
                 }
             }
             clip.stop();
-        });
-        fadeThread.start();
+        }, "Sound fade Thread");
+        soundFadeThread.start();
     }
 
     public void playOnGui() {
-        if (!(boolean) Settings.get("sound") || clip == null) {
+        if (!Settings.getBoolean("sound") || clip == null) {
             return;
         }
 
@@ -254,7 +254,7 @@ public class Sound {
 
     public void loop(boolean start) {
         if (start) {
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            clip.loop(-1);
         } else {
             clip.stop();
         }

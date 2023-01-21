@@ -40,7 +40,7 @@ public class GiantBossMob extends MobAi {
             int rwTime, int rwChance) {
         super(lvlSprites[0],
                 isFactor ? (lvl == 0 ? 1 : lvl * lvl) * health
-                        * ((Double) (Math.pow(2, Settings.getIdx("diff")))).intValue() : health,
+                        * ((Double) (Math.pow(2, Settings.getIndex("diff")))).intValue() : health,
                 lifetime, rwTime, rwChance);
         this.lvl = lvl == 0 ? 1 : lvl;
         this.lvlSprites = java.util.Arrays.copyOf(lvlSprites, lvlSprites.length);
@@ -49,7 +49,7 @@ public class GiantBossMob extends MobAi {
 
     /**
      * Constructor for a hostile (boss) mob. Lifetime will be set to 60 *
-     * Game.normSpeed.
+     * Game.normalSpeed.
      * 
      * @param lvl        The mob's level.
      * @param lvlSprites The mob's sprites (ordered by level, then direction, then
@@ -66,7 +66,7 @@ public class GiantBossMob extends MobAi {
      */
     public GiantBossMob(int lvl, MobSprite[][][] lvlSprites, int health, boolean isFactor, int detectDist, int rwTime,
             int rwChance) {
-        this(lvl, lvlSprites, health, isFactor, detectDist, 60 * Updater.normSpeed, rwTime, rwChance);
+        this(lvl, lvlSprites, health, isFactor, detectDist, 60 * Updater.normalSpeed, rwTime, rwChance);
     }
 
     /**
@@ -146,8 +146,8 @@ public class GiantBossMob extends MobAi {
             return false;
         }
 
-        x = x >> 4;
-        y = y >> 4;
+        x >>= 4;
+        y >>= 4;
 
         Tile tile = level.getTile(x >> 4, y >> 4);
         return tile == Tiles.get("Grass") || tile == Tiles.get("Flower");

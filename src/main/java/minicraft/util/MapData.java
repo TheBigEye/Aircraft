@@ -13,7 +13,10 @@ public enum MapData {
     ORANGE_TULIP(Tiles.get("Orange Tulip").id, Color.get(1, 96, 165, 96)),
 
     DIRT(Tiles.get("Dirt").id, Color.get(1, 131, 108, 108)),
+    MYCELIUM(Tiles.get("Mycelium").id, Color.get(1, 120, 105, 105)),
     FLOWER(Tiles.get("Flower").id, Color.get(1, 96, 165, 96)),
+    RED_MUSHROOM(Tiles.get("Red Mushroom").id, Color.get(1, 117, 102, 102)),
+    BROWN_MUSHROOM(Tiles.get("Brown Mushroom").id, Color.get(1, 117, 102, 102)),
     HOLE(Tiles.get("Hole").id, Color.get(1, 61, 47, 8)),
 
     WATER(Tiles.get("Water").id, Color.get(1, 26, 44, 137)),
@@ -47,6 +50,7 @@ public enum MapData {
     OBSIDIAN_FLOOR(Tiles.get("Obsidian").id, Color.get(1, 76, 30, 100)),
     OBSIDIAN_WALL(Tiles.get("Obsidian Wall").id, Color.get(1, 46, 24, 118)),
     OBSIDIAN_DOOR(Tiles.get("Obsidian Door").id, Color.get(1, 44, 21, 67)),
+    RAW_OBSIDIAN(Tiles.get("Raw Obsidian").id, Color.get(1, 73, 28, 98)),
 
     // Wools in the map
     WOOL(Tiles.get("Wool").id, Color.get(1, 220, 220, 220)),
@@ -74,9 +78,9 @@ public enum MapData {
     CLOUD_CACTUS(Tiles.get("Cloud Cactus").id, Color.WHITE),
 
     FERROSITE(Tiles.get("Ferrosite").id, Color.get(1, 203, 197, 121)),
-    CLOUD_TREE(Tiles.get("Cloud Tree").id, Color.get(1, 71, 112, 68)),
-    GOLDEN_CLOUD_TREE(Tiles.get("Golden Cloud Tree").id, Color.get(1, 187, 161, 79)),
-    BLUE_CLOUD_TREE(Tiles.get("Blue Cloud Tree").id, Color.get(1, 0, 118, 158)),
+    SKYROOT_TREE(Tiles.get("Skyroot Tree").id, Color.get(1, 71, 112, 68)),
+    GOLDROOT_TREE(Tiles.get("Goldroot Tree").id, Color.get(1, 187, 161, 79)),
+    BLUROOT_TREE(Tiles.get("Bluroot Tree").id, Color.get(1, 0, 118, 158)),
     HOLY_ROCK(Tiles.get("Holy Rock").id, Color.get(1, 97, 147, 126)),
     SKY_LAWN(Tiles.get("Sky Lawn").id, Color.get(1, 86, 163, 131)),
     SKY_HIGH_GRASS(Tiles.get("Sky High Grass").id, Color.get(1, 79, 150, 120)),
@@ -98,7 +102,7 @@ public enum MapData {
     MapData(int id, int color) {
         tileID = id;
         this.color = color;
-    }
+    }   
 
     public static MapData getById(int id) {
         return MapData.BY_ID.get(id);

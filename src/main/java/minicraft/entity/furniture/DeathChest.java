@@ -28,10 +28,10 @@ public class DeathChest extends Chest {
 		String difficulty = (String) Settings.get("diff");
 
 		/// set the expiration time based on the world difficulty.
-		if (difficulty == "Peaceful") time = 300 * Updater.normSpeed;
-		else if (difficulty =="Easy") time = 200 * Updater.normSpeed;
-		else if (difficulty =="Normal") time = 120 * Updater.normSpeed;
-		else if (difficulty =="Hard") time = 30 * Updater.normSpeed;
+		if (difficulty == "Peaceful") time = 300 * Updater.normalSpeed;
+		else if (difficulty =="Easy") time = 200 * Updater.normalSpeed;
+		else if (difficulty =="Normal") time = 120 * Updater.normalSpeed;
+		else if (difficulty =="Hard") time = 30 * Updater.normalSpeed;
 	}
 
 	public DeathChest(Player player) {
@@ -51,7 +51,7 @@ public class DeathChest extends Chest {
 			remove();
 		}
 
-		if (time < 30 * Updater.normSpeed) { // if there is less than 30 seconds left...
+		if (time < 30 * Updater.normalSpeed) { // if there is less than 30 seconds left...
 			redtick += reverse ? -1 : 1; // inc/dec-rement redtick, changing the red shading.
 
 			/// these two statements keep the red color oscillating.
@@ -76,7 +76,7 @@ public class DeathChest extends Chest {
 	@Override
 	public void render(Screen screen) {
 		super.render(screen);
-		String timeString = (time / Updater.normSpeed) + "S";
+		String timeString = (time / Updater.normalSpeed) + "S";
 		Font.draw(timeString, screen, x - Font.textWidth(timeString) / 2, y - Font.textHeight() - getBounds().getHeight() / 2, Color.WHITE);
 	}
 

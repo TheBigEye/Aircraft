@@ -113,14 +113,14 @@ public class EyeQueenPhase3 extends EnemyMob {
     protected void delay(long milis) {
         try {
             Thread.sleep(milis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException exception) {
+            exception.printStackTrace();
         }
     }
 
     @SuppressWarnings("unused")
     public void die() {
-        Player player = getClosestPlayer();
+        //Player player = getClosestPlayer();
 
         int min = 0;
         int max = 0;

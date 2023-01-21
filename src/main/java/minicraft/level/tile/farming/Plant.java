@@ -26,33 +26,36 @@ public class Plant extends FarmTile {
     }
 
     @Override
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+    public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
         harvest(level, x, y, source);
         return true;
     }
 
     @Override
     public boolean tick(Level level, int xt, int yt) {
-        if (random.nextInt(2) == 0)
+        if (random.nextInt(2) == 0) {
             return false;
+        }
 
         int age = level.getData(xt, yt);
         if (age < maxAge) {
-            if (!IfWater(level, xt, yt))
+            if (!ifWater(level, xt, yt)) {
                 level.setData(xt, yt, age + 1);
-            else if (IfWater(level, xt, yt))
+            } else if (ifWater(level, xt, yt)) {
                 level.setData(xt, yt, age + 2);
+            }
             return true;
         }
-
         return false;
     }
 
-    protected boolean IfWater(Level level, int xs, int ys) {
+    protected boolean ifWater(Level level, int xs, int ys) {
         Tile[] areaTiles = level.getAreaTiles(xs, ys, 2);
-        for (Tile t : areaTiles)
-            if (t == Tiles.get("Water"))
+        for (Tile tile : areaTiles) {
+            if (tile == Tiles.get("Water")) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -62,11 +65,11 @@ public class Plant extends FarmTile {
      * special behavior.
      */
     protected void harvest(Level level, int x, int y, Entity entity) {
-        if (entity instanceof ItemEntity || entity instanceof VillagerMob)
+        if (entity instanceof ItemEntity || entity instanceof VillagerMob) {
             return;
+        }
+        
         int age = level.getData(x, y);
-
-        // level.dropItem(x * 16 + 8, y * 16 + 8, 1, Items.get(name + " Seeds"));
 
         int count = 0;
         if (age >= maxAge) {
@@ -75,14 +78,18 @@ public class Plant extends FarmTile {
             count = random.nextInt(2) + 1;
         }
 
-        level.dropItem(x * 16 + 8, y * 16 + 8, count, Items.get(name));
+        level.dropItem((x << 4) + 8, (y << 4) + 8, count, Items.get(name));
 
         if (age >= maxAge && entity instanceof Player) {
             ((Player) entity).addScore(random.nextInt(5) + 1);
         }
         
         Sound.genericHurt.playOnGui();
-
-        level.setTile(x, y, Tiles.get("Dirt"));
+        
+        if (random.nextBoolean()) {
+        	level.setTile(x, y, Tiles.get("Dirt"));
+        } else {
+        	level.setTile(x, y, Tiles.get("Farmland"));
+        }
     }
 }

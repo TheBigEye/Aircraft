@@ -14,7 +14,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class SkyLawnTile extends Tile {
-	private static Sprite sprite = new Sprite(52, 10, 1);
+	private static final Sprite sprite = new Sprite(52, 10, 1);
 
 	protected SkyLawnTile(String name) {
 		super(name, (ConnectorSprite) null);
@@ -23,9 +23,9 @@ public class SkyLawnTile extends Tile {
 	}
 
 	@Override
-	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+	public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
 		if (random.nextInt(12) == 1) { // 20% chance to drop sky seeds
-			level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));
+			level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Sky Seeds"));
 		}
 		level.setTile(x, y, Tiles.get("Sky grass"));
 		return true;
@@ -41,7 +41,7 @@ public class SkyLawnTile extends Tile {
 					Sound.genericHurt.playOnGui();
 
 					if (random.nextInt(20) == 1) { // 20% chance to drop sky seeds
-						level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Sky Seeds"));
+						level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Sky Seeds"));
 					}
 
 					return true;
@@ -56,10 +56,10 @@ public class SkyLawnTile extends Tile {
 		Tiles.get("Sky grass").render(screen, level, x, y);
 
 		int data = level.getData(x, y);
-		int shape = (data / 16) % 2;
+		int shape = (data >> 4) % 2;
 
-		x = x << 4;
-		y = y << 4;
+		x <<= 4;
+		y <<= 4;
 
 		sprite.render(screen, x + 8 * shape, y);
 		sprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);

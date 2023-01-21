@@ -27,7 +27,7 @@ public class JungleGrassTile extends Tile {
 
 	protected JungleGrassTile(String name) {
 		super(name, sprite);
-		csprite.sides = csprite.sparse;
+		connectorSprite.sides = connectorSprite.sparse;
 		connectsToJungleGrass = true;
 		maySpawn = true;
 	}

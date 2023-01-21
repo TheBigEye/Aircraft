@@ -28,7 +28,7 @@ public class CloudTile extends Tile {
 	
 	private int tickTime = 0;
 
-	public static int CloudCol(int depth) {
+	public static int cloudColor(int depth) {
 		return Color.get(1, 201, 201, 201);
 	}
 

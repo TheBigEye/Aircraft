@@ -43,10 +43,10 @@ public class Bed extends Furniture {
 
 		if (!(Updater.tickCount >= Updater.sleepStartTime || Updater.tickCount < Updater.sleepEndTime && Updater.pastDay1)) {
 			// it is too early to sleep; display how much time is remaining.
-			// gets the seconds until sleeping allowed. normSpeed is in tiks/sec.
-			int sec = (int) Math.ceil((Updater.sleepStartTime - Updater.tickCount) * 1.0 / Updater.normSpeed); 
+			// gets the seconds until sleeping allowed. normalSpeed is in tiks/sec.
+			int seconds = (int) Math.ceil((Updater.sleepStartTime - Updater.tickCount) * 1.0 / Updater.normalSpeed); 
 
-			String note = "Can't sleep! " + (sec / 60) + "Min " + (sec % 60) + " Sec left!";
+			String note = "Can't sleep! " + (seconds / 60) + "Min " + (seconds % 60) + " Sec left!";
 			Game.notifications.add(note); // Add the notification displaying the time remaining in minutes and seconds.
 			return false;
 		}

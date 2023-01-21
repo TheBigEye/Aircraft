@@ -11,7 +11,7 @@ import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
 
 public class EyeQueen extends EnemyMob {
-    private static final MobSprite[][][] sprites = new MobSprite[2][2][2];
+    private static final MobSprite[][][] sprites = new MobSprite[1][1][1];
 
     static {
         sprites[0][0][0] = new MobSprite(64, 0, 4, 4, 0);
@@ -22,14 +22,15 @@ public class EyeQueen extends EnemyMob {
     public static EyeQueen entity = null;
     
     private int tickTime = 0;
-    public static int length = 0;
+    public static int length;
     
     public EyeQueen(int lvl) {
         super(5, sprites, 24000, false, 16 * 8, -1, 10, 50);
         
         active = true;
         entity = this;
-        
+        beaten = false;
+
         walkTime = 2;
     }
 
@@ -46,8 +47,9 @@ public class EyeQueen extends EnemyMob {
         tickTime++;
         
         length = health / (maxHealth / 100);
+        int spriteMirror = random.nextInt(1);
 
-        Player player = getClosestPlayer();
+        Player player = level.getClosestPlayer(x, y);
         if (player != null && randomWalkTime == 0) { // if there is a player around, and the walking is not random
             int xd = player.x - x; // the horizontal distance between the player and the air wizard.
             int yd = player.y - y; // the vertical distance between the player and the air wizard.
@@ -66,22 +68,22 @@ public class EyeQueen extends EnemyMob {
                 
                 if (yd > 1) { // up
                 	if (tickTime /12 %2 == 0) {
-                		sprites[0][0][0] = new MobSprite(64, 0, 4, 4, random.nextInt(1)); // up 1
+                		sprites[0][0][0] = new MobSprite(64, 0, 4, 4, spriteMirror); // up 1
                 	} else {
                 		if (random.nextBoolean()) {
-                			sprites[0][0][0] = new MobSprite(68, 0, 4, 4, random.nextInt(1)); // up 2
+                			sprites[0][0][0] = new MobSprite(68, 0, 4, 4, spriteMirror); // up 2
                 		} else {
-                			sprites[0][0][0] = new MobSprite(72, 0, 4, 4, random.nextInt(1)); // up 2
+                			sprites[0][0][0] = new MobSprite(72, 0, 4, 4, spriteMirror); // up 2
                 		}
                 	}
                 } else if (yd < 1) { // down
                 	if (tickTime /12 %2 == 0) {
-                		sprites[0][0][0] = new MobSprite(64, 8, 4, 4, random.nextInt(1)); // down 1
+                		sprites[0][0][0] = new MobSprite(64, 8, 4, 4, spriteMirror); // down 1
                 	} else {
                 		if (random.nextBoolean()) {
-                			sprites[0][0][0] = new MobSprite(68, 8, 4, 4, random.nextInt(1)); // up 2
+                			sprites[0][0][0] = new MobSprite(68, 8, 4, 4, spriteMirror); // up 2
                 		} else {
-                			sprites[0][0][0] = new MobSprite(72, 8, 4, 4, random.nextInt(1)); // up 2
+                			sprites[0][0][0] = new MobSprite(72, 8, 4, 4, spriteMirror); // up 2
                 		}
                 	}
                 }
@@ -164,36 +166,8 @@ public class EyeQueen extends EnemyMob {
         }
     }
 
-    @SuppressWarnings("unused")
-    public void die() {
-        int min = 0;
-        int max = 0;
 
-        if (Settings.get("diff").equals("Peaceful")) {
-            min = 1;
-            max = 3;
-        }
-        if (Settings.get("diff").equals("Easy")) {
-            min = 1;
-            max = 3;
-        }
-        if (Settings.get("diff").equals("Normal")) {
-            min = 1;
-            max = 2;
-        }
-        if (Settings.get("diff").equals("Hard")) {
-            min = 0;
-            max = 2;
-        }
-        
-        /*if (Settings.get("particles").equals(true)) {
-            int randX = rnd.nextInt(16);
-            int randY = rnd.nextInt(16);
-            level.add(new FireParticle(x - 0 + randX, y - 0 + randY));
-            level.add(new FireParticle(x - 32 + randX, y - 24 + randY));
-            level.add(new FireParticle(x - 26 + randX, y - 14 + randY));
-        }*/
-
+    public void die() {    
         Sound.Mob_eyeBoss_changePhase.playOnGui();
         
         beaten = true;
@@ -201,7 +175,6 @@ public class EyeQueen extends EnemyMob {
         entity = null;
         
         super.die();
-        //level.add(new EyeQueenPhase2(1), x, y);
     }
     
 	@Override

@@ -14,7 +14,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class OrangeTulipTile extends Tile {
-	private static Sprite sprite = new Sprite(4, 9, 1);
+	private static final Sprite sprite = new Sprite(4, 9, 1);
 
 	protected OrangeTulipTile(String name) {
 		super(name, (ConnectorSprite) null);
@@ -23,8 +23,8 @@ public class OrangeTulipTile extends Tile {
 	}
 
 	@Override
-	public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-		level.dropItem(x * 16 + 8, y * 16 + 8, 1, 1, Items.get("Orange Tulip"));
+	public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
+		level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 1, Items.get("Orange Tulip"));
 		level.setTile(x, y, Tiles.get("Grass"));
 		return true;
 	}
@@ -37,7 +37,7 @@ public class OrangeTulipTile extends Tile {
 				if (player.payStamina(2 - tool.level) && tool.payDurability()) {
 					level.setTile(x, y, Tiles.get("Grass"));
 					Sound.genericHurt.playOnGui();
-					level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Orange Tulip"));
+					level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Orange Tulip"));
 					return true;
 				}
 			}
@@ -50,10 +50,10 @@ public class OrangeTulipTile extends Tile {
 		Tiles.get("Grass").render(screen, level, x, y);
 
 		int data = level.getData(x, y);
-		int shape = (data / 16) % 2;
+		int shape = (data >> 4) % 2;
 
-		x = x << 4;
-		y = y << 4;
+		x <<= 4;
+		y <<= 4;
 
 		sprite.render(screen, x + 8 * shape, y);
 		sprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);

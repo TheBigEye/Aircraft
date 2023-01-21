@@ -25,7 +25,7 @@ public class SkyHighGrassTile extends Tile {
 
     protected SkyHighGrassTile(String name) {
 		super(name, sprite);
-		csprite.sides = csprite.sparse;
+		connectorSprite.sides = connectorSprite.sparse;
         connectsToSkyHighGrass = true;
         maySpawn = true;
     }

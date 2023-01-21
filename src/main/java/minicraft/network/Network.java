@@ -40,13 +40,13 @@ public class Network extends Game {
 				} else {
 					latestVersion = new VersionInfo(new JSONObject(response.getBody().getArray().getJSONObject(0).toString()));
 				}
-			} catch (UnirestException e) {
-				e.printStackTrace();
+			} catch (UnirestException exception) {
+				exception.printStackTrace();
 				latestVersion = new VersionInfo(VERSION, "", "");
 			}
 
 			callback.act(); // finished.
-		}).start();
+		}, "Version check Thread").start();
 	}
 
 	@Nullable

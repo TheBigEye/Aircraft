@@ -24,17 +24,17 @@ public class WheatTile extends Plant {
 
         Tiles.get("Farmland").render(screen, level, x, y);
 
-        screen.render(x * 16 + 0, y * 16 + 0, 13 + 0 * 32 + icon, 0, 1);
-        screen.render(x * 16 + 8, y * 16 + 0, 13 + 0 * 32 + icon, 0, 1);
-        screen.render(x * 16 + 0, y * 16 + 8, 13 + 0 * 32 + icon, 1, 1);
-        screen.render(x * 16 + 8, y * 16 + 8, 13 + 0 * 32 + icon, 1, 1);
+        screen.render((x << 4) + 0, (y << 4) + 0, 13 + 0 * 32 + icon, 0, 1);
+        screen.render((x << 4) + 8, (y << 4) + 0, 13 + 0 * 32 + icon, 0, 1);
+        screen.render((x << 4) + 0, (y << 4) + 8, 13 + 0 * 32 + icon, 1, 1);
+        screen.render((x << 4) + 8, (y << 4) + 8, 13 + 0 * 32 + icon, 1, 1);
     }
 
     @Override
-    protected boolean IfWater(Level level, int xs, int ys) {
+    protected boolean ifWater(Level level, int xs, int ys) {
         Tile[] areaTiles = level.getAreaTiles(xs, ys, 3);
-        for (Tile t : areaTiles) {
-            if (t == Tiles.get("Water")) {
+        for (Tile tile : areaTiles) {
+            if (tile == Tiles.get("Water")) {
                 return true;
             }
         }
@@ -48,13 +48,9 @@ public class WheatTile extends Plant {
             return;
         }
         
-        if (entity instanceof Player) {
-        	return;
-        }
-
         int age = level.getData(x, y);
 
-        level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("seeds"));
+        level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 2, Items.get("Seeds"));
 
         int count = 0;
         if (age >= maxAge) {
@@ -63,7 +59,7 @@ public class WheatTile extends Plant {
             count = random.nextInt(2);
         }
 
-        level.dropItem(x * 16 + 8, y * 16 + 8, count, Items.get("Wheat"));
+        level.dropItem((x << 4) + 8, (y << 4) + 8, count, Items.get("Wheat"));
 
         if (age >= maxAge && entity instanceof Player) {
             ((Player) entity).addScore(random.nextInt(4) + 1);

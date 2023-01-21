@@ -1,18 +1,11 @@
 package minicraft.entity.mob;
 
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
-import minicraft.entity.Direction;
-import minicraft.entity.particle.FireParticle;
 import minicraft.entity.particle.HeartParticle;
 import minicraft.gfx.MobSprite;
 import minicraft.gfx.Screen;
-import minicraft.item.Item;
-import minicraft.item.ToolItem;
-import minicraft.item.ToolType;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
@@ -38,7 +31,7 @@ public class PassiveMob extends MobAi {
      *                     difficulty and then added with 5.
      */
     public PassiveMob(MobSprite[][] sprites, int healthFactor) {
-        super(sprites, 8 + healthFactor * Settings.getIdx("diff"), 5 * 60 * Updater.normSpeed, 45, 40);
+        super(sprites, 8 + healthFactor * Settings.getIndex("diff"), 5 * 60 * Updater.normalSpeed, 45, 40);
     }
 
     @Override
@@ -46,51 +39,11 @@ public class PassiveMob extends MobAi {
         super.render(screen);
     }
 
-    // Burn
-    public boolean isBurn = false;
-    private int burnTime;
-
     public void tick() {
         super.tick();
         tickTime++;
-
-        if (isBurn == true) {
-        	if (tickTime / 16 % 4 == 0 && burnTime < 128) {
-                if (Settings.get("Particles").equals(true)) {
-                    int randX = random.nextInt(10);
-                    int randY = random.nextInt(9);
-
-                    level.add(new FireParticle(x - 4 + randX, y - 4 + randY));
-                }
-                this.hurt(this, 1);
-                burnTime++;
-        	}
-            
-        	if (level.getTile(x / 16, y / 16) == Tiles.get("Water")) {
-            	burnTime = 0;
-            	isBurn = false;
-        	}
-            if (burnTime > 128) {
-            	burnTime = 0;
-            	isBurn = false;
-            }
-        }
     }
 
-    @Override
-    public int getLightRadius() {
-
-        int lightRadius = 0;
-
-        if (isBurn == true) {
-            lightRadius = 2;
-        } else {
-            lightRadius = 0;
-        }
-
-        return lightRadius;
-    }
-    
     public void followOnHold(int followRadius, String item, boolean heartParticles) {
     	Player player = level.getClosestPlayer(x, y);
     	// This is true if the player isnt null, the active item also isnt null, the player is holding the item and within the followRadius
@@ -115,24 +68,9 @@ public class PassiveMob extends MobAi {
     	
     	if (heartParticles) {
 		    if (Settings.get("particles").equals(true) && tickTime /8 %12 == 0) {
-		        int randX = random.nextInt(8);
-		        level.add(new HeartParticle(x - 2 + randX, y - 16));
+		        level.add(new HeartParticle(x - 2 + random.nextInt(8), y - 16));
 		    }
     	}
-    }
-
-    public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
-        if (isBurn)
-            return false;
-
-        if (item instanceof ToolItem) {
-            if (((ToolItem) item).type == ToolType.Igniter) {
-                isBurn = true;
-                ((ToolItem) item).payDurability();
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
@@ -159,8 +97,6 @@ public class PassiveMob extends MobAi {
      * @return true if the mob can spawn here, false if not.
      */
     public static boolean checkStartPos(Level level, int x, int y) {
-
-    	// get no-mob radius by
         int r = (Game.isMode("score") ? 22 : 15) + (Updater.getTime() == Updater.Time.Night ? 0 : 5); 
 
         if (!MobAi.checkStartPos(level, x, y, 80, r)) {
@@ -168,7 +104,11 @@ public class PassiveMob extends MobAi {
         }
 
         Tile tile = level.getTile(x >> 4, y >> 4);
-        return tile == Tiles.get("Grass") || tile == Tiles.get("Flower");
+        if (tile == Tiles.get("Grass") || tile == Tiles.get("Flower")) {
+        	return true;
+        }
+        
+        return false;
     }
 
     @Override

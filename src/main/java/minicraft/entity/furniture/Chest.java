@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
 
 import minicraft.core.Game;
 import minicraft.entity.Direction;
@@ -58,9 +59,9 @@ public class Chest extends Furniture implements ItemHolder {
 					}
 				}
 			}
-		} catch (IOException e) {
-			System.out.println("Couldn't read loot table \"" + lootTable + ".txt" + "\"");
-			e.printStackTrace();
+		} catch (IOException exception) {
+			Logger.error("Couldn't read loot table \"" + lootTable + ".txt" + "\"");
+			exception.printStackTrace();
 		}
 	}
 

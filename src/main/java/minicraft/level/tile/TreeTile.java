@@ -9,6 +9,7 @@ import minicraft.entity.Entity;
 import minicraft.entity.mob.Firefly;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
+import minicraft.entity.mob.boss.AirWizard;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.gfx.Color;
@@ -33,10 +34,10 @@ public class TreeTile extends Tile {
 	public enum TreeType {
 		Oak(
 			new Sprite[] {
-		 		new Sprite(0, 0, 1), new Sprite(1, 0, 1),   // [0] [1]
-		 		new Sprite(0, 1, 1), new Sprite(1, 1, 1),   // [2] [3]
-		 		new Sprite(1, 2, 1), 						// [-] [4]
-		 		new Sprite(1, 3, 1)  						// [-] [5]
+		 		new Sprite(0, 34, 1), new Sprite(1, 34, 1),   // [0] [1]
+		 		new Sprite(0, 35, 1), new Sprite(1, 35, 1),   // [2] [3]
+		 		new Sprite(1, 36, 1), 						  // [-] [4]
+		 		new Sprite(1, 37, 1)  						  // [-] [5]
 		 		
 			}, "Grass", 
 			new String[] {
@@ -46,10 +47,10 @@ public class TreeTile extends Tile {
 
 		Birch(
 			new Sprite[] {
-		 		new Sprite(0, 28, 1), new Sprite(1, 28, 1),
-		 		new Sprite(0, 29, 1), new Sprite(1, 29, 1),
-		 		new Sprite(1, 30, 1),
-		 		new Sprite(1, 31, 1)
+		 		new Sprite(2, 34, 1), new Sprite(3, 34, 1),
+		 		new Sprite(2, 35, 1), new Sprite(3, 35, 1),
+		 		new Sprite(3, 36, 1),
+		 		new Sprite(3, 37, 1)
 		 		
 			}, "Grass", 
 			new String[] {
@@ -59,10 +60,10 @@ public class TreeTile extends Tile {
 			
 		Red_mushroom(
 			new Sprite[] {
-		 		new Sprite(2, 28, 1), new Sprite(3, 28, 1),
-		 		new Sprite(2, 29, 1), new Sprite(3, 29, 1),
-		 		new Sprite(3, 30, 1),
-		 		new Sprite(3, 31, 1)
+		 		new Sprite(4, 34, 1), new Sprite(5, 34, 1),
+		 		new Sprite(4, 35, 1), new Sprite(5, 35, 1),
+		 		new Sprite(5, 36, 1),
+		 		new Sprite(5, 37, 1)
 
 			}, "Dirt", 
 			new String[] {
@@ -72,10 +73,10 @@ public class TreeTile extends Tile {
 		
 		Fir(
 			new Sprite[] {
-		 		new Sprite(4, 28, 1), new Sprite(5, 28, 1),
-		 		new Sprite(4, 29, 1), new Sprite(5, 29, 1),
-		 		new Sprite(5, 30, 1),
-		 		new Sprite(5, 31, 1)
+		 		new Sprite(6, 34, 1), new Sprite(7, 34, 1),
+		 		new Sprite(6, 35, 1), new Sprite(7, 35, 1),
+		 		new Sprite(7, 36, 1),
+		 		new Sprite(7, 37, 1)
 			
 			}, "Snow", 
 			new String[] {
@@ -85,10 +86,10 @@ public class TreeTile extends Tile {
 		
 		Pine(
 			new Sprite[] {
-		 		new Sprite(6, 28, 1), new Sprite(7, 28, 1),
-		 		new Sprite(6, 29, 1), new Sprite(7, 29, 1),
-		 		new Sprite(7, 30, 1),
-		 		new Sprite(7, 31, 1)
+		 		new Sprite(8, 34, 1), new Sprite(9, 34, 1),
+		 		new Sprite(8, 35, 1), new Sprite(9, 35, 1),
+		 		new Sprite(9, 36, 1),
+		 		new Sprite(9, 37, 1)
 			
 			}, "Snow", 
 			new String[] {
@@ -96,30 +97,66 @@ public class TreeTile extends Tile {
 			}, 32
 		),
 		
+		Skyroot(
+			new Sprite[] {
+		 		new Sprite(10, 34, 1), new Sprite(11, 34, 1),
+		 		new Sprite(10, 35, 1), new Sprite(11, 35, 1),
+		 		new Sprite(11, 36, 1),
+		 		new Sprite(11, 37, 1)
+			
+			}, "Sky grass", 
+			new String[] {
+				"Oak Wood", "Leaf", "Acorn"
+			}, 34
+		),		
 		Brown_mushroom(
 			new Sprite[] {
-		 		new Sprite(8, 28, 1), new Sprite(9, 28, 1),
-		 		new Sprite(8, 29, 1), new Sprite(9, 29, 1),
-		 		new Sprite(9, 30, 1),
-		 		new Sprite(9, 31, 1)
+		 		new Sprite(12, 34, 1), new Sprite(13, 34, 1),
+		 		new Sprite(12, 35, 1), new Sprite(13, 35, 1),
+		 		new Sprite(13, 36, 1),
+		 		new Sprite(13, 37, 1)
 			
 			}, "Dirt", 
+			new String[] {
+				"Oak Wood", "Leaf", "Acorn"
+			}, 34
+		),		
+		Bluroot(
+			new Sprite[] {
+		 		new Sprite(14, 34, 1), new Sprite(15, 34, 1),
+		 		new Sprite(14, 35, 1), new Sprite(15, 35, 1),
+		 		new Sprite(15, 36, 1),
+		 		new Sprite(15, 37, 1)
+			
+			}, "Sky grass", 
+			new String[] {
+				"Oak Wood", "Leaf", "Acorn"
+			}, 34
+		),		
+		Goldroot(
+			new Sprite[] {
+		 		new Sprite(16, 34, 1), new Sprite(17, 34, 1),
+		 		new Sprite(16, 35, 1), new Sprite(17, 35, 1),
+		 		new Sprite(17, 36, 1),
+		 		new Sprite(17, 37, 1)
+			
+			}, "Sky High Grass", 
 			new String[] {
 				"Oak Wood", "Leaf", "Acorn"
 			}, 34
 		);
 
 
-	    private final Sprite[] sprites;
+	    private Sprite[] sprites;
 	    
-	    private final String baseTile;
+	    private final String parentTile;
 	    private final String[] loot;
 	    private final int health;
 
-		TreeType(Sprite[] sprites, String baseTile, String[] loot, int health) {
+		TreeType(Sprite[] sprites, String parentTile, String[] loot, int health) {
 			this.sprites = sprites;
 			
-            this.baseTile = baseTile;
+            this.parentTile = parentTile;
             this.loot = loot;
             this.health = health;
 		}
@@ -128,44 +165,44 @@ public class TreeTile extends Tile {
 	private TreeType tree;
 
     protected TreeTile(TreeType type) {
-        super((type == TreeTile.TreeType.Red_mushroom ? "Red mushroom" : type.name() + " Tree"), (ConnectorSprite) null);
+        super((type == TreeType.Red_mushroom ? "Red mushroom" : (type == TreeType.Brown_mushroom ? "Red mushroom" : type.name() + " Tree")), (ConnectorSprite) null);
     	this.tree = type;
 
-        switch (type.baseTile) {
-        	case "Grass": connectsToGrass = true; break;
-        	case "Snow": connectsToSnow = true; break;
-        	case "Sand": connectsToSand = true; break;
-        	case "Dirt": connectsToDirt = true; break;
-        	case "Sky grass": connectsToSkyGrass = true; break;
-        	case "Sky high grass": connectsToSkyHighGrass = true; break;
+        switch (type.parentTile.toLowerCase()) {
+        	case "grass": connectsToGrass = true; break;
+        	case "snow": connectsToSnow = true; break;
+        	case "sand": connectsToSand = true; break;
+        	case "dirt": connectsToDirt = true; break;
+        	case "sky grass": connectsToSkyGrass = true; break;
+        	case "sky high grass": connectsToSkyHighGrass = true; break;
         	default: 
-        		Logger.error("The connector type {} is invalid", type.baseTile);
-        }
+        		Logger.error("The connector type {} is invalid", type.parentTile);
+        }	
     }
     
     @Override
-    public void hurt(Level level, int x, int y, int dmg) {   	
-        if (random.nextInt(50) == 25) {
-            level.dropItem(x * 16 + 8, y * 16 + 8, Items.get("Apple"));
+    public void hurt(Level level, int x, int y, int hurtDamage) {   	
+        if (random.nextInt(50) == 25 && (tree != TreeType.Brown_mushroom || tree != TreeType.Red_mushroom)) {
+            level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Apple"));
         }
 
-        int damage = level.getData(x, y) + dmg;
+        int damage = level.getData(x, y) + hurtDamage;
         int treeHealth = tree.health;
         if (Game.isMode("Creative")) {
-            dmg = damage = treeHealth;
+        	hurtDamage = damage = treeHealth;
         }
         
-        level.add(new SmashParticle(x * 16, y * 16));
-        Sound.genericHurt.playOnWorld(x * 16, y * 16);
+        level.add(new SmashParticle(x << 4, y << 4));
+        Sound.genericHurt.playOnWorld(x << 4, y << 4);
 
-        level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
+        level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
         if (damage >= treeHealth) {
         	
-        	level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get(tree.loot[0]));
-            level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get(tree.loot[1]));
-            level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get(tree.loot[2]));
+        	level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 2, Items.get(tree.loot[0]));
+            level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 2, Items.get(tree.loot[1]));
+            level.dropItem((x << 4) + 8, (y << 4) + 8, 0, 1, Items.get(tree.loot[2]));
             
-            level.setTile(x, y, Tiles.get(tree.baseTile));
+            level.setTile(x, y, Tiles.get(tree.parentTile));
             
 			if (!Game.isMode("Creative")) {
 				AchievementsDisplay.setAchievement("minicraft.achievement.woodcutter", true);
@@ -177,8 +214,8 @@ public class TreeTile extends Tile {
     }
 
     @Override
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-        hurt(level, x, y, dmg);
+    public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
+        hurt(level, x, y, hurtDamage);
         return true;
     }
 
@@ -201,12 +238,13 @@ public class TreeTile extends Tile {
 
     @Override
     public boolean mayPass(Level level, int x, int y, Entity entity) {
-        return entity instanceof Firefly;
+        return entity instanceof Firefly || entity instanceof AirWizard;
     }
+    
 
     @Override
     public void render(Screen screen, Level level, int x, int y) {
-        Tiles.get(tree.baseTile).render(screen, level, x, y);
+        Tiles.get(tree.parentTile).render(screen, level, x, y);
 
         boolean u = level.getTile(x, y - 1) == this; // up
         boolean l = level.getTile(x - 1, y) == this; // left
@@ -218,24 +256,24 @@ public class TreeTile extends Tile {
         boolean dr = level.getTile(x + 1, y + 1) == this; // down-right
 
         if (u && ul && l) {
-            tree.sprites[3].render(screen, x * 16 + 0, y * 16 + 0); // good
+            tree.sprites[3].render(screen, (x << 4) + 0, (y << 4) + 0);
         } else {
-            tree.sprites[0].render(screen, x * 16 + 0, y * 16 + 0); // good
+            tree.sprites[0].render(screen, (x << 4) + 0, (y << 4) + 0);
         }
         if (u && ur && r) {
-            tree.sprites[4].render(screen, x * 16 + 8, y * 16 + 0); // good
+            tree.sprites[4].render(screen, (x << 4) + 8, (y << 4) + 0);
         } else {
-        	tree.sprites[1].render(screen, x * 16 + 8, y * 16 + 0); // good
+        	tree.sprites[1].render(screen, (x << 4) + 8, (y << 4) + 0);
         }
         if (d && dl && l) {
-        	tree.sprites[4].render(screen, x * 16 + 0, y * 16 + 8); // good
+        	tree.sprites[4].render(screen, (x << 4) + 0, (y << 4) + 8);
         } else {
-        	tree.sprites[2].render(screen, x * 16 + 0, y * 16 + 8); // ?
+        	tree.sprites[2].render(screen, (x << 4) + 0, (y << 4) + 8);
         }
         if (d && dr && r) {
-            tree.sprites[3].render(screen, x * 16 + 8, y * 16 + 8); // ?
+            tree.sprites[3].render(screen, (x << 4) + 8, (y << 4) + 8);
         } else {
-        	tree.sprites[5].render(screen, x * 16 + 8, y * 16 + 8); // good
+        	tree.sprites[5].render(screen, (x << 4) + 8, (y << 4) + 8);
         }
     }
 
@@ -247,5 +285,13 @@ public class TreeTile extends Tile {
             return true;
         }
         return false;
-    } 
+    }
+    
+    @Override
+    public int getLightRadius(Level level, int x, int y) {
+    	if (tree == TreeType.Goldroot) {
+    		return 6;
+    	}
+        return 0;
+    }
 }

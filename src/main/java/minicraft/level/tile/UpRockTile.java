@@ -34,7 +34,7 @@ public class UpRockTile extends Tile {
 
     protected UpRockTile(String name) {
         super(name, (ConnectorSprite) null);
-        csprite = sprite;
+        connectorSprite = sprite;
     }
 
     @Override
@@ -49,8 +49,8 @@ public class UpRockTile extends Tile {
     }
 
     @Override
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-        hurt(level, x, y, dmg);
+    public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
+        hurt(level, x, y, hurtDamage);
         return true;
     }
 
@@ -71,29 +71,29 @@ public class UpRockTile extends Tile {
     }
 
     @Override
-	public void hurt(Level level, int x, int y, int dmg) {
-    	damage = level.getData(x, y) + dmg;
+	public void hurt(Level level, int x, int y, int hurtDamage) {
+    	damage = level.getData(x, y) + hurtDamage;
 		if (Game.isMode("Creative")) {
-			dmg = damage = maxHealth;
+			hurtDamage = damage = maxHealth;
 			dropCoal = true;
 		}
 
-		level.add(new SmashParticle(x * 16, y * 16));
-		Sound.genericHurt.playOnWorld(x * 16, y * 16);
+		level.add(new SmashParticle(x << 4, y << 4));
+		Sound.genericHurt.playOnWorld(x << 4, y << 4);
 		
-		level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.DARK_RED));
+		level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.DARK_RED));
 		if (damage >= maxHealth) {
 
 			if (dropCoal) {
-				level.dropItem(x * 16 + 8, y * 16 + 8, 1, 3, Items.get("Stone"));
+				level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 3, Items.get("Stone"));
 				int coal = 0;
 
 				if (!Settings.get("diff").equals("Hard")) {
 					coal++;
 				}
-				level.dropItem(x * 16 + 8, y * 16 + 8, coal, coal + 1, Items.get("Coal"));
+				level.dropItem((x << 4) + 8, (y << 4) + 8, coal, coal + 1, Items.get("Coal"));
 			} else {
-				level.dropItem(x * 16 + 8, y * 16 + 8, 1, 2, Items.get("Stone"));
+				level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 2, Items.get("Stone"));
 			}
 			level.setTile(x, y, Tiles.get("Dirt"));
 		} else {

@@ -73,7 +73,7 @@ public class Command {
 	            if (timeString.matches("\\d+")) {
 	                try {
 	                    timeValue = Integer.parseInt(timeString);
-	                } catch (NumberFormatException e) {
+	                } catch (NumberFormatException exception) {
 	                    Game.notifications.add("- Time value must be a numeric value -");
 	                    return;
 	                }

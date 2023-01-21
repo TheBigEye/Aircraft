@@ -35,7 +35,7 @@ public class TexturePackDisplay extends Display {
 			"tiles.png", // Tiles sheet (1)
 			"entities.png", // Entities sheet (2)
 			"gui.png", // GUI Elements sheet (3)
-			"icons.png", // More GUI Elements sheet (4)
+			"font.png", // Letters and font sheet (4)
 			"background.png" // More GUI Elements sheet (5)
 
 	};
@@ -101,8 +101,8 @@ public class TexturePackDisplay extends Display {
 							try (InputStream inputEntry = zipFile.getInputStream(entry)) {
 								sheets[i] = new SpriteSheet(ImageIO.read(inputEntry));
 
-							} catch (IOException e) {
-								e.printStackTrace();
+							} catch (IOException exception) {
+								exception.printStackTrace();
 								Logger.error("Loading sheet {} failed. Aborting.", TexturePackDisplay.ENTRY_NAMES[i]);
 								return;
 							}
@@ -112,25 +112,26 @@ public class TexturePackDisplay extends Display {
 						}
 					}
 
-				} catch (IllegalStateException | IOException e) {
-					e.printStackTrace();
+				} catch (IllegalStateException | IOException exception) {
+					exception.printStackTrace();
 					Logger.error("Could not load texture pack with name {} at {}.", Objects.requireNonNull(menus[0].getCurEntry()).toString(), location);
 					return;
 
-				} catch (NullPointerException e) {
-					e.printStackTrace();
+				} catch (NullPointerException exception) {
+					exception.printStackTrace();
 					return;
 				}
 			}
 
 			Renderer.screen.setSheet(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
-		} catch(NullPointerException e) {
-			e.printStackTrace();
+		} catch(NullPointerException exception) {
+			exception.printStackTrace();
 			Logger.error("Changing texture pack failed.");
 			return;
 		}
 
-		Logger.debug("Changed texture pack to {}.", Objects.requireNonNull(menus[0].getCurEntry()).toString());
+		Logger.debug("Changed sprites and texture pack to {}.", () -> Objects.requireNonNull(menus[0].getCurEntry()).toString());
+
 	}
 
 

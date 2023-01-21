@@ -22,7 +22,7 @@ public class Snake extends EnemyMob {
     @Override
     protected void touchedBy(Entity entity) {
         if (entity instanceof Player) {
-            int damage = lvl + Settings.getIdx("diff");
+            int damage = lvl + Settings.getIndex("diff");
             ((Player) entity).hurt(this, damage);
         }
     }
@@ -31,7 +31,7 @@ public class Snake extends EnemyMob {
         int num = Settings.get("diff").equals("Hard") ? 1 : 0;
         dropItem(num, num + 1, Items.get("scale"));
 
-        if (random.nextInt(24 / lvl / (Settings.getIdx("diff") + 1)) == 0) {
+        if (random.nextInt(24 / lvl / (Settings.getIndex("diff") + 1)) == 0) {
             dropItem(1, 1, Items.get("key"));
         }
 

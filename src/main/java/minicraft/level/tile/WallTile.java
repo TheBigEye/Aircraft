@@ -72,7 +72,7 @@ public class WallTile extends Tile {
 	                     new Sprite(51, 15, 2, 2, 1, 0, true));
 	            break;
         }
-        csprite = sprite;
+        connectorSprite = sprite;
     }
 
     @Override
@@ -81,9 +81,9 @@ public class WallTile extends Tile {
     }
 
     @Override
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
+    public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
         if (Game.isMode("Creative") || level.depth != -3 || type != Material.Obsidian || AirWizard.beaten) {
-            hurt(level, x, y, random.nextInt(6) / 6 * dmg / 2);
+            hurt(level, x, y, (random.nextInt(6) / 6) * (hurtDamage / 2));
             return true;
         } else {
             Game.notifications.add(obsidianBricksMsg);
@@ -119,18 +119,18 @@ public class WallTile extends Tile {
     }
 
     @Override
-    public void hurt(Level level, int x, int y, int dmg) {
-    	int damage = level.getData(x, y) + dmg;
+    public void hurt(Level level, int x, int y, int hurtDamage) {
+    	int damage = level.getData(x, y) + hurtDamage;
         int sbwHealth = 100;
 
         if (Game.isMode("Creative")) {
-            dmg = damage = sbwHealth;
+        	hurtDamage = damage = sbwHealth;
         }
 
-        level.add(new SmashParticle(x * 16, y * 16));
-        Sound.genericHurt.playOnWorld(x * 16, y * 16);
+        level.add(new SmashParticle(x << 4, y << 4));
+        Sound.genericHurt.playOnWorld(x << 4, y << 4);
 
-        level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
+        level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
         if (damage >= sbwHealth) {
 
             String itemName = "";
@@ -145,7 +145,7 @@ public class WallTile extends Tile {
 	            case Holy: itemName = "Holy Brick"; tilename = "Holy Bricks"; break;
             }
 
-            level.dropItem(x * 16 + 8, y * 16 + 8, 1, 6 - type.ordinal(), Items.get(itemName));
+            level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 6 - type.ordinal(), Items.get(itemName));
             level.setTile(x, y, Tiles.get(tilename));
         } else {
             level.setData(x, y, damage);

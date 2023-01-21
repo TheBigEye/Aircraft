@@ -29,9 +29,11 @@ public class Screen {
 
 	private SpriteSheet[] sheets;
 
-	public Screen(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet, SpriteSheet iconsSheet, SpriteSheet background) {
+	public Screen(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet, SpriteSheet fontSheet, SpriteSheet background) {
 
-		sheets = new SpriteSheet[] { itemSheet, tileSheet, entitySheet, guiSheet, iconsSheet, background };
+		sheets = new SpriteSheet[] { 
+			itemSheet, tileSheet, entitySheet, guiSheet, fontSheet, background 
+		};
 
 		/// Screen width and height are determined by the actual game window size, meaning the screen is only as big as the window.
 		pixels = new int[Screen.w * Screen.h]; // Makes new integer array for all the pixels on the screen.
@@ -41,14 +43,13 @@ public class Screen {
 		this(model.sheets[0], model.sheets[1], model.sheets[2], model.sheets[3], model.sheets[4], model.sheets[5]);
 	}
 
-	public void setSheet(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet, SpriteSheet iconsSheet, SpriteSheet background) {
-		if (itemSheet != null) sheets[0] = itemSheet;
-		if (tileSheet != null) sheets[1] = tileSheet;
-		if (entitySheet != null) sheets[2] = entitySheet;
-		if (guiSheet != null) sheets[3] = guiSheet;
-		if (iconsSheet != null) sheets[4] = iconsSheet;
-		if (background != null) sheets[5] = background;
-		
+	public void setSheet(SpriteSheet itemSheet, SpriteSheet tileSheet, SpriteSheet entitySheet, SpriteSheet guiSheet, SpriteSheet fontSheet, SpriteSheet background) {
+		sheets[0] = itemSheet != null ? itemSheet : sheets[0];
+		sheets[1] = tileSheet != null ? tileSheet : sheets[1];
+		sheets[2] = entitySheet != null ? entitySheet : sheets[2];
+		sheets[3] = guiSheet != null ? guiSheet : sheets[3];
+		sheets[4] = fontSheet != null ? fontSheet : sheets[4];
+		sheets[5] = background != null ? background : sheets[5];
 	}
 
 	/** Clears all the colors on the screen */
@@ -370,19 +371,13 @@ public class Screen {
 				if (oPixels[i] / 256 <= dither[((x + xa) & 3) + ((y + ya) & 3) * 4]) {
 					int intense = (128 + oPixels[i]) / 128;
 
-					if (currentLevel < 3) { // if in caves...
-
-						//pixels[i] = Color.createShadowCol(pixels[i], Math.min(intens2, 1), 0, Math.min(intens2, 1));
-
-					} else {
+					if (currentLevel > 3) {
 						/// outside the caves, not being lit simply means being darker.
 						pixels[i] = Color.tintColor(pixels[i], (int) tintFactor); // darkens the color one shade.
 					}
 
-					if (intense != 0) {
-						switch (intense) {
-                            case 5: pixels[i] = Color.createShadowCol(Color.tintColor(pixels[i], (int) tintFactor), (int)Math.min(intense, 1), 6, Math.min(intense, 1)); break;
-						}
+					if (intense == 5) {
+                         pixels[i] = Color.createShadowCol(Color.tintColor(pixels[i], (int) tintFactor), (int)Math.min(intense, 1), 6, Math.min(intense, 1));
 					}
 				}
 

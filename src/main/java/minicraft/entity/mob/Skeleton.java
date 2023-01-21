@@ -25,7 +25,7 @@ public class Skeleton extends EnemyMob {
      * @param lvl The skeleton's level.
      */
     public Skeleton(int lvl) {
-        super(lvl, sprites, 6, true, 100, 45, 200);
+        super(lvl, sprites, 8, true, 100, 45, 200);
 
         arrowtime = 500 / (lvl + 5);
         artime = arrowtime;
@@ -57,7 +57,7 @@ public class Skeleton extends EnemyMob {
     public void die() {
         int[] diffrands = { 20, 20, 30 };
         int[] diffvals = { 13, 18, 28 };
-        int diff = Settings.getIdx("diff");
+        int diff = Settings.getIndex("diff");
 
         int count = random.nextInt(3 - diff) + 1;
         int bookcount = random.nextInt(1) + 1;

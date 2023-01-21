@@ -1,7 +1,6 @@
 package minicraft.item;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import minicraft.core.Game;
 import minicraft.core.io.Localization;
@@ -28,14 +27,12 @@ public class ToolItem extends Item {
 		return items;
 	}
 
-	private Random random = new Random();
-
 	// The names of the different levels. A later level means a stronger tool.
-	public static final String[] LEVEL_NAMES = { "Wood", "Rock", "Iron", "Gold", "Gem" };
+	protected static final String[] LEVEL_NAMES = { "Wood", "Rock", "Iron", "Gold", "Gem" };
 
 	public ToolType type; // Type of tool (Sword, hoe, axe, pickaxe, shovel)
 	public int level; // Level of said tool
-	public int dur; // the durability of the tool
+	public int durability; // the durability of the tool
 	private int damage; // The damage of the tool
 
 	/**
@@ -49,14 +46,14 @@ public class ToolItem extends Item {
 		this.level = level;
 		this.damage = level * 5 + 10;
 
-		dur = type.durability * (level + 1); // initial durability fetched from the ToolType
+		durability = type.durability * (level + 1); // initial durability fetched from the ToolType
 	}
 
 	public ToolItem(ToolType type) {
 		super(type.name(), new Sprite(type.xPos, type.yPos, 0));
 
 		this.type = type;
-		dur = type.durability;
+		durability = type.durability;
 	}
 
 	/** Gets the name of this tool (and it's type) as a display string. */
@@ -70,7 +67,7 @@ public class ToolItem extends Item {
 	}
 
 	public boolean isDepleted() {
-		return dur <= 0 && type.durability > 0;
+		return durability <= 0 && type.durability > 0;
 	}
 
 	/** You can attack mobs with tools. */
@@ -79,8 +76,8 @@ public class ToolItem extends Item {
 	}
 
 	public boolean payDurability() {
-		if (dur <= 0) return false;
-		if (!Game.isMode("Creative")) dur--;
+		if (durability <= 0) return false;
+		if (!Game.isMode("Creative")) durability--;
 		return true;
 	}
 
@@ -111,7 +108,7 @@ public class ToolItem extends Item {
 
 	@Override
 	public String getData() {
-		return super.getData() + "_" + dur;
+		return super.getData() + "_" + durability;
 	}
 
 	/** Sees if this item equals another. */
@@ -128,13 +125,13 @@ public class ToolItem extends Item {
 	public int hashCode() { return type.name().hashCode() + level; }
 
 	public ToolItem clone() {
-		ToolItem ti;
+		ToolItem toolItem;
 		if (type.noLevel) {
-			ti = new ToolItem(type);
+			toolItem = new ToolItem(type);
 		} else {
-			ti = new ToolItem(type, level);
+			toolItem = new ToolItem(type, level);
 		}
-		ti.dur = dur;
-		return ti;
+		toolItem.durability = durability;
+		return toolItem;
 	}
 }

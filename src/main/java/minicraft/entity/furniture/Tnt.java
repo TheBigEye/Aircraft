@@ -35,7 +35,9 @@ public class Tnt extends Furniture implements ActionListener {
 	private Timer explodeTimer;
 	private Level levelSave;
 
-	private final String[] explosionBlacklist = new String[] { "hard rock", "obsidian wall", "raw obsidian", "stairs up", "stairs down", "infinite fall"};
+	private final String[] explosionBlacklist = new String[] {
+		"hard rock", "obsidian wall", "raw obsidian", "stairs up", "stairs down", "infinite fall"
+	};
 
 	/**
 	 * Creates a new tnt furniture.

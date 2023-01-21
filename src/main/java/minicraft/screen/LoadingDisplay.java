@@ -1,7 +1,5 @@
 package minicraft.screen;
 
-import java.util.Random;
-
 import javax.swing.Timer;
 
 import minicraft.core.Game;
@@ -11,8 +9,6 @@ import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
 import minicraft.gfx.Color;
 import minicraft.gfx.Ellipsis;
-import minicraft.gfx.Ellipsis.DotUpdater.TimeUpdater;
-import minicraft.gfx.Ellipsis.SmoothEllipsis;
 import minicraft.gfx.Font;
 import minicraft.gfx.FontStyle;
 import minicraft.gfx.Screen;
@@ -24,27 +20,24 @@ public class LoadingDisplay extends Display {
 	private static float percentage = 0;
 	private static String progressType;
 
-	private static String Build = "";
-
-	String[] BuildString = {
-			"Generating", "Separating", "Planting", "Eroding", "Digging",
-			"Raising", "Leveling", "Flattening", "Molding", "Building"
+	private static final String[] BuildString = {
+		"Generating", "Separating", "Planting", "Eroding", "Digging",
+		"Raising", "Leveling", "Flattening", "Molding", "Building"
 	};
 
-	private static Random random = new Random();
-
-	private final Timer t;
+	private final Timer timer;
 	private String msg;
-	private final Ellipsis ellipsis = new SmoothEllipsis(new TimeUpdater());
+	
+	private Ellipsis ellipsis = (Ellipsis) new Ellipsis.SmoothEllipsis((Ellipsis.DotUpdater) new Ellipsis.DotUpdater.TimeUpdater());
 	
 	public LoadingDisplay() {
 		super(true, false);
-		t = new Timer(500, e -> {
+		timer = new Timer(500, e -> {
 			World.initWorld();
 			msg = Localization.getLocalized("Rendering");
 			Game.setDisplay(null);
 		});
-		t.setRepeats(false);
+		timer.setRepeats(false);
 	}
 
 	public void tick(InputHandler input) {
@@ -57,15 +50,12 @@ public class LoadingDisplay extends Display {
 		super.init(parent);
 		percentage = 0;
 		progressType = "World";
-
 		if (WorldSelectDisplay.hasLoadedWorld()) {
 			msg = Localization.getLocalized("Loading");
 		} else {
-			LoadingDisplay.Build = Localization.getLocalized(BuildString[random.nextInt(BuildString.length)]);
+			msg = Localization.getLocalized(BuildString[random.nextInt(BuildString.length)]);
 		}
-
-		msg = Build;
-		t.start();
+		timer.start();
 	}
 
 	@Override

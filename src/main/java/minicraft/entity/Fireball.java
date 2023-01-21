@@ -4,7 +4,6 @@ import java.util.List;
 
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Color;
 import minicraft.gfx.Rectangle;
 import minicraft.gfx.Screen;
 
@@ -14,23 +13,18 @@ public class Fireball extends Entity implements ClientTickable {
 	public Mob owner;
 	private int speed;
 
-	public Fireball(Mob owner, Direction dir, int dmg) {
-		this(owner, owner.x, owner.y, dir, dmg);
+	public Fireball(Mob owner, Direction dir, int damage) {
+		this(owner, owner.x, owner.y, dir, damage);
 	}
 
-	public Fireball(Mob owner, int x, int y, Direction dir, int dmg) {
-		super(Math.abs(dir.getX())+1, Math.abs(dir.getY())+1);
+	public Fireball(Mob owner, int x, int y, Direction dir, int damage) {
+		super(Math.abs(dir.getX()) + 1, Math.abs(dir.getY()) + 1);
 		this.owner = owner;
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
-
-		damage = dmg;
-		color = Color.get(-1, 111, 222, 430);
-
-		if (damage > 3) speed = 3;
-		else if (damage >= 0) speed = 2;
-		else speed = 1;
+		this.damage = damage;
+		this.speed = damage > 3 ? 3 : (damage >= 0 ? 2 : 1);
 	}
 
 	public String getData() {
@@ -59,16 +53,20 @@ public class Fireball extends Entity implements ClientTickable {
 				//mob.ignite(50);
 			}
 
-			if (!level.getTile(x / 16, y / 16).mayPass(level, x / 16, y / 16, this)
-					&& !level.getTile(x / 16, y / 16).connectsToFluid
-					&& level.getTile(x / 16, y / 16).id != 16) {
+			if (!level.getTile(x >> 4, y >> 4).mayPass(level, x >> 4, y >> 4, this) && level.getTile(x >> 4, y >> 4).id != 16) {
 				this.remove();
 			}
 		}
 	}
 
+	@Override
 	public boolean isSolid() {
 		return false;
+	}
+	
+	@Override
+	public boolean canSwim() {
+		return true;
 	}
 
 	@Override

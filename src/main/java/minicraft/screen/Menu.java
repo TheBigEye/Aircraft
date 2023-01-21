@@ -115,13 +115,13 @@ public class Menu {
         selection = Math.max(0, selection);
 
         if (!entries.get(selection).isSelectable()) {
-            int prevSel = selection;
+            int previousSelection = selection;
             do {
                 selection++;
                 if (selection < 0)
                     selection = entries.size() - 1;
                 selection = selection % entries.size();
-            } while (!entries.get(selection).isSelectable() && selection != prevSel);
+            } while (!entries.get(selection).isSelectable() && selection != previousSelection);
         }
 
         dispSelection = selection;
@@ -202,17 +202,12 @@ public class Menu {
         if (!selectable || entries.size() == 0)
             return;
 
-        int prevSel = selection;
-        if (input.getKey("cursor-up").clicked)
-            selection--;
-        if (input.getKey("cursor-down").clicked)
-            selection++;
-        if (input.getKey("shift-cursor-up").clicked && selectionSearcher == 0)
-            selectionSearcher -= 2;
-        if (input.getKey("shift-cursor-down").clicked && selectionSearcher == 0)
-            selectionSearcher += 2;
-        if (prevSel != selection && selectionSearcher != 0)
-            selection = prevSel;
+        int previousSelection = selection;
+        if (input.getKey("cursor-up").clicked) selection--;
+        if (input.getKey("cursor-down").clicked) selection++;
+        if (input.getKey("shift-cursor-up").clicked && selectionSearcher == 0) selectionSearcher -= 2;
+        if (input.getKey("shift-cursor-down").clicked && selectionSearcher == 0) selectionSearcher += 2;
+        if (previousSelection != selection && selectionSearcher != 0) selection = previousSelection;
 
         if (useSearcherBar) {
             if (input.getKey("searcher-bar").clicked) {
@@ -280,8 +275,8 @@ public class Menu {
             }
         }
 
-        int delta = selection - prevSel;
-        selection = prevSel;
+        int delta = selection - previousSelection;
+        selection = previousSelection;
         if (delta == 0) {
             entries.get(selection).tick(input); // only ticks the entry on a frame where the selection cursor has not moved.
             return;
@@ -295,10 +290,10 @@ public class Menu {
                 selection = entries.size() - 1;
             }
             selection = selection % entries.size();
-        } while (!entries.get(selection).isSelectable() && selection != prevSel);
+        } while (!entries.get(selection).isSelectable() && selection != previousSelection);
 
         // update offset and selection displayed
-        dispSelection += selection - prevSel;
+        dispSelection += selection - previousSelection;
 
         if (dispSelection < 0) dispSelection = 0;
         if (dispSelection >= displayLength) dispSelection = displayLength - 1;
@@ -629,8 +624,9 @@ public class Menu {
         }
 
         private Menu createMenu(Builder b) {
-            if (b == this)
+            if (b == this) {
                 return copy().createMenu(this);
+            }
 
             menu.title = Localization.getLocalized(menu.title);
 

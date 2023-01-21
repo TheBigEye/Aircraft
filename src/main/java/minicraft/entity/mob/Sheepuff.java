@@ -5,7 +5,7 @@ import minicraft.gfx.MobSprite;
 import minicraft.item.Items;
 
 public class Sheepuff extends SkyMob {
-	private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(20, 42);
+	private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(20, 42);
 
 	/**
 	 * Creates a Sheepuff (Floating sheep).

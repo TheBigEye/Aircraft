@@ -18,9 +18,9 @@ public final class ClipboardHandler implements ClipboardOwner {
 	 * Give the system clipboard data.
 	 */
 	public void setClipboardContents(String string) {
-		StringSelection stringSelection = new StringSelection(string);
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents(stringSelection, this);
+	    StringSelection stringSelection = new StringSelection(string);
+	    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+	    clipboard.setContents(stringSelection, null);
 	}
 
 	/**
@@ -28,19 +28,15 @@ public final class ClipboardHandler implements ClipboardOwner {
 	 * @return A string with the contents.
 	 */
 	public String getClipboardContents() {
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		Transferable contents = clipboard.getContents(null);
-
-		String result = "";
-
-		if ((contents != null) && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-			try {
-				result = (String) contents.getTransferData(DataFlavor.stringFlavor);
-			} catch (UnsupportedFlavorException | IOException ex){
-				ex.printStackTrace();
-			}
-		}
-
-		return result;
+	    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+	    Transferable contents = clipboard.getContents(null);
+	    if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+	        try {
+	            return (String) contents.getTransferData(DataFlavor.stringFlavor);
+	        } catch (UnsupportedFlavorException | IOException ex){
+	            ex.printStackTrace();
+	        }
+	    }
+	    return "";
 	}
 }

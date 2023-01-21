@@ -29,17 +29,17 @@ public class Point {
         return x == o.x && y == o.y;
     }
 
-    @Override
-    public int hashCode() {
-        return x * 71 + y;
-    }
-
-    public String toString() {
-        return "(" + x + "," + y + ")";
-    }
-
     public void translate(int xoff, int yoff) {
         x += xoff;
         y += yoff;
+    }
+    
+    public String toString() {
+        return "(" + x + "," + y + ")";
+    }
+    
+    @Override
+    public int hashCode() {
+        return x * 71 + y;
     }
 }

@@ -42,8 +42,9 @@ public class TempDisplay extends Display {
 
         new Thread(() -> {
             Utils.sleep(milliDelay);
-            if (Game.getDisplay() == TempDisplay.this)
+            if (Game.getDisplay() == this) {
                 Game.exitDisplay();
+            }
         }).start();
     }
 }

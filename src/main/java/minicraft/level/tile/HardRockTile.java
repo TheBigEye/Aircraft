@@ -32,8 +32,8 @@ public class HardRockTile extends Tile {
         return entity instanceof Firefly;
     }
 
-    public boolean hurt(Level level, int x, int y, Mob source, int dmg, Direction attackDir) {
-        hurt(level, x, y, 0);
+    public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
+        hurt(level, x, y, 0); // Damage is 0 because gem pickaxe
         return true;
     }
 
@@ -53,33 +53,31 @@ public class HardRockTile extends Tile {
                 if (random.nextInt(4) == 2) {
                     Game.notifications.add("Gem Pickaxe Required.");
                 }
-                fail(level, xt, yt);
             }
         }
         return false;
     }
 
-    public void fail(Level level, int x, int y) {
-        level.add(new TextParticle("X", x * 16 + 8, y * 16 + 8, Color.RED));
-    }
-
-    public void hurt(Level level, int x, int y, int dmg) {
-        int damage = level.getData(x, y) + dmg;
-        int hrHealth = 200;
+    public void hurt(Level level, int x, int y, int hurtDamage) {
+        int damage = level.getData(x, y) + hurtDamage;
+        int hardrockHealth = 200;
         
         if (Game.isMode("Creative")) {
-            dmg = damage = hrHealth;
+        	hurtDamage = damage = hardrockHealth;
         }
         
-        level.add(new SmashParticle(x * 16, y * 16));
-        Sound.genericHurt.playOnGui();
+        level.add(new SmashParticle(x << 4, y << 4));
+        Sound.genericHurt.playOnWorld(x << 4, y << 4);
+        if (damage <= 30) {
+        	level.add(new TextParticle("X", (x << 4) + 8, (y << 4) + 8, Color.RED));
+        } else {
+        	level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
+        }
 
-        level.add(new TextParticle("" + dmg, x * 16 + 8, y * 16 + 8, Color.RED));
-
-        if (damage >= hrHealth) {
+        if (damage >= hardrockHealth) {
             level.setTile(x, y, Tiles.get("Dirt"));
-            level.dropItem(x * 16 + 8, y * 16 + 8, 1, 3, Items.get("Stone"));
-            level.dropItem(x * 16 + 8, y * 16 + 8, 0, 1, Items.get("Coal"));
+            level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 3, Items.get("Stone"));
+            level.dropItem((x << 4) + 8, (y << 4) + 8, 0, 1, Items.get("Coal"));
         } else {
             level.setData(x, y, damage);
         }

@@ -24,7 +24,7 @@ public class ObsidianTile extends Tile {
 
     protected ObsidianTile(String name) {
         super(name, sprite);
-        csprite.sides = csprite.sparse;
+        connectorSprite.sides = connectorSprite.sparse;
         connectsToObsidian = true;
         maySpawn = true;
     }

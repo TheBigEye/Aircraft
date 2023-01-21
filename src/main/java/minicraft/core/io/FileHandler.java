@@ -22,13 +22,12 @@ public class FileHandler extends Game {
 	public static final int RENAME_COPY = 1;
 	public static final int SKIP = 2;
 
-	static final String OS;
+	private static final String OS = System.getProperty("os.name").toLowerCase();
 	private static final String localGameDir;
-	static final String systemGameDir;
-	static final String systemTempDir;
+	private static final String systemGameDir;
+	private static final String systemTempDir;
 
 	static {
-		OS = System.getProperty("os.name").toLowerCase();
 		String local = "playminicraft/mods/Aircraft";
 
 		if (OS.contains("windows")) { // Windows filesystem
@@ -46,9 +45,9 @@ public class FileHandler extends Game {
 		localGameDir = "/" + local;
 
 		if (Game.debug) {
-			Logger.debug("OS name: \"" + OS + "\"");
-			Logger.debug("System game dir: " + systemGameDir);
-			Logger.debug("System temp dir: " + systemTempDir);
+			Logger.debug("OS name: {}", OS);
+			Logger.debug("System game dir: {}", systemGameDir);
+			Logger.debug("System temp dir: {}", systemTempDir);
 		}
 	}
 
@@ -74,8 +73,8 @@ public class FileHandler extends Game {
 		if (oldFolder.exists() && !oldFolder.equals(testFile)) {
 			try {
 				copyFolderContents(oldFolder.toPath(), testFile.toPath(), RENAME_COPY, true);
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException exception) {
+				exception.printStackTrace();
 			}
 		}
 
@@ -84,8 +83,8 @@ public class FileHandler extends Game {
 			if (oldFolder.exists()) {
 				try {
 					copyFolderContents(oldFolder.toPath(), testFile.toPath(), RENAME_COPY, true);
-				} catch (IOException e) {
-					e.printStackTrace();
+				} catch (IOException exception) {
+					exception.printStackTrace();
 				}
 			}
 		}
@@ -104,14 +103,13 @@ public class FileHandler extends Game {
 				}
 			}
 		}
-		// noinspection ResultOfMethodCallIgnored
 		top.delete();
 	}
 
 	public static void copyFolderContents(Path origFolder, Path newFolder, int ifExisting, boolean deleteOriginal) throws IOException {
 
 		// I can determine the local folder structure with origFolder.relativize(file), then use newFolder.resolve(relative).
-		Logger.info("Copying contents of folder " + origFolder + " to new folder " + newFolder);
+		Logger.info("Copying contents of folder {} to new folder {} ...", origFolder, newFolder);
 
 		Files.walkFileTree(origFolder, new FileVisitor<Path>() {
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
@@ -123,8 +121,10 @@ public class FileHandler extends Game {
 
 					} else if (ifExisting == RENAME_COPY) {
 						newFilename = newFilename.substring(0, newFilename.lastIndexOf("."));
+						StringBuilder newFilenameBuilder = new StringBuilder(newFilename);
 						do {
-							newFilename += "(Old)";
+						    newFilenameBuilder.append("(Old)");
+						    newFilename = newFilenameBuilder.toString();
 						} while (new File(newFilename).exists());
 						newFilename += Save.extension;
 					}

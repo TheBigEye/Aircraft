@@ -25,7 +25,7 @@ public class MyceliumTile extends Tile {
 
 	protected MyceliumTile(String name) {
 		super(name, sprite);
-		csprite.sides = csprite.sparse;
+		connectorSprite.sides = connectorSprite.sparse;
 		connectsToMycelium = true;
 		maySpawn = true;
 	}

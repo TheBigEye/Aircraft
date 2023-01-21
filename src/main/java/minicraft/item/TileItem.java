@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.tinylog.Logger;
+
 import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
@@ -124,7 +126,7 @@ public class TileItem extends StackableItem {
 			}
 		}
 
-		if (Game.debug) System.out.println(model + " cannot be placed on " + tile.name);
+		if (Game.debug) Logger.info("{} cannot be placed on {}", model, tile.name);
 
 		String note = "";
 		if (model.contains("WALL")) {

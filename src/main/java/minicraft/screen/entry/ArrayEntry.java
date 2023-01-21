@@ -112,21 +112,21 @@ public class ArrayEntry<T> extends ListEntry {
 
 	@Override
 	public void tick(InputHandler input) {
-		int prevSel = selection;
+		int previousSelection = selection;
 		int selection = this.selection;
 
 		if (input.getKey("cursor-left").clicked) selection--;
 		if (input.getKey("cursor-right").clicked) selection++;
 
-		if (prevSel != selection) {
+		if (previousSelection != selection) {
 			Sound.Menu_select.playOnGui();
-			moveSelection(selection - prevSel);
+			moveSelection(selection - previousSelection);
 		}
 	}
 
 	private void moveSelection(int dir) {
 		// stuff for changing the selection, including skipping locked entries
-		int prevSel = selection;
+		int previousSelection = selection;
 		int selection = this.selection;
 		do {
 			selection += dir;
@@ -139,7 +139,7 @@ public class ArrayEntry<T> extends ListEntry {
 				selection = Math.min(selection, options.length - 1);
 				selection = Math.max(0, selection);
 			}
-		} while (!optionVis[selection] && selection != prevSel);
+		} while (!optionVis[selection] && selection != previousSelection);
 
 		setSelection(selection);
 	}

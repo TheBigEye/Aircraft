@@ -1,22 +1,13 @@
 package minicraft.core;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.UnknownHostException;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.UIManager;
 
 import org.jetbrains.annotations.Nullable;
 import org.tinylog.Logger;
@@ -36,7 +27,8 @@ import minicraft.saveload.Load;
 import minicraft.saveload.Version;
 import minicraft.screen.Display;
 import minicraft.screen.TitleDisplay;
-import minicraft.util.Info;
+import minicraft.util.TimeData;
+import minicraft.util.Utils;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -48,18 +40,10 @@ public class Game {
 
 	protected Game() {} // Can't instantiate the Game class.
 
-	private static final Random random = new Random();
-
+	/** Random values used for some Game class logic **/
+	protected static final Random random = new Random(); // Create a Random object to generate random numbers  
+	
 	public static boolean debug = false; // --debug arg
-	public static boolean dev = false; // --dev arg
-
-	public static boolean in_dev = false; // development version?
-
-	// TODO: remove these vars, are redoundants :d
-	// Game events (Shhhh is seeeecret)
-	public static boolean IS_Christmas = false;
-	public static boolean IS_Halloween = false;
-	public static boolean IS_April_fools = false;
 
 	public static final String NAME = "Aircraft"; // This is the name on the application window
 	public static final String BUILD = "0.5"; // Aircraft version
@@ -74,7 +58,7 @@ public class Game {
 	public static Level level;
 
 	// Crash splashes
-	private static final String[] Splash = {
+	/*private static final String[] Splash = {
 		"Who has put TNT?",
 		"An error has occurred!",
 		"A nice cup of coffee?",
@@ -85,7 +69,7 @@ public class Game {
 		"F, the game was crashed!",
 		"Interesting, hmmmmm...",
 		"Ok, i messed it up"
-	};
+	};*/
 
 	//--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -136,82 +120,54 @@ public class Game {
 	// Main functions
 	public static void main(String[] args) {
 		
-		// Load the time vars
-		LocalDateTime time = LocalDateTime.now();
-		
-        // Initialize game events
-        IS_Christmas = (time.getMonth() == Month.DECEMBER) && (time.getDayOfMonth() == 24); // Christmas
-        IS_Halloween = (time.getMonth() == Month.OCTOBER) && (time.getDayOfMonth() == 31); // Halloween
-        IS_April_fools = (time.getMonth() == Month.APRIL) && (time.getDayOfMonth() == 1); // April Fools
-
-		// Crash window log ------------------------------------------------------------------------------------------------------------------------------
-
-		// Load the splashes
-		String errorSplash = Splash[random.nextInt(Splash.length)];
-
+		// Crash report log
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
 			throwable.printStackTrace();
-
-			StringWriter crash = new StringWriter();
+		
+			StringWriter crash = new StringWriter(8192);
 			PrintWriter printer = new PrintWriter(crash);
 			throwable.printStackTrace(printer);
-
+			
+			String crashString = (
+					"" 																										+ "\n\n" +
+					"         Aircraft has crashed! " 																		+ "\n" +
+					"         --------------------- " 																		+ "\n\n" +
+					
+					"Aircraft was stopped running because it encountered a problem.	" 										+ "\n\n" +
+					
+					"If you wish to report this, please copy this entire text and send to the developer. " 					+ "\n" +
+					"Please include a description of what you did when the error occured. " 								+ "\n\n" +
+					
+			        "--------- BEGIN ERROR REPORT ---------	" 																+ "\n" +
+			        "Generated " + TimeData.date() 																			+ "\n\n" +
+			
+			        "-- System Details -- " 																				+ "\n" +
+			        "Details: " 																							+ "\n" +
+			        "        Aircraft version: " + Game.BUILD + " (" + Game.VERSION + ")" 									+ "\n" +
+			        "        Operting System: " + Utils.OS_NAME + " (" + Utils.OS_ARCH + ") version " + Utils.OS_VERSION 	+ "\n" +
+			        "        Java Version: " + Utils.JAVA_VERSION + ", " + Utils.JAVA_VENDOR 								+ "\n" +
+			        "        Java VM Version: " + Utils.JVM_NAME + " (" + Utils.JVM_INFO + "), " + Utils.JVM_VENDOR 		+ "\n" +
+			        "        Memory: " + Utils.memoryInfo() 																+ "\n\n" +
+			
+			        "~~ ERROR ~~ " 																							+ "\n" +
+			
+			        crash.toString() 																						+ "\n" +
+			
+			        "--------- END ERROR REPORT --------- "
+			);
+		
 			// If the OS not have a desktop or graphic interface
 			if (GraphicsEnvironment.isHeadless()) {
+				System.out.println(crashString);
 				return;
+			} else {
+				Logger.error(crash.toString());
 			}
-
-			// Crash log Structure
-			JTextArea crashDisplay = new JTextArea();
-
-			crashDisplay.setForeground(Color.BLACK);
-			crashDisplay.setBackground(Color.WHITE);
-
-			// Crash message
-			crashDisplay.setText(
-
-				" " + errorSplash + "\n" +
-				" If the problem persists, send a screenshot to the developer.\n" + "\n" +
-
-                "--- BEGIN ERROR REPORT ---------" + "\n" +
-                "Generated: " + time.toLocalDate() + "\n\n" +
-
-                "-- System Details --" + "\n" +
-                "Details: " + "\n" +
-                "        Aircraft Version: " + Game.BUILD + "\n" +
-                "        Minicraft Plus Version: " + Game.VERSION + "\n" +
-                "        Operting System: " + Info.OS_Name + " (" + Info.OS_Arch + ") " + Info.OS_Version + "\n" +
-                "        Java Version: " + Info.Java_Version + ", " + Info.Java_Vendor + "\n" +
-                "        Java VM Version: " + Info.JVM_Name + " (" + Info.JVM_Info + "), " + Info.JVM_Vendor + "\n" +
-                "        Memory: " + Info.Memory_info + "\n\n" +
-
-                "~~ERROR~~ " + "\n" +
-
-                crash.toString() + "\n" +
-
-                "--- END ERROR REPORT ---------"
-			);
-
-			// Not editable
-			crashDisplay.setEditable(false);
-
-			// Font
-			crashDisplay.setFont(new Font("Consolas", Font.PLAIN, 12));
-
-			// Create the scroll control and the window size
-			JScrollPane errorPane = new JScrollPane(crashDisplay);
-			errorPane.setSize(600, 400);
-
-			// all white, is better
-			UIManager.put("OptionPane.background", Color.white);
-			UIManager.put("Panel.background", Color.white);
-
-			// Display the window
-			JOptionPane.showOptionDialog(null, errorPane, "Aircraft has crashed!", JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, args, thread);
-			Logger.error(crash.toString());
-
-            // Stop and close the game window
-            quit();
+		
+			Renderer.canvas.setVisible(false);
+			Initializer.frame.add(new CrashReport(crashString));
+			Initializer.frame.pack();
+			Initializer.frame.setVisible(true);
 		});
 
 		// Start events ------------------------------------------------------------------------------------------------------------------------------------
@@ -238,27 +194,34 @@ public class Game {
 
 			discordCore.activityManager().updateActivity(activity);
 			Logger.debug("Initializing discord rich presence ...");
-		} catch(Exception e) {
-			e.printStackTrace();
-			if (e instanceof UnknownHostException) Logger.error("Failed to download Discord SDK, no internet connection!");
-			if (e instanceof GameSDKException) Logger.error("Failed to initialize Discord SDK, no discord detected!");
-		} 
-
-		Initializer.parseArgs(args); // Parses the command line arguments
+			
+		} catch (GameSDKException exception) {
+			exception.printStackTrace();
+			Logger.error("Failed to initialize Discord SDK, no discord detected!");
+		} catch (UnknownHostException exception) {
+			exception.printStackTrace();
+			Logger.error("Failed to download Discord SDK, no internet connection!");
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			Logger.error("Unknown error");
+		}
+		
+		// Parses the command line arguments
+		Initializer.parseArgs(args); 
 
 		// Initialize input handler
 		input = new InputHandler(Renderer.canvas);
 
-		// Load events
-		Tiles.initTileList();
+		// Initialize ...
+		Tiles.init();
 		Sound.init();
 		Settings.init();
 
 		World.resetGame(); // "half"-starts a new game, to set up initial variables
 		player.eid = 0;
 		new Load(true); // This loads any saved preferences.
-		MAX_FPS = (int) Settings.get("fps");  // DO NOT put this above.
-
+		MAX_FPS = (int) Settings.get("fps"); // DO NOT put this above.
+		
 		// Window events ----------------------------------------------------------------------------------------------------------------------------------
 
 		// Create a game window

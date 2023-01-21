@@ -1,7 +1,6 @@
 package minicraft.item;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import minicraft.core.Game;
 import minicraft.entity.Direction;
@@ -25,8 +24,6 @@ public class FishingRodItem extends Item {
 
     private int uses = 0; // the more uses, the higher the chance of breaking
     public int level; // the higher the level the lower the chance of breaking
-
-    private Random random = new Random();
 
     /*
      * these numbers are a bit confusing, so here's an explanation if you want to

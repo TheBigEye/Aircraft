@@ -1,7 +1,6 @@
 package minicraft.entity;
 
 import java.util.List;
-import java.util.Random;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -22,12 +21,9 @@ public class Boat extends Entity {
     private static Sprite boatSprite = new Sprite(4, 34, 2, 2, 2);
 
     public Player playerInBoat = null;
-    private Random rnd = new Random();
 
     private int exitTimer = 0;
-    
     protected int pushTime = 0;
-    protected int multiPushTime = 0;
 
     private Direction pushDir = Direction.NONE; // the direction to push the furniture
 
@@ -91,8 +87,6 @@ public class Boat extends Entity {
 
         if (pushTime > 0) {
             pushTime--; // update pushTime by subtracting 1.
-        } else {
-            multiPushTime = 0;
         }
     	
         if (playerInBoat != null) {
@@ -115,8 +109,8 @@ public class Boat extends Entity {
             
             // Water particles
             if (Settings.get("particles").equals(true)) {
-                int randX = rnd.nextInt(10);
-                int randY = rnd.nextInt(9);
+                int randX = random.nextInt(10);
+                int randY = random.nextInt(9);
                 level.add(new SplashParticle(x - 8 + randX, y - 8 + randY));
             }
 

@@ -3,8 +3,10 @@ package minicraft.entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
 
 import minicraft.core.Game;
 import minicraft.core.Updater;
@@ -30,7 +32,9 @@ public abstract class Entity implements Tickable {
 	 */
 
 	// Entity coordinates are per pixel, not per tile; each tile is 16x16 entity pixels.
-    protected final Random random = new Random();
+	
+	/** Random value for all the entities instances **/
+    protected static final Random random = new Random();
 
     // x, y entity coordinates on the map
     public int x;
@@ -62,7 +66,7 @@ public abstract class Entity implements Tickable {
 		removed = true;
 		color = 0;
 
-		eid = -1;
+		eid = ThreadLocalRandom.current().nextInt();;
     }
 
     public abstract void render(Screen screen); /// used to render the entity on screen.
@@ -261,7 +265,7 @@ public abstract class Entity implements Tickable {
         removed = true;
 
         if (level == null) {
-            System.out.println("Note: remove() called on entity with no level reference: " + getClass());
+        	Logger.warn("Note: remove() called on entity with no level reference: " + getClass());
         } else {
             level.remove(this);
         }
@@ -273,7 +277,7 @@ public abstract class Entity implements Tickable {
      */
     public void remove(Level level) {
         if (level != this.level) {
-            if (Game.debug) System.out.println("Tried to remove entity " + this + " from level it is not in: " + level + "; in level " + this.level);
+            if (Game.debug) Logger.info("Tried to remove entity " + this + " from level it is not in: " + level + "; in level " + this.level);
         } else {
             removed = true; // Should already be set.
             this.level = null;
@@ -286,7 +290,7 @@ public abstract class Entity implements Tickable {
      */
     public void setLevel(Level level, int x, int y) {
         if (level == null) {
-            System.out.println("Tried to set level of entity " + this + " to a null level; Should use remove(level)");
+            Logger.warn("Tried to set level of entity " + this + " to a null level; Should use remove(level)");
             return;
         }
 

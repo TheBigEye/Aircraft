@@ -60,8 +60,8 @@ public class ConnectorSprite {
 		boolean ur = connectsToDoEdgeCheck(level.getTile(x + 1, y - 1), false);
 		boolean dr = connectsToDoEdgeCheck(level.getTile(x + 1, y + 1), false);
 
-		x = x << 4;
-		y = y << 4;
+		x <<= 4;
+		y <<= 4;
 
 		if (u && l) {
 			if (ul || !checkCorners) full.renderPixel(0, 0, screen, x, y);

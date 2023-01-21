@@ -1,4 +1,4 @@
-package minicraft.item;
+package minicraft.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,8 +17,8 @@ public class FishingData {
         List<String> data;
         try {
             data = Load.loadFile("/resources/fishing/" + name + "_loot.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
             data = new ArrayList<>();
         }
         return data;

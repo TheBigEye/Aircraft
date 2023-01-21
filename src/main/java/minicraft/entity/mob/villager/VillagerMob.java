@@ -30,7 +30,7 @@ public class VillagerMob extends MobAi {
 	 *                     difficulty and then added with 5.
 	 */
 	public VillagerMob(MobSprite[][] sprites, int healthFactor) {
-		super(sprites, 5 + healthFactor * Settings.getIdx("diff"), -1, 45, 40);
+		super(sprites, 5 + healthFactor * Settings.getIndex("diff"), -1, 45, 40);
 	}
 
 	public void tick() {
@@ -67,16 +67,14 @@ public class VillagerMob extends MobAi {
 	 * @return true if the mob can spawn here, false if not.
 	 */
 	public static boolean checkStartPos(Level level, int x, int y) {
+		int r = (Game.isMode("score") ? 22 : 15) + (Updater.getTime() == Updater.Time.Night ? 0 : 5); // get no-mob radius by
 
-		int r = (Game.isMode("score") ? 22 : 15) + (Updater.getTime() == Updater.Time.Night ? 0 : 5); // get no-mob
-		// radius by
-
-		if (!MobAi.checkStartPos(level, x, y, 80, r))
+		if (!MobAi.checkStartPos(level, x, y, 80, r)) {
 			return false;
+		}
 
 		Tile tile = level.getTile(x >> 4, y >> 4);
 		return tile == Tiles.get("Oak Planks") || tile == Tiles.get("path");
-
 	}
 
 	@Override
