@@ -63,6 +63,9 @@
 
 **Aircraft** is a modified version (Mod) of [**Minicraft Plus**](https://github.com/chrisj42/minicraft-plus-revived), another mod, based on the original [**Minicraft**](https://minicraft.fandom.com/wiki/Minicraft) game made by Markus persson "Notch" for the Lodum dare 22 competition
 
+
+> **Note**: For now, don't try to load old worlds into new versions, the save system isn't finished yet, and is prone to causing problems
+
 ## Main features
 ### Graphics:
 * More detailed and renewed graphics and textures (based on Rcraft texture pack for Minicraft+ made by RiverOaken).
@@ -98,7 +101,6 @@
 * More durability in tools.
 * Enchanted Tools and Enchantment Books (deprecated for now).
 
-#### Is continuously updated to clean most of the bugs, make maintenance and add features, for now don't try to load old worlds in new versions, the save system is not ready yet
 
 ## How run?
 - Download and install [**Java**](https://java.com/en/download/).
