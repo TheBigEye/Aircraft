@@ -69,7 +69,7 @@
 ## Main features
 ### Graphics:
 * More detailed and renewed graphics and textures (based on Rcraft texture pack for Minicraft+ made by RiverOaken).
-* Semi-transparent GUI (Without those annoying black boxes behind the letters), and more centered.
+* Semi-transparent GUI (without those annoying black boxes behind the letters), and more centered.
 * Improved status bar (Hotbar).
 * Debug screen (F3 screen) expanded with detailed information regarding the game.
 * Higher screen resolution (scale).
