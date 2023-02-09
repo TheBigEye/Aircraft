@@ -24,8 +24,8 @@
                Title="Java"  
           />
           <img 
-               src="https://komarev.com/ghpvc/?username=Eye-Aircraft&label=Views&style=for-the-badge&color=orange" 
-               Title="Views" 
+               src="https://img.shields.io/github/downloads/TheBigEye/Aircraft/total.svg?style=for-the-badge&label=Downloads&color=orange" 
+               Title="Downloads" 
           />
           <img 
                src="https://img.shields.io/badge/Eclipse-2C2255?style=for-the-badge&logo=eclipse&logoColor=ffffff&color=orange" 
@@ -40,6 +40,10 @@
           <img 
                src="https://komarev.com/ghpvc/?username=Eye-Aircraft&label=Views&color=000000&style=for-the-badge" 
                Title="Views" 
+          />
+          <img 
+               src="https://img.shields.io/github/downloads/TheBigEye/Aircraft/total.svg?style=for-the-badge&label=Downloads&color=000000" 
+               Title="Downloads" 
           />
           <img 
                src="https://img.shields.io/badge/Eclipse-2C2255?style=for-the-badge&logo=eclipse&logoColor=orange&color=000000" 
