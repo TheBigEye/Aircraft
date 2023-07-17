@@ -5,13 +5,13 @@
     <a href="https://github.com/TheBigEye/Aircraft#gh-light-mode-only"> <!-- light mode -->
         <img
              width="100%"
-             src="https://github.com/TheBigEye/TheBigEye/blob/main/Projects/Aircraft/Light-header.svg?raw=true" alt="Light mode Aircraft logo!"
+             src="https://github.com/TheBigEye/TheBigEye/blob/main/assets/projects/Aircraft/Light-header.svg?raw=true" alt="Light mode Aircraft logo!"
          />
     </a>
     <a href="https://github.com/TheBigEye/Aircraft#gh-dark-mode-only"> <!-- dark mode -->
         <img
              width="100%"
-             src="https://github.com/TheBigEye/TheBigEye/blob/main/Projects/Aircraft/Dark-header.svg?raw=true" alt="Dark mode Aircraft logo!"
+             src="https://github.com/TheBigEye/TheBigEye/blob/main/assets/projects/Aircraft/Dark-header.svg?raw=true" alt="Dark mode Aircraft logo!"
          />
     </a>
 </p>
