@@ -77,9 +77,9 @@ public class InputHandler implements KeyListener {
 		return key;
 	}
 	
-	private static HashMap<Integer, String> keyNames = new HashMap<>();
-	private HashMap<String, String> keymap; // The symbolic map of actions to physical key names.
-	private HashMap<String, Key> keyboard; // The actual map of key names to Key objects.
+	private static final HashMap<Integer, String> keyNames = new HashMap<>();
+	private final HashMap<String, String> keymap; // The symbolic map of actions to physical key names.
+	private final HashMap<String, Key> keyboard; // The actual map of key names to Key objects.
 	
 	static {
 	    HashMap<String, Field> keyConstants = new HashMap<>();
@@ -111,7 +111,7 @@ public class InputHandler implements KeyListener {
 		keymap = new LinkedHashMap<>(); // stores custom key name with physical key name in keyboard.
 		keyboard = new HashMap<>(); // stores physical keyboard keys; auto-generated :D
 
-		initKeyMap(); // this is seperate so I can make a "restore defaults" option.
+		initKeyMap(); // this is separate so I can make a "restore defaults" option.
 
 		// I'm not entirely sure if this is necessary... but it doesn't hurt.
 		keyboard.put("SHIFT", new Key(true));
@@ -196,7 +196,7 @@ public class InputHandler implements KeyListener {
 		public boolean clicked; // clicked = if the key is still being processed at the current tick.
 		private boolean sticky; // sticky = true if presses reaches 3, and the key continues to be held down.
 
-		boolean stayDown;
+		final boolean stayDown;
 
 		public Key() {
 			this(false);
@@ -381,14 +381,6 @@ public class InputHandler implements KeyListener {
 		return key; // return the Key object.
 	}
 
-	/// this method provides a way to press physical keys without actually
-	/// generating a key event.
-	/*
-	 * public void pressKey(String keyname, boolean pressed) { Key key =
-	 * getPhysKey(keyname); key.toggle(pressed); //System.out.println("Key " +
-	 * keyname + " is clicked: " + getPhysKey(keyname).clicked); }
-	 */
-
 	public Set<String> getAllPressedKeys() {
 	    Set<String> pressedKeys = new HashSet<>();
 
@@ -420,7 +412,7 @@ public class InputHandler implements KeyListener {
 		if (keyNames.containsKey(Integer.valueOf(keycode))) {
 			keytext = keyNames.get(Integer.valueOf(keycode));
 		} else {
-			Logger.info("INPUT: Could not find keyname for keycode \"" + keycode + "\"");
+			if (Game.debug) Logger.info("INPUT: Could not find keyname for keycode \"{}\"", keycode);
 			return;
 		}
 

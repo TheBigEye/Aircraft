@@ -1,7 +1,7 @@
 package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
-import minicraft.gfx.MobSprite;
+import minicraft.graphic.MobSprite;
 import minicraft.item.Items;
 
 public class SlimyWizard extends EnemyMob {
@@ -43,6 +43,7 @@ public class SlimyWizard extends EnemyMob {
         }
     }
 
+    @Override
     public void die() {
     	int min = 0; int max = 0;
         String difficulty = (String) Settings.get("diff");

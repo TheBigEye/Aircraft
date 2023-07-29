@@ -9,10 +9,10 @@ import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.TextParticle;
-import minicraft.gfx.Color;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -22,7 +22,7 @@ import minicraft.level.Level;
 /// this is the typical stone you see underground and on the surface, that gives coal.
 
 public class HolyRockTile extends Tile {
-    private ConnectorSprite sprite = new ConnectorSprite(HolyRockTile.class, new Sprite(37, 6, 3, 3, 1), new Sprite(40, 8, 2, 2, 1), new Sprite(40, 6, 2, 2, 1));
+    private ConnectorSprite sprite = new ConnectorSprite(HolyRockTile.class, new Sprite(18, 6, 3, 3, 1), new Sprite(23, 6, 2, 2, 1), new Sprite(21, 6, 2, 2, 1));
 
     private int coalLvl = 0;
 
@@ -33,21 +33,24 @@ public class HolyRockTile extends Tile {
         connectsToSkyGrass = true;
     }
 
+    @Override
     public void render(Screen screen, Level level, int x, int y) {
-        Tiles.get("Sky High grass").render(screen, level, x, y);
-        sprite.render(screen, level, x, y);
-        
+        Tiles.get("Sky Grass").render(screen, level, x, y);
+    	super.render(screen, level, x, y);
     }
 
+    @Override
     public boolean mayPass(Level level, int x, int y, Entity entity) {
         return false;
     }
 
+    @Override
     public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
         hurt(level, x, y, hurtDamage);
         return true;
     }
 
+    @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
         // creative mode can just act like survival here
         if (item instanceof ToolItem) {
@@ -61,6 +64,7 @@ public class HolyRockTile extends Tile {
         return false;
     }
 
+    @Override
     public void hurt(Level level, int x, int y, int hurtDamage) {
         int damage = level.getData(x, y) + hurtDamage;
         int holyrockHealth = 50;
@@ -69,29 +73,36 @@ public class HolyRockTile extends Tile {
             coalLvl = 1;
         }
         
+        Sound.genericHurt.playOnLevel(x << 4, y << 4);
         level.add(new SmashParticle(x << 4, y << 4));
-        Sound.genericHurt.playOnWorld(x << 4, y << 4);
+        
         level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
         
         if (damage >= holyrockHealth) {
             if (coalLvl == 0) {
                 level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 4, Items.get("Holy Stone"));
             }
+            
             if (coalLvl == 1) {
                 level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 2, Items.get("Holy Stone"));
-                int mincoal = 0, maxcoal = 1;
+                
+                int mincoal = 0;
+                int maxcoal = 1;
+                
                 if (!Settings.get("diff").equals("Hard")) {
                     mincoal++;
                     maxcoal++;
                 }
                 level.dropItem((x << 4) + 8, (y << 4) + 8, mincoal, maxcoal, Items.get("coal"));
             }
-            level.setTile(x, y, Tiles.get("Sky High grass"));
+            level.setTile(x, y, Tiles.get("Sky Grass"));
+            
         } else {
             level.setData(x, y, damage);
         }
     }
 
+    @Override
     public boolean tick(Level level, int xt, int yt) {
         int damage = level.getData(xt, yt);
         if (damage > 0) {

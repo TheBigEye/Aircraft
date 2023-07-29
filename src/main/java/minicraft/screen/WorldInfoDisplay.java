@@ -7,9 +7,9 @@ import java.io.IOException;
 import minicraft.core.Game;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Settings;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Screen;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
@@ -38,6 +38,7 @@ public class WorldInfoDisplay extends Display {
 		};
 	}
 
+	@Override
 	public void render(Screen screen) {
 		super.render(screen);
 		Font.draw(Localization.getLocalized("Name:") + " " + WorldSelectDisplay.getWorldName(), screen, 120, 90, Color.GREEN);

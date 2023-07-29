@@ -155,6 +155,9 @@ public class Recipes {
 		anvilRecipes.add(new Recipe("Sharp II Sword_1", "Sharp II_1", "Gold Sword_1"));
 		anvilRecipes.add(new Recipe("Sharp II Claymore_1", "Sharp II_1", "Gold Claymore_1"));*/
 
+		furnaceRecipes.add(new Recipe("coal_2", "Oak Wood_4", "coal_1"));
+		furnaceRecipes.add(new Recipe("coal_3", "Spruce Wood_4", "coal_1"));
+		furnaceRecipes.add(new Recipe("coal_4", "Birch Wood_4", "coal_1"));
 		furnaceRecipes.add(new Recipe("iron_1", "iron Ore_4", "coal_1"));
 		furnaceRecipes.add(new Recipe("gold_1", "gold Ore_4", "coal_1"));
 		furnaceRecipes.add(new Recipe("glass_1", "sand_4", "coal_1"));

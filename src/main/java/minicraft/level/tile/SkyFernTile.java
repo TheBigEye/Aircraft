@@ -5,9 +5,9 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -79,8 +79,9 @@ public class SkyFernTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(2 - tool.level) && tool.payDurability()) {
+                	Sound.genericHurt.playOnLevel(x, y);
+                	
                     level.setTile(x, y, Tiles.get("Sky Grass"));
-                    Sound.genericHurt.playOnGui();
 
                     if (random.nextInt(20) == 10) { // 20% chance to drop sky seeds
                         level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Sky Seeds"));

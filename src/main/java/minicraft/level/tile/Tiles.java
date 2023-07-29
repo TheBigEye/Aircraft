@@ -9,10 +9,12 @@ import minicraft.core.Game;
 import minicraft.level.tile.WoolTile.WoolType;
 import minicraft.level.tile.farming.CarrotTile;
 import minicraft.level.tile.farming.FarmTile;
+import minicraft.level.tile.farming.ParsnipTile;
 import minicraft.level.tile.farming.PotatoTile;
 import minicraft.level.tile.farming.SkyFarmTile;
 import minicraft.level.tile.farming.SkyWartTile;
 import minicraft.level.tile.farming.WheatTile;
+import minicraft.util.Utils;
 
 public final class Tiles {
 	/// idea: to save tile names while saving space, I could encode the names in
@@ -23,136 +25,138 @@ public final class Tiles {
 	public static ArrayList<String> oldids = new ArrayList<>();
 	private static final HashMap<Short, Tile> tiles = new HashMap<>();
 
-	public static void init() {
+	public static void initialize() {
 		Logger.debug("Initializing tile list ...");
 
-		tiles.put((short) 0, new GrassTile("Grass"));
-		tiles.put((short) 1, new DirtTile("Dirt"));
-		tiles.put((short) 2, new FlowerTile("Flower"));
-		tiles.put((short) 3, new HoleTile("Hole"));
-		tiles.put((short) 4, new StairsTile("Stairs Up", true));
-		tiles.put((short) 5, new StairsTile("Stairs Down", false));
-		tiles.put((short) 6, new WaterTile("Water"));
+		Tiles.add(0, new GrassTile("Grass"));
+		Tiles.add(1, new DirtTile("Dirt"));
+		Tiles.add(2, new FlowerTile("Flower"));
+		Tiles.add(3, new HoleTile("Hole"));
+		Tiles.add(4, new StairsTile("Stairs Up", true));
+		Tiles.add(5, new StairsTile("Stairs Down", false));
+		Tiles.add(6, new WaterTile("Water"));
+		
 		// this is out of order because of lava buckets
-		tiles.put((short) 17, new LavaTile("Lava"));
+		Tiles.add(17, new LavaTile("Lava"));
 
-		tiles.put((short) 7, new RockTile("Rock"));
-		tiles.put((short) 8, new TreeTile(TreeTile.TreeType.Oak));
-		tiles.put((short) 9, new SaplingTile("Oak Sapling", Tiles.get("Grass"), Tiles.get("Oak Tree")));
-		tiles.put((short) 10, new SandTile("Sand"));
-		tiles.put((short) 11, new CactusTile("Cactus"));
-		tiles.put((short) 12, new SaplingTile("Cactus Sapling", Tiles.get("Sand"), Tiles.get("Cactus")));
-		tiles.put((short) 13, new OreTile(OreTile.OreType.Iron));
-		tiles.put((short) 14, new OreTile(OreTile.OreType.Gold));
-		tiles.put((short) 15, new OreTile(OreTile.OreType.Gem));
-		tiles.put((short) 16, new OreTile(OreTile.OreType.Lapis));
-		tiles.put((short) 18, new LavaBrickTile("Lava Brick"));
-		tiles.put((short) 19, new ExplodedTile("Explode"));
-		tiles.put((short) 20, new FarmTile("Farmland"));
-		tiles.put((short) 21, new WheatTile("Wheat"));
-		tiles.put((short) 22, new HardRockTile("Hard Rock"));
-		tiles.put((short) 23, new InfiniteFallTile("Infinite Fall"));
-		tiles.put((short) 24, new CloudTile("Cloud"));
-		tiles.put((short) 25, new CloudCactusTile("Cloud Cactus"));
+		Tiles.add(7, new RockTile("Rock"));
+		Tiles.add(8, new TreeTile(TreeTile.TreeType.Oak));
+		Tiles.add(9, new SaplingTile("Oak Sapling", Tiles.get("Grass"), Tiles.get("Oak Tree")));
+		Tiles.add(10, new SandTile("Sand"));
+		Tiles.add(11, new CactusTile("Cactus"));
+		Tiles.add(12, new SaplingTile("Cactus Sapling", Tiles.get("Sand"), Tiles.get("Cactus")));
+		Tiles.add(13, new OreTile(OreTile.OreType.Iron));
+		Tiles.add(14, new OreTile(OreTile.OreType.Gold));
+		Tiles.add(15, new OreTile(OreTile.OreType.Gem));
+		Tiles.add(16, new OreTile(OreTile.OreType.Lapis));
+		Tiles.add(18, new GrassTile("Lava Brick"));
+		Tiles.add(19, new ExplodedTile("Explode"));
+		Tiles.add(20, new FarmTile("Farmland"));
+		Tiles.add(21, new WheatTile("Wheat"));
+		Tiles.add(22, new HardRockTile("Hard Rock"));
+		Tiles.add(23, new InfiniteFallTile("Infinite Fall"));
+		Tiles.add(24, new CloudTile("Cloud"));
+		Tiles.add(25, new CloudCactusTile("Cloud Cactus"));
 
 		// Building tiles
-		tiles.put((short) 26, new DoorTile(Tile.Material.Oak));
-		tiles.put((short) 27, new DoorTile(Tile.Material.Spruce));
-		tiles.put((short) 28, new DoorTile(Tile.Material.Birch));
-		tiles.put((short) 29, new DoorTile(Tile.Material.Stone));
-		tiles.put((short) 30, new DoorTile(Tile.Material.Obsidian));
-		tiles.put((short) 31, new DoorTile(Tile.Material.Holy));
-		tiles.put((short) 32, new FloorTile(Tile.Material.Oak));
-		tiles.put((short) 33, new FloorTile(Tile.Material.Spruce));
-		tiles.put((short) 34, new FloorTile(Tile.Material.Birch));
-		tiles.put((short) 35, new FloorTile(Tile.Material.Stone));
-		tiles.put((short) 36, new FloorTile(Tile.Material.Obsidian));
-		tiles.put((short) 37, new FloorTile(Tile.Material.Holy));
-		tiles.put((short) 38, new WallTile(Tile.Material.Oak));
-		tiles.put((short) 39, new WallTile(Tile.Material.Spruce));
-		tiles.put((short) 40, new WallTile(Tile.Material.Birch));
-		tiles.put((short) 41, new WallTile(Tile.Material.Stone));
-		tiles.put((short) 42, new WallTile(Tile.Material.Obsidian));
-		tiles.put((short) 43, new WallTile(Tile.Material.Holy));
+		Tiles.add(26, new DoorTile(Tile.Material.Oak));
+		Tiles.add(27, new DoorTile(Tile.Material.Spruce));
+		Tiles.add(28, new DoorTile(Tile.Material.Birch));
+		Tiles.add(29, new DoorTile(Tile.Material.Stone));
+		Tiles.add(30, new DoorTile(Tile.Material.Obsidian));
+		Tiles.add(31, new DoorTile(Tile.Material.Holy));
+		Tiles.add(32, new FloorTile(Tile.Material.Oak));
+		Tiles.add(33, new FloorTile(Tile.Material.Spruce));
+		Tiles.add(34, new FloorTile(Tile.Material.Birch));
+		Tiles.add(35, new FloorTile(Tile.Material.Stone));
+		Tiles.add(36, new FloorTile(Tile.Material.Obsidian));
+		Tiles.add(37, new FloorTile(Tile.Material.Holy));
+		Tiles.add(38, new WallTile(Tile.Material.Oak));
+		Tiles.add(39, new WallTile(Tile.Material.Spruce));
+		Tiles.add(40, new WallTile(Tile.Material.Birch));
+		Tiles.add(41, new WallTile(Tile.Material.Stone));
+		Tiles.add(42, new WallTile(Tile.Material.Obsidian));
+		Tiles.add(43, new WallTile(Tile.Material.Holy));
 
-		tiles.put((short) 44, new PathTile("Path"));
+		Tiles.add(44, new PathTile("Path"));
 
 		// Wool tiles
-		tiles.put((short) 45, new WoolTile("Wool", WoolType.NORMAL));
-		tiles.put((short) 46, new WoolTile("Red Wool", WoolType.RED));
-		tiles.put((short) 47, new WoolTile("Blue Wool", WoolType.BLUE));
-		tiles.put((short) 48, new WoolTile("Lime Wool", WoolType.LIME));
-		tiles.put((short) 49, new WoolTile("Yellow Wool", WoolType.YELLOW));
-		tiles.put((short) 50, new WoolTile("Purple Wool", WoolType.PURPLE));
-		tiles.put((short) 51, new WoolTile("Black Wool", WoolType.BLACK));
-		tiles.put((short) 52, new WoolTile("Pink Wool", WoolType.PINK));
-		tiles.put((short) 53, new WoolTile("Green Wool", WoolType.GREEN));
-		tiles.put((short) 54, new WoolTile("Light Gray Wool", WoolType.LIGHT_GRAY));
-		tiles.put((short) 55, new WoolTile("Brown Wool", WoolType.BROWN));
-		tiles.put((short) 56, new WoolTile("Magenta Wool", WoolType.MAGENTA));
-		tiles.put((short) 57, new WoolTile("Light Blue Wool", WoolType.LIGHT_BLUE));
-		tiles.put((short) 58, new WoolTile("Cyan Wool", WoolType.CYAN));
-		tiles.put((short) 59, new WoolTile("Orange Wool", WoolType.ORANGE));
-		tiles.put((short) 60, new WoolTile("Gray Wool", WoolType.GRAY));
+		Tiles.add(45, new WoolTile("Wool", WoolType.NORMAL));
+		Tiles.add(46, new WoolTile("Red Wool", WoolType.RED));
+		Tiles.add(47, new WoolTile("Blue Wool", WoolType.BLUE));
+		Tiles.add(48, new WoolTile("Lime Wool", WoolType.LIME));
+		Tiles.add(49, new WoolTile("Yellow Wool", WoolType.YELLOW));
+		Tiles.add(50, new WoolTile("Purple Wool", WoolType.PURPLE));
+		Tiles.add(51, new WoolTile("Black Wool", WoolType.BLACK));
+		Tiles.add(52, new WoolTile("Pink Wool", WoolType.PINK));
+		Tiles.add(53, new WoolTile("Green Wool", WoolType.GREEN));
+		Tiles.add(54, new WoolTile("Light Gray Wool", WoolType.LIGHT_GRAY));
+		Tiles.add(55, new WoolTile("Brown Wool", WoolType.BROWN));
+		Tiles.add(56, new WoolTile("Magenta Wool", WoolType.MAGENTA));
+		Tiles.add(57, new WoolTile("Light Blue Wool", WoolType.LIGHT_BLUE));
+		Tiles.add(58, new WoolTile("Cyan Wool", WoolType.CYAN));
+		Tiles.add(59, new WoolTile("Orange Wool", WoolType.ORANGE));
+		Tiles.add(60, new WoolTile("Gray Wool", WoolType.GRAY));
 
-		tiles.put((short) 61, new CarrotTile("Carrot"));
-		tiles.put((short) 62, new PotatoTile("Potato"));
-		tiles.put((short) 63, new SkyWartTile("Sky Wart"));
-		tiles.put((short) 64, new LawnTile("Lawn"));
-		tiles.put((short) 65, new OrangeTulipTile("Orange Tulip"));
+		Tiles.add(61, new CarrotTile("Carrot"));
+		Tiles.add(62, new PotatoTile("Potato"));
+		Tiles.add(63, new SkyWartTile("Sky Wart"));
+		Tiles.add(64, new LawnTile("Lawn"));
+		Tiles.add(65, new OrangeTulipTile("Orange Tulip"));
 
-		tiles.put((short) 66, new SnowTile("Snow"));
+		Tiles.add(66, new SnowTile("Snow"));
 
-		tiles.put((short) 67, new TreeTile(TreeTile.TreeType.Birch));
-		tiles.put((short) 68, new SaplingTile("Birch Sapling", Tiles.get("Grass"), Tiles.get("Birch tree")));
+		Tiles.add(67, new TreeTile(TreeTile.TreeType.Birch));
+		Tiles.add(68, new SaplingTile("Birch Sapling", Tiles.get("Grass"), Tiles.get("Birch tree")));
 
-		tiles.put((short) 69, new TreeTile(TreeTile.TreeType.Fir));
-		tiles.put((short) 70, new SaplingTile("Fir Sapling", Tiles.get("Snow"), Tiles.get("Fir tree")));
+		Tiles.add(69, new TreeTile(TreeTile.TreeType.Fir));
+		Tiles.add(70, new SaplingTile("Fir Sapling", Tiles.get("Snow"), Tiles.get("Fir tree")));
 
-		tiles.put((short) 71, new TreeTile(TreeTile.TreeType.Pine));
-		tiles.put((short) 72, new SaplingTile("Pine Sapling", Tiles.get("Snow"), Tiles.get("Pine tree")));
+		Tiles.add(71, new TreeTile(TreeTile.TreeType.Pine));
+		Tiles.add(72, new SaplingTile("Pine Sapling", Tiles.get("Snow"), Tiles.get("Pine tree")));
 
-		tiles.put((short) 73, new TreeTile(TreeTile.TreeType.Skyroot));
+		Tiles.add(73, new TreeTile(TreeTile.TreeType.Skyroot));
 
-		tiles.put((short) 74, new IceSpikeTile("Ice Spike"));
-		tiles.put((short) 75, new ObsidianTile("Raw Obsidian"));
+		Tiles.add(74, new IceSpikeTile("Ice Spike"));
+		Tiles.add(75, new ObsidianTile("Raw Obsidian"));
 
 		// heaven tiles
-		tiles.put((short) 76, new SkyGrassTile("Sky Grass"));
-		tiles.put((short) 77, new SkyHighGrassTile("Sky High Grass"));
-		tiles.put((short) 78, new SkyDirtTile("Sky Dirt"));
-		tiles.put((short) 79, new SkyLawnTile("Sky Lawn"));
-		tiles.put((short) 80, new FerrositeTile("Ferrosite"));
-		tiles.put((short) 81, new SkyFarmTile("Sky Farmland"));
-		tiles.put((short) 82, new HolyRockTile("Holy Rock"));
-		tiles.put((short) 83, new TreeTile(TreeTile.TreeType.Goldroot));
-		tiles.put((short) 84, new TreeTile(TreeTile.TreeType.Bluroot));
-		tiles.put((short) 85, new SkyFernTile("Sky Fern"));
-		tiles.put((short) 86, new UpRockTile("Up Rock"));
+		Tiles.add(76, new SkyGrassTile("Sky Grass"));
+		Tiles.add(77, new SkyHighGrassTile("Sky High Grass"));
+		Tiles.add(78, new SkyGrassTile("Sky Dirt"));
+		Tiles.add(79, new SkyLawnTile("Sky Lawn"));
+		Tiles.add(80, new FerrositeTile("Ferrosite"));
+		Tiles.add(81, new SkyFarmTile("Sky Farmland"));
+		Tiles.add(82, new HolyRockTile("Holy Rock"));
+		Tiles.add(83, new TreeTile(TreeTile.TreeType.Goldroot));
+		Tiles.add(84, new TreeTile(TreeTile.TreeType.Bluroot));
+		Tiles.add(85, new SkyFernTile("Sky Fern"));
+		Tiles.add(86, new UpRockTile("Up Rock"));
 
-		tiles.put((short) 87, new JungleGrassTile("Jungle Grass"));
+		Tiles.add(87, new GrassTile("Jungle Grass"));
 
-		tiles.put((short) 88, new CloudHoleTile("Cloud Hole"));
+		Tiles.add(88, new SkyGrassTile("Cloud Hole"));
 
-		tiles.put((short) 89, new IceTile("Ice"));
-		tiles.put((short) 90, new MyceliumTile("Mycelium"));
-		tiles.put((short) 91, new MushroomTile(MushroomTile.MushroomType.Brown));
-		tiles.put((short) 92, new MushroomTile(MushroomTile.MushroomType.Red));
+		Tiles.add(89, new IceTile("Ice"));
+		Tiles.add(90, new MyceliumTile("Mycelium"));
+		Tiles.add(91, new MushroomTile(MushroomTile.MushroomType.Brown));
+		Tiles.add(92, new MushroomTile(MushroomTile.MushroomType.Red));
+		Tiles.add(93, new ParsnipTile("Parsnip"));
 
 		// tiles.put((short)?, new SandRockTile("Sand rock"));
 
 		// WARNING: don't use this tile for anything!
-		tiles.put((short) 255, new ConnectTile());
+		Tiles.add(255, new ConnectTile());
 
-		for (short i = 0; i < 256; i++) {
-			if (tiles.get(i) == null) continue;
-			tiles.get(i).id = (short)i;
+		for (short tile = 0; tile < 256; tile++) {
+			if (tiles.get(tile) == null) continue;
+			tiles.get(tile).id = (short) tile;
 		}
 	}
 
 	protected static void add(int id, Tile tile) {
-		tiles.put((short)id, tile);
-		if (Game.debug) Logger.info("Adding {} to tile list with id {} ...", tile.name, id);
+		tiles.put((short) id, tile);
+		if (Game.debug) Logger.info("Loading tile ID \"{}\", adding \"{}\" for tile list ... ", id, Utils.formatText(tile.name));
 		tile.id = (short) id;
 	}
 

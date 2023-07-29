@@ -1,10 +1,9 @@
 package minicraft.level.tile;
 
-import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -12,7 +11,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class PathTile extends Tile {
-	private static Sprite sprite = new Sprite(8, 2, 2, 2, 1);
+	private static Sprite sprite = new Sprite(59, 2, 2, 2, 1);
 
 	public PathTile(String name) {
 		super(name, sprite);
@@ -32,8 +31,8 @@ public class PathTile extends Tile {
 		if (toolType == ToolType.Shovel) {
 			if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 				level.setTile(xt, yt, Tiles.get("Hole"));
-				Sound.genericHurt.playOnWorld(xt * 16, yt * 16);
-				level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Dirt"));
+				//Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+				level.dropItem((xt << 4) + 8, (yt << 4) + 8, Items.get("Dirt"));
 				return true;
 			}
 		}
@@ -42,6 +41,6 @@ public class PathTile extends Tile {
 
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
-		sprite.render(screen, x * 16, y * 16, 0, DirtTile.dCol(level.depth));
+		sprite.render(screen, x << 4, y << 4, 0, DirtTile.dirtColor(level.depth));
 	}
 }

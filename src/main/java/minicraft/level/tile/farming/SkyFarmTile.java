@@ -4,9 +4,9 @@ import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
+import minicraft.entity.mob.AirWizard;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.boss.AirWizard;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
@@ -15,20 +15,18 @@ import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class SkyFarmTile extends Tile {
-    private static Sprite sprite = new Sprite(12, 3, 2, 2, 1, true, new int[][] { { 1, 0 }, { 0, 1 } });
+    private static Sprite sprite = new Sprite(9, 38, 2, 2, 1, true, new int[][] { { 1, 0 }, { 0, 1 } });
 
     public SkyFarmTile(String name) {
         super(name, sprite);
         connectsToSkyGrass = true;
         connectsToSkyDirt = true;
-
     }
 
     protected SkyFarmTile(String name, Sprite sprite) {
         super(name, sprite);
         connectsToSkyGrass = true;
         connectsToSkyDirt = true;
-
     }
 
     @Override
@@ -37,8 +35,8 @@ public class SkyFarmTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
                     level.setTile(xt, yt, Tiles.get("Sky dirt"));
-                    Sound.genericHurt.playOnGui();
                     return true;
                 }
             }

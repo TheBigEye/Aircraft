@@ -8,14 +8,14 @@ import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.TextParticle;
-import minicraft.gfx.Color;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Items;
 import minicraft.level.Level;
 
 public class CactusTile extends Tile {
-    private static final Sprite sprite = new Sprite(0, 0, 2, 2, 1);
+    private static final Sprite sprite = new Sprite(65, 0, 2, 2, 1);
 
     protected CactusTile(String name) {
         super(name, sprite);
@@ -40,8 +40,8 @@ public class CactusTile extends Tile {
         level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
 
         if (damage >= cactusHealth) {
+        	Sound.genericHurt.playOnLevel(x << 4, y << 4);
             level.setTile(x, y, Tiles.get("Sand"));
-            Sound.genericHurt.playOnWorld(x << 4, y << 4);
             level.dropItem((x << 4) + 8, (y << 4) + 8, 2, 4, Items.get("Cactus"));
         } else {
             level.setData(x, y, damage);

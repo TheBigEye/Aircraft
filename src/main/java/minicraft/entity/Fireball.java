@@ -4,8 +4,8 @@ import java.util.List;
 
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Rectangle;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Rectangle;
+import minicraft.graphic.Screen;
 
 public class Fireball extends Entity implements ClientTickable {
 	private Direction dir;

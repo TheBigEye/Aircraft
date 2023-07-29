@@ -1,6 +1,6 @@
 package minicraft.entity.furniture;
 
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 
 public class CommandBlock extends Furniture {
 

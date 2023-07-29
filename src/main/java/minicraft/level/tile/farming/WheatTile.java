@@ -4,8 +4,8 @@ import minicraft.core.io.Sound;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.villager.VillagerMob;
-import minicraft.gfx.Screen;
+import minicraft.entity.mob.VillagerMob;
+import minicraft.graphic.Screen;
 import minicraft.item.Items;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
@@ -24,10 +24,10 @@ public class WheatTile extends Plant {
 
         Tiles.get("Farmland").render(screen, level, x, y);
 
-        screen.render((x << 4) + 0, (y << 4) + 0, 13 + 0 * 32 + icon, 0, 1);
-        screen.render((x << 4) + 8, (y << 4) + 0, 13 + 0 * 32 + icon, 0, 1);
-        screen.render((x << 4) + 0, (y << 4) + 8, 13 + 0 * 32 + icon, 1, 1);
-        screen.render((x << 4) + 8, (y << 4) + 8, 13 + 0 * 32 + icon, 1, 1);
+        screen.render((x << 4) + 0, (y << 4) + 0, 1 + 38 * 32 + icon, 0, 1);
+        screen.render((x << 4) + 8, (y << 4) + 0, 1 + 38 * 32 + icon, 0, 1);
+        screen.render((x << 4) + 0, (y << 4) + 8, 1 + 38 * 32 + icon, 1, 1);
+        screen.render((x << 4) + 8, (y << 4) + 8, 1 + 38 * 32 + icon, 1, 1);
     }
 
     @Override
@@ -66,9 +66,26 @@ public class WheatTile extends Plant {
         }
         
         // Play sound.
-		Sound.genericHurt.playOnGui();
+		 Sound.genericHurt.playOnLevel(x, y);
 
-        level.setTile(x, y, Tiles.get("Dirt"));
+        if (random.nextBoolean()) {
+        	level.setTile(x, y, Tiles.get("Dirt"));
+        } else {
+        	level.setTile(x, y, Tiles.get("Farmland"));
+        }
     }
-
+    
+	@Override
+	public void steppedOn(Level level, int xt, int yt, Entity entity) {
+		if (random.nextInt(60) != 0 || entity instanceof VillagerMob || entity instanceof ItemEntity) {
+			return;
+		}
+		if (level.getData(xt, yt) < 2) {
+			return;
+		}
+		
+        if (!ifWater(level, xt, yt)) {
+        	harvest(level, xt, yt, entity);
+        }
+	}
 }

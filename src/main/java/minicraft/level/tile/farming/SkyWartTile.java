@@ -3,7 +3,7 @@ package minicraft.level.tile.farming;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Screen;
 import minicraft.item.Items;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
@@ -22,10 +22,10 @@ public class SkyWartTile extends SkyPlant {
 
         Tiles.get("Sky Farmland").render(screen, level, x, y);
 
-        screen.render(x * 16 + 0, y * 16 + 0, 13 + 3 * 32 + icon, 0, 1);
-        screen.render(x * 16 + 8, y * 16 + 0, 13 + 3 * 32 + icon, 0, 1);
-        screen.render(x * 16 + 0, y * 16 + 8, 13 + 3 * 32 + icon, 1, 1);
-        screen.render((x << 4) + 8, (y << 4) + 8, 13 + 3 * 32 + icon, 1, 1);
+        screen.render((x << 4) + 0, (y << 4) + 0, 10 + 38 * 32 + icon, 0, 1);
+        screen.render((x << 4) + 8, (y << 4) + 0, 10 + 38 * 32 + icon, 0, 1);
+        screen.render((x << 4) + 0, (y << 4) + 8, 10 + 38 * 32 + icon, 1, 1);
+        screen.render((x << 4) + 8, (y << 4) + 8, 10 + 38 * 32 + icon, 1, 1);
     }
 
     @Override

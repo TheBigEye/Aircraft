@@ -3,8 +3,8 @@ package minicraft.screen;
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.InputHandler;
-import minicraft.gfx.Point;
-import minicraft.gfx.SpriteSheet;
+import minicraft.graphic.Point;
+import minicraft.graphic.SpriteSheet;
 import minicraft.screen.entry.StringEntry;
 
 public class InfoDisplay extends Display {
@@ -19,7 +19,9 @@ public class InfoDisplay extends Display {
 			
 			Game.input.getMapping("select") + "/" + Game.input.getMapping("exit") + ":Exit")
 				
-		).setTitle("Player Stats")
+		)
+
+		.setTitle("Player Stats")
 		.setTitlePos(RelPos.TOP_LEFT)
 		.setPositioning(new Point(SpriteSheet.boxWidth, SpriteSheet.boxWidth), RelPos.BOTTOM_RIGHT).createMenu());
 	}

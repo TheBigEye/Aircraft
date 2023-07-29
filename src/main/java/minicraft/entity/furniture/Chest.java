@@ -10,7 +10,7 @@ import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.ItemHolder;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 import minicraft.item.Inventory;
 import minicraft.item.Item;
 import minicraft.item.Items;
@@ -18,7 +18,7 @@ import minicraft.saveload.Load;
 import minicraft.screen.ContainerDisplay;
 
 public class Chest extends Furniture implements ItemHolder {
-	private Inventory inventory; // Inventory of the chest
+	private Inventory chestInventory; // Inventory of the chest
 
 	public Chest() {
 		this("Chest");
@@ -31,7 +31,7 @@ public class Chest extends Furniture implements ItemHolder {
 	 */
 	public Chest(String name) {
 		super(name, new Sprite(6, 30, 2, 2, 2), 3, 3); // Name of the chest
-		inventory = new Inventory(); // initialize the inventory.
+		chestInventory = new Inventory(); // initialize the inventory.
 	}
 
 	/** This is what occurs when the player uses the "Menu" command near this */
@@ -41,7 +41,7 @@ public class Chest extends Furniture implements ItemHolder {
 		return true;
 	}
 
-	public void populateInvRandom(String lootTable, int depth) {
+	public void fillInventoryRandom(String lootTable, int depth) {
 		try {
 			String[] lines = Load.loadFile("/resources/chestloot/" + lootTable + ".txt").toArray(new String[] {});
 
@@ -49,18 +49,18 @@ public class Chest extends Furniture implements ItemHolder {
 				// System.out.println(line);
 				String[] data = line.split(",");
 				if (!line.startsWith(":")) {
-					inventory.tryAdd(Integer.parseInt(data[0]), Items.get(data[1]), data.length < 3 ? 1 : Integer.parseInt(data[2]));
+					chestInventory.tryAdd(Integer.parseInt(data[0]), Items.get(data[1]), data.length < 3 ? 1 : Integer.parseInt(data[2]));
 
-				} else if (inventory.invSize() == 0) {
+				} else if (chestInventory.size() == 0) {
 					// adds the "fallback" items to ensure there's some stuff
 					String[] fallbacks = line.substring(1).split(":");
 					for (String item : fallbacks) {
-						inventory.add(Items.get(item.split(",")[0]), Integer.parseInt(item.split(",")[1]));
+						chestInventory.add(Items.get(item.split(",")[0]), Integer.parseInt(item.split(",")[1]));
 					}
 				}
 			}
 		} catch (IOException exception) {
-			Logger.error("Couldn't read loot table \"" + lootTable + ".txt" + "\"");
+			Logger.error("Couldn't read loot table \"{}.txt\"", lootTable);
 			exception.printStackTrace();
 		}
 	}
@@ -70,7 +70,7 @@ public class Chest extends Furniture implements ItemHolder {
 		if (Game.isMode("Creative")) { // Can pickup in Creative
 			return super.interact(player, item, attackDir);
 		} else { // But not in others gamemodes
-			if (inventory.invSize() == 0) {
+			if (chestInventory.size() == 0) {
 				return super.interact(player, item, attackDir);
 			}
 		}
@@ -79,13 +79,13 @@ public class Chest extends Furniture implements ItemHolder {
 
 	@Override
 	public Inventory getInventory() {
-		return inventory;
+		return chestInventory;
 	}
 
 	@Override
 	public void die() {
 		if (level != null) {
-			List<Item> items = inventory.getItems();
+			List<Item> items = chestInventory.getItems();
 			level.dropItem(x, y, items.toArray(new Item[items.size()]));
 		}
 		super.die();

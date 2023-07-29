@@ -4,9 +4,10 @@ import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.FontStyle;
+import minicraft.graphic.Screen;
 
 public class PlayerInvDisplay extends Display {
 
@@ -35,8 +36,11 @@ public class PlayerInvDisplay extends Display {
 	@Override
 	public void render(Screen screen) {
 		super.render(screen);
-
-		String text = "(" + Game.input.getMapping("SEARCHER-BAR") + ") " + Localization.getLocalized("to search.");
-		Font.draw(text, screen, Screen.w / 4 - 75 - text.length(), Screen.h / 2 - 46, Color.WHITE);
+		
+		if (!menus[0].searcherBarActive) {
+			String text = "(" + Game.input.getMapping("SEARCHER-BAR") + ") " + Localization.getLocalized("to search.");
+			FontStyle style = new FontStyle(Color.WHITE).setShadowType(Color.BLACK, true).setXPos(Screen.w / 4 - 75 - text.length()).setYPos(Screen.h / 2 - 46);
+			Font.drawParagraph(text, screen, style, 2);
+		}
 	}
 }

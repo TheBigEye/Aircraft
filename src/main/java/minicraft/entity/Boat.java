@@ -10,9 +10,9 @@ import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.SplashParticle;
-import minicraft.gfx.Rectangle;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Rectangle;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.BoatItem;
 import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
@@ -111,7 +111,7 @@ public class Boat extends Entity {
             if (Settings.get("particles").equals(true)) {
                 int randX = random.nextInt(10);
                 int randY = random.nextInt(9);
-                level.add(new SplashParticle(x - 8 + randX, y - 8 + randY));
+                level.add(new SplashParticle((x - 8) + randX, (y - 8) + randY));
             }
 
             move(xa, ya);
@@ -140,9 +140,10 @@ public class Boat extends Entity {
         return true;
     }
 
+    @Override
     public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
     	if (item instanceof PowerGloveItem) {
-    		Sound.genericHurt.playOnGui();
+    		Sound.genericHurt.playOnLevel(this.x, this.y);
     		remove();
 
     		// put whatever item the player is holding into their inventory

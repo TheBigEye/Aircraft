@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.Summoner;
+import minicraft.entity.mob.EyeQueen;
 import minicraft.entity.mob.Keeper;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.boss.EyeQueen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 
@@ -31,6 +31,7 @@ public class AmuletItem extends Item {
         this.mob = mob;
     }
 
+    @Override
     public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {	
 		level.add(new Summoner(player, this, attackDir.getX(), attackDir.getY()));
 		removed = true;
@@ -42,6 +43,7 @@ public class AmuletItem extends Item {
         return false;
     }
     
+    @Override
     public boolean isDepleted() {
         return removed;
     }

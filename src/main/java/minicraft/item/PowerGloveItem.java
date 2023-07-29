@@ -1,6 +1,6 @@
 package minicraft.item;
 
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 
 public class PowerGloveItem extends Item {
 

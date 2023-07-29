@@ -4,8 +4,8 @@ import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.entity.Entity;
-import minicraft.gfx.MobSprite;
-import minicraft.gfx.Screen;
+import minicraft.graphic.MobSprite;
+import minicraft.graphic.Screen;
 import minicraft.level.Level;
 import minicraft.level.tile.DoorTile;
 import minicraft.level.tile.MyceliumTile;
@@ -15,8 +15,6 @@ import minicraft.level.tile.farming.FarmTile;
 import minicraft.level.tile.farming.Plant;
 
 public class FriendlyMob extends MobAi {
-
-    protected int color;
     public int lvl;
 
     public FriendlyMob(MobSprite[][] sprites, int healthFactor) {

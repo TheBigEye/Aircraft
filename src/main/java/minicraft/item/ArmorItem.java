@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 
@@ -46,10 +46,7 @@ public class ArmorItem extends StackableItem {
 		staminaCost = 9;
 	}
 
-	public ArmorItem clone() {
-		return new ArmorItem(getName(), sprite, count, armor, level);
-	}
-
+	@Override
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 		boolean success = false;
 		if (player.currentArmor == null && player.payStamina(staminaCost)) {
@@ -64,5 +61,10 @@ public class ArmorItem extends StackableItem {
 	@Override
 	public boolean interactsWithWorld() {
 		return false;
+	}
+	
+	@Override
+	public ArmorItem clone() {
+		return new ArmorItem(getName(), sprite, count, armor, level);
 	}
 }

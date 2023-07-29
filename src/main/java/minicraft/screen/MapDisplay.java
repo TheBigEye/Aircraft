@@ -5,11 +5,11 @@ import java.util.List;
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.entity.Entity;
-import minicraft.entity.mob.boss.AirWizard;
-import minicraft.entity.mob.boss.EyeQueen;
-import minicraft.gfx.Color;
-import minicraft.gfx.Rectangle;
-import minicraft.gfx.Screen;
+import minicraft.entity.mob.AirWizard;
+import minicraft.entity.mob.EyeQueen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Rectangle;
+import minicraft.graphic.Screen;
 import minicraft.util.MapData;
 
 public class MapDisplay extends Display {

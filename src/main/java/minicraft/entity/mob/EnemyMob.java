@@ -5,8 +5,8 @@ import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.entity.Entity;
 import minicraft.entity.furniture.Bed;
-import minicraft.gfx.MobSprite;
-import minicraft.gfx.Screen;
+import minicraft.graphic.MobSprite;
+import minicraft.graphic.Screen;
 import minicraft.level.Level;
 import minicraft.level.tile.DoorTile;
 import minicraft.level.tile.MyceliumTile;
@@ -113,7 +113,6 @@ public class EnemyMob extends MobAi {
                 }
             }  
         }
-
     }
 
     @Override

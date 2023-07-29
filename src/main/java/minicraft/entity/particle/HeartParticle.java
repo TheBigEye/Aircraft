@@ -1,6 +1,6 @@
 package minicraft.entity.particle;
 
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 
 public class HeartParticle extends Particle {
 	/// This is used for lovely mobs.

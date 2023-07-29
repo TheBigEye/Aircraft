@@ -4,9 +4,9 @@ import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -16,8 +16,8 @@ import minicraft.level.Level;
 public class MushroomTile extends Tile {
 	
 	public enum MushroomType {
-		Brown(new Sprite(10, 12, 1), "Brown Mushroom"),
-		Red(new Sprite(9, 12, 1), "Red Mushroom");
+		Brown(new Sprite(33, 16, 1), "Brown Mushroom"),
+		Red(new Sprite(32, 16, 1), "Red Mushroom");
 		
     	private Sprite sprite;
     	private String loot;
@@ -47,8 +47,8 @@ public class MushroomTile extends Tile {
 
 		if (toolType == ToolType.Shovel) {
 			if (player.payStamina(2 - tool.level) && tool.payDurability()) {
+				Sound.genericHurt.playOnLevel(x, y);
 				level.setTile(x, y, Tiles.get("Mycelium"));
-				Sound.genericHurt.playOnGui();
 				level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get(type.loot));
 				return true;
 			}
@@ -67,8 +67,8 @@ public class MushroomTile extends Tile {
 	public void render(Screen screen, Level level, int x, int y) {
 		Tiles.get("Mycelium").render(screen, level, x, y);
 
-		//int data = level.getData(x, y);
-		int shape = (50 >> 4) % 2;
+		int data = level.getData(x, y);
+		int shape = (data >> 4) % 2;
 
 		x <<= 4;
 		y <<= 4;

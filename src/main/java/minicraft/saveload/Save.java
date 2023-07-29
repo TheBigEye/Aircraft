@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,12 +30,12 @@ import minicraft.entity.furniture.DungeonChest;
 import minicraft.entity.furniture.Lantern;
 import minicraft.entity.furniture.Spawner;
 import minicraft.entity.furniture.Statue;
+import minicraft.entity.mob.AirWizard;
 import minicraft.entity.mob.EnemyMob;
+import minicraft.entity.mob.EyeQueen;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.Sheep;
-import minicraft.entity.mob.boss.AirWizard;
-import minicraft.entity.mob.boss.EyeQueen;
 import minicraft.entity.particle.Particle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.item.Inventory;
@@ -70,7 +71,7 @@ public class Save {
 			String worldName = worldFolder.getName();
 			if (!worldName.toLowerCase().equals(worldName)) {
 
-				Logger.debug("Renaming world in " + worldFolder + " to lowercase");
+				Logger.debug("Renaming world in \"{}\" to lowercase ...", worldFolder);
 				String path = worldFolder.toString();
 				path = path.substring(0, path.lastIndexOf(worldName));
 				File newFolder = new File(path + worldName.toLowerCase());
@@ -78,7 +79,7 @@ public class Save {
 				if (worldFolder.renameTo(newFolder)) {
 					worldFolder = newFolder;
 				} else {
-					System.err.println("Failed to rename world folder " + worldFolder + " to " + newFolder);
+					Logger.error("Failed to rename world folder \"{}\" to \"{}\"", worldFolder, newFolder);
 				}
 			}
 		}
@@ -115,7 +116,7 @@ public class Save {
 	public Save() {
 		this(new File(Game.gameDir + "/"));
 
-		Logger.debug("Writing preferences and unlocks...");
+		Logger.debug("Writing preferences and unlocks ...");
 
 		writePrefs();
 		writeUnlocks();
@@ -131,16 +132,16 @@ public class Save {
 	}
 
 	public static void writeFile(String filename, String[] lines) throws IOException {
-		try (BufferedWriter br = new BufferedWriter(new FileWriter(filename))) {
-			br.write(String.join(System.lineSeparator(), lines));
+		try (BufferedWriter fileBuffer = new BufferedWriter(new FileWriter(filename))) {
+			fileBuffer.write(String.join(System.lineSeparator(), lines));
 		}
 	}
 
 	public void writeToFile(String filename, List<String> savedata) {
 		try {
 			writeToFile(filename, savedata.toArray(new String[0]), true);
-		} catch (IOException ex) {
-			ex.printStackTrace();
+		} catch (IOException exception) {
+			exception.printStackTrace();
 		}
 
 		data.clear();
@@ -154,24 +155,24 @@ public class Save {
 	}
 
 	public static void writeToFile(String filename, String[] savedata, boolean isWorldSave) throws IOException {
-		try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filename))) {
+		try (BufferedWriter fileBuffer = new BufferedWriter(new FileWriter(filename))) {
 			for (int i = 0; i < savedata.length; i++) {
-				bufferedWriter.write(savedata[i]);
+				fileBuffer.write(savedata[i]);
 				if (isWorldSave) {
-					bufferedWriter.write(",");
+					fileBuffer.write(",");
 					if (filename.contains("Level5") && i == savedata.length - 1) {
-						bufferedWriter.write(",");
+						fileBuffer.write(",");
 					}
 				} else {
-					bufferedWriter.write("\n");
+					fileBuffer.write("\n");
 				}
 			}
 		}
 	}
 
 	public static void writeJSONToFile(String filename, String json) throws IOException {
-		try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filename))) {
-			bufferedWriter.write(json);
+		try (BufferedWriter fileBuffer = new BufferedWriter(new FileWriter(filename))) {
+			fileBuffer.write(json);
 		}
 	}
 
@@ -246,37 +247,48 @@ public class Save {
 	}
 
 	private void writeWorld(String filename) {
-		LoadingDisplay.setMessage("Levels");
-		for (int l = 0; l < World.levels.length; l++) {
-			String worldSize = String.valueOf(Settings.get("size"));
-			data.add(worldSize);
-			data.add(worldSize);
-			data.add(Long.toString(World.levels[l].getSeed()));
-			data.add(String.valueOf(World.levels[l].depth));
+	    // set the message to display while loading
+	    LoadingDisplay.setProgressType("Levels");
 
-			for (int x = 0; x < World.levels[l].w; x++) {
-				for (int y = 0; y < World.levels[l].h; y++) {
-					data.add(String.valueOf(World.levels[l].getTile(x, y).name));
-				}
-			}
+	    String worldSize = String.valueOf(Settings.get("size"));
 
-			writeToFile(location + filename + l + extension, data);
-		}
+	    // loop through all levels in World.levels array
+	    for (int currentLevel = 0; currentLevel < World.levels.length; currentLevel++) {
+	        // add world size and level seed to data array
+	        data.add(worldSize);
+	        data.add(worldSize);
+	        data.add(Long.toString(World.levels[currentLevel].getSeed()));
+	        data.add(String.valueOf(World.levels[currentLevel].depth));
 
-		for (int l = 0; l < World.levels.length; l++) {
-			for (int x = 0; x < World.levels[l].w; x++) {
-				for (int y = 0; y < World.levels[l].h; y++) {
-					data.add(String.valueOf(World.levels[l].getData(x, y)));
-				}
-			}
+	        // loop through each tile in the level and add the tile name to data array
+	        for (int x = 0; x < World.levels[currentLevel].w; x++) {
+	            for (int y = 0; y < World.levels[currentLevel].h; y++) {
+	                data.add(String.valueOf(World.levels[currentLevel].getTile(x, y).name));
+	            }
+	        }
+	        // write the data array to file
+	        writeToFile(location + filename + currentLevel + extension, data);
+	        // clear the data array for next level
+	        data.clear();
+	    }
 
-			writeToFile(location + filename + l + "data" + extension, data);
-		}
-
+	    // loop through all levels in World.levels array
+	    for (int currentLevel = 0; currentLevel < World.levels.length; currentLevel++) {
+	        // loop through each tile in the level and add the tile data to data array
+	        for (int x = 0; x < World.levels[currentLevel].w; x++) {
+	            for (int y = 0; y < World.levels[currentLevel].h; y++) {
+	                data.add(String.valueOf(World.levels[currentLevel].getData(x, y)));
+	            }
+	        }
+	        // write the data array to file
+	        writeToFile(location + filename + currentLevel + "data" + extension, data);
+	        // clear the data array for next level
+	        data.clear();
+	    }
 	}
 
 	private void writePlayer(String filename, Player player) {
-		LoadingDisplay.setMessage("Player");
+		LoadingDisplay.setProgressType("Player");
 		writePlayer(player, data);
 		writeToFile(location + filename + extension, data);
 	}
@@ -297,7 +309,7 @@ public class Save {
 
 		StringBuilder subdata = new StringBuilder("PotionEffects[");
 
-		for (java.util.Map.Entry<PotionType, Integer> potion : player.potionEffects.entrySet()) {
+		for (Map.Entry<PotionType, Integer> potion : player.potionEffects.entrySet()) {
 			subdata.append(potion.getKey()).append(";").append(potion.getValue()).append(":");
 		}
 
@@ -332,20 +344,20 @@ public class Save {
 			data.add(player.activeItem.getData());
 		}
 
-		Inventory inventory = player.getInventory();
+		Inventory playerInventory = player.getInventory();
 
-		for (int i = 0; i < inventory.invSize(); i++) {
-			data.add(inventory.get(i).getData());
+		for (int itemIndex = 0; itemIndex < playerInventory.size(); itemIndex++) {
+			data.add(playerInventory.get(itemIndex).getData());
 		}
 	}
 
 	private void writeEntities(String filename) {
-		LoadingDisplay.setMessage("Entities");
-		for (int l = 0; l < World.levels.length; l++) {
-			for (Entity entity : World.levels[l].getEntitiesToSave()) {
-				String saved = writeEntity(entity, true);
-				if (saved.length() > 0) {
-					data.add(saved);
+		LoadingDisplay.setProgressType("Entities");
+		for (int currentLevel = 0; currentLevel < World.levels.length; currentLevel++) { // Iterate through each world level
+			for (Entity entity : World.levels[currentLevel].getEntitiesToSave()) { // Gets the entities of the current level to be saved
+				String savedEntity = writeEntity(entity, true);
+				if (savedEntity.length() > 0) {
+					data.add(savedEntity);
 				}
 			}
 		}
@@ -354,8 +366,8 @@ public class Save {
 	}
 
 	public static String writeEntity(Entity entity, boolean isLocalSave) {
-		String name = entity.getClass().getName();
-		name = name.substring(name.lastIndexOf('.') + 1);
+		String entityName = entity.getClass().getName();
+		entityName = entityName.substring(entityName.lastIndexOf('.') + 1);
 		StringBuilder extradata = new StringBuilder();
 
 		// Don't even write ItemEntities or particle effects; Spark... will probably is saved, eventually;
@@ -382,16 +394,18 @@ public class Save {
 			}
 
 			// Saves if the sheep is cut. If not, we could reload the save and the wool would regenerate.
-			else if (entity instanceof Sheep) {
+			if (entity instanceof Sheep) {
 				extradata.append(":").append(((Sheep) mob).sheared);
 			}
 		}
 
 		if (entity instanceof Chest) {
 			Chest chest = (Chest) entity;
+			
+			Inventory chestInventory = chest.getInventory();
 
-			for (int ii = 0; ii < chest.getInventory().invSize(); ii++) {
-				Item item = chest.getInventory().get(ii);
+			for (int itemIndex = 0; itemIndex < chestInventory.size(); itemIndex++) {
+				Item item = chestInventory.get(itemIndex);
 				extradata.append(":").append(item.getData());
 			}
 
@@ -400,10 +414,12 @@ public class Save {
 		}
 
 		if (entity instanceof Spawner) {
-			Spawner egg = (Spawner) entity;
-			String mobname = egg.mob.getClass().getName();
-			mobname = mobname.substring(mobname.lastIndexOf(".") + 1);
-			extradata.append(":").append(mobname).append(":").append(egg.mob instanceof EnemyMob ? ((EnemyMob) egg.mob).lvl : 1);
+			Spawner spawner = (Spawner) entity;
+			
+			String mobName = spawner.mob.getClass().getName();
+			mobName = mobName.substring(mobName.lastIndexOf(".") + 1);
+			
+			extradata.append(":").append(mobName).append(":").append(spawner.mob instanceof EnemyMob ? ((EnemyMob) spawner.mob).lvl : 1);
 		}
 
 		if (entity instanceof Lantern) {
@@ -411,11 +427,11 @@ public class Save {
 		}
 
 		if (entity instanceof Crafter) {
-			name = ((Crafter) entity).type.name();
+			entityName = ((Crafter) entity).type.name();
 		}
 		
 		if (entity instanceof Statue) {
-			name = ((Statue) entity).type.name() + "Statue";
+			entityName = ((Statue) entity).type.name() + "Statue";
 		}
 
 		if (!isLocalSave) {
@@ -434,8 +450,8 @@ public class Save {
 			depth = entity.getLevel().depth;
 		}
 
-		extradata.append(":").append(World.lvlIdx(depth));
+		extradata.append(":").append(World.levelIndex(depth));
 
-		return name + "[" + entity.x + ":" + entity.y + extradata + "]";
+		return entityName + "[" + entity.x + ":" + entity.y + extradata + "]";
 	}
 }

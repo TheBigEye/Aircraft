@@ -6,7 +6,7 @@ import minicraft.core.Game;
 import minicraft.core.io.Localization;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 import minicraft.screen.AchievementsDisplay;
 
 public class ToolItem extends Item {
@@ -66,11 +66,13 @@ public class ToolItem extends Item {
 		}
 	}
 
+	@Override
 	public boolean isDepleted() {
 		return durability <= 0 && type.durability > 0;
 	}
 
 	/** You can attack mobs with tools. */
+	@Override
 	public boolean canAttack() {
 		return type != ToolType.Shears && type != ToolType.Igniter;
 	}

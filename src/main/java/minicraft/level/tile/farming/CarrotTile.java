@@ -3,9 +3,11 @@ package minicraft.level.tile.farming;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
+import minicraft.entity.ItemEntity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Screen;
+import minicraft.entity.mob.VillagerMob;
+import minicraft.graphic.Screen;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -38,9 +40,13 @@ public class CarrotTile extends Plant {
 		}
 
 		// Play sound.
-		Sound.genericHurt.playOnGui();
+		Sound.genericHurt.playOnDisplay();
 
-		level.setTile(x, y, Tiles.get("Dirt"));
+        if (random.nextBoolean()) {
+        	level.setTile(x, y, Tiles.get("Dirt"));
+        } else {
+        	level.setTile(x, y, Tiles.get("Farmland"));
+        }
 	}
 
 	@Override
@@ -67,8 +73,8 @@ public class CarrotTile extends Plant {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+					Sound.genericHurt.playOnDisplay();
 					level.setTile(xt, yt, Tiles.get("Dirt"));
-					Sound.genericHurt.playOnGui();
 					return true;
 				}
 			}
@@ -83,20 +89,24 @@ public class CarrotTile extends Plant {
 
 		Tiles.get("Farmland").render(screen, level, x, y);
 
-		screen.render(x * 16 + 0, y * 16 + 0, 13 + 1 * 32 + icon, 0, 1);
-		screen.render(x * 16 + 8, y * 16 + 0, 13 + 1 * 32 + icon, 0, 1);
-		screen.render(x * 16 + 0, y * 16 + 8, 13 + 1 * 32 + icon, 1, 1);
-		screen.render((x << 4) + 8, (y << 4) + 8, 13 + 1 * 32 + icon, 1, 1);
+		screen.render((x << 4) + 0, (y << 4) + 0, 0 + 39 * 32 + icon, 0, 1);
+		screen.render((x << 4) + 8, (y << 4) + 0, 0 + 39 * 32 + icon, 0, 1);
+		screen.render((x << 4) + 0, (y << 4) + 8, 0 + 39 * 32 + icon, 1, 1);
+		screen.render((x << 4) + 8, (y << 4) + 8, 0 + 39 * 32 + icon, 1, 1);
 	}
 
 	@Override
 	public void steppedOn(Level level, int xt, int yt, Entity entity) {
-		if (random.nextInt(60) != 0) {
+		if (random.nextInt(60) != 0 || entity instanceof VillagerMob || entity instanceof ItemEntity) {
 			return;
 		}
+		
 		if (level.getData(xt, yt) < 2) {
 			return;
 		}
-		harvest(level, xt, yt, entity);
+		
+        if (!ifWater(level, xt, yt)) {
+        	harvest(level, xt, yt, entity);
+        }
 	}
 }

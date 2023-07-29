@@ -4,7 +4,7 @@ import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -34,12 +34,12 @@ public class FloorTile extends Tile {
 		this.type = type;
 		maySpawn = true;
 		switch (type) {
-			case Oak: sprite = new Sprite(5, 14, 2, 2, 1, 0); break;
-			case Stone: sprite = new Sprite(15, 14, 2, 2, 1, 0); break;
-			case Obsidian: sprite = new Sprite(25, 14, 2, 2, 1, 0); break;
-			case Spruce: sprite = new Sprite(35, 14, 2, 2, 1, 0); break;
-			case Birch: sprite = new Sprite(45, 14, 2, 2, 1, 0); break;
-			case Holy: sprite = new Sprite(55, 14, 2, 2, 1, 0); break;
+			case Oak: sprite = new Sprite(5, 26, 2, 2, 1, 0); break;
+			case Stone: sprite = new Sprite(14, 26, 2, 2, 1, 0); break;
+			case Obsidian: sprite = new Sprite(23, 26, 2, 2, 1, 0); break;
+			case Spruce: sprite = new Sprite(32, 26, 2, 2, 1, 0); break;
+			case Birch: sprite = new Sprite(41, 26, 2, 2, 1, 0); break;
+			case Holy: sprite = new Sprite(50, 26, 2, 2, 1, 0); break;
 		}
 		super.sprite = sprite;
 	}
@@ -50,6 +50,8 @@ public class FloorTile extends Tile {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == type.getRequiredTool()) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+					
+					Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
 
 					if (level.depth == 1) {
 						level.setTile(xt, yt, Tiles.get("Cloud hole"));
@@ -64,9 +66,8 @@ public class FloorTile extends Tile {
 						case Birch: drop = Items.get("Birch Plank"); break;
 						default: drop = Items.get(type.name() + " Brick"); break;
 					}
-
-					Sound.genericHurt.playOnGui();
-					level.dropItem(xt * 16 + 8, yt * 16 + 8, drop);
+					
+					level.dropItem((xt << 4) + 8, (yt << 4) + 8, drop);
 					return true;
 				}
 			}

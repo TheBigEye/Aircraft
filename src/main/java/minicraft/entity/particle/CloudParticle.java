@@ -1,6 +1,6 @@
 package minicraft.entity.particle;
 
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 
 public class CloudParticle extends Particle {
 	/// This is used for the player when steppen on in Cloud tile

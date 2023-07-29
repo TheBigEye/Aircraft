@@ -7,42 +7,45 @@ import minicraft.core.World;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
-import minicraft.gfx.Color;
-import minicraft.gfx.Ellipsis;
-import minicraft.gfx.Font;
-import minicraft.gfx.FontStyle;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Ellipsis;
+import minicraft.graphic.Font;
+import minicraft.graphic.FontStyle;
+import minicraft.graphic.Screen;
 import minicraft.saveload.Save;
 
 public class LoadingDisplay extends Display {
 
-	private int step;
 	private static float percentage = 0;
 	private static String progressType;
+	private static String message;
 
-	private static final String[] BuildString = {
+	/*private static final String[] BuildString = {
 		"Generating", "Separating", "Planting", "Eroding", "Digging",
 		"Raising", "Leveling", "Flattening", "Molding", "Building"
-	};
+	};*/
 
 	private final Timer timer;
-	private String msg;
-	
+
 	private Ellipsis ellipsis = (Ellipsis) new Ellipsis.SmoothEllipsis((Ellipsis.DotUpdater) new Ellipsis.DotUpdater.TimeUpdater());
 	
 	public LoadingDisplay() {
 		super(true, false);
-		timer = new Timer(500, e -> {
-			World.initWorld();
-			msg = Localization.getLocalized("Rendering");
-			Game.setDisplay(null);
-		});
+		timer = new Timer(500, e -> new Thread(() -> {
+			try {
+				World.initWorld();
+				Game.setDisplay(null);
+			} catch (RuntimeException exception) {
+				exception.printStackTrace();
+			}
+		}, "World Loader Thread").start());
 		timer.setRepeats(false);
 	}
+	
+	
 
 	public void tick(InputHandler input) {
 		super.tick(input);
-		step++;
 	}
 
 	@Override
@@ -51,9 +54,9 @@ public class LoadingDisplay extends Display {
 		percentage = 0;
 		progressType = "World";
 		if (WorldSelectDisplay.hasLoadedWorld()) {
-			msg = Localization.getLocalized("Loading");
+			message = Localization.getLocalized("Loading");
 		} else {
-			msg = Localization.getLocalized(BuildString[random.nextInt(BuildString.length)]);
+			message = Localization.getLocalized("Starting");
 		}
 		timer.start();
 	}
@@ -63,12 +66,10 @@ public class LoadingDisplay extends Display {
 		percentage = 0;
 		if (!WorldSelectDisplay.hasLoadedWorld()) {
 			progressType = "World";
-			msg = Localization.getLocalized("Rendering");
+			message = Localization.getLocalized("Rendering");
 			new Save(WorldSelectDisplay.getWorldName());
 			Game.notifications.clear();
 		}
-
-		Sound.playerChangeLevel.playOnGui();
 	}
 
 	public static void setPercentage(float percent) {
@@ -79,8 +80,12 @@ public class LoadingDisplay extends Display {
 		return percentage;
 	}
 
-	public static void setMessage(String progressType) {
+	public static void setProgressType(String progressType) {
 		LoadingDisplay.progressType = progressType;
+	}
+	
+	public static void setMessage(String message) {
+		LoadingDisplay.message = message;
 	}
 
 	public static void progress(float amt) {
@@ -92,15 +97,8 @@ public class LoadingDisplay extends Display {
 		super.render(screen);
 		int percent = Math.round(percentage);
 
-		int LoadingIndex = (step / 4) % 24;
-
 		if (!WorldSelectDisplay.hasLoadedWorld()) {
-
-			if (LoadingIndex == 0) {
-				msg = BuildString[random.nextInt(BuildString.length)];
-			}
-
-			Font.drawParagraph(screen, new FontStyle(Color.YELLOW), 0, Localization.getLocalized(msg) + ellipsis.updateAndGet(), percent + "%");
+			Font.drawParagraph(screen, new FontStyle(Color.YELLOW), 0, message + ellipsis.updateAndGet(), percent + "%");
 			Font.drawCentered(Localization.getLocalized("May take a while, be patient"), screen, Screen.h - 12, Color.get(1, 51));
 
 		} else {

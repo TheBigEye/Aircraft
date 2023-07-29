@@ -6,16 +6,16 @@ import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
+import minicraft.entity.mob.AirWizard;
 import minicraft.entity.mob.Firefly;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.boss.AirWizard;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.TextParticle;
-import minicraft.gfx.Color;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -34,10 +34,10 @@ public class TreeTile extends Tile {
 	public enum TreeType {
 		Oak(
 			new Sprite[] {
-		 		new Sprite(0, 34, 1), new Sprite(1, 34, 1),   // [0] [1]
-		 		new Sprite(0, 35, 1), new Sprite(1, 35, 1),   // [2] [3]
-		 		new Sprite(1, 36, 1), 						  // [-] [4]
-		 		new Sprite(1, 37, 1)  						  // [-] [5]
+		 		new Sprite(18, 0, 1), new Sprite(19, 0, 1),   // [0] [1]
+		 		new Sprite(18, 1, 1), new Sprite(19, 1, 1),   // [2] [3]
+		 		new Sprite(19, 2, 1), 						  // [-] [4]
+		 		new Sprite(19, 3, 1)  						  // [-] [5]
 		 		
 			}, "Grass", 
 			new String[] {
@@ -47,10 +47,10 @@ public class TreeTile extends Tile {
 
 		Birch(
 			new Sprite[] {
-		 		new Sprite(2, 34, 1), new Sprite(3, 34, 1),
-		 		new Sprite(2, 35, 1), new Sprite(3, 35, 1),
-		 		new Sprite(3, 36, 1),
-		 		new Sprite(3, 37, 1)
+		 		new Sprite(20, 0, 1), new Sprite(21, 0, 1),
+		 		new Sprite(20, 1, 1), new Sprite(21, 1, 1),
+		 		new Sprite(21, 2, 1),
+		 		new Sprite(21, 3, 1)
 		 		
 			}, "Grass", 
 			new String[] {
@@ -60,10 +60,10 @@ public class TreeTile extends Tile {
 			
 		Red_mushroom(
 			new Sprite[] {
-		 		new Sprite(4, 34, 1), new Sprite(5, 34, 1),
-		 		new Sprite(4, 35, 1), new Sprite(5, 35, 1),
-		 		new Sprite(5, 36, 1),
-		 		new Sprite(5, 37, 1)
+		 		new Sprite(22, 0, 1), new Sprite(23, 0, 1),
+		 		new Sprite(22, 1, 1), new Sprite(23, 1, 1),
+		 		new Sprite(23, 2, 1),
+		 		new Sprite(23, 3, 1)
 
 			}, "Dirt", 
 			new String[] {
@@ -73,10 +73,10 @@ public class TreeTile extends Tile {
 		
 		Fir(
 			new Sprite[] {
-		 		new Sprite(6, 34, 1), new Sprite(7, 34, 1),
-		 		new Sprite(6, 35, 1), new Sprite(7, 35, 1),
-		 		new Sprite(7, 36, 1),
-		 		new Sprite(7, 37, 1)
+		 		new Sprite(24, 0, 1), new Sprite(25, 0, 1),
+		 		new Sprite(24, 1, 1), new Sprite(25, 1, 1),
+		 		new Sprite(25, 2, 1),
+		 		new Sprite(25, 3, 1)
 			
 			}, "Snow", 
 			new String[] {
@@ -86,10 +86,10 @@ public class TreeTile extends Tile {
 		
 		Pine(
 			new Sprite[] {
-		 		new Sprite(8, 34, 1), new Sprite(9, 34, 1),
-		 		new Sprite(8, 35, 1), new Sprite(9, 35, 1),
-		 		new Sprite(9, 36, 1),
-		 		new Sprite(9, 37, 1)
+		 		new Sprite(26, 0, 1), new Sprite(27, 0, 1),
+		 		new Sprite(26, 1, 1), new Sprite(27, 1, 1),
+		 		new Sprite(27, 2, 1),
+		 		new Sprite(27, 3, 1)
 			
 			}, "Snow", 
 			new String[] {
@@ -99,22 +99,22 @@ public class TreeTile extends Tile {
 		
 		Skyroot(
 			new Sprite[] {
-		 		new Sprite(10, 34, 1), new Sprite(11, 34, 1),
-		 		new Sprite(10, 35, 1), new Sprite(11, 35, 1),
-		 		new Sprite(11, 36, 1),
-		 		new Sprite(11, 37, 1)
+		 		new Sprite(28, 0, 1), new Sprite(29, 0, 1),
+		 		new Sprite(28, 1, 1), new Sprite(29, 1, 1),
+		 		new Sprite(29, 2, 1),
+		 		new Sprite(29, 3, 1)
 			
 			}, "Sky grass", 
 			new String[] {
-				"Oak Wood", "Leaf", "Acorn"
+				"Oak Wood", "Gold Apple", "Acorn"
 			}, 34
 		),		
 		Brown_mushroom(
 			new Sprite[] {
-		 		new Sprite(12, 34, 1), new Sprite(13, 34, 1),
-		 		new Sprite(12, 35, 1), new Sprite(13, 35, 1),
-		 		new Sprite(13, 36, 1),
-		 		new Sprite(13, 37, 1)
+		 		new Sprite(30, 0, 1), new Sprite(31, 0, 1),
+		 		new Sprite(30, 1, 1), new Sprite(31, 1, 1),
+		 		new Sprite(31, 2, 1),
+		 		new Sprite(31, 3, 1)
 			
 			}, "Dirt", 
 			new String[] {
@@ -123,10 +123,10 @@ public class TreeTile extends Tile {
 		),		
 		Bluroot(
 			new Sprite[] {
-		 		new Sprite(14, 34, 1), new Sprite(15, 34, 1),
-		 		new Sprite(14, 35, 1), new Sprite(15, 35, 1),
-		 		new Sprite(15, 36, 1),
-		 		new Sprite(15, 37, 1)
+		 		new Sprite(32, 0, 1), new Sprite(33, 0, 1),
+		 		new Sprite(32, 1, 1), new Sprite(33, 1, 1),
+		 		new Sprite(33, 2, 1),
+		 		new Sprite(33, 3, 1)
 			
 			}, "Sky grass", 
 			new String[] {
@@ -135,14 +135,14 @@ public class TreeTile extends Tile {
 		),		
 		Goldroot(
 			new Sprite[] {
-		 		new Sprite(16, 34, 1), new Sprite(17, 34, 1),
-		 		new Sprite(16, 35, 1), new Sprite(17, 35, 1),
-		 		new Sprite(17, 36, 1),
-		 		new Sprite(17, 37, 1)
+		 		new Sprite(34, 0, 1), new Sprite(35, 0, 1),
+		 		new Sprite(34, 1, 1), new Sprite(35, 1, 1),
+		 		new Sprite(35, 2, 1),
+		 		new Sprite(35, 3, 1)
 			
-			}, "Sky High Grass", 
+			}, "Ferrosite", 
 			new String[] {
-				"Oak Wood", "Leaf", "Acorn"
+				"Oak Wood", "Spores", "Spores"
 			}, 34
 		);
 
@@ -175,6 +175,7 @@ public class TreeTile extends Tile {
         	case "dirt": connectsToDirt = true; break;
         	case "sky grass": connectsToSkyGrass = true; break;
         	case "sky high grass": connectsToSkyHighGrass = true; break;
+        	case "ferrosite": connectsToFerrosite = true; break;
         	default: 
         		Logger.error("The connector type {} is invalid", type.parentTile);
         }	
@@ -192,9 +193,9 @@ public class TreeTile extends Tile {
         	hurtDamage = damage = treeHealth;
         }
         
+        Sound.genericHurt.playOnLevel(x << 4, y << 4);
         level.add(new SmashParticle(x << 4, y << 4));
-        Sound.genericHurt.playOnWorld(x << 4, y << 4);
-
+        
         level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
         if (damage >= treeHealth) {
         	

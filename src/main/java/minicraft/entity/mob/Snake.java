@@ -2,7 +2,7 @@ package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
 import minicraft.entity.Entity;
-import minicraft.gfx.MobSprite;
+import minicraft.graphic.MobSprite;
 import minicraft.item.Items;
 
 public class Snake extends EnemyMob {
@@ -27,6 +27,7 @@ public class Snake extends EnemyMob {
         }
     }
 
+    @Override
     public void die() {
         int num = Settings.get("diff").equals("Hard") ? 1 : 0;
         dropItem(num, num + 1, Items.get("scale"));

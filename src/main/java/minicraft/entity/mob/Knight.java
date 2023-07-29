@@ -1,7 +1,7 @@
 package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
-import minicraft.gfx.MobSprite;
+import minicraft.graphic.MobSprite;
 import minicraft.item.Items;
 
 public class Knight extends EnemyMob {

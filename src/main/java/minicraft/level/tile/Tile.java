@@ -7,9 +7,9 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
@@ -183,7 +183,7 @@ public abstract class Tile {
 	public int getData(String data) {
 		try {
 			return Integer.parseInt(data);
-		} catch (NumberFormatException ex) {
+		} catch (NumberFormatException exception) {
 			return 0;
 		}
 	}
@@ -198,14 +198,14 @@ public abstract class Tile {
 
 	public static String getData(int depth, int x, int y) {
 		try {
-			byte lvlidx = (byte) World.lvlIdx(depth);
-			Level curLevel = World.levels[lvlidx];
-			int pos = x + curLevel.w * y;
+			byte levelIndex = (byte) World.levelIndex(depth);
+			Level currentLevel = World.levels[levelIndex];
+			int pos = x + currentLevel.w * y;
 
-			int tileid = curLevel.tiles[pos];
-			int tiledata = curLevel.data[pos];
+			int tileId = currentLevel.tiles[pos];
+			int tileData = currentLevel.data[pos];
 
-			return lvlidx + ";" + pos + ";" + tileid + ";" + tiledata;
+			return levelIndex + ";" + pos + ";" + tileId + ";" + tileData;
 		} catch (NullPointerException | IndexOutOfBoundsException ignored) {
 			return "";
 		}
@@ -217,8 +217,8 @@ public abstract class Tile {
 			return false;
 		}
 		
-		Tile o = (Tile) other;
-		return name.equals(o.name);
+		Tile otherTile = (Tile) other;
+		return name.equals(otherTile.name);
 	}
 
 	@Override

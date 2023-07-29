@@ -5,8 +5,8 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -23,28 +23,28 @@ public class DoorTile extends Tile {
         this.type = type;
         switch (type) {
 	        case Oak:
-	            closedSprite = new Sprite(5, 16, 2, 2, 1);
-	            openSprite = new Sprite(3, 16, 2, 2, 1);
+	            closedSprite = new Sprite(5, 28, 2, 2, 1);
+	            openSprite = new Sprite(3, 28, 2, 2, 1);
 	            break;
 	        case Stone:
-	            closedSprite = new Sprite(15, 16, 2, 2, 1);
-	            openSprite = new Sprite(13, 16, 2, 2, 1);
+	            closedSprite = new Sprite(14, 28, 2, 2, 1);
+	            openSprite = new Sprite(12, 28, 2, 2, 1);
 	            break;
 	        case Obsidian:
-	            closedSprite = new Sprite(25, 16, 2, 2, 1);
-	            openSprite = new Sprite(23, 16, 2, 2, 1);
+	            closedSprite = new Sprite(23, 28, 2, 2, 1);
+	            openSprite = new Sprite(21, 28, 2, 2, 1);
 	            break;
 	        case Spruce:
-	            closedSprite = new Sprite(35, 16, 2, 2, 1);
-	            openSprite = new Sprite(33, 16, 2, 2, 1);
+	            closedSprite = new Sprite(32, 28, 2, 2, 1);
+	            openSprite = new Sprite(30, 28, 2, 2, 1);
 	            break;
 	        case Birch:
-	            closedSprite = new Sprite(45, 16, 2, 2, 1);
-	            openSprite = new Sprite(43, 16, 2, 2, 1);
+	            closedSprite = new Sprite(41, 28, 2, 2, 1);
+	            openSprite = new Sprite(39, 28, 2, 2, 1);
 	            break;
 	        case Holy:
-	            closedSprite = new Sprite(55, 16, 2, 2, 1);
-	            openSprite = new Sprite(53, 16, 2, 2, 1);
+	            closedSprite = new Sprite(50, 28, 2, 2, 1);
+	            openSprite = new Sprite(48, 28, 2, 2, 1);
 	            break;
         }
         sprite = closedSprite;
@@ -54,7 +54,7 @@ public class DoorTile extends Tile {
     public void render(Screen screen, Level level, int x, int y) {
         boolean closed = level.getData(x, y) == 0;
         Sprite currentSprite = closed ? closedSprite : openSprite;
-        currentSprite.render(screen, x * 16, y * 16);
+        currentSprite.render(screen, x << 4, y << 4);
     }
 
     @Override
@@ -63,9 +63,9 @@ public class DoorTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == type.getRequiredTool()) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
                     level.setTile(xt, yt, Tiles.get(id + 6)); // will get the corresponding floor tile.
-                    Sound.genericHurt.playOnGui();
-                    level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get(type.name() + " Door"));
+                    level.dropItem((xt << 4) + 8, (yt << 4) + 8, Items.get(type.name() + " Door"));
                     return true;
                 }
             }

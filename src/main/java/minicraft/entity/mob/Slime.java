@@ -3,8 +3,8 @@ package minicraft.entity.mob;
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.entity.Direction;
-import minicraft.gfx.MobSprite;
-import minicraft.gfx.Screen;
+import minicraft.graphic.MobSprite;
+import minicraft.graphic.Screen;
 import minicraft.item.Items;
 
 public class Slime extends EnemyMob {
@@ -75,6 +75,7 @@ public class Slime extends EnemyMob {
         y = oldy;
     }
 
+    @Override
     public void die() {
         dropItem(1, Game.isMode("score") ? 2 : 4 - Settings.getIndex("diff"), Items.get("slime"));
         super.die();

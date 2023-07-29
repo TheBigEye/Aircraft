@@ -4,14 +4,14 @@ import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
+import minicraft.entity.mob.AirWizard;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.boss.AirWizard;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.TextParticle;
-import minicraft.gfx.Color;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -37,39 +37,39 @@ public class WallTile extends Tile {
         switch (type) {
 	        case Oak:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		 new Sprite(0, 14, 3, 3, 1),
-	            		 new Sprite(3, 14, 2, 2, 1),
-	                     new Sprite(1, 15, 2, 2, 1, 0, true));
+	            		 new Sprite(0, 26, 3, 3, 1),
+	            		 new Sprite(3, 26, 2, 2, 1),
+	                     new Sprite(1, 27, 2, 2, 1, 0, true));
 	            break;
 	        case Stone:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		 new Sprite(10, 14, 3, 3, 1),
-	            		 new Sprite(13, 14, 2, 2, 1),
-	                     new Sprite(11, 15, 2, 2, 1, 0, true));
+	            		 new Sprite(9, 26, 3, 3, 1),
+	            		 new Sprite(12, 26, 2, 2, 1),
+	                     new Sprite(10, 27, 2, 2, 1, 0, true));
 	            break;
 	        case Obsidian:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		 new Sprite(20, 14, 3, 3, 1),
-	            		 new Sprite(23, 14, 2, 2, 1),
-	                     new Sprite(21, 15, 2, 2, 1, 0, true));
+	            		 new Sprite(18, 26, 3, 3, 1),
+	            		 new Sprite(21, 26, 2, 2, 1),
+	                     new Sprite(19, 27, 2, 2, 1, 0, true));
 	            break;
 	        case Spruce:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		 new Sprite(30, 14, 3, 3, 1),
-	            		 new Sprite(33, 14, 2, 2, 1),
-	                     new Sprite(31, 15, 2, 2, 1, 0, true));
+	            		 new Sprite(27, 26, 3, 3, 1),
+	            		 new Sprite(30, 26, 2, 2, 1),
+	                     new Sprite(28, 27, 2, 2, 1, 0, true));
 	            break;
 	        case Birch:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		 new Sprite(40, 14, 3, 3, 1),
-	            		 new Sprite(43, 14, 2, 2, 1),
-	                     new Sprite(41, 15, 2, 2, 1, 0, true));
+	            		 new Sprite(36, 26, 3, 3, 1),
+	            		 new Sprite(39, 26, 2, 2, 1),
+	                     new Sprite(37, 27, 2, 2, 1, 0, true));
 	            break;
 	        case Holy:
 	            sprite = new ConnectorSprite(WallTile.class,
-	            		 new Sprite(50, 14, 3, 3, 1),
-	            		 new Sprite(53, 14, 2, 2, 1),
-	                     new Sprite(51, 15, 2, 2, 1, 0, true));
+	            		 new Sprite(45, 26, 3, 3, 1),
+	            		 new Sprite(48, 26, 2, 2, 1),
+	                     new Sprite(46, 27, 2, 2, 1, 0, true));
 	            break;
         }
         connectorSprite = sprite;
@@ -127,9 +127,9 @@ public class WallTile extends Tile {
         	hurtDamage = damage = sbwHealth;
         }
 
+        Sound.genericHurt.playOnLevel(x << 4, y << 4);
         level.add(new SmashParticle(x << 4, y << 4));
-        Sound.genericHurt.playOnWorld(x << 4, y << 4);
-
+        
         level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
         if (damage >= sbwHealth) {
 

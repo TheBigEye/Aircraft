@@ -22,8 +22,11 @@ import minicraft.entity.ItemEntity;
 import minicraft.entity.Spark;
 import minicraft.entity.furniture.Chest;
 import minicraft.entity.furniture.DungeonChest;
+import minicraft.entity.furniture.Lantern;
 import minicraft.entity.furniture.Spawner;
+import minicraft.entity.mob.AirWizard;
 import minicraft.entity.mob.Chicken;
+import minicraft.entity.mob.Cleric;
 import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
 import minicraft.entity.mob.EnemyMob;
@@ -33,8 +36,10 @@ import minicraft.entity.mob.FrostMob;
 import minicraft.entity.mob.Goat;
 import minicraft.entity.mob.GuiMan;
 import minicraft.entity.mob.Knight;
+import minicraft.entity.mob.Librarian;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.MobAi;
+import minicraft.entity.mob.OldGolem;
 import minicraft.entity.mob.PassiveMob;
 import minicraft.entity.mob.Phyg;
 import minicraft.entity.mob.Pig;
@@ -45,14 +50,11 @@ import minicraft.entity.mob.Skeleton;
 import minicraft.entity.mob.SkyMob;
 import minicraft.entity.mob.Slime;
 import minicraft.entity.mob.Snake;
+import minicraft.entity.mob.VillagerMob;
 import minicraft.entity.mob.Zombie;
-import minicraft.entity.mob.boss.AirWizard;
-import minicraft.entity.mob.villager.Cleric;
-import minicraft.entity.mob.villager.Librarian;
-import minicraft.entity.mob.villager.OldGolem;
-import minicraft.gfx.Point;
-import minicraft.gfx.Rectangle;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Point;
+import minicraft.graphic.Rectangle;
+import minicraft.graphic.Screen;
 import minicraft.item.Item;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
@@ -144,7 +146,7 @@ public class Level {
 
 	public void printLevelLoc(String prefix, int x, int y, String suffix) {
 		String levelName = getLevelName(depth);
-		Logger.debug(prefix + " on " + levelName + " level (" + x + ", " + y + ")" + suffix);
+		Logger.debug("{} on {} level ({}, {}){}", prefix, levelName, x, y, suffix);
 	}
 
 	public void printTileLocs(Tile tile) {
@@ -199,7 +201,7 @@ public class Level {
 
 		maps = LevelGen.createAndValidateMap(w, h, level, seed);
 		if (maps == null) {
-			Logger.error("Level generation: Returned maps array is null");
+			Logger.error("Level generation: returned maps array is null");
 			return;
 		}
 
@@ -239,14 +241,11 @@ public class Level {
 		} else if (depth == 1) { // This is the sky level
 			boolean placedSkyDungeon = false;
 			while (!placedSkyDungeon) {
-				Logger.debug("Placing Sky dungeon structure...");
 				int x = (this.w / 2) - 2;
 				int y = (this.h / 2) - 2;
 
 				Structure.skyDungeon.draw(this, x, y);
 				placedSkyDungeon = true;
-
-				Logger.debug("Placed Sky dungeon structure!");
 			}
 		}
 
@@ -280,13 +279,13 @@ public class Level {
 
 			boolean found = false;
 			if (check) {
-				for (Entity e: entitiesToAdd) {
-					if (e instanceof AirWizard) {
+				for (Entity entity: entitiesToAdd) {
+					if (entity instanceof AirWizard) {
 						found = true;
 					}
 				}
-				for (Entity e: entities) {
-					if (e instanceof AirWizard) {
+				for (Entity entity: entities) {
+					if (entity instanceof AirWizard) {
 						found = true;
 					}
 				}
@@ -295,7 +294,7 @@ public class Level {
 			// if not found the Air Wizard, add then again
 			if (!found) {
 				AirWizard airWizard = new AirWizard(false);
-				add(airWizard, w / 2, h / 2, true);
+				this.add(airWizard, w / 2, h / 2, true);
 			}
 		}
 
@@ -392,7 +391,7 @@ public class Level {
 			boolean inLevel = entities.contains(entity);
 
 			if (!inLevel) {
-				if (Game.debug) printEntityStatus("Adding ", entity, "furniture.DungeonChest", "mob.boss.AirWizard", "mob.Player");
+				if (Game.debug) printEntityStatus("Adding ", entity, "furniture.DungeonChest", "mob.AirWizard", "mob.Player");
 
 				synchronized (entityLock) {
 					if (entity instanceof Spark) {
@@ -436,7 +435,7 @@ public class Level {
 		if (fullTick) {
 			// this prevents any entity (or tile) tick action from happening on a server level with no players.
 
-			for (int i = 0; i < w * h / 50; i++) {
+			for (int i = 0; i < (w * h) / 50; i++) {
 				int xt = random.nextInt(w);
 				int yt = random.nextInt(w);
 				getTile(xt, yt).tick(this, xt, yt);
@@ -456,7 +455,7 @@ public class Level {
 
 		while (count > maxMobCount) {
 			Entity removeThis = (Entity) entities.toArray()[(random.nextInt(entities.size()))];
-			if (removeThis instanceof MobAi) {
+			if ((removeThis instanceof MobAi) && !(removeThis instanceof VillagerMob)) {
 				// make sure there aren't any close players
 				boolean playerClose = entityNearPlayer(removeThis);
 
@@ -511,15 +510,15 @@ public class Level {
 	public void printEntityStatus(String entityMessage, Entity entity, String... searching) {
 		// "searching" can contain any number of class names I want to print when found.
 		String entityClass = entity.getClass().getCanonicalName();
-		entityClass = entityClass.substring(entityClass.lastIndexOf(".")+1);
+		entityClass = entityClass.substring(entityClass.lastIndexOf(".") + 1);
 		for (String search: searching) {
 			try {
 				if (Class.forName("minicraft.entity." + search).isAssignableFrom(entity.getClass())) {
 					printLevelLoc(entityMessage + entityClass, entity.x >> 4, entity.y >> 4, ": " + entity);
 					break;
 				}
-			} catch (ClassNotFoundException ex) {
-				ex.printStackTrace();
+			} catch (ClassNotFoundException exception) {
+				exception.printStackTrace();
 			}
 		}
 	}
@@ -544,8 +543,8 @@ public class Level {
 		int ranx, rany;
 
 		do {
-			ranx = x + random.nextInt(11) - 5;
-			rany = y + random.nextInt(11) - 5;
+			ranx = (x + random.nextInt(11)) - 5;
+			rany = (y + random.nextInt(11)) - 5;
 		} while (ranx >> 4 != x >> 4 || rany >> 4 != y >> 4);
 
 		ItemEntity itemEntity = new ItemEntity(item, ranx, rany);
@@ -556,9 +555,12 @@ public class Level {
 	public void renderBackground(Screen screen, int xScroll, int yScroll) {
 		int xo = xScroll >> 4; // latches to the nearest tile coordinate
 		int yo = yScroll >> 4;
-		int w = (Screen.w) >> 4; // there used to be a "+15" as in below method
+		
+		int w = (Screen.w) >> 4; // there used to be a "+ 15" as in below method
 		int h = (Screen.h) >> 4;
+		
 		screen.setOffset(xScroll, yScroll);
+		
 		for (int y = yo; y <= h + yo; y++) {
 			for (int x = xo; x <= w + xo; x++) {
 				getTile(x, y).render(screen, this, x, y);
@@ -570,11 +572,12 @@ public class Level {
 	public void renderSprites(Screen screen, int xScroll, int yScroll) {
 		int xo = xScroll >> 4; // latches to the nearest tile coordinate
 		int yo = yScroll >> 4;
+		
 		int w = (Screen.w + 15) >> 4;
 		int h = (Screen.h + 15) >> 4;
 
 		screen.setOffset(xScroll, yScroll);
-		sortAndRender(screen, getEntitiesInTiles(xo - 1, yo - 1, xo + w + 1, yo + h + 1));
+		sortAndRender(screen, getEntitiesInTiles(xo - 1, yo - 1, (xo + w) + 1, (yo + h) + 1));
 
 		screen.setOffset(0, 0);
 	}
@@ -582,6 +585,7 @@ public class Level {
 	public void renderLight(Screen screen, int xScroll, int yScroll, int brightness) {
 		int xo = xScroll >> 4;
 		int yo = yScroll >> 4;
+		
 		int w = (Screen.w + 15) >> 4;
 		int h = (Screen.h + 15) >> 4;
 
@@ -611,14 +615,13 @@ public class Level {
 	
 	private void sortAndRender(Screen screen, List <Entity> list) {
 		list.sort(spriteSorter);
-		for (int i = 0; i < list.size(); i++) {
-			Entity entity = list.get(i);
-			if (entity.getLevel() == this && !entity.isRemoved()) {
-				entity.render(screen);
-			} else {
-				remove(entity);
-			}
-		}
+	    for (Entity entity : list) {
+	        if (entity.getLevel() == this && !entity.isRemoved()) {
+	            entity.render(screen);
+	        } else {
+	            remove(entity);
+	        }
+	    }
 	}
 
 	public Tile getTile(int x, int y) {
@@ -632,13 +635,13 @@ public class Level {
 		return Tiles.get(id);
 	}
 
-	public void setTile(int x, int y, String tilewithdata) {
-		if (!tilewithdata.contains("_")) {
-			setTile(x, y, Tiles.get(tilewithdata));
+	public void setTile(int x, int y, String tileWithData) {
+		if (!tileWithData.contains("_")) {
+			setTile(x, y, Tiles.get(tileWithData));
 			return;
 		}
-		String name = tilewithdata.substring(0, tilewithdata.indexOf("_"));
-		int data = Tiles.get(name).getData(tilewithdata.substring(name.length() + 1));
+		String name = tileWithData.substring(0, tileWithData.indexOf("_"));
+		int data = Tiles.get(name).getData(tileWithData.substring(name.length() + 1));
 		setTile(x, y, Tiles.get(name), data);
 	}
 
@@ -646,11 +649,11 @@ public class Level {
 		setTile(x, y, tile, tile.getDefaultData());
 	}
 
-	public void setTile(int x, int y, Tile tile, int dataVal) {
+	public void setTile(int x, int y, Tile tile, int dataValue) {
 		if (x < 0 || y < 0 || x >= w || y >= h) return;
 
 		tiles[x + y * w] = tile.id;
-		data[x + y * w] = (short) dataVal;
+		data[x + y * w] = (short) dataValue;
 	}
 
 	public int getData(int x, int y) {
@@ -710,7 +713,7 @@ public class Level {
 		}
 
 		boolean spawned = false;
-		for (int i = 0; i < 30 && !spawned; i++) {
+		for (int i = 0; i < 15 && !spawned; i++) {
 
 			int minLevel = 1;
 			int maxLevel = 1;
@@ -720,8 +723,8 @@ public class Level {
 			
 			int lvl = random.nextInt(maxLevel - minLevel + 1) + minLevel;
 			int spawnChance = random.nextInt(100);
-			int nx = (random.nextInt(w) * 16) + 8;
-			int ny = (random.nextInt(h) * 16) + 8;
+			int nx = (random.nextInt(w) << 4) + 8;
+			int ny = (random.nextInt(h) << 4) + 8;
 
 			// System.out.println("trySpawn on level " + depth + " of lvl " + lvl + " mob w/rand " + random + " at tile " + nx + "," + ny);
 
@@ -805,7 +808,7 @@ public class Level {
 			} else if (depth == 0 && Updater.getTime() == Updater.Time.Night) {
 				// Spawns a firefly
 				if (Game.player.isNiceNight && FlyMob.checkStartPos(this, nx, ny)) {
-					if (spawnChance <= 75) {
+					if (spawnChance != 75) {
 						add(new Firefly(), nx, ny);
 					}
 					spawned = true;
@@ -865,7 +868,7 @@ public class Level {
 	}
 
 	@SafeVarargs
-	public final List <Entity> getEntitiesInTiles(int xt, int yt, int radius, boolean includeGiven, Class < ? extends Entity > ...entityClasses) {
+	public final List <Entity> getEntitiesInTiles(int xt, int yt, int radius, boolean includeGiven, Class <? extends Entity> ...entityClasses) {
 		return getEntitiesInTiles(xt - radius, yt - radius, xt + radius, yt + radius, includeGiven, entityClasses);
 	}
 
@@ -877,7 +880,7 @@ public class Level {
 	 * @param xt1 Right
 	 * @param yt1 Bottom
 	 */
-	public List <Entity> getEntitiesInTiles(int xt0, int yt0, int xt1, int yt1) {
+	public List<Entity> getEntitiesInTiles(int xt0, int yt0, int xt1, int yt1) {
 		return getEntitiesInTiles(xt0, yt0, xt1, yt1, false);
 	}
 
@@ -969,9 +972,9 @@ public class Level {
 	/// finds all entities that are an instance of the given entity.
 	public Entity[] getEntitiesOfClass(Class <? extends Entity> targetClass) {
 		ArrayList <Entity> matches = new ArrayList<>();
-		for (Entity e: getEntityArray()) {
-			if (targetClass.isAssignableFrom(e.getClass())) {
-				matches.add(e);
+		for (Entity entity: getEntityArray()) {
+			if (targetClass.isAssignableFrom(entity.getClass())) {
+				matches.add(entity);
 			}
 		}
 
@@ -1013,7 +1016,7 @@ public class Level {
 	}
 
 	public Point[] getAreaTilePositions(int x, int y, int rx, int ry) {
-	    Point[] positions = new Point[(rx*2+1)*(ry*2+1)];
+	    Point[] positions = new Point[(rx * 2 + 1) * (ry * 2 + 1)];
 	    int index = 0;
 	    Point point = new Point(0,0);
 	    for (int yp = y - ry; yp <= y + ry; yp++) {
@@ -1033,7 +1036,7 @@ public class Level {
 	}
 
 	public Tile[] getAreaTiles(int x, int y, int rx, int ry) {
-		ArrayList <Tile> local = new ArrayList<>();
+		ArrayList<Tile> local = new ArrayList<>();
 		
 		for (Point point: getAreaTilePositions(x, y, rx, ry)) {
 			local.add(getTile(point.x, point.y));
@@ -1105,6 +1108,13 @@ public class Level {
 				return true;
 			}
 		}
+		
+		for (Entity entity : getEntitiesInRect(entity -> entity instanceof Lantern, new Rectangle(x, y, 8, 8, Rectangle.CENTER_DIMS))) {
+			if (Math.hypot((entity.x >> 4) - x, (entity.y >> 4) - y) < entity.getLightRadius() - 1) {
+				return true;
+			}
+		}
+		
 		return false;
 	}
 
@@ -1183,7 +1193,7 @@ public class Level {
 					Chest chest = new Chest();
 					int chance = -depth;
 
-					chest.populateInvRandom("minidungeon", chance);
+					chest.fillInventoryRandom("minidungeon", chance);
 
 					add(chest, spawner.x - 16 + rpt * 32, spawner.y - 16);
 				}
@@ -1217,113 +1227,89 @@ public class Level {
 	 */
 
 	private void generateVillages() {
-		int lastVillageX = 8;
-		int lastVillageY = 8;
-		
-		if (Game.debug) Logger.info("Generating villages on surface");
+	    int lastVillageX = 8;
+	    int lastVillageY = 8;
 
-		// makes 2-8 villages based on world size
-		for (int i = 0; i < w / 128 * 4; i++) {
+	    if (Game.debug) Logger.info("Generating villages on surface");
 
-			// tries 10 times for each one
-			for (int t = 0; t < 10; t++) {
+	    // makes 2-3 villages based on world size
+	    int numberOfVillages = 2 + random.nextInt(2); // 2-3 aldeas
+	    
+	    for (int i = 0; i < numberOfVillages; i++) {
+	        int x, y;
+	        do {
+	            x = random.nextInt(w);
+	            y = random.nextInt(h);
+	        } while (getTile(x, y) != Tiles.get("Grass") || (Math.abs(x - lastVillageX) <= 48 && Math.abs(y - lastVillageY) <= 48));
 
-				int x = random.nextInt(w);
-				int y = random.nextInt(h);
+	        lastVillageX = x;
+	        lastVillageY = y;
 
-				// makes sure the village isn't to close to the previous village
-				if (getTile(x, y) == Tiles.get("Grass") && (Math.abs(x - lastVillageX) > 48 && Math.abs(y - lastVillageY) > 48)) {
-					lastVillageX = x;
-					lastVillageY = y;
+	        boolean hasCrops = random.nextBoolean();
+	        
+	        // xOffset and yOffset
+	        int xo = random.nextInt(8) - 8;
+	        int yo = random.nextInt(8) - 8;
 
-					// loops for each house in the village
-					for (int hs = 0; hs < 1; hs++) {
-						boolean hasCrops = random.nextBoolean();
-
-						// basically just gets what offset this house should have from the center of the village
-						int xo = hs == 0 || hs == 3 ? -8 : 8;
-						int yo = hs < 2 ? -8 : 8;
-
-						xo += random.nextInt(8);
-						yo += random.nextInt(8);
-
-						
-
-						// generate the villages an villagers
-						if (hasCrops && getTile(x, y) != Tiles.get("Rock") && getTile(x, y) != Tiles.get("Up Rock")) {
-							Structure.villageCrops.draw(this, x + xo, y + yo);
-							for (int k = 0; k < 2; k++) {
-								add(new Cleric(), (x + xo + k) * 16, (y + yo + k) * 16);
-								add(new Librarian(), (x + xo + k) * 16, (y + yo + k) * 16);
-							}
-							// inside of the houses
-							for (int k = 0; k < 1; k++) {
-								add(new Librarian(), (x + xo + 5) * 16, (y + yo - 5) * 16);
-								add(new Cleric(), (x + xo - 5) * 16, (y + yo + 4) * 16);
-							}
-						} else {
-							Structure.villageHouseNormal2.draw(this, x + xo, y + yo);
-							for (int k = 0; k < 2; k++) {
-								add(new Librarian(), (x + xo + k) * 16, (y + yo + k) * 16);
-								add(new Cleric(), (x + xo + k) * 16, (y + yo + k) * 16);
-							}
-							// inside of the houses
-							for (int k = 0; k < 1; k++) {
-								add(new Librarian(), (x + xo + 5) * 16, (y + yo - 5) * 16);
-								add(new Cleric(), (x + xo - 5) * 16, (y + yo + 4) * 16);
-							}
-						}
-
-						// add chests to some of the houses
-						if (true) {
-							Chest firstChest = new Chest();
-							Chest secondChest = new Chest();
-							firstChest.populateInvRandom("villagehouse", 1);
-							secondChest.populateInvRandom("villagehouse", random.nextInt(10));
-							add(firstChest, (x + xo + 5) * 16, (y + yo - 6) * 16); // up
-							add(secondChest, (x + xo - 5) * 16, (y + yo + 4) * 16); // down
-						}
-					}
-
-					break;
-				}
-			}
-		}
+	        if (getTile(x, y) != Tiles.get("Rock") || getTile(x, y) != Tiles.get("Up Rock")) {
+		        if (hasCrops) {
+		            Structure.villageCrops.draw(this, x + xo, y + yo);
+		            add(new Cleric(), (x + xo) << 4, (y + yo) << 4);
+		            add(new Librarian(), (x + xo) << 4, (y + yo) << 4);
+		            add(new Librarian(), (x + xo + 5) << 4, (y + yo - 5) << 4);
+		            add(new Cleric(), (x + xo - 5) << 4, (y + yo + 4) << 4);
+		        } else {
+		            Structure.villageNormal.draw(this, x + xo, y + yo);
+		            add(new Librarian(), (x + xo) << 4, (y + yo) << 4);
+		            add(new Cleric(), (x + xo) << 4, (y + yo) << 4);
+		            add(new Librarian(), (x + xo + 5) << 4, (y + yo - 5) << 4);
+		            add(new Cleric(), (x + xo - 5) << 4, (y + yo + 4) << 4);
+		        }
+		        
+		    	Chest firstChest = new Chest();
+		    	Chest secondChest = new Chest();
+		    	firstChest.fillInventoryRandom("villagehouse", 1);
+		    	secondChest.fillInventoryRandom("villagehouse", random.nextInt(10));
+		    	add(firstChest, (x + xo + 5) << 4, (y + yo - 6) << 4); // up
+		    	add(secondChest, (x + xo - 5) << 4, (y + yo + 4) << 4); // down
+		    }
+	    }
 	}
 	
+
 	private void playRandomMusic(int depth) {
 	    int randomNum = random.nextInt(8);
 	    if (depth == 0) {
 	        if (randomNum == 0) {
-	            Sound.Theme_Surface.playOnGui();
+	            Sound.Theme_Surface.playOnDisplay();
 	        } else if (randomNum == 1) {
-	            Sound.Theme_Cave.playOnGui();
+	            Sound.Theme_Cave.playOnDisplay();
 	        } else if (randomNum == 2) {
-	            Sound.Theme_Peaceful.playOnGui();
+	            Sound.Theme_Peaceful.playOnDisplay();
 	        } else if (randomNum == 3) {
-	            Sound.Theme_Peaceful.playOnGui();
+	            Sound.Theme_Peaceful.playOnDisplay();
 	        }
 	    } else if (depth == -1) {
 	        if (randomNum == 0) {
-	            Sound.Ambience1.playOnGui();
+	            Sound.Ambience1.playOnDisplay();
 	        } else if (randomNum == 1) {
-	            Sound.Ambience2.playOnGui();
+	            Sound.Ambience2.playOnDisplay();
 	        } else if (randomNum == 2) {
-	            Sound.Ambience3.playOnGui();
+	            Sound.Ambience3.playOnDisplay();
 	        } else if (randomNum == 3) {
-	            Sound.Ambience4.playOnGui();
+	            Sound.Ambience4.playOnDisplay();
 	        }
 	    } else if (depth == -2) {
 	        if (randomNum == 0) {
-	            Sound.Theme_Cavern.playOnGui();
+	            Sound.Theme_Cavern.playOnDisplay();
 	        } else if (randomNum == 1) {
-	            Sound.Theme_Cavern_drip.playOnGui();
+	            Sound.Theme_Cavern_drip.playOnDisplay();
 	        }
 	    } else if (depth == 1) {
 	        if (randomNum == 0) {
-	            Sound.Theme_Surface.playOnGui();
+	            Sound.Theme_Surface.playOnDisplay();
 	        } else if (randomNum == 1) {
-	            Sound.Theme_Fall.playOnGui();
+	            Sound.Theme_Fall.playOnDisplay();
 	        }
 	    }
 	}

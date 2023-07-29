@@ -4,15 +4,13 @@ import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.entity.Entity;
-import minicraft.gfx.MobSprite;
-import minicraft.gfx.Screen;
+import minicraft.graphic.MobSprite;
+import minicraft.graphic.Screen;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class DefenderMob extends MobAi {
-    protected int color;
-
     /**
      * Constructor for a non-hostile (passive) mob. healthFactor = 3.
      * 

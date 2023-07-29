@@ -8,8 +8,8 @@ import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Sound;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Point;
-import minicraft.gfx.SpriteSheet;
+import minicraft.graphic.Point;
+import minicraft.graphic.SpriteSheet;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.Recipe;
@@ -155,7 +155,7 @@ public class CraftingDisplay extends Display {
 
 				selectedRecipe.craft(player);
 
-				Sound.playerCraft.playOnGui();
+				Sound.playerCraft.playOnDisplay();
 
 				refreshData();
 				for (Recipe recipe : recipes) {

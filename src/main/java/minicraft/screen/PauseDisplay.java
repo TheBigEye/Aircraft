@@ -6,7 +6,7 @@ import java.util.Arrays;
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
-import minicraft.gfx.Color;
+import minicraft.graphic.Color;
 import minicraft.saveload.Save;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.ListEntry;

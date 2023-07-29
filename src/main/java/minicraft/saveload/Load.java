@@ -37,18 +37,26 @@ import minicraft.entity.furniture.Lantern;
 import minicraft.entity.furniture.Spawner;
 import minicraft.entity.furniture.Statue;
 import minicraft.entity.furniture.Tnt;
+import minicraft.entity.mob.AirWizard;
 import minicraft.entity.mob.Cat;
 import minicraft.entity.mob.Chicken;
+import minicraft.entity.mob.Cleric;
 import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
 import minicraft.entity.mob.EnemyMob;
+import minicraft.entity.mob.EyeQueen;
+import minicraft.entity.mob.EyeQueenPhase2;
+import minicraft.entity.mob.EyeQueenPhase3;
 import minicraft.entity.mob.Firefly;
 import minicraft.entity.mob.Goat;
+import minicraft.entity.mob.Golem;
 import minicraft.entity.mob.GuiMan;
 import minicraft.entity.mob.Keeper;
 import minicraft.entity.mob.Knight;
+import minicraft.entity.mob.Librarian;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.MobAi;
+import minicraft.entity.mob.OldGolem;
 import minicraft.entity.mob.Phyg;
 import minicraft.entity.mob.Pig;
 import minicraft.entity.mob.Player;
@@ -58,14 +66,6 @@ import minicraft.entity.mob.Skeleton;
 import minicraft.entity.mob.Slime;
 import minicraft.entity.mob.Snake;
 import minicraft.entity.mob.Zombie;
-import minicraft.entity.mob.boss.AirWizard;
-import minicraft.entity.mob.boss.EyeQueen;
-import minicraft.entity.mob.boss.EyeQueenPhase2;
-import minicraft.entity.mob.boss.EyeQueenPhase3;
-import minicraft.entity.mob.villager.Cleric;
-import minicraft.entity.mob.villager.Golem;
-import minicraft.entity.mob.villager.Librarian;
-import minicraft.entity.mob.villager.OldGolem;
 import minicraft.entity.particle.BrightParticle;
 import minicraft.entity.particle.CloudParticle;
 import minicraft.entity.particle.FireParticle;
@@ -73,7 +73,7 @@ import minicraft.entity.particle.HeartParticle;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.SplashParticle;
 import minicraft.entity.particle.TextParticle;
-import minicraft.gfx.Color;
+import minicraft.graphic.Color;
 import minicraft.item.ArmorItem;
 import minicraft.item.Inventory;
 import minicraft.item.Item;
@@ -93,15 +93,15 @@ public class Load {
 	private String location = Game.gameDir;
 
 	private static final String extension = Save.extension;
-	private float percentInc;
+	private float loadPercent;
 
 	private ArrayList<String> data;
 	private ArrayList<String> extradata; // These two are changed when loading a new file. (see loadFromFile())
 
-	private Version worldVer;
+	private Version worldVersion;
 
 	{
-		worldVer = null;
+		worldVersion = null;
 
 		data = new ArrayList<>();
 		extradata = new ArrayList<>();
@@ -115,23 +115,23 @@ public class Load {
 		loadFromFile(location + "/saves/" + worldname + "/Game" + extension);
 		
 		if (data.get(0).contains(".")) {
-			worldVer = new Version(data.get(0));
+			worldVersion = new Version(data.get(0));
 		}
 
-		if (worldVer == null) {
-			worldVer = new Version("1.8");
+		if (worldVersion == null) {
+			worldVersion = new Version("1.8");
 		}
 
 		if (!loadGame) return;
 		
-		if (worldVer.compareTo(new Version("1.9.2")) < 0) {
+		if (worldVersion.compareTo(new Version("1.9.2")) < 0) {
 			new LegacyLoad(worldname);
 		} else {
 			location += "/saves/" + worldname + "/";
 
 			// For the methods below, and world.
-			percentInc = 5 + World.levels.length - 1; 
-			percentInc = 100f / percentInc;
+			loadPercent = 5 + World.levels.length - 1; 
+			loadPercent = 100f / loadPercent;
 
 			LoadingDisplay.setPercentage(0);
 			
@@ -152,9 +152,9 @@ public class Load {
 		this(Game.VERSION);
 	}
 
-	public Load(Version worldVersion) {
+	public Load(Version worldSaveVersion) {
 		this(false);
-		worldVer = worldVersion;
+		worldVersion = worldSaveVersion;
 	}
 
 	public Load(boolean loadConfig) {
@@ -215,7 +215,7 @@ public class Load {
 	}
 
 	public Version getWorldVersion() {
-		return worldVer;
+		return worldVersion;
 	}
 
 	public static ArrayList<String> loadFile(String filename) throws IOException {
@@ -243,20 +243,20 @@ public class Load {
 			if (total.length() > 0) {
 				data.addAll(Arrays.asList(total.split(",")));
 			}
-		} catch (IOException ex) {
-			ex.printStackTrace();
+		} catch (IOException exception) {
+			exception.printStackTrace();
 		}
 
 		if (filename.contains("Level")) {
 			try {
 				total = Load.loadFromFile(filename.substring(0, filename.lastIndexOf("/") + 7) + "data" + extension, true);
 				extradata.addAll(Arrays.asList(total.split(",")));
-			} catch (IOException ex) {
-				ex.printStackTrace();
+			} catch (IOException exception) {
+				exception.printStackTrace();
 			}
 		}
 
-		LoadingDisplay.progress(percentInc);
+		LoadingDisplay.progress(loadPercent);
 	}
 
 	public static String loadFromFile(String filename, boolean isWorldSave) throws IOException {
@@ -277,27 +277,27 @@ public class Load {
 		loadFromFile(location + filename + extension);
 
 		// Gets the world version
-		worldVer = new Version(data.remove(0)); 
+		worldVersion = new Version(data.remove(0)); 
         
-        if (worldVer.compareTo(new Version("2.2.0-dev1")) >= 0) {
+        if (worldVersion.compareTo(new Version("2.2.0-dev1")) >= 0) {
 			World.setWorldSeed(Long.parseLong(data.remove(0)));
         }
 
-		if (worldVer.compareTo(new Version("2.0.4-dev8")) >= 0) {
+		if (worldVersion.compareTo(new Version("2.0.4-dev8")) >= 0) {
 			loadMode(data.remove(0));
 		}
 
 		Updater.setTime(Integer.parseInt(data.remove(0)));
 
 		Updater.gameTime = Integer.parseInt(data.remove(0));
-		if (worldVer.compareTo(new Version("1.9.3-dev2")) >= 0) {
-			Updater.pastDay1 = Updater.gameTime > 65000;
+		if (worldVersion.compareTo(new Version("1.9.3-dev2")) >= 0) {
+			Updater.pastFirstDay = Updater.gameTime > 65000;
 		} else {
 			Updater.gameTime = 65000; // Prevents time cheating.
 		}
 
 		int diffIdx = Integer.parseInt(data.remove(0));
-		if (worldVer.compareTo(new Version("1.9.3-dev3")) < 0) {
+		if (worldVersion.compareTo(new Version("1.9.3-dev3")) < 0) {
 			diffIdx--; // Account for change in difficulty
 		}
 
@@ -307,7 +307,7 @@ public class Load {
 		Settings.set("Cheats", Boolean.parseBoolean(data.remove(0)));
 
 		// Check if the AirWizard was beaten in versions prior to 2.1.0
-		if (worldVer.compareTo(new Version("2.1.0-dev2")) < 0) {
+		if (worldVersion.compareTo(new Version("2.1.0-dev2")) < 0) {
 			if (AirWizard.beaten) {
 				Logger.debug("AirWizard was beaten in an old version, giving achievement...");
 				AchievementsDisplay.setAchievement("minicraft.achievement.airwizard", true);
@@ -323,13 +323,13 @@ public class Load {
 			mode = Integer.parseInt(modeinfo[0]);
 
 			// We changed the min mode idx from 1 to 0.
-			if (worldVer.compareTo(new Version("2.0.3")) <= 0) {
+			if (worldVersion.compareTo(new Version("2.0.3")) <= 0) {
 				mode--; 
 			}
 
 			if (mode == 3) {
 				Updater.scoreTime = Integer.parseInt(modeinfo[1]);
-				if (worldVer.compareTo(new Version("1.9.4")) >= 0) {
+				if (worldVersion.compareTo(new Version("1.9.4")) >= 0) {
 					Settings.set("scoretime", modeinfo[2]);
 				}
 			}
@@ -338,7 +338,7 @@ public class Load {
 			mode = Integer.parseInt(modedata);
 
 			// We changed the min mode idx from 1 to 0.
-			if (worldVer.compareTo(new Version("2.0.3")) <= 0) {
+			if (worldVersion.compareTo(new Version("2.0.3")) <= 0) {
 				mode--; 
 			}
 
@@ -400,10 +400,11 @@ public class Load {
 
 	private void loadPrefs(String filename) {
 		JSONObject json;
+
 		try {
 			json = new JSONObject(loadFromFile(location + filename + ".json", false));
-		} catch (JSONException | IOException ex) {
-			ex.printStackTrace();
+		} catch (JSONException | IOException exception) {
+			exception.printStackTrace();
 			return;
 		}
 
@@ -460,10 +461,11 @@ public class Load {
 
 	private void loadUnlocks(String filename) {
 		JSONObject json;
+
 		try {
 			json = new JSONObject(loadFromFile(location + filename + ".json", false));
-		} catch (JSONException | IOException ex) {
-			ex.printStackTrace();
+		} catch (JSONException | IOException exception) {
+			exception.printStackTrace();
 			return;
 		}
 
@@ -481,31 +483,31 @@ public class Load {
 	
 
 	private void loadWorld(String filename) {
-		for (int l = World.maxLevelDepth; l >= World.minLevelDepth; l--) {
-			LoadingDisplay.setMessage(Level.getDepthString(l));
-			int lvlidx = World.lvlIdx(l);
-			loadFromFile(location + filename + lvlidx + extension);
+		for (int levelDepth = World.maxLevelDepth; levelDepth >= World.minLevelDepth; levelDepth--) {
+			LoadingDisplay.setProgressType(Level.getDepthString(levelDepth));
+			int levelIndex = World.levelIndex(levelDepth);
+			loadFromFile(location + filename + levelIndex + extension);
 
 			int worldWidth = Integer.parseInt(data.get(0));
 			int worldHeight = Integer.parseInt(data.get(1));
 			
-			boolean hasSeed = worldVer.compareTo(new Version("2.0.7-dev2")) >= 0;
+			boolean hasSeed = worldVersion.compareTo(new Version("2.0.7-dev2")) >= 0;
 			long seed = hasSeed ? Long.parseLong(data.get(2)) : 0;
 			Settings.set("size", worldWidth);
 
 			short[] tiles = new short[worldWidth * worldHeight];
-			short[] tdata = new short[worldWidth * worldHeight];
+			short[] datas = new short[worldWidth * worldHeight];
 
 			for (int x = 0; x < worldWidth; x++) {
 				for (int y = 0; y < worldHeight; y++) {
 
 					// The tiles are saved with x outer loop, and y inner loop, meaning that
 					// the list reads down, then right one, rather than right, then down one.
-					int tileArrIdx = y + x * worldWidth;
-					int tileidx = x + y * worldWidth;
+					int tilesArrayIndex = y + x * worldWidth;
+					int tileIndex = x + y * worldWidth;
 
-					String tilename = data.get(tileidx + (hasSeed ? 4 : 3));
-					if (worldVer.compareTo(new Version("1.9.4-dev6")) < 0) {
+					String tilename = data.get(tileIndex + (hasSeed ? 4 : 3));
+					if (worldVersion.compareTo(new Version("1.9.4-dev6")) < 0) {
 
 						// they were id numbers, not names, at this point
 						int tileID = Integer.parseInt(tilename);
@@ -518,8 +520,8 @@ public class Load {
 						}
 					}
 
-					if (tilename.equalsIgnoreCase("WOOL") && worldVer.compareTo(new Version("2.0.6-dev4")) < 0) {
-						switch (Integer.parseInt(extradata.get(tileidx))) {
+					if (tilename.equalsIgnoreCase("WOOL") && worldVersion.compareTo(new Version("2.0.6-dev4")) < 0) {
+						switch (Integer.parseInt(extradata.get(tileIndex))) {
 							case 1: tilename = "Red Wool"; break;
 							case 2: tilename = "Yellow Wool"; break;
 							case 3: tilename = "Green Wool"; break;
@@ -530,7 +532,7 @@ public class Load {
 						}
 					}
 					
-					if (worldVer.compareTo(new Version("2.2.0-dev1")) >= 0) {
+					if (worldVersion.compareTo(new Version("2.2.0-dev1")) >= 0) {
 						if (tilename.equalsIgnoreCase("TREE")) {
 							tilename = "Oak Tree";
 							Logger.info("Detected old TREE tile, converting to new OAK TREE tile...");
@@ -552,27 +554,29 @@ public class Load {
 						}
 					}
 
-					if (l == World.minLevelDepth + 1 && tilename.equalsIgnoreCase("LAPIS") && worldVer.compareTo(new Version("2.0.3-dev6")) < 0) {
-						// don't replace *all* the lapis
-						if (Math.random() < 0.8) {
-							tilename = "Gem Ore";
+					if (worldVersion.compareTo(new Version("2.0.3-dev6")) < 0) {
+						if (levelDepth == World.minLevelDepth + 1 && tilename.equalsIgnoreCase("LAPIS")) {
+							// don't replace *all* the lapis
+							if (Math.random() < 0.8) {
+								tilename = "Gem Ore";
+							}
 						}
 					}
 
-					tiles[tileArrIdx] = Tiles.get(tilename).id;
-					tdata[tileArrIdx] = Short.parseShort(extradata.get(tileidx));
+					tiles[tilesArrayIndex] = Tiles.get(tilename).id;
+					datas[tilesArrayIndex] = Short.parseShort(extradata.get(tileIndex));
 				}
 			}
 
-			Level parent = World.levels[World.lvlIdx(l + 1)];
-			World.levels[lvlidx] = new Level(worldWidth, worldHeight, seed, l, parent, false);
+			Level parent = World.levels[World.levelIndex(levelDepth + 1)];
+			World.levels[levelIndex] = new Level(worldWidth, worldHeight, seed, levelDepth, parent, false);
 
-			Level curLevel = World.levels[lvlidx];
-			curLevel.tiles = tiles;
-			curLevel.data = tdata;
+			Level currentLevel = World.levels[levelIndex];
+			currentLevel.tiles = tiles;
+			currentLevel.data = datas;
 
 			if (Game.debug) {
-				curLevel.printTileLocs(Tiles.get("Stairs Down"));
+				currentLevel.printTileLocs(Tiles.get("Stairs Down"));
 			}
 
 			if (parent == null) {
@@ -580,13 +584,13 @@ public class Load {
 			}
 
 			/// confirm that there are stairs in all the places that should have stairs.
-			for (minicraft.gfx.Point p : parent.getMatchingTiles(Tiles.get("Stairs Down"))) {
-				if (curLevel.getTile(p.x, p.y) != Tiles.get("Stairs Up")) {
-					curLevel.printLevelLoc("INCONSISTENT STAIRS detected; placing stairsUp", p.x, p.y);
-					curLevel.setTile(p.x, p.y, Tiles.get("Stairs Up"));
+			for (minicraft.graphic.Point p : parent.getMatchingTiles(Tiles.get("Stairs Down"))) {
+				if (currentLevel.getTile(p.x, p.y) != Tiles.get("Stairs Up")) {
+					currentLevel.printLevelLoc("INCONSISTENT STAIRS detected; placing stairsUp", p.x, p.y);
+					currentLevel.setTile(p.x, p.y, Tiles.get("Stairs Up"));
 				}
 			}
-			for (minicraft.gfx.Point p : curLevel.getMatchingTiles(Tiles.get("Stairs Up"))) {
+			for (minicraft.graphic.Point p : currentLevel.getMatchingTiles(Tiles.get("Stairs Up"))) {
 				if (parent.getTile(p.x, p.y) != Tiles.get("Stairs Down")) {
 					parent.printLevelLoc("INCONSISTENT STAIRS detected; placing stairsDown", p.x, p.y);
 					parent.setTile(p.x, p.y, Tiles.get("Stairs Down"));
@@ -596,7 +600,7 @@ public class Load {
 	}
 
 	public void loadPlayer(String filename, Player player) {
-		LoadingDisplay.setMessage("Player");
+		LoadingDisplay.setProgressType("Player");
 		loadFromFile(location + filename + extension);
 		loadPlayer(player, data);
 	}
@@ -610,13 +614,13 @@ public class Load {
 		player.spawny = Integer.parseInt(data.remove(0));
 		player.health = Integer.parseInt(data.remove(0));
 
-		if (worldVer.compareTo(new Version("2.0.4-dev7")) >= 0) {
+		if (worldVersion.compareTo(new Version("2.0.4-dev7")) >= 0) {
 			player.hunger = Integer.parseInt(data.remove(0));
 		}
 		player.armor = Integer.parseInt(data.remove(0));
 
-		if (worldVer.compareTo(new Version("2.0.5-dev5")) >= 0 || player.armor > 0 || worldVer.compareTo(new Version("2.0.5-dev4")) == 0 && data.size() > 5) {
-			if (worldVer.compareTo(new Version("2.0.4-dev7")) < 0) {
+		if (worldVersion.compareTo(new Version("2.0.5-dev5")) >= 0 || player.armor > 0 || worldVersion.compareTo(new Version("2.0.5-dev4")) == 0 && data.size() > 5) {
+			if (worldVersion.compareTo(new Version("2.0.4-dev7")) < 0) {
 				// Reverse order b/c we are taking from the end
 				player.currentArmor = (ArmorItem) Items.get(data.remove(data.size() - 1));
 				player.armorDamageBuffer = Integer.parseInt(data.remove(data.size() - 1));
@@ -627,10 +631,10 @@ public class Load {
 		}
 		player.setScore(Integer.parseInt(data.remove(0)));
 
-		if (worldVer.compareTo(new Version("2.0.4-dev7")) < 0) {
+		if (worldVersion.compareTo(new Version("2.0.4-dev7")) < 0) {
 			int arrowCount = Integer.parseInt(data.remove(0));
 
-			if (worldVer.compareTo(new Version("2.0.1-dev1")) < 0) {
+			if (worldVersion.compareTo(new Version("2.0.1-dev1")) < 0) {
 				player.getInventory().add(Items.get("arrow"), arrowCount);
 			}
 		}
@@ -649,7 +653,7 @@ public class Load {
 			Logger.trace("Game level to add player {} to is null.", player);
 		}
 
-		if (worldVer.compareTo(new Version("2.0.4-dev8")) < 0) {
+		if (worldVersion.compareTo(new Version("2.0.4-dev8")) < 0) {
 			String modedata = data.remove(0);
 			if (player == Game.player) {
 				loadMode(modedata); // Only load if you're loading the main player
@@ -667,20 +671,20 @@ public class Load {
 			}
 		}
 
-		if (worldVer.compareTo(new Version("1.9.4-dev4")) < 0) {
-			String colors = data.remove(0).replace("[", "").replace("]", "");
-			String[] color = colors.split(";");
-			int[] cols = new int[color.length];
+		if (worldVersion.compareTo(new Version("1.9.4-dev4")) < 0) {
+			String colorsList = data.remove(0).replace("[", "").replace("]", "");
+			String[] color = colorsList.split(";");
+			int[] colors = new int[color.length];
 
-			for (int i = 0; i < cols.length; i++) {
-				cols[i] = Integer.parseInt(color[i]) / 50;
+			for (int i = 0; i < colors.length; i++) {
+				colors[i] = Integer.parseInt(color[i]) / 50;
 			}
 
-			String spriteColor = "" + cols[0] + cols[1] + cols[2];
-			Logger.debug("Getting player shirt color as " + spriteColor);
+			String spriteColor = "" + colors[0] + colors[1] + colors[2];
+			Logger.debug("Loaded player shirt color as {}", spriteColor);
 			player.shirtColor = Integer.parseInt(spriteColor);
 
-		} else if (worldVer.compareTo(new Version("2.0.6-dev4")) < 0) {
+		} else if (worldVersion.compareTo(new Version("2.0.6-dev4")) < 0) {
 			String color = data.remove(0);
 			int[] colors = new int[3];
 
@@ -764,7 +768,7 @@ public class Load {
 	}
 
 	public void loadInventory(Inventory inventory, List<String> data) {
-		inventory.clearInv();
+		inventory.clear();
 
 		for (String item : data) {
 			if (item.length() == 0) {
@@ -772,22 +776,22 @@ public class Load {
 				continue;
 			}
 
-			if (worldVer.compareTo(new Version("2.1.0-dev2")) < 0) {
-				item = subOldName(item, worldVer);
+			if (worldVersion.compareTo(new Version("2.1.0-dev2")) < 0) {
+				item = subOldName(item, worldVersion);
 			}
 
-			if (item.contains("Power Glove"))
+			if (item.contains("Power Glove")) {
 				continue; // Just pretend it doesn't exist. Because it doesn't. :P
+			}
 
 			// System.out.println("Loading item: " + item);
 
-			if (worldVer.compareTo(new Version("2.0.4")) <= 0 && item.contains(";")) {
-				String[] curData = item.split(";");
-				String itemName = curData[0];
-
+			if (worldVersion.compareTo(new Version("2.0.4")) <= 0 && item.contains(";")) {
+				String[] currentData = item.split(";");
+				String itemName = currentData[0];
+				
 				Item newItem = Items.get(itemName);
-
-				int count = Integer.parseInt(curData[1]);
+				int count = Integer.parseInt(currentData[1]);
 
 				if (newItem instanceof StackableItem) {
 					((StackableItem) newItem).count = count;
@@ -797,30 +801,30 @@ public class Load {
 				}
 
 			} else {
-				Item toAdd = Items.get(item);
-				inventory.add(toAdd);
+				Item itemToAdd = Items.get(item);
+				inventory.add(itemToAdd);
 			}
 		}
 	}
 
 	private void loadEntities(String filename) {
-		LoadingDisplay.setMessage("Entities");
+		LoadingDisplay.setProgressType("Entities");
 		loadFromFile(location + filename + extension);
 
-		for (int i = 0; i < World.levels.length; i++) {
-			World.levels[i].clearEntities();
+		for (Level level : World.levels) {
+			level.clearEntities();
 		}
-		
+
 		for (String name : data) {
 			if (name.startsWith("Player")) {
 				continue;
 			}
-			loadEntity(name, worldVer, true);
+			loadEntity(name, worldVersion, true);
 		}
-
-		for (int i = 0; i < World.levels.length; i++) {
-			World.levels[i].checkChestCount();
-			World.levels[i].checkAirWizard();
+		
+		for (Level level : World.levels) {
+			level.checkChestCount();
+			level.checkAirWizard();
 		}
 	}
 
@@ -834,7 +838,7 @@ public class Load {
 
 	
 	@Nullable @SuppressWarnings({ "rawtypes", "unused" })
-	public static Entity loadEntity(String entityData, Version worldVer, boolean isLocalSave) {
+	public static Entity loadEntity(String entityData, Version worldSaveVersion, boolean isLocalSave) {
 		entityData = entityData.trim();
 
 		if (entityData.length() == 0) {
@@ -911,7 +915,7 @@ public class Load {
 
 			Class c = null;
 
-			if (worldVer.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is more or equal to 2.0.7-dev1
+			if (worldSaveVersion.compareTo(new Version("2.0.7-dev1")) >= 0) { // If the version is more or equal to 2.0.7-dev1
 				if (newEntity instanceof Sheep) {
 					Sheep sheep = ((Sheep) mob);
 					if (info.get(3).equalsIgnoreCase("true")) {
@@ -930,11 +934,11 @@ public class Load {
 			boolean isDungeonChest = chest instanceof DungeonChest;
 			List<String> chestInfo = info.subList(2, info.size() - 1);
 
-			int endIdx = chestInfo.size() - (isDeathChest || isDungeonChest ? 1 : 0);
-			for (int idx = 0; idx < endIdx; idx++) {
-				String itemData = chestInfo.get(idx);
-				if (worldVer.compareTo(new Version("2.1.0-dev3")) < 0) {
-					itemData = subOldName(itemData, worldVer);
+			int endIndex = chestInfo.size() - (isDeathChest || isDungeonChest ? 1 : 0);
+			for (int index = 0; index < endIndex; index++) {
+				String itemData = chestInfo.get(index);
+				if (worldSaveVersion.compareTo(new Version("2.1.0-dev3")) < 0) {
+					itemData = subOldName(itemData, worldSaveVersion);
 				}
 
 				if (itemData.contains("Power Glove")) {
@@ -963,7 +967,7 @@ public class Load {
 				newEntity = new Spawner(mob);
 			}
 
-		} else if (newEntity instanceof Lantern && worldVer.compareTo(new Version("1.9.4")) >= 0 && info.size() > 3) {
+		} else if (newEntity instanceof Lantern && worldSaveVersion.compareTo(new Version("1.9.4")) >= 0 && info.size() > 3) {
 			newEntity = new Lantern(Lantern.Type.values()[Integer.parseInt(info.get(2))]);
 		}
 
@@ -1010,9 +1014,9 @@ public class Load {
 			Logger.warn("Item entity was loaded with no eid");
 		}
 
-		int curLevel = Integer.parseInt(info.get(info.size() - 1));
-		if (World.levels[curLevel] != null) {
-			World.levels[curLevel].add(newEntity, x, y);
+		int currentLevel = Integer.parseInt(info.get(info.size() - 1));
+		if (World.levels[currentLevel] != null) {
+			World.levels[currentLevel].add(newEntity, x, y);
 		}
 		return newEntity;
 	}

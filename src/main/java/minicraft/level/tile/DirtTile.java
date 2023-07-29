@@ -3,9 +3,9 @@ package minicraft.level.tile;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Color;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -15,12 +15,12 @@ import minicraft.level.Level;
 public class DirtTile extends Tile {
     private static Sprite[] levelSprite = new Sprite[4];
     static {
-        levelSprite[0] = new Sprite(8, 0, 2, 2, 1);
-        levelSprite[1] = new Sprite(10, 0, 2, 2, 1);
-        levelSprite[2] = new Sprite(10, 2, 2, 2, 1);
+        levelSprite[0] = new Sprite(57, 0, 2, 2, 1);
+        levelSprite[1] = new Sprite(59, 0, 2, 2, 1);
+        levelSprite[2] = new Sprite(61, 2, 2, 2, 1);
     }
 
-    public static int dCol(int depth) {
+    public static int dirtColor(int depth) {
         switch (depth) {
 			case 1: return Color.get(1, 194, 194, 194); // Sky.
 	        case 0: return Color.get(1, 129, 105, 83); // surface.
@@ -30,7 +30,7 @@ public class DirtTile extends Tile {
         }
     }
 
-    protected static int dIdx(int depth) {
+    protected static int dirtIndex(int depth) {
         switch (depth) {
 	        case 0: return 0; // surface
 	        case -4: return 2; // dungeons
@@ -49,12 +49,12 @@ public class DirtTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
                     level.setTile(xt, yt, Tiles.get("Hole"));
-                    Sound.genericHurt.playOnGui();
-                    level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Dirt"));
+                    level.dropItem((xt << 4) + 8, (yt << 4) + 8, Items.get("Dirt"));
 
                     if (random.nextInt(64) == 0) { // 2% chance to drop bones
-                        level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Bone"));
+                        level.dropItem((xt << 4) + 8, (yt << 4) + 8, Items.get("Bone"));
                     }
 
                     return true;
@@ -62,8 +62,8 @@ public class DirtTile extends Tile {
             }
             if (tool.type == ToolType.Hoe) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
                     level.setTile(xt, yt, Tiles.get("Farmland"));
-                    Sound.genericHurt.playOnGui();
                     return true;
                 }
             }
@@ -73,6 +73,6 @@ public class DirtTile extends Tile {
 
     @Override
     public void render(Screen screen, Level level, int x, int y) {
-        levelSprite[dIdx(level.depth)].render(screen, x * 16, y * 16, 0);
+        levelSprite[dirtIndex(level.depth)].render(screen, x << 4, y << 4, 0);
     }
 }

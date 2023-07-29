@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.screen.BookDisplay;
@@ -36,6 +36,7 @@ public class BookItem extends Item {
         this.sprite = sprite;
     }
 
+    @Override
     public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
         Game.setDisplay(new BookDisplay(book, hasTitlePage));
         // level.add(new Cthulhu(1), player.x, player.y);
@@ -47,6 +48,7 @@ public class BookItem extends Item {
         return false;
     }
 
+    @Override
     public BookItem clone() {
         return new BookItem(getName(), sprite, book, hasTitlePage);
     }

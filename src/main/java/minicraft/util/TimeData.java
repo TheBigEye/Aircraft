@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 
 public class TimeData {
-	public static final LocalDateTime time = LocalDateTime.now();
+	private static final LocalDateTime time = LocalDateTime.now();
 	
 	public static Month month() {
 		return time.getMonth();

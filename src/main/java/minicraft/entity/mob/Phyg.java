@@ -2,7 +2,7 @@ package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
 import minicraft.entity.particle.HeartParticle;
-import minicraft.gfx.MobSprite;
+import minicraft.graphic.MobSprite;
 import minicraft.item.Items;
 
 public class Phyg extends SkyMob {
@@ -47,23 +47,12 @@ public class Phyg extends SkyMob {
 
     public void die() {
         int min = 0, max = 0;
-        if (Settings.get("diff").equals("Peaceful")) {
-            min = 1;
-            max = 3;
-        }
-        if (Settings.get("diff").equals("Easy")) {
-            min = 1;
-            max = 3;
-        }
-        if (Settings.get("diff").equals("Normal")) {
-            min = 1;
-            max = 2;
-        }
-        if (Settings.get("diff").equals("Hard")) {
-            min = 0;
-            max = 2;
-        }
-
+        
+        if (Settings.get("diff").equals("Peaceful")) min = 1;  max = 3;
+        if (Settings.get("diff").equals("Easy")) min = 1; max = 3;
+        if (Settings.get("diff").equals("Normal")) min = 1; max = 2;
+        if (Settings.get("diff").equals("Hard")) min = 0; max = 2;
+        
         dropItem(min, max, Items.get("raw pork"));
 
         super.die();

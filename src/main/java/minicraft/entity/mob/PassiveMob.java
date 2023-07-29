@@ -4,16 +4,13 @@ import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.entity.particle.HeartParticle;
-import minicraft.gfx.MobSprite;
-import minicraft.gfx.Screen;
+import minicraft.graphic.MobSprite;
+import minicraft.graphic.Screen;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class PassiveMob extends MobAi {
-    protected int color;
-    private int tickTime;
-
     /**
      * Constructor for a non-hostile (passive) mob. healthFactor = 4.
      * 
@@ -41,7 +38,6 @@ public class PassiveMob extends MobAi {
 
     public void tick() {
         super.tick();
-        tickTime++;
     }
 
     public void followOnHold(int followRadius, String item, boolean heartParticles) {

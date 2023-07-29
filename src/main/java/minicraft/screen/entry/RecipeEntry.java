@@ -4,15 +4,17 @@ import java.util.List;
 
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Font;
+import minicraft.graphic.Screen;
 import minicraft.item.Recipe;
 
 public class RecipeEntry extends ItemEntry {
 
     public static RecipeEntry[] useRecipes(List<Recipe> recipes) {
         RecipeEntry[] entries = new RecipeEntry[recipes.size()];
-        for (int i = 0; i < recipes.size(); i++) {
+        int recipesListSize = recipes.size();
+        
+        for (int i = 0; i < recipesListSize; i++) {
             entries[i] = new RecipeEntry(recipes.get(i));
         }
         return entries;
@@ -20,9 +22,9 @@ public class RecipeEntry extends ItemEntry {
 
     private Recipe recipe;
 
-    public RecipeEntry(Recipe r) {
-        super(r.getProduct());
-        this.recipe = r;
+    public RecipeEntry(Recipe recipe) {
+        super(recipe.getProduct());
+        this.recipe = recipe;
     }
 
     @Override

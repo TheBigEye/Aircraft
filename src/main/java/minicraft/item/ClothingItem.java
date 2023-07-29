@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Color;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 
@@ -41,6 +41,7 @@ public class ClothingItem extends StackableItem {
     }
 
     // put on clothes
+    @Override
     public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
         if (player.shirtColor == playerShirtColor) {
             return false;
@@ -62,6 +63,7 @@ public class ClothingItem extends StackableItem {
         return false;
     }
 
+    @Override
     public ClothingItem clone() {
         return new ClothingItem(getName(), count, sprite, playerShirtColor);
     }

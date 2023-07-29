@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import minicraft.core.Game;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 import minicraft.item.Recipe;
 import minicraft.item.Recipes;
 import minicraft.screen.AchievementsDisplay;
@@ -23,10 +23,10 @@ public class Crafter extends Furniture {
 		Brewery(new Sprite(34, 30, 2, 2, 2), 7, 2, Recipes.breweryRecipes, false),
 		Loom(new Sprite(24, 30, 2, 2, 2), 7, 2, Recipes.loomRecipes, false);
 
-		public ArrayList<Recipe> recipes;
-		protected Sprite sprite;
-		protected int xr;
-		protected int yr;
+		public final ArrayList<Recipe> recipes;
+		private final Sprite sprite;
+		private final int xr;
+		private final int yr;
 		protected boolean melt;
 
 		Type(Sprite sprite, int xr, int yr, ArrayList<Recipe> list, boolean melt) {

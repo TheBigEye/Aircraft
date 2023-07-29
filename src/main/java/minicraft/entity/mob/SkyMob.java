@@ -3,14 +3,14 @@ package minicraft.entity.mob;
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
-import minicraft.gfx.MobSprite;
-import minicraft.gfx.Screen;
+import minicraft.entity.particle.HeartParticle;
+import minicraft.graphic.MobSprite;
+import minicraft.graphic.Screen;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class SkyMob extends MobAi {
-    protected int color;
 
     /**
      * Constructor for a non-hostile (passive) mob. healthFactor = 3.
@@ -45,6 +45,35 @@ public class SkyMob extends MobAi {
             xa = (random.nextInt(3) - 1) * random.nextInt(2);
             ya = (random.nextInt(3) - 1) * random.nextInt(2);
         }
+    }
+    
+    public void followOnHold(int followRadius, String item, boolean heartParticles) {
+    	Player player = level.getClosestPlayer(x, y);
+    	// This is true if the player isnt null, the active item also isnt null, the player is holding the item and within the followRadius
+    	boolean holdingItem = player != null && player.activeItem != null && player.activeItem.name.equals(item) && player.isWithin(followRadius, this);
+    	
+    	if (holdingItem) {
+    		// get player walk direction
+	        int xd = player.x - x;
+	        int yd = player.y - y;
+
+	        int dir = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
+	        xa = ya = 0;
+	        
+	        // follow to the player
+	        if (xd < dir) xa = -1;
+	        else if (xd > dir) xa = 1;
+	        if (yd < dir) ya = -1;
+	        else if (yd > dir) ya = 1;
+	    } else {
+	        randomizeWalkDir(false);
+	    }
+    	
+    	if (heartParticles) {
+		    if (Settings.get("particles").equals(true) && tickTime /8 %12 == 0) {
+		        level.add(new HeartParticle(x - 2 + random.nextInt(8), y - 16));
+		    }
+    	}
     }
 
     public void die() {

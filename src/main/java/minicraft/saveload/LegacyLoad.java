@@ -21,6 +21,7 @@ import minicraft.entity.furniture.DungeonChest;
 import minicraft.entity.furniture.Lantern;
 import minicraft.entity.furniture.Spawner;
 import minicraft.entity.furniture.Tnt;
+import minicraft.entity.mob.AirWizard;
 import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
 import minicraft.entity.mob.Knight;
@@ -33,7 +34,6 @@ import minicraft.entity.mob.Skeleton;
 import minicraft.entity.mob.Slime;
 import minicraft.entity.mob.Snake;
 import minicraft.entity.mob.Zombie;
-import minicraft.entity.mob.boss.AirWizard;
 import minicraft.item.ArmorItem;
 import minicraft.item.Inventory;
 import minicraft.item.Item;
@@ -55,19 +55,19 @@ public class LegacyLoad {
     ArrayList<String> data;
     ArrayList<String> extradata;
 
-    public boolean hasloadedbigworldalready;
-    Version currentVer, worldVer;
+    public boolean hasLoadedBigWorldAlready;
+    Version currentVersion, worldVersion;
     boolean oldSave = false;
 
     Game game = null;
 
     {
-        currentVer = Game.VERSION;
-        worldVer = null;
+        currentVersion = Game.VERSION;
+        worldVersion = null;
 
         data = new ArrayList<>();
         extradata = new ArrayList<>();
-        hasloadedbigworldalready = false;
+        hasLoadedBigWorldAlready = false;
     }
 
     public LegacyLoad(String worldname) {
@@ -75,7 +75,7 @@ public class LegacyLoad {
 
         File testFile = new File(location + "KeyPrefs" + extension);
         if (!testFile.exists()) {
-            worldVer = new Version("1.8");
+            worldVersion = new Version("1.8");
             oldSave = true;
         } else {
             testFile.delete(); // we don't care about it anymore anyway.
@@ -112,15 +112,16 @@ public class LegacyLoad {
 
             if (filename.contains("Level")) {
                 total = new StringBuilder();
-                br2 = new BufferedReader(
-                        new FileReader(filename.substring(0, filename.lastIndexOf("/") + 7) + "data" + extension));
+                br2 = new BufferedReader(new FileReader(filename.substring(0, filename.lastIndexOf("/") + 7) + "data" + extension));
 
-                while ((curLine = br2.readLine()) != null)
+                while ((curLine = br2.readLine()) != null) {
                     total.append(curLine);
+                }
+                
                 extradata.addAll(Arrays.asList(total.toString().split(",")));
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException exception) {
+        	exception.printStackTrace();
         } finally {
             try {
                 LoadingDisplay.progress(13);
@@ -135,8 +136,8 @@ public class LegacyLoad {
                 if (br2 != null) {
                     br2.close();
                 }
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            } catch (IOException exception) {
+            	exception.printStackTrace();
             }
 
         }
@@ -164,8 +165,8 @@ public class LegacyLoad {
             }
             writer.flush();
             writer.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException exception) {
+        	exception.printStackTrace();
         }
     }
 
@@ -175,30 +176,36 @@ public class LegacyLoad {
         loadFromFile(location + filename + extension);
         boolean hasVersion = data.get(0).contains(".");
         if (hasVersion) {
-            worldVer = new Version(data.get(0)); // gets the world version
+            worldVersion = new Version(data.get(0)); // gets the world version
             Updater.setTime(Integer.parseInt(data.get(1)));
             Updater.gameTime = 65000; // prevents time cheating.
 
-            if (worldVer.compareTo(new Version("1.9.2")) < 0) {
+            if (worldVersion.compareTo(new Version("1.9.2")) < 0) {
                 Settings.set("autosave", Boolean.parseBoolean(data.get(3)));
                 Settings.set("sound", Boolean.parseBoolean(data.get(4)));
-                if (worldVer.compareTo(new Version("1.9.2-dev2")) >= 0)
+                
+                if (worldVersion.compareTo(new Version("1.9.2-dev2")) >= 0) {
                     AirWizard.beaten = Boolean.parseBoolean(data.get(5));
+                }
+                
             } else { // this is 1.9.2 official or after
                 Settings.setIndex("diff", Integer.parseInt(data.get(3)));
                 AirWizard.beaten = Boolean.parseBoolean(data.get(4));
             }
+            
         } else {
             if (data.size() == 5) {
-                worldVer = new Version("1.9");
+                worldVersion = new Version("1.9");
                 Updater.setTime(Integer.parseInt(data.get(0)));
                 Settings.set("autosave", Boolean.parseBoolean(data.get(3)));
                 Settings.set("sound", Boolean.parseBoolean(data.get(4)));
+                
             } else { // version == 1.8?
                 if (!oldSave) {
                     System.out.println("UNEXPECTED WORLD VERSION");
-                    worldVer = new Version("1.8.1");
+                    worldVersion = new Version("1.8.1");
                 }
+                
                 // for backwards compatibility
                 Updater.tickCount = Integer.parseInt(data.get(0));
                 playerac = Integer.parseInt(data.get(3));
@@ -221,10 +228,10 @@ public class LegacyLoad {
 
             for (int x = 0; x < worldWidth - 1; x++) {
                 for (int y = 0; y < worldHeight - 1; y++) {
-                    int tileArrIdx = y + x * worldWidth;
-                    int tileidx = x + y * worldWidth; // the tiles are saved with x outer loop, and y inner loop, meaning that the list reads down, then right one, rather than right, then down one.
-                    tiles[tileArrIdx] = Tiles.get(Tiles.oldids.get(Integer.parseInt(data.get(tileidx + 3)))).id;
-					tdata[tileArrIdx] = Short.parseShort(extradata.get(tileidx));
+                    int tilesArrayIndex = y + x * worldWidth;
+                    int tileIndex = x + y * worldWidth; // the tiles are saved with x outer loop, and y inner loop, meaning that the list reads down, then right one, rather than right, then down one.
+                    tiles[tilesArrayIndex] = Tiles.get(Tiles.oldids.get(Integer.parseInt(data.get(tileIndex + 3)))).id;
+					tdata[tilesArrayIndex] = Short.parseShort(extradata.get(tileIndex));
                 }
             }
 
@@ -246,8 +253,8 @@ public class LegacyLoad {
         String modedata;
         if (!oldSave) {
             if (data.size() >= 14) {
-                if (worldVer == null)
-                    worldVer = new Version("1.9.1-pre1");
+                if (worldVersion == null)
+                    worldVersion = new Version("1.9.1-pre1");
                 player.armorDamageBuffer = Integer.parseInt(data.get(13));
                 player.currentArmor = (ArmorItem) Items.get(data.get(14));
             } else
@@ -311,7 +318,7 @@ public class LegacyLoad {
 
     public void loadInventory(String filename, Inventory inventory) {
         loadFromFile(location + filename + extension);
-        inventory.clearInv();
+        inventory.clear();
 
         for (int i = 0; i < data.size(); i++) {
             String item = data.get(i);
@@ -348,7 +355,7 @@ public class LegacyLoad {
     private String subOldName(String oldName) {
         // System.out.println("Old name: " + oldName);
         String newName = oldName.replace("P.", "Potion").replace("Fish Rod", "Fishing Rod").replace("bed", "Bed");
-        newName = Load.subOldName(newName, worldVer);
+        newName = Load.subOldName(newName, worldVersion);
         // System.out.println("New name: " + newName);
         return newName;
     }
@@ -394,7 +401,7 @@ public class LegacyLoad {
                     int endIdx = chestInfo.size() - (isDeathChest || isDungeonChest ? 1 : 0);
                     for (int idx = 0; idx < endIdx; idx++) {
                         String itemData = chestInfo.get(idx);
-                        if (worldVer.compareTo(new Version("1.9.1")) < 0) { // if this world is before 1.9.1
+                        if (worldVersion.compareTo(new Version("1.9.1")) < 0) { // if this world is before 1.9.1
                             if (itemData.length() == 0) {
                                 continue; // this skips any null items
                             }

@@ -3,7 +3,6 @@ package minicraft.item;
 import java.util.ArrayList;
 
 import minicraft.core.Game;
-import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.furniture.Chest;
@@ -14,16 +13,22 @@ import minicraft.entity.furniture.Lantern;
 import minicraft.entity.furniture.Spawner;
 import minicraft.entity.furniture.Statue;
 import minicraft.entity.furniture.Tnt;
+import minicraft.entity.mob.AirWizard;
 import minicraft.entity.mob.Cat;
 import minicraft.entity.mob.Chicken;
+import minicraft.entity.mob.Cleric;
 import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
+import minicraft.entity.mob.EyeQueen;
 import minicraft.entity.mob.Firefly;
 import minicraft.entity.mob.Goat;
+import minicraft.entity.mob.Golem;
 import minicraft.entity.mob.GuiMan;
 import minicraft.entity.mob.Keeper;
 import minicraft.entity.mob.Knight;
+import minicraft.entity.mob.Librarian;
 import minicraft.entity.mob.MobAi;
+import minicraft.entity.mob.OldGolem;
 import minicraft.entity.mob.Pig;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.Sheep;
@@ -31,18 +36,11 @@ import minicraft.entity.mob.Skeleton;
 import minicraft.entity.mob.Slime;
 import minicraft.entity.mob.Snake;
 import minicraft.entity.mob.Zombie;
-import minicraft.entity.mob.boss.AirWizard;
-import minicraft.entity.mob.boss.EyeQueen;
-import minicraft.entity.mob.villager.Cleric;
-import minicraft.entity.mob.villager.Golem;
-import minicraft.entity.mob.villager.Librarian;
-import minicraft.entity.mob.villager.OldGolem;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 
 public class FurnitureItem extends Item {
-
 	protected static ArrayList<Item> getAllInstances() {
 		ArrayList<Item> items = new ArrayList<>();
 
@@ -166,10 +164,10 @@ public class FurnitureItem extends Item {
 		if (tile.mayPass(level, xt, yt, furniture)) { // If the furniture can go on the tile
 
 			// Placed furniture's X and Y positions
-			furniture.x = (xt * 16) + 8;
-			furniture.y = (yt * 16) + 8;
+			furniture.x = (xt << 4) + 8;
+			furniture.y = (yt << 4) + 8;
 			
-			Sound.playerPlace.playOnWorld(furniture.x, furniture.y);
+			//Sound.playerPlace.playOnLevel(furniture.x, furniture.y);
 			
 			level.add(furniture); // adds the furniture to the world
 			if (Game.isMode("Creative")) {

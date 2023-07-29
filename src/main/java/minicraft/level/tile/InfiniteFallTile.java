@@ -4,9 +4,9 @@ import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.entity.Arrow;
 import minicraft.entity.Entity;
+import minicraft.entity.mob.AirWizard;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.boss.AirWizard;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 
 public class InfiniteFallTile extends Tile {

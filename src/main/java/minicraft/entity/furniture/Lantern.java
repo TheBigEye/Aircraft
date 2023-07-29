@@ -2,7 +2,7 @@ package minicraft.entity.furniture;
 
 import minicraft.core.io.Settings;
 import minicraft.entity.particle.BrightParticle;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 
 public class Lantern extends Furniture {
 	public enum Type {
@@ -55,8 +55,8 @@ public class Lantern extends Furniture {
 		tickTime++;
 
 		// Add bright particles
-		if (tickTime / 6 % 2 == 0 && Settings.get("particles").equals(true)) {
-			level.add(new BrightParticle(x - 10 + random.nextInt(14), y - 9 + random.nextInt(12)));
+		if ((tickTime / 1 % 12 == 0) && Settings.get("particles").equals(true)) {
+			level.add(new BrightParticle(x - 5 + random.nextInt(4), y - 4 + random.nextInt(4)));
 		}
 	}
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.TorchTile;
@@ -29,6 +29,7 @@ public class TorchItem extends TileItem {
                 "Ferrosite");
     }
 
+    @Override
     public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
         if (validTiles.contains(tile.name)) {
             level.setTile(xt, yt, TorchTile.getTorchTile(tile));
@@ -47,6 +48,7 @@ public class TorchItem extends TileItem {
         return 8931;
     }
 
+    @Override
     public TorchItem clone() {
         return new TorchItem(count);
     }

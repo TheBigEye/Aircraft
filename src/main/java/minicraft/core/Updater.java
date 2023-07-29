@@ -27,7 +27,7 @@ public class Updater extends Game {
 
 	/// TIME AND TICKS
 	public static final int normalSpeed = 60; // Measured in ticks / second.
-	public static float gamespeed = 1; // Measured in MULTIPLES OF NORMSPEED.
+	public static float gameSpeed = 1; // Measured in MULTIPLES OF NORMSPEED.
 	public static boolean paused = true; // If the game is paused.
 
 	public static int tickCount = 0; // The number of ticks since the beginning of the game day.
@@ -39,8 +39,8 @@ public class Updater extends Game {
 	// public static int noon = 32400; // This value determines when the sky switches from getting lighter to getting darker.
 
 	public static int gameTime = 0; // This stores the total time (number of ticks) you've been playing your
-	public static boolean pastDay1 = true; // Used to prevent mob spawn on surface on day 1.
-	public static int scoreTime; // Uime remaining for score mode
+	public static boolean pastFirstDay = true; // Used to prevent mob spawn on surface on day 1.
+	public static int scoreTime; // Time remaining for score mode
 
 	/**
 	 * Indicates if FullScreen Mode has been toggled.
@@ -56,9 +56,12 @@ public class Updater extends Game {
 	public static int savecooldown; // Prevents saving many times too fast, I think.
 
 	public enum Time {
-		Morning(0), Day(dayLength / 4), Evening(dayLength / 2), Night(dayLength / 4 * 3);
+		Morning(0),
+		Day(dayLength / 4),
+		Evening(dayLength / 2),
+		Night(dayLength / 4 * 3);
 
-		public int tickTime;
+		public final int tickTime;
 
 		Time(int ticks) {
 			tickTime = ticks;
@@ -117,17 +120,19 @@ public class Updater extends Game {
 		Level level = levels[currentLevel];
 		if (Bed.sleeping()) {
 			// IN BED
-			if (gamespeed != 20) {
-				gamespeed = 20;
+			if (gameSpeed != 20) {
+				gameSpeed = 20;
 			}
+			
 			if (tickCount > sleepEndTime) {
 				Logger.trace("Passing midnight in bed.");
-				pastDay1 = true;
+				pastFirstDay = true;
 				tickCount = 0;
 			}
+			
 			if (tickCount <= sleepStartTime && tickCount >= sleepEndTime || input.getKey("exit").clicked) { // it has reached morning.
 				Logger.trace("Getting out of bed.");
-				gamespeed = 1;
+				gameSpeed = 1;
 				Bed.restorePlayers();
 			}
 		}
@@ -212,7 +217,6 @@ public class Updater extends Game {
 
 				// for debugging only
 				if (debug) {
-
 					if (input.getKey("ctrl-p").clicked) {
 						// print all players on all levels, and their coordinates.
 						Logger.debug("Printing players on all levels ...");
@@ -230,35 +234,23 @@ public class Updater extends Game {
 					if (input.getKey("3").clicked) changeTimeOfDay(Time.Evening);
 					if (input.getKey("4").clicked) changeTimeOfDay(Time.Night);
 
-
-					/*
-					String prevMode = (String)Settings.get("mode");
-					if (input.getKey("Creative").clicked) {
-						Settings.set("mode", "Creative");
-						Items.fillCreativeInventory(player.getInventory(), false);
-                    }
-
-					if (input.getKey("survival").clicked) Settings.set("mode", "survival");
-					 */
-
 					if (input.getKey("SHIFT-T").clicked) Settings.set("mode", "score");
 
 					if (isMode("score") && input.getKey("CTRL-T").clicked) {
 						scoreTime = normalSpeed * 5; // 5 seconds
 					}
 
-					//float prevSpeed = gamespeed;
 					if (input.getKey("SHIFT-0").clicked) {
-						gamespeed = 1;
+						gameSpeed = 1;
                     }
 
 					if (input.getKey("shift-equals").clicked) {
-						if (gamespeed < 1) gamespeed *= 2;
-						else if (normalSpeed*gamespeed < 2000) gamespeed++;
+						if (gameSpeed < 1) gameSpeed *= 2;
+						else if (normalSpeed * gameSpeed < 2000) gameSpeed++;
 					}
 					if (input.getKey("shift-minus").clicked) {
-						if (gamespeed > 1) gamespeed--;
-						else if (normalSpeed*gamespeed > 5) gamespeed /= 2;
+						if (gameSpeed > 1) gameSpeed--;
+						else if (normalSpeed * gameSpeed > 5) gameSpeed /= 2;
 					}
 
 
@@ -294,7 +286,7 @@ public class Updater extends Game {
 		else { // back to morning
 			time = 0;
 			ticks = 0;
-			pastDay1 = true;
+			pastFirstDay = true;
 		}
 		tickCount = ticks;
 	}
@@ -305,12 +297,12 @@ public class Updater extends Game {
 	}
 
 	// this one works too.
-	public static void changeTimeOfDay(int t) {
+	public static void changeTimeOfDay(int timeOfDay) {
 		Time[] times = Time.values();
-		if (t > 0 && t < times.length) {
-			changeTimeOfDay(times[t]); // it just references the other one.
+		if (timeOfDay > 0 && timeOfDay < times.length) {
+			changeTimeOfDay(times[timeOfDay]); // it just references the other one.
 		} else {
-			Logger.warn("Time " + t + " does not exist.");
+			Logger.warn("Time " + timeOfDay + " does not exist.");
 		}
 	}
 

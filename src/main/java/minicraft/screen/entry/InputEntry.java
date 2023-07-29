@@ -3,9 +3,9 @@ package minicraft.screen.entry;
 import minicraft.core.io.ClipboardHandler;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Screen;
 
 public class InputEntry extends ListEntry {
 

@@ -3,9 +3,9 @@ package minicraft.level.tile;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -65,10 +65,10 @@ public class SkyHighGrassTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
                     level.setTile(xt, yt, Tiles.get("Sky grass")); // would allow you to shovel cloud, I think.
-                    Sound.genericHurt.playOnGui();
                     if (random.nextInt(5) == 0) { // 45% chance to drop sky dirt
-                        level.dropItem(xt * 16 + 8, yt * 16 + 8, 2, Items.get("Sky dirt"));
+                        level.dropItem((xt << 4) + 8, (yt << 4) + 8, 2, Items.get("Sky dirt"));
                     }
                     return true;
                 }
@@ -76,7 +76,7 @@ public class SkyHighGrassTile extends Tile {
             if (tool.type == ToolType.Pickaxe) {
                 if (player.payStamina(1 - tool.level)) {
                     // level.setTile(xt, yt, Tiles.get("path"));
-                    Sound.genericHurt.playOnGui();
+                	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
                 }
             }
         }

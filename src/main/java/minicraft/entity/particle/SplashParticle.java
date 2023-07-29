@@ -1,7 +1,7 @@
 package minicraft.entity.particle;
 
 import minicraft.entity.ClientTickable;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 
 public class SplashParticle extends Particle implements ClientTickable {
 	/// This is used for boats and when the player swim in the water

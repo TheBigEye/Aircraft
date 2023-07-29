@@ -7,10 +7,10 @@ import minicraft.entity.mob.Firefly;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.mob.Slime;
-import minicraft.gfx.Color;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -20,14 +20,14 @@ import minicraft.level.Level;
 public class SandTile extends Tile {
 
     static Sprite steppedOn_sprite;
-    static Sprite normal_sprite = new Sprite(9, 6, 2, 2, 1);
+    static Sprite normal_sprite = new Sprite(3, 16, 2, 2, 1);
 
     static {
         Sprite.Px[][] pixels = new Sprite.Px[2][2];
-        pixels[0][0] = new Sprite.Px(9, 8, 0, 1);
-        pixels[0][1] = new Sprite.Px(10, 6, 0, 1);
-        pixels[1][0] = new Sprite.Px(9, 7, 0, 1);
-        pixels[1][1] = new Sprite.Px(9, 8, 0, 1);
+        pixels[0][0] = new Sprite.Px(5, 16, 0, 1);
+        pixels[0][1] = new Sprite.Px(4, 16, 0, 1);
+        pixels[1][0] = new Sprite.Px(3, 17, 0, 1);
+        pixels[1][1] = new Sprite.Px(5, 16, 0, 1);
         steppedOn_sprite = new Sprite(pixels);
     }
 
@@ -39,7 +39,7 @@ public class SandTile extends Tile {
         }
     }
 
-    private ConnectorSprite sprite = new ConnectorSprite(SandTile.class, new Sprite(6, 6, 3, 3, 1), normal_sprite) {
+    private ConnectorSprite sprite = new ConnectorSprite(SandTile.class, new Sprite(0, 16, 3, 3, 1), normal_sprite) {
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) {
             if (!isSide) {
@@ -67,9 +67,9 @@ public class SandTile extends Tile {
 
         if (toolType == ToolType.Shovel) {
             if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+            	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
                 level.setTile(xt, yt, Tiles.get("Dirt"));
-                Sound.genericHurt.playOnGui();
-                level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Sand"));
+                level.dropItem((xt << 4) + 8, (yt << 4) + 8, Items.get("Sand"));
                 return true;
             }
         }
@@ -87,7 +87,7 @@ public class SandTile extends Tile {
             connectorSprite.full = SandTile.normal_sprite;
         }
 
-        connectorSprite.sparse.color = DirtTile.dCol(level.depth);
+        connectorSprite.sparse.color = DirtTile.dirtColor(level.depth);
         connectorSprite.render(screen, level, x, y);
     }
 

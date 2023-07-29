@@ -9,9 +9,9 @@ import java.util.regex.Pattern;
 import minicraft.core.Game;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Settings;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Screen;
 import minicraft.screen.entry.InputEntry;
 import minicraft.screen.entry.SelectEntry;
 

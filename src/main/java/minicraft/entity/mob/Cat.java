@@ -1,7 +1,7 @@
 package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
-import minicraft.gfx.MobSprite;
+import minicraft.graphic.MobSprite;
 import minicraft.item.Items;
 
 public class Cat extends PassiveMob {
@@ -21,6 +21,7 @@ public class Cat extends PassiveMob {
 	    followOnHold(2, "Raw Fish", false);
 	}
 
+	@Override
 	public void die() {
 		int min = 0;
 		int max = 0;

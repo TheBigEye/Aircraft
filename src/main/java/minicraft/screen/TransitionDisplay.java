@@ -2,7 +2,7 @@ package minicraft.screen;
 
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Screen;
 
 public class TransitionDisplay extends Display {
 
@@ -16,6 +16,7 @@ public class TransitionDisplay extends Display {
 		this.dt = dt;
 	}
 
+	@Override
 	public void tick(InputHandler input) {
 		time++; // Ticks up 2 times per tick
 		if (time == DURATION / 2) {
@@ -28,6 +29,7 @@ public class TransitionDisplay extends Display {
 		}
 	}
 
+	@Override
 	public void render(Screen screen) {
 		for (int x = 0; x < 200; x++) { // Loop however many times depending on the width (It's divided by 3 because the pixels are scaled up by 3)
 			for (int y = 0; y < 150; y++) { // Loop however many times depending on the height (It's divided by 3 because the pixels are scaled up by 3)

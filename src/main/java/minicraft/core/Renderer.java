@@ -18,19 +18,19 @@ import org.tinylog.Logger;
 import minicraft.core.io.Settings;
 import minicraft.entity.Entity;
 import minicraft.entity.furniture.Bed;
+import minicraft.entity.mob.AirWizard;
+import minicraft.entity.mob.EyeQueen;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.boss.AirWizard;
-import minicraft.entity.mob.boss.EyeQueen;
-import minicraft.gfx.Color;
-import minicraft.gfx.Ellipsis;
-import minicraft.gfx.Ellipsis.DotUpdater.TickUpdater;
-import minicraft.gfx.Ellipsis.SmoothEllipsis;
-import minicraft.gfx.Font;
-import minicraft.gfx.FontStyle;
-import minicraft.gfx.Rectangle;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
-import minicraft.gfx.SpriteSheet;
+import minicraft.graphic.Color;
+import minicraft.graphic.Ellipsis;
+import minicraft.graphic.Ellipsis.DotUpdater.TickUpdater;
+import minicraft.graphic.Ellipsis.SmoothEllipsis;
+import minicraft.graphic.Font;
+import minicraft.graphic.FontStyle;
+import minicraft.graphic.Rectangle;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
+import minicraft.graphic.SpriteSheet;
 import minicraft.item.Items;
 import minicraft.item.PotionType;
 import minicraft.item.ToolItem;
@@ -51,12 +51,12 @@ public class Renderer extends Game {
 	public static final int HEIGHT = 288; // This is the height of the game * scale
 	public static final int WIDTH = 432; // This is the width of the game * scale
 
-	static float SCALE = 2; // Scales the window
+	protected static float SCALE = 2; // Scales the window
 
 	private static String levelName; // Used to store the names of the levels in the debug GUI
 	public static Screen screen; // Creates the main screen
 
-	static Canvas canvas = new Canvas();
+	protected static final Canvas canvas = new Canvas();
 
 	private static BufferedImage image; // Creates an image to be displayed on the screen.
 	public static Screen lightScreen; // Creates a front screen to render the darkness in caves (Fog of war).
@@ -64,9 +64,9 @@ public class Renderer extends Game {
 	public static boolean showDebugInfo = false;
 	public static boolean renderRain = false;
 
-	private static Ellipsis ellipsis = (Ellipsis) new SmoothEllipsis(new TickUpdater());
+	private static final Ellipsis ellipsis = (Ellipsis) new SmoothEllipsis(new TickUpdater());
 
-	public static SpriteSheet[] loadDefaultSpriteSheets() {
+	public static SpriteSheet[] loadDefaultTextures() {
 	    String[] sheetsPaths = {
     		"/resources/textures/items.png",
     		"/resources/textures/tiles.png",
@@ -77,20 +77,23 @@ public class Renderer extends Game {
 	    };
 	    
 	    SpriteSheet[] sheets = new SpriteSheet[sheetsPaths.length];
+
 	    try {
 	        for (int i = 0; i < sheetsPaths.length; i++) {
+	        	if (debug) Logger.debug("Loading sprite '{}', for default textures ...", sheetsPaths[i]);
 	        	sheets[i] = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(sheetsPaths[i]))));
 	        }
-	    }  catch (NullPointerException | IOException | IllegalArgumentException exception) {
+	    }  catch (NullPointerException | IllegalArgumentException | IOException exception) {
+	    	Logger.error("Sprites failure, default textures are unable to load an sprite sheet!");
 	        exception.printStackTrace();
-	        Logger.error("Default textures, could not load a sprite sheet.");
 	        System.exit(-1);
 	        return null;
 	    }
+			
 	    return sheets;
 	}
 		
-	public static SpriteSheet[] loadLegacySpriteSheets() {
+	public static SpriteSheet[] loadLegacyTextures() {
 	    String[] sheetsPaths = {
     		"/resources/textures/legacy/items.png",
     		"/resources/textures/legacy/tiles.png",
@@ -99,24 +102,29 @@ public class Renderer extends Game {
     		"/resources/textures/legacy/font.png",
     		"/resources/textures/legacy/background.png"
 	    };
+
 	    SpriteSheet[] sheets = new SpriteSheet[sheetsPaths.length];
+
 	    try {
 	        for (int i = 0; i < sheetsPaths.length; i++) {
+	        	if (debug) Logger.debug("Loading sprite '{}', for legacy textures ...", sheetsPaths[i]);
 	        	sheets[i] = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(sheetsPaths[i]))));
 	        }
-	    }  catch (NullPointerException | IOException | IllegalArgumentException exception) {
+	    }  catch (NullPointerException | IllegalArgumentException | IOException exception) {
+	    	Logger.error("Sprites failure, legacy textures are unable to load an sprite sheet!");
 	        exception.printStackTrace();
-	        Logger.error("Legacy textures, could not load a sprite sheet.");
 	        System.exit(-1);
 	        return null;
 	    }
+
 	    return sheets;
 	}
 
 	static void initScreen() {
-		Logger.debug("Loading spriteheets and sprites ...");
+		Logger.debug("Initializing game display ...");
 
-		SpriteSheet[] sheets = loadDefaultSpriteSheets();
+		SpriteSheet[] sheets = loadDefaultTextures();
+		
 		screen = new Screen(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
 		lightScreen = new Screen(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
 		
@@ -184,7 +192,7 @@ public class Renderer extends Game {
 			for (int y = 0; y < 56; y++) {
 				for (int x = 0; x < 96; x++) {
 					// Creates the background for the sky (and dungeon) level:
-					screen.render(x * 8 - ((xScroll >> 2) & 7), y * 8 - ((yScroll >> 2) & 7), random.nextInt(2) + 25 * 32, 0, 1);
+					screen.render(x * 8 - ((xScroll >> 2) & 7), y * 8 - ((yScroll >> 2) & 7), 3 + 23 * 32, 0, 1);
 				}
 			}
 		}
@@ -193,7 +201,7 @@ public class Renderer extends Game {
 		level.renderSprites(screen, xScroll, yScroll); // Renders level sprites on screen
 
 		// this creates the darkness in the caves
-		if ((currentLevel != 3 || Updater.tickCount < Updater.dayLength / 4 || Updater.tickCount > Updater.dayLength / 2) && !Game.isMode("Creative")) {
+		if (currentLevel != 3 || Updater.tickCount < Updater.dayLength / 4 || Updater.tickCount > Updater.dayLength / 2) {
 
 			// This doesn't mean that the pixel will be black; it means that the pixel will
 			// be DARK, by default; lightScreen is about light vs. dark, not necessarily a
@@ -210,7 +218,7 @@ public class Renderer extends Game {
 			screen.overlay(lightScreen, currentLevel, xScroll, yScroll); // Overlays the light screen over the main screen.
 		}
 		
-		if (player != null && !Game.isMode("Creative")) {
+		if (player != null) {
 			if (!player.isNiceNight && (currentLevel == 3 || currentLevel == 4)) {
 				lightScreen.clear(0); 
 	
@@ -345,52 +353,53 @@ public class Renderer extends Game {
 				Font.drawBox(screen, x, y, 16, effects.length);
 			}
 
-			for (int i = 0; i < effects.length; i++) {
-				potionType = effects[i].getKey();
-				int potionTime = effects[i].getValue() / Updater.normalSpeed;
+			for (int effectIndex = 0; effectIndex < effects.length; effectIndex++) {
+				potionType = effects[effectIndex].getKey();
+				int potionTime = effects[effectIndex].getValue() / Updater.normalSpeed;
 				
-				potionIcon.color = potionType.dispColor;
+				potionIcon.color = potionType.displayColor;
                 
 				int minutes = potionTime / 60;
 				int seconds = potionTime % 60;
 				
 				// Title background
 				for (int j = 0; j < title.length(); j++) {
-					screen.render(310 + j * 8, 9, 3 + 21 * 32, 0, 3);
+					screen.render(311 + (j * 8) - 1, 9, 3 + 21 * 32, 0, 3);
 				}
 				Font.draw(title, screen, 310, 9, Color.YELLOW);
 				
-				Font.drawTransparentBackground(potionType + " ", screen, 300 , 17 + i * Font.textHeight(), potionType.dispColor);
-				Font.drawTransparentBackground("(" + minutes + ":" + (seconds < 10? "0" + seconds:seconds) + ")", screen, 373 , 17 + i * Font.textHeight(), potionType.dispColor);
-				potionIcon.render(screen, 290, 17 + i * Font.textHeight());
+				Font.draw(potionType + " ", screen, 300 , 17 + effectIndex * Font.textHeight(), potionType.displayColor);
+				Font.draw("(" + minutes + ":" + (seconds < 10? "0" + seconds:seconds) + ")", screen, 373 , 17 + effectIndex * Font.textHeight(), potionType.displayColor);
+				potionIcon.render(screen, 290, 17 + effectIndex * Font.textHeight());
 			}
 		}
 
 		// This is the status icons, like health hearts, stamina bolts, hunger "burger", and armor points.
 		if (!isMode("Creative")) {
 			
-			Font.drawBox(screen, Screen.w - 80, Screen.h - 16, 10, 2); // the hunger and armor background
-			Font.drawBox(screen, 0, Screen.h - 16, 10, 2); // the health and stamina background
+			Font.drawBox(screen, Screen.w - 80, Screen.h - 17, 10, 2); // the hunger and armor background
+			Font.drawBox(screen, 0, Screen.h - 17, 10, 2); // the health and stamina background
 			
 			for (int i = 0; i < Player.maxStat; i++) {
 				
 				/// Renders your current red hearts, hardcore hearts, or black hearts for damaged health.
+
 				if (!isMode("Hardcore")) { // Survival hearts
 					if (i < player.health) {
 						
 						// wobbling hearts if the player health is less than 5
 						if (player.health < 5) {
 							int blinking = (random.nextInt(2) - random.nextInt(2));
-							screen.render(i * 8, Screen.h - (16 + blinking), 0 + 2 * 32, 0, 3);
+							screen.render(2 + i * 8, Screen.h - (18 + blinking), 0 + 2 * 32, 0, 3);
 						} else { // normal hearts if more than 4
-							screen.render(i * 8, Screen.h - 16, 0 + 2 * 32, 0, 3);
+							screen.render(2 + i * 8, Screen.h - 18, 0 + 2 * 32, 0, 3);
 						}
 					} else { // hearts cotainer
 						if (player.health < 5) {
 							int blinking = (random.nextInt(2) - random.nextInt(2));
-							screen.render(i * 8, Screen.h - (16 + blinking), 0 + 3 * 32, 0, 3); // wobbling hearts cotainer
+							screen.render(2 + i * 8, Screen.h - (18 + blinking), 0 + 3 * 32, 0, 3); // wobbling hearts cotainer
 						} else {
-							screen.render(i * 8, Screen.h - 16 , 0 + 3 * 32, 0, 3); // nomral hearts container
+							screen.render(2 + i * 8, Screen.h - 18 , 0 + 3 * 32, 0, 3); // nomral hearts container
 						}
 					}
 				
@@ -400,17 +409,17 @@ public class Renderer extends Game {
 					if (i < player.health) {
 						if (player.health < 6) {
 							int blinking = (random.nextInt(2) - random.nextInt(2));
-							screen.render(i * 8, Screen.h - (16 + blinking), 7 + 2 * 32, 0, 3);
+							screen.render(2 + i * 8, Screen.h - (18 + blinking), 7 + 2 * 32, 0, 3);
 						} else {
-							screen.render(i * 8, Screen.h - 16, 7 + 2 * 32, 0, 3);
+							screen.render(2 + i * 8, Screen.h - 18, 7 + 2 * 32, 0, 3);
 						}
 					
 				} else { // hearts cotainer
 						if (player.health < 5) {
 							int blinking = (random.nextInt(2) - random.nextInt(2));
-							screen.render(i * 8, Screen.h - (16 + blinking), 7 + 3 * 32, 0, 3); // wobbling hearts cotainer
+							screen.render(2 + i * 8, Screen.h - (18 + blinking), 7 + 3 * 32, 0, 3); // wobbling hearts cotainer
 						} else {
-							screen.render(i * 8, Screen.h - 16 , 7 + 3 * 32, 7, 3); // nomral hearts container
+							screen.render(2 + i * 8, Screen.h - 18 , 7 + 3 * 32, 7, 3); // nomral hearts container
 						}
 					}
 				}
@@ -418,32 +427,32 @@ public class Renderer extends Game {
 				if (player.staminaRechargeDelay > 0) {
 					// Creates the white/gray blinking effect when you run out of stamina.
 					if (player.staminaRechargeDelay / 4 % 2 == 0) {
-						screen.render(i * 8, Screen.h - 8, 1 + 4 * 32, 0, 3);
+						screen.render(2 + i * 8, Screen.h - 9, 1 + 4 * 32, 0, 3);
 					} else {
-						screen.render(i * 8, Screen.h - 8, 1 + 3 * 32, 0, 3);
+						screen.render(2 + i * 8, Screen.h - 9, 1 + 3 * 32, 0, 3);
 					}
 				} else {
 					// Renders your current stamina, and uncharged gray stamina.
 					if (i < player.stamina) {
-						screen.render(i * 8, Screen.h - 8, 1 + 2 * 32, 0, 3);
+						screen.render(2 + i * 8, Screen.h - 9, 1 + 2 * 32, 0, 3);
 					} else {
-						screen.render(i * 8, Screen.h - 8, 1 + 3 * 32, 0, 3);
+						screen.render(2 + i * 8, Screen.h - 9, 1 + 3 * 32, 0, 3);
 					}
 				}
 							
 				// Renders hunger icons
 				if (i < player.hunger) {
-					screen.render(i * 8 + (Screen.w - 80), Screen.h - 16, 2 + 2 * 32, 0, 3);
+					screen.render(i * 8 + (Screen.w - 82), Screen.h - 18, 2 + 2 * 32, 0, 3);
 				} else {
-					screen.render(i * 8 + (Screen.w - 80), Screen.h - 16, 2 + 3 * 32, 0, 3);
+					screen.render(i * 8 + (Screen.w - 82), Screen.h - 18, 2 + 3 * 32, 0, 3);
 				}
 				
 				// Renders armor icons
 				int armor = player.armor * Player.maxStat / Player.maxArmor;
 				if (i <= armor && player.currentArmor != null) {
-					screen.render(i * 8 + (Screen.w - 81), Screen.h - 8, (player.currentArmor.level - 1) + 9 * 32, 0, 0);
+					screen.render(i * 8 + (Screen.w - 82), Screen.h - 9, (player.currentArmor.level - 1) + 9 * 32, 0, 0);
 				} else {
-					screen.render(i * 8 + (Screen.w - 81), Screen.h - 8, 8 + 2 * 32, 0, 3);
+					screen.render(i * 8 + (Screen.w - 82), Screen.h - 9, 8 + 2 * 32, 0, 3);
 				}
 				
 			}
@@ -501,50 +510,47 @@ public class Renderer extends Game {
 		}
 	}*/
 
-	public static void renderBossbar(int length, String title) {
-		int x = (Screen.w / 4) + 4;
-		int y = (Screen.h / 8) - 28;
-
-		int max_bar_length = 100;
-		int bar_length = length; // Bossbar size.
-
-		if (bar_length > 1) {
-			screen.render(x + (max_bar_length * 2) , y , 0 + 24 * 32, 1, 3); // left corner
+	public static void renderBossbar(int barLength, String title) {
+		if (!showDebugInfo) {
+			int x = (Screen.w / 4) + 4;
+			int y = (Screen.h / 8) - 27;
 	
-			// The middle
-			for (int bx = 0; bx < max_bar_length; bx++) {
-				for (int by = 0; by < 1; by++) {
-					screen.render(x + (bx * 2), y + (by * 8), 1 + 24 * 32, 0, 3);
+			int maxBarLength = 100;
+	
+			if (barLength > 1) {
+				screen.render(x + (maxBarLength * 2) , y , 0 + 24 * 32, 1, 3); // left corner
+		
+				// The middle
+				for (int bx = 0; bx < maxBarLength; bx++) {
+						screen.render(x + (bx * 2), y, 1 + 24 * 32, 0, 3);
+				}  
+		
+				screen.render(x - 5 , y , 0 + 25 * 32, 0, 3); // right corner
+		
+				for (int bx = 0; bx < barLength; bx++) {
+					screen.render(x + (bx * 2), y, 1 + 25 * 32, 0, 3);
 				}
-			}  
-	
-			screen.render(x - 5 , y , 0 + 25 * 32, 0, 3); // right corner
-	
-			for (int bx = 0; bx < bar_length; bx++) {
-				for (int by = 0; by < 1; by++) {
-					screen.render(x + (bx * 2), y + (by * 8), 1 + 25 * 32, 0, 3);
-				}
+				
+				FontStyle style = new FontStyle(Color.WHITE).setShadowType(Color.BLACK, true).setYPos(2);
+		
+				Font.drawParagraph(title, screen, style, 2);
 			}
-	
-			Font.drawCentered(title, screen, y - 7, Color.WHITE);
 		}
 	}
 
 	// Renders show debug info on the screen.
-	private static void renderDebugInfo() { 
-		int textColor = Color.WHITE;
-
+	private static void renderDebugInfo() {
 		if (showDebugInfo) {
 			ArrayList <String> info = new ArrayList <> ();
 			ArrayList <String> subinfo = new ArrayList <> ();
 
 			info.add("Version: " + Game.BUILD + " (" + Game.VERSION + ")");                 subinfo.add("Played:" + InfoDisplay.getTimeString());
 			info.add("Base: " + "Minicraft Plus Legacy");                                   subinfo.add("Java:" + Utils.JAVA_VERSION + " x" + Utils.JAVA_ARCH);
-			info.add("" + TimeData.date());                                                 subinfo.add("Heap:" + Utils.heapMemory() + "MB " + Utils.heapMemoryUsage() + "%");
-			info.add(Initializer.fra + " fps");                                             
-			info.add("Day tiks: " + Updater.tickCount + " (" + Updater.getTime() + ")");    
-			info.add((Updater.normalSpeed * Updater.gamespeed) + " tps ");
-																							
+			info.add("" + TimeData.date());                                                 subinfo.add(Utils.getGeneralMemoryUsage());
+			info.add(Initializer.fra + " fps" );                                            subinfo.add(Utils.getMemoryAllocation());
+			info.add("Day tiks: " + Updater.tickCount + " (" + Updater.getTime() + ")");
+			info.add((Updater.normalSpeed * Updater.gameSpeed) + " tps");
+             
 			// player info
 			info.add("Walk spd: " + player.moveSpeed);
 			info.add("X: " + (player.x >> 4) + "." + (player.x % 16));
@@ -556,10 +562,6 @@ public class Renderer extends Game {
 			info.add("Data: " + levels[currentLevel].getData(player.x >> 4, player.y >> 4));
 			info.add("Depth: " + levels[currentLevel].depth + " (" + levels[currentLevel].w +"x" + levels[currentLevel].h +")");
 			info.add("");
-
-			// screen info
-			//info.add("Screen: " + java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight() + "x" + java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth());
-			//info.add("Current: " + getWindowSize().getHeight() + "x" + getWindowSize().getWidth());
 
 			if (isMode("score")) {
 				info.add("Score " + player.getScore());
@@ -574,7 +576,7 @@ public class Renderer extends Game {
 					case -3: levelName = "Hell"; break;
 					case -4: levelName = "Dungeon"; break;
 					case -5: levelName = "Void"; break;
-					default: levelName = "Secret dimension"; break;
+					default: levelName = "Unknown"; break;
 				}
 				
 				info.add("Level: " + levelName);
@@ -601,8 +603,8 @@ public class Renderer extends Game {
 				info.add("Rain factor: " + player.isRaining + " -> " + player.rainCount + "/8");
 			}
 
-			FontStyle style = new FontStyle(textColor).setShadowType(Color.BLACK, true).setXPos(1).setYPos(1);
-			FontStyle substyle = new FontStyle(textColor).setShadowType(Color.BLACK, true).setXPos(Screen.w - 121).setYPos(1);
+			FontStyle style = new FontStyle(Color.WHITE).setShadowType(Color.BLACK, true).setXPos(1).setYPos(1);
+			FontStyle substyle = new FontStyle(Color.WHITE).setShadowType(Color.BLACK, true).setXPos(Screen.w - 121).setYPos(1);
 
 			Font.drawParagraph(info, screen, style, 2);
 			Font.drawParagraph(subinfo, screen, substyle, 2);

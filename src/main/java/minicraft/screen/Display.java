@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Sound;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Screen;
 import minicraft.screen.entry.ArrayEntry;
 
 public class Display {
@@ -89,7 +89,7 @@ public class Display {
 			if (input.getKey(shift + "right").clicked) selection++;
 
 			if (previousSelection != selection) {
-				Sound.Menu_select.playOnGui();
+				Sound.Menu_select.playOnDisplay();
 
 				int delta = selection - previousSelection;
 				selection = previousSelection;

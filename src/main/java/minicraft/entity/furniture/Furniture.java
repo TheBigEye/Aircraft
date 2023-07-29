@@ -10,8 +10,8 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.FireParticle;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.FurnitureItem;
 import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
@@ -117,17 +117,17 @@ public class Furniture extends Entity {
     @Override
     public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
         if (item instanceof PowerGloveItem) {
-            Sound.genericHurt.playOnGui();
-                remove();
-                
-                if (!Game.isMode("Creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem)) {
-                	// put whatever item the player is holding into their inventory
-                	player.getInventory().add(0, player.activeItem); 
-                }
-                
-                // make this the player's current item.
-                player.activeItem = new FurnitureItem(this); 
-                return true;
+            Sound.genericHurt.playOnLevel(this.x, this.y);
+            remove();
+            
+            if (!Game.isMode("Creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem)) {
+            	// put whatever item the player is holding into their inventory
+            	player.getInventory().add(0, player.activeItem); 
+            }
+            
+            // make this the player's current item.
+            player.activeItem = new FurnitureItem(this); 
+            return true;
         }
         return false;
     }

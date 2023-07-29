@@ -3,7 +3,7 @@ package minicraft.entity.furniture;
 import java.util.ArrayList;
 
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 
 public class Statue extends Furniture {
 	
@@ -42,12 +42,6 @@ public class Statue extends Furniture {
 
 	@Override
 	public boolean use(Player player) {
-		/*if (type.melt) {
-			AchievementsDisplay.setAchievement("minicraft.achievement.smelt_iron", true);
-			Game.setDisplay(new CraftingDisplay(type.recipes, type.name(), player));
-		} else {
-			Game.setDisplay(new CraftingDisplay(type.recipes, type.name(), player));
-		}*/
 		return true;
 	}
 	

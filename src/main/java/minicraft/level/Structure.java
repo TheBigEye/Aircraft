@@ -7,7 +7,7 @@ import minicraft.entity.furniture.Crafter;
 import minicraft.entity.furniture.Furniture;
 import minicraft.entity.furniture.Lantern;
 import minicraft.entity.furniture.Statue;
-import minicraft.gfx.Point;
+import minicraft.graphic.Point;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
@@ -118,15 +118,14 @@ public class Structure {
 
     // used for random villages
     static final Structure villageCrops;
-    static final Structure villageHouseNormal2;
+    static final Structure villageNormal;
     static final Structure villageHouseTwoDoor;
 
     static final Structure villageRuinedOverlay1;
     static final Structure villageRuinedOverlay2;
 
     // ok, because of the way the system works, these structures are rotated 90
-    // degrees clockwise when placed
-    // then it's flipped on the vertical
+    // degrees clockwise when placed, then it's flipped on the vertical
     static {
         dungeonGate = new Structure();
         dungeonGate.setData("O:Obsidian,D:Obsidian Door,W:Obsidian Wall",
@@ -226,43 +225,43 @@ public class Structure {
 
         villageCrops = new Structure();
         villageCrops.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass,O:Path,C:potato,Z:wheat,X:Water",
-            "WWWWW**O**WWWWW\n" + 
-            "WFFFW**O**WFFFW\n" + 
-            "WFFFDOOOOODFFFW\n" + 
-            "WFFFW**O**WFFFW\n" + 
-            "WWWWW**O**WWWWW\n" + 
-            "*******O*******\n" + 
-            "******OOO******\n" + 
-            "OOOOOOOGOOOOOOO\n" + 
-            "******OOO***O**\n" + 
-            "*******O****O**\n" + 
-            "WWWWW**O**ZZXCC\n" + 
-            "WFFFW**O**ZZXCC\n" + 
-            "WFFFDOOO**ZZXCC\n" + 
-            "WFFFW**O**ZZXCC\n" + 
-            "WWWWW**O**ZZXCC\n"
+            "WWWWWO*O**WWWWW\n" + 
+            "WFFFW*OO**WFFFW\n" + 
+            "WFFFDOO*OODFFFW\n" + 
+            "WFFFW*OO**WFFFW\n" + 
+            "WWWWW**OO*WWWWW\n" + 
+            "**OO**OO*OO*OO*\n" + 
+            "*OO*O*OOO**OO**\n" + 
+            "OO*OOOOGOOOO*OO\n" +   
+            "**OO**OOO**OOO*\n" + 
+            "O*O*O*OO*O**O*O\n" + 
+            "WWWWW**OO*ZZXCC\n" + 
+            "WFFFW*OO**ZZXCC\n" + 
+            "WFFFDOO*O*ZZXCC\n" + 
+            "WFFFW**OO*ZZXCC\n" + 
+            "WWWWW**O*OZZXCC\n"
         );
-        villageCrops.addFurniture(0, 0, new Statue(Statue.Type.Zombie));
+        villageCrops.addFurniture(0 * 16, 0 * 16, new Statue(Statue.Type.Zombie));
 
-        villageHouseNormal2 = new Structure();
-        villageHouseNormal2.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass,O:Path",
-            "WWWWW**O**WWWWW\n" + 
-            "WFFFW**O**WFFFW\n" + 
-            "WFFFW**O**WFFFW\n" + 
-            "WFFFW**O**WFFFW\n" + 
-            "WWDWW**O**WWDWW\n" + 
-            "**O****O****O**\n" + 
-            "**O***OOO***O**\n" + 
-            "OOOOOOOGOOOOOOO\n" +   
-            "**O***OOO***O**\n" + 
-            "**O****O****O**\n" + 
-            "WWDWW**O**WWDWW\n" + 
-            "WFFFW**O**WFFFW\n" + 
-            "WFFFW**O**WFFFW\n" + 
-            "WFFFW**O**WFFFW\n" + 
-            "WWWWW**O**WWWWW\n"
+        villageNormal = new Structure();
+        villageNormal.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass,O:Path",
+            "WWWWWO*O**WWWWW\n" + 
+            "WFFFW*OO**WFFFW\n" + 
+            "WFFFW*O*O*WFFFW\n" + 
+            "WFFFW*OO**WFFFW\n" + 
+            "WWDWW**OO*WWDWW\n" + 
+            "**OO**OO*OO*OO*\n" + 
+            "*OO*O*OOO**OO**\n" + 
+            "OO*OOOOGOOOO*OO\n" +   
+            "**OO**OOO**OOO*\n" + 
+            "O*O*O*OO*O**O*O\n" + 
+            "WWDWW**OO*WWDWW\n" + 
+            "WFFFW*OO**WFFFW\n" + 
+            "WFFFW*O*O*WFFFW\n" + 
+            "WFFFW**OO*WFFFW\n" + 
+            "WWWWW**O*OWWWWW\n"
         );
-        villageHouseNormal2.addFurniture(0, 0, new Statue(Statue.Type.Skeleton));
+        villageNormal.addFurniture(0 * 16, 0 * 16, new Statue(Statue.Type.Skeleton));
 
         villageHouseTwoDoor = new Structure();
         villageHouseTwoDoor.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass",

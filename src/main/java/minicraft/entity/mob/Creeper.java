@@ -9,9 +9,9 @@ import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.furniture.Spawner;
-import minicraft.gfx.MobSprite;
-import minicraft.gfx.Point;
-import minicraft.gfx.Screen;
+import minicraft.graphic.MobSprite;
+import minicraft.graphic.Point;
+import minicraft.graphic.Screen;
 import minicraft.item.Items;
 import minicraft.level.tile.Tiles;
 
@@ -86,7 +86,7 @@ public class Creeper extends EnemyMob {
 			// It will only blow up if there are any players nearby.
 			if (playerInRange) {
             	// Play explosion sound
-				Sound.genericExplode.playOnWorld(x, y);
+				Sound.genericExplode.playOnLevel(this.x, this.y);
 				
 				// figure out which tile the mob died on
 				int xt = x >> 4;
@@ -171,7 +171,7 @@ public class Creeper extends EnemyMob {
 
 		if (entity instanceof Player) {
 			if (fuseTime == 0 && !fuseLit) {
-				Sound.genericFuse.playOnWorld(x, y);
+				Sound.genericFuse.playOnLevel(this.x, this.y);
 				fuseTime = MAX_FUSE_TIME;
 				fuseLit = true;
 			}
@@ -179,10 +179,12 @@ public class Creeper extends EnemyMob {
 		}
 	}
 
+	@Override
 	public boolean canWool() {
 		return false;
 	}
 
+	@Override
 	public void die() {
 		// Only drop items if the creeper has not exploded
 		if (!fuseLit) {

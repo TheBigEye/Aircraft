@@ -18,10 +18,10 @@ import minicraft.core.Renderer;
 import minicraft.core.io.FileHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
-import minicraft.gfx.SpriteSheet;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Screen;
+import minicraft.graphic.SpriteSheet;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 
@@ -29,15 +29,14 @@ public class TexturePackDisplay extends Display {
 
 	private static final String DEFAULT_TEXTURE_PACK = "Default"; // Default texture :)
 	private static final String LEGACY_TEXTURE_PACK = "Legacy"; // Legacy texture :)
+
 	private static final String[] ENTRY_NAMES = new String[] {
-
-			"items.png", // Items sheet (0)
-			"tiles.png", // Tiles sheet (1)
-			"entities.png", // Entities sheet (2)
-			"gui.png", // GUI Elements sheet (3)
-			"font.png", // Letters and font sheet (4)
-			"background.png" // More GUI Elements sheet (5)
-
+		"items.png", // Items sheet (0)
+		"tiles.png", // Tiles sheet (1)
+		"entities.png", // Entities sheet (2)
+		"gui.png", // GUI Elements sheet (3)
+		"font.png", // Letters and font sheet (4)
+		"background.png" // More GUI Elements sheet (5)
 	};
 
 	private static boolean shouldUpdate;
@@ -54,8 +53,8 @@ public class TexturePackDisplay extends Display {
 		textureList.add(new SelectEntry(TexturePackDisplay.LEGACY_TEXTURE_PACK, TexturePackDisplay::update, false));
 
 		// Generate texture packs folder
-		if (location.mkdirs()) {
-			Logger.info("Created texture packs folder at {}.", location);
+		if (Game.debug && location.mkdirs()) {
+			Logger.debug("Created {}, as texture packs folder", location);
 		}
 
 		// Read and add the .zip file to the texture pack list.
@@ -77,7 +76,7 @@ public class TexturePackDisplay extends Display {
 
 	private static void update() {
 		shouldUpdate = true;
-		Sound.Menu_loaded.playOnGui();
+		Sound.Menu_loaded.playOnDisplay();
 	}
 
 	private void updateSheets(Screen screen) throws IOException {
@@ -86,11 +85,11 @@ public class TexturePackDisplay extends Display {
 
 			if (menus[0].getSelection() == 0) {
 				// Load default sprite sheet.
-				sheets = Renderer.loadDefaultSpriteSheets();
+				sheets = Renderer.loadDefaultTextures();
 
 			} else if (menus[0].getSelection() == 1) {
 				// Load legacy sprite sheet.
-				sheets = Renderer.loadLegacySpriteSheets();
+				sheets = Renderer.loadLegacyTextures();
 
 			} else {
 				try (ZipFile zipFile = new ZipFile(new File(location, Objects.requireNonNull(menus[0].getCurEntry()).toString()))) {
@@ -103,7 +102,7 @@ public class TexturePackDisplay extends Display {
 
 							} catch (IOException exception) {
 								exception.printStackTrace();
-								Logger.error("Loading sheet {} failed. Aborting.", TexturePackDisplay.ENTRY_NAMES[i]);
+								Logger.error("Sprites failure, '{}' has unable to be loaded, aborting ...", TexturePackDisplay.ENTRY_NAMES[i]);
 								return;
 							}
 

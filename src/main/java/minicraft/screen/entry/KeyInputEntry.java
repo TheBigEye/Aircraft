@@ -2,8 +2,8 @@ package minicraft.screen.entry;
 
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Font;
+import minicraft.graphic.Screen;
 
 public class KeyInputEntry extends SelectEntry {
 
@@ -20,7 +20,7 @@ public class KeyInputEntry extends SelectEntry {
         this.mapping = mapping;
 
         StringBuilder buffer = new StringBuilder();
-        for (int spaces = 0; spaces < Screen.w / Font.textWidth(" ") - action.length() - mapping.length(); spaces++){
+        for (int spaces = 0; spaces < (Screen.w - 76) / Font.textWidth(" ") - action.length() - mapping.length(); spaces++){
             buffer.append(" ");
         }
 
@@ -39,7 +39,7 @@ public class KeyInputEntry extends SelectEntry {
 
     @Override
     public int getWidth() {
-        return Screen.w;
+        return Screen.w - 78;
     }
 
     @Override

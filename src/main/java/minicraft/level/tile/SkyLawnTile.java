@@ -1,12 +1,11 @@
 package minicraft.level.tile;
 
-import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -14,7 +13,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class SkyLawnTile extends Tile {
-	private static final Sprite sprite = new Sprite(52, 10, 1);
+	private static final Sprite sprite = new Sprite(40, 23, 1);
 
 	protected SkyLawnTile(String name) {
 		super(name, (ConnectorSprite) null);
@@ -38,7 +37,7 @@ public class SkyLawnTile extends Tile {
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(2 - tool.level) && tool.payDurability()) {
 					level.setTile(x, y, Tiles.get("Sky grass"));
-					Sound.genericHurt.playOnGui();
+					//Sound.genericHurt.playOnDisplay();
 
 					if (random.nextInt(20) == 1) { // 20% chance to drop sky seeds
 						level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Sky Seeds"));

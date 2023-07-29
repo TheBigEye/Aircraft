@@ -72,7 +72,7 @@ public class Settings {
         
 	}
 
-	public static void init() {
+	public static void initialize() {
 		Logger.debug("Initializing game settings ...");
 	}
 
@@ -102,16 +102,14 @@ public class Settings {
 		return options.get(option.toLowerCase());
 	}
 
-	@SuppressWarnings("rawtypes")
 	// Sets the value of the given option name, to the given value, provided it is a valid value for that option.
 	public static void set(String option, Object value) {
-		((ArrayEntry) options.get(option.toLowerCase())).setValue(value);
+		options.get(option.toLowerCase()).setValue(value);
 	}
 
-	@SuppressWarnings("rawtypes")
 	// Sets the index of the value of the given option, provided it is a valid index
 	public static void setIndex(String option, int idx) {
-		((ArrayEntry) options.get(option.toLowerCase())).setSelection(idx);
+		options.get(option.toLowerCase()).setSelection(idx);
 	}
 
 	public static int getRefreshRate() {

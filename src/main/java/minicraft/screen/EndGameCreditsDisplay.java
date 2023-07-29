@@ -2,9 +2,9 @@ package minicraft.screen;
 
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Screen;
 
 public class EndGameCreditsDisplay extends Display {
 	
@@ -22,7 +22,7 @@ public class EndGameCreditsDisplay extends Display {
     
     @Override
     public void tick(InputHandler input) {
-    	if (tickTime / 6 %2 == 0) {
+    	if (tickTime / 2 %4 == 0) {
     		line++;
     	}
     	
@@ -107,12 +107,12 @@ public class EndGameCreditsDisplay extends Display {
 		Font.draw(" - BoxDude", 							screen, Screen.h/2 - 40, 680 - line, nameColor);
 		Font.draw(" - MrToad", 								screen, Screen.h/2 - 40, 690 - line, nameColor);
 		Font.draw(" - itayfeder", 							screen, Screen.h/2 - 40, 700 - line, nameColor);
-		Font.draw("for giving me ideas and", 				screen, Screen.h/2 - 40, 710 - line, Color.YELLOW);
-		Font.draw("participate in the ", 					screen, Screen.h/2 - 40, 720 - line, Color.YELLOW);
-		Font.draw("development of this nice mod ", 			screen, Screen.h/2 - 40, 730 - line, Color.YELLOW);
+		Font.draw("for giving me ideas and", 				screen, Screen.h/2 - 40, 720 - line, Color.YELLOW);
+		Font.draw("   participate in the ", 			    screen, Screen.h/2 - 40, 730 - line, Color.YELLOW);
+		Font.draw("development of this nice mod ", 			screen, Screen.h/2 - 50, 740 - line, Color.YELLOW);
 		
-		Font.draw("And thanks to the Minicraft plus", 		screen, Screen.h/2 - 40, 750 - line, Color.YELLOW);
-		Font.draw("maintainers that thanks to their", 		screen, Screen.h/2 - 40, 760 - line, Color.YELLOW);
-		Font.draw("  work this mod is possible :)", 		screen, Screen.h/2 - 40, 770 - line, Color.YELLOW);
+		Font.draw("And thanks to the Minicraft plus", 		screen, Screen.h/2 - 58, 760 - line, Color.YELLOW);
+		Font.draw("maintainers that thanks to their", 		screen, Screen.h/2 - 58, 770 - line, Color.YELLOW);
+		Font.draw("work this mod is possible :)", 		screen, Screen.h/2 - 40, 780 - line, Color.YELLOW);
 	}
 }

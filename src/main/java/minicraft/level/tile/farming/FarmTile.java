@@ -5,9 +5,9 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.villager.VillagerMob;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.entity.mob.VillagerMob;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
@@ -17,7 +17,7 @@ import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class FarmTile extends Tile {
-    private static Sprite sprite = new Sprite(12, 0, 2, 2, 1, true, new int[][] { { 1, 0 }, { 0, 1 } });
+    private static Sprite sprite = new Sprite(0, 38, 2, 2, 1, true, new int[][] { { 1, 0 }, { 0, 1 } });
 
     public FarmTile(String name) {
         super(name, sprite);
@@ -29,7 +29,7 @@ public class FarmTile extends Tile {
     
     @Override
     public void render(Screen screen, Level level, int x, int y) {
-        sprite.render(screen, x * 16, y * 16, 0, DirtTile.dCol(level.depth));
+        sprite.render(screen, x << 4, y << 4, 0, DirtTile.dirtColor(level.depth));
     }
 
     @Override
@@ -38,8 +38,8 @@ public class FarmTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+                	Sound.genericHurt.playOnDisplay();
                     level.setTile(xt, yt, Tiles.get("Dirt"));
-                    Sound.genericHurt.playOnGui();
                     return true;
                 }
             }
@@ -71,13 +71,14 @@ public class FarmTile extends Tile {
         }
         
         level.setTile(xt, yt, Tiles.get("Dirt"));
+
         
         switch (random.nextInt(3)) {
-            case 0: Sound.Tile_farmland.playOnGui(); break;
-            case 1: Sound.Tile_farmland_2.playOnGui(); break;
-            case 2: Sound.Tile_farmland_3.playOnGui(); break;
+            case 0: Sound.Tile_farmland.playOnDisplay(); break;
+            case 1: Sound.Tile_farmland_2.playOnDisplay(); break;
+            case 2: Sound.Tile_farmland_3.playOnDisplay(); break;
             default:
-                break;
+            	Sound.Tile_farmland.playOnDisplay(); break;
         }
     }
 }

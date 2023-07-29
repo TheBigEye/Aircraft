@@ -8,8 +8,8 @@ import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.FireParticle;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.PowerGloveItem;
@@ -60,7 +60,7 @@ public class TorchTile extends Tile {
     @Override
     public void render(Screen screen, Level level, int x, int y) {
         onType.render(screen, level, x, y);
-        sprite.render(screen, x * 16 + 4, y * 16 + 4);
+        sprite.render(screen, (x << 4) + 4, (y << 4) + 4);
         
 		if (!Updater.paused && tickTime / 2 % 2 == 0 && Settings.getBoolean("particles")) {
 			if (random.nextInt(1) == 0) {
@@ -69,11 +69,12 @@ public class TorchTile extends Tile {
 		}
     }
     
+    @Override
 	public boolean tick(Level level, int x, int y) {
 		tickTime++;
 		
-		spawnX  = x * 16 + 4;
-		spawnY = (y * 16) + random.nextInt(2) - random.nextInt(1);
+		spawnX  = (x << 4) + 4;
+		spawnY = (y << 4) + random.nextInt(2) - random.nextInt(1);
 		
 		return false;
 	}
@@ -86,9 +87,9 @@ public class TorchTile extends Tile {
     @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
         if (item instanceof PowerGloveItem) {
+        	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
             level.setTile(xt, yt, this.onType);
-            Sound.genericHurt.playOnWorld(xt * 16, yt * 16);
-            level.dropItem(xt * 16 + 8, yt * 16 + 8, Items.get("Torch"));
+            level.dropItem((xt << 4) + 8, (yt << 4) + 8, Items.get("Torch"));
             return true;
         } else {
             return false;

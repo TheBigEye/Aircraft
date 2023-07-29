@@ -2,10 +2,10 @@ package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.MobSprite;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.MobSprite;
+import minicraft.graphic.Screen;
 
 public class Keeper extends EnemyMob {
     private static final MobSprite[][][] sprites = new MobSprite[2][2][2];
@@ -14,7 +14,6 @@ public class Keeper extends EnemyMob {
     }
     
     // private int slimeSpawnRate = 0;
-    private int tickTime = 0;
 
     public Keeper(int lvl) {
     	super(5, sprites, 12000, false, 16 * 8, -1, 10, 50);
@@ -22,7 +21,6 @@ public class Keeper extends EnemyMob {
 
     public void tick() {
         super.tick();
-        tickTime++;
 
         /*slimeSpawnRate++;
         if (slimeSpawnRate >= 1500) {
@@ -88,7 +86,7 @@ public class Keeper extends EnemyMob {
 
         String txt = "";
         int w = Font.textWidth(txt) / 2;
-        Font.drawTransparentBackground(txt, screen, x - w, y - 45 - Font.textHeight());
+        Font.draw(txt, screen, x - w, y - 45 - Font.textHeight());
     }
 
     public boolean canSwim() {
@@ -116,7 +114,7 @@ public class Keeper extends EnemyMob {
             max = 2;
         }
 
-        Sound.Mob_keeper_death.playOnGui();
+        Sound.Mob_keeper_death.playOnLevel(this.x, this.y);
         level.add(new SlimyWizard(1), x, y);
         super.die();
     }

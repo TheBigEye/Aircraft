@@ -1,13 +1,14 @@
 package minicraft.item;
 
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 
 public class UnknownItem extends StackableItem {
 
-    protected UnknownItem(String reqName) {
-        super(reqName, Sprite.missingTexture(1, 1));
+    protected UnknownItem(String name) {
+        super(name, Sprite.missingTexture(1, 1));
     }
 
+    @Override
     public UnknownItem clone() {
         return new UnknownItem(getName());
     }

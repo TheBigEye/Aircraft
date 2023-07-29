@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
@@ -54,6 +54,7 @@ public class BucketItem extends StackableItem {
 		this.filling = fill;
 	}
 
+	@Override
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 		Fill fill = getFilling(tile);
 		if (fill == null) {
@@ -99,6 +100,7 @@ public class BucketItem extends StackableItem {
 		return this;
 	}
 
+	@Override
 	public boolean equals(Item other) {
 		return super.equals(other) && filling == ((BucketItem) other).filling;
 	}
@@ -108,6 +110,7 @@ public class BucketItem extends StackableItem {
 		return super.hashCode() + filling.offset * 31;
 	}
 
+	@Override
 	public BucketItem clone() {
 		return new BucketItem(filling, count);
 	}

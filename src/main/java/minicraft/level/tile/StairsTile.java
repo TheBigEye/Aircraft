@@ -6,18 +6,26 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.furniture.Furniture;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
 import minicraft.level.Level;
 
 public class StairsTile extends Tile {
-	private static final Sprite down_sprite = new Sprite(21, 0, 2, 2, 1, 0);
-	private static final Sprite up_sprite = new Sprite(19, 0, 2, 2, 1, 0);
+	
+	// Normal stairs
+	private static Sprite up_sprite = new Sprite(48, 0, 2, 2, 1, 0);
+	private static Sprite down_sprite = new Sprite(48, 2, 2, 2, 1, 0);
+	
+	// Obsidian stairs
+	private static Sprite obsidian_up_sprite = new Sprite(50, 0, 2, 2, 1, 0);
+	private static Sprite obsidian_down_sprite = new Sprite(50, 2, 2, 2, 1, 0);
+	
 
-	protected StairsTile(String name, boolean leadsUp) {
+	protected StairsTile(String name, boolean leadsUp) {	
 		super(name, leadsUp ? up_sprite : down_sprite);
+
 		maySpawn = false;
 	}
 
@@ -27,14 +35,15 @@ public class StairsTile extends Tile {
 
 		// Makes it so you can remove the stairs if you are in creative and debug mode.
 		if (item instanceof PowerGloveItem && Game.isMode("Creative") && Game.debug) {
+			Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
 			level.setTile(xt, yt, Tiles.get("Grass"));
-			Sound.genericHurt.playOnWorld(xt * 16, yt * 16);
 			return true;
 		} else {
 			return false;
 		}
 	}
 
+	@Override
 	public boolean mayPass(Level level, int x, int y, Entity entity) {
 		return !(entity instanceof Furniture);
 	}
@@ -50,16 +59,16 @@ public class StairsTile extends Tile {
 			default: Tiles.get("Dirt").render(screen, level, x, y); break; // caves, surface and dungeon
 		}
 
-		for (Tile t : areaTiles) {
-			if (t == Tiles.get("Obsidian")) Tiles.get("Obsidian").render(screen, level, x, y);
-			if (t == Tiles.get("Stone bricks")) Tiles.get("Stone bricks").render(screen, level, x, y);
-			if (t == Tiles.get("Oak planks")) Tiles.get("Oak planks").render(screen, level, x, y);
-			if (t == Tiles.get("Spruce planks")) Tiles.get("Spruce planks").render(screen, level, x, y);
-			if (t == Tiles.get("Birch planks")) Tiles.get("Birch planks").render(screen, level, x, y);
-			if (t == Tiles.get("Holy bricks")) Tiles.get("Holy bricks").render(screen, level, x, y);
+		for (Tile tile : areaTiles) {
+			if (tile == Tiles.get("Obsidian")) Tiles.get("Obsidian").render(screen, level, x, y);
+			if (tile == Tiles.get("Stone bricks")) Tiles.get("Stone bricks").render(screen, level, x, y);
+			if (tile == Tiles.get("Oak planks")) Tiles.get("Oak planks").render(screen, level, x, y);
+			if (tile == Tiles.get("Spruce planks")) Tiles.get("Spruce planks").render(screen, level, x, y);
+			if (tile == Tiles.get("Birch planks")) Tiles.get("Birch planks").render(screen, level, x, y);
+			if (tile == Tiles.get("Holy bricks")) Tiles.get("Holy bricks").render(screen, level, x, y);
 		}
 
-		sprite.render(screen, x * 16, y * 16, 0);
+		sprite.render(screen, x << 4, y << 4, 0);
 	}
 
 }

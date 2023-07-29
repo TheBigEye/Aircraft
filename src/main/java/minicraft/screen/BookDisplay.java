@@ -5,11 +5,11 @@ import java.util.Arrays;
 
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Point;
-import minicraft.gfx.Screen;
-import minicraft.gfx.SpriteSheet;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Point;
+import minicraft.graphic.Screen;
+import minicraft.graphic.SpriteSheet;
 import minicraft.screen.entry.StringEntry;
 
 public class BookDisplay extends Display {
@@ -18,7 +18,10 @@ public class BookDisplay extends Display {
     private static final String defaultBook = " \n \0" + "There is nothing of use here." + "\0 \0" + "Still nothing... :P";
 
     private static final int spacing = 3;
-    private static final int minX = 15, maxX = 15 + 8 * 32, minY = 8 * 5, maxY = 8 * 5 + 8 * 16;
+    private static final int minX = 15; 
+    private static final int maxX = 15 + 8 * 32;
+    private static final int minY = 8 * 5;
+    private static final int maxY = 8 * 5 + 8 * 16;
 
     private String[][] lines;
     protected int page;
@@ -42,7 +45,9 @@ public class BookDisplay extends Display {
         ArrayList<String[]> pages = new ArrayList<>();
         String[] splitContents = book.split("\0");
         for (String content : splitContents) {
-            String[] remainder = { content };
+            String[] remainder = {
+            		content 
+            };
             while (remainder[remainder.length - 1].length() > 0) {
                 remainder = Font.getLines(remainder[remainder.length - 1], maxX - minX, maxY - minY, spacing, true);
                 pages.add(Arrays.copyOf(remainder, remainder.length - 1)); // removes the last element of remainder, which is the leftover.
@@ -56,15 +61,14 @@ public class BookDisplay extends Display {
 
         Menu.Builder builder = new Menu.Builder(true, spacing, RelPos.CENTER);
 
-        Menu pageCount = builder // the small rect for the title
-                .setPositioning(new Point(Screen.w / 2, 0), RelPos.BOTTOM)
-                .setEntries(StringEntry.useLines(Color.BLACK, "Page", hasTitle ? "Title" : "1/" + lines.length))
-                .setSelection(1).createMenu();
+        Menu pageCount = builder
+    		.setPositioning(new Point(Screen.w / 2, 48 + spacing), RelPos.BOTTOM)
+            .setSize(maxX - minX + SpriteSheet.boxWidth * 2, maxY - minY + SpriteSheet.boxWidth * 2)
+            .setShouldRender(false)
+            .setBackground(19)
+            .createMenu();
 
-        builder.setPositioning(new Point(Screen.w / 2, pageCount.getBounds().getBottom() + spacing), RelPos.BOTTOM)
-                .setSize(maxX - minX + SpriteSheet.boxWidth * 2, maxY - minY + SpriteSheet.boxWidth * 2)
-                .setShouldRender(false);
-
+        
         menus = new Menu[lines.length + pageOffset];
         if (showPageCount) {
             menus[0] = pageCount;
@@ -102,5 +106,14 @@ public class BookDisplay extends Display {
             turnPage(1); // this is what turns the page forward
         }
 
+    }
+    
+    @Override
+    public void render(Screen screen) {
+        super.render(screen);
+        
+        String text = (page == 0 && hasTitle ? "Title" : (page + 1) + "/" + lines.length);
+        int x = Screen.w / 2 + 128 - (Font.textWidth(text));
+        Font.draw(text, screen, x, 180, Color.GRAY);
     }
 }

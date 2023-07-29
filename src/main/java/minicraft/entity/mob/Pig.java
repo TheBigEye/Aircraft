@@ -2,13 +2,11 @@ package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
-import minicraft.gfx.MobSprite;
-import minicraft.item.Item;
+import minicraft.graphic.MobSprite;
 import minicraft.item.Items;
 
 public class Pig extends PassiveMob {
     private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 38);
-    private int tickTime = 0;
 
     /**
      * Creates a pig.
@@ -17,9 +15,9 @@ public class Pig extends PassiveMob {
         super(sprites);
     }
 
+    @Override
     public void tick() {
         super.tick();
-        tickTime++;
 
 		// follows to the player if holds a carrot
 		followOnHold(5, "Carrot", false);
@@ -28,27 +26,26 @@ public class Pig extends PassiveMob {
 		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
 			if (random.nextBoolean()) {
 				if (!random.nextBoolean()) {
-					Sound.pigSay1.playOnWorld(x, y);
+					Sound.pigSay1.playOnLevel(this.x, this.y);
 				} else {
-					Sound.pigSay2.playOnWorld(x, y);
+					Sound.pigSay2.playOnLevel(this.x, this.y);
 				}
 			} else {
-				Sound.pigSay3.playOnWorld(x, y);
+				Sound.pigSay3.playOnLevel(this.x, this.y);
 			}
 		}
     }
 
+    @Override
     public void die() {
-        int min = 0, max = 0;
-        String difficulty = (String) Settings.get("diff");
+        int min = 0;
+        int max = 0;
         
-        if (difficulty == "Peaceful" || difficulty == "Easy") { min = 1; max = 3; }
-        if (difficulty == "Normal") { min = 1; max = 2; }
-        if (difficulty == "Hard") { min = 0; max = 2; }
+        if (Settings.get("diff").equals("Peaceful") || Settings.get("diff").equals("Easy")) { min = 1; max = 3; }
+        if (Settings.get("diff").equals("Normal")) { min = 1; max = 2; }
+        if (Settings.get("diff").equals("Hard")) { min = 0; max = 2; }
         
-        dropItem(min, max, new Item[] {
-        		Items.get("raw pork")
-        });
+        dropItem(min, max, Items.get("raw pork"));
 
         super.die();
     }

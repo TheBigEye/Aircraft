@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Screen;
 
 // an unselectable line.
 public class StringEntry extends ListEntry {
@@ -25,16 +25,18 @@ public class StringEntry extends ListEntry {
     }
     
 	public static StringEntry[] useLines(int color, boolean getLocalized, String... lines) {
-		ArrayList<String> lns = new ArrayList<>();
-		for (String l : lines) {
-			for (String ll : Font.getLines(getLocalized? Localization.getLocalized(l): l, Screen.w - 20, Screen.h * 2, 0)){
-                lns.add(ll);
+		ArrayList<String> linesList = new ArrayList<>();
+		for (String line : lines) {
+			for (String newLine : Font.getLines(getLocalized? Localization.getLocalized(line): line, Screen.w - 20, Screen.h * 2, 0)){
+				linesList.add(newLine);
             }
 		}
         
-		StringEntry[] entries = new StringEntry[lns.size()];
-		for (int i = 0; i < lns.size(); i++) {
-			entries[i] = new StringEntry(lns.get(i), color);
+		StringEntry[] entries = new StringEntry[linesList.size()];
+		int linesListSize = linesList.size();
+		
+		for (int i = 0; i < linesListSize; i++) {
+			entries[i] = new StringEntry(linesList.get(i), color);
         }
 
 		return entries;

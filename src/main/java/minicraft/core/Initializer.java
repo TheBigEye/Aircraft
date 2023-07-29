@@ -33,7 +33,10 @@ public class Initializer extends Game {
 	 */
 	static JFrame frame;
 	static LogoSplashCanvas logoSplash = new LogoSplashCanvas();
-	static int fra, tik; // These store the number of frames and ticks in the previous second, used for fps, at least.
+	
+	// These store the number of frames and ticks in the previous second, used for fps, at least.
+	static int fra;
+	static int tik; 
 
 	public static int getCurrentFPS() {
 		return fra;
@@ -75,15 +78,20 @@ public class Initializer extends Game {
 	    int ticks = 0;
 	    long lastTimer = System.currentTimeMillis();
 
-	    // Calculate nanoseconds per tick (updates)
-	    double nsPerTick = 1E9D / Updater.normalSpeed;
-	    if (display == null) {
-	        nsPerTick /= Updater.gamespeed;
-	    }
-
 	    // Game main loop
 	    while (running) {
+			if (discordCore != null) {
+				discordCore.runCallbacks();
+			}
+	    	
 	        long now = System.nanoTime();
+	        
+		    // Calculate nanoseconds per tick (updates)
+		    double nsPerTick = 1E9D / Updater.normalSpeed;
+		    if (display == null) {
+		        nsPerTick /= Updater.gameSpeed;
+		    }
+
 	        unprocessed += (now - lastTick) / nsPerTick;
 	        lastTick = now;
 
@@ -93,30 +101,33 @@ public class Initializer extends Game {
 	            Updater.tick();
 	            unprocessed--;
 	        }
-	        
-	        // TODO: try make this more optimized and secure
-			/*try {
-				Thread.sleep(2); // Makes a small pause for 2 milliseconds (bad idea)
-			} catch (InterruptedException exception) {
-				exception.printStackTrace();
-			}*/
 	
 	        // Refresh the screen
-			if ((now - lastRender) / 1.0E9 > 1.0 / MAX_FPS) {
+	        now = System.nanoTime();
+			if (now >= lastRender + 1E9D / maxFPS / 1.05) {
 				frames++;
 				lastRender = System.nanoTime();
 				Renderer.render();
 			}
-	
-			if (discordCore != null) {
-				discordCore.runCallbacks();
-			}
+			
+			try {
+				long curNano = System.nanoTime();
+				long untilNextTick = (long) (lastTick + nsPerTick - curNano);
+				long untilNextFrame = (long) (lastRender + 1E9D / maxFPS - curNano);
+				if (untilNextTick > 1E3 && untilNextFrame > 1E3) {
+					double timeToWait = Math.min(untilNextTick, untilNextFrame) / 1.2; // in nanosecond
+					//noinspection BusyWait
+					Thread.sleep((long) Math.floor(timeToWait / 1E6), (int) ((timeToWait - Math.floor(timeToWait)) % 1E6));
+				}
+			} catch (InterruptedException ignored) {}
+
 	
 			if (System.currentTimeMillis() - lastTimer > 1000) { // updates every 1 second
+				long interval = System.currentTimeMillis() - lastTimer;
 				lastTimer += 1000; // adds a second to the timer
 	
-				fra = frames; // saves total frames in last second
-				tik = ticks; // saves total ticks in last second
+				fra = (int) Math.round(frames * 1000D / interval); // saves total frames in last second
+				tik = (int) Math.round(ticks * 1000D / interval); // saves total ticks in last second
 				frames = 0; // resets frames
 				ticks = 0; // resets ticks; ie, frames and ticks only are per second
 			}
@@ -142,7 +153,7 @@ public class Initializer extends Game {
 	    frame.pack();
 
 		try { // Load the window logo
-			BufferedImage logo = ImageIO.read(Game.class.getResourceAsStream("/resources/logo.png"));
+			BufferedImage logo = ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream("/resources/logo.png")));
 			frame.setIconImage(logo);
 		} catch (IOException exception) {
 			exception.printStackTrace();
@@ -151,6 +162,7 @@ public class Initializer extends Game {
 		frame.setLocationRelativeTo(null); // The window will pop up in the middle of the screen when launched.
 
 		frame.addComponentListener(new ComponentAdapter() {
+			@Override
 			public void componentResized(ComponentEvent e) {
 				float w = frame.getWidth() - frame.getInsets().left - frame.getInsets().right;
 				float h = frame.getHeight() - frame.getInsets().top - frame.getInsets().bottom;
@@ -167,14 +179,16 @@ public class Initializer extends Game {
 	
 	
 	private static final WindowListener windowListener = new WindowListener() {
-	    public void windowActivated(WindowEvent e) {}
-	    public void windowDeactivated(WindowEvent e) {}
-	    public void windowIconified(WindowEvent e) {}
-	    public void windowDeiconified(WindowEvent e) {}
-	    public void windowOpened(WindowEvent e) {}
-	    public void windowClosed(WindowEvent e) {
+	    public void windowActivated(WindowEvent e) {} // not used
+	    public void windowDeactivated(WindowEvent e) {} // not used
+	    public void windowIconified(WindowEvent e) {} // not used
+	    public void windowDeiconified(WindowEvent e) {} // not used
+	    public void windowOpened(WindowEvent e) {} // not used
+	    
+	    public void windowClosed(WindowEvent e) { 
 	        Logger.debug("Game window closed!");
 	    }
+	    
 	    public void windowClosing(WindowEvent e) {
 	        quit();
 	    }
@@ -183,7 +197,7 @@ public class Initializer extends Game {
 
 	@SuppressWarnings("serial") 
 	private static class LogoSplashCanvas extends JPanel {
-		private Image logo;
+		private final Image logo;
 		{
 			try {
 				logo = ImageIO.read(Objects.requireNonNull(Initializer.class.getResourceAsStream("/resources/title.png")));
@@ -196,8 +210,12 @@ public class Initializer extends Game {
 		private boolean display = false;
 		private boolean inAnimation = false;
 		private boolean interruptWhenAnimated = false;
+		
+	    public LogoSplashCanvas() {
+	        setBackground(Color.BLACK);
+	    }
 
-		public Thread renderer = new Thread(() -> {
+		public final Thread renderer = new Thread(() -> {
 			do {
 				repaint();
 				if (interruptWhenAnimated && !inAnimation) break;
@@ -205,17 +223,21 @@ public class Initializer extends Game {
 		}, "Splash renderer Thread");
 
 		@Override
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			setBackground(Color.BLACK); 
+		public void paintComponent(Graphics graphics) {
+			super.paintComponent(graphics);
 			
+			int lx = (getWidth() / 2) - logo.getWidth(frame);
+			int ly = (getHeight() / 2) - (logo.getHeight(frame) + 12);
+			int lw = logo.getWidth(frame) * 2;
+			int lh = logo.getHeight(frame) * 2;
+
 			if (transparency < 255) {
-				g.drawImage(logo, (getWidth() / 2) - logo.getWidth(frame), (getHeight() / 2) - (logo.getHeight(frame) * 2), logo.getWidth(frame) * 2, logo.getHeight(frame) * 2, frame);
+				graphics.drawImage(logo, lx, ly, lw, lh, frame);
 			}
 			
 			if (transparency > 0) {
-				g.setColor(new Color(0, 0, 0, transparency));
-				g.fillRect(0, 0, g.getClipBounds().width, g.getClipBounds().height);
+				graphics.setColor(new Color(0, 0, 0, transparency));
+				graphics.fillRect(0, 0, graphics.getClipBounds().width, graphics.getClipBounds().height);
 			}
 
 			if (inAnimation) {
@@ -262,12 +284,15 @@ public class Initializer extends Game {
 		final java.io.ByteArrayOutputStream byteStream = new java.io.ByteArrayOutputStream();
 		final java.io.PrintStream printStream = new java.io.PrintStream(byteStream);
 		throwable.printStackTrace(printStream);
+
 		String exceptionString;
+		
 		try {
 			exceptionString = byteStream.toString("UTF-8");
-		} catch(Exception ex) {
+		} catch(Exception exception) {
 			exceptionString = "Unavailable";
 		}
+
 		return exceptionString;
 	}
 }

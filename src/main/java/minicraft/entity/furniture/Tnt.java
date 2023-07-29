@@ -13,10 +13,10 @@ import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.FireParticle;
-import minicraft.gfx.Color;
-import minicraft.gfx.Rectangle;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.Rectangle;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
@@ -84,7 +84,7 @@ public class Tnt extends Furniture implements ActionListener {
 						Tnt tnt = (Tnt) entity;
 						if (!tnt.fuseLit) {
 							tnt.fuseLit = true;
-							Sound.genericFuse.playOnWorld(x, y);
+							Sound.genericFuse.playOnLevel(this.x, this.y);
 							tnt.fuseTick = FUSE_TIME * 2 / 3;
 						}
 
@@ -106,7 +106,7 @@ public class Tnt extends Furniture implements ActionListener {
 				}
 
 				// Play explosion sound
-				Sound.genericExplode.playOnWorld(x, y);
+				Sound.genericExplode.playOnLevel(this.x, this.y);
 
 				level.setAreaTiles(xt, yt, 1, Tiles.get("Explode"), 0, explosionBlacklist);
 
@@ -152,7 +152,7 @@ public class Tnt extends Furniture implements ActionListener {
 	public boolean interact(Player player, Item heldItem, Direction attackDir) {
 		if (!fuseLit) {
 			fuseLit = true;
-			Sound.genericFuse.playOnWorld(x, y);
+			Sound.genericFuse.playOnLevel(this.x, this.y);
 			return true;
 		}
 		return false;

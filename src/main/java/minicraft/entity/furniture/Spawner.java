@@ -2,7 +2,10 @@ package minicraft.entity.furniture;
 
 import java.util.ArrayList;
 
+import org.tinylog.Logger;
+
 import minicraft.core.Game;
+import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
@@ -11,15 +14,16 @@ import minicraft.entity.mob.MobAi;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.FireParticle;
 import minicraft.entity.particle.TextParticle;
-import minicraft.gfx.Color;
-import minicraft.gfx.Point;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.Point;
+import minicraft.graphic.Sprite;
 import minicraft.item.FurnitureItem;
 import minicraft.item.Item;
 import minicraft.item.PotionType;
 import minicraft.item.PowerGloveItem;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
+import minicraft.level.tile.Tile;
 
 public class Spawner extends Furniture {
 
@@ -85,30 +89,31 @@ public class Spawner extends Furniture {
 
 	@Override
 	public void tick() {
-		super.tick();
+	    super.tick();
 
-		tickTime++;
+	    tickTime++;
 
-		spawnTick--;
-		if (spawnTick <= 0) {
-			int chance = (int) (minMobSpawnChance * Math.pow(level.mobCount, 2) / Math.pow(level.maxMobCount, 2)); // this forms a quadratic function that determines the mob spawn chance.
-			if (chance <= 0 || random.nextInt(chance) == 0) trySpawn();
-			resetSpawnInterval();
-		}
+	    spawnTick--;
+	    if (spawnTick <= 0) {
+	        int chance = (int) (minMobSpawnChance * Math.pow(level.mobCount, 2) / Math.pow(level.maxMobCount, 2)); // this forms a quadratic function that determines the mob spawn chance.
+	        if (chance <= 0 || random.nextInt(chance) == 0) trySpawn();
+	        resetSpawnInterval();
+	    }
 
-		// Fire particles
-		if (tickTime / 2 % 8 == 0) {
-			if (Settings.get("particles").equals(true)) {
-				level.add(new FireParticle(x - 10 + random.nextInt(14), y - 8 + random.nextInt(12)));
-			}
-		}  else {
-			frame = random.nextInt(3) * 2;
-		}
+	    // Fire particles
+	    if (tickTime / 2 % 8 == 0) {
+	        if (Settings.get("particles").equals(true)) {
+	            level.add(new FireParticle(x - 10 + random.nextInt(14), y - 8 + random.nextInt(12)));
+	        }
+	    } else {
+	        frame = random.nextInt(3) * 2;
+	    }
 
-		if (Settings.get("diff").equals("Peaceful")) {
-			resetSpawnInterval();
-		}
+	    if (Settings.get("diff").equals("Peaceful")) {
+	        resetSpawnInterval();
+	    }
 	}
+
 
 	/**
 	 * Resets the spawner so it can spawn another mob.
@@ -121,71 +126,82 @@ public class Spawner extends Furniture {
 	 * Tries to spawn a new mob.
 	 */
 	private void trySpawn() {
-		if (level == null) return; // if no level, so we cannot do anything
-		if (level.mobCount >= level.maxMobCount) return; // can't spawn more entities
-		
-		Player player = getClosestPlayer();
-		if (player == null) {
-			return;
-		}
+	    if (level == null) return; // if no level, so we cannot do anything
+	    if (level.mobCount >= level.maxMobCount) return; // can't spawn more entities
 
-		int xd = player.x - x;
-		int yd = player.y - y;
+	    if (mob instanceof EnemyMob) {
+	        if (level.depth >= 0 && (Updater.tickCount > Updater.sleepEndTime) && (Updater.tickCount < Updater.sleepStartTime)) {
+	            return; // Do not spawn if it is on the surface or above and it is under daylight.
+	        }
+	        if (level.isLight(x >> 4, y >> 4)) {
+	            return;
+	        }
+	    }
 
-		if (xd * xd + yd * yd > ACTIVE_RADIUS * ACTIVE_RADIUS) {
-			return;
-		}
+	    Player player = getClosestPlayer();
+	    if (player == null) {
+	        return;
+	    }
 
-		MobAi newmob;
-		try {
-			if (mob instanceof EnemyMob) {
-				newmob = mob.getClass().getConstructor(int.class).newInstance(lvl);
-			} else {
-				newmob = mob.getClass().getDeclaredConstructor().newInstance();
-			}
-		} catch (Exception ex) {
-			System.err.println("Spawner ERROR: could not spawn mob; error initializing mob instance:");
-			ex.printStackTrace();
-			return;
-		}
+	    int xd = player.x - x;
+	    int yd = player.y - y;
 
-		Point pos = new Point(x >> 4, y >> 4);
-		Point[] areaPositions = level.getAreaTilePositions(pos.x, pos.y, 1);
-		ArrayList<Point> validPositions = new ArrayList<>();
-		for (Point p : areaPositions) {
-			if (!(!level.getTile(p.x, p.y).mayPass(level, p.x, p.y, newmob) || mob instanceof EnemyMob && level.getTile(p.x, p.y).getLightRadius(level, p.x, p.y) > 0)) {
-				validPositions.add(p);
-			}
-		}
+	    if (xd * xd + yd * yd > ACTIVE_RADIUS * ACTIVE_RADIUS) {
+	        return;
+	    }
 
-		if (validPositions.size() == 0) {
-			return; // cannot spawn mob.
-		}
+	    MobAi newmob;
+	    try {
+	        if (mob instanceof EnemyMob) {
+	            newmob = mob.getClass().getConstructor(int.class).newInstance(lvl);
+	        } else {
+	            newmob = mob.getClass().getDeclaredConstructor().newInstance();
+	        }
+	    } catch (Exception exception) {
+	        Logger.error("Could not spawn mob, error initializing mob instance:");
+	        exception.printStackTrace();
+	        return;
+	    }
 
-		Point spawnPos = validPositions.get(random.nextInt(validPositions.size()));
+	    Point position = new Point(x >> 4, y >> 4);
+	    Point[] areaPositions = level.getAreaTilePositions(position.x, position.y, 1);
+	    ArrayList<Point> validPositions = new ArrayList<>();
+	    for (Point point : areaPositions) {
+	        Tile tile = level.getTile(point.x, point.y);
+	        if (!(!tile.mayPass(level, point.x, point.y, newmob) || mob instanceof EnemyMob && tile.getLightRadius(level, point.x, point.y) > 0)) {
+	            validPositions.add(point);
+	        }
+	    }
 
-		newmob.x = spawnPos.x << 4;
-		newmob.y = spawnPos.y << 4;
+	    if (validPositions.isEmpty()) {
+	        return; // cannot spawn mob.
+	    }
 
-		if (Game.debug) level.printLevelLoc("Spawning new " + mob, (newmob.x >> 4), (newmob.y >> 4), "...");
+	    Point spawnPos = validPositions.get(random.nextInt(validPositions.size()));
 
-		level.add(newmob);
-		Sound.Furniture_spawner_spawn.playOnWorld(x, y);
+	    newmob.x = spawnPos.x << 4;
+	    newmob.y = spawnPos.y << 4;
 
-		// Fire particles when spawn a mob
-		if (Settings.get("particles").equals(true)) {
-			for (int i = 0; i < 3; i++) {
-				level.add(new FireParticle(x - 8 + random.nextInt(16), y - 6 + random.nextInt(12)));
-			}
-		}
+	    if (Game.debug) level.printLevelLoc("Spawning new " + mob, (newmob.x >> 4), (newmob.y >> 4), "...");
+
+	    level.add(newmob);
+	    Sound.Furniture_spawner_spawn.playOnLevel(this.x, this.y);
+
+	    // Fire particles when spawn a mob
+	    if (Settings.get("particles").equals(true)) {
+	        for (int i = 0; i < 3; i++) {
+	            level.add(new FireParticle(x - 8 + random.nextInt(16), y - 6 + random.nextInt(12)));
+	        }
+	    }
 	}
+
 
 	@Override
 	public boolean interact(Player player, Item item, Direction attackDir) {
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
 
-			Sound.genericHurt.playOnWorld(x, y);
+			Sound.genericHurt.playOnLevel(this.x, this.y);
 
 			int toolDamage;
 			if (Game.isMode("Creative")) {
@@ -208,16 +224,15 @@ public class Spawner extends Furniture {
 				level.remove(this);
                 
                 // Random spawner sound 
-				switch (random.nextInt(4)) {
-					case 0: Sound.Furniture_spawner_hurt.playOnGui(); break;
-					case 1: Sound.Furniture_spawner_destroy.playOnGui(); break;
-					case 2: Sound.Furniture_spawner_destroy_2.playOnGui(); break;
-				    case 3: Sound.Furniture_spawner_destroy_3.playOnGui(); break;
-				    case 4: Sound.Furniture_spawner_destroy_3.playOnGui(); break;
-				    default: Sound.Furniture_spawner_hurt.playOnGui(); break;
+				switch (random.nextInt(3)) {
+					case 0: Sound.Furniture_spawner_hurt.playOnLevel(this.x, this.y); break;
+					case 1: Sound.Furniture_spawner_destroy.playOnLevel(this.x, this.y); break;
+					case 2: Sound.Furniture_spawner_destroy_2.playOnLevel(this.x, this.y); break;
+				    case 3: Sound.Furniture_spawner_destroy_3.playOnLevel(this.x, this.y); break;
+				    default: Sound.Furniture_spawner_hurt.playOnLevel(this.x, this.y); break;
 				}
 
-				// Sound.playerDeath.playOnGui();
+				// Sound.playerDeath.playOnDisplay();
 				player.addScore(500);
             }
 
@@ -251,8 +266,8 @@ public class Spawner extends Furniture {
     		try {
     			EnemyMob newmob = (EnemyMob) mob.getClass().getConstructor(int.class).newInstance(lvl);
     			initMob(newmob);
-    		} catch (Exception ex) {
-    			ex.printStackTrace();
+    		} catch (Exception exception) {
+    			exception.printStackTrace();
     		}
     		return true;
     	}
@@ -260,6 +275,7 @@ public class Spawner extends Furniture {
     	return false;
     }
 
+    @Override
     public Furniture clone() {
     	return new Spawner(mob);
     }

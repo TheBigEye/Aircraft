@@ -5,7 +5,7 @@ import java.util.Arrays;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
-import minicraft.gfx.Font;
+import minicraft.graphic.Font;
 
 public class ArrayEntry<T> extends ListEntry {
 
@@ -119,7 +119,7 @@ public class ArrayEntry<T> extends ListEntry {
 		if (input.getKey("cursor-right").clicked) selection++;
 
 		if (previousSelection != selection) {
-			Sound.Menu_select.playOnGui();
+			Sound.Menu_select.playOnDisplay();
 			moveSelection(selection - previousSelection);
 		}
 	}

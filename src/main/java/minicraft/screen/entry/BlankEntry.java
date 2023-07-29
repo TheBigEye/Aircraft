@@ -1,8 +1,8 @@
 package minicraft.screen.entry;
 
 import minicraft.core.io.InputHandler;
-import minicraft.gfx.Screen;
-import minicraft.gfx.SpriteSheet;
+import minicraft.graphic.Screen;
+import minicraft.graphic.SpriteSheet;
 
 public class BlankEntry extends ListEntry {
 

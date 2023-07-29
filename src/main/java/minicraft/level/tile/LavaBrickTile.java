@@ -5,12 +5,14 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
 
+
+// TODO: replace this with Magma tile
 public class LavaBrickTile extends Tile {
 	private static Sprite sprite = new Sprite(19, 2, 2, 2, 1);
 
@@ -35,8 +37,8 @@ public class LavaBrickTile extends Tile {
 	    
 		if (toolType == ToolType.Pickaxe) {
 			if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+				Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
 				level.setTile(xt, yt, Tiles.get("Lava"));
-				Sound.genericHurt.playOnGui();
 				return true;
 			}
 		}

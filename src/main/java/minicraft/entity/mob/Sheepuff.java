@@ -1,7 +1,8 @@
 package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
-import minicraft.gfx.MobSprite;
+import minicraft.core.io.Sound;
+import minicraft.graphic.MobSprite;
 import minicraft.item.Items;
 
 public class Sheepuff extends SkyMob {
@@ -14,30 +15,27 @@ public class Sheepuff extends SkyMob {
 		super(sprites);
 	}
 
+	@Override
 	public void tick() {
 		super.tick();
 
-		Player player = getClosestPlayer();
-		if (player != null && player.activeItem != null && player.activeItem.name.equals("Sky wart")) {
-			int xd = player.x - x;
-			int yd = player.y - y;
-
-			/// if player is less than 6.25 tiles away, then set move dir towards player
-			int sig0 = 1; // this prevents too precise estimates, preventing mobs from bobbing up and down.
-			xa = ya = 0;
-
-			if (xd < sig0) xa = -1;
-			if (xd > sig0) xa = +1;
-			if (yd < sig0) ya = -1;
-			if (yd > sig0) ya = +1;
-
-		} else {
-			// if the Pet was following the player, but has now lost it, it stops moving.
-			// *that would be nice, but I'll just make it move randomly instead.
-			randomizeWalkDir(false);
+		followOnHold(3, "Sky Wart", false);
+		
+		// Sheep sounds
+		if (tickTime / 8 % 24 == 0 && random.nextInt(8) == 4) {
+			if (random.nextBoolean()) {
+				if (!random.nextBoolean()) {
+					Sound.sheepSay1.playOnLevel(this.x, this.y);
+				} else {
+					Sound.sheepSay2.playOnLevel(this.x, this.y);
+				}
+			} else {
+				Sound.sheepSay3.playOnLevel(this.x, this.y);
+			}
 		}
 	}
 
+	@Override
 	public void die() {
 		int min = 0, max = 0;
 		if (Settings.get("diff").equals("Peaceful")) {

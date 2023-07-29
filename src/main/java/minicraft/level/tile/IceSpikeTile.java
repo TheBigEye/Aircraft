@@ -8,14 +8,14 @@ import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.TextParticle;
-import minicraft.gfx.Color;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Items;
 import minicraft.level.Level;
 
 public class IceSpikeTile extends Tile {
-	private static Sprite sprite = new Sprite(4, 12, 1);
+	private static Sprite sprite = new Sprite(15, 16, 1);
 
 	protected IceSpikeTile(String name) {
 		super(name, sprite);
@@ -45,8 +45,9 @@ public class IceSpikeTile extends Tile {
 		level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.BLUE));
 
 		if (damage >= iceHealth) {
+			Sound.genericHurt.playOnLevel(x << 4, y << 4);
 			level.setTile(x, y, Tiles.get("Snow"));
-			Sound.genericHurt.playOnGui();
+			
 			level.dropItem((x << 4) + 8, (y << 4) + 8, 2, 4, Items.get("Icicle"));
 		} else {
 			level.setData(x, y, damage);
@@ -54,6 +55,7 @@ public class IceSpikeTile extends Tile {
 		return true;
 	}
 
+	@Override
 	public boolean mayPass(Level level, int x, int y, Entity entity) {
 		return false;
 	}
@@ -72,6 +74,7 @@ public class IceSpikeTile extends Tile {
 		sprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
 	}
 
+	@Override
 	public boolean tick(Level level, int xt, int yt) {
 		int damage = level.getData(xt, yt);
 		if (damage > 0) {

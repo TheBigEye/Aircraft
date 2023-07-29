@@ -24,7 +24,7 @@ public class Items {
      * If you want to access one of those items, you do it through this class, by
      * calling get("item name"); casing does not matter.
      */
-    private static ArrayList<Item> items = new ArrayList<>();
+    private static final ArrayList<Item> items = new ArrayList<>();
 
     private static void add(Item item) {
         items.add(item);
@@ -75,16 +75,16 @@ public class Items {
             hadUnderscore = true;
             try {
                 data = Integer.parseInt(name.substring(name.indexOf("_") + 1));
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception exception) {
+            	exception.printStackTrace();
             }
             name = name.substring(0, name.indexOf("_"));
         } else if (name.contains(";")) {
             hadUnderscore = true;
             try {
                 data = Integer.parseInt(name.substring(name.indexOf(";") + 1));
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
             name = name.substring(0, name.indexOf(";"));
         }
@@ -126,14 +126,14 @@ public class Items {
 
     public static Item arrowItem = get("arrow");
 
-    public static void fillCreativeInventory(Inventory inv) {
-        fillCreativeInventory(inv, true);
+    public static void fillCreativeInventory(Inventory inventory) {
+        fillCreativeInventory(inventory, true);
     }
 
-    public static void fillCreativeInventory(Inventory inv, boolean addAll) {
+    public static void fillCreativeInventory(Inventory inventory, boolean addAll) {
         for (Item item : items) {
-            if (!(item instanceof PowerGloveItem) && (addAll || inv.count(item) == 0)) {
-            	inv.add(item.clone());
+            if (!(item instanceof PowerGloveItem) && (addAll || inventory.count(item) == 0)) {
+            	inventory.add(item.clone());
             }
         }
     }

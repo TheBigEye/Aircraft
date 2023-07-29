@@ -11,8 +11,8 @@ import org.tinylog.Logger;
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Rectangle;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Rectangle;
+import minicraft.graphic.Screen;
 import minicraft.item.Item;
 import minicraft.level.Level;
 import minicraft.network.Network;
@@ -28,7 +28,7 @@ public abstract class Entity implements Tickable {
 	 * x >> 4 is the equivalent to x / (2^4). Which means it's dividing the X value by 16. (2x2x2x2 = 16)
 	 * xt << 4 is the equivalent to xt * (2^4). Which means it's multiplying the X tile value by 16.
 	 *
-	 * These bit shift operators are used to easily get the X & Y coordinates of a tile that the entity is standing on.
+	 * These bit shift operators are used to easily get the X & Y coordinates of a tile that the entity is standing on (have better performance than / or *)
 	 */
 
 	// Entity coordinates are per pixel, not per tile; each tile is 16x16 entity pixels.
@@ -40,15 +40,15 @@ public abstract class Entity implements Tickable {
     public int x;
     public int y;
 
-    // x, y radius of entity
+    // x, y radius of entity (hitbox)
     private int xr;
     private int yr;
 
 	private boolean removed; // If the entity is to be removed from the level.
 	protected Level level; // The level that the entity is on.
-    public int color; // current color.
+    public int color; // Current color. (deprecated for some cases)
 
-    public int eid; 
+    public int eid; // Entity id
 
 	/**
 	 * Default constructor for the Entity class.
@@ -66,7 +66,7 @@ public abstract class Entity implements Tickable {
 		removed = true;
 		color = 0;
 
-		eid = ThreadLocalRandom.current().nextInt();;
+		eid = ThreadLocalRandom.current().nextInt();
     }
 
     public abstract void render(Screen screen); /// used to render the entity on screen.
@@ -128,7 +128,12 @@ public abstract class Entity implements Tickable {
     // used for lanterns... and player? that might be about it, though, so idk if I want to put it here.
     public int getLightRadius() {
         return 0;
-    } 
+    }
+    
+    protected void setHitboxSize(int w, int h) {
+    	this.xr = w;
+    	this.yr = h;
+    }
 
     /** if this entity is touched by another entity (extended by sub-classes) */
     protected void touchedBy(Entity entity) {
@@ -259,7 +264,7 @@ public abstract class Entity implements Tickable {
 
     /** Removes the entity from the level. */
     public void remove() {
-        if (removed && !(this instanceof ItemEntity)) // Apparently this happens fairly often with item entities.
+        // if (removed && !(this instanceof ItemEntity)) // Apparently this happens fairly often with item entities.
         // System.out.println("Note: remove() called on removed entity: " + this);
 
         removed = true;

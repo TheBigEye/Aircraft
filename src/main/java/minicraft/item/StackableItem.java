@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import minicraft.core.Game;
 import minicraft.core.io.Localization;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 
 // some items are direct instances of this class; those instances are the true "items",
 // like stone, wood, wheat, or coal; you can't do anything with them besides use them to make something else.
@@ -138,13 +138,14 @@ public class StackableItem extends Item {
 		return super.toString() + "-Stack_Size:" + count;
 	}
 
+	@Override
 	public String getData() {
 		return getName() + "_" + count;
 	}
 
 	@Override
 	public String getDisplayName() {
-		String amt = (count > 999 ? 999 : count) + " ";
-		return " " + amt + Localization.getLocalized(getName());
+		String amount = (count > 999 ? 999 : count) + " ";
+		return " " + amount + Localization.getLocalized(getName());
 	}
 }

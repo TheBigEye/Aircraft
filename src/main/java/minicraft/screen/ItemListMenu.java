@@ -1,6 +1,6 @@
 package minicraft.screen;
 
-import minicraft.gfx.Point;
+import minicraft.graphic.Point;
 import minicraft.screen.entry.ItemEntry;
 
 class ItemListMenu extends Menu {

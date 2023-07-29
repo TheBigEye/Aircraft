@@ -1,6 +1,6 @@
 package minicraft.entity.particle;
 
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 
 public class SmashParticle extends Particle {
     static int[][] mirrors = { { 2, 3 }, { 0, 1 } };

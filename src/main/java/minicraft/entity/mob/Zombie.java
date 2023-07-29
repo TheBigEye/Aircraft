@@ -1,7 +1,7 @@
 package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
-import minicraft.gfx.MobSprite;
+import minicraft.graphic.MobSprite;
 import minicraft.item.Items;
 
 public class Zombie extends EnemyMob {
@@ -29,15 +29,16 @@ public class Zombie extends EnemyMob {
         super.tick();
     }
 
+    @Override
     public void die() {
-    	int min = 0; int max = 0;
-        String difficulty = (String) Settings.get("diff");
+    	int min = 0; 
+    	int max = 0;
 
-        if (difficulty == "Peaceful" || difficulty == "Easy") {
+        if (Settings.get("diff").equals("Peaceful") || Settings.get("diff").equals("Easy")) {
         	min = 2; max = 4;
-        } else if (difficulty == "Normal") {
+        } else if (Settings.get("diff").equals("Normal")) {
         	min = 1; max = 3;
-        } else if (difficulty == "Hard") {
+        } else if (Settings.get("diff").equals("Hard")) {
         	min = 1; max = 2;
         }
        

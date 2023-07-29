@@ -1,6 +1,7 @@
 package minicraft.saveload;
 
 import org.jetbrains.annotations.NotNull;
+import org.tinylog.Logger;
 
 public class Version implements Comparable<Version> {
 	private int make, major, minor, dev;
@@ -44,11 +45,11 @@ public class Version implements Comparable<Version> {
 				}
 				dev = 0;
 			}
-		} catch (NumberFormatException ex) {
-			if (printError) System.err.println("INVALID version number: \"" + version + "\"");
+		} catch (NumberFormatException exception) {
+			if (printError) Logger.error("INVALID version number: \"{}\"", version);
 			valid = false;
-		} catch (Exception ex) {
-			if (printError) ex.printStackTrace();
+		} catch (Exception exception) {
+			if (printError) exception.printStackTrace();
 			valid = false;
 		}
 	}

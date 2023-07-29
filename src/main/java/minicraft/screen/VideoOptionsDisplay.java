@@ -3,8 +3,8 @@ package minicraft.screen;
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Settings;
-import minicraft.gfx.Color;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Screen;
 import minicraft.saveload.Save;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.StringEntry;
@@ -84,7 +84,7 @@ public class VideoOptionsDisplay extends Display {
 
     @Override
     public void onExit() {
-        Game.MAX_FPS = (int) Settings.get("fps");
+        Game.maxFPS = (int) Settings.get("fps");
         new Save();
     }
 }

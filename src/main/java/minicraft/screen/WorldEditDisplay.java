@@ -14,9 +14,9 @@ import minicraft.core.io.FileHandler;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Screen;
 import minicraft.screen.Menu.Builder;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.InputEntry;
@@ -100,7 +100,7 @@ public class WorldEditDisplay extends Display {
 
 				// Do the action.
 				if (action == Action.Delete) {
-					Logger.debug("Deleting world {} ...", world);
+					Logger.debug("Deleting world \"{}\" ...", world);
 					File[] list = world.listFiles();
 					for (File file : list) {
 						file.delete();
@@ -116,8 +116,7 @@ public class WorldEditDisplay extends Display {
 					String newname = entry.getUserInput();
 					File newworld = new File(worldsDir + newname);
 					newworld.mkdirs();
-
-					Logger.debug("Copying world {} to world {} ...", world, newworld);
+					Logger.debug("Copying world \"{}\" to \"{}\" ...", world, newworld);
 
 					// walk file tree
 					try {
@@ -136,7 +135,7 @@ public class WorldEditDisplay extends Display {
 
 					// Try to rename the file, if it works, return
 					if (world.renameTo(new File(worldsDir + name))) {
-						Logger.debug("Renaming world {} to new name: {}", world, name);
+						Logger.debug("Renaming world \"{}\" to \"{}\" ...", world, name);
 						WorldSelectDisplay.updateWorlds();
 					} else {
 						Logger.error("Rename failed in WorldEditDisplay.");
@@ -144,7 +143,9 @@ public class WorldEditDisplay extends Display {
 				}
 
 				confirm = false;
-				Sound.Menu_select.playOnGui();
+		
+				Sound.Menu_select.playOnDisplay();
+				
 				if (!WorldSelectDisplay.getWorldNames().isEmpty()) {
 					Game.setDisplay(new WorldSelectDisplay());
 				} else {

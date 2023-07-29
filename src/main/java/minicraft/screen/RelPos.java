@@ -1,8 +1,8 @@
 package minicraft.screen;
 
-import minicraft.gfx.Dimension;
-import minicraft.gfx.Point;
-import minicraft.gfx.Rectangle;
+import minicraft.graphic.Dimension;
+import minicraft.graphic.Point;
+import minicraft.graphic.Rectangle;
 import minicraft.util.Utils;
 
 // stands for "Relative Position"

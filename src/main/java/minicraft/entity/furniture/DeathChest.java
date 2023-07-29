@@ -5,10 +5,10 @@ import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 
 public class DeathChest extends Chest {
 	private static Sprite normalSprite = new Sprite(6, 30, 2, 2, 2);
@@ -47,7 +47,7 @@ public class DeathChest extends Chest {
 		super.tick();
 		// name = "Death Chest:"; // add the current
 
-		if (getInventory().invSize() == 0) {
+		if (getInventory().size() == 0) {
 			remove();
 		}
 
@@ -76,7 +76,7 @@ public class DeathChest extends Chest {
 	@Override
 	public void render(Screen screen) {
 		super.render(screen);
-		String timeString = (time / Updater.normalSpeed) + "S";
+		String timeString = (time / Updater.normalSpeed) + "Secs";
 		Font.draw(timeString, screen, x - Font.textWidth(timeString) / 2, y - Font.textHeight() - getBounds().getHeight() / 2, Color.WHITE);
 	}
 

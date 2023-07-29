@@ -8,8 +8,8 @@ import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.FerrositeParticle;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -17,7 +17,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class FerrositeTile extends Tile {
-    private static ConnectorSprite sprite = new ConnectorSprite(FerrositeTile.class, new Sprite(12, 22, 3, 3, 1), new Sprite(15, 24, 2, 2, 1), new Sprite(15, 22, 2, 2, 1)) {
+    private static ConnectorSprite sprite = new ConnectorSprite(FerrositeTile.class, new Sprite(9, 21, 3, 3, 1), new Sprite(14, 21, 2, 2, 1), new Sprite(12, 21, 2, 2, 1)) {
         @Override
         public boolean connectsTo(Tile tile, boolean isSide) {
             return tile != Tiles.get("Infinite fall");
@@ -74,6 +74,8 @@ public class FerrositeTile extends Tile {
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel && player.payStamina(5)) {
+            	
+            	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
 
                 /* 
                  If the current level is the sky then when breaking the
@@ -85,8 +87,7 @@ public class FerrositeTile extends Tile {
                     level.setTile(xt, yt, Tiles.get("Hole"));
                 }
 
-                Sound.genericHurt.playOnGui();
-                level.dropItem(xt * 16 + 8, yt * 16 + 8, 1, 3, Items.get("Ferrosite"));
+                level.dropItem((xt << 4) + 8, (yt << 4) + 8, 1, 3, Items.get("Ferrosite"));
                 return true;
             }
         }

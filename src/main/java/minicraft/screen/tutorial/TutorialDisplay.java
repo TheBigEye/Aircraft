@@ -2,7 +2,7 @@ package minicraft.screen.tutorial;
 
 import minicraft.core.Game;
 import minicraft.core.io.Localization;
-import minicraft.gfx.Color;
+import minicraft.graphic.Color;
 import minicraft.screen.Display;
 import minicraft.screen.Menu;
 import minicraft.screen.RelPos;

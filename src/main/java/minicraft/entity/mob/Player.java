@@ -25,17 +25,15 @@ import minicraft.entity.furniture.Bed;
 import minicraft.entity.furniture.DeathChest;
 import minicraft.entity.furniture.Furniture;
 import minicraft.entity.furniture.Tnt;
-import minicraft.entity.mob.villager.Cleric;
-import minicraft.entity.mob.villager.Librarian;
 import minicraft.entity.particle.FireParticle;
 import minicraft.entity.particle.Particle;
 import minicraft.entity.particle.SplashParticle;
 import minicraft.entity.particle.TextParticle;
-import minicraft.gfx.Color;
-import minicraft.gfx.MobSprite;
-import minicraft.gfx.Point;
-import minicraft.gfx.Rectangle;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.MobSprite;
+import minicraft.graphic.Point;
+import minicraft.graphic.Rectangle;
+import minicraft.graphic.Screen;
 import minicraft.item.ArmorItem;
 import minicraft.item.FishingRodItem;
 import minicraft.item.FurnitureItem;
@@ -63,11 +61,11 @@ import minicraft.screen.PauseDisplay;
 import minicraft.screen.PlayerInvDisplay;
 import minicraft.screen.WorldSelectDisplay;
 import minicraft.util.FishingData;
+import minicraft.util.FlatVector;
 import minicraft.util.TimeData;
-import minicraft.util.Vector2;
 
 public class Player extends Mob implements ItemHolder, ClientTickable {
-	protected InputHandler input;
+	protected final InputHandler input;
 
 	// Attack static variables
 	private static final int playerHurtTime = 30;
@@ -126,10 +124,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	private static final int maxStaminaRecharge = 10; // Cutoff value for staminaRecharge
 	public int staminaRechargeDelay; // The recharge delay ticks when the player uses up their stamina.
 
-	private int hungerStamCnt, stamHungerTicks; // Tiers of hunger penalties before losing a burger.
+	private int hungerStamCount, stamHungerTicks; // Tiers of hunger penalties before losing a burger.
 	private static final int maxHungerTicks = 400; // The cutoff value for stamHungerTicks
 
-	private static final int[] maxHungerStams =  { 16,  14,  12,  8  }; // hungerStamCnt required to lose a burger.
+	private static final int[] maxHungerStams =  { 16,  14,  12,  8  }; // hungerStamCount required to lose a burger.
 	private static final int[] hungerTickCount = { 160, 140, 120, 80 }; // Ticks before decrementing stamHungerTicks.
 	private static final int[] hungerStepCount = { 32,  28,  24,  16 }; // Steps before decrementing stamHungerTicks.
 	private static final int[] minStarveHealth = { 8,   7,   5,   3  }; // min hearts required for hunger to hurt you.
@@ -138,7 +136,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	private int hungerChargeDelay; // The delay between each time the hunger bar increases your health
 	private int hungerStarveDelay; // The delay between each time the hunger bar decreases your health
 
-	public HashMap<PotionType, Integer> potionEffects; // The potion effects currently applied to the player
+	public final HashMap<PotionType, Integer> potionEffects; // The potion effects currently applied to the player
 	public boolean showPotionEffects; // Whether to display the current potion effects on screen
 	private int cooldowninfo; // Prevents you from toggling the info pane on and off super fast.
 	private int regentick; // Counts time between each time the regen potion effect heals you.
@@ -149,7 +147,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
 	public boolean isFishing = false;
 
-	public int maxFishingTicks = 120;
+	public final int maxFishingTicks = 120;
 	public int fishingTicks = maxFishingTicks;
 	public int fishingLevel;
 
@@ -198,12 +196,12 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			@Override
 			public Item remove(int idx) {
 				if (Game.isMode("Creative")) {
-					Item cur = get(idx);
-					if (cur instanceof StackableItem) ((StackableItem) cur).count = 1;
-					if (count(cur) == 1) {
+					Item currentItem = get(idx);
+					if (currentItem instanceof StackableItem) ((StackableItem) currentItem).count = 1;
+					if (count(currentItem) == 1) {
 						super.remove(idx);
-						super.add(0, cur);
-						return cur.clone();
+						super.add(0, currentItem);
+						return currentItem.clone();
 					}
 				}
 				return super.remove(idx);
@@ -227,7 +225,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		stamina = maxStamina;
 		hunger = maxHunger;
 
-		hungerStamCnt = maxHungerStams[Settings.getIndex("diff")];
+		hungerStamCount = maxHungerStams[Settings.getIndex("diff")];
 		stamHungerTicks = maxHungerTicks;
 
 		if (Game.isMode("Creative")) {
@@ -293,7 +291,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	 * @param type Type of effect.
 	 */
 	public void addPotionEffect(PotionType type) {
-		addPotionEffect(type, type.duration);
+		addPotionEffect(type, type.displayTime);
 	}
 
 	/**
@@ -383,12 +381,12 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				if (this != null && tickTime / 8 % 32 == 0 && random.nextInt(8) == 4) {
 					if (random.nextBoolean()) {
 						if (!random.nextBoolean()) {
-							Sound.rainThunder1.playOnGui();
+							Sound.rainThunder1.playOnDisplay();
 						} else {
-							Sound.rainThunder2.playOnGui();
+							Sound.rainThunder2.playOnDisplay();
 						}
 					} else {
-						Sound.rainThunder3.playOnGui();
+						Sound.rainThunder3.playOnDisplay();
 					}
 				}
 
@@ -477,7 +475,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				World.scheduleLevelChange((onTile == Tiles.get("Stairs Up")) ? 1 : -1); // Decide whether to go up or down.
 				onStairDelay = 10; // Resets delay, since the level has now been changed.
 
-				Sound.playerChangeLevel.playOnGui();
+				Sound.playerChangeLevel.playOnDisplay();
 
 				return; // SKIPS the rest of the tick() method.
 			}
@@ -577,12 +575,12 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
             if (stamHungerTicks <= 0) {
                 stamHungerTicks += maxHungerTicks; // reset stamHungerTicks
-                hungerStamCnt--; // enter 1 level away from burger.
+                hungerStamCount--; // enter 1 level away from burger.
             }
 
-            while (hungerStamCnt <= 0) {
+            while (hungerStamCount <= 0) {
                 hunger--; // reached burger level.
-                hungerStamCnt += maxHungerStams[diffIdx];
+                hungerStamCount += maxHungerStams[diffIdx];
             }
 
             /// System that heals you depending on your hunger
@@ -638,7 +636,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         // Handle player input. Input is handled by the menu if we are in one.
         if (Game.getDisplay() == null && !Bed.inBed(this)) {
         	// Create the raw movement vector.
-        	Vector2 vec = new Vector2(0, 0);
+        	FlatVector vec = new FlatVector(0, 0);
 
         	// Move while we are not falling.
         	if (onFallDelay <= 0) {
@@ -840,8 +838,14 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     				return;
     			}
     		}
+    		
     		// If the interaction between you and an entity is successful, then return.
-    		if (interact(getInteractionBox(playerInteractDistance))) return;
+    		if (interact(getInteractionBox(playerInteractDistance))) {
+				if (activeItem.isDepleted()) {
+					activeItem = null;
+				}
+				return;
+			}
 
     		// Attempt to interact with the tile.
     		Point interactionTile = getInteractionTile();
@@ -853,7 +857,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     			List<Entity> tileEntities = level.getEntitiesInTiles(interactionTile.x, interactionTile.y, interactionTile.x, interactionTile.y, false, ItemEntity.class, Particle.class);
 
     			// If there are no other entities than us on the tile.
-    			if (tileEntities.size() == 0 || tileEntities.size() == 1 && tileEntities.get(0) == this) {
+    			if (tileEntities.isEmpty() || tileEntities.size() == 1 && tileEntities.get(0) == this) {
     				Tile targetTile = level.getTile(interactionTile.x, interactionTile.y);
 
     				// If the item successfully interacts with the target tile.
@@ -1079,7 +1083,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         int xo = x - 8; // Horizontal
         int yo = y - 11; // Vertical
 
-        if (isSwimming()) {
+        if (isSwimming() && onFallDelay <= 0) {
         	yo += 4; // y offset is moved up by 4
  
         	if (level.getTile(x >> 4, y >> 4) == Tiles.get("Water")) {
@@ -1113,10 +1117,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         // Renders indicator for what tile the item will be placed on
         if (activeItem instanceof TileItem && !isSwimming()) {
             Point interactionTile = getInteractionTile();
-            screen.render(interactionTile.x * 16, interactionTile.y * 16, 3 + 4 * 32, 0, 3);
-            screen.render(interactionTile.x * 16 + 8, interactionTile.y * 16, 3 + 4 * 32, 1, 3);
-            screen.render(interactionTile.x * 16, interactionTile.y * 16 + 8, 3 + 4 * 32, 2, 3);
-            screen.render(interactionTile.x * 16 + 8, interactionTile.y * 16 + 8, 3 + 4 * 32, 3, 3);
+            screen.render(interactionTile.x << 4, interactionTile.y << 4, 3 + 4 * 32, 0, 3);
+            screen.render((interactionTile.x << 4) + 8, interactionTile.y << 4, 3 + 4 * 32, 1, 3);
+            screen.render(interactionTile.x << 4, (interactionTile.y << 4) + 8, 3 + 4 * 32, 2, 3);
+            screen.render((interactionTile.x << 4) + 8, (interactionTile.y << 4) + 8, 3 + 4 * 32, 3, 3);
         }
 
         if (attackTime > 0 && attackDir == Direction.UP) { // If currently attacking upwards...
@@ -1214,7 +1218,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     /** What happens when the player interacts with a itemEntity */
     public void pickupItem(ItemEntity itemEntity) {
     	// pickup sound
-    	Sound.playerPickup.playOnWorld(itemEntity.x, itemEntity.y);
+    	Sound.playerPickup.playOnLevel(itemEntity.x, itemEntity.y);
     	
     	// remove the picked-up item
     	itemEntity.remove();
@@ -1268,16 +1272,16 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
         List<Point> spawnTilePositions = level.getMatchingTiles(Tiles.get("Grass"));
 
-        if (spawnTilePositions.size() == 0) {
+        if (spawnTilePositions.isEmpty()) {
             spawnTilePositions.addAll(level.getMatchingTiles((t, x, y) -> t.maySpawn()));
         }
 
-        if (spawnTilePositions.size() == 0) {
+        if (spawnTilePositions.isEmpty()) {
             spawnTilePositions.addAll(level.getMatchingTiles((t, x, y) -> t.mayPass(level, x, y, Player.this)));
         }
 
         // There are no tiles in the entire map which the player is allowed to stand on. not likely.
-        if (spawnTilePositions.size() == 0) {
+        if (spawnTilePositions.isEmpty()) {
             spawnPos = new Point(random.nextInt(level.w / 4) + level.w * 3 / 8, random.nextInt(level.h / 4) + level.h * 3 / 8);
             level.setTile(spawnPos.x, spawnPos.y, Tiles.get("Grass"));
         } else { // Gets random valid spawn tile position.
@@ -1290,8 +1294,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             spawny = spawnPos.y;
         }
         // Set (entity) coordinates of player to the center of the tile.
-        this.x = spawnPos.x * 16 + 8; // conversion from tile coords to entity coords.
-        this.y = spawnPos.y * 16 + 8;
+        this.x = (spawnPos.x * 16) + 8; // conversion from tile coords to entity coords.
+        this.y = (spawnPos.y * 16) + 8;
     }
 
 	/**
@@ -1305,8 +1309,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     		findStartPos(level); 
     	}
     	// Move the player to the spawnpoint
-    	this.x = spawnx * 16 + 8;
-    	this.y = spawny * 16 + 8;
+    	this.x = (spawnx * 16) + 8;
+    	this.y = (spawny * 16) + 8;
     }
 
     /**
@@ -1370,7 +1374,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     	if (activeItem != null) deathChest.getInventory().add(activeItem);
     	if (currentArmor != null) deathChest.getInventory().add(currentArmor);
 
-    	Sound.playerDeath.playOnGui();
+    	Sound.playerDeath.playOnLevel(this.x, this.y);
         
         // Add the death chest to the world.
     	World.levels[Game.currentLevel].add(deathChest);
@@ -1430,7 +1434,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     		if (this == Game.player) super.doHurt(healthDamage, attackDir); // Sets knockback, and takes away health.
     	}
 
-    	Sound.playerHurt.playOnGui();
+    	Sound.playerHurt.playOnLevel(this.x, this.y);
     	hurtTime = playerHurtTime;
     }
 
@@ -1454,10 +1458,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     		if (this == Game.player) super.doHurt(healthDamage, attackDir); // Sets knockback, and takes away health.
     	}
 
-    	Sound.playerHurt.playOnGui();
+    	Sound.playerHurt.playOnLevel(this.x, this.y);
     	hurtTime = playerHurtTime;
     }
-
 
     @Override
     public void remove() {
@@ -1472,8 +1475,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     
 	// Note: the player's health & max health are inherited from Mob.java
 	public String getDebugHunger() {
-		return hungerStamCnt + "_" + stamHungerTicks;
+		return hungerStamCount + "_" + stamHungerTicks;
 	}
 	
-    
 }

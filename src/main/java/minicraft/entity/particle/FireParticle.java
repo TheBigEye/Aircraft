@@ -1,6 +1,6 @@
 package minicraft.entity.particle;
 
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Sprite;
 
 public class FireParticle extends Particle {
     /// This is used for Spawner, when they spawn an entity, and for the torches.

@@ -3,13 +3,12 @@ package minicraft.entity.mob;
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
-import minicraft.gfx.MobSprite;
+import minicraft.graphic.MobSprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 
 public class Chicken extends PassiveMob {
     private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 40);
-    private int tickTime = 0;
 
     /**
      * Creates a Chicken.
@@ -21,7 +20,6 @@ public class Chicken extends PassiveMob {
 
     public void tick() {
         super.tick();
-        tickTime++;
 
         // Drop eggs each 15 secs
         int min = 0;
@@ -43,16 +41,17 @@ public class Chicken extends PassiveMob {
 		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
 			if (random.nextBoolean()) {
 				if (!random.nextBoolean()) {
-					Sound.chickenSay1.playOnWorld(x, y);
+					Sound.chickenSay1.playOnLevel(this.x, this.y);
 				} else {
-					Sound.chickenSay2.playOnWorld(x, y);
+					Sound.chickenSay2.playOnLevel(this.x, this.y);
 				}
 			} else {
-				Sound.chickenSay3.playOnWorld(x, y);
+				Sound.chickenSay3.playOnLevel(this.x, this.y);
 			}
 		}
     }
 
+    @Override
     public void die() {
 		int min = 0;
 		int max = 0;

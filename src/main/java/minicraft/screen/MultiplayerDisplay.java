@@ -11,12 +11,12 @@ import kong.unirest.UnirestException;
 import minicraft.core.Action;
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
-import minicraft.gfx.Color;
-import minicraft.gfx.Ellipsis;
-import minicraft.gfx.Ellipsis.SequentialEllipsis;
-import minicraft.gfx.Font;
-import minicraft.gfx.FontStyle;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Ellipsis;
+import minicraft.graphic.Ellipsis.SequentialEllipsis;
+import minicraft.graphic.Font;
+import minicraft.graphic.FontStyle;
+import minicraft.graphic.Screen;
 
 public class MultiplayerDisplay extends Display {
 	

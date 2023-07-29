@@ -23,6 +23,8 @@ public class CrashReport extends JPanel {
 	private JTextArea crashTextArea;
     private JScrollPane crashScrollPane;
     private JLabel crashIconLabel;
+    
+    // TODO: Add a crash log save, save all into a txt file
 
     public CrashReport(String crash) {
     	// Crash log Structure

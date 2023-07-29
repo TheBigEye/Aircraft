@@ -12,14 +12,14 @@ import org.jetbrains.annotations.Nullable;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
-import minicraft.gfx.Color;
-import minicraft.gfx.Dimension;
-import minicraft.gfx.Font;
-import minicraft.gfx.Insets;
-import minicraft.gfx.Point;
-import minicraft.gfx.Rectangle;
-import minicraft.gfx.Screen;
-import minicraft.gfx.SpriteSheet;
+import minicraft.graphic.Color;
+import minicraft.graphic.Dimension;
+import minicraft.graphic.Font;
+import minicraft.graphic.Insets;
+import minicraft.graphic.Point;
+import minicraft.graphic.Rectangle;
+import minicraft.graphic.Screen;
+import minicraft.graphic.SpriteSheet;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.ListEntry;
 
@@ -28,7 +28,7 @@ public class Menu {
     private int bgSpritePos = 21;
     
     
-    private static final int LIMIT_TYPING_SEARCHER = 21;
+    private static final int LIMIT_TYPING_SEARCHER = 20;
 
     @NotNull
     private final ArrayList<ListEntry> entries = new ArrayList<>();
@@ -61,7 +61,7 @@ public class Menu {
      * If there's searcher bar in menu
      */
     private boolean useSearcherBar = false;
-    private boolean searcherBarActive = false;
+    public boolean searcherBarActive = false;
     private List<Integer> listSearcher;
     private int listPositionSearcher;
     private int selectionSearcher;
@@ -104,7 +104,7 @@ public class Menu {
 
     public void init() {
 
-        if (entries.size() == 0) {
+        if (entries.isEmpty()) {
             selection = 0;
             dispSelection = 0;
             offset = 0;
@@ -131,11 +131,11 @@ public class Menu {
         doScroll();
     }
 
-    void setSelection(int idx) {
-        if (idx >= entries.size()) idx = entries.size() - 1;
-        if (idx < 0) idx = 0;
+    void setSelection(int index) {
+        if (index >= entries.size()) index = entries.size() - 1;
+        if (index < 0) index = 0;
 
-        this.selection = idx;
+        this.selection = index;
 
         doScroll();
     }
@@ -168,7 +168,7 @@ public class Menu {
 
     @Nullable
     ListEntry getCurEntry() {
-        return entries.size() == 0 ? null : entries.get(selection);
+        return entries.isEmpty() ? null : entries.get(selection);
     }
 
     int getNumOptions() {
@@ -199,8 +199,9 @@ public class Menu {
     }
 
     public void tick(InputHandler input) {
-        if (!selectable || entries.size() == 0)
+        if (!selectable || entries.isEmpty()) {
             return;
+        }
 
         int previousSelection = selection;
         if (input.getKey("cursor-up").clicked) selection--;
@@ -241,7 +242,7 @@ public class Menu {
                 }
 
                 // check if word was updated
-                if (typingSearcher.length() <= Menu.LIMIT_TYPING_SEARCHER && typingSearcher.length() != this.typingSearcher.length()) {
+                if (typingSearcher.length() <= ((entryBounds.getWidth() / 8)) && typingSearcher.length() != this.typingSearcher.length()) {
                     this.typingSearcher = typingSearcher;
                     listSearcher.clear();
                     listPositionSearcher = 0;
@@ -281,7 +282,7 @@ public class Menu {
             entries.get(selection).tick(input); // only ticks the entry on a frame where the selection cursor has not moved.
             return;
         } else {
-            Sound.Menu_select.playOnGui();
+            Sound.Menu_select.playOnDisplay();
         }
 
         do {
@@ -328,27 +329,8 @@ public class Menu {
 
     public void render(Screen screen) {
 
-        renderFrame(screen);
-
-        // render the title
-        if (title.length() > 0) {
-            if (drawVertically) {
-                for (int i = 0; i < title.length(); i++) {
-                    if (hasFrame)
-                        screen.render(titleLoc.x, titleLoc.y + i * Font.textHeight(), 3 + 21 * bgSpritePos, 0, 3);
-                    Font.draw(title.substring(i, i + 1), screen, titleLoc.x, titleLoc.y + i * Font.textHeight(),
-                            titleColor);
-                }
-            } else {
-                for (int i = 0; i < title.length(); i++) {
-                    if (hasFrame)
-                        screen.render(titleLoc.x + i * Font.textWidth(" "), titleLoc.y, 3 + bgSpritePos * 32, 0, 3);
-                    Font.draw(title.substring(i, i + 1), screen, titleLoc.x + i * Font.textWidth(" "), titleLoc.y,
-                            titleColor);
-                }
-            }
-        }
-
+        
+        
         // render searcher bar
         if (searcherBarActive && useSearcherBar) {
             int spaceWidth = Font.textWidth(" ");
@@ -361,13 +343,41 @@ public class Menu {
             }
 
             for (int i = 0; i < typingSearcher.length() + 4; i++) {
+            	Font.drawBox(screen, (entryBounds.getCenter().x - entryBounds.getWidth() / 2) - 16, titleLoc.y + 90, 4 + entryBounds.getWidth() / 8, 1);
+            	
                 if (hasFrame) {
-                    screen.render(xSearcherBar + spaceWidth * i - leading, titleLoc.y - 8, 3 + bgSpritePos * 32, 0, 3);
+                    screen.render(xSearcherBar + spaceWidth * i - leading, titleLoc.y + 90, 3 + bgSpritePos * 32, 0, 3);
                 }
 
-                Font.draw("> " + typingSearcher + " <", screen, xSearcherBar - leading, titleLoc.y - 8, typingSearcher.length() < Menu.LIMIT_TYPING_SEARCHER ? Color.YELLOW : Color.RED);
+                Font.draw("< " + typingSearcher + " >", screen, xSearcherBar - leading, titleLoc.y + 90, typingSearcher.length() < ((entryBounds.getWidth() / 8)) ? Color.YELLOW : Color.RED);
             }
         }
+        
+        // Render the menu GUI
+        
+        renderFrame(screen);
+
+        // Render the title
+        if (title.length() > 0) {
+            if (drawVertically) {
+                for (int i = 0; i < title.length(); i++) {
+                    if (hasFrame) {
+                        screen.render(titleLoc.x, titleLoc.y + i * Font.textHeight(), 3 + 21 * bgSpritePos, 0, 3);
+                    }
+                    Font.draw(title.substring(i, i + 1), screen, titleLoc.x, titleLoc.y + i * Font.textHeight(), titleColor);
+                    
+                }
+            } else {
+                for (int i = 0; i < title.length(); i++) {
+                    if (hasFrame) {
+                        screen.render(titleLoc.x + i * Font.textWidth(" "), titleLoc.y, 3 + bgSpritePos * 32, 0, 3);
+                    }
+                    Font.draw(title.substring(i, i + 1), screen, titleLoc.x + i * Font.textWidth(" "), titleLoc.y, titleColor);  
+                }
+            }
+        }
+
+
 
         // render the options
         int y = entryBounds.getTop();
@@ -481,6 +491,7 @@ public class Menu {
 
         @NotNull
         private Point anchor = center;
+        
         @NotNull
         private RelPos menuPos = RelPos.CENTER;
         private Dimension menuSize = null;
@@ -623,8 +634,8 @@ public class Menu {
             return copy().createMenu(this);
         }
 
-        private Menu createMenu(Builder b) {
-            if (b == this) {
+        private Menu createMenu(Builder menuBuilder) {
+            if (menuBuilder == this) {
                 return copy().createMenu(this);
             }
 

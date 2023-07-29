@@ -4,15 +4,13 @@ import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.entity.particle.HeartParticle;
-import minicraft.gfx.MobSprite;
-import minicraft.gfx.Screen;
+import minicraft.graphic.MobSprite;
+import minicraft.graphic.Screen;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class FrostMob extends MobAi {
-    protected int color;
-    private int tickTime;
 
     /**
      * Constructor for a non-hostile (Frost) mob. healthFactor = 3.
@@ -37,7 +35,6 @@ public class FrostMob extends MobAi {
     @Override
     public void tick() {
         super.tick();
-        tickTime++;
     }
     
 

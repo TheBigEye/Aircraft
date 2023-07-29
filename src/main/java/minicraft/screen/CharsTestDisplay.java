@@ -2,8 +2,8 @@ package minicraft.screen;
 
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
-import minicraft.gfx.Color;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Screen;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.StringEntry;
 

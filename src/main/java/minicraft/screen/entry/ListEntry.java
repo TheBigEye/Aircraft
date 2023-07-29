@@ -3,9 +3,9 @@ package minicraft.screen.entry;
 import java.util.Locale;
 
 import minicraft.core.io.InputHandler;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Screen;
 
 public abstract class ListEntry {
 

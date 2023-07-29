@@ -4,12 +4,12 @@ import java.util.List;
 
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
+import minicraft.entity.mob.AirWizard;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.boss.AirWizard;
-import minicraft.gfx.Color;
-import minicraft.gfx.Rectangle;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Rectangle;
+import minicraft.graphic.Screen;
 
 public class Spark extends Entity {
 
@@ -142,7 +142,7 @@ public class Spark extends Entity {
 		}
 
 		if (Settings.getBoolean("shadows")) {
-			screen.render(x - 4, y - 4 + 2, 0 + 62 * 32, randmirror, 2, -1, false, Color.BLACK); // renders the shadow on the ground
+			screen.render(x - 4, y - 4 + 2, 0 + 62 * 32, randmirror, 2, -1, false, Color.get(-1, 555)); // renders the shadow on the ground
 		}        
 		screen.render(x - 4, y - 4 - 2, 0 + 62 * 32, randmirror, 2); // renders the spark
 	}

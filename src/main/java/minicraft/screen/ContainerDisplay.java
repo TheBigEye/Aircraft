@@ -5,7 +5,7 @@ import minicraft.core.io.InputHandler;
 import minicraft.entity.ItemHolder;
 import minicraft.entity.furniture.Chest;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Screen;
 import minicraft.item.Inventory;
 import minicraft.item.Item;
 import minicraft.item.StackableItem;
@@ -18,14 +18,18 @@ public class ContainerDisplay extends Display {
 	private Chest chest;
 
 	public ContainerDisplay(Player player, Chest chest) {
-		super(new InventoryMenu(chest, chest.getInventory(), chest.name), new InventoryMenu(player, player.getInventory(), "Inventory"));
+		super(
+			new InventoryMenu(player, player.getInventory(), "Inventory"), 
+			new InventoryMenu(chest, chest.getInventory(), chest.name)
+		);
+
 		this.player = player;
 		this.chest = chest;
 
-		menus[1].translate(menus[0].getBounds().getWidth() + padding, 0);
+		menus[1].translate(menus[0].getBounds().getRight(), 0);
 
-		if (menus[0].getNumOptions() == 0) {
-			onSelectionChange(0, 1);
+		if (menus[1].getNumOptions() == 0) {
+			onSelectionChange(1, 0);
 		}
 	}
 
@@ -38,15 +42,17 @@ public class ContainerDisplay extends Display {
 		}
 
 		int shift = 0;
-
-		if (newSel == 0) {
+		
+		if (newSel == 0) { // Inventory
 			shift = padding - menus[0].getBounds().getLeft();
 		}
-		if (newSel == 1) {
+
+		if (newSel == 1) { // Chest
 			shift = (Screen.w - padding) - menus[1].getBounds().getRight();
 		}
-		for (Menu m : menus) {
-			m.translate(shift, 0);
+
+		for (Menu menu : menus) {
+			menu.translate(shift, 0);
 		}
 	}
 
@@ -63,22 +69,23 @@ public class ContainerDisplay extends Display {
 			return;
 		}
 
-		Menu curMenu = menus[selection];
+		Menu currentMenu = menus[selection];
 		int otherIdx = getOtherIdx();
 
-		if (curMenu.getNumOptions() > 0 && (input.getKey("attack").clicked || input.getKey("drop-one").clicked)) {
+		if (currentMenu.getNumOptions() > 0 && (input.getKey("attack").clicked || input.getKey("drop-one").clicked)) {
 			// switch inventories
 			Inventory from, to;
+
 			if (selection == 0) {
-				from = chest.getInventory();
-				to = player.getInventory();
-			} else {
 				from = player.getInventory();
 				to = chest.getInventory();
+			} else {
+				from = chest.getInventory();
+				to = player.getInventory();
 			}
 
 			int toSel = menus[otherIdx].getSelection();
-			int fromSel = curMenu.getSelection();
+			int fromSel = currentMenu.getSelection();
 
 			Item fromItem = from.get(fromSel);
 
@@ -110,7 +117,10 @@ public class ContainerDisplay extends Display {
 	private void update() {
 		menus[0] = new InventoryMenu((InventoryMenu) menus[0]);
 		menus[1] = new InventoryMenu((InventoryMenu) menus[1]);
-		menus[1].translate(menus[0].getBounds().getWidth() + padding, 0);
+		menus[1].translate(menus[0].getBounds().getRight(), 0);
 		onSelectionChange(0, selection);
+		if (menus[1].getNumOptions() == 0) {
+			onSelectionChange(1, 0);
+		}
 	}
 }

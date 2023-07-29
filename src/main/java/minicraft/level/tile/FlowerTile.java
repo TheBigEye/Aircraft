@@ -4,9 +4,9 @@ import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -14,7 +14,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class FlowerTile extends Tile {
-	private static final Sprite sprite = new Sprite(3, 8, 1);
+	private static final Sprite sprite = new Sprite(5, 11, 1);
 
 	protected FlowerTile(String name) {
 		super(name, (ConnectorSprite) null);
@@ -69,8 +69,10 @@ public class FlowerTile extends Tile {
 	    
 		if (toolType == ToolType.Shovel) {
 			if (player.payStamina(2 - tool.level) && tool.payDurability()) {
+				Sound.genericHurt.playOnLevel(x << 4, y << 4);
+				
 				level.setTile(x, y, Tiles.get("Grass"));
-				Sound.genericHurt.playOnGui();
+				
 				level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Flower"));
 				level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Rose"));
 				return true;

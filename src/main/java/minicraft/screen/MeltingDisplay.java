@@ -9,9 +9,9 @@ import minicraft.core.io.InputHandler;
 import minicraft.core.io.Sound;
 import minicraft.entity.furniture.Crafter;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Point;
-import minicraft.gfx.Screen;
-import minicraft.gfx.SpriteSheet;
+import minicraft.graphic.Point;
+import minicraft.graphic.Screen;
+import minicraft.graphic.SpriteSheet;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.Recipe;
@@ -104,20 +104,23 @@ public class MeltingDisplay extends Display {
 
         int previousSelection = recipeMenu.getSelection();
         super.tick(input);
-        if (previousSelection != recipeMenu.getSelection())
+        
+        if (previousSelection != recipeMenu.getSelection()) {
             refreshData();
+        }
 
         if ((input.getKey("select").clicked || input.getKey("attack").clicked) && recipeMenu.getSelection() >= 0) {
             // check the selected recipe
-            Recipe r = recipes[recipeMenu.getSelection()];
-            if (r.getCanCraft()) {
-                r.craft(player);
+            Recipe selctedRecipe = recipes[recipeMenu.getSelection()];
+            if (selctedRecipe.getCanCraft()) {
+            	selctedRecipe.craft(player);
 
-                Sound.playerCraft.playOnGui();
+                Sound.playerCraft.playOnDisplay();
 
                 refreshData();
-                for (Recipe recipe : recipes)
+                for (Recipe recipe : recipes) {
                     recipe.checkCanCraft(player);
+                }
             }
         }
     }

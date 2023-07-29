@@ -1,13 +1,13 @@
 package minicraft.level.tile;
 
 import minicraft.entity.Entity;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 
 public class LavaTile extends Tile {
-	private ConnectorSprite sprite = new ConnectorSprite(LavaTile.class, new Sprite(12, 9, 3, 3, 1), Sprite.dots(0)) {
+	private ConnectorSprite sprite = new ConnectorSprite(LavaTile.class, new Sprite(27, 21, 3, 3, 1), Sprite.dots(0)) {
 		public boolean connectsTo(Tile tile, boolean isSide) {
 			return tile.connectsToFluid;
 		}
@@ -31,8 +31,8 @@ public class LavaTile extends Tile {
 
 	public void render(Screen screen, Level level, int x, int y) {
 		long seed = ((tickCount + (x / 2 - y) * 4311) / 10) * 54687121L + x * 3271612L + y * 3412987161L;
-		sprite.full = Sprite.randomDots(seed, 1);
-		sprite.sparse.color = DirtTile.dCol(level.depth);
+		sprite.full = Sprite.randomDots(seed, 30, 21);
+		sprite.sparse.color = DirtTile.dirtColor(level.depth);
 		sprite.render(screen, level, x, y);
 	}
 

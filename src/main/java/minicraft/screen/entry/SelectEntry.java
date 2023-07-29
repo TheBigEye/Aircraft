@@ -4,7 +4,7 @@ import minicraft.core.Action;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
-import minicraft.gfx.Font;
+import minicraft.graphic.Font;
 
 public class SelectEntry extends ListEntry {
 
@@ -46,7 +46,7 @@ public class SelectEntry extends ListEntry {
     @Override
     public void tick(InputHandler input) {
         if (input.getKey("select").clicked && onSelect != null) {
-            Sound.Menu_confirm.playOnGui();
+            Sound.Menu_confirm.playOnDisplay();
             onSelect.act();
         }
     }

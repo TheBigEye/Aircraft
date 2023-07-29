@@ -10,10 +10,10 @@ import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.SmashParticle;
 import minicraft.entity.particle.TextParticle;
-import minicraft.gfx.Color;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.ToolItem;
@@ -24,8 +24,17 @@ import minicraft.screen.AchievementsDisplay;
 // This is the normal stone you see underground and on the surface, that drops coal and stone.
 
 public class RockTile extends Tile {
-	private ConnectorSprite sprite = new ConnectorSprite(RockTile.class, new Sprite(18, 6, 3, 3, 1), new Sprite(21, 8, 2, 2, 1), new Sprite(21, 6, 2, 2, 1)) {
+	private ConnectorSprite sprite = new ConnectorSprite(RockTile.class, new Sprite(0, 6, 3, 3, 1), new Sprite(5, 6, 2, 2, 1), new Sprite(3, 6, 2, 2, 1)) {
 
+		@Override
+		public boolean connectsTo(Tile tile, boolean isSide) {
+			return tile == Tiles.get("Rock") || tile == Tiles.get("Up Rock");
+		}
+	};
+	
+	private ConnectorSprite mossySprite = new ConnectorSprite(MossyRockTile.class, new Sprite(36, 6, 3, 3, 1), new Sprite(41, 6, 2, 2, 1), new Sprite(39, 6, 2, 2, 1)) {
+
+		@Override
 		public boolean connectsTo(Tile tile, boolean isSide) {
 			return tile == Tiles.get("Rock") || tile == Tiles.get("Up Rock");
 		}
@@ -49,8 +58,8 @@ public class RockTile extends Tile {
 			dropCoal = true;
 		}
 
+		Sound.genericHurt.playOnLevel(x << 4, y << 4);
 		level.add(new SmashParticle(x << 4, y << 4));
-		Sound.genericHurt.playOnWorld(x << 4, y << 4);
 
 		level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
 		if (damage >= maxHealth) {
@@ -103,8 +112,13 @@ public class RockTile extends Tile {
 
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
-		sprite.sparse.color = DirtTile.dCol(level.depth);
-		sprite.render(screen, level, x, y);
+		if (level.depth == -2) {
+			mossySprite.sparse.color = DirtTile.dirtColor(level.depth);
+			mossySprite.render(screen, level, x, y);
+		} else {
+			Tiles.get("Dirt").render(screen, level, x, y);
+			sprite.render(screen, level, x, y);
+		}
 	}
 
 	@Override

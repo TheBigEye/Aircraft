@@ -2,6 +2,8 @@ package minicraft.core.io;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -20,6 +22,9 @@ import minicraft.entity.mob.Player;
 
 // Creates sounds from their respective files
 public class Sound { 
+	
+    // Executor service to manage playing multiple clips simultaneously
+    private static final ExecutorService executorService = Executors.newFixedThreadPool(5);
 	
 	// Player
 	public static final Sound playerHurt 			= new Sound("/resources/sounds/mob/player/hurt.wav");
@@ -130,41 +135,44 @@ public class Sound {
     private FloatControl volumeControl;
     private Thread soundFadeThread;
 
-    public static void init() {
+    public static void initialize() {
     	Logger.debug("Initializing sound engine ...");
     }
     
     private Sound(String name) {
-    	if (Game.debug) Logger.debug("Loading sound clip: {} ...", name);
+    	if (Game.debug) Logger.debug("Loading clip '{}', for sound engine ...", name);
     	
         try {
-            URL url = getClass().getResource(name);
+            URL clipUrl = getClass().getResource(name);
 
-            DataLine.Info info = new DataLine.Info(Clip.class, AudioSystem.getAudioFileFormat(url).getFormat());
+            DataLine.Info clipInfo = new DataLine.Info(Clip.class, AudioSystem.getAudioFileFormat(clipUrl).getFormat());
 
-            if (!AudioSystem.isLineSupported(info)) {
-                Logger.error("ERROR: Audio format of file " + name + " is not supported: " + AudioSystem.getAudioFileFormat(url));
-
-                System.out.println("Supported audio formats:");
-                System.out.println("-source:");
-                Line.Info[] sinfo = AudioSystem.getSourceLineInfo(info);
-                Line.Info[] tinfo = AudioSystem.getTargetLineInfo(info);
-                for (Line.Info value : sinfo) {
+            if (!AudioSystem.isLineSupported(clipInfo)) {
+                Logger.error("Audio failure, audio format of file {} is not supported to {}!", name, AudioSystem.getAudioFileFormat(clipUrl));
+                
+                Logger.info("Supported audio formats:");
+                Logger.info("-- source:");
+     
+                Line.Info[] sourceInfo = AudioSystem.getSourceLineInfo(clipInfo);
+                Line.Info[] targetInfo = AudioSystem.getTargetLineInfo(clipInfo);
+                
+                for (Line.Info value : sourceInfo) {
                     if (value instanceof DataLine.Info) {
                         DataLine.Info dataLineInfo = (DataLine.Info) value;
                         AudioFormat[] supportedFormats = dataLineInfo.getFormats();
-                        for (AudioFormat af : supportedFormats) {
-                            System.out.println(af);
+                        for (AudioFormat audioFormat : supportedFormats) {
+                            Logger.info("- {}", audioFormat);
                         }
                     }
                 }
-                System.out.println("-target:");
-                for (int i = 0; i < tinfo.length; i++) {
-                    if (tinfo[i] instanceof DataLine.Info) {
-                        DataLine.Info dataLineInfo = (DataLine.Info) tinfo[i];
+                
+                Logger.info("-- target:");
+                for (int i = 0; i < targetInfo.length; i++) {
+                    if (targetInfo[i] instanceof DataLine.Info) {
+                        DataLine.Info dataLineInfo = (DataLine.Info) targetInfo[i];
                         AudioFormat[] supportedFormats = dataLineInfo.getFormats();
-                        for (AudioFormat af : supportedFormats) {
-                            System.out.println(af);
+                        for (AudioFormat audioFormat : supportedFormats) {
+                        	Logger.info("- {}", audioFormat);
                         }
                     }
                 }
@@ -172,11 +180,11 @@ public class Sound {
                 return;
             }
 
-            clip = (Clip) AudioSystem.getLine(info);
-            clip.open(AudioSystem.getAudioInputStream(url));
+            clip = (Clip) AudioSystem.getLine(clipInfo);
+            clip.open(AudioSystem.getAudioInputStream(clipUrl));
             
-            clip = (Clip) AudioSystem.getLine(info);
-            clip.open(AudioSystem.getAudioInputStream(url));
+            clip = (Clip) AudioSystem.getLine(clipInfo);
+            clip.open(AudioSystem.getAudioInputStream(clipUrl));
             volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
             clip.addLineListener(e -> {
@@ -187,59 +195,62 @@ public class Sound {
             });
 
         } catch (LineUnavailableException | UnsupportedAudioFileException | IOException exception) {
-            Logger.error("Could not load sound file " + name);
+            Logger.error("Could not load sound file {}", name);
             exception.printStackTrace();
         }
     }
     
-    // NOTE, this is a headcache, try not play lot sounds with this at same time ._.
-    public void playOnWorld(int x, int y) {
-    	Player player = Game.levels[Game.currentLevel].getClosestPlayer(x, y);
-    	
+    // NOTE: this is a headcache, try not play lot sounds (maximum 5) with this at same time ._.
+    public void playOnLevel(int x, int y) {
+        Player player = Game.levels[Game.currentLevel].getClosestPlayer(x, y);
+
         if (!Settings.getBoolean("sound") || player == null) {
             return;
         }
-        
-        if (clip.isRunning() || clip.isActive()) {
-            clip.stop();
-        }
 
-        // Calculate the distance between the sound and the player
-        double distance = Math.sqrt(Math.pow(x - player.x, 2) + Math.pow(y - player.y, 2));
-
-        // Set the volume based on the distance from the player
-        float minVolume = volumeControl.getMinimum();
-        float volume = 1.0f - (float) distance / 20.0f; // Start to fade after of 28 (distance)
-        if (volume < minVolume) { // CHECK
-            volume = minVolume;
-        }
-        volumeControl.setValue(volume);
-
-        float fadeRate = 0.1f; // Adjust this value to control the rate at which the sound fades
-
-        clip.start();
-
-        // Start a separate thread to gradually fade the sound as the player moves away
-        soundFadeThread = new Thread(() -> {
-            while (volumeControl.getValue() > volumeControl.getMinimum() && clip.isRunning()) {
-                // Calculate the new volume based on the current volume and the fade rate
-                float newVolume = volumeControl.getValue() - (0.1f * fadeRate);
-                // Make sure the new volume is above the minimum allowable value
-                if (newVolume > volumeControl.getMinimum()) {
-                    volumeControl.setValue(newVolume);
-                }
-                try {
-                    Thread.sleep(2); // Adjust this value to control how often the volume is decreased
-                } catch (InterruptedException exception) {
-                    exception.printStackTrace();
-                }
+        // Use executor service to play the clip in a separate thread
+        executorService.submit(() -> {
+            if (clip.isRunning() || clip.isActive()) {
+                clip.stop();
             }
-            clip.stop();
-        }, "Sound fade Thread");
-        soundFadeThread.start();
+
+            // Calculate the distance between the sound and the player
+            double distance = Math.sqrt(Math.pow(x - player.x, 2) + Math.pow(y - player.y, 2));
+
+            // Set the volume based on the distance from the player
+            float minVolume = volumeControl.getMinimum();
+            float volume = 1.0f - (float) distance / 20.0f; // Start to fade after 28 (distance)
+            if (volume < minVolume) {
+                volume = minVolume;
+            }
+            volumeControl.setValue(volume);
+
+            float fadeRate = 0.1f; // Adjust this value to control the rate at which the sound fades
+
+            clip.start();
+
+            // Start a separate thread to gradually fade the sound as the player moves away
+            soundFadeThread = new Thread(() -> {
+                while (volumeControl.getValue() > volumeControl.getMinimum() && clip.isRunning()) {
+                    // Calculate the new volume based on the current volume and the fade rate
+                    float newVolume = volumeControl.getValue() - (0.1f * fadeRate);
+                    // Make sure the new volume is above the minimum allowable value
+                    if (newVolume > volumeControl.getMinimum()) {
+                        volumeControl.setValue(newVolume);
+                    }
+                    try {
+                        Thread.sleep(2); // Adjust this value to control how often the volume is decreased
+                    } catch (InterruptedException exception) {
+                        exception.printStackTrace();
+                    }
+                }
+                clip.stop();
+            }, "Sound fade Thread");
+            soundFadeThread.start();
+        });
     }
 
-    public void playOnGui() {
+    public void playOnDisplay() {
         if (!Settings.getBoolean("sound") || clip == null) {
             return;
         }

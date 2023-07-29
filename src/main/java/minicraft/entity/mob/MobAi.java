@@ -4,10 +4,10 @@ import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.particle.TextParticle;
-import minicraft.gfx.Color;
-import minicraft.gfx.MobSprite;
-import minicraft.gfx.Rectangle;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.MobSprite;
+import minicraft.graphic.Rectangle;
+import minicraft.graphic.Screen;
 import minicraft.item.Item;
 import minicraft.item.PotionType;
 import minicraft.level.Level;
@@ -99,10 +99,10 @@ public abstract class MobAi extends Mob {
         }
     }
 
-    @Override
-    public void render(Screen screen) {
-        int xo = x - 8;
-        int yo = y - 11;
+
+    public void render(Screen screen, int xpos, int ypos) {
+        int xo = x - xpos;
+        int yo = y - ypos;
 
         MobSprite currentSprite = sprites[dir.getDir()][(walkDist >> 3) % sprites[dir.getDir()].length];
         if (hurtTime > 0) {
@@ -112,6 +112,11 @@ public abstract class MobAi extends Mob {
         }
     }
 
+    @Override
+    public void render(Screen screen) {
+    	render(screen, 8, 11);
+    }
+    
     @Override
     public boolean move(int xa, int ya) {
         return super.move(xa, ya);
@@ -129,7 +134,7 @@ public abstract class MobAi extends Mob {
             int xd = player.x - x;
             int yd = player.y - y;
             if (xd * xd + yd * yd < 80 * 80) {
-                Sound.genericHurt.playOnWorld(x, y);
+                Sound.genericHurt.playOnLevel(this.x, this.y);
             }
         }
         // Make a text particle at this position in this level, bright red and displaying the damage inflicted

@@ -3,15 +3,13 @@ package minicraft.entity.mob;
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
-import minicraft.gfx.MobSprite;
-import minicraft.gfx.Screen;
+import minicraft.graphic.MobSprite;
+import minicraft.graphic.Screen;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class FlyMob extends MobAi {
-	protected int color;
-	
 	/**
 	 * Constructor for a non-hostile (passive) mob.
 	 * healthFactor = 3.
@@ -28,7 +26,7 @@ public class FlyMob extends MobAi {
 	 * and then added with 5.
 	 */
 	public FlyMob(MobSprite[][] sprites, int healthFactor) {
-		super(sprites, 5 + healthFactor * Settings.getIndex("diff"), 5*60*Updater.normalSpeed, 45, 40);
+		super(sprites, 5 + healthFactor * Settings.getIndex("diff"), 5 * 60 * Updater.normalSpeed, 45, 40);
 	}
 	
 	@Override
@@ -58,12 +56,12 @@ public class FlyMob extends MobAi {
 		// Get no-mob radius by
 		int r = (Game.isMode("score") ? 22 : 15) + (Updater.getTime() == Updater.Time.Night ? 0 : 5); 
 		
-		if (!MobAi.checkStartPos(level, x, y, 80, r)) {
+		if (!MobAi.checkStartPos(level, x, y, 120, r)) {
 			return false;
 		}
 		
 		Tile tile = level.getTile(x >> 4, y >> 4);
-		return tile == Tiles.get("Grass") || tile == Tiles.get("Flower") || tile == Tiles.get("Oak tree") || tile == Tiles.get("Rock") || tile == Tiles.get("Lawn");
+		return tile == Tiles.get("Oak tree") || tile == Tiles.get("Birch tree") || tile == Tiles.get("Rock") || tile == Tiles.get("Up Rock") || tile == Tiles.get("Lawn") || tile == Tiles.get("Grass");
 		
 	}
 	

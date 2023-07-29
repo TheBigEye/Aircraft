@@ -1,8 +1,8 @@
 package minicraft.entity.particle;
 
-import minicraft.gfx.Color;
-import minicraft.gfx.FontStyle;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.FontStyle;
+import minicraft.graphic.Screen;
 
 public class TextParticle extends Particle {
     private String msg; // Message of the text particle

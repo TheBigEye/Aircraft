@@ -4,8 +4,8 @@ import java.util.Random;
 
 import minicraft.entity.ClientTickable;
 import minicraft.entity.Entity;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 
 public class Particle extends Entity implements ClientTickable {
 	private int time; // lifetime elapsed.

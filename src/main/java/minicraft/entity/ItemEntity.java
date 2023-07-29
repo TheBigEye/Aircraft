@@ -5,8 +5,8 @@ import java.util.List;
 import minicraft.core.io.Settings;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.FireParticle;
-import minicraft.gfx.Color;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Screen;
 import minicraft.item.Item;
 import minicraft.level.tile.Tiles;
 
@@ -14,11 +14,12 @@ public class ItemEntity extends Entity implements ClientTickable {
 	private int lifeTime; // the life time of this entity in the level
 	private double xa, ya, za; // the x, y, and z accelerations.
 	private double xx, yy, zz; // the x, y, and z coordinates; in double precision.
-	public Item item; // the item that this entity is based off of.
+	public final Item item; // the item that this entity is based off of.
 	private int time = 0; // time it has lasted in the level
 
 	// solely for multiplayer use.
 	private boolean pickedUp = false;
+
 	@SuppressWarnings("unused")
 	private long pickupTimestamp;
 

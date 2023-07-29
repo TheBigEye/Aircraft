@@ -19,10 +19,10 @@ import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Point;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Point;
+import minicraft.graphic.Screen;
 import minicraft.saveload.Save;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
@@ -63,9 +63,9 @@ public class AchievementsDisplay extends Display {
 	            } else {
 	                Logger.error("Could not find achievements json.");
 	            }
-	        } catch (IOException ex) {
+	        } catch (IOException exception) {
 	            Logger.error("Could not read achievements from json file.");
-	            ex.printStackTrace();
+	            exception.printStackTrace();
 	        } catch (JSONException exception) {
 	            Logger.error("Achievements json contains invalid json.");
 	        }
@@ -73,7 +73,7 @@ public class AchievementsDisplay extends Display {
 
 	public AchievementsDisplay() {
 		super(true, true,
-			new Menu.Builder(true, 2, RelPos.CENTER, getAchievemensAsEntries())
+			new Menu.Builder(true, 2, RelPos.CENTER, getAchievementsAsEntries())
 			.setSize(220, 96)
 			.setPositioning(new Point((Screen.w / 2) - 1, Screen.h / 2 - 64), RelPos.BOTTOM)
 			.createMenu(),
@@ -189,7 +189,7 @@ public class AchievementsDisplay extends Display {
 	@Override
 	public void onExit() {
 		// Play confirm sound.
-		Sound.Menu_confirm.playOnGui();
+		Sound.Menu_confirm.playOnDisplay();
 		new Save();
 	}
 
@@ -207,7 +207,7 @@ public class AchievementsDisplay extends Display {
         return strings.toArray(new String[0]);
     }
     
-    public static List<ListEntry> getAchievemensAsEntries() {
+    public static List<ListEntry> getAchievementsAsEntries() {
         List<ListEntry> achievementsList = new ArrayList<>();
         for (String id : achievements.keySet()) {
             // Add entry to list.
@@ -238,7 +238,7 @@ public class AchievementsDisplay extends Display {
         for (Object id : unlockedAchievements.toList()) {
         	
     		if (Game.debug) {
-    			Logger.debug("Updating {} achievement data ...", id);
+    			Logger.debug("Checking and updating '{}', achievement data ...", Localization.getLocalized(id.toString()));
     		}
         	
             if (!setAchievement(id.toString(), true, false)) {

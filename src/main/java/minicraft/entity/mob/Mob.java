@@ -7,8 +7,8 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.furniture.Tnt;
 import minicraft.entity.particle.TextParticle;
-import minicraft.gfx.Color;
-import minicraft.gfx.MobSprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.MobSprite;
 import minicraft.item.PotionType;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
@@ -181,7 +181,7 @@ public abstract class Mob extends Entity {
     public void hurt(Tile tile, int x, int y, int damage) { // Hurt the mob, when the source of damage is a tile
     	// Set attackDir to our own direction, inverted. XORing it with 1 flips the rightmost bit in the variable, this effectively adds one when even, and subtracts one when odd.
         Direction attackDir = Direction.getDirection(dir.getDir() ^ 1);
-        if (!(tile == Tiles.get("Lava"))) {
+        if (tile != Tiles.get("Lava")) {
         	if (!(this instanceof Player && (((Player) this).potionEffects.containsKey(PotionType.Lava) || ((Player) this).potionEffects.containsKey(PotionType.xLava)))) {
 	        	// Call the method that actually performs damage, and set it to no particular direction
 	            doHurt(damage, tile.mayPass(level, x, y, this) ? Direction.NONE : attackDir); 

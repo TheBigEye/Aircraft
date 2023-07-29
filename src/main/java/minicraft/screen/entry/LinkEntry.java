@@ -53,7 +53,7 @@ public class LinkEntry extends SelectEntry {
                     canBrowse = desktop.isSupported(Action.BROWSE);
                 }
             }
-
+            
             if (canBrowse) {
                 // try to open the download link directly from the browser.
                 try {
@@ -61,7 +61,7 @@ public class LinkEntry extends SelectEntry {
                     Game.setDisplay(new TempDisplay(3000, false, true, new Menu.Builder(true, 0, RelPos.CENTER, new StringEntry(Localization.getLocalized(openMsg))).createMenu()));
                     desktop.browse(uri);
                 } catch (IOException exception) {
-                    Logger.error("Could not parse LinkEntry url \"" + url + "\" into valid URI:");
+                    Logger.error("Could not parse LinkEntry url \"{}\" into valid URI:", url);
                     exception.printStackTrace();
                     canBrowse = false;
                 }

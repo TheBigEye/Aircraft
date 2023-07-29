@@ -6,7 +6,7 @@ import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.entity.mob.villager.VillagerMob;
+import minicraft.entity.mob.VillagerMob;
 import minicraft.item.Items;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
@@ -22,7 +22,9 @@ public class Plant extends FarmTile {
     @Override
     public void steppedOn(Level level, int xt, int yt, Entity entity) {
         super.steppedOn(level, xt, yt, entity);
-        harvest(level, xt, yt, entity);
+        if (!ifWater(level, xt, yt)) {
+        	harvest(level, xt, yt, entity);
+        }
     }
 
     @Override
@@ -38,7 +40,7 @@ public class Plant extends FarmTile {
         }
 
         int age = level.getData(xt, yt);
-        if (age < maxAge) {
+        if ((age < maxAge) && random.nextBoolean()) {
             if (!ifWater(level, xt, yt)) {
                 level.setData(xt, yt, age + 1);
             } else if (ifWater(level, xt, yt)) {
@@ -50,7 +52,7 @@ public class Plant extends FarmTile {
     }
 
     protected boolean ifWater(Level level, int xs, int ys) {
-        Tile[] areaTiles = level.getAreaTiles(xs, ys, 2);
+        Tile[] areaTiles = level.getAreaTiles(xs, ys, 3);
         for (Tile tile : areaTiles) {
             if (tile == Tiles.get("Water")) {
                 return true;
@@ -84,7 +86,7 @@ public class Plant extends FarmTile {
             ((Player) entity).addScore(random.nextInt(5) + 1);
         }
         
-        Sound.genericHurt.playOnGui();
+        Sound.genericHurt.playOnLevel(x, y);
         
         if (random.nextBoolean()) {
         	level.setTile(x, y, Tiles.get("Dirt"));

@@ -4,16 +4,16 @@ import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.ConnectorSprite;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.ConnectorSprite;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class IceTile extends Tile {
-	private static ConnectorSprite sprite = new ConnectorSprite(IceTile.class, new Sprite(30, 9, 3, 3, 1), new Sprite(33, 9, 2, 2, 1)) {
+	private static ConnectorSprite sprite = new ConnectorSprite(IceTile.class, new Sprite(18, 16, 3, 3, 1), new Sprite(21, 16, 2, 2, 1)) {
 
 		@Override
 		public boolean connectsTo(Tile tile, boolean isSide) {
@@ -38,8 +38,8 @@ public class IceTile extends Tile {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Pickaxe) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+					Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
 					level.setTile(xt, yt, Tiles.get("Water"));
-					Sound.genericHurt.playOnGui();
 					//level.dropItem(xt *16 + 8, yt * 16 + 8, 0, 3, Items.get("Ice"));
 					return true;
 				}
@@ -84,6 +84,7 @@ public class IceTile extends Tile {
 		return false;
 	}
 	
+	@Override
 	public void steppedOn(Level level, int x, int y, Entity entity) {
 		if (entity instanceof Player) {
 			

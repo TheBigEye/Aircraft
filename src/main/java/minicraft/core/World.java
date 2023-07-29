@@ -40,8 +40,8 @@ public class World extends Game {
 	public static Action onChangeAction; // Allows action to be stored during a change schedule that should only occur once the screen is blacked out.
 
 	static {
-		int min, max;
-		min = max = indexToDepth[0];
+		int min = indexToDepth[0];
+		int max = indexToDepth[0];
 		for (int depth: indexToDepth) {
 			if (depth < min) {
 				min = depth;
@@ -57,9 +57,9 @@ public class World extends Game {
 	/// SCORE MODE
 
 	/** This is for a contained way to find the index in the levels array of a level, based on it's depth. This is also helpful because add a new level in the future could change this. */
-	public static int lvlIdx(int depth) {
-		if (depth > maxLevelDepth) return lvlIdx(minLevelDepth);
-		if (depth < minLevelDepth) return lvlIdx(maxLevelDepth);
+	public static int levelIndex(int depth) {
+		if (depth > maxLevelDepth) return levelIndex(minLevelDepth);
+		if (depth < minLevelDepth) return levelIndex(maxLevelDepth);
 		if (depth < -3) return Math.abs(depth) + maxLevelDepth;
 
 		return depth + 3;
@@ -71,7 +71,7 @@ public class World extends Game {
 	}
 
 	public static void resetGame(boolean keepPlayer) {
-		Logger.debug("Resetting world game info ...");
+		Logger.debug("Resetting player game info ...");
 		playerDeadTime = 0;
 		currentLevel = 3;
 		Updater.asTick = 0;
@@ -105,7 +105,7 @@ public class World extends Game {
 		player = new Player(null, input);
 		Bed.removePlayers();
 		Updater.gameTime = 0;
-		Updater.gamespeed = 1;
+		Updater.gameSpeed = 1;
 
 		Updater.changeTimeOfDay(Updater.Time.Morning); // Resets tickCount; game starts in the day, so that it's nice and bright.
 		gameOver = false;
@@ -131,11 +131,11 @@ public class World extends Game {
 
 				Logger.trace("Loading level {} ..." , i);
 
-				LoadingDisplay.setMessage(Level.getDepthString(i));
+				LoadingDisplay.setProgressType(Level.getDepthString(i));
 				if (i > 0) {
-					levels[lvlIdx(i)] = new Level(worldSize, worldSize, random.nextLong(), i, null, !WorldSelectDisplay.hasLoadedWorld());
+					levels[levelIndex(i)] = new Level(worldSize, worldSize, random.nextLong(), i, null, !WorldSelectDisplay.hasLoadedWorld());
 				} else {
-					levels[lvlIdx(i)] = new Level(worldSize, worldSize, random.nextLong(), i, levels[lvlIdx(i + 1)], !WorldSelectDisplay.hasLoadedWorld());
+					levels[levelIndex(i)] = new Level(worldSize, worldSize, random.nextLong(), i, levels[levelIndex(i + 1)], !WorldSelectDisplay.hasLoadedWorld());
 				}
 
 				LoadingDisplay.progress(loadingInc);
@@ -144,7 +144,7 @@ public class World extends Game {
 			Logger.trace("Level loading complete.");
 
 			Level level = levels[currentLevel]; // Sets level to the current level (3; surface)
-			Updater.pastDay1 = false;
+			Updater.pastFirstDay = false;
 			player.findStartPos(level, seed); // Finds the start level for the player
 			level.add(player);
 		}

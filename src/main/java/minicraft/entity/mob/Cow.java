@@ -2,14 +2,12 @@ package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
-import minicraft.gfx.MobSprite;
+import minicraft.graphic.MobSprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 
 public class Cow extends PassiveMob {
-    private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 40);
-
-    private int tickTime = 0;
+    private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 40);
 
     /**
      * Creates the cow with the right sprites and color.
@@ -20,7 +18,6 @@ public class Cow extends PassiveMob {
 
     public void tick() {
         super.tick();
-        tickTime++;
 
 		// follows to the player if holds wheat
 		followOnHold(3, "Wheat", false);
@@ -29,16 +26,18 @@ public class Cow extends PassiveMob {
 		if (tickTime /8 %24 == 0 && random.nextInt(8) == 4) {
 			if (random.nextBoolean()) {
 				if (!random.nextBoolean()) {
-					Sound.cowSay1.playOnWorld(x, y);
+					Sound.cowSay1.playOnLevel(this.x, this.y);
 				} else {
-					Sound.cowSay2.playOnWorld(x, y);
+					Sound.cowSay2.playOnLevel(this.x, this.y);
 				}
 			} else {
-				Sound.cowSay3.playOnWorld(x, y);
+				Sound.cowSay3.playOnLevel(this.x, this.y);
 			}
+			
 		}
     }
 
+    @Override
     public void die() {
         int min = 0, max = 0;      
 		String difficulty = (String) Settings.get("diff");

@@ -3,7 +3,7 @@ package minicraft.item;
 import minicraft.core.Game;
 import minicraft.core.World;
 import minicraft.entity.mob.Player;
-import minicraft.gfx.Color;
+import minicraft.graphic.Color;
 import minicraft.level.Level;
 
 public enum PotionType {
@@ -60,7 +60,7 @@ public enum PotionType {
                 int depthDiff = playerDepth > 0 ? -1 : 1;
 
                 World.scheduleLevelChange(depthDiff, () -> {
-                    Level plevel = World.levels[World.lvlIdx(playerDepth + depthDiff)];
+                    Level plevel = World.levels[World.levelIndex(playerDepth + depthDiff)];
                     if (plevel != null && !plevel.getTile(player.x >> 4, player.y >> 4).mayPass(plevel, player.x >> 4, player.y >> 4, player)) {
                         player.findStartPos(plevel, false);
                     }
@@ -70,12 +70,12 @@ public enum PotionType {
         }
     };
 
-    public int dispColor, duration;
+    public int displayColor, displayTime;
     public String name;
 
-    PotionType(int col, int dur) {
-        dispColor = col;
-        duration = dur;
+    PotionType(int color, int time) {
+        displayColor = color;
+        displayTime = time;
         if (this.toString().equals("None")) {
             name = "Potion";
         } else {
@@ -84,7 +84,7 @@ public enum PotionType {
     }
 
     public boolean toggleEffect(Player player, boolean addEffect) {
-        return duration > 0; // if you have no duration and do nothing, then you can't be used.
+        return displayTime > 0; // if you have no duration and do nothing, then you can't be used.
     }
 
     public boolean transmitEffect() {

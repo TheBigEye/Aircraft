@@ -17,11 +17,11 @@ import minicraft.core.World;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Point;
-import minicraft.gfx.Screen;
-import minicraft.gfx.Sprite;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Point;
+import minicraft.graphic.Screen;
+import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.LinkEntry;
@@ -67,7 +67,7 @@ public class TitleDisplay extends Display {
 
 	public TitleDisplay() {
 		super(false, false, new Menu.Builder(true, 1, RelPos.CENTER,
-			new SelectEntry("Singleplayer", () -> {
+			new SelectEntry("Play", () -> {
 				// if there are no worlds, it redirects to WorldGenDisplay()
 				if (!WorldSelectDisplay.getWorldNames().isEmpty()) {
 					Game.setDisplay(new Display(true, new Menu.Builder(false, 2, RelPos.CENTER,
@@ -111,12 +111,11 @@ public class TitleDisplay extends Display {
 
 		if (TimeData.month() != Month.OCTOBER) {
 			switch (random.nextInt(4)) {
-				case 0: Sound.Theme_Cave.playOnGui(); break;
-				case 1: Sound.Theme_Surface.playOnGui(); break;
-				case 2: Sound.Theme_Fall.playOnGui(); break;
-				case 3: Sound.Theme_Peaceful.playOnGui(); break;
-				case 4: Sound.Theme_Surface.playOnGui(); break;
-				default: Sound.Theme_Fall.playOnGui(); break;
+				case 0: Sound.Theme_Cave.playOnDisplay(); break; 
+				case 1: Sound.Theme_Surface.playOnDisplay(); break;
+				case 2: Sound.Theme_Fall.playOnDisplay(); break;
+				case 3: Sound.Theme_Peaceful.playOnDisplay(); break;
+				default: Sound.Theme_Fall.playOnDisplay(); break;
 			}
 		}
 
@@ -148,8 +147,8 @@ public class TitleDisplay extends Display {
 		}
 
 		if (TimeData.month() == Month.OCTOBER) {
-			if (TimeData.day() == 8) Sound.Theme_Cavern.playOnGui();
-			if (TimeData.day() == 16) Sound.Theme_Cavern_drip.playOnGui();
+			if (TimeData.day() == 8) Sound.Theme_Cavern.playOnDisplay();
+			if (TimeData.day() == 16) Sound.Theme_Cavern_drip.playOnDisplay();
 		}
 
 		if (TimeData.month() == Month.AUGUST) {
@@ -161,6 +160,7 @@ public class TitleDisplay extends Display {
 
 		World.levels = new Level[World.levels.length];
 
+		//  TODO: remove multiplayer references
 		if (Game.player == null) {
 			// Was online, need to reset player
 			World.resetGame(false);
@@ -176,7 +176,7 @@ public class TitleDisplay extends Display {
 
 		if (shouldRender) menus[0].shouldRender = true;
 		if (time > 72) shouldRender = true;
-		if (tickTime /4 %2 == 0) time++;
+		if (tickTime /1 %2 == 0) time++;
 
 		tickTime++;
 	}
@@ -224,7 +224,9 @@ public class TitleDisplay extends Display {
 		boolean isGreen = splashes.get(rand).contains("Green");
 		boolean isRed = splashes.get(rand).contains("Red");
 		boolean isOrange = splashes.get(rand).contains("Orange");
-		boolean isYellow = splashes.get(rand).contains("Yellow") || splashes.get(rand).contains("Java edition") || splashes.get(rand).contains("The movie");
+		boolean isYellow = splashes.get(rand).contains("Yellow") 
+				|| splashes.get(rand).contains("Coffee edition") 
+				|| splashes.get(rand).contains("The movie");
 
 		if (reverse) {
 			count--;
@@ -245,13 +247,16 @@ public class TitleDisplay extends Display {
 		Color.get(1, textColor * 51, textColor * 51, textColor * 25);
 
 		if (shouldRender == true) {
+			Font.drawCentered(splashes.get(rand), screen, 101, splashColor & 2);
 			Font.drawCentered(splashes.get(rand), screen, 100, splashColor);
 			
-			// Show the version number
-			Font.draw(Game.BUILD, screen, 1, Screen.h - 10, Color.WHITE);
+			// Show the version number and the author's name below the options
+			Font.draw(Localization.getLocalized("Mod by TheBigEye"), screen, 4, Screen.h - 9, Color.get(-1, 240, 240, 240) % 2);
+			Font.draw(Localization.getLocalized("Mod by TheBigEye"), screen, 4, Screen.h - 10, Color.get(-1, 240, 240, 240));
 			
-			// Show the author's name below the options
-			Font.draw(Localization.getLocalized("Mod by TheBigEye"), screen, 298, Screen.h - 10, Color.WHITE);
+			// Show 
+			Font.draw("Version " + Game.BUILD, screen, Screen.w - (11 * 8) - 1, Screen.h - 9, Color.get(-1, 240, 240, 240) % 2);
+			Font.draw("Version " + Game.BUILD, screen, Screen.w - (11 * 8) - 1, Screen.h - 10, Color.get(-1, 240, 240, 240));
 		}
 
 		for (int x = 0; x < 200; x++) { // Loop however many times depending on the width (It's divided by 3 because the pixels are scaled up by 3)

@@ -1,17 +1,18 @@
 package minicraft.screen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Point;
-import minicraft.gfx.Screen;
-import minicraft.gfx.SpriteSheet;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Point;
+import minicraft.graphic.Screen;
+import minicraft.graphic.SpriteSheet;
 import minicraft.screen.entry.InputEntry;
 import minicraft.util.Command;
 
@@ -21,13 +22,13 @@ public class CommandsDisplay extends Display {
 	private static final int CHAT_FOREGOUND_COLOR = Color.GRAY;
 	private static final float CHAT_OPACITY = 0.8F;
 	
-    public static InputEntry command = new InputEntry("", ".*", 48, false);
+    public static InputEntry command = new InputEntry("", ".*", 43, false);
     
     public CommandsDisplay() {
         super(new Menu.Builder(false, 3, RelPos.LEFT, command)
             .setTitle("")
             .setTitlePos(RelPos.TOP_LEFT)
-            .setPositioning(new Point(SpriteSheet.boxWidth,  Screen.h - 12), RelPos.BOTTOM_RIGHT)
+            .setPositioning(new Point(SpriteSheet.boxWidth + 40, Screen.h - 16), RelPos.BOTTOM_RIGHT)
             .createMenu()
         );
         command.userInput = "";
@@ -49,8 +50,8 @@ public class CommandsDisplay extends Display {
     		if (commandArguments[0].startsWith("/", 0)) {
     			switch (commandArguments[0]) {
     				case "/gamemode": Command.gamemodeCommand(commandArguments); break;
-    				case "/time": 	 Command.timeCommand(commandArguments); 	break;
-    				case "/kill": 	 Command.killCommand(commandArguments); 	break;
+    				case "/time": Command.timeCommand(commandArguments); break;
+    				case "/kill": Command.killCommand(commandArguments); break;
     			
     				case "/say":       
     					String messageString = command.getUserInput().toLowerCase(Localization.getSelectedLocale()).replace("/say ", "");
@@ -62,87 +63,51 @@ public class CommandsDisplay extends Display {
     					recognizedCommand = false; // The command is not recognized
     					break;
     			}
+    			
+        		// Play the sound effect if the command was recognized
+        		if (recognizedCommand) {
+        			Sound.Menu_loaded.playOnDisplay();
+        		}
+ 
 			} else {
 				String messageString = command.getUserInput().toLowerCase(Localization.getSelectedLocale());
-				Game.player.sendMessage("<Amy> " + messageString);
+				Game.player.sendMessage(messageString);
+				Sound.Menu_back.playOnDisplay();
 			}
     		
     		command.clearUserInput();
-    		
-    		// Play the sound effect if the command was recognized
-    		if (recognizedCommand) {
-    			Sound.Menu_loaded.playOnGui();
-    		}
     	}
     }
 
     @Override
     public void render(Screen screen) {
-    	int CHAT_WIDTH = 52;
-    	int CHAT_HEIGHT = 8;
-    	
-    	int CHAT_INPUT_WIDTH = 52;
-    	int CHAT_INPUT_HEIGHT = 1;
-    	
-        int x = 8; // box x pos
-        int y = (Screen.h - 12); // box y pos
+        Font.drawBox(screen, 8, (Screen.h - 16) - 66, 52, 8);
+        Font.drawBox(screen, 8, (Screen.h - 16), 52, 1);
+        Font.draw("[Amy]", screen, 8, Screen.h - 16, Color.GREEN);
         
-        // Rrender the backgound box (TODO: Make an option to disable or enaable this)
-        Font.drawBox(screen, 4, y - 70, 53, 16);
+		for (int j = 0; j < 4; j++) {
+			screen.render(200 + j * 8, Screen.h - 90, 3 + 21 * 32, 0, 3);
+		}
+        Font.drawCentered("Chat", screen, Screen.h - 90, Color.YELLOW);
         
-        
-        // RENDER THE CHAT BACKGROUND
-        for (int xb = 0; xb < CHAT_WIDTH; xb++) {
-        	for (int yb = 0; yb < CHAT_HEIGHT; yb++) {
-        		screen.renderColor(x + xb * 8, y - yb * 8 - 14, 8, 8, CHAT_BACKGOUND_COLOR, CHAT_OPACITY);
-        	}
-        }
-        
-        // RENDER THE MESSAGES
-        List<String> msgs = new ArrayList<String>();
-        for (int i = 0; i < Game.player.chatMessages.size() && i <= Game.player.chatMessages.size() - 1; i++) {
-            String msg = Game.player.chatMessages.get(i);
-            String chopped = "";
-            if (msg.length() * 8 > 400) {
-              int il = 0;
-              for (int k = 0; k < msg.length(); k++) {
-                if (k * 8 > 400 * (il + 1)) {
-                  chopped = String.valueOf(chopped) + "&" + msg.charAt(k);
-                  il++;
-                } else {
-                  chopped = String.valueOf(chopped) + msg.charAt(k);
-                } 
-              } 
-            } 
-            if ((chopped.split("&")).length > 1) {
-              for (int k = 0; k < (chopped.split("&")).length; k++)
-                msgs.add(chopped.split("&")[k]); 
+        // Render the messages
+        List<String> messages = new ArrayList<>();
+        for (String msg : Game.player.chatMessages) {
+            if (msg.length() > 10) {
+                String[] lines = msg.split("(?<=\\G.{46})");
+                messages.addAll(Arrays.asList(lines));
             } else {
-              msgs.add(msg);
-            } 
-          } 
-          int line = 0;
-          for (int j = (msgs.size() > 7) ? (msgs.size() - 7) : 0; j < msgs.size(); j++) {
-            if (j > msgs.size())
-              break; 
-            Font.drawTransparentBackground(msgs.get(j), screen, 12, line * 8 + 211, CHAT_FOREGOUND_COLOR);
-            line++;
-          } 
-        
-        // RENDER THE INPUT ENTRY BACKGROUND
-        /*for (int xb = 0; xb < w; xb++) {
-            screen.renderColor(x + xb * 8, y - 2, 8, 11, CHAT_BACKGOUND_COLOR, CHAT_OPACITY);
-            
-        }*/
-        
-        for (int xb = 0; xb < CHAT_INPUT_WIDTH; xb++) {
-        	for (int yb = 0; yb < CHAT_INPUT_HEIGHT; yb++) {
-        		screen.renderColor(x + xb * 8, y - yb * 8 - 2, 8, 8 + 3, CHAT_BACKGOUND_COLOR, CHAT_OPACITY);
-        	}
+                messages.add(msg);
+            }
         }
         
-        // render the entryes in the top
-        super.render(screen);
+        int lineNumber = 0;
+        for (int j = Math.max(0, messages.size() - 7); j < messages.size(); j++) {
+        	Font.draw("<Amy>", screen, 8, (lineNumber * 8) + Screen.h - 80, Color.DARK_GREEN);
+            Font.draw(messages.get(j), screen, 6 * 8 + 4, (lineNumber * 8) + Screen.h - 80, CHAT_FOREGOUND_COLOR);
+            lineNumber++;
+        }
         
+        super.render(screen);
     }
 }

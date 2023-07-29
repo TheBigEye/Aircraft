@@ -3,7 +3,7 @@ package minicraft.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import minicraft.gfx.Color;
+import minicraft.graphic.Color;
 import minicraft.level.tile.Tiles;
 
 public enum MapData {

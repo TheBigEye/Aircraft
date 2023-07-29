@@ -12,7 +12,7 @@ import java.io.IOException;
 public final class ClipboardHandler implements ClipboardOwner {
 
 	@Override
-	public void lostOwnership(Clipboard clipboard, Transferable contents) { }
+	public void lostOwnership(Clipboard clipboard, Transferable contents) { /* unused */ }
 
 	/**
 	 * Give the system clipboard data.
@@ -33,8 +33,8 @@ public final class ClipboardHandler implements ClipboardOwner {
 	    if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 	        try {
 	            return (String) contents.getTransferData(DataFlavor.stringFlavor);
-	        } catch (UnsupportedFlavorException | IOException ex){
-	            ex.printStackTrace();
+	        } catch (UnsupportedFlavorException | IOException exception){
+	        	exception.printStackTrace();
 	        }
 	    }
 	    return "";

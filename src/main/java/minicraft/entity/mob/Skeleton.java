@@ -3,7 +3,7 @@ package minicraft.entity.mob;
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.entity.Arrow;
-import minicraft.gfx.MobSprite;
+import minicraft.graphic.MobSprite;
 import minicraft.item.Items;
 
 public class Skeleton extends EnemyMob {
@@ -45,15 +45,14 @@ public class Skeleton extends EnemyMob {
 
             int xd = player.x - x;
             int yd = player.y - y;
-            if (xd * xd + yd * yd < 100 * 100) {
-                if (artime < 1) {
-                    level.add(new Arrow(this, dir, lvl));
-                    artime = arrowtime;
-                }
+            if ((xd * xd + yd * yd < 100 * 100) && artime < 1) {
+                level.add(new Arrow(this, dir, lvl));
+                artime = arrowtime;
             }
         }
     }
 
+    @Override
     public void die() {
         int[] diffrands = { 20, 20, 30 };
         int[] diffvals = { 13, 18, 28 };

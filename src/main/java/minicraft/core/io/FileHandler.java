@@ -62,8 +62,8 @@ public class FileHandler extends Game {
 	public static void determineGameDir(String saveDir) {
 		gameDir = saveDir + localGameDir;
 
-		if (debug) {
-			Logger.debug("Determined game directory: {}",  gameDir);
+		if (Game.debug) {
+			Logger.debug("Loaded path '{}'",  gameDir);
 		}
 
 		File testFile = new File(gameDir);
@@ -133,26 +133,26 @@ public class FileHandler extends Game {
 				Path newFile = new File(newFilename).toPath();
 
 				if (Game.debug) {
-					System.out.println("Visiting file " + file + "; translating to " + newFile);
+					Logger.debug("Visiting file {}, translating to ...", file, newFile);
 				}
 
 				try {
 					Files.copy(file, newFile, StandardCopyOption.REPLACE_EXISTING);
-				} catch (Exception ex) {
-					ex.printStackTrace();
+				} catch (Exception exception) {
+					exception.printStackTrace();
 				}
 				return FileVisitResult.CONTINUE;
 			}
 
-			public FileVisitResult preVisitDirectory(Path p, BasicFileAttributes bfa) {
+			public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes bfa) {
 				return FileVisitResult.CONTINUE;
 			}
 
-			public FileVisitResult postVisitDirectory(Path p, IOException ex) {
+			public FileVisitResult postVisitDirectory(Path path, IOException exception) {
 				return FileVisitResult.CONTINUE;
 			}
 
-			public FileVisitResult visitFileFailed(Path p, IOException ex) {
+			public FileVisitResult visitFileFailed(Path path, IOException exception) {
 				return FileVisitResult.CONTINUE;
 			}
 		});
@@ -169,7 +169,7 @@ public class FileHandler extends Game {
 	public static void cleanNativesFiles() {
 	    // Remove these native libraries
 	    String[] folderNames = {
-	    		"java-discord"
+	    	"java-discord"
 	    };
 	    
 	    File tempDirFile = new File(systemTempDir);

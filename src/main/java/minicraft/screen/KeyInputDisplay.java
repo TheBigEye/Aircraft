@@ -2,16 +2,23 @@ package minicraft.screen;
 
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
-import minicraft.gfx.Color;
-import minicraft.gfx.Font;
-import minicraft.gfx.Point;
-import minicraft.gfx.Screen;
+import minicraft.graphic.Color;
+import minicraft.graphic.Font;
+import minicraft.graphic.Point;
+import minicraft.graphic.Screen;
+import minicraft.graphic.SpriteSheet;
 import minicraft.screen.entry.KeyInputEntry;
 import minicraft.screen.entry.StringEntry;
 
 public class KeyInputDisplay extends Display {
 
 	private boolean listeningForBind, confirmReset;
+	
+    private static final int minX = 15; 
+    private static final int maxX = 15 + 12 * 32;
+    private static final int minY = 8 ;
+    private static final int maxY = 8 * 12 + 8 * 16;
+    
 
 	private static Menu.Builder builder;
 
@@ -29,12 +36,19 @@ public class KeyInputDisplay extends Display {
 	public KeyInputDisplay() {
 		super(true);
 		
-		builder = new Menu.Builder(true, 1, RelPos.CENTER, getEntries()).setTitle("Controls").setPositioning(new Point(Screen.w / 2, Screen.h - Font.textHeight() * 4), RelPos.TOP);
-		Menu.Builder popupBuilder = new Menu.Builder(true, 4, RelPos.CENTER).setShouldRender(false).setSelectable(false);
+		builder = new Menu.Builder(true, 0, RelPos.CENTER, getEntries());
+		builder.setTitle("Controls");
+		builder.setPositioning(new Point(Screen.w / 2, Screen.h - Font.textHeight() * 4), RelPos.TOP);
+		builder.setSize(maxX - minX + SpriteSheet.boxWidth * 2, maxY - minY + SpriteSheet.boxWidth * 2);
+		
+		Menu.Builder popupBuilder = new Menu.Builder(true, 4, RelPos.CENTER);
+		popupBuilder.setShouldRender(false);
+		popupBuilder.setSelectable(false);
 
-		menus = new Menu[] { builder.createMenu(),
+		menus = new Menu[] { 
+			builder.createMenu(),
 			popupBuilder.setEntries(StringEntry.useLines(Color.YELLOW, "Press the desired", "key sequence")).createMenu(),
-			popupBuilder.setEntries(StringEntry.useLines(Color.RED, "Are you sure you want to reset all key bindings to the default keys?", "enter to confirm", "escape to cancel")).setTitle("Confirm Action").createMenu() 
+			popupBuilder.setEntries(StringEntry.useLines(Color.RED, "Are you sure you want to reset all key bindings?", "enter to confirm", "escape to cancel")).setTitle("Confirm Action").createMenu() 
 		};
 
 		listeningForBind = false;
@@ -88,7 +102,7 @@ public class KeyInputDisplay extends Display {
 		if (selection == 0) { // not necessary to put in if statement now, but it's probably more efficient anyway
 			screen.clear(0);
 		}
-
+		
 		super.render(screen);
 
 		if (!listeningForBind && !confirmReset) {
