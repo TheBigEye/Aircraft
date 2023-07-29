@@ -53,44 +53,44 @@
 
 ## Main Features
 ### Graphics 🖌️
-+ More detailed and renewed graphics and textures
-+ Added more particles effects
-+ Improved the rendering of various menus and GUI elements
-+ The game window and interface is wider
++ More detailed and renewed graphics and textures.
++ Added more particles effects.
++ Improved the rendering of various menus and GUI elements.
++ The game window and interface is wider.
 
 ### Gameplay 👾
-* Added peaceful difficulty
-* Added more durability in tools
+* Added peaceful difficulty.
+* Added more durability in tools.
 * Added some more diversity of peaceful and hostile mobs:
-    * Penguins, Chickens and Goats
-    * Iron golems and Rust Iron Golems
-    * NPCs, like villagers, that you can trade with
-* Added the Keeper, the guardian of the underground (UNFINISHED)
-* Added the Eye queen, the final boss (UNFINISHED)
-* Improved the Air Wizard with three phases (UNFINISHED)
+    * Penguins, Chickens and Goats.
+    * Iron golems and Rust Iron Golems.
+    * NPCs, like villagers, that you can trade with.
+* Added the Keeper, the guardian of the underground. (**UNFINISHED**)
+* Added the Eye queen, the final boss. (**UNFINISHED**)
+* Improved the Air Wizard with three phases. (**UNFINISHED**)
 
 ### Level Generation 🗺️
-- Added villages, replacing the wooden ruins in the forests
+- Added villages, replacing the wooden ruins in the forests.
 - Improved the Heaven generation:
-    - Added a Sky dungeon
-    - Added a central island, with trees, grass and rock
-    - Added one more cloud variety, Ferrosite, which temporarily increases player speed
-    - Added Aether-inspired crops and mobs
-* Improved mountains to have two rock layers instead of one
+    - Added a Sky dungeon.
+    - Added a central island, with trees, grass and rock.
+    - Added one more cloud variety, Ferrosite, which temporarily increases player speed.
+    - Added Aether-inspired crops and mobs.
+* Improved mountains to have two rock layers instead of one.
 * More vegetation (Lawn and flowers).
-* Added tundra biome
-* More types of trees were added with their respective types of wood and their variants in doors, walls and floors
-* Better terrain shape generation
+* Added the tundra biome.
+* More types of trees were added with their respective types of wood and their variants in doors, walls and floors.
+* Better terrain shape generation.
 
 ### Technical side 🛠️
 * Improved the sound system:
-    * Added background music
-    * Some sounds are attenuated depending on the distance
-* Added Texture packs support
-* Added an more detailed Crash screen in information
-* Improved precision and information in the F3 menu (debug screen)
+    * Added background music.
+    * Some sounds are attenuated depending on the distance.
+* Added Texture packs support.
+* Added an more detailed Crash screen in information.
+* Improved precision and information in the F3 menu (debug screen).
 
-## How run?
+## How to Run? 🚀
 - First, make sure you have [**Java**](https://java.com/en/download/) installed on your system.
 - Next, download the .jar file of the game from our [**releases page**](https://github.com/TheBigEye/Aircraft/releases).
 - **Windows Users:** Simply `double click` the downloaded .jar file to launch the game. Alternatively, you can `right-click` on the file and choose `open with > Java platform SE binary`.
