@@ -139,8 +139,6 @@ Currently the project is built with Gradle, a tool that makes it easy to build o
      title="Aircraft"
 />
 
-#
-
 <!-- -------------------------------------------------------------------------- Credits ------------------------------------------------------------------------------>
 <!-- Header and footer svgs --- kyechan99/capsule-render -->
 <!-- Views counter --- antonkomarev/github-profile-views-counter -->
