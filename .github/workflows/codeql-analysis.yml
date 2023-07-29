@@ -67,7 +67,7 @@ jobs:
     - run: |
         echo "Gradle build"
         chmod +x gradlew
-        ./gradlew build --stracktrace
+        ./gradlew build --stacktrace
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
