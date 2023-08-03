@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: "[BUG] I see an bug"
+title: "[Bug] I see an bug"
 labels: bug
 assignees: TheBigEye
 
