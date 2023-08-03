@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: "[IDEA] I have an idea"
+title: "[Suggestion] I have an idea"
 labels: enhancement
 assignees: TheBigEye
 
