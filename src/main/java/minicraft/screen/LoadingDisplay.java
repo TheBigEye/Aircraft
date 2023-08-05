@@ -20,11 +20,6 @@ public class LoadingDisplay extends Display {
 	private static String progressType;
 	private static String message;
 
-	/*private static final String[] BuildString = {
-		"Generating", "Separating", "Planting", "Eroding", "Digging",
-		"Raising", "Leveling", "Flattening", "Molding", "Building"
-	};*/
-
 	private final Timer timer;
 
 	private Ellipsis ellipsis = (Ellipsis) new Ellipsis.SmoothEllipsis((Ellipsis.DotUpdater) new Ellipsis.DotUpdater.TimeUpdater());

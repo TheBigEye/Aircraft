@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,9 +25,6 @@ import minicraft.screen.entry.ListEntry;
 public class Menu {
 
     private int bgSpritePos = 21;
-    
-    
-    private static final int LIMIT_TYPING_SEARCHER = 20;
 
     @NotNull
     private final ArrayList<ListEntry> entries = new ArrayList<>();
@@ -252,8 +248,8 @@ public class Menu {
                     for (int i = 0; entryIt.hasNext(); i++) {
                         ListEntry entry = entryIt.next();
 
-                        String stringEntry = entry.toString().toLowerCase(Locale.ENGLISH);
-                        String typingString = typingSearcher.toLowerCase(Locale.ENGLISH);
+                        String stringEntry = entry.toString();
+                        String typingString = typingSearcher;
 
                         if (stringEntry.contains(typingString)) {
                             if (shouldSelect) {
@@ -328,30 +324,18 @@ public class Menu {
     }
 
     public void render(Screen screen) {
-
-        
-        
         // render searcher bar
-        if (searcherBarActive && useSearcherBar) {
-            int spaceWidth = Font.textWidth(" ");
-            int leading = typingSearcher.length() * spaceWidth / 2;
-            // int xSearcherBar = titleLoc.x + title.length() * spaceWidth / 3 - title.length() / 2;
-            int xSearcherBar = titleLoc.x + title.length() * 8 / 2 - 16;
+    	if (searcherBarActive && useSearcherBar) {
+    	    int leading = Font.textWidth(typingSearcher) * Font.textWidth(" ") / 15;
+    	    int xSearcherBar = titleLoc.x + title.length() * 8 / 2 - 16;
 
-            if (xSearcherBar - leading < 0) {
-                leading += xSearcherBar - leading;
-            }
+    	    if (xSearcherBar - leading < 0) {
+    	        leading += xSearcherBar - leading;
+    	    }
 
-            for (int i = 0; i < typingSearcher.length() + 4; i++) {
-            	Font.drawBox(screen, (entryBounds.getCenter().x - entryBounds.getWidth() / 2) - 16, titleLoc.y + 90, 4 + entryBounds.getWidth() / 8, 1);
-            	
-                if (hasFrame) {
-                    screen.render(xSearcherBar + spaceWidth * i - leading, titleLoc.y + 90, 3 + bgSpritePos * 32, 0, 3);
-                }
-
-                Font.draw("< " + typingSearcher + " >", screen, xSearcherBar - leading, titleLoc.y + 90, typingSearcher.length() < ((entryBounds.getWidth() / 8)) ? Color.YELLOW : Color.RED);
-            }
-        }
+    	    Font.drawBox(screen, (entryBounds.getCenter().x - entryBounds.getWidth() / 2) - 16, titleLoc.y + 90, 4 + entryBounds.getWidth() / 8, 1);
+    	    Font.draw("< " + typingSearcher + " >", screen, xSearcherBar - leading, titleLoc.y + 90, typingSearcher.length() < ((entryBounds.getWidth() / 8)) ? Color.YELLOW : Color.RED);
+    	}
         
         // Render the menu GUI
         
@@ -365,18 +349,16 @@ public class Menu {
                         screen.render(titleLoc.x, titleLoc.y + i * Font.textHeight(), 3 + 21 * bgSpritePos, 0, 3);
                     }
                     Font.draw(title.substring(i, i + 1), screen, titleLoc.x, titleLoc.y + i * Font.textHeight(), titleColor);
-                    
                 }
             } else {
-                for (int i = 0; i < title.length(); i++) {
-                    if (hasFrame) {
-                        screen.render(titleLoc.x + i * Font.textWidth(" "), titleLoc.y, 3 + bgSpritePos * 32, 0, 3);
+                if (hasFrame) {
+                    for (int i = 0; i < title.length(); i++) {
+                        screen.render(titleLoc.x + i * 7, titleLoc.y, 3 + bgSpritePos * 32, 0, 3);
                     }
-                    Font.draw(title.substring(i, i + 1), screen, titleLoc.x + i * Font.textWidth(" "), titleLoc.y, titleColor);  
                 }
+                Font.draw(title, screen, titleLoc.x, titleLoc.y, titleColor);
             }
         }
-
 
 
         // render the options

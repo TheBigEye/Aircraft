@@ -4,29 +4,50 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import minicraft.core.io.Localization;
-
 public class Font {
     
     private static final int CHAR_SHEET_Y = 0;
     
     // These are all the characters that will be translated to the screen. (The spaces and the UTF8 incoding are important)
     private static final String chars =
-    		" !\"#$%&'()*+,-./0123456789:;<=>?" +
-            "@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_" +
-            "`abcdefghijklmnopqrstuvwxyz{|}~∞" +
-            "ÇÜÉÂÄÀÅÇÊËÈÏÎÌÄÅÉæÆÔÖÒÛÙŸÖÜ¢£¥₧Ƒ" +
-            "ÁÍÓÚñÑªº¿⌐¬½¼¡«»░▒▓│┤╡╢╖╕╣║╗╝╜╛┐" +
-            "└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀" +
-            "αβΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■А" +
-    		"БВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
-            "абвгдеёжзийклмнопрстуфхцчшщъыьэю" +
-            "яÁÍíÓÚÀÂÈÊËÌÎÏÒÔŒœÙÛÝýŸÃãÕõ";
+		" !\"#$%&'()*+,-./0123456789:;<=>?" +
+        "@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_" +
+        "`abcdefghijklmnopqrstuvwxyz{|}~∞" +
+        "ÇÜÉÂÄÀÅÇÊËÈÏÎÌÄÅÉæÆÔÖÒÛÙŸÖÜ¢£¥₧Ƒ" +
+        "ÁÍÓÚñÑªº¿⌐¬½¼¡«»░▒▓│┤╡╢╖╕╣║╗╝╜╛┐" +
+        "└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀" +
+        "αβΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■А" +
+		"БВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
+        "абвгдеёжзийклмнопрстуфхцчшщъыьэю" +
+        "яÁÍíÓÚÀÂÈÊËÌÎÏÒÔŒœÙÛÝýŸÃãÕõ";
     
     /*
      * The order of the letters in the chars string is represented in the order that
      * they appear in the sprite-sheet.
      */
+    
+	private static final int[] charsAdvance = new int[Font.chars.length()];
+
+	public static void updateCharAdvances(SpriteSheet font) {
+		for (int i = 0; i < chars.length(); ++i) {
+			int c = i % 32;
+			int r = (i / 32);
+
+			int advance = 8;
+			adfinder: for (int j = 7; j >= 0; --j) {
+				int u = c * 8 + j;
+				for (int k = 0; k < 8; ++k) {
+					int v = r * 8 + k;
+					if ((font.pixels[v * font.height + u] >> 24) != 0) {
+						advance = j + 2;
+						break adfinder;
+					}
+				}
+			}
+
+			Font.charsAdvance[i] = advance;
+		}
+	}
 
     public static void draw(String msg, Screen screen, int x, int y) {
         draw(msg, screen, x, y, -1);
@@ -41,16 +62,18 @@ public class Font {
      * @param whiteTint The white tint applied to the message
      */
     public static void draw(String msg, Screen screen, int x, int y, int whiteTint) {
-        msg = msg.toUpperCase(Localization.getSelectedLocale()); // Converts the message to uppercase based on the selected locale
         int len = msg.length(); // The length of the message
+        
+        int xx = x;
         
         // Loops through all the characters in the message
         for (int chr = 0; chr < len; chr++) {
             int charIndex = chars.indexOf(msg.charAt(chr)); // The current character's index in the `chars` string
             if (charIndex >= 0) { // Renders the character if it's index is valid             
                 // Renders the character on the screen
-                screen.render(x + chr * textWidth(String.valueOf(msg.charAt(chr))), y, charIndex + CHAR_SHEET_Y * 32, 0, 4, whiteTint);
+                screen.render(xx, y, (charIndex % 32 + CHAR_SHEET_Y) + (charIndex / 32 + CHAR_SHEET_Y) * 32, 0, 4, whiteTint);
             }
+            xx += msg.charAt(chr) == ' ' ? 8 : charIndex >= 0 ? Font.charsAdvance[charIndex] : 8;
         }
     }
 
@@ -89,36 +112,36 @@ public class Font {
     }
 
     public static void drawBackground(String msg, Screen screen, int x, int y, int whiteTint) {
-        msg = msg.toUpperCase(Localization.getSelectedLocale());
+    	int xx = x;
+        
         for (int i = 0; i < msg.length(); i++) {
-            int ix = chars.indexOf(msg.charAt(i));
-            if (ix >= 0) {
-                // render the black background
-                screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, 12 + 24 * 32, 0, 3);
-                screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, ix + CHAR_SHEET_Y * 32, 0, 4, whiteTint);
-            }
-        }
-    }
-
-    public static void drawTransparentBackground(String msg, Screen screen, int x, int y) {
-        drawTransparentBackground(msg, screen, x, y, -1);
-    }
-
-    public static void drawTransparentBackground(String msg, Screen screen, int x, int y, int whiteTint) {
-        msg = msg.toUpperCase(Localization.getSelectedLocale());
-
-        for (int i = 0; i < msg.length(); i++) {
-            int ix = chars.indexOf(msg.charAt(i));
             // render the black background
-            screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, 13 + 24 * 32, 0, 3);
-            if (ix >= 0) {
-                screen.render(x + i * textWidth(msg.substring(i, i + 1)), y, ix + CHAR_SHEET_Y * 32, 0, 4, whiteTint);
-            }
+            screen.render(xx, y, 12 + 24 * 32, 0, 3);
+			int ix = chars.indexOf(msg.charAt(i));
+			xx += msg.charAt(i) == ' ' ? 8 : ix >= 0 ? Font.charsAdvance[ix] : 8;
+            
         }
+        draw(msg, screen, x, y, whiteTint);
     }
 
     public static int textWidth(String text) {
-        return text.length() * 8;
+		if (text == null) return 0;
+
+		int width = 0;
+
+		for (int i = 0; i < text.length(); ++i) {
+			char chr = text.charAt(i);
+
+			if (chr == Color.COLOR_CHAR) {
+				i += 5;
+				continue;
+			}
+
+			int idx = Font.chars.indexOf(chr);
+			width += idx >= 0 ? Font.charsAdvance[idx] : 8;
+		}
+
+		return width;
     }
 
     public static int textWidth(String[] paragraph) {
@@ -160,8 +183,9 @@ public class Font {
     }
 
     public static void drawParagraph(Screen screen, FontStyle style, int lineSpacing, String... lines) {
-        for (int i = 0; i < lines.length; i++)
+        for (int i = 0; i < lines.length; i++) {
             style.drawParagraphLine(lines, i, lineSpacing, screen);
+        }
     }
 
     public static String[] getLines(String para, int w, int h, int lineSpacing) {

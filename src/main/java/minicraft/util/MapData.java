@@ -10,11 +10,13 @@ public enum MapData {
 
     GRASS(Tiles.get("Grass").id, Color.get(1, 84, 168, 84)),
     LAWN(Tiles.get("Lawn").id, Color.get(1, 96, 165, 96)),
-    ORANGE_TULIP(Tiles.get("Orange Tulip").id, Color.get(1, 96, 165, 96)),
 
     DIRT(Tiles.get("Dirt").id, Color.get(1, 131, 108, 108)),
     MYCELIUM(Tiles.get("Mycelium").id, Color.get(1, 120, 105, 105)),
-    FLOWER(Tiles.get("Flower").id, Color.get(1, 96, 165, 96)),
+    ROSE(Tiles.get("Rose").id, Color.get(1, 96, 165, 96)),
+    DAISY(Tiles.get("Daisy").id, Color.get(1, 96, 165, 96)),
+    POPPY(Tiles.get("Poppy").id, Color.get(1, 96, 165, 96)),
+    DANDELION(Tiles.get("Dandelion").id, Color.get(1, 96, 165, 96)),
     RED_MUSHROOM(Tiles.get("Red Mushroom").id, Color.get(1, 117, 102, 102)),
     BROWN_MUSHROOM(Tiles.get("Brown Mushroom").id, Color.get(1, 117, 102, 102)),
     HOLE(Tiles.get("Hole").id, Color.get(1, 61, 47, 8)),

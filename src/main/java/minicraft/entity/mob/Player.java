@@ -154,15 +154,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public boolean playerBurning = false;
 	public boolean fallWarn = false;
 	private int burnTime = 0;
-	
-	// RAIN STUFF
-	public boolean isRaining = false; // Is raining?
-	public int rainCount = 0; // RAIN PROBABILITY
-	
-	public int rainTick = 0; // rain animation delay
-	
-	private int rainTickCount = 0; // Used to get the Currrent time value
-	private int rainTime = 0; // Delay
     
     // NICE NIGHT STUFF
     public boolean isNiceNight = false; // Spawn mobs or spaw fireflyes?
@@ -349,22 +340,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		// Ticks Mob.java
 		super.tick(); 
 
-		rainTime++;
         nightTime++;
 
 		Level level = Game.levels[Game.currentLevel];
-		rainTickCount = Updater.tickCount;
         nightTickCount = Updater.tickCount;
-
-		if (rainTickCount == 24255) {
-			rainCount += 1;
-
-			if (rainCount == 8) isRaining = true;
-			if (rainCount < 8) isRaining = false;
-			if (rainCount > 8) rainCount = 0;
-		}
-        
-        if (rainTickCount == 0) isRaining = false;
 
 		if (nightTickCount == 16000) { 
 			nightCount +=1;
@@ -373,39 +352,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         if (nightCount == 4) isNiceNight = true;
 		if (nightCount < 4) isNiceNight = false;
 		if (nightCount > 4) nightCount = 0;
-
-		if (isRaining == true) {
-			if (!Updater.paused && Game.currentLevel == 3) {
-				
-				// Thunder sound
-				if (this != null && tickTime / 8 % 32 == 0 && random.nextInt(8) == 4) {
-					if (random.nextBoolean()) {
-						if (!random.nextBoolean()) {
-							Sound.rainThunder1.playOnDisplay();
-						} else {
-							Sound.rainThunder2.playOnDisplay();
-						}
-					} else {
-						Sound.rainThunder3.playOnDisplay();
-					}
-				}
-
-				if (rainTime /24 %2 == 0) {
-					rainTick++;
-                    
-                    if (Settings.get("particles").equals(true)) {
-                        for (int i = 0; i < 6; i++) {
-                            level.add(new SplashParticle(x, y), x + (random.nextInt(level.w) - random.nextInt(level.h)), y + (random.nextInt(level.w) - random.nextInt(level.h)));
-                        }
-                    }
-				}
-				if (rainTick > 56) rainTick = 0;
-			}
-
-			/*if (rainTime /2 %2 == 0) {
-				Renderer.renderRain = !Renderer.renderRain;
-			}*/
-		}
 
 		// PLAYER BURNING
 		if (playerBurning == true) {

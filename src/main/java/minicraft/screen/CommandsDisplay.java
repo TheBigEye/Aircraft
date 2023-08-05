@@ -6,7 +6,6 @@ import java.util.List;
 
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
-import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
 import minicraft.graphic.Color;
 import minicraft.graphic.Font;
@@ -43,7 +42,7 @@ public class CommandsDisplay extends Display {
     	}
         
     	if (input.getKey("select").clicked) {
-    		String commandString = command.getUserInput().toLowerCase(Localization.getSelectedLocale());
+    		String commandString = command.getUserInput();
     		String[] commandArguments = commandString.split(" ");
     		boolean recognizedCommand = true; // Assume the command is recognized unless proven otherwise
     		
@@ -54,7 +53,7 @@ public class CommandsDisplay extends Display {
     				case "/kill": Command.killCommand(commandArguments); break;
     			
     				case "/say":       
-    					String messageString = command.getUserInput().toLowerCase(Localization.getSelectedLocale()).replace("/say ", "");
+    					String messageString = command.getUserInput().replace("/say ", "");
     					Game.player.sendMessage(messageString);
     					break;
     				
@@ -70,7 +69,7 @@ public class CommandsDisplay extends Display {
         		}
  
 			} else {
-				String messageString = command.getUserInput().toLowerCase(Localization.getSelectedLocale());
+				String messageString = command.getUserInput();
 				Game.player.sendMessage(messageString);
 				Sound.Menu_back.playOnDisplay();
 			}

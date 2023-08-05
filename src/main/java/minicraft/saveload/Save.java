@@ -55,7 +55,11 @@ public class Save {
 	private static final int indent = 4;
 
 	// Save files extension
-	public static final String extension = ".miniplussave";
+	public static final String worldExtension = ".level";
+	public static final String dataExtension = ".data";
+	public static final String saveExtension = ".dat";
+	
+	public static final String oldExtension = ".miniplussave";
 
 	List<String> data;
 
@@ -69,12 +73,12 @@ public class Save {
 
 		if (worldFolder.getParent().equals("saves")) {
 			String worldName = worldFolder.getName();
-			if (!worldName.toLowerCase().equals(worldName)) {
+			if (!worldName.equals(worldName)) {
 
 				Logger.debug("Renaming world in \"{}\" to lowercase ...", worldFolder);
 				String path = worldFolder.toString();
 				path = path.substring(0, path.lastIndexOf(worldName));
-				File newFolder = new File(path + worldName.toLowerCase());
+				File newFolder = new File(path + worldName);
 
 				if (worldFolder.renameTo(newFolder)) {
 					worldFolder = newFolder;
@@ -187,7 +191,7 @@ public class Save {
 		data.add(String.valueOf(EyeQueen.beaten));
 		data.add(String.valueOf(Settings.get("cheats")));
 
-		writeToFile(location + filename + extension, data);
+		writeToFile(location + filename + saveExtension, data);
 	}
 
 	private void writePrefs() {
@@ -267,7 +271,7 @@ public class Save {
 	            }
 	        }
 	        // write the data array to file
-	        writeToFile(location + filename + currentLevel + extension, data);
+	        writeToFile(location + filename + currentLevel + worldExtension, data);
 	        // clear the data array for next level
 	        data.clear();
 	    }
@@ -281,7 +285,7 @@ public class Save {
 	            }
 	        }
 	        // write the data array to file
-	        writeToFile(location + filename + currentLevel + "data" + extension, data);
+	        writeToFile(location + filename + currentLevel + dataExtension, data);
 	        // clear the data array for next level
 	        data.clear();
 	    }
@@ -290,7 +294,7 @@ public class Save {
 	private void writePlayer(String filename, Player player) {
 		LoadingDisplay.setProgressType("Player");
 		writePlayer(player, data);
-		writeToFile(location + filename + extension, data);
+		writeToFile(location + filename + saveExtension, data);
 	}
 
 	public static void writePlayer(Player player, List<String> data) {
@@ -324,17 +328,14 @@ public class Save {
 
 		data.add(String.valueOf(player.shirtColor));
 		data.add(String.valueOf(player.suitOn));
-
-		data.add(String.valueOf(player.isRaining));
-		data.add(String.valueOf(player.rainCount));
         
-        data.add(String.valueOf(player.isNiceNight));
         data.add(String.valueOf(player.nightCount));
+        data.add(String.valueOf(player.isNiceNight));
 	}
 
 	private void writeInventory(String filename, Player player) {
 		writeInventory(player, data);
-		writeToFile(location + filename + extension, data);
+		writeToFile(location + filename + saveExtension, data);
 	}
 
 	public static void writeInventory(Player player, List<String> data) {
@@ -362,7 +363,7 @@ public class Save {
 			}
 		}
 
-		writeToFile(location + filename + extension, data);
+		writeToFile(location + filename + saveExtension, data);
 	}
 
 	public static String writeEntity(Entity entity, boolean isLocalSave) {

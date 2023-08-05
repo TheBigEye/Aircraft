@@ -67,7 +67,6 @@ public class StackableItem extends Item {
 		items.add(new StackableItem("Gold Ore", new Sprite(5, 4, 0)));
 		items.add(new StackableItem("Iron", new Sprite(6, 4, 0)));
 		items.add(new StackableItem("Gold", new Sprite(7, 4, 0)));
-		items.add(new StackableItem("Rose", new Sprite(5, 0, 0)));
 		items.add(new StackableItem("GunPowder", new Sprite(8, 4, 0)));
 
 		items.add(new StackableItem("Slime", new Sprite(9, 4, 0)));

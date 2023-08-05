@@ -46,6 +46,9 @@ public class GrassTile extends Tile {
 	            if (random.nextInt(5) == 0) { // 20% chance to drop seeds
 	                level.dropItem((xt << 4) + 8, (yt << 4) + 8, 2, Items.get("Seeds"));
 	            }
+	            
+	            level.setTile(xt, yt, Tiles.get("Dirt"));
+	            
 	            return true;
 	        }
 	    } else if (toolType == ToolType.Hoe) {

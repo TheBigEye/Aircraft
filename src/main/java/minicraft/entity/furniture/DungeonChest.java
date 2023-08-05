@@ -90,7 +90,6 @@ public class DungeonChest extends Chest {
                 level.add(new TextParticle("-1 key", x, y, Color.RED));
                 level.chestCount--;
                 if (level.chestCount == 0) { // if this was the last chest...
-                	player.isRaining = true; // Starts to rain
                 	Sound.rainThunder2.playOnDisplay();
                 	
                     level.dropItem(x, y, 5, Items.get("Gold Apple"));

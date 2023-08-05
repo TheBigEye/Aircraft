@@ -174,7 +174,7 @@ public class LevelGen {
 			if (count[Tiles.get("Sand").id & 0xffff] < 100) continue;
 			if (count[Tiles.get("Grass").id & 0xffff] < 100) continue;
 			if (count[Tiles.get("Oak Tree").id & 0xffff] < 100) continue;
-			if (count[Tiles.get("Flower").id & 0xffff] < 100) continue;
+			if (count[Tiles.get("Daisy").id & 0xffff] < 100) continue;
 			if (count[Tiles.get("Stairs Down").id & 0xffff] == 0) continue;
 
 			return result;
@@ -506,9 +506,24 @@ public class LevelGen {
 				int yy = y + random.nextInt(5) - random.nextInt(5);
 
 				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-					if (map[xx + yy * w] == Tiles.get("Grass").id) {
-						map[xx + yy * w] = Tiles.get("Flower").id;
-						data[xx + yy * w] = (short) (pos + random.nextInt(4) * 16); // data determines which way the flower faces
+					int index = xx + yy * w;
+					
+					if (map[index] == Tiles.get("Grass").id) {
+						if (random.nextBoolean()) {
+							if (random.nextBoolean()) {
+								map[index] = Tiles.get("Rose").id;
+							} else {
+								map[index] = Tiles.get("Poppy").id;
+							}
+						} else {
+							if (random.nextBoolean()) {
+								map[index] = Tiles.get("Dandelion").id;
+							} else {
+								map[index] = Tiles.get("Daisy").id;
+							}
+						}
+						
+						data[index] = (short) (pos + random.nextInt(4) * 16);  // data determines which way the flower faces
 					}
 				}
 			}
@@ -528,24 +543,6 @@ public class LevelGen {
 					if (map[xx + yy * w] == Tiles.get("Grass").id) {
 						map[xx + yy * w] = Tiles.get("Lawn").id;
 						data[xx + yy * w] = (short) (pos + random.nextInt(4) * 16);
-					}
-				}
-			}
-		}
-
-		for (int i = 0; i < (fullSize / 100); i++) {
-			int x = random.nextInt(w);
-			int y = random.nextInt(h);
-			int pos = random.nextInt(4);
-			
-			for (int j = 0; j < 20; j++) {
-				int xx = x + random.nextInt(4) - random.nextInt(4);
-				int yy = y + random.nextInt(4) - random.nextInt(4);
-
-				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-					if (map[xx + yy * w] == Tiles.get("Grass").id) {
-						map[xx + yy * w] = Tiles.get("Orange Tulip").id;
-						data[xx + yy * w] = (byte) (pos + random.nextInt(4) * 16);
 					}
 				}
 			}
@@ -601,10 +598,12 @@ public class LevelGen {
 				if (map[index] != Tiles.get("Water").id && (
 					map[index] == Tiles.get("Grass").id || 
 					map[index] == Tiles.get("Oak Tree").id || 
-					map[index] == Tiles.get("Flower").id || 
+					map[index] == Tiles.get("Daisy").id ||
+					map[index] == Tiles.get("Poppy").id ||
+					map[index] == Tiles.get("Rose").id ||  
 					map[index] == Tiles.get("Birch Tree").id || 
 					map[index] == Tiles.get("Lawn").id || 
-					map[index] == Tiles.get("Orange Tulip").id)) {
+					map[index] == Tiles.get("Dandelion").id)) {
 					boolean replace = false;
 
 					// Check the tiles around the current position
@@ -639,7 +638,8 @@ public class LevelGen {
 		                        int tileToCheck = map[tx + ty * w];
 		                        if (tileToCheck == Tiles.get("Grass").id || tileToCheck == Tiles.get("Snow").id || tileToCheck == Tiles.get("Sand").id ||
 		                            tileToCheck == Tiles.get("Fir Tree").id || tileToCheck == Tiles.get("Oak Tree").id || tileToCheck == Tiles.get("Birch Tree").id || tileToCheck == Tiles.get("Pine Tree").id ||
-		                            tileToCheck == Tiles.get("Ice Spike").id || tileToCheck == Tiles.get("Flower").id || tileToCheck == Tiles.get("Lawn").id || tileToCheck == Tiles.get("Orange Tulip").id) {
+		                            tileToCheck == Tiles.get("Ice Spike").id || tileToCheck == Tiles.get("Rose").id || tileToCheck == Tiles.get("Lawn").id || tileToCheck == Tiles.get("Dandelion").id ||
+		                            tileToCheck == Tiles.get("Poppy").id || tileToCheck == Tiles.get("Daisy").id) {
 		                            replace = true;
 		                            break check_mountains;
 		                        }
@@ -659,10 +659,12 @@ public class LevelGen {
 			for (int x = 0; x < w; x++) {
 				if (map[x + j * w] != Tiles.get("Ice").id && map[x + j * w] == Tiles.get("Grass").id ||
 					map[x + j * w] != Tiles.get("Ice").id && map[x + j * w] == Tiles.get("Oak Tree").id ||
-					map[x + j * w] != Tiles.get("Ice").id && map[x + j * w] == Tiles.get("Flower").id ||
+					map[x + j * w] != Tiles.get("Ice").id && map[x + j * w] == Tiles.get("Poppy").id ||
+					map[x + j * w] != Tiles.get("Ice").id && map[x + j * w] == Tiles.get("Rose").id ||
+					map[x + j * w] != Tiles.get("Ice").id && map[x + j * w] == Tiles.get("Daisy").id ||
 					map[x + j * w] != Tiles.get("Ice").id && map[x + j * w] == Tiles.get("Birch Tree").id ||
 					map[x + j * w] != Tiles.get("Ice").id && map[x + j * w] == Tiles.get("Lawn").id ||
-					map[x + j * w] != Tiles.get("Ice").id && map[x + j * w] == Tiles.get("Orange Tulip").id) {
+					map[x + j * w] != Tiles.get("Ice").id && map[x + j * w] == Tiles.get("Dandelion").id) {
 					boolean replace = false;
 
 					check_ocean:
@@ -1553,9 +1555,11 @@ public class LevelGen {
 					// Surface tiles
 					if (map[i] == Tiles.get("Grass").id) pixels[i] = 0x54a854;
 					else if (map[i] == Tiles.get("Lawn").id) pixels[i] = 0x60a560;
-					else if (map[i] == Tiles.get("Orange Tulip").id) pixels[i] = 0x60a560;
 					else if (map[i] == Tiles.get("Dirt").id) pixels[i] = 0x836c6c;
-					else if (map[i] == Tiles.get("Flower").id) pixels[i] = 0x60A560;
+					else if (map[i] == Tiles.get("Rose").id) pixels[i] = 0x60A560;
+					else if (map[i] == Tiles.get("Dandelion").id) pixels[i] = 0x60a560;
+					else if (map[i] == Tiles.get("Poppy").id) pixels[i] = 0x60a560;
+					else if (map[i] == Tiles.get("Daisy").id) pixels[i] = 0x60a560;
 					else if (map[i] == Tiles.get("Water").id) pixels[i] = 0x1A2C89;
 					else if (map[i] == Tiles.get("Lava").id) pixels[i] = 0xC82020;
 					else if (map[i] == Tiles.get("Rock").id) pixels[i] = 0x7a7a7a;

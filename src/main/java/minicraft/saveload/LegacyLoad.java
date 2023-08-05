@@ -50,7 +50,7 @@ public class LegacyLoad {
     String location = Game.gameDir;
     File folder;
 
-    private static String extension = Save.extension;
+    private static String extension = ".miniplussave";
 
     ArrayList<String> data;
     ArrayList<String> extradata;

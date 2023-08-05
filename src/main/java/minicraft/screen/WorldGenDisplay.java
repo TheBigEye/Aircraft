@@ -67,7 +67,7 @@ public class WorldGenDisplay extends Display {
 
 			@Override
 			public String getUserInput() {
-				return super.getUserInput().toLowerCase(Localization.getSelectedLocale());
+				return super.getUserInput();
 			}
 		};
 	}

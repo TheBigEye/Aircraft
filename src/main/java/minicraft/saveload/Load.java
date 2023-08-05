@@ -92,7 +92,12 @@ public class Load {
 
 	private String location = Game.gameDir;
 
-	private static final String extension = Save.extension;
+	private static final String worldExtension = Save.worldExtension;
+	private static final String dataExtension = Save.dataExtension;
+	private static final String saveExtension = Save.saveExtension;
+	
+	private static final String oldExtension = Save.oldExtension;
+	
 	private float loadPercent;
 
 	private ArrayList<String> data;
@@ -112,7 +117,7 @@ public class Load {
 	}
 
 	public Load(String worldname, boolean loadGame) {
-		loadFromFile(location + "/saves/" + worldname + "/Game" + extension);
+		loadFromFile(location + "/saves/" + worldname + "/Game" + saveExtension);
 		
 		if (data.get(0).contains(".")) {
 			worldVersion = new Version(data.get(0));
@@ -171,7 +176,7 @@ public class Load {
 			loadPrefs("Preferences");
 
 		// Check if Preferences.miniplussave exists. (old version)
-		} else if (new File(location + "Preferences" + extension).exists()) {
+		} else if (new File(location + "Preferences" + oldExtension).exists()) {
 			loadPrefsOld("Preferences");
 			Logger.info("Upgrading preferences to JSON...");
 			resave = true;
@@ -183,8 +188,8 @@ public class Load {
 		}
 
 		// Load unlocks. (new version)
-		File testFileOld = new File(location + "unlocks" + extension);
-		File testFile = new File(location + "Unlocks" + extension);
+		File testFileOld = new File(location + "unlocks" + oldExtension);
+		File testFile = new File(location + "Unlocks" + oldExtension);
 
 		if (new File(location + "Unlocks.json").exists()) {
 			loadUnlocks("Unlocks");
@@ -249,7 +254,7 @@ public class Load {
 
 		if (filename.contains("Level")) {
 			try {
-				total = Load.loadFromFile(filename.substring(0, filename.lastIndexOf("/") + 7) + "data" + extension, true);
+				total = Load.loadFromFile(filename.substring(0, filename.lastIndexOf("/") + 7) + dataExtension, true);
 				extradata.addAll(Arrays.asList(total.split(",")));
 			} catch (IOException exception) {
 				exception.printStackTrace();
@@ -274,7 +279,7 @@ public class Load {
 	}
 
 	private void loadGame(String filename) {
-		loadFromFile(location + filename + extension);
+		loadFromFile(location + filename + saveExtension);
 
 		// Gets the world version
 		worldVersion = new Version(data.remove(0)); 
@@ -351,7 +356,7 @@ public class Load {
 	}
 
 	private void loadPrefsOld(String filename) {
-		loadFromFile(location + filename + extension);
+		loadFromFile(location + filename + oldExtension);
 
 		// the default, because this doesn't really matter much being specific past this if it's not set below.
 		Version prefVer = new Version("2.0.2");
@@ -444,7 +449,7 @@ public class Load {
 	}
 
 	private void loadUnlocksOld(String filename) {
-		loadFromFile(location + filename + extension);
+		loadFromFile(location + filename + oldExtension);
 
 		for (String unlock : data) {
 			if (unlock.equals("AirSkin")) {
@@ -486,7 +491,7 @@ public class Load {
 		for (int levelDepth = World.maxLevelDepth; levelDepth >= World.minLevelDepth; levelDepth--) {
 			LoadingDisplay.setProgressType(Level.getDepthString(levelDepth));
 			int levelIndex = World.levelIndex(levelDepth);
-			loadFromFile(location + filename + levelIndex + extension);
+			loadFromFile(location + filename + levelIndex + worldExtension);
 
 			int worldWidth = Integer.parseInt(data.get(0));
 			int worldHeight = Integer.parseInt(data.get(1));
@@ -601,7 +606,7 @@ public class Load {
 
 	public void loadPlayer(String filename, Player player) {
 		LoadingDisplay.setProgressType("Player");
-		loadFromFile(location + filename + extension);
+		loadFromFile(location + filename + saveExtension);
 		loadPlayer(player, data);
 	}
 
@@ -699,12 +704,9 @@ public class Load {
 
 		// This works for some reason... lol
 		Settings.set("skinon", player.suitOn = Boolean.parseBoolean(data.remove(0)));
-		
-		player.isRaining = Boolean.parseBoolean(data.remove(0));
-		player.rainCount  = Integer.parseInt(data.remove(0));
         
-        player.isNiceNight = Boolean.parseBoolean(data.remove(0));
 		player.nightCount  = Integer.parseInt(data.remove(0));
+        player.isNiceNight = Boolean.parseBoolean(data.remove(0));
 	}
 
 	protected static String subOldName(String name, Version worldVer) {
@@ -763,7 +765,7 @@ public class Load {
 	}
 
 	public void loadInventory(String filename, Inventory inventory) {
-		loadFromFile(location + filename + extension);
+		loadFromFile(location + filename + saveExtension);
 		loadInventory(inventory, data);
 	}
 
@@ -809,7 +811,7 @@ public class Load {
 
 	private void loadEntities(String filename) {
 		LoadingDisplay.setProgressType("Entities");
-		loadFromFile(location + filename + extension);
+		loadFromFile(location + filename + saveExtension);
 
 		for (Level level : World.levels) {
 			level.clearEntities();

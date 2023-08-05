@@ -6,6 +6,8 @@ import java.util.HashMap;
 import org.tinylog.Logger;
 
 import minicraft.core.Game;
+import minicraft.level.tile.FlowerTile.Flower;
+import minicraft.level.tile.TreeTile.TreeType;
 import minicraft.level.tile.WoolTile.WoolType;
 import minicraft.level.tile.farming.CarrotTile;
 import minicraft.level.tile.farming.FarmTile;
@@ -30,7 +32,7 @@ public final class Tiles {
 
 		Tiles.add(0, new GrassTile("Grass"));
 		Tiles.add(1, new DirtTile("Dirt"));
-		Tiles.add(2, new FlowerTile("Flower"));
+		Tiles.add(2, new FlowerTile(Flower.DAISY));
 		Tiles.add(3, new HoleTile("Hole"));
 		Tiles.add(4, new StairsTile("Stairs Up", true));
 		Tiles.add(5, new StairsTile("Stairs Down", false));
@@ -102,20 +104,20 @@ public final class Tiles {
 		Tiles.add(62, new PotatoTile("Potato"));
 		Tiles.add(63, new SkyWartTile("Sky Wart"));
 		Tiles.add(64, new LawnTile("Lawn"));
-		Tiles.add(65, new OrangeTulipTile("Orange Tulip"));
+		Tiles.add(65, new FlowerTile(Flower.DANDELION));
 
 		Tiles.add(66, new SnowTile("Snow"));
 
-		Tiles.add(67, new TreeTile(TreeTile.TreeType.Birch));
+		Tiles.add(67, new TreeTile(TreeType.Birch));
 		Tiles.add(68, new SaplingTile("Birch Sapling", Tiles.get("Grass"), Tiles.get("Birch tree")));
 
-		Tiles.add(69, new TreeTile(TreeTile.TreeType.Fir));
+		Tiles.add(69, new TreeTile(TreeType.Fir));
 		Tiles.add(70, new SaplingTile("Fir Sapling", Tiles.get("Snow"), Tiles.get("Fir tree")));
 
-		Tiles.add(71, new TreeTile(TreeTile.TreeType.Pine));
+		Tiles.add(71, new TreeTile(TreeType.Pine));
 		Tiles.add(72, new SaplingTile("Pine Sapling", Tiles.get("Snow"), Tiles.get("Pine tree")));
 
-		Tiles.add(73, new TreeTile(TreeTile.TreeType.Skyroot));
+		Tiles.add(73, new TreeTile(TreeType.Skyroot));
 
 		Tiles.add(74, new IceSpikeTile("Ice Spike"));
 		Tiles.add(75, new ObsidianTile("Raw Obsidian"));
@@ -133,15 +135,22 @@ public final class Tiles {
 		Tiles.add(85, new SkyFernTile("Sky Fern"));
 		Tiles.add(86, new UpRockTile("Up Rock"));
 
-		Tiles.add(87, new GrassTile("Jungle Grass"));
+		Tiles.add(87, new SkyGrassTile("Cloud Hole"));
 
-		Tiles.add(88, new SkyGrassTile("Cloud Hole"));
-
-		Tiles.add(89, new IceTile("Ice"));
-		Tiles.add(90, new MyceliumTile("Mycelium"));
-		Tiles.add(91, new MushroomTile(MushroomTile.MushroomType.Brown));
-		Tiles.add(92, new MushroomTile(MushroomTile.MushroomType.Red));
-		Tiles.add(93, new ParsnipTile("Parsnip"));
+		Tiles.add(88, new IceTile("Ice"));
+		Tiles.add(89, new MyceliumTile("Mycelium"));
+		Tiles.add(90, new MushroomTile(MushroomTile.MushroomType.Brown));
+		Tiles.add(91, new MushroomTile(MushroomTile.MushroomType.Red));
+		Tiles.add(92, new ParsnipTile("Parsnip"));
+		
+		Tiles.add(93, new FlowerTile(Flower.ROSE));
+		Tiles.add(94, new SproutTile("Rose Sprout", Tiles.get("Grass"), Tiles.get("Rose")));
+		
+		Tiles.add(95, new FlowerTile(Flower.POPPY));
+		Tiles.add(96, new SproutTile("Poppy Sprout", Tiles.get("Grass"), Tiles.get("Poppy")));
+		
+		Tiles.add(97, new SproutTile("Daisy Sprout", Tiles.get("Grass"), Tiles.get("Daisy")));
+		Tiles.add(98, new SproutTile("Dandelion Sprout", Tiles.get("Grass"), Tiles.get("Dandelion")));
 
 		// tiles.put((short)?, new SandRockTile("Sand rock"));
 

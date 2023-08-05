@@ -123,6 +123,7 @@ public class TexturePackDisplay extends Display {
 			}
 
 			Renderer.screen.setSheet(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
+			Font.updateCharAdvances(sheets[4]);
 		} catch(NullPointerException exception) {
 			exception.printStackTrace();
 			Logger.error("Changing texture pack failed.");

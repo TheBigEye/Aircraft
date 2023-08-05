@@ -19,9 +19,12 @@ public class TileItem extends StackableItem {
 	protected static ArrayList<Item> getAllInstances() {
 		ArrayList<Item> items = new ArrayList<>();
 
-		/// TileItem sprites all have 1x1 sprites.
-		items.add(new TileItem("Flower", (new Sprite(4, 0, 0)), "Flower", "Grass"));
-		items.add(new TileItem("Orange Tulip", (new Sprite(22, 0, 0)), "Orange Tulip", "Grass"));
+		// TileItem sprites all have 8x8 sprites.
+		items.add(new TileItem("Daisy", (new Sprite(4, 0, 0)), "Daisy Sprout", "Grass"));
+		items.add(new TileItem("Rose", (new Sprite(5, 0, 0)), "Rose Sprout", "Grass"));
+		items.add(new TileItem("Dandelion", (new Sprite(21, 0, 0)), "Dandelion Sprout", "Grass"));
+		items.add(new TileItem("Poppy", (new Sprite(22, 0, 0)), "Poppy Sprout", "Grass"));
+		
 		items.add(new TileItem("Acorn", (new Sprite(1, 3, 0)), "Oak Sapling", "Grass"));
 		items.add(new TileItem("Birch Cone", (new Sprite(18, 3, 0)), "Birch Sapling", "Grass"));
 		items.add(new TileItem("Fir Cone", (new Sprite(18, 3, 0)), "Fir Sapling", "Snow"));
@@ -35,7 +38,7 @@ public class TileItem extends StackableItem {
 
 		// Creative mode available tiles:
 		items.add(new TileItem("Natural Rock", (new Sprite(2, 0, 0)), "Rock", "Hole", "Dirt", "Sand", "Path", "Grass", "Snow"));
-		// items.add(new TileItem("Natural Hard Rock", (new Sprite(2, 0, 0)), "Hard rock", "hole", "dirt", "sand", "path", "grass"));
+		items.add(new TileItem("Natural Hard Rock", (new Sprite(2, 0, 0)), "Hard rock", "hole", "dirt", "sand", "path", "grass"));
 
 		items.add(new TileItem("Oak Plank", (new Sprite(0, 5, 0)), "Oak Planks", "Hole", "Water", "Infinite fall", "Lava"));
 		items.add(new TileItem("Oak Wall", (new Sprite(1, 5, 0)), "Oak Wall", "Oak Planks"));

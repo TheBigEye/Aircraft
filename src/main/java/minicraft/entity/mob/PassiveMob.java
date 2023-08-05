@@ -100,7 +100,7 @@ public class PassiveMob extends MobAi {
         }
 
         Tile tile = level.getTile(x >> 4, y >> 4);
-        if (tile == Tiles.get("Grass") || tile == Tiles.get("Flower")) {
+        if (tile == Tiles.get("Grass") || tile == Tiles.get("Rose") || tile == Tiles.get("Daisy") || tile == Tiles.get("Poppy") || tile == Tiles.get("Dandelion")) {
         	return true;
         }
         

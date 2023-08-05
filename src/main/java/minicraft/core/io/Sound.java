@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -140,22 +141,22 @@ public class Sound {
     }
     
     private Sound(String name) {
-    	if (Game.debug) Logger.debug("Loading clip '{}', for sound engine ...", name);
-    	
+        if (Game.debug) Logger.debug("Loading clip '{}', for sound engine ...", name);
+
         try {
             URL clipUrl = getClass().getResource(name);
-
-            DataLine.Info clipInfo = new DataLine.Info(Clip.class, AudioSystem.getAudioFileFormat(clipUrl).getFormat());
+            AudioFileFormat audioFileFormat = AudioSystem.getAudioFileFormat(clipUrl);
+            DataLine.Info clipInfo = new DataLine.Info(Clip.class, audioFileFormat.getFormat());
 
             if (!AudioSystem.isLineSupported(clipInfo)) {
-                Logger.error("Audio failure, audio format of file {} is not supported to {}!", name, AudioSystem.getAudioFileFormat(clipUrl));
-                
+                Logger.error("Audio failure, audio format of file {} is not supported to {}!", name, audioFileFormat);
+
                 Logger.info("Supported audio formats:");
                 Logger.info("-- source:");
-     
+
                 Line.Info[] sourceInfo = AudioSystem.getSourceLineInfo(clipInfo);
                 Line.Info[] targetInfo = AudioSystem.getTargetLineInfo(clipInfo);
-                
+
                 for (Line.Info value : sourceInfo) {
                     if (value instanceof DataLine.Info) {
                         DataLine.Info dataLineInfo = (DataLine.Info) value;
@@ -165,14 +166,14 @@ public class Sound {
                         }
                     }
                 }
-                
+
                 Logger.info("-- target:");
                 for (int i = 0; i < targetInfo.length; i++) {
                     if (targetInfo[i] instanceof DataLine.Info) {
                         DataLine.Info dataLineInfo = (DataLine.Info) targetInfo[i];
                         AudioFormat[] supportedFormats = dataLineInfo.getFormats();
                         for (AudioFormat audioFormat : supportedFormats) {
-                        	Logger.info("- {}", audioFormat);
+                            Logger.info("- {}", audioFormat);
                         }
                     }
                 }
@@ -180,9 +181,6 @@ public class Sound {
                 return;
             }
 
-            clip = (Clip) AudioSystem.getLine(clipInfo);
-            clip.open(AudioSystem.getAudioInputStream(clipUrl));
-            
             clip = (Clip) AudioSystem.getLine(clipInfo);
             clip.open(AudioSystem.getAudioInputStream(clipUrl));
             volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
