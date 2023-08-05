@@ -17,10 +17,6 @@ import minicraft.util.Command;
 
 public class CommandsDisplay extends Display {
 	
-	private static final int CHAT_BACKGOUND_COLOR = Color.BLACK;
-	private static final int CHAT_FOREGOUND_COLOR = Color.GRAY;
-	private static final float CHAT_OPACITY = 0.8F;
-	
     public static InputEntry command = new InputEntry("", ".*", 43, false);
     
     public CommandsDisplay() {
@@ -103,7 +99,7 @@ public class CommandsDisplay extends Display {
         int lineNumber = 0;
         for (int j = Math.max(0, messages.size() - 7); j < messages.size(); j++) {
         	Font.draw("<Amy>", screen, 8, (lineNumber * 8) + Screen.h - 80, Color.DARK_GREEN);
-            Font.draw(messages.get(j), screen, 6 * 8 + 4, (lineNumber * 8) + Screen.h - 80, CHAT_FOREGOUND_COLOR);
+            Font.draw(messages.get(j), screen, 6 * 8 + 4, (lineNumber * 8) + Screen.h - 80, Color.GRAY);
             lineNumber++;
         }
         

@@ -229,6 +229,21 @@ public class Menu {
 
             if (searcherBarActive) {
                 String typingSearcher = input.addKeyTyped(this.typingSearcher, null);
+                
+                if (typingSearcher.length() > 0) {
+                    // Convert the first letter on uppercase
+                    typingSearcher = typingSearcher.substring(0, 1).toUpperCase() + typingSearcher.substring(1);
+
+                    // Iterate over the remaining characters to convert to lowercase until a space is found
+                    for (int i = 1; i < typingSearcher.length(); i++) {
+                        if (typingSearcher.charAt(i - 1) == ' ') {
+                            typingSearcher = typingSearcher.substring(0, i) + typingSearcher.substring(i, i + 1).toUpperCase() + typingSearcher.substring(i + 1);
+                        }
+                    }
+                }
+
+
+    
                 for (String pressedKey : input.getAllPressedKeys()) {
                     if (pressedKey.equals("ENTER")) {
                         continue;
@@ -240,6 +255,7 @@ public class Menu {
                 // check if word was updated
                 if (typingSearcher.length() <= ((entryBounds.getWidth() / 8)) && typingSearcher.length() != this.typingSearcher.length()) {
                     this.typingSearcher = typingSearcher;
+ 
                     listSearcher.clear();
                     listPositionSearcher = 0;
 
@@ -247,7 +263,7 @@ public class Menu {
                     boolean shouldSelect = true;
                     for (int i = 0; entryIt.hasNext(); i++) {
                         ListEntry entry = entryIt.next();
-
+                        
                         String stringEntry = entry.toString();
                         String typingString = typingSearcher;
 
@@ -326,6 +342,8 @@ public class Menu {
     public void render(Screen screen) {
         // render searcher bar
     	if (searcherBarActive && useSearcherBar) {
+
+    		
     	    int leading = Font.textWidth(typingSearcher) * Font.textWidth(" ") / 15;
     	    int xSearcherBar = titleLoc.x + title.length() * 8 / 2 - 16;
 

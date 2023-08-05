@@ -23,10 +23,10 @@ public class Command {
 	    Entity[] entities = new Entity[0];
 	    
 	    switch (targetSelector) {
-	        case "@a": entities = currentLevel.getPlayers(); break; // all players
-	        case "@e": entities = currentLevel.getEntities(); break; // all entities
-	        case "@p":  entities = new Entity[]{currentPlayer}; break; // nearest player
-	        case "@s": entities = new Entity[]{currentPlayer}; break; // executing entity
+	        case ALL_PLAYERS: entities = currentLevel.getPlayers(); break; // all players
+	        case ALL_ENTITIES: entities = currentLevel.getEntities(); break; // all entities
+	        case NEAR_PLAYER:  entities = new Entity[]{currentPlayer}; break; // nearest player
+	        case EXECUTING_ENTITY: entities = new Entity[]{currentPlayer}; break; // executing entity
 	            
 	        default:
 	            // parse target selector and return matching entities
@@ -38,7 +38,7 @@ public class Command {
 	
 	public static void gamemodeCommand(String[] arguments) {
         if (arguments.length < 2) {
-            Game.notifications.add("- missing gamemode -");
+            Game.player.sendMessage("{?} - Missing gamemode [creative, survival]");
             return;
         }
 		
@@ -48,14 +48,14 @@ public class Command {
 	    } else if (mode.equals("survival") || mode.equals("s") || mode.equals("0")) {
 	        Settings.set("mode", "survival");
 	    } else {
-	        Game.notifications.add("- unknown gamemode -");
+	        Game.player.sendMessage("{?} - Unknown gamemode");
 	    }
 	}
 	
 	public static void timeCommand(String[] arguments) {
 		
 	    if (arguments.length < 2) {
-	        Game.notifications.add("- missing time action -");
+	    	Game.player.sendMessage("{?} - Missing time action [add, set, get]");
 	        return;
 	    }
 		
@@ -64,17 +64,18 @@ public class Command {
 			case "set":
 				
 	            if (arguments.length < 3) {
-	                Game.notifications.add("- missing time of day -");
+	            	Game.player.sendMessage("{?} - Missing time of day [day, night, 12000]");
 	                return;
 	            }
 				
 				String timeString = arguments[2]; // morning, night, etc
 	            int timeValue = 0;
+	            
 	            if (timeString.matches("\\d+")) {
 	                try {
 	                    timeValue = Integer.parseInt(timeString);
 	                } catch (NumberFormatException exception) {
-	                    Game.notifications.add("- Time value must be a numeric value -");
+	                    Game.player.sendMessage("{?} - Time value must be a numeric value");
 	                    return;
 	                }
 	                Updater.tickCount = timeValue;
@@ -85,7 +86,9 @@ public class Command {
 						case "evening": Updater.changeTimeOfDay(Updater.Time.Evening); break;
 						case "night": Updater.changeTimeOfDay(Updater.Time.Night); break;
 						
-						default: Game.notifications.add("- Unknown time status '"+ timeString + "' -"); break;
+						default:
+							Game.player.sendMessage("{?} - Unknown time status '"+ timeString + "'");
+							break;
 					} 
 					break;
 	            }
@@ -93,14 +96,23 @@ public class Command {
 			case "add":
 				
 	            if (arguments.length < 3) {
-	                Game.notifications.add("- missing time of day -");
+	                Game.player.sendMessage("{?} - Missing time of day [1000, 6000, 32000]");
 	                return;
 	            }
-				
-				int timeIndex = Integer.parseInt(arguments[2]); // 6000, 18000, 64000
+
+	            int timeIndex = 0;
+	            
+	            try {
+					timeIndex = Integer.parseInt(arguments[2]); // 6000, 18000, 64000
+	            } catch (NumberFormatException exception) {	
+	            	Game.player.sendMessage("{?} - Time value must be a numeric value");
+	            }
+	            
 				Updater.tickCount += timeIndex; break;
 				
-			default: Game.notifications.add("- Unknown time modifier'" + timeAction + "' -"); break;
+			default:
+				Game.player.sendMessage("{?} - Unknown time action '" + timeAction + "'");
+				break;
 		}
 	}
 	
@@ -122,7 +134,7 @@ public class Command {
 	                for (Player player : players) {
 	                    player.die();
 	                }
-	                Game.notifications.add("Ouch! That looked like it hurt"); 
+	                Game.player.sendMessage("{!} - All the players has died");
 	            } 
 	            break;
 	            
@@ -131,18 +143,18 @@ public class Command {
 	                for (Entity entity : entities) {
 	                    entity.die();
 	                }
-	                Game.notifications.add("Ouch! That looked like it hurt"); 
+	                Game.player.sendMessage("{!} - All the entities has died");
 	            } 
 	            break;
 	            
 	        case NEAR_PLAYER: // Get the closest player on the level and kill them
 	            currentPlayer.die();
-	            Game.notifications.add("Ouch! That looked like it hurt"); 
+	            Game.player.sendMessage("{!} - A player has died");
 	            break;
 	    
 	        case EXECUTING_ENTITY: // Kills the entity that executes the command
 	        	executorEntity.die();
-	            Game.notifications.add("Ouch! That looked like it hurt"); 
+	            Game.player.sendMessage("{!} - A player has commit suicide");
 	            break;
 	            
 	        default:
