@@ -18,7 +18,7 @@ public class Cat extends PassiveMob {
 	    super.tick();
 
 	    // follows to the player if holds raw fish
-	    followOnHold(2, "Raw Fish", false);
+	    followOnHold(Items.get("Raw Fish"), 2);
 	}
 
 	@Override

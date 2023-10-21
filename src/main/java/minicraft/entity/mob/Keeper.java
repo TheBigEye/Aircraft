@@ -114,7 +114,7 @@ public class Keeper extends EnemyMob {
             max = 2;
         }
 
-        Sound.Mob_keeper_death.playOnLevel(this.x, this.y);
+        Sound.keeperDeath.playOnLevel(this.x, this.y);
         level.add(new SlimyWizard(1), x, y);
         super.die();
     }

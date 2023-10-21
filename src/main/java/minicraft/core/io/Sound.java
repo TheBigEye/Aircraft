@@ -24,8 +24,8 @@ import minicraft.entity.mob.Player;
 // Creates sounds from their respective files
 public class Sound { 
 	
-    // Executor service to manage playing multiple clips simultaneously
-    private static final ExecutorService executorService = Executors.newFixedThreadPool(5);
+    // Executor service to manage playing multiple clips simultaneously (yeah, im bad optimizing this :/)
+    private static final ExecutorService executorService = Executors.newFixedThreadPool(10);
 	
 	// Player
 	public static final Sound playerHurt 			= new Sound("/resources/sounds/mob/player/hurt.wav");
@@ -62,11 +62,11 @@ public class Sound {
 	public static final Sound airWizardSpawnSpark 	= new Sound("/resources/sounds/mob/airwizard/spawnspark.wav");
 
 	// Keeper
-	public static final Sound Mob_keeper_death = new Sound("/resources/sounds/entities/Keeper/keeperdeath.wav");
+	public static final Sound keeperDeath = new Sound("/resources/sounds/entities/Keeper/keeperdeath.wav");
 
 	// Eye Queen
-	public static final Sound Mob_eyeBoss_death = new Sound("/resources/sounds/entities/EyeQueen/eyedeath.wav");
-	public static final Sound Mob_eyeBoss_changePhase = new Sound("/resources/sounds/entities/EyeQueen/changephase.wav");
+	public static final Sound eyeQueenDeath = new Sound("/resources/sounds/entities/EyeQueen/eyedeath.wav");
+	public static final Sound eyeQueenChangePhase = new Sound("/resources/sounds/entities/EyeQueen/changephase.wav");
 
 	// Dungeon chest
 	public static final Sound dungeonChest1 = new Sound("/resources/sounds/furniture/dungeonchest/dungeonchest1.wav");
@@ -141,7 +141,7 @@ public class Sound {
     }
     
     private Sound(String name) {
-        if (Game.debug) Logger.debug("Loading clip '{}', for sound engine ...", name);
+        if (Game.debug) Logger.debug("Loading sound clip '{}' ...", name);
 
         try {
             URL clipUrl = getClass().getResource(name);
@@ -198,7 +198,7 @@ public class Sound {
         }
     }
     
-    // NOTE: this is a headcache, try not play lot sounds (maximum 5) with this at same time ._.
+    // NOTE: this is a headcache, try not play lot sounds (maximum 10) with this at same time ._.
     public void playOnLevel(int x, int y) {
         Player player = Game.levels[Game.currentLevel].getClosestPlayer(x, y);
 
@@ -206,24 +206,24 @@ public class Sound {
             return;
         }
 
+        // Calculate the distance between the sound source and the player
+        double distance = Math.sqrt(Math.pow(x - player.x, 2) + Math.pow(y - player.y, 2));
+
+        // Set the volume based on the distance from the player
+        float minVolume = volumeControl.getMinimum();
+        float volume = 1.0f - (float) distance / 20.0f; // Start to fade after 28 (distance)
+        if (volume < minVolume) {
+            return; // Don't play the sound if the volume is too low
+        }
+        volumeControl.setValue(volume);
+
+        float fadeRate = 0.1f; // Adjust this value to control the rate at which the sound fades
+
         // Use executor service to play the clip in a separate thread
         executorService.submit(() -> {
             if (clip.isRunning() || clip.isActive()) {
                 clip.stop();
             }
-
-            // Calculate the distance between the sound and the player
-            double distance = Math.sqrt(Math.pow(x - player.x, 2) + Math.pow(y - player.y, 2));
-
-            // Set the volume based on the distance from the player
-            float minVolume = volumeControl.getMinimum();
-            float volume = 1.0f - (float) distance / 20.0f; // Start to fade after 28 (distance)
-            if (volume < minVolume) {
-                volume = minVolume;
-            }
-            volumeControl.setValue(volume);
-
-            float fadeRate = 0.1f; // Adjust this value to control the rate at which the sound fades
 
             clip.start();
 

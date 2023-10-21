@@ -1,10 +1,13 @@
 package minicraft.saveload;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +44,7 @@ import minicraft.entity.particle.TextParticle;
 import minicraft.item.Inventory;
 import minicraft.item.Item;
 import minicraft.item.PotionType;
+import minicraft.level.Level;
 import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
@@ -58,6 +62,7 @@ public class Save {
 	public static final String worldExtension = ".level";
 	public static final String dataExtension = ".data";
 	public static final String saveExtension = ".dat";
+	public static final String mapExtension = ".map";
 	
 	public static final String oldExtension = ".miniplussave";
 
@@ -270,6 +275,7 @@ public class Save {
 	                data.add(String.valueOf(World.levels[currentLevel].getTile(x, y).name));
 	            }
 	        }
+	        
 	        // write the data array to file
 	        writeToFile(location + filename + currentLevel + worldExtension, data);
 	        // clear the data array for next level
@@ -287,6 +293,29 @@ public class Save {
 	        // write the data array to file
 	        writeToFile(location + filename + currentLevel + dataExtension, data);
 	        // clear the data array for next level
+	        data.clear();
+	    }
+	    
+	    for (int currentLevel = 0; currentLevel < World.levels.length; currentLevel++) {
+	        Level currentLevelObj = World.levels[currentLevel];
+
+	        // Serialize the explored array to a byte array
+	        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+	        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream)) {
+	            objectOutputStream.writeObject(currentLevelObj.explored);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+
+	        // Convert the byte array to a base64-encoded string
+	        String exploredData = Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
+	        
+	        // Add the serialized and encoded explored data to the data array
+	        data.add(exploredData);
+	        
+	        // write the data array to file
+	        writeToFile(location + filename + currentLevel + mapExtension, data);
+	        // clear the data array for the next level
 	        data.clear();
 	    }
 	}

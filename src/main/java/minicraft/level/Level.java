@@ -99,6 +99,7 @@ public class Level {
 
 	// Depth level of the level
 	public final int depth;
+	public boolean[][] explored;
 	
 	public static String getLevelName(int depth) {
 		return levelNames[-1 * depth + 2];
@@ -264,6 +265,14 @@ public class Level {
 		if (Game.debug) {
 			printTileLocs(Tiles.get("Stairs Down"));
 		}
+		
+        // Initialize the explored array for all sectors to all false
+        explored = new boolean[this.w][this.h];
+        for (int y = 0; y < this.h; y++) {
+            for (int x = 0; x < this.w; x++) {
+                explored[y][x] = false;
+            }
+        }
 	}
 
 	public Level(int w, int h, int level, Level parentLevel, boolean makeWorld) {
@@ -729,7 +738,7 @@ public class Level {
 
 			if (depth < 0) maxLevel = (-depth) + ((Math.random() > 0.75 && -depth != 4) ? 1 : 0);
 			if (depth > 0) minLevel = maxLevel = 4;
-			
+
 			int lvl = random.nextInt(maxLevel - minLevel + 1) + minLevel;
 			int spawnChance = random.nextInt(100);
 			int nx = (random.nextInt(w) << 4) + 8;
@@ -739,44 +748,32 @@ public class Level {
 
 			// spawns the enemy mobs; first part prevents enemy mob spawn on surface and the sky on first day, more or less.
 			if (!Settings.get("diff").equals("Peaceful")) {
-				if ((depth != 1 && depth != 2) && EnemyMob.checkStartPos(this, nx, ny)) { // if night or underground, with a valid tile, spawn an enemy mob.
-					if (depth != -4) { // normal mobs
-						if (depth == 0) {
-                            if (Updater.getTime() == Updater.Time.Night) {
-                                if (Game.player.isNiceNight == false) {
-                                    if (spawnChance <= 75) add((new Zombie(lvl)), nx, ny);
-                                    else if (spawnChance >= 85) add((new Skeleton(lvl)), nx, ny);
-                                    else add((new Creeper(lvl)), nx, ny);
-                                }
-                            }
-						} else {
-							if (spawnChance <= 40) add((new Slime(lvl)), nx, ny);
-							else if (spawnChance <= 75) add((new Zombie(lvl)), nx, ny);
-							else if (spawnChance >= 85) add((new OldGolem(lvl)), nx, ny);
-							else if (spawnChance >= 82) add((new Skeleton(lvl)), nx, ny);
-							else add((new Creeper(lvl)), nx, ny);
-						}
-
-					} else { // special dungeon mobs
-						if (spawnChance <= 40) add((new Snake(lvl)), nx, ny);
-						else if (spawnChance <= 75) add((new Knight(lvl)), nx, ny);
-						else if (spawnChance >= 85) add((new Snake(lvl)), nx, ny);
-						else add((new Knight(lvl)), nx, ny);
-					}
-
-                    if (depth == -3) {
-                        if (spawnChance <= 40) add((new Slime(lvl)), nx, ny);
-						else if (spawnChance <= 75) add((new Zombie(lvl)), nx, ny);
-						else if (spawnChance >= 85) add((new OldGolem(lvl)), nx, ny);
-						else if (spawnChance >= 82) add((new Skeleton(lvl)), nx, ny);
-						else add((new Creeper(lvl)), nx, ny);
-                    }
-
-					spawned = true;
-				}
+			    if ((depth != 1 && depth != 2) && EnemyMob.checkStartPos(this, nx, ny)) {
+			        if (depth == 0 && Updater.getTime() == Updater.Time.Night && !Game.player.isNiceNight) {
+			            EnemyMob[] mobs = {new Zombie(lvl), new Skeleton(lvl), new Creeper(lvl)};
+			            int mobIndex = spawnChance / 25;
+			            if (mobIndex >= 0 && mobIndex < mobs.length) {
+			                add(mobs[mobIndex], nx, ny);
+			            }
+			        } else if (depth == -4) {
+			            EnemyMob[] mobs = {new Snake(lvl), new Knight(lvl)};
+			            int mobIndex = spawnChance / 50;
+			            if (mobIndex >= 0 && mobIndex < mobs.length) {
+			                add(mobs[mobIndex], nx, ny);
+			            }
+			        } else if (depth == -3 || depth != 0) {
+			            EnemyMob[] mobs = {new Slime(lvl), new Zombie(lvl), new OldGolem(lvl), new Skeleton(lvl), new Creeper(lvl)};
+			            int mobIndex = spawnChance / 20;
+			            if (mobIndex >= 0 && mobIndex < mobs.length) {
+			                add(mobs[mobIndex], nx, ny);
+			            }
+			        }
+			        spawned = true;
+			    }
 			} else {
-				spawned = false;
+			    spawned = false;
 			}
+
 
 			if (depth == 2 && EnemyMob.checkStartPos(this, nx, ny)) { // if nether
 				if (spawnChance <= 40) add((new Skeleton(1)), nx, ny);
@@ -1242,7 +1239,7 @@ public class Level {
 	    if (Game.debug) Logger.info("Generating villages on surface");
 
 	    // makes 2-3 villages based on world size
-	    int numberOfVillages = 2 + random.nextInt(2); // 2-3 aldeas
+	    int numberOfVillages = 2 + random.nextInt(2);
 	    
 	    for (int i = 0; i < numberOfVillages; i++) {
 	        int x, y;
@@ -1289,39 +1286,20 @@ public class Level {
 	private void playRandomMusic(int depth) {
 	    int randomNum = random.nextInt(8);
 	    if (depth == 0) {
-	        if (randomNum == 0) {
-	            Sound.Theme_Surface.playOnDisplay();
-	        } else if (randomNum == 1) {
-	            Sound.Theme_Cave.playOnDisplay();
-	        } else if (randomNum == 2) {
-	            Sound.Theme_Peaceful.playOnDisplay();
-	        } else if (randomNum == 3) {
-	            Sound.Theme_Peaceful.playOnDisplay();
-	        }
+	        Sound[] sounds = {Sound.Theme_Surface, Sound.Theme_Cave, Sound.Theme_Peaceful, Sound.Theme_Peaceful};
+	        sounds[randomNum].playOnDisplay();
 	    } else if (depth == -1) {
-	        if (randomNum == 0) {
-	            Sound.Ambience1.playOnDisplay();
-	        } else if (randomNum == 1) {
-	            Sound.Ambience2.playOnDisplay();
-	        } else if (randomNum == 2) {
-	            Sound.Ambience3.playOnDisplay();
-	        } else if (randomNum == 3) {
-	            Sound.Ambience4.playOnDisplay();
-	        }
+	        Sound[] sounds = {Sound.Ambience1, Sound.Ambience2, Sound.Ambience3, Sound.Ambience4};
+	        sounds[randomNum].playOnDisplay();
 	    } else if (depth == -2) {
-	        if (randomNum == 0) {
-	            Sound.Theme_Cavern.playOnDisplay();
-	        } else if (randomNum == 1) {
-	            Sound.Theme_Cavern_drip.playOnDisplay();
-	        }
+	        Sound[] sounds = {Sound.Theme_Cavern, Sound.Theme_Cavern_drip};
+	        sounds[randomNum].playOnDisplay();
 	    } else if (depth == 1) {
-	        if (randomNum == 0) {
-	            Sound.Theme_Surface.playOnDisplay();
-	        } else if (randomNum == 1) {
-	            Sound.Theme_Fall.playOnDisplay();
-	        }
+	        Sound[] sounds = {Sound.Theme_Surface, Sound.Theme_Fall};
+	        sounds[randomNum].playOnDisplay();
 	    }
 	}
+
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------
 

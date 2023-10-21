@@ -143,7 +143,7 @@ public class EyeQueenPhase3 extends EnemyMob {
         DeathAnim = true;
         AchievementsDisplay.setAchievement("minicraft.achievement.eye_queen", true);
         super.die();
-        Sound.Mob_eyeBoss_death.playOnLevel(this.x, this.y);
+        Sound.eyeQueenDeath.playOnLevel(this.x, this.y);
         // Game.setMenu(new EndGameDisplay(player));
         // Game.setMenu(new EndMessageDisplay(player));
     }

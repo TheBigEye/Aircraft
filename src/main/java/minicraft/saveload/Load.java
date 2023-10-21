@@ -1,13 +1,16 @@
 package minicraft.saveload;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -95,6 +98,7 @@ public class Load {
 	private static final String worldExtension = Save.worldExtension;
 	private static final String dataExtension = Save.dataExtension;
 	private static final String saveExtension = Save.saveExtension;
+	private static final String mapExtension = Save.mapExtension;
 	
 	private static final String oldExtension = Save.oldExtension;
 	
@@ -143,6 +147,7 @@ public class Load {
 			// More of the version will be determined here
 			loadGame("Game"); 
 			loadWorld("Level");
+			loadMap("Level");
 			loadEntities("Entities");
 			loadInventory("Inventory", Game.player.getInventory());
 			loadPlayer("Player", Game.player);
@@ -603,12 +608,45 @@ public class Load {
 			}
 		}
 	}
+	
+	public void loadMap(String filename) {
+		for (int levelDepth = World.maxLevelDepth; levelDepth >= World.minLevelDepth; levelDepth--) {
+		    LoadingDisplay.setProgressType("Map");
+		    LoadingDisplay.setProgressType(Level.getDepthString(levelDepth));
+		    int levelIndex = World.levelIndex(levelDepth);
+
+		    // Clear the data list before loading each level's map data
+		    data.clear();
+
+		    loadFromFile(location + filename + levelIndex + mapExtension);
+
+		    if (data.size() >= 1) { // Check if there is at least one element in the data list
+		        Level currentLevel = World.levels[levelIndex];
+
+		        // Get the base64-encoded explored data from the data list
+		        String exploredData = data.get(0);
+
+		        // Decode the base64 string to a byte array
+		        byte[] byteArray = Base64.getDecoder().decode(exploredData);
+
+		        // Deserialize the byte array to the explored array
+		        try (ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(byteArray))) {
+		            boolean[][] explored = (boolean[][]) objectInputStream.readObject();
+		            currentLevel.explored = explored;
+		        } catch (IOException | ClassNotFoundException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		}
+	}
+
 
 	public void loadPlayer(String filename, Player player) {
 		LoadingDisplay.setProgressType("Player");
 		loadFromFile(location + filename + saveExtension);
 		loadPlayer(player, data);
 	}
+	
 
 	public void loadPlayer(Player player, List<String> origData) {
 		List<String> data = new ArrayList<>(origData);

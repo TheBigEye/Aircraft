@@ -53,7 +53,7 @@ import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 import minicraft.saveload.Save;
 import minicraft.screen.AchievementsDisplay;
-import minicraft.screen.CommandsDisplay;
+import minicraft.screen.ChatDisplay;
 import minicraft.screen.CraftingDisplay;
 import minicraft.screen.InfoDisplay;
 import minicraft.screen.LoadingDisplay;
@@ -88,7 +88,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	// public boolean bedSpawn = false;
 	
 	public boolean suitOn;
-
+	
 	// The maximum stats that the player can have.
 	public static final int maxStat = 10;
 	public static final int maxHealth = maxStat;
@@ -229,6 +229,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		}
 		
 		suitOn = Settings.getBoolean("skinon");
+		
 	}
 
 	public int getMultiplier() {
@@ -670,7 +671,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                     Game.setDisplay(new PauseDisplay());
                 }
 				if (input.getKey("commands").clicked && (boolean)Settings.get("cheats") == true) {
-					Game.setDisplay(new CommandsDisplay());
+					Game.setDisplay(new ChatDisplay());
 				} else if (input.getKey("commands").clicked && (boolean)Settings.get("cheats") == false) {
 					Game.notifications.add("Cheats are disabled!");
 				}

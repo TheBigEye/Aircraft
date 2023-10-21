@@ -29,7 +29,7 @@ public class Tnt extends Furniture implements ActionListener {
 	private static int BLAST_DAMAGE = 75;
 
 	private int damage = 0;
-	private int light;
+	private int light = 0;
 	private int fuseTick = 0;
 	private boolean fuseLit = false;
 	private Timer explodeTimer;

@@ -62,7 +62,7 @@ public class Sheep extends PassiveMob {
 		}
 
 		// follows to the player if holds wheat
-		followOnHold(3, "Wheat", false);
+		followOnHold(Items.get("Wheat"), 3);
 
 		Tile tile = level.getTile(x >> 4, y >> 4);
 		if (tile == Tiles.get("Snow")) {
@@ -71,7 +71,7 @@ public class Sheep extends PassiveMob {
 		}
 		
 		// Sheep sounds
-		if (tickTime / 8 % 24 == 0 && random.nextInt(8) == 4) {
+		if (tickTime /16 %24 == 0 && random.nextInt(8) == 4) {
 			if (random.nextBoolean()) {
 				if (!random.nextBoolean()) {
 					Sound.sheepSay1.playOnLevel(this.x, this.y);

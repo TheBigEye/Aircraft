@@ -15,11 +15,11 @@ import minicraft.graphic.SpriteSheet;
 import minicraft.screen.entry.InputEntry;
 import minicraft.util.Command;
 
-public class CommandsDisplay extends Display {
+public class ChatDisplay extends Display {
 	
     public static InputEntry command = new InputEntry("", ".*", 43, false);
     
-    public CommandsDisplay() {
+    public ChatDisplay() {
         super(new Menu.Builder(false, 3, RelPos.LEFT, command)
             .setTitle("")
             .setTitlePos(RelPos.TOP_LEFT)

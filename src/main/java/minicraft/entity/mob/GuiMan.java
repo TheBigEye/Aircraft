@@ -20,7 +20,7 @@ public class GuiMan extends FrostMob {
 	    super.tick();
 
 		// follows to the player if holds raw fish
-		followOnHold(2, "Raw Fish", false);
+	    followOnHold(Items.get("Raw Fish"), 2);
 	    
         Tile tile = level.getTile(x >> 4, y >> 4);
         if (tile == Tiles.get("Grass") || tile == Tiles.get("Sand")) {

@@ -26,7 +26,7 @@ public class LoadingDisplay extends Display {
 	
 	public LoadingDisplay() {
 		super(true, false);
-		timer = new Timer(500, e -> new Thread(() -> {
+		timer = new Timer(500, event -> new Thread(() -> {
 			try {
 				World.initWorld();
 				Game.setDisplay(null);
@@ -107,6 +107,5 @@ public class LoadingDisplay extends Display {
 		Sound.Theme_Fall.stop();
 		Sound.Theme_Peaceful.stop();
 		Sound.Theme_Surface.stop();
-
 	}
 }

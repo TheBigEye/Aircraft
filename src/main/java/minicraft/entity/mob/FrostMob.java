@@ -3,9 +3,9 @@ package minicraft.entity.mob;
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
-import minicraft.entity.particle.HeartParticle;
 import minicraft.graphic.MobSprite;
 import minicraft.graphic.Screen;
+import minicraft.item.Item;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
@@ -43,10 +43,10 @@ public class FrostMob extends MobAi {
         super.render(screen);
     }
     
-    public void followOnHold(int followRadius, String item, boolean heartParticles) {
+    public void followOnHold(Item item, int followRadius) {
     	Player player = level.getClosestPlayer(x, y);
     	// This is true if the player isnt null, the active item also isnt null, the player is holding the item and within the followRadius
-    	boolean holdingItem = player != null && player.activeItem != null && player.activeItem.name.equals(item) && player.isWithin(followRadius, this);
+    	boolean holdingItem = player != null && player.activeItem != null && player.activeItem.equals(item) && player.isWithin(followRadius, this);
     	
     	if (holdingItem) {
     		// get player walk direction
@@ -64,13 +64,6 @@ public class FrostMob extends MobAi {
 	    } else {
 	        randomizeWalkDir(false);
 	    }
-    	
-    	if (heartParticles) {
-		    if (Settings.get("particles").equals(true) && tickTime /8 %12 == 0) {
-		        int randX = random.nextInt(8);
-		        level.add(new HeartParticle(x - 2 + randX, y - 16));
-		    }
-    	}
     }
 
     @Override

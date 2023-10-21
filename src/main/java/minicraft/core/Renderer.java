@@ -67,58 +67,60 @@ public class Renderer extends Game {
 	private static final Ellipsis ellipsis = (Ellipsis) new SmoothEllipsis(new TickUpdater());
 
 	public static SpriteSheet[] loadDefaultTextures() {
-	    String[] sheetsPaths = {
-    		"/resources/textures/items.png",
-    		"/resources/textures/tiles.png",
-    		"/resources/textures/entities.png",
-    		"/resources/textures/gui.png",
-    		"/resources/textures/font.png",
-    		"/resources/textures/background.png"
+	    final String[] SHEETS_PATHS = {
+	        "/resources/textures/items.png",
+	        "/resources/textures/tiles.png",
+	        "/resources/textures/entities.png",
+	        "/resources/textures/gui.png",
+	        "/resources/textures/font.png",
+	        "/resources/textures/background.png"
 	    };
 	    
-	    SpriteSheet[] sheets = new SpriteSheet[sheetsPaths.length];
-
-	    try {
-	        for (int i = 0; i < sheetsPaths.length; i++) {
-	        	if (debug) Logger.debug("Loading sprite '{}', for default textures ...", sheetsPaths[i]);
-	        	sheets[i] = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(sheetsPaths[i]))));
+	    ArrayList<SpriteSheet> sheets = new ArrayList<>();
+	    
+	    for (String path : SHEETS_PATHS) {
+	        try {
+	            if (debug) Logger.debug("Loading sprite '{}', for default textures ...", path);
+	            sheets.add(new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(path)))));
+	        } catch (NullPointerException | IllegalArgumentException | IOException exception) {
+	            Logger.error("Sprites failure, default textures are unable to load an sprite sheet!");
+	            exception.printStackTrace();
+	            System.exit(-1);
+	            return null;
 	        }
-	    }  catch (NullPointerException | IllegalArgumentException | IOException exception) {
-	    	Logger.error("Sprites failure, default textures are unable to load an sprite sheet!");
-	        exception.printStackTrace();
-	        System.exit(-1);
-	        return null;
 	    }
-			
-	    return sheets;
+	    
+	    return sheets.toArray(new SpriteSheet[0]);
 	}
+
 		
 	public static SpriteSheet[] loadLegacyTextures() {
-	    String[] sheetsPaths = {
-    		"/resources/textures/legacy/items.png",
-    		"/resources/textures/legacy/tiles.png",
-    		"/resources/textures/legacy/entities.png",
-    		"/resources/textures/legacy/gui.png",
-    		"/resources/textures/legacy/font.png",
-    		"/resources/textures/legacy/background.png"
+	    final String[] SHEETS_PATHS = {
+	        "/resources/textures/legacy/items.png",
+	        "/resources/textures/legacy/tiles.png",
+	        "/resources/textures/legacy/entities.png",
+	        "/resources/textures/legacy/gui.png",
+	        "/resources/textures/legacy/font.png",
+	        "/resources/textures/legacy/background.png"
 	    };
+	    
+	    ArrayList<SpriteSheet> sheets = new ArrayList<>();
 
-	    SpriteSheet[] sheets = new SpriteSheet[sheetsPaths.length];
-
-	    try {
-	        for (int i = 0; i < sheetsPaths.length; i++) {
-	        	if (debug) Logger.debug("Loading sprite '{}', for legacy textures ...", sheetsPaths[i]);
-	        	sheets[i] = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(sheetsPaths[i]))));
+	    for (String path : SHEETS_PATHS) {
+	        try {
+	            if (debug) Logger.debug("Loading sprite '{}', for legacy textures ...", path);
+	            sheets.add(new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(path)))));
+	        } catch (NullPointerException | IllegalArgumentException | IOException exception) {
+	            Logger.error("Sprites failure, legacy textures are unable to load an sprite sheet!");
+	            exception.printStackTrace();
+	            System.exit(-1);
+	            return null;
 	        }
-	    }  catch (NullPointerException | IllegalArgumentException | IOException exception) {
-	    	Logger.error("Sprites failure, legacy textures are unable to load an sprite sheet!");
-	        exception.printStackTrace();
-	        System.exit(-1);
-	        return null;
 	    }
-
-	    return sheets;
+	    
+	    return sheets.toArray(new SpriteSheet[0]);
 	}
+
 
 	static void initScreen() {
 		Logger.debug("Initializing game display ...");

@@ -20,7 +20,7 @@ public class Goat extends FrostMob {
         super.tick();
 
 		// follows to the player if holds wheat
-		this.followOnHold(3, "Wheat", false);
+		followOnHold(Items.get("Wheat"), 3);
 
         Tile tile = level.getTile(x >> 4, y >> 4);
         if (tile == Tiles.get("Grass") || tile == Tiles.get("Sand") || tile == Tiles.get("Lawn") || tile == Tiles.get("Rose") || tile == Tiles.get("Daisy") || tile == Tiles.get("Dandelion") || tile == Tiles.get("Poppy")) {

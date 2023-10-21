@@ -15,7 +15,6 @@ public class Command {
 	private static final String NEAR_PLAYER = "@p";
 	private static final String EXECUTING_ENTITY = "@s";
 	
-	
 	public Entity[] getEntitiesBySelector(String targetSelector) {
 	    Level currentLevel = Game.levels[Game.currentLevel]; // The command only works on the current level
 	    Player currentPlayer = Game.player; // Current player instance
@@ -78,7 +77,7 @@ public class Command {
 	                    Game.player.sendMessage("{?} - Time value must be a numeric value");
 	                    return;
 	                }
-	                Updater.tickCount = timeValue;
+	                Updater.setTime(timeValue);
 	            } else {
 					switch (timeString) {
 						case "morning": Updater.changeTimeOfDay(Updater.Time.Morning); break;
@@ -154,11 +153,11 @@ public class Command {
 	    
 	        case EXECUTING_ENTITY: // Kills the entity that executes the command
 	        	executorEntity.die();
-	            Game.player.sendMessage("{!} - A player has commit suicide");
+	            Game.player.sendMessage("{!} - Player has commit suicide");
 	            break;
 	            
 	        default:
-	        	Game.notifications.add("- missing entity selector -"); 
+	        	Game.player.sendMessage("{!} - Unknown entity selector -"); 
 	            break;
 	    }
 	}
