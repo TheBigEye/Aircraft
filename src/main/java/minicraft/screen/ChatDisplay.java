@@ -6,7 +6,6 @@ import java.util.List;
 
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
-import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
 import minicraft.graphic.Color;
 import minicraft.graphic.Font;
@@ -16,15 +15,11 @@ import minicraft.graphic.SpriteSheet;
 import minicraft.screen.entry.InputEntry;
 import minicraft.util.Command;
 
-public class CommandsDisplay extends Display {
-	
-	private static final int CHAT_BACKGOUND_COLOR = Color.BLACK;
-	private static final int CHAT_FOREGOUND_COLOR = Color.GRAY;
-	private static final float CHAT_OPACITY = 0.8F;
+public class ChatDisplay extends Display {
 	
     public static InputEntry command = new InputEntry("", ".*", 43, false);
     
-    public CommandsDisplay() {
+    public ChatDisplay() {
         super(new Menu.Builder(false, 3, RelPos.LEFT, command)
             .setTitle("")
             .setTitlePos(RelPos.TOP_LEFT)
@@ -43,7 +38,7 @@ public class CommandsDisplay extends Display {
     	}
         
     	if (input.getKey("select").clicked) {
-    		String commandString = command.getUserInput().toLowerCase(Localization.getSelectedLocale());
+    		String commandString = command.getUserInput();
     		String[] commandArguments = commandString.split(" ");
     		boolean recognizedCommand = true; // Assume the command is recognized unless proven otherwise
     		
@@ -54,7 +49,7 @@ public class CommandsDisplay extends Display {
     				case "/kill": Command.killCommand(commandArguments); break;
     			
     				case "/say":       
-    					String messageString = command.getUserInput().toLowerCase(Localization.getSelectedLocale()).replace("/say ", "");
+    					String messageString = command.getUserInput().replace("/say ", "");
     					Game.player.sendMessage(messageString);
     					break;
     				
@@ -70,7 +65,7 @@ public class CommandsDisplay extends Display {
         		}
  
 			} else {
-				String messageString = command.getUserInput().toLowerCase(Localization.getSelectedLocale());
+				String messageString = command.getUserInput();
 				Game.player.sendMessage(messageString);
 				Sound.Menu_back.playOnDisplay();
 			}
@@ -104,7 +99,7 @@ public class CommandsDisplay extends Display {
         int lineNumber = 0;
         for (int j = Math.max(0, messages.size() - 7); j < messages.size(); j++) {
         	Font.draw("<Amy>", screen, 8, (lineNumber * 8) + Screen.h - 80, Color.DARK_GREEN);
-            Font.draw(messages.get(j), screen, 6 * 8 + 4, (lineNumber * 8) + Screen.h - 80, CHAT_FOREGOUND_COLOR);
+            Font.draw(messages.get(j), screen, 6 * 8 + 4, (lineNumber * 8) + Screen.h - 80, Color.GRAY);
             lineNumber++;
         }
         

@@ -1,7 +1,5 @@
 package minicraft.screen.entry;
 
-import java.util.Locale;
-
 import minicraft.core.io.InputHandler;
 import minicraft.graphic.Color;
 import minicraft.graphic.Font;
@@ -32,8 +30,7 @@ public abstract class ListEntry {
             return;
         }
 
-        String string = toString().toLowerCase(Locale.ENGLISH);
-        contain = contain.toLowerCase(Locale.ENGLISH);
+        String string = toString();
 
         Font.drawColor(string.replace(contain, Color.toStringCode(containColor) + contain + Color.WHITE_CODE), screen, x, y);
     }

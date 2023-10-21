@@ -20,10 +20,10 @@ public class Cow extends PassiveMob {
         super.tick();
 
 		// follows to the player if holds wheat
-		followOnHold(3, "Wheat", false);
+		followOnHold(Items.get("Wheat"), 3);
         
 		// Cow sounds
-		if (tickTime /8 %24 == 0 && random.nextInt(8) == 4) {
+		if (tickTime /16 %24 == 0 && random.nextInt(8) == 4) {
 			if (random.nextBoolean()) {
 				if (!random.nextBoolean()) {
 					Sound.cowSay1.playOnLevel(this.x, this.y);

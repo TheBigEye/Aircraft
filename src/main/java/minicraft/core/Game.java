@@ -31,7 +31,6 @@ import minicraft.screen.Display;
 import minicraft.screen.TitleDisplay;
 import minicraft.util.Utils;
 
-
 /*
  *This is the main class, where is all the important variables and
  * functions that make up the game at the beginning of the game.
@@ -57,9 +56,7 @@ public class Game {
 	public static int maxFPS;
 	public static Level level;
 
-	
 	// DISPLAY
-
 	static Display display = null;
 	static Display newDisplay = null;
 	
@@ -249,9 +246,9 @@ public class Game {
 		Initializer.createAndDisplayFrame();
 		
 		// Initialize the game modules
-		Tiles.initialize();
 		Sound.initialize();
-
+		Tiles.initialize();
+		
 		// Display objects in the screen
 		Renderer.initScreen();
 

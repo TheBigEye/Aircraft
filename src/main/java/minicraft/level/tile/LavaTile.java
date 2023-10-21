@@ -22,7 +22,7 @@ public class LavaTile extends Tile {
 	}
 
 	public int getLightRadius(Level level, int x, int y) {
-		return 5;
+		return 4;
 	}
 
 	public boolean mayPass(Level level, int x, int y, Entity entity) {

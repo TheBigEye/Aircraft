@@ -105,8 +105,9 @@ public class Furniture extends Entity {
 
     @Override
     protected void touchedBy(Entity entity) {
-        if (entity instanceof Player)
+        if (entity instanceof Player) {
             tryPush((Player) entity);
+        }
     }
 
     /**

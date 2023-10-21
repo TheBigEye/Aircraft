@@ -3,6 +3,8 @@ package minicraft.entity.mob;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -12,7 +14,10 @@ import minicraft.entity.furniture.Spawner;
 import minicraft.graphic.MobSprite;
 import minicraft.graphic.Point;
 import minicraft.graphic.Screen;
+import minicraft.item.Item;
 import minicraft.item.Items;
+import minicraft.item.ToolItem;
+import minicraft.item.ToolType;
 import minicraft.level.tile.Tiles;
 
 public class Creeper extends EnemyMob {
@@ -55,7 +60,7 @@ public class Creeper extends EnemyMob {
 		super.tick();
 
 		// Creepers should not explode if player is in passive mode
-		if (Settings.get("diff").equals("Peaceful") || Game.isMode("Creative")) {
+		if (Settings.get("diff").equals("Peaceful") || ( Game.isMode("Creative") && !fuseLit)) {
 			return; 
 		}
 
@@ -125,7 +130,7 @@ public class Creeper extends EnemyMob {
 					}
 					if (!hasSpawner) {
 						if (level.depth != 1) {
-							level.setAreaTiles(tilePosition.x, tilePosition.y, 0, Tiles.get("Hole"), 0, explosionBlacklist);
+							level.setAreaTiles(this.x >> 4, this.y >> 4, this.lvl - 1, Tiles.get("Hole"), 0, explosionBlacklist);
 						} else {
 							level.setAreaTiles(tilePosition.x, tilePosition.y, 0, Tiles.get("Infinite Fall"), 0, explosionBlacklist);
 						}
@@ -159,7 +164,17 @@ public class Creeper extends EnemyMob {
 
 	@Override
 	public void render(Screen screen) {
-		super.render(screen);
+		if (!fuseLit) {
+			super.render(screen);
+		}
+		
+		if (fuseLit) {
+			if (fuseTime / 8 % 2 == 0) {
+				super.render(screen, fuseLit);
+			} else { 
+				super.render(screen);
+			}
+		}
 	}
 
 	@Override
@@ -183,6 +198,30 @@ public class Creeper extends EnemyMob {
 	public boolean canWool() {
 		return false;
 	}
+	
+    /**
+     * Used in PowerGloveItem.java to let the user pick up furniture.
+     * 
+     * @param player The player picking up the furniture.
+     */
+    @Override
+    public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
+        if (item instanceof ToolItem) {
+        	ToolItem tool = (ToolItem) item;
+        	
+            if (tool.type == ToolType.Igniter) {
+                if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+        			if (fuseTime == 0 && !fuseLit) {
+        				Sound.genericFuse.playOnLevel(this.x, this.y);
+        				fuseTime = MAX_FUSE_TIME;
+        				fuseLit = true;
+        				return true;
+        			}
+                }
+            }
+        }
+        return false;
+    }
 
 	@Override
 	public void die() {

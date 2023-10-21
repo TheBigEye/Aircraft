@@ -41,6 +41,6 @@ public class RecipeEntry extends ItemEntry {
 
     @Override
     public String toString() {
-        return "  " + Localization.getLocalized(recipe.getProduct().getName()) + (recipe.getAmount() > 1 ? " X" + recipe.getAmount() : "");
+        return "  " + Localization.getLocalized(recipe.getProduct().getName()) + (recipe.getAmount() > 1 ? " x" + recipe.getAmount() : "");
     }
 }

@@ -67,58 +67,60 @@ public class Renderer extends Game {
 	private static final Ellipsis ellipsis = (Ellipsis) new SmoothEllipsis(new TickUpdater());
 
 	public static SpriteSheet[] loadDefaultTextures() {
-	    String[] sheetsPaths = {
-    		"/resources/textures/items.png",
-    		"/resources/textures/tiles.png",
-    		"/resources/textures/entities.png",
-    		"/resources/textures/gui.png",
-    		"/resources/textures/font.png",
-    		"/resources/textures/background.png"
+	    final String[] SHEETS_PATHS = {
+	        "/resources/textures/items.png",
+	        "/resources/textures/tiles.png",
+	        "/resources/textures/entities.png",
+	        "/resources/textures/gui.png",
+	        "/resources/textures/font.png",
+	        "/resources/textures/background.png"
 	    };
 	    
-	    SpriteSheet[] sheets = new SpriteSheet[sheetsPaths.length];
-
-	    try {
-	        for (int i = 0; i < sheetsPaths.length; i++) {
-	        	if (debug) Logger.debug("Loading sprite '{}', for default textures ...", sheetsPaths[i]);
-	        	sheets[i] = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(sheetsPaths[i]))));
+	    ArrayList<SpriteSheet> sheets = new ArrayList<>();
+	    
+	    for (String path : SHEETS_PATHS) {
+	        try {
+	            if (debug) Logger.debug("Loading sprite '{}', for default textures ...", path);
+	            sheets.add(new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(path)))));
+	        } catch (NullPointerException | IllegalArgumentException | IOException exception) {
+	            Logger.error("Sprites failure, default textures are unable to load an sprite sheet!");
+	            exception.printStackTrace();
+	            System.exit(-1);
+	            return null;
 	        }
-	    }  catch (NullPointerException | IllegalArgumentException | IOException exception) {
-	    	Logger.error("Sprites failure, default textures are unable to load an sprite sheet!");
-	        exception.printStackTrace();
-	        System.exit(-1);
-	        return null;
 	    }
-			
-	    return sheets;
+	    
+	    return sheets.toArray(new SpriteSheet[0]);
 	}
+
 		
 	public static SpriteSheet[] loadLegacyTextures() {
-	    String[] sheetsPaths = {
-    		"/resources/textures/legacy/items.png",
-    		"/resources/textures/legacy/tiles.png",
-    		"/resources/textures/legacy/entities.png",
-    		"/resources/textures/legacy/gui.png",
-    		"/resources/textures/legacy/font.png",
-    		"/resources/textures/legacy/background.png"
+	    final String[] SHEETS_PATHS = {
+	        "/resources/textures/legacy/items.png",
+	        "/resources/textures/legacy/tiles.png",
+	        "/resources/textures/legacy/entities.png",
+	        "/resources/textures/legacy/gui.png",
+	        "/resources/textures/legacy/font.png",
+	        "/resources/textures/legacy/background.png"
 	    };
+	    
+	    ArrayList<SpriteSheet> sheets = new ArrayList<>();
 
-	    SpriteSheet[] sheets = new SpriteSheet[sheetsPaths.length];
-
-	    try {
-	        for (int i = 0; i < sheetsPaths.length; i++) {
-	        	if (debug) Logger.debug("Loading sprite '{}', for legacy textures ...", sheetsPaths[i]);
-	        	sheets[i] = new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(sheetsPaths[i]))));
+	    for (String path : SHEETS_PATHS) {
+	        try {
+	            if (debug) Logger.debug("Loading sprite '{}', for legacy textures ...", path);
+	            sheets.add(new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(path)))));
+	        } catch (NullPointerException | IllegalArgumentException | IOException exception) {
+	            Logger.error("Sprites failure, legacy textures are unable to load an sprite sheet!");
+	            exception.printStackTrace();
+	            System.exit(-1);
+	            return null;
 	        }
-	    }  catch (NullPointerException | IllegalArgumentException | IOException exception) {
-	    	Logger.error("Sprites failure, legacy textures are unable to load an sprite sheet!");
-	        exception.printStackTrace();
-	        System.exit(-1);
-	        return null;
 	    }
-
-	    return sheets;
+	    
+	    return sheets.toArray(new SpriteSheet[0]);
 	}
+
 
 	static void initScreen() {
 		Logger.debug("Initializing game display ...");
@@ -127,6 +129,8 @@ public class Renderer extends Game {
 		
 		screen = new Screen(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
 		lightScreen = new Screen(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
+		
+		Font.updateCharAdvances(sheets[4]);
 		
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		screen.pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
@@ -192,11 +196,12 @@ public class Renderer extends Game {
 			for (int y = 0; y < 56; y++) {
 				for (int x = 0; x < 96; x++) {
 					// Creates the background for the sky (and dungeon) level:
-					screen.render(x * 8 - ((xScroll >> 2) & 7), y * 8 - ((yScroll >> 2) & 7), 3 + 23 * 32, 0, 1);
+					screen.render(x * 8 - ((xScroll >> 2) & 7), y * 8 - ((yScroll >> 2) & 7), 3 + 23 * 32, 0, 1); // for rain
 				}
 			}
 		}
-
+		
+		// for earthquakes
 		level.renderBackground(screen, xScroll, yScroll); // Renders current level background
 		level.renderSprites(screen, xScroll, yScroll); // Renders level sprites on screen
 
@@ -228,6 +233,7 @@ public class Renderer extends Game {
 				screen.darkness(lightScreen, currentLevel, xScroll, yScroll);
 			}
 		}
+		
 	}
 
 	/**
@@ -237,8 +243,6 @@ public class Renderer extends Game {
 	@SuppressWarnings("unchecked")
 	private static void renderGui() {
 		
-		/*renderRain();*/
-
 		if (player.activeItem instanceof ToolItem) {
 			ToolItem tool = (ToolItem) player.activeItem;
 			
@@ -488,27 +492,6 @@ public class Renderer extends Game {
 		
 		renderDebugInfo();
 	}
-	
-	/*public static void renderRain() {
-		// Check if it is raining and the current level is 3
-		if (currentLevel == 3 && player.isRaining == true) {
-
-		    // Loop through the screen width
-		    for (int x = 0; x < 200; x++) {
-		    	// Loop through the screen height
-		    	for (int y = 0; y < 75; y++) {
-		    	  	int dd = (y + x % 2 * 2 + x / 3) - player.rainTick * 2; // Used as part of the positioning.
-
-		        	// Check if the rain should be rendered upwards or downwards
-		        	if (dd < 0 && dd > -140) {
-		        		screen.render(x * 16 - random.nextInt(8), y * 16 - random.nextInt(8), 14 + 24 * 32, 0, 3); // Render the rain upwards
-		        	} else {
-		        		screen.render(x * 16 - random.nextInt(12), y * 16 - random.nextInt(12), 14 + 24 * 32, 0, 3); // Render the rain downwards
-		        	}
-		      	}
-		    }
-		}
-	}*/
 
 	public static void renderBossbar(int barLength, String title) {
 		if (!showDebugInfo) {
@@ -544,8 +527,8 @@ public class Renderer extends Game {
 			ArrayList <String> info = new ArrayList <> ();
 			ArrayList <String> subinfo = new ArrayList <> ();
 
-			info.add("Version: " + Game.BUILD + " (" + Game.VERSION + ")");                 subinfo.add("Played:" + InfoDisplay.getTimeString());
-			info.add("Base: " + "Minicraft Plus Legacy");                                   subinfo.add("Java:" + Utils.JAVA_VERSION + " x" + Utils.JAVA_ARCH);
+			info.add("Version: " + Game.BUILD + " (" + Game.VERSION + ")");                 subinfo.add("Played: " + InfoDisplay.getTimeString());
+			info.add("Base: " + "Minicraft Plus Legacy");                                   subinfo.add("Java: " + Utils.JAVA_VERSION + " x" + Utils.JAVA_ARCH);
 			info.add("" + TimeData.date());                                                 subinfo.add(Utils.getGeneralMemoryUsage());
 			info.add(Initializer.fra + " fps" );                                            subinfo.add(Utils.getMemoryAllocation());
 			info.add("Day tiks: " + Updater.tickCount + " (" + Updater.getTime() + ")");
@@ -569,7 +552,7 @@ public class Renderer extends Game {
 
 			if (levels[currentLevel] != null) {
 				switch (levels[currentLevel].depth) {
-					case 1: levelName = "Aether"; break;
+					case 1: levelName = "Heaven"; break;
 					case 0: levelName = "Surface"; break;
 					case -1: levelName = "Caves"; break;
 					case -2: levelName = "Caverns"; break;
@@ -579,8 +562,8 @@ public class Renderer extends Game {
 					default: levelName = "Unknown"; break;
 				}
 				
-				info.add("Level: " + levelName);
-				info.add("Mob Cnt: " + levels[currentLevel].mobCount + "/" + levels[currentLevel].maxMobCount);
+				info.add("Current level: " + levelName);
+				info.add("Mobs Count: " + levels[currentLevel].mobCount + "/" + levels[currentLevel].maxMobCount);
 				
 				/// Displays number of chests left, if on dungeon level.
 				if (currentLevel == 6) {
@@ -599,8 +582,7 @@ public class Renderer extends Game {
 
 				info.add("");
 				info.add("Level seed: " + levels[currentLevel].getSeed());
-				info.add("Night factor: " + player.isNiceNight + " -> " + player.nightCount + "/4");
-				info.add("Rain factor: " + player.isRaining + " -> " + player.rainCount + "/8");
+				info.add("Moon phase: " + player.isNiceNight + " -> " + player.nightCount + "/4");
 			}
 
 			FontStyle style = new FontStyle(Color.WHITE).setShadowType(Color.BLACK, true).setXPos(1).setYPos(1);
@@ -619,7 +601,7 @@ public class Renderer extends Game {
 		int x = (Screen.w - Font.textWidth(msg)) / 2;
 		int y = (HEIGHT - 8) / 2;
 
-		Font.drawBox(screen, x, y, msg.length(), 1);
+		Font.drawBox(screen, x, y, Font.textWidth(msg) / 8, 1);
 
 		// Renders the focus nagger text with a flash effect...
 		if ((Updater.tickCount / 20) % 2 == 0) { // ...medium yellow color

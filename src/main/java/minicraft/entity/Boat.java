@@ -23,7 +23,11 @@ public class Boat extends Entity {
     public Player playerInBoat = null;
 
     private int exitTimer = 0;
+    private int boatHeight = 0;
+    private boolean boatAnim = false;
     protected int pushTime = 0;
+ 
+    private int tickTime =  0;
 
     private Direction pushDir = Direction.NONE; // the direction to push the furniture
 
@@ -38,40 +42,40 @@ public class Boat extends Entity {
     @Override
     public void render(Screen screen) {
         int xo = x - 4; // Horizontal
-        int yo = y - 8; // Vertical
+        int yo = (y - 8) - boatHeight; // Vertical
 
         if (Game.player.equals(playerInBoat)) {
         	switch (Game.player.dir) {
-        	case UP: // if currently attacking upwards...
-        		screen.render(xo + 4, yo, 2 + 34 * 32, 1, 2);
-        		screen.render(xo - 4, yo, 3 + 34 * 32, 1, 2);
-        		screen.render(xo + 4, yo + 8, 2 + 35 * 32, 1, 2);
-        		screen.render(xo - 4, yo + 8, 3 + 35 * 32, 1, 2);
-        		break;
-
-        	case LEFT: // Attacking to the left... (Same as above)
-        		screen.render(xo + 4, yo, 6 + 34 * 32, 1, 2);
-        		screen.render(xo - 4, yo, 7 + 34 * 32, 1, 2);
-        		screen.render(xo + 4, yo + 8, 6 + 35 * 32, 1, 2);
-        		screen.render(xo - 4, yo + 8, 7 + 35 * 32, 1, 2);
-        		break;
-
-        	case RIGHT: // Attacking to the right (Same as above)
-        		screen.render(xo + 4, yo, 0 + 34 * 32, 1, 2);
-        		screen.render(xo - 4, yo, 1 + 34 * 32, 1, 2);
-        		screen.render(xo + 4, yo + 8, 0 + 35 * 32, 1, 2);
-        		screen.render(xo - 4, yo + 8, 1 + 35 * 32, 1, 2);
-        		break;
-
-        	case DOWN: // Attacking downwards (Same as above)
-        		screen.render(xo + 4, yo, 4 + 34 * 32, 1, 2);
-        		screen.render(xo - 4, yo, 5 + 34 * 32, 1, 2);
-        		screen.render(xo + 4, yo + 8, 4 + 35 * 32, 1, 2);
-        		screen.render(xo - 4, yo + 8, 5 + 35 * 32, 1, 2);
-        		break;
-
-        	case NONE:
-        		break;
+	        	case UP: // if currently attacking upwards...
+	        		screen.render(xo + 4, yo, 2 + 34 * 32, 1, 2);
+	        		screen.render(xo - 4, yo, 3 + 34 * 32, 1, 2);
+	        		screen.render(xo + 4, yo + 8, 2 + 35 * 32, 1, 2);
+	        		screen.render(xo - 4, yo + 8, 3 + 35 * 32, 1, 2);
+	        		break;
+	
+	        	case LEFT: // Attacking to the left... (Same as above)
+	        		screen.render(xo + 4, yo, 6 + 34 * 32, 1, 2);
+	        		screen.render(xo - 4, yo, 7 + 34 * 32, 1, 2);
+	        		screen.render(xo + 4, yo + 8, 6 + 35 * 32, 1, 2);
+	        		screen.render(xo - 4, yo + 8, 7 + 35 * 32, 1, 2);
+	        		break;
+	
+	        	case RIGHT: // Attacking to the right (Same as above)
+	        		screen.render(xo + 4, yo, 0 + 34 * 32, 1, 2);
+	        		screen.render(xo - 4, yo, 1 + 34 * 32, 1, 2);
+	        		screen.render(xo + 4, yo + 8, 0 + 35 * 32, 1, 2);
+	        		screen.render(xo - 4, yo + 8, 1 + 35 * 32, 1, 2);
+	        		break;
+	
+	        	case DOWN: // Attacking downwards (Same as above)
+	        		screen.render(xo + 4, yo, 4 + 34 * 32, 1, 2);
+	        		screen.render(xo - 4, yo, 5 + 34 * 32, 1, 2);
+	        		screen.render(xo + 4, yo + 8, 4 + 35 * 32, 1, 2);
+	        		screen.render(xo - 4, yo + 8, 5 + 35 * 32, 1, 2);
+	        		break;
+	
+	        	case NONE:
+	        		break;
         	}
         }  else {
         	boatSprite.render(screen, x - 8, y - 8);
@@ -81,6 +85,16 @@ public class Boat extends Entity {
 
     @Override
     public void tick() {
+    	tickTime++;
+    	
+    	if (tickTime /2 %8 == 0) {
+    		if (!boatAnim && boatHeight <= 3) boatHeight++;
+    		if (boatHeight == 3) boatAnim = true;
+    		
+    		if (boatAnim && boatHeight >= 0) boatHeight--;
+    		if (boatHeight == 0) boatAnim = false;	
+    	}
+    	
         // moves the furniture in the correct direction.
         move(pushDir.getX(), pushDir.getY());
         pushDir = Direction.NONE;
@@ -253,6 +267,29 @@ public class Boat extends Entity {
 
         return true; // the move was successful.
     }
+    
+    /* @Override
+    protected void touchedBy(Entity entity) {
+        if (level.getTile(this.x, this.y).id != 6) {
+            return;
+        }
+        if (entity instanceof Player) {
+            tryPush((Player) entity);
+        }
+    }
+    */
+    
+    /*
+
+	public void tryPush(Player player) {
+        if (level.getTile(this.x, this.y).id != 6) {
+            return;
+        }
+		if (pushTime == 0) {
+			pushDir = player.dir; // Set pushDir to the player's dir.
+			pushTime = 10; // Set pushTime to 10.
+		}
+	}*/
 
     @Override
     public Boat clone() {

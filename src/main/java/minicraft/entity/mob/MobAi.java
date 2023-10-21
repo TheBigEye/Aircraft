@@ -111,6 +111,14 @@ public abstract class MobAi extends Mob {
             currentSprite.render(screen, xo, yo);
         }
     }
+    
+    public void render(Screen screen, boolean fullbright) {
+        int xo = x - 8;
+        int yo = y - 11;
+
+        MobSprite currentSprite = sprites[dir.getDir()][(walkDist >> 3) % sprites[dir.getDir()].length];
+        currentSprite.render(screen, xo, yo, fullbright);
+    }
 
     @Override
     public void render(Screen screen) {

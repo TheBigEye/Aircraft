@@ -34,10 +34,10 @@ public class TreeTile extends Tile {
 	public enum TreeType {
 		Oak(
 			new Sprite[] {
-		 		new Sprite(18, 0, 1), new Sprite(19, 0, 1),   // [0] [1]
-		 		new Sprite(18, 1, 1), new Sprite(19, 1, 1),   // [2] [3]
-		 		new Sprite(19, 2, 1), 						  // [-] [4]
-		 		new Sprite(19, 3, 1)  						  // [-] [5]
+		 		new Sprite(18, 0, 1), new Sprite(19, 0, 1),
+		 		new Sprite(18, 1, 1), new Sprite(19, 1, 1),
+		 		new Sprite(19, 2, 1),
+		 		new Sprite(19, 3, 1)
 		 		
 			}, "Grass", 
 			new String[] {

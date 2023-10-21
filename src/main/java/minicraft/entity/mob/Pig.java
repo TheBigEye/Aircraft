@@ -20,7 +20,7 @@ public class Pig extends PassiveMob {
         super.tick();
 
 		// follows to the player if holds a carrot
-		followOnHold(5, "Carrot", false);
+		followOnHold(Items.get("Carrot"), 5);
         
 		// Pig sounds
 		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
@@ -42,8 +42,8 @@ public class Pig extends PassiveMob {
         int max = 0;
         
         if (Settings.get("diff").equals("Peaceful") || Settings.get("diff").equals("Easy")) { min = 1; max = 3; }
-        if (Settings.get("diff").equals("Normal")) { min = 1; max = 2; }
-        if (Settings.get("diff").equals("Hard")) { min = 0; max = 2; }
+        else if (Settings.get("diff").equals("Normal")) { min = 1; max = 2; }
+        else if (Settings.get("diff").equals("Hard")) { min = 0; max = 2; }
         
         dropItem(min, max, Items.get("raw pork"));
 

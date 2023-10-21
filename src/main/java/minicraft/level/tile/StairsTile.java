@@ -18,10 +18,6 @@ public class StairsTile extends Tile {
 	private static Sprite up_sprite = new Sprite(48, 0, 2, 2, 1, 0);
 	private static Sprite down_sprite = new Sprite(48, 2, 2, 2, 1, 0);
 	
-	// Obsidian stairs
-	private static Sprite obsidian_up_sprite = new Sprite(50, 0, 2, 2, 1, 0);
-	private static Sprite obsidian_down_sprite = new Sprite(50, 2, 2, 2, 1, 0);
-	
 
 	protected StairsTile(String name, boolean leadsUp) {	
 		super(name, leadsUp ? up_sprite : down_sprite);

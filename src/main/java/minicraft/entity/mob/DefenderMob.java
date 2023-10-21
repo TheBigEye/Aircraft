@@ -91,7 +91,7 @@ public class DefenderMob extends MobAi {
         if (tile != Tiles.get("Oak Planks") && tile != Tiles.get("Path")) {
             return false;
         } else if (tile != Tiles.get("Grass") && tile != Tiles.get("Sand") && tile != Tiles.get("Snow")
-                && tile != Tiles.get("Birch tree") && tile != Tiles.get("Oak tree") && tile != Tiles.get("Flower")
+                && tile != Tiles.get("Birch tree") && tile != Tiles.get("Oak tree")
                 && tile != Tiles.get("Water") && tile != Tiles.get("Wheat") && tile != Tiles.get("Farmland")) {
             return true;
         } else {

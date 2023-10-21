@@ -57,7 +57,7 @@ public class Recipes {
 		loomRecipes.add(new Recipe("Gray dye_1", "Bone powder_1", "Ink sac_1"));
 		loomRecipes.add(new Recipe("Green dye_1", "Lime dye_1", "Ink sac_1"));
 		loomRecipes.add(new Recipe("Lime dye_1", "Cactus_1"));
-		loomRecipes.add(new Recipe("Yellow dye_1", "Flower_1"));
+		loomRecipes.add(new Recipe("Yellow dye_1", "Daisy_1"));
 		loomRecipes.add(new Recipe("Orange dye_1", "Orange tulip_1"));
 		loomRecipes.add(new Recipe("Brown dye_1", "Orange tulip_1", "Ink sac_1"));
 		loomRecipes.add(new Recipe("Red dye_1", "Rose_1"));
@@ -88,13 +88,13 @@ public class Recipes {
 
 		loomRecipes.add(new Recipe("Bed_1", "Oak Wood_5", "Wool_3"));
 
-		loomRecipes.add(new Recipe("blue clothes_1", "cloth_5", "Lapis_1"));
-		loomRecipes.add(new Recipe("green clothes_1", "cloth_5", "Cactus_1"));
-		loomRecipes.add(new Recipe("yellow clothes_1", "cloth_5", "Flower_1"));
-		loomRecipes.add(new Recipe("black clothes_1", "cloth_5", "coal_1"));
-		loomRecipes.add(new Recipe("orange clothes_1", "cloth_5", "rose_1", "Flower_1"));
-		loomRecipes.add(new Recipe("purple clothes_1", "cloth_5", "Lapis_1", "rose_1"));
-		loomRecipes.add(new Recipe("cyan clothes_1", "cloth_5", "Lapis_1", "Cactus_1"));
+		loomRecipes.add(new Recipe("blue clothes_1", "cloth_5", "Blue dye_1"));
+		loomRecipes.add(new Recipe("green clothes_1", "cloth_5", "Green dye_1"));
+		loomRecipes.add(new Recipe("yellow clothes_1", "cloth_5", "Yellow dye_1"));
+		loomRecipes.add(new Recipe("black clothes_1", "cloth_5", "Ink sac_1"));
+		loomRecipes.add(new Recipe("orange clothes_1", "cloth_5", "Orange dye_1"));
+		loomRecipes.add(new Recipe("purple clothes_1", "cloth_5", "Purple dye_1"));
+		loomRecipes.add(new Recipe("cyan clothes_1", "cloth_5", "Cyan dye_1"));
 		loomRecipes.add(new Recipe("reg clothes_1", "cloth_5"));
 
 		workbenchRecipes.add(new Recipe("Wood Sword_1", "Stick_1", "Oak Wood_2"));

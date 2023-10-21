@@ -93,21 +93,21 @@ public class ArrayEntry<T> extends ListEntry {
 	}
 
 	public void setValueVisibility(Object value, boolean visible) {
-		int idx = getIndex(value);
-		if (idx >= 0) {
-			optionVis[idx] = visible;
-			if (idx == selection && !visible) {
+		int index = getIndex(value);
+		if (index >= 0) {
+			optionVis[index] = visible;
+			if (index == selection && !visible) {
 				moveSelection(1);
             }
 		}
 	}
 
 	public boolean getValueVisibility(Object value) {
-		int idx = getIndex(value);
-		if (idx < 0) {
+		int index = getIndex(value);
+		if (index < 0) {
 			return false;
         }
-		return optionVis[idx];
+		return optionVis[index];
 	}
 
 	@Override
@@ -133,8 +133,9 @@ public class ArrayEntry<T> extends ListEntry {
 
 			if (wrap) {
 				selection = selection % options.length;
-				if (selection < 0)
+				if (selection < 0) {
 					selection = options.length - 1;
+				}
 			} else {
 				selection = Math.min(selection, options.length - 1);
 				selection = Math.max(0, selection);
@@ -145,8 +146,9 @@ public class ArrayEntry<T> extends ListEntry {
 	}
 
 	@Override
-	public int getWidth() {
-		return Font.textWidth(Localization.getLocalized(label) + ": ") + maxWidth;
+	public int getWidth() {	
+		String option = options[selection].toString();
+		return Font.textWidth(Localization.getLocalized(label) + ": ") + Font.textWidth(localize ? Localization.getLocalized(option) : option);
 	}
 
 	@Override

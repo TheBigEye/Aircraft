@@ -126,7 +126,7 @@ public class FileHandler extends Game {
 						    newFilenameBuilder.append("(Old)");
 						    newFilename = newFilenameBuilder.toString();
 						} while (new File(newFilename).exists());
-						newFilename += Save.extension;
+						newFilename += Save.saveExtension;
 					}
 				}
 

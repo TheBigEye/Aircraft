@@ -20,18 +20,13 @@ public class LoadingDisplay extends Display {
 	private static String progressType;
 	private static String message;
 
-	/*private static final String[] BuildString = {
-		"Generating", "Separating", "Planting", "Eroding", "Digging",
-		"Raising", "Leveling", "Flattening", "Molding", "Building"
-	};*/
-
 	private final Timer timer;
 
 	private Ellipsis ellipsis = (Ellipsis) new Ellipsis.SmoothEllipsis((Ellipsis.DotUpdater) new Ellipsis.DotUpdater.TimeUpdater());
 	
 	public LoadingDisplay() {
 		super(true, false);
-		timer = new Timer(500, e -> new Thread(() -> {
+		timer = new Timer(500, event -> new Thread(() -> {
 			try {
 				World.initWorld();
 				Game.setDisplay(null);
@@ -112,6 +107,5 @@ public class LoadingDisplay extends Display {
 		Sound.Theme_Fall.stop();
 		Sound.Theme_Peaceful.stop();
 		Sound.Theme_Surface.stop();
-
 	}
 }

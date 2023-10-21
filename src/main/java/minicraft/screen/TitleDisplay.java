@@ -15,7 +15,6 @@ import minicraft.core.Game;
 import minicraft.core.Renderer;
 import minicraft.core.World;
 import minicraft.core.io.InputHandler;
-import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
 import minicraft.graphic.Color;
 import minicraft.graphic.Font;
@@ -119,7 +118,7 @@ public class TitleDisplay extends Display {
 			}
 		}
 
-		if (TimeData.month() == Month.DECEMBER) {
+		/*if (TimeData.month() == Month.DECEMBER) {
 			if (TimeData.day() == 19) rand = 1;
 			if (TimeData.day() == 25) rand = 2;
 		} else {
@@ -156,7 +155,7 @@ public class TitleDisplay extends Display {
 			if (TimeData.day() == 10) rand = 6;
 		} else {
 			rand = random.nextInt(splashes.size() - 3) + 3;
-		}
+		}*/
 
 		World.levels = new Level[World.levels.length];
 
@@ -183,89 +182,83 @@ public class TitleDisplay extends Display {
 
 	@Override
 	public void render(Screen screen) {
-		screen.clear(0);
+	    screen.clear(0);
 
-		if (shouldRender == true) {
-			// Background sprite
-			int hh = 39; // Height of squares (on the spritesheet)
-			int ww = 416; // Width of squares (on the spritesheet)
-			int xxo = (Screen.w - ww * 8) / 2; // X location of the title
-			int yyo = 0; // Y location of the title
+	    if (shouldRender) {
+	        int hh = 39; // Height of squares (on the spritesheet)
+	        int ww = 416; // Width of squares (on the spritesheet)
+	        int xxo = (Screen.w - ww * 8) / 2; // X location of the title
+	        int yyo = 0; // Y location of the title
 
-			for (int y = 0; y < hh; y++) {
-				for (int x = 0; x < ww; x++) {
-					screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x - 8, y, 0, 5));
-				}
+	        for (int y = 0; y < hh; y++) {
+	            for (int x = 0; x < ww; x++) {
+	                screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x - 8, y, 0, 5));
+	            }
+	        }
+	    }
+
+	    if (shouldRender) {
+	        super.render(screen);
+	        menus[0].render(screen);
+	    }
+
+	    if (shouldRender) {
+	        int h = 6; // Height of squares (on the spritesheet)
+	        int w = 26; // Width of squares (on the spritesheet)
+	        int xo = (Screen.w - w * 8) / 2; // X location of the title
+	        int yo = 55; // Y location of the title
+
+	        for (int y = 0; y < h; y++) {
+	            for (int x = 0; x < w; x++) {
+	                screen.render(xo + x * 8, yo + y * 8, x + (y + 7) * 32, 0, 3);
+	            }
+	        }
+	    }
+
+	    if (shouldRender) {
+	    	
+	    	boolean isblue = splashes.get(rand).contains("blue");
+			boolean isGreen = splashes.get(rand).contains("Green");
+			boolean isRed = splashes.get(rand).contains("Red");
+			boolean isOrange = splashes.get(rand).contains("Orange");
+			boolean isYellow = splashes.get(rand).contains("Yellow") || splashes.get(rand).contains("Coffee edition") || splashes.get(rand).contains("The movie");
+
+			if (reverse) {
+				count--;
+				if (count == 0) reverse = false;
+			} else {
+				count++;
+				if (count == 25) reverse = true;
 			}
-		}
 
-		// Render the options
-		super.render(screen);
+			/// This isn't as complicated as it looks. It just gets a color based off of count, which oscilates between 0 and 25.
+			int textColor = 5 - count / 5; // this number ends up being between 1 and 5, inclusive.
+			int splashColor =
+				isblue ? Color.BLUE :
+				isRed ? Color.RED :
+				isGreen ? Color.GREEN :
+				isOrange ? Color.ORANGE :
+				isYellow ? Color.YELLOW :
+			Color.get(1, textColor * 51, textColor * 51, textColor * 25);
+	    	
+	        Font.drawCentered(splashes.get(rand), screen, 101, splashColor & 2);
+	        Font.drawCentered(splashes.get(rand), screen, 100, splashColor);
+	        
+	        Font.draw("Mod by TheBigEye", screen, 4, Screen.h - 9, Color.get(-1, 240, 240, 240) % 2);
+	        Font.draw("Mod by TheBigEye", screen, 4, Screen.h - 10, Color.get(-1, 240, 240, 240));
+	        
+	        Font.draw("Version " + Game.BUILD, screen, Screen.w - (11 * 8) - 1, Screen.h - 9, Color.get(-1, 240, 240, 240) % 2);
+	        Font.draw("Version " + Game.BUILD, screen, Screen.w - (11 * 8) - 1, Screen.h - 10, Color.get(-1, 240, 240, 240));
+	    }
 
-        if (shouldRender) {
-            menus[0].render(screen);
-        }
-
-		if (shouldRender == true) {
-			// Title sprite
-			int h = 6; // Height of squares (on the spritesheet)
-			int w = 26; // Width of squares (on the spritesheet)
-			int xo = (Screen.w - w * 8) / 2; // X location of the title
-			int yo = 55; // Y location of the title
-
-			for (int y = 0; y < h; y++) {
-				for (int x = 0; x < w; x++) {
-					screen.render(xo + x * 8, yo + y * 8, x + (y + 7) * 32, 0, 3);
-				}
-			}
-		}
-
-		boolean isblue = splashes.get(rand).contains("blue");
-		boolean isGreen = splashes.get(rand).contains("Green");
-		boolean isRed = splashes.get(rand).contains("Red");
-		boolean isOrange = splashes.get(rand).contains("Orange");
-		boolean isYellow = splashes.get(rand).contains("Yellow") 
-				|| splashes.get(rand).contains("Coffee edition") 
-				|| splashes.get(rand).contains("The movie");
-
-		if (reverse) {
-			count--;
-			if (count == 0) reverse = false;
-		} else {
-			count++;
-			if (count == 25) reverse = true;
-		}
-
-		/// This isn't as complicated as it looks. It just gets a color based off of count, which oscilates between 0 and 25.
-		int textColor = 5 - count / 5; // this number ends up being between 1 and 5, inclusive.
-		int splashColor =
-			isblue ? Color.BLUE :
-			isRed ? Color.RED :
-			isGreen ? Color.GREEN :
-			isOrange ? Color.ORANGE :
-			isYellow ? Color.YELLOW :
-		Color.get(1, textColor * 51, textColor * 51, textColor * 25);
-
-		if (shouldRender == true) {
-			Font.drawCentered(splashes.get(rand), screen, 101, splashColor & 2);
-			Font.drawCentered(splashes.get(rand), screen, 100, splashColor);
-			
-			// Show the version number and the author's name below the options
-			Font.draw(Localization.getLocalized("Mod by TheBigEye"), screen, 4, Screen.h - 9, Color.get(-1, 240, 240, 240) % 2);
-			Font.draw(Localization.getLocalized("Mod by TheBigEye"), screen, 4, Screen.h - 10, Color.get(-1, 240, 240, 240));
-			
-			// Show 
-			Font.draw("Version " + Game.BUILD, screen, Screen.w - (11 * 8) - 1, Screen.h - 9, Color.get(-1, 240, 240, 240) % 2);
-			Font.draw("Version " + Game.BUILD, screen, Screen.w - (11 * 8) - 1, Screen.h - 10, Color.get(-1, 240, 240, 240));
-		}
-
-		for (int x = 0; x < 200; x++) { // Loop however many times depending on the width (It's divided by 3 because the pixels are scaled up by 3)
-			for (int y = 0; y < 150; y++) { // Loop however many times depending on the height (It's divided by 3 because the pixels are scaled up by 3)
-				int dd = (y + x % 2 * 2 + x / 2) - time * 2; // Used as part of the positioning.
-				if (dd < 0 && dd > -140) {
-					screen.render(x * 8, Screen.h - y * 8 - 8, 12 + 24 * 32, 0, 3); // The squares will go down.
-				}
-			}
-		}
+	    int transitionStart = Math.max(-140, -(time * 2));
+	    for (int x = 0; x < 200; x++) {
+	        for (int y = 0; y < 150; y++) {
+	            int dd = (y + x % 2 * 2 + x / 2) - time * 2;
+	            if (dd < 0 && dd > transitionStart) {
+	                screen.render(x * 8, Screen.h - y * 8 - 8, 12 + 24 * 32, 0, 3);
+	            }
+	        }
+	    }
 	}
 }

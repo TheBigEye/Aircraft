@@ -125,7 +125,7 @@ public class EyeQueen extends GiantBossMob {
 
 
     public void die() {
-        Sound.Mob_eyeBoss_changePhase.playOnLevel(this.x, this.y);
+        Sound.eyeQueenChangePhase.playOnLevel(this.x, this.y);
         
         beaten = true;
         active = false;

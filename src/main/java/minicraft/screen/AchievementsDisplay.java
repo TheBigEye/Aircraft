@@ -74,13 +74,13 @@ public class AchievementsDisplay extends Display {
 	public AchievementsDisplay() {
 		super(true, true,
 			new Menu.Builder(true, 2, RelPos.CENTER, getAchievementsAsEntries())
-			.setSize(220, 96)
-			.setPositioning(new Point((Screen.w / 2) - 1, Screen.h / 2 - 64), RelPos.BOTTOM)
+			.setSize(220, 136)
+			.setPositioning(new Point((Screen.w / 2) - 1, Screen.h / 2 - 90), RelPos.BOTTOM)
 			.createMenu(),
 			
 			new Menu.Builder(true, 2, RelPos.BOTTOM, new StringEntry(""))
 			.setSize(220, 48)
-			.setPositioning(new Point((Screen.w / 2) - 1, Screen.h / 2 + 32), RelPos.BOTTOM)
+			.setPositioning(new Point((Screen.w / 2) - 1, Screen.h / 2 + 46), RelPos.BOTTOM)
 			.createMenu()
 		);
 	}
@@ -165,11 +165,11 @@ public class AchievementsDisplay extends Display {
 		if (selectedAchievement != null) {
 			
 			// Render Achievement Info.
-			if (selectedAchievement.getUnlocked()){
+			/*if (selectedAchievement.getUnlocked()){
 				Font.drawCentered(Localization.getLocalized("Earned!"), screen, 48, Color.GREEN);
 			} else {
 				Font.drawCentered(Localization.getLocalized("Not Earned"), screen, 48, Color.RED);
-			}
+			}*/
 	
 			// Achievement description.
 			menus[1].setEntries(StringEntry.useLines(Color.GRAY, Font.getLines(
@@ -183,7 +183,7 @@ public class AchievementsDisplay extends Display {
 		}
 
 		// Help text.
-		Font.drawCentered("Use " + Game.input.getMapping("cursor-down") + " and " + Game.input.getMapping("cursor-up") + " to move.", screen, Screen.h - 16, Color.DARK_GRAY);
+		Font.drawCentered("Use " + Game.input.getMapping("cursor-down") + " and " + Game.input.getMapping("cursor-up") + " to move.", screen, Screen.h - 24, Color.DARK_GRAY);
 	}
 
 	@Override
@@ -238,7 +238,7 @@ public class AchievementsDisplay extends Display {
         for (Object id : unlockedAchievements.toList()) {
         	
     		if (Game.debug) {
-    			Logger.debug("Checking and updating '{}', achievement data ...", Localization.getLocalized(id.toString()));
+    			Logger.debug("Checking and updating '{}', achievement data ...", id.toString());
     		}
         	
             if (!setAchievement(id.toString(), true, false)) {

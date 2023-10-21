@@ -217,22 +217,22 @@ No puedes ir a casa desde aqui!
 
 # ArmorItem.java
 Leather Armor
-Armadura de Cuero
+Armadura De Cuero
 
 Snake Armor
-Armadura de Serpiente
+Armadura De Serpiente
 
 ChainMail Armor
-Armadura Cota de malla
+Armadura Cota De Malla
 
 Iron Armor
-Armadura de Hierro
+Armadura De Hierro
 
 Gold Armor
-Armadura de Oro
+Armadura De Oro
 
 Gem Armor
-Armadura de Gema
+Armadura De Gema
 
 # BoatItem.java
 
@@ -248,18 +248,18 @@ Antidious
 Antidoto
 
 AlAzif
-Libro del Aire
+Libro Del Aire
 
 # BucketItem.java
 
 Empty Bucket
-Cubeta vacia
+Cubeta Vacia
 
 Water Bucket
-Cubeta de Agua
+Cubeta De Agua
 
 Lava Bucket
-Cubeta de Lava
+Cubeta De Lava
 
  Bucket
  Cubeta
@@ -302,37 +302,37 @@ Apple
 Manzana
 
 Frozen palette
-Paleta congelada
+Paleta Congelada
 
 Mushroom Soup
-Sopa de hongos
+Sopa De hongos
 
 Carrot Soup
-Sopa de Zanahoria
+Sopa De Zanahoria
 
 Raw Chicken
-Pollo crudo
+Pollo Crudo
 
 Raw Pork
-Cerdo crudo
+Cerdo Crudo
 
 Raw Fish
-Pescado crudo
+Pescado Crudo
 
 Raw Beef
-Bistec crudo
+Bistec Crudo
 
 Cooked Chicken
-Pollo cocinado
+Pollo Cocinado
 
 Pork Chop
-Chuleta de Cerdo
+Chuleta De Cerdo
 
 Cooked Fish
-Pescado cocido
+Pescado Cocido
 
 Cooked Pork
-Cerdo cocido
+Cerdo Cocido
 
 Steak
 Bistec
@@ -346,76 +346,76 @@ Zanahoria Dorada
 # FurnitureItem.java
 
 KingZombie Spawner
-Generador de Reyes Zombies
+Generador De Reyes Zombies
 
 Cow Spawner
-Generador de Vacas
+Generador De Vacas
 
 Pig Spawner
-Generador de Cerdos
+Generador De Cerdos
 
 Sheep Spawner
-Generador de Ovejas
+Generador De Ovejas
 
 Goat Spawner
-Generador de Cabras
+Generador De Cabras
 
 Chicken Spawner
-Generador de Pollos
+Generador De Pollos
 
 Cleric Spawner
-Generador de Clerigos
+Generador De Clerigos
 
 Librarian Spawner
-Generador de Bibliotecarios
+Generador De Bibliotecarios
 
 GuiMan Spawner
-Generador de Pinguinos
+Generador De Pinguinos
 
 Cat Spawner
-Generador de Gatos
+Generador De Gatos
 
 Golem Spawner
-Generador de Golems
+Generador De Golems
 
 Slime Spawner
-Generador de Slimes
+Generador De Slimes
 
 Zombie Spawner
-Generador de Zombies
+Generador De Zombies
 
 Mooshroom Spawner
-Generador de Vacahongos
+Generador De Vacahongos
 
 Creeper Spawner
-Generador de Creepers
+Generador De Creepers
 
 Skeleton Spawner
-Generador de Esqueletos
+Generador De Esqueletos
 
 Snake Spawner
-Generador de Serpientes
+Generador De Serpientes
 
 Knight Spawner
-Generador de Caballeros
+Generador De Caballeros
 
 OldGolem Spawner
-Generador de Golems viejos
+Generador De Golems viejos
 
 AirWizard Spawner
-Generador de Magos de Aire
+Generador De Magos de Aire
 
 EyeQueen Spawner
-Generador de Reinas Ojo
+Generador De Reinas Ojo
 
 Cthulhu Spawner
-Generador de Cthulhu
+Generador De Cthulhu
 
 Keeper Spawner
-Generador de Guardian
+Generador De Guardian
 
 Workbench
-Mesa de Crafteo
+Mesa De Trabajo
 
 Oven
 Horno
@@ -445,10 +445,10 @@ Lantern
 Linterna
 
 Iron Lantern
-Linterna de Hierro
+Linterna De Hierro
 
 Gold Lantern
-Linterna de Oro
+Linterna De Oro
 
 Tnt
 Dinamita
@@ -457,94 +457,94 @@ Bed
 Cama
 
 Slime Statue
-Estatua de slime
+Estatua De Slime
 
 Zombie Statue
-Estatua de Zombie
+Estatua De Zombie
 
 Skeleton Statue
-Estatua de Esqueleto
+Estatua De Esqueleto
 
 Chest
 Cofre
 
 Dungeon Chest
-Cofre de mazmorra
+Cofre De mazmorra
 
 # MapItem.java
 
 Map book
-Libro de mapas
+Libro De mapas
 
 # AmuletItem.java
 
 Eye Amulet
-Amuleto del ojo
+Amuleto Del ojo
 
 # PotionType.java
 
 None Potion
-Ninguna Poción
+Ninguna Pocion
 
 Speed Potion
-Pocion de Velocidad
+Pocion De Velocidad
 
 xSpeed Potion
-Pocion de Velocidad II
+Pocion De Velocidad II
 
 Light Potion
-Pocion de Luz
+Pocion De Luz
 
 xLight Potion
-Pocion de Luz II
+Pocion De Luz II
 
 Swim Potion
-Pocion de Nadar
+Pocion De Nadar
 
 xSwim Potion
-Pocion de Nadar II
+Pocion De Nadar II
 
 Energy Potion
-Pocion de Energia
+Pocion De Energia
 
 xEnergy Potion
-Pocion de Energia II
+Pocion De Energia II
 
 Regen Potion
-Pocion de Regeneracion
+Pocion De Curacion
 
 xRegen Potion
-Pocion de Regen II
+Pocion De Curacion II
 
 Health Potion
-Pocion de Vida
+Pocion De Vida
 
 xHealth Potion
-Pocion de Vida II
+Pocion De Vida II
 
 Time Potion
-Pocion de Tiempo
+Pocion De Tiempo
 
 Lava Potion
-Pocion de Lava
+Pocion De Lava
 
 xLava Potion
-Pocion de Lava II
+Pocion De Lava II
 
 Shield Potion
-Pocion de Escudo
+Pocion De Escudo
 
 xShield Potion
-Pocion de Escudo II
+Pocion De Escudo II
 
 Haste Potion
-Pocion de Prisa
+Pocion De Prisa
 
 Escape Potion
-Pocion de Escapar
+Pocion De Escape
 
 Blindness Potion
-Pocion de ceguera
+Pocion De Ceguera
 
 Potion
 Pocion
@@ -562,13 +562,13 @@ Tijeras
 # StackableItem.java
 
 Oak Wood
-Madera de Roble
+Madera De Roble
 
 Spruce Wood
-Madera de Abeto
+Madera De Abeto
 
 Birch Wood
-Madera de Abedul
+Madera De Abedul
 
 Leaf
 Hoja
@@ -610,7 +610,7 @@ Stone
 Piedra
 
 Holy Stone
-Piedra sagrada
+Piedra Sagrada
 
 Andesite
 Andesita
@@ -631,64 +631,64 @@ Quartzite
 Cuarcita
 
 Light gray dye
-Tinte gris claro
+Tinte Gris Claro
 
 Gray dye
-Tinte gris
+Tinte Gris
 
 Ink sac
-Saco de tinta
+Saco De Tinta
 
 Lime dye
-Tinte lima
+Tinte Lima
 
 Yellow dye
-Tinte amarillo
+Tinte Amarillo
 
 Green dye
-Tinte verde
+Tinte Verde
 
 Brown dye
-Tinte marron
+Tinte Marron
 
 Red dye
-Tinte rojo
+Tinte Rojo
 
 Purple dye
 Tinte Morado
 
 Pink dye
-Tinte rosa
+Tinte Rosa
 
 Magenta dye
-Tinte magenta
+Tinte Magenta
 
 Dark green dye
-Tinte verde oscuro
+Tinte Verde Oscuro
 
 Orange dye
-Tinte naranja
+Tinte Naranja
 
 Blue dye
-Tinte azul
+Tinte Azul
 
 Cyan dye
-Tinte cian
+Tinte Cian
 
 Light blue dye
-Tinte celeste
+Tinte Celeste
 
 Coal
 Carbon
 
 Iron Ore
-Mena de Hierro
+Mena De Hierro
 
 Lapis
 Lapis
 
 Gold Ore
-Mena de Oro
+Mena De Oro
 
 Iron
 Hierro
@@ -754,90 +754,100 @@ Sharp III
 Filo III
 
 Cordyceps essence
-Esencia de cordyceps
+Esencia De Cordyceps
 
 Sticky essence
-Esencia pegajosa
+Esencia Pegajosa
 
 Gaseous essence
-Esencia gaseosa
+Esencia Gaseosa
 
 Master essence
-Esencia maestra
+Esencia Maestra
 
 # TileItem.java
 
-Flower
-Flor
+Daisy
+Margarita
 
-Orange Tulip
-Tulipan naranja
+Rose
+Rosa
 
-Red Mushroom
-Hongo rojo
+Dandelion
+Diente De Leon
 
-Brown Mushroom
-Hongo cafe
+Poppy
+Amapola
+
 
 Acorn
 Bellota
 
 Birch Cone
-Cono de abedul
+Piña De Abedul
 
 Fir Cone
-Cono de abeto
+Piña De Abeto
 
 Pine Cone
-Cono de pino
+Piña De Pino
 
 Dirt
 Tierra
 
-Sky dirt
-Tierra del cielo
+Sky Grass
+Cesped Del Cielo
+
+Ice
+Hielo
+
+Red Mushroom
+Hongo Rojo
+
+Brown Mushroom
+Hongo Cafe
 
 Natural Rock
-Piedra natural
+Piedra Natural
 
 Natural Hard Rock
-Piedra natural dura
+Piedra Natural Dura
 
 Oak Plank
-Tablon de Roble
+Tablon De Roble
 
 Spruce Plank
-Tablon de Abeto
+Tablon De Abeto
 
 Birch Plank
-Tablon de Abedul
+Tablon De Abedul
 
 Oak Wall
-Muro de Roble
+Muro De Roble
 
 Spruce Wall
-Muro de Abeto
+Muro De Abeto
 
 Birch Wall
-Muro de Abedul
+Muro De Abedul
 
 Oak Door
-Puerta de Roble
+Puerta De Roble
 
 Spruce Door
-Puerta de Abeto
+Puerta De Abeto
 
 Birch Door
-Puerta de Abedul
+Puerta De Abedul
 
 Stone Brick
-Ladrillo de Piedra
+Ladrillo De Piedra
 
 Stone Wall
-Muro de Piedra
+Muro De Piedra
 
 Stone Door
-Puerta de Piedra
+Puerta De Piedra
 
 Holy Brick
 Ladrillo Sagrado
@@ -849,61 +859,61 @@ Holy Door
 Puerta Sagrada
 
 Obsidian Brick
-Ladrillo de Obsidiana
+Ladrillo De Obsidiana
 
 Obsidian Wall
-Muro de Obsidiana
+Muro De Obsidiana
 
 Obsidian Door
-Puerta de Obsidiana
+Puerta De Obsidiana
 
 Wool
 Lana
 
 Light Gray Wool
-Lana gris claro
+Lana Gris Claro
 
 Gray Wool
-Lana gris
+Lana Gris
 
 Black Wool
-Lana negra
+Lana Negra
 
 Brown Wool
 Lana Marron
 
 Red Wool
-Lana roja
+Lana Roja
 
 Orange Wool
-Lana naranja
+Lana Naranja
 
 Yellow Wool
-Lana amarilla
+Lana Amarilla
 
 Lime Wool
-Lana lima
+Lana Lima
 
 Green Wool
-Lana verde
+Lana Verde
 
 Cyan Wool
-Lana cian
+Lana Cian
 
 Light Blue Wool
-Lana celeste
+Lana Celeste
 
 Blue Wool
-Lana azul
+Lana Azul
 
 Purple Wool
-Lana morada
+Lana Morada
 
 Magenta Wool
-Lana magenta
+Lana Magenta
 
 Pink Wool
-Lana rosa
+Lana Rosa
 
 Sand
 Arena
@@ -927,22 +937,22 @@ Potato
 Patata
 
 Sky wart
-Verruga del Cielo
+Verruga Del Cielo
 
 Sky Seeds
-Semillas del Cielo
+Semillas Del Cielo
 
 Grass Seeds
-Semillas de Pasto
+Semillas De Cesped
 
 Bone
 Hueso
 
 Bone Powder
-Polvo de Hueso
+Polvo De Hueso
 
 Ferrosite
-Nube rapida
+Nube Rapida
 
 Cloud
 Nube
@@ -976,16 +986,16 @@ Caña de Pescar
 # FishingRodItem.java
 
 Wood Fishing rod
-Caña de pescar de madera
+Caña De Pescar De Madera
 
 Iron Fishing rod
-Caña de pescar de hierro
+Caña De Pescar De Hierro
 
 Gold Fishing rod
-Caña de pescar de oro
+Caña De Pescar De Oro
 
 Gem Fishing rod
-Caña de pescar de gema
+Caña De Pescar De Gema
 
 # ToolType.java
 
@@ -1039,16 +1049,16 @@ Gem Ore
 Mena de Gema
 
 Oak Planks
-Tablon de roble
+Tablon De roble
 
 Spruce Planks
-Tablon de abeto
+Tablon De abeto
 
 Birch Planks
-Tablon de abedul
+Tablon De abedul
 
 Stone Bricks
-Ladrillo de piedra
+Ladrillo De piedra
 
 Obsidian
 Obsidiana
@@ -1057,10 +1067,10 @@ Oak Wall
 Muro de roble
 
 Spruce Wall
-Muro de abeto
+Muro De abeto
 
 Birch Wall
-Muro de abedul
+Muro De abedul
 
 Grass
 Cesped
@@ -1093,7 +1103,7 @@ Tree
 Arbol
 
 Tree Sapling
-Brote de Arbol
+Brote De Arbol
 
 Sand
 Arena
@@ -1102,19 +1112,19 @@ Cactus
 Cactus
 
 Cactus Sapling
-Brote de Cactus
+Brote De Cactus
 
 Lava
 Lava
 
 Lava Brick
-Ladrillo de Lava
+Ladrillo De Lava
 
 Explode
 Explotar
 
 Farmland
-Tierras de cultivo
+Tierras De Cultivo
 
 Wheat
 Trigo
@@ -1298,33 +1308,6 @@ Cargando
 
 Generating
 Generando
-
-Separating
-Separando
-
-Planting
-Plantando
-
-Eroding
-Erosionando
-
-Digging
-Cavando
-
-Raising
-Elevenado
-
-Leveling
-Nivelando
-
-Flattening
-Aplanando
-
-Molding
-Moldeando
-
-Building
-Construyendo
 
 Rendering
 Renderizando

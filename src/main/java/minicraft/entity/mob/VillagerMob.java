@@ -79,4 +79,9 @@ public class VillagerMob extends MobAi {
 	public int getMaxLevel() {
 		return 1;
 	}
+	
+	@Override
+	public int getLightRadius() {
+		return 3;
+	}
 }

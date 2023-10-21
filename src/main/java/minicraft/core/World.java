@@ -19,13 +19,14 @@ import minicraft.screen.WorldSelectDisplay;
 public class World extends Game {
 	private World() {}
 
-    /// This is to map the level depths to each level's index in Game's levels array. This must ALWAYS be the same length as the levels array, of course.
+    // This is to map the level depths to each level's index in Game's levels array. 
+	// This must ALWAYS be the same length as the levels array, of course.
 	public static final int[] indexToDepth = {-3, -2, -1, 0, 1, 2, -4};
 	public static final int minLevelDepth, maxLevelDepth;
 
-    static int worldSize = 128; // The size of the world
-	public static int worldWidth = worldSize; // The width of the world
-	public static int worldHeight = worldSize; // The height of the world
+    static int worldSize = 128;
+	public static int worldWidth = worldSize;
+	public static int worldHeight = worldSize;
 
 	static int playerDeadTime; // The time after you die before the dead menu shows up.
 	static int pendingLevelChange; // Used to determine if the player should change levels or not.
@@ -125,7 +126,7 @@ public class World extends Game {
             seed = WorldGenDisplay.getSeed().orElse(new Random().nextLong());
 			random = new Random(seed);
 
-			float loadingInc = 100f / (maxLevelDepth - minLevelDepth + 1); // The .002 is for floating point errors, in case they occur.
+			float loadingIncrement = 100f / (maxLevelDepth - minLevelDepth + 1); // The .002 is for floating point errors, in case they occur.
 			for (int i = maxLevelDepth; i >= minLevelDepth; i--) {
 				// i = level depth; the array starts from the top because the parent level is used as a reference, so it should be constructed first. It is expected that the highest level will have a null parent.
 
@@ -138,7 +139,7 @@ public class World extends Game {
 					levels[levelIndex(i)] = new Level(worldSize, worldSize, random.nextLong(), i, levels[levelIndex(i + 1)], !WorldSelectDisplay.hasLoadedWorld());
 				}
 
-				LoadingDisplay.progress(loadingInc);
+				LoadingDisplay.progress(loadingIncrement);
 			}
 
 			Logger.trace("Level loading complete.");
