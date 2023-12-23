@@ -51,7 +51,7 @@ public class CloudTile extends Tile {
 	@Override
 	public void steppedOn(Level level, int x, int y, Entity entity) {
 	    if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
-	        if (entity instanceof Mob && random.nextInt(1) == 0) {
+	        if (entity instanceof Mob && random.nextBoolean()) {
 	            int spawnX  = (entity.x - 4) + random.nextInt(8) - random.nextInt(8);
 	            int spawnY = (entity.y - 4) + random.nextInt(8) - random.nextInt(8);
 

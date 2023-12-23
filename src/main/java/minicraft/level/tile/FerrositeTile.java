@@ -43,7 +43,7 @@ public class FerrositeTile extends Tile {
 		if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
 			// Spawn ferrosite particles under the mobs
 			if (entity instanceof Mob) {
-				if (random.nextInt(1) == 0) {
+				if (random.nextBoolean()) {
 					int spawnX  = (entity.x - 4) + random.nextInt(8) - random.nextInt(8);
 					int spawnY = (entity.y - 4) + random.nextInt(8) - random.nextInt(8);
 					

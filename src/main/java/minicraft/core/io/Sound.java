@@ -14,6 +14,8 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.Mixer;
+import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.tinylog.Logger;
@@ -140,7 +142,24 @@ public class Sound {
     	Logger.debug("Initializing sound engine ...");
     }
     
+    public static boolean isAudioOutputAvailable() {
+        Mixer.Info[] mixers = AudioSystem.getMixerInfo();
+        for (Mixer.Info mixerInfo : mixers) {
+            Mixer mixer = AudioSystem.getMixer(mixerInfo);
+            Line.Info lineInfo = new Line.Info(SourceDataLine.class);
+            if (mixer.isLineSupported(lineInfo)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private Sound(String name) {
+        if (!isAudioOutputAvailable()) {
+            Logger.warn("No audio devices or mixer available!, {} will not load ...", name.substring(name.lastIndexOf('/') + 1));
+            return;
+        }
+    	
         if (Game.debug) Logger.debug("Loading sound clip '{}' ...", name);
 
         try {
@@ -201,7 +220,7 @@ public class Sound {
     // NOTE: this is a headcache, try not play lot sounds (maximum 10) with this at same time ._.
     public void playOnLevel(int x, int y) {
         Player player = Game.levels[Game.currentLevel].getClosestPlayer(x, y);
-
+        
         if (!Settings.getBoolean("sound") || player == null) {
             return;
         }
@@ -262,6 +281,10 @@ public class Sound {
 
 
     public void loop(boolean start) {
+        if (!Settings.getBoolean("sound") || clip == null) {
+            return;
+        }
+    	
         if (start) {
             clip.loop(-1);
         } else {
@@ -270,6 +293,10 @@ public class Sound {
     }
 
     public void stop() {
+        if (!Settings.getBoolean("sound") || clip == null) {
+            return;
+        }
+        
         clip.stop();
     }
 }

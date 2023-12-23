@@ -145,7 +145,7 @@ public class Game {
 					"         Aircraft has crashed! " 																		+ "\n" +
 					"         --------------------- " 																		+ "\n\n" +
 					
-					"Aircraft was stopped running because it encountered a problem.	" 										+ "\n\n" +
+					"The game was stopped running because it encountered a problem.	" 										+ "\n\n" +
 					
 					"" + getWittyComment() 																					+ "\n\n" +
 					
@@ -162,6 +162,9 @@ public class Game {
 			        "        Java Version: " + Utils.JAVA_VERSION + ", " + Utils.JAVA_VENDOR 								+ "\n" +
 			        "        Java VM Version: " + Utils.JVM_NAME + " (" + Utils.JVM_INFO + "), " + Utils.JVM_VENDOR 		+ "\n" +
 			        "        Memory: " + Utils.memoryInfo() 																+ "\n\n" +
+			        
+					"Flags: " 	                                                                                            + "\n" +
+					"        isAudioOutputAvailible: " + Sound.isAudioOutputAvailable()         							+ "\n\n" +
 			
 			        "~~ ERROR ~~ " 																							+ "\n" +
 			

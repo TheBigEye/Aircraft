@@ -63,7 +63,7 @@ public class TorchTile extends Tile {
         sprite.render(screen, (x << 4) + 4, (y << 4) + 4);
         
 		if (!Updater.paused && tickTime / 2 % 2 == 0 && Settings.getBoolean("particles")) {
-			if (random.nextInt(1) == 0) {
+			if (random.nextBoolean()) {
 				level.add(new FireParticle(spawnX, spawnY));
 			}
 		}
