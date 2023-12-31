@@ -127,8 +127,7 @@ public class Level {
 
 	// Creates a sorter for all the entities to be rendered.
 	//private static Comparator<Entity> spriteSorter = Comparator.comparingInt(e -> e.y); // Broken
-	
-	@SuppressWarnings("Convert2Lambda")
+
 	private static Comparator<Entity> spriteSorter = Comparator.comparingInt(new ToIntFunction<Entity>() {
 		@Override
 		public int applyAsInt(Entity entity) {
@@ -1116,7 +1115,8 @@ public class Level {
 		}
 		
 		for (Entity entity : getEntitiesInRect(entity -> entity instanceof Lantern, new Rectangle(x, y, 8, 8, Rectangle.CENTER_DIMS))) {
-			if (Math.hypot((entity.x >> 4) - x, (entity.y >> 4) - y) < entity.getLightRadius() - 1) {
+			int xx = (entity.x >> 4) - x, yy = (entity.y >> 4) - y, rr = entity.getLightRadius() - 1;
+			if (xx * xx + yy * yy < rr * rr) {
 				return true;
 			}
 		}

@@ -311,9 +311,11 @@ public final class Tiles {
 	public static Tile get(int id) {
 		//System.out.println("Requesting tile by id: " + id);
 		if (id < 0) id += 32768;
+		
+		Tile tile = tiles.get((short)id);
 
-		if (tiles.get((short)id) != null) {
-			return tiles.get((short)id);
+		if (tile != null) {
+			return tile;
 
 		} else if (id >= 32767) {
 			return TorchTile.getTorchTile(get(id - 32767));

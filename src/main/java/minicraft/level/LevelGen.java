@@ -286,6 +286,7 @@ public class LevelGen {
 		LevelGen noise1 = new LevelGen(w, h, 32);
 		LevelGen noise2 = new LevelGen(w, h, 32);
 		
+		// humidity noise
 	    LevelGen hnoise1 = new LevelGen(w, h, 64);
 	    LevelGen hnoise2 = new LevelGen(w, h, 64);
 		
@@ -313,6 +314,7 @@ public class LevelGen {
 				double mval = Math.abs(mnoise1.values[i] - mnoise2.values[i]);
 				mval = Math.abs(mval - mnoise3.values[i]) * 3 - 2;
 				
+				// Temperature and humidity noise values
 				double tval = Math.abs(noise2.values[i] - noise1.values[i]) * 3 - 2;
 				double hval = Math.abs(hnoise1.values[i] - hnoise2.values[i]) * 3 - 2;
 
@@ -804,6 +806,9 @@ public class LevelGen {
 
 		LevelGen noise1 = new LevelGen(w, h, 32);
 		LevelGen noise2 = new LevelGen(w, h, 32);
+		
+	    LevelGen hnoise1 = new LevelGen(w, h, 64);
+	    LevelGen hnoise2 = new LevelGen(w, h, 64);
 
 		/*
 		 * This generates the 3 levels of cave, iron, gold and gem
@@ -835,6 +840,10 @@ public class LevelGen {
 
 				double wval = Math.abs(wnoise1.values[i] - wnoise2.values[i]);
 				wval = Math.abs(wval - wnoise3.values[i]) * 3 - 2;
+				
+				// Temperature and humidity noise values
+				double tval = Math.abs(noise2.values[i] - noise1.values[i]) * 3 - 2;
+				double hval = Math.abs(hnoise1.values[i] - hnoise2.values[i]) * 3 - 2;
 
 				double xd = x / (w - 1.0) * 2 - 1;
 				double yd = y / (h - 1.0) * 2 - 1;
@@ -856,7 +865,11 @@ public class LevelGen {
 						default: map[i] = Tiles.get("Water").id; break;
 					}
 				} else if (val > -1.5 && (mval < -1.7 || nval < -1.4)) {
-					map[i] = Tiles.get("Dirt").id;
+		            if (tval < -0.10 && hval > 0.6) {
+		                map[i] = Tiles.get("Mycelium").id;
+		            } else {
+		                map[i] = Tiles.get("Dirt").id;
+		            }
 				} else {
 					map[i] = Tiles.get("Rock").id;
 				}
@@ -865,31 +878,6 @@ public class LevelGen {
 		
 		if (depth == 1) {
 			LoadingDisplay.setMessage("Generating mushrooms");
-			for (int i = 0; i < (size / 2800); i++) {
-				int xs = random.nextInt(w);
-				int ys = random.nextInt(h);
-				
-				for (int k = 0; k < 64; k++) {
-					int x = xs + random.nextInt(32) - 8 + random.nextInt(4);
-					int y = ys + random.nextInt(32) - 8 + random.nextInt(4);
-					
-					for (int j = 0; j < 75; j++) {
-						int xo = x + random.nextInt(5) - random.nextInt(4);
-						
-						int yo = y + random.nextInt(5) - random.nextInt(4);
-						for (int yy = yo - 1; yy <= yo + 1; yy++) {
-							for (int xx = xo - 1; xx <= xo + 1; xx++) {
-								if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-									if (map[xx + yy * w] == Tiles.get("Dirt").id) {
-										map[xx + yy * w] = Tiles.get("Mycelium").id;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			
 			for (int i = 0; i < (size / 100); i++) {
 				int x = random.nextInt(w);
 				int y = random.nextInt(h);
@@ -965,7 +953,8 @@ public class LevelGen {
 			for (int i = 0; i < w * h / 380; i++) {
 				for (int j = 0; j < 10; j++) {
 					if (xx < w - stairsRadius && yy < h - stairsRadius) {
-
+						
+						LoadingDisplay.setMessage("Placing Dungeon Lock");
 						Structure.dungeonLock.draw(map, xx, yy, w);
 
 						/// The "& 0xffff" is a common way to convert a short to an unsigned int, which basically prevents negative values... except... this doesn't do anything if you flip it back to a short again...
@@ -1414,7 +1403,7 @@ public class LevelGen {
 			int lvl = maplvls[idx++ % maplvls.length];
 			if (lvl > 2 || lvl < -4) continue;
 
-			short[][] fullmap = LevelGen.createAndValidateMap(w, h, 0, random.nextLong());
+			short[][] fullmap = LevelGen.createAndValidateMap(w, h, -1, random.nextLong());
 
 			if (fullmap == null) continue;
 			short[] map = fullmap[0];

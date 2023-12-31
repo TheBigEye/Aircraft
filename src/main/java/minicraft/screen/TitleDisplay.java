@@ -118,7 +118,7 @@ public class TitleDisplay extends Display {
 			}
 		}
 
-		/*if (TimeData.month() == Month.DECEMBER) {
+		if (TimeData.month() == Month.DECEMBER) {
 			if (TimeData.day() == 19) rand = 1;
 			if (TimeData.day() == 25) rand = 2;
 		} else {
@@ -155,7 +155,7 @@ public class TitleDisplay extends Display {
 			if (TimeData.day() == 10) rand = 6;
 		} else {
 			rand = random.nextInt(splashes.size() - 3) + 3;
-		}*/
+		}
 
 		World.levels = new Level[World.levels.length];
 

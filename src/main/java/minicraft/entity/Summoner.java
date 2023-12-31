@@ -2,8 +2,11 @@ package minicraft.entity;
 
 import java.util.List;
 
+import org.tinylog.Logger;
+
 import minicraft.core.Game;
 import minicraft.entity.mob.Mob;
+import minicraft.entity.mob.MobAi;
 import minicraft.entity.mob.Player;
 import minicraft.graphic.Rectangle;
 import minicraft.graphic.Screen;
@@ -37,7 +40,7 @@ public class Summoner extends Entity {
         
         this.sprite = amulet.getSprite();
         this.owner = owner;
-        this.amuletItem = amulet;
+        this.amuletItem = amulet.clone();
         xx = owner.x;
         yy = owner.y;
         this.xa = xa * 1.3;
@@ -91,6 +94,7 @@ public class Summoner extends Entity {
             if (time >= (120 - random.nextInt(8))) {
                 comeback = true;
                 summonable = false;
+                time = 0;
             }
 
             List<Entity> entities = level.getEntitiesInRect(new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS));
@@ -121,10 +125,21 @@ public class Summoner extends Entity {
 	            summonable = false;
             }*/
         }
-
+        
 	    if (!(level.getTile(x >> 4, y >> 4).id == 6) && summonable) {
 	        if (random.nextInt(20) == 4 && time / 2 % 8 == 0) {
-	            level.add(amuletItem.getSummonMob(), x, y);
+	        	
+	        	MobAi newmob;
+	        	
+	        	try {
+	    	         newmob = amuletItem.getSummonMob().getClass().getConstructor(int.class).newInstance(1);
+	    	    } catch (Exception exception) {
+	    	        Logger.error("Could not spawn mob, error initializing mob instance:");
+	    	        exception.printStackTrace();
+	    	        return;
+	    	    }
+	        	
+	    	    level.add(newmob, x, y);
 	            summonable = false;
 	            super.die();
 	        }

@@ -9,6 +9,7 @@ import org.tinylog.Logger;
 import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
+import minicraft.entity.particle.BrightParticle;
 import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
@@ -114,17 +115,45 @@ public class TileItem extends StackableItem {
 		super(name, sprite, count);
 		this.model = model.toUpperCase();
 		this.validTiles = new ArrayList<>();
-		for (String tile : validTiles)
+		for (String tile : validTiles) {
 			this.validTiles.add(tile.toUpperCase());
+		}
 	}
 
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 		for (String tilename : validTiles) {
 			if (tile.matches(level.getData(xt, yt), tilename)) {
-				level.setTile(xt, yt, model); // TODO maybe data should be part of the saved tile..?
-
-				//Sound.playerPlace.playOnDisplay();
-
+				
+				if (getName() == "Bone Powder") {
+					if (level.getTile(xt, yt) == Tiles.get("Grass")) {
+						for (int y = yt - 1; y <= yt + 1; y++) {
+							for (int x = xt - 1; x <= xt + 1; x++) {
+								if (level.getTile(x, y).name.contains("GRASS") && Math.random() < 0.4) {
+									if (Math.random() < 0.1) {
+										if (random.nextBoolean()) {
+											level.setTile(x, y, Tiles.get("Poppy"));
+										} else {
+											level.setTile(x, y, Tiles.get("Dandelion"));
+										}
+									} else {
+										level.setTile(x, y, Tiles.get("Lawn"));
+									}
+								}
+							}
+						}
+					}
+					
+					for (int i = 0; i < 3; i++) {
+						int randX = (int) Math.ceil(Math.random() * 12) - 4;
+						int randY = (int) Math.ceil(Math.random() * 12) - 4;
+						level.add(new BrightParticle(xt * 16 + randX, yt * 16 + randY));
+					}
+					
+				} else {
+					level.setTile(xt, yt, model); // TODO maybe data should be part of the saved tile..?
+					//Sound.playerPlace.playOnDisplay();
+				}
+				
 				return super.interactOn(true);
 			}
 		}
@@ -140,6 +169,9 @@ public class TileItem extends StackableItem {
 
 		} else if ((model.contains("BRICK") || model.contains("PLANK"))) {
 			note = "Dig a hole first!";
+	
+		} else if((model.contains("BONE POWDER"))) {
+			note = "Only on grass!";
 		}
 
 		if (note.length() > 0) {

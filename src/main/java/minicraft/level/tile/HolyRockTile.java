@@ -35,8 +35,7 @@ public class HolyRockTile extends Tile {
 
     @Override
     public void render(Screen screen, Level level, int x, int y) {
-        Tiles.get("Sky Grass").render(screen, level, x, y);
-    	super.render(screen, level, x, y);
+    	sprite.render(screen, level, x, y);
     }
 
     @Override

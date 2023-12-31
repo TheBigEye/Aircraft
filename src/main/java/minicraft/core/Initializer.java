@@ -220,7 +220,7 @@ public class Initializer extends Game {
 				repaint();
 				if (interruptWhenAnimated && !inAnimation) break;
 			} while (!Initializer.logoSplash.renderer.isInterrupted());
-		}, "Splash renderer Thread");
+		}, "Splash Renderer Thread");
 
 		@Override
 		public void paintComponent(Graphics graphics) {

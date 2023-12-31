@@ -39,7 +39,7 @@ public class Items {
     static {
         add(new PowerGloveItem());
         addAll(FurnitureItem.getAllInstances());
-        add(new BoatItem("Boat")); // Disabled to b0.6 fixes
+        add(new BoatItem("Boat"));
         addAll(TorchItem.getAllInstances());
         addAll(BucketItem.getAllInstances());
         addAll(BookItem.getAllInstances());

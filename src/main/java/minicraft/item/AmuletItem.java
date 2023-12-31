@@ -7,6 +7,7 @@ import minicraft.entity.Entity;
 import minicraft.entity.Summoner;
 import minicraft.entity.mob.EyeQueen;
 import minicraft.entity.mob.Keeper;
+import minicraft.entity.mob.MobAi;
 import minicraft.entity.mob.Player;
 import minicraft.graphic.Sprite;
 import minicraft.level.Level;
@@ -23,9 +24,9 @@ public class AmuletItem extends Item {
         return items;
     }
 
-    private Entity mob;
+    private MobAi mob;
 
-    private AmuletItem(String name, Sprite sprite, Entity mob) {
+    private AmuletItem(String name, Sprite sprite, MobAi mob) {
         super(name, sprite);
         removed = false;
         this.mob = mob;
@@ -48,7 +49,7 @@ public class AmuletItem extends Item {
         return removed;
     }
     
-    public Entity getSummonMob() {
+    public MobAi getSummonMob() {
     	return mob;
     }
 

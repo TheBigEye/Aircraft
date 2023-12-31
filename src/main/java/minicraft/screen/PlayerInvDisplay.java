@@ -22,7 +22,7 @@ public class PlayerInvDisplay extends Display {
 	public void tick(InputHandler input) {
 		super.tick(input);
 
-		if (input.getKey("menu").clicked) {
+		if (!menus[0].searcherBarActive && input.getKey("menu").clicked) {
 			Game.exitDisplay();
 			return;
 		}
