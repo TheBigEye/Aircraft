@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -625,6 +626,42 @@ public class Level {
 
 				int lightRadius = getTile(x, y).getLightRadius(this, x, y);
 				if (lightRadius > 0) screen.renderLight((x << 4) + 8, (y << 4) + 8, lightRadius * brightness);
+			}
+		}
+		screen.setOffset(0, 0);
+	}
+	
+	public void renderLight(Screen screen, int xScroll, int yScroll, int brightness, int additionalRadius) {
+		int xo = xScroll >> 4;
+		int yo = yScroll >> 4;
+				
+		int w = (Screen.w + 15) >> 4;
+		int h = (Screen.h + 15) >> 4;
+		
+		screen.setOffset(xScroll, yScroll);
+		
+		int r = 8;
+
+		List <Entity> entities = getEntitiesInTiles(xo - r, yo - r, w + xo + r, h + yo + r);
+		for (Entity entity: entities) {
+			int lightRadius = entity.getLightRadius();
+			if (lightRadius > 0) {
+				lightRadius += additionalRadius;
+				screen.renderLight(entity.x - 1, entity.y - 4, lightRadius * brightness, 51);
+			}
+		}
+
+		for (int y = yo - r; y <= h + yo + r; y++) {
+			for (int x = xo - r; x <= w + xo + r; x++) {
+				if (x < 0 || y < 0 || x >= this.w || y >= this.h) {
+					continue;
+				}
+
+				int lightRadius = getTile(x, y).getLightRadius(this, x, y);
+				if (lightRadius > 0) {
+					lightRadius += additionalRadius;
+					screen.renderLight((x << 4) + 8, (y << 4) + 8, lightRadius * brightness, 0);
+				}
 			}
 		}
 		screen.setOffset(0, 0);
@@ -1284,18 +1321,15 @@ public class Level {
 	
 
 	private void playRandomMusic(int depth) {
-	    int randomNum = random.nextInt(8);
-	    if (depth == 0) {
-	        Sound[] sounds = {Sound.Theme_Surface, Sound.Theme_Cave, Sound.Theme_Peaceful, Sound.Theme_Peaceful};
-	        sounds[randomNum].playOnDisplay();
-	    } else if (depth == -1) {
-	        Sound[] sounds = {Sound.Ambience1, Sound.Ambience2, Sound.Ambience3, Sound.Ambience4};
-	        sounds[randomNum].playOnDisplay();
-	    } else if (depth == -2) {
-	        Sound[] sounds = {Sound.Theme_Cavern, Sound.Theme_Cavern_drip};
-	        sounds[randomNum].playOnDisplay();
-	    } else if (depth == 1) {
-	        Sound[] sounds = {Sound.Theme_Surface, Sound.Theme_Fall};
+	    Map<Integer, Sound[]> soundMap = new HashMap<>();
+	    soundMap.put(0, new Sound[]{Sound.Theme_Surface, Sound.Theme_Cave, Sound.Theme_Peaceful, Sound.Theme_Peaceful});
+	    soundMap.put(-1, new Sound[]{Sound.Ambience1, Sound.Ambience2, Sound.Ambience3, Sound.Ambience4});
+	    soundMap.put(-2, new Sound[]{Sound.Theme_Cavern, Sound.Theme_Cavern_drip});
+	    soundMap.put(1, new Sound[]{Sound.Theme_Surface, Sound.Theme_Fall});
+
+	    if (soundMap.containsKey(depth)) {
+	        Sound[] sounds = soundMap.get(depth);
+	        int randomNum = random.nextInt(sounds.length);
 	        sounds[randomNum].playOnDisplay();
 	    }
 	}

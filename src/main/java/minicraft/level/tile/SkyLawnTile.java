@@ -14,6 +14,8 @@ import minicraft.level.Level;
 
 public class SkyLawnTile extends Tile {
 	private static final Sprite sprite = new Sprite(40, 23, 1);
+	
+	private Tile skyGrassTile = Tiles.get("Sky grass");
 
 	protected SkyLawnTile(String name) {
 		super(name, (ConnectorSprite) null);
@@ -26,7 +28,7 @@ public class SkyLawnTile extends Tile {
 		if (random.nextInt(12) == 1) { // 20% chance to drop sky seeds
 			level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Sky Seeds"));
 		}
-		level.setTile(x, y, Tiles.get("Sky grass"));
+		level.setTile(x, y, skyGrassTile);
 		return true;
 	}
 
@@ -52,7 +54,7 @@ public class SkyLawnTile extends Tile {
 
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
-		Tiles.get("Sky grass").render(screen, level, x, y);
+		skyGrassTile.render(screen, level, x, y);
 
 		int data = level.getData(x, y);
 		int shape = (data >> 4) % 2;

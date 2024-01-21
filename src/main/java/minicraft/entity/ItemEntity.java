@@ -8,6 +8,7 @@ import minicraft.entity.particle.FireParticle;
 import minicraft.graphic.Color;
 import minicraft.graphic.Screen;
 import minicraft.item.Item;
+import minicraft.item.Items;
 import minicraft.level.tile.Tiles;
 
 public class ItemEntity extends Entity implements ClientTickable {
@@ -154,9 +155,9 @@ public class ItemEntity extends Entity implements ClientTickable {
 		}
 
 		if (Settings.getBoolean("shadows")) {
-			item.sprite.render(screen, x - 4, y - 4, 4, -1, Color.BLACK); // item shadow uses black color
+			item.sprite.render(screen, x - 5, y - 8, 4, -1, Color.BLACK); // item shadow uses black color
 		}
-		item.sprite.render(screen, x - 4, y - 4 - (int)(zz));
+		item.sprite.render(screen, x - 5, y - 8 - (int)(zz));
 	}
 
 	@Override
@@ -180,4 +181,17 @@ public class ItemEntity extends Entity implements ClientTickable {
 		prints.add(0, item.toString());
 		return prints;
 	}
+	
+	@Override
+	public int getLightRadius() {
+	    return (
+	    	this.item.equals(Items.get("Torch")) ||
+	    	this.item.equals(Items.get("Lava Bucket")) ||
+	    	this.item.equals(Items.get("Lantern")) ||
+	    	this.item.equals(Items.get("Iron Lantern")) ||
+	    	this.item.equals(Items.get("Gold Lantern")) ||
+	    	this.item.equals(Items.get("Summon Altar"))
+	    ) ? 1 : 0;
+	}
+
 }

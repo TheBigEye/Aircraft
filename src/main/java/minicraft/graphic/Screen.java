@@ -415,6 +415,42 @@ public class Screen {
 			}
 		}
 	}
+	
+	public void renderLight(int x, int y, int lightRadius, int intensReduce) {
+		// Apply the x and y offsets to the light's position (by screen scrolling)
+		x -= xOffset;
+		y -= yOffset;
+
+		// Calculate the starting and ending positions of the light circle on the x and y axis, ensuring the light does not render outside the screen
+		int x0 = Math.max(x - lightRadius, 0); // start x
+		int y0 = Math.max(y - lightRadius, 0); // start y
+		int x1 = Math.min(x + lightRadius, w); // end x
+		int y1 = Math.min(y + lightRadius, h); // end y
+
+		// Declare the distance from the center of the light circle along the y axis
+		int yd = 0;
+
+		// Loop through each y position
+		for (int yy = y0; yy < y1; yy++) {
+			// Calculate distance between current y position and previous y position
+			yd = yy - y;
+			yd *= yd;
+			// Loop through each x position
+			for (int xx = x0; xx < x1; xx++) { 
+				int xd = xx - x; // Calculate distance between current x position and previous x position
+				int dist = xd * xd + yd; // Calculate total distance between current position and center of the circle
+
+				// If the current position is within the circle of light
+				if (dist <= lightRadius * lightRadius) {
+					// Calculate the brightness of the light at the current position
+					int br = 255 - dist * 255 / (lightRadius * lightRadius);
+					br -= intensReduce;
+					// Set the pixel value to the maximum between its current value and the calculated brightness
+					pixels[xx + yy * w] = Math.max(pixels[xx + yy * w], br);
+				}
+			}
+		}
+	}
 
 	public void setPixel(int xp, int yp, int color) {
 		// If the pixel is out of bounds, then skip the rest of the loop.

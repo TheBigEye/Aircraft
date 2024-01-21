@@ -151,6 +151,7 @@ public final class Tiles {
 		
 		Tiles.add(97, new SproutTile("Daisy Sprout", Tiles.get("Grass"), Tiles.get("Daisy")));
 		Tiles.add(98, new SproutTile("Dandelion Sprout", Tiles.get("Grass"), Tiles.get("Dandelion")));
+		Tiles.add(99, new AltarTile("Summon Altar"));
 
 		// tiles.put((short)?, new SandRockTile("Sand rock"));
 

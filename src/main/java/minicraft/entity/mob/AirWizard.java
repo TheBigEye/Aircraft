@@ -217,19 +217,18 @@ public class AirWizard extends EnemyMob {
         if (tickTime % 4 != 0 && currentPhase != 1) {
             speed = 1;
         }
-
-
-	        if (player != null && randomWalkTime == 0) {
-	            int xd = player.x - x; // x dist to player
-	            int yd = player.y - y; // y dist to player
-	            if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) {
-	            	if (currentPhase == 1) {
-	            		attackDelay = 60 * 4; // ...then set attackDelay to 240 (4 seconds at default 60 ticks/sec)
-	            	} else {
-	            		attackDelay = 60 * 2; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
-	            	}
-	            }
-	        }
+        
+        if (player != null && randomWalkTime == 0) {
+            int xd = player.x - x; // x dist to player
+            int yd = player.y - y; // y dist to player
+            if (random.nextInt(4) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) {
+            	if (currentPhase == 1) {
+            		attackDelay = 60 * 4; // ...then set attackDelay to 240 (4 seconds at default 60 ticks/sec)
+            	} else {
+            		attackDelay = 60 * 2; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
+            	}
+            }
+        }
         
        
     }

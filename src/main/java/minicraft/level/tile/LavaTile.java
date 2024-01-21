@@ -12,6 +12,8 @@ public class LavaTile extends Tile {
 			return tile.connectsToFluid;
 		}
 	};
+	
+	private Tile holeTile = Tiles.get("Hole");
 
 	protected LavaTile(String name) {
 		super(name, (ConnectorSprite) null);
@@ -46,7 +48,7 @@ public class LavaTile extends Tile {
 			yn += random.nextInt(2) * 2 - 1;
 		}
 
-		if (level.getTile(xn, yn) == Tiles.get("Hole")) {
+		if (level.getTile(xn, yn) == holeTile) {
 			level.setTile(xn, yn, this);
 		}
 		return false;

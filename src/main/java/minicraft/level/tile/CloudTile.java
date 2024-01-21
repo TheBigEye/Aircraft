@@ -27,8 +27,6 @@ public class CloudTile extends Tile {
 		}
 	};
 	
-	private int tickTime = 0;
-
 	public static int cloudColor(int depth) {
 		return Color.get(1, 201, 201, 201);
 	}
@@ -44,13 +42,12 @@ public class CloudTile extends Tile {
 	}
 	
 	public boolean tick(Level level, int x, int y) {
-		tickTime++;
 		return false;
 	}
 
 	@Override
 	public void steppedOn(Level level, int x, int y, Entity entity) {
-	    if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
+	    if (tickCount / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
 	        if (entity instanceof Mob && random.nextBoolean()) {
 	            int spawnX  = (entity.x - 4) + random.nextInt(8) - random.nextInt(8);
 	            int spawnY = (entity.y - 4) + random.nextInt(8) - random.nextInt(8);

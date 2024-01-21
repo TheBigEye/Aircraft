@@ -36,6 +36,8 @@ public class TileItem extends StackableItem {
 		items.add(new TileItem("Ice", (new Sprite(15, 21, 0)), "Ice", "Hole", "Water"));
 		items.add(new TileItem("Brown Mushroom", (new Sprite(25, 0, 0)), "Brown Mushroom", "Mycelium"));
 		items.add(new TileItem("Red Mushroom", (new Sprite(24, 0, 0)), "Red Mushroom", "Mycelium"));
+		
+		items.add(new TileItem("Summon Altar", (new Sprite(32, 0, 0)), "Summon Altar", "Grass", "Dirt", "Sand"));
 
 		// Creative mode available tiles:
 		items.add(new TileItem("Natural Rock", (new Sprite(2, 0, 0)), "Rock", "Hole", "Dirt", "Sand", "Path", "Grass", "Snow"));
@@ -140,15 +142,24 @@ public class TileItem extends StackableItem {
 									}
 								}
 							}
+							
+							for (int i = 0; i < 3; i++) {
+								int randX = (int) Math.ceil(Math.random() * 12) - 4;
+								int randY = (int) Math.ceil(Math.random() * 12) - 4;
+								level.add(new BrightParticle(xt * 16 + randX, yt * 16 + randY));
+							}
 						}
 					}
-					
-					for (int i = 0; i < 3; i++) {
-						int randX = (int) Math.ceil(Math.random() * 12) - 4;
-						int randY = (int) Math.ceil(Math.random() * 12) - 4;
-						level.add(new BrightParticle(xt * 16 + randX, yt * 16 + randY));
-					}
-					
+
+				} else if (getName() == "Summon Altar") {
+				    for (int y = yt - 1; y <= yt + 1; y++) {
+				        for (int x = xt - 1; x <= xt + 1; x++) {
+				            if (level.getTile(x, y) != Tiles.get("Summon Altar")) {
+				                level.setTile(x, y, Tiles.get("Summon Altar"));
+				            }
+				        }
+				    }
+				    
 				} else {
 					level.setTile(xt, yt, model); // TODO maybe data should be part of the saved tile..?
 					//Sound.playerPlace.playOnDisplay();

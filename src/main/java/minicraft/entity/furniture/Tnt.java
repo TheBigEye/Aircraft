@@ -18,15 +18,16 @@ import minicraft.graphic.Rectangle;
 import minicraft.graphic.Screen;
 import minicraft.graphic.Sprite;
 import minicraft.item.Item;
+import minicraft.item.PowerGloveItem;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 import minicraft.screen.AchievementsDisplay;
 
 public class Tnt extends Furniture implements ActionListener {
-	private static int FUSE_TIME = 90;
-	private static int BLAST_RADIUS = 32;
-	private static int BLAST_DAMAGE = 75;
+	private static final int FUSE_TIME = 90;
+	private static final int BLAST_RADIUS = 32;
+	private static final int BLAST_DAMAGE = 75;
 
 	private int damage = 0;
 	private int light = 0;
@@ -35,8 +36,8 @@ public class Tnt extends Furniture implements ActionListener {
 	private Timer explodeTimer;
 	private Level levelSave;
 
-	private final String[] explosionBlacklist = new String[] {
-		"hard rock", "obsidian wall", "raw obsidian", "stairs up", "stairs down", "infinite fall"
+	private static final String[] explosionBlacklist = new String[] {
+		"hard rock", "obsidian wall", "raw obsidian", "stairs up", "stairs down", "infinite fall", "summon altar"
 	};
 
 	/**
@@ -150,11 +151,18 @@ public class Tnt extends Furniture implements ActionListener {
 
 	@Override
 	public boolean interact(Player player, Item heldItem, Direction attackDir) {
-		if (!fuseLit) {
-			fuseLit = true;
-			Sound.genericFuse.playOnLevel(this.x, this.y);
-			return true;
-		}
+    	if (heldItem instanceof PowerGloveItem) {
+			if (!fuseLit) {
+				return super.interact(player, heldItem, attackDir);
+			}
+    		return true;
+    	} else {
+			if (!fuseLit) {
+				fuseLit = true;
+				Sound.genericFuse.playOnLevel(this.x, this.y);
+				return true;
+			}
+    	}
 		return false;
 	}
 

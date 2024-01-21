@@ -86,7 +86,6 @@ public class HardRockTile extends Tile {
 
     @Override
     public void render(Screen screen, Level level, int x, int y) {
-    	//Tiles.get("Dirt").render(screen, level, x, y);
     	sprite.sparse.color = DirtTile.dirtColor(level.depth);
         super.render(screen, level, x, y);
     }

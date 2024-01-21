@@ -18,10 +18,7 @@ import minicraft.level.Level;
 public class TorchTile extends Tile {
     private static Sprite sprite = new Sprite(5, 3, 0);
     
-    private static int LIGHT = 5;
     private Tile onType;
-
-    private int tickTime = 0;
     
     int spawnX = 0;
     int spawnY = 0;
@@ -62,7 +59,7 @@ public class TorchTile extends Tile {
         onType.render(screen, level, x, y);
         sprite.render(screen, (x << 4) + 4, (y << 4) + 4);
         
-		if (!Updater.paused && tickTime / 2 % 2 == 0 && Settings.getBoolean("particles")) {
+		if (!Updater.paused && tickCount / 2 % 2 == 0 && Settings.getBoolean("particles")) {
 			if (random.nextBoolean()) {
 				level.add(new FireParticle(spawnX, spawnY));
 			}
@@ -71,9 +68,14 @@ public class TorchTile extends Tile {
     
     @Override
 	public boolean tick(Level level, int x, int y) {
-		tickTime++;
-		
-		spawnX  = (x << 4) + 4;
+
+    	int data = level.getData(x, y);
+		if (data != 5) {
+			level.setData(x, y, data + 1);
+		}  
+
+
+		spawnX = (x << 4) + 4;
 		spawnY = (y << 4) + random.nextInt(2) - random.nextInt(1);
 		
 		return false;
@@ -81,7 +83,11 @@ public class TorchTile extends Tile {
 
     @Override
     public int getLightRadius(Level level, int x, int y) {
-        return LIGHT;
+    	if (level.getData(x, y) == 0) {
+    		return 1;
+    	}
+    
+	    return level.getData(x, y);
     }
 
     @Override

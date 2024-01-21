@@ -21,13 +21,15 @@ public class Goat extends FrostMob {
 
 		// follows to the player if holds wheat
 		followOnHold(Items.get("Wheat"), 3);
-
-        Tile tile = level.getTile(x >> 4, y >> 4);
-        if (tile == Tiles.get("Grass") || tile == Tiles.get("Sand") || tile == Tiles.get("Lawn") || tile == Tiles.get("Rose") || tile == Tiles.get("Daisy") || tile == Tiles.get("Dandelion") || tile == Tiles.get("Poppy")) {
-            this.remove();
-            level.add(new Sheep(), x, y);
-
-        }
+		
+		if (tickTime /16 %24 == 0) {
+	        Tile tile = level.getTile(x >> 4, y >> 4);
+	        if (tile == Tiles.get("Grass") || tile == Tiles.get("Sand") || tile == Tiles.get("Lawn") || tile == Tiles.get("Rose") || tile == Tiles.get("Daisy") || tile == Tiles.get("Dandelion") || tile == Tiles.get("Poppy")) {
+	            this.remove();
+	            level.add(new Sheep(), x, y);
+	
+	        }
+		}
     }
 
     public void die() {
@@ -37,16 +39,10 @@ public class Goat extends FrostMob {
         if (Settings.get("diff").equals("Peaceful")) {
             min = 1;
             max = 3;
-        }
-        if (Settings.get("diff").equals("Easy")) {
+        } else if (Settings.get("diff").equals("Easy") || Settings.get("diff").equals("Normal")) {
             min = 1;
             max = 2;
-        }
-        if (Settings.get("diff").equals("Normal")) {
-            min = 1;
-            max = 2;
-        }
-        if (Settings.get("diff").equals("Hard")) {
+        } else if (Settings.get("diff").equals("Hard")) {
             min = 0;
             max = 1;
         }

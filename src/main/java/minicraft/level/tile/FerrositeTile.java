@@ -24,8 +24,6 @@ public class FerrositeTile extends Tile {
         }
     };
     
-    private int tickTime = 0;
-
     protected FerrositeTile(String name) {
         super(name, sprite);
         connectsToFerrosite = true;
@@ -35,12 +33,11 @@ public class FerrositeTile extends Tile {
     
     @Override
     public boolean tick(Level level, int xt, int yt) {
-    	tickTime++;
         return false;
     }
      
 	public void steppedOn(Level level, int x, int y, Entity entity) {
-		if (tickTime / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
+		if (tickCount / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
 			// Spawn ferrosite particles under the mobs
 			if (entity instanceof Mob) {
 				if (random.nextBoolean()) {
