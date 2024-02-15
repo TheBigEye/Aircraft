@@ -20,6 +20,7 @@ import minicraft.entity.Entity;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.AirWizard;
 import minicraft.entity.mob.EyeQueen;
+import minicraft.entity.mob.Keeper;
 import minicraft.entity.mob.Player;
 import minicraft.graphic.Color;
 import minicraft.graphic.Ellipsis;
@@ -472,9 +473,9 @@ public class Renderer extends Game {
             	for (Entity entity: entitiesInRange) { 
             		if (entity instanceof AirWizard) {
             			if (boss.secondform) {
-            				renderBossbar((int) ((Float.valueOf(boss.health) / boss.maxHealth) * 100), "Air Wizard II");
+            				renderBossbar((int) ((Float.valueOf(boss.health) / boss.maxHealth) * 100), boss.health, "Air Wizard II");
             			} else {
-            				renderBossbar((int) ((Float.valueOf(boss.health) / boss.maxHealth) * 100), "Air Wizard");
+            				renderBossbar((int) ((Float.valueOf(boss.health) / boss.maxHealth) * 100), boss.health, "Air Wizard");
             			}
             		}
             	}    
@@ -484,7 +485,17 @@ public class Renderer extends Game {
             	EyeQueen boss = EyeQueen.entity;
             	for (Entity entity: entitiesInRange) {
             		if (entity instanceof EyeQueen) {
-            			renderBossbar((int) ((Float.valueOf(boss.health) / boss.maxHealth) * 100), "Eye Queen");
+            			renderBossbar((int) ((Float.valueOf(boss.health) / boss.maxHealth) * 100), boss.health, "Eye Queen");
+            		}
+            	}           	
+            }
+			
+			
+			if (Keeper.active) {
+				Keeper boss = Keeper.entity;
+            	for (Entity entity: entitiesInRange) {
+            		if (entity instanceof Keeper) {
+            			renderBossbar((int) ((Float.valueOf(boss.health) / boss.maxHealth) * 100), boss.health, "The Keeper");
             		}
             	}           	
             }
@@ -493,19 +504,19 @@ public class Renderer extends Game {
 		renderDebugInfo();
 	}
 
-	public static void renderBossbar(int barLength, String title) {
+	public static void renderBossbar(int barLength, int bossHealth, String title) {
 		if (!showDebugInfo) {
 			int x = (Screen.w / 4) + 4;
 			int y = (Screen.h / 8) - 27;
 	
 			int maxBarLength = 100;
 	
-			if (barLength > 1) {
+			if (bossHealth > 1) {
 				screen.render(x + (maxBarLength * 2) , y , 0 + 24 * 32, 1, 3); // left corner
 		
 				// The middle
 				for (int bx = 0; bx < maxBarLength; bx++) {
-						screen.render(x + (bx * 2), y, 1 + 24 * 32, 0, 3);
+					screen.render(x + (bx * 2), y, 1 + 24 * 32, 0, 3);
 				}  
 		
 				screen.render(x - 5 , y , 0 + 25 * 32, 0, 3); // right corner

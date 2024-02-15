@@ -14,10 +14,6 @@ public class WaterTile extends Tile {
 		}
 	};
 	
-	private Tile holeTile = Tiles.get("Hole");
-	private Tile lavaTile = Tiles.get("Lava");
-	private Tile rawObsidianTile = Tiles.get("Raw Obsidian");
-
 	protected WaterTile(String name) {
 		super(name, (ConnectorSprite) null);
 		connectorSprite = sprite;
@@ -47,18 +43,18 @@ public class WaterTile extends Tile {
 	        case 1: yn += random.nextInt(2) * 2 - 1; break;
 	    }
 
-	    if (level.getTile(xn, yn) == holeTile) {
+	    if (level.getTile(xn, yn) == Tiles.get("Hole")) {
 	        level.setTile(xn, yn, this);
 	    }
 
 	    for (int x = -1; x < 2; x++) {
-	        if (level.getTile(xt + x, yt) == lavaTile) {
-	            level.setTile(xt + x, yt, rawObsidianTile);
+	        if (level.getTile(xt + x, yt) == Tiles.get("Lava")) {
+	            level.setTile(xt + x, yt, Tiles.get("Raw Obsidian"));
 	        }
 	    }
 	    for (int y = -1; y < 2; y++) {
-	        if (level.getTile(xt, yt + y) == lavaTile) {
-	            level.setTile(xt, yt + y, rawObsidianTile);
+	        if (level.getTile(xt, yt + y) == Tiles.get("Lava")) {
+	            level.setTile(xt, yt + y, Tiles.get("Raw Obsidian"));
 	        }
 	    }
 	    return false;

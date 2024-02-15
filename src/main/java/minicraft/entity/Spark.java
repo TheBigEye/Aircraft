@@ -82,7 +82,7 @@ public class Spark extends Entity {
 		// move the spark to the player positon:
 		xx += xa; x = (int) xx;
 		yy += ya; y = (int) yy;
-
+		
 		Player player = getClosestPlayer();
 		if (player != null) { // avoid NullPointer if player dies
 			// If the entity is a mob, but not a Air Wizard, then hurt it.

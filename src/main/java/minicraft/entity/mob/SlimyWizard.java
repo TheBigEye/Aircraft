@@ -20,7 +20,7 @@ public class SlimyWizard extends EnemyMob {
      * @param lvl Boss level.
      */
     public SlimyWizard(int lvl) {
-        super(lvl, sprites, 5, 100);
+        super(lvl, sprites, 5, 500);
     }
 
     @Override
@@ -65,4 +65,9 @@ public class SlimyWizard extends EnemyMob {
         
         super.die();
     }
+    
+    @Override
+	public int getLightRadius() {
+		return 2;
+	}
 }

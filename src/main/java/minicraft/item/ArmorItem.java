@@ -24,9 +24,9 @@ public class ArmorItem extends StackableItem {
 		items.add(new ArmorItem("Gem Armor", new Sprite(4, 9, 0), 1f, 5));
 
 		// Useless for now...
-		items.add(new ArmorItem("Prot I Armor", new Sprite(5, 9, 0), .1f, 6));
-		items.add(new ArmorItem("Prot II Armor", new Sprite(5, 9, 0), .1f, 6));
-		items.add(new ArmorItem("Prot III Armor", new Sprite(5, 9, 0), .1f, 6));
+		// items.add(new ArmorItem("Prot I Armor", new Sprite(5, 9, 0), .1f, 6));
+		// items.add(new ArmorItem("Prot II Armor", new Sprite(5, 9, 0), .1f, 6));
+		// items.add(new ArmorItem("Prot III Armor", new Sprite(5, 9, 0), .1f, 6));
 
 		return items;
 	}

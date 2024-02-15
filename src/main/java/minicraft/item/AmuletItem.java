@@ -3,7 +3,6 @@ package minicraft.item;
 import java.util.ArrayList;
 
 import minicraft.entity.Direction;
-import minicraft.entity.Entity;
 import minicraft.entity.Summoner;
 import minicraft.entity.mob.EyeQueen;
 import minicraft.entity.mob.Keeper;
@@ -28,7 +27,6 @@ public class AmuletItem extends Item {
 
     private AmuletItem(String name, Sprite sprite, MobAi mob) {
         super(name, sprite);
-        removed = false;
         this.mob = mob;
     }
 
@@ -36,7 +34,7 @@ public class AmuletItem extends Item {
     public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {	
 		level.add(new Summoner(player, this, attackDir.getX(), attackDir.getY()));
 		removed = true;
-		return interact(player, (Entity) null, attackDir);
+		return true;
     }
 
     @Override
@@ -56,5 +54,4 @@ public class AmuletItem extends Item {
     public AmuletItem clone() {
         return new AmuletItem(getName(), getSprite(), mob);
     }
-	
 }

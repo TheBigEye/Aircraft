@@ -109,8 +109,6 @@ public class Giant extends EnemyMob {
         }
 
         super.die();
-        level.add(new EyeQueenPhase2(1), x, y);
-
         int randX = random.nextInt(16);
         int randY = random.nextInt(16);
         level.add(new FireParticle(x - 0 + randX, y - 0 + randY));

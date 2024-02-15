@@ -7,20 +7,41 @@ import minicraft.graphic.Font;
 import minicraft.graphic.MobSprite;
 import minicraft.graphic.Screen;
 
-public class Keeper extends EnemyMob {
-    private static final MobSprite[][][] sprites = new MobSprite[2][2][2];
+public class Keeper extends GiantBossMob {
+    private static MobSprite[][][] spritesMain;
+
     static {
-        sprites[0][0][0] = new MobSprite(52, 0, 6, 6, 0);
+    	spritesMain = new MobSprite[2][4][2];
+        for (int i = 0; i < 1; i++) { // Normal wizard
+            MobSprite[][] list = MobSprite.compileMobSpriteAnimations(60, 4, 4, 4);
+            spritesMain[i] = list;
+        }
     }
     
+    public static boolean beaten = false;
+    public static boolean active = true;
+    public static Keeper entity = null;
+    
+    public static int length;
+ 
     // private int slimeSpawnRate = 0;
 
     public Keeper(int lvl) {
-    	super(5, sprites, 12000, false, 16 * 8, -1, 10, 50);
+    	super(5, spritesMain, 12000, false, 16 * 8, -1, 10, 50);
+    	
+        active = true;
+        entity = this;
+        beaten = false;
+        
+        walkTime = 2;
+        
+        this.setHitboxSize(6, 6);
     }
 
     public void tick() {
         super.tick();
+        
+        length = health / (maxHealth / 100);
 
         /*slimeSpawnRate++;
         if (slimeSpawnRate >= 1500) {
@@ -43,28 +64,6 @@ public class Keeper extends EnemyMob {
             else if (xd > sig0) xa = 1;
             if (yd < sig0) ya = -1;
             else if (yd > sig0) ya = 1;
-
-            // texture phases
-            if (yd > 1) { // up
-            	if (tickTime /12 %2 == 0) {
-            		sprites[0][0][0] = new MobSprite(64, 13, 4, 4, 0); // up 1
-            	} else {
-            		sprites[0][0][0] = new MobSprite(64, 13, 4, 4, 1); // up 2
-            	}
-            } else if (yd < 1) { // down
-            	if (tickTime /12 %2 == 0) {
-            		sprites[0][0][0] = new MobSprite(68, 13, 4, 4, 0); // down 1
-            	} else {
-            		sprites[0][0][0] = new MobSprite(68, 13, 4, 4, 1); // down 2
-            	}
-            }
-
-            if (xd > 1) { // right
-            	sprites[0][0][0] = new MobSprite(72, 13, 4, 4, 0);
-            } else if (xd < 1) { // left
-            	sprites[0][0][0] = new MobSprite(72, 13, 4, 4, 1);
-            }
-
         } else {
             // if the enemy was following the player, but has now lost it, it stops moving.
             // *that would be nice, but I'll just make it move randomly instead.
@@ -74,23 +73,45 @@ public class Keeper extends EnemyMob {
 
     @Override
     public void render(Screen screen) {
-        sprites[0][0][0].render(screen, x - 16, y - 24);
+    	super.render(screen);
 
-        int textColor = Color.get(-1, Color.rgb(255, 0, 0));
-        int textColor2 = Color.get(-1, Color.rgb(200, 0, 0));
-        String h = health + "/" + maxHealth;
+        int textColor = Color.get(1, 0, 204, 0);
+        int textColor2 = Color.get(1, 0, 51, 0);
+        int percent = health / (maxHealth / 100);
+        String h = percent + "%";
 
+        if (percent < 1) {
+            h = "1%";
+        }
+
+        if (percent < 16) {
+            textColor = Color.get(1, 204, 0, 0);
+            textColor2 = Color.get(1, 51, 0, 0);
+        } else if (percent < 51) {
+            textColor = Color.get(1, 204, 204, 9);
+            textColor2 = Color.get(1, 51, 51, 0);
+        }
+        
         int textwidth = Font.textWidth(h);
-        Font.draw(h, screen, (x - textwidth / 2) + 1, y - 40, textColor2);
-        Font.draw(h, screen, (x - textwidth / 2), y - 41, textColor);
+        
+        // Bossbar on the the Air wizard
+        if (Settings.get("bossbar").equals("On entity")) {
+            Font.drawBar(screen, (x - Screen.w / 12 + 16), y - 24, length, "testificate");
+        }
 
-        String txt = "";
-        int w = Font.textWidth(txt) / 2;
-        Font.draw(txt, screen, x - w, y - 45 - Font.textHeight());
+        // Bossbar percent
+        if (Settings.get("bossbar").equals("Percent")) {
+            Font.draw(h, screen, (x - textwidth / 2) + 1, y - 17, textColor2);
+            Font.draw(h, screen, (x - textwidth / 2), y - 18, textColor);
+        }
     }
 
     public boolean canSwim() {
         return false;
+    }
+    
+    public boolean canWool() {
+        return true;
     }
 
     @SuppressWarnings("unused")
@@ -115,7 +136,17 @@ public class Keeper extends EnemyMob {
         }
 
         Sound.keeperDeath.playOnLevel(this.x, this.y);
+        
+        beaten = true;
+        active = false;
+        entity = null;
+
         level.add(new SlimyWizard(1), x, y);
         super.die();
     }
+    
+    @Override
+	public int getLightRadius() {
+		return 3;
+	}
 }

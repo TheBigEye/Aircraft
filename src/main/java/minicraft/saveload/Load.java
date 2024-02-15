@@ -48,8 +48,6 @@ import minicraft.entity.mob.Cow;
 import minicraft.entity.mob.Creeper;
 import minicraft.entity.mob.EnemyMob;
 import minicraft.entity.mob.EyeQueen;
-import minicraft.entity.mob.EyeQueenPhase2;
-import minicraft.entity.mob.EyeQueenPhase3;
 import minicraft.entity.mob.Firefly;
 import minicraft.entity.mob.Goat;
 import minicraft.entity.mob.Golem;
@@ -924,6 +922,17 @@ public class Load {
 				return null;
 			}
 
+		} else if (entityName.equals("Fireball") && !isLocalSave) {
+			int eyeQueenID = Integer.parseInt(info.get(2));
+			Entity fireballOwner = Network.getEntity(eyeQueenID);
+			
+			if (fireballOwner instanceof EyeQueen) {
+				newEntity = new Fireball((EyeQueen) fireballOwner, x, y, 1, 1);
+			} else {
+				Logger.error("failed to load fireball; owner id doesn't point to a correct entity");
+				return null;
+			}
+
 		} else {
 			int mobLvl = 1;
 			Class c = null;
@@ -1022,15 +1031,6 @@ public class Load {
 					newEntity = new Arrow(mob, x, y, shootDirection, arrowDamage);
 				}
 			}
-			if (newEntity instanceof Fireball) {
-				int ownerID = Integer.parseInt(info.get(2));
-				Mob mob = (Mob)Network.getEntity(ownerID);
-				if (mob != null) {
-					Direction shootDirection = Direction.values[Integer.parseInt(info.get(3))];
-					int fireballDamage = Integer.parseInt(info.get(5));
-					newEntity = new Fireball(mob, x, y, shootDirection, fireballDamage);
-				}
-			}
 			if (newEntity instanceof ItemEntity) {
 				Item item = Items.get(info.get(2));
 				double zz = Double.parseDouble(info.get(3));
@@ -1089,8 +1089,6 @@ public class Load {
 	        case "Snake": return new Snake(moblvl);
 	        case "Cthulhu": return new EyeQueen(moblvl); // Check...
 	        case "EyeQueen": return new EyeQueen(moblvl);
-	        case "EyeQueenPhase2": return new EyeQueenPhase2(moblvl);
-	        case "EyeQueenPhase3": return new EyeQueenPhase3(moblvl);
 	        case "DeepGuardian": return new Keeper(moblvl);
 	        case "Keeper": return new Keeper(moblvl);
 	        case "AirWizard": return new AirWizard(moblvl > 1);
@@ -1118,7 +1116,6 @@ public class Load {
 	        case "Tnt": return new Tnt();
 	        case "Lantern": return new Lantern(Lantern.Type.NORM);
 	        case "Arrow": return new Arrow(new Skeleton(0), 0, 0, Direction.NONE, 0);
-	        case "Fireball": return new Fireball(new Skeleton(0), 0, 0, Direction.NONE, 0);
 	        case "ItemEntity": return new ItemEntity(Items.get("unknown"), 0, 0);
 	
 	        // Load Particles

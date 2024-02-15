@@ -1,10 +1,5 @@
 package minicraft.entity.mob;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Timer;
-
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -12,11 +7,10 @@ import minicraft.graphic.MobSprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 
-public class Chicken extends PassiveMob implements ActionListener {
+public class Chicken extends PassiveMob {
     private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 40);
     
     private boolean eggDropped = false;
-    private Timer eggTimer;
 
     /**
      * Creates a Chicken.
@@ -24,15 +18,15 @@ public class Chicken extends PassiveMob implements ActionListener {
 
     public Chicken() {
         super(sprites);
-        eggTimer = new Timer(60000, this);
     }
 
     public void tick() {
         super.tick();
         
-        if (!eggDropped) {
-        	eggTimer.start();
-        	eggDropped = true;
+        if (tickTime % 2000 == 0) {
+            if (Game.isMode("Survival")) { // drop eggs each 15 secs
+                dropItem(0, 1, Items.get("egg"));
+            }
         }
         
         // follows to the player if holds seeds
@@ -75,15 +69,7 @@ public class Chicken extends PassiveMob implements ActionListener {
         	Items.get("raw chicken"), Items.get("feather") 
         });
 
+        
         super.die();
     }
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		eggTimer.stop();
-        if (Game.isMode("Survival")) { // drop eggs each 15 secs
-            dropItem(0, 1, Items.get("egg"));
-            eggDropped = false;
-        }
-	}
 }

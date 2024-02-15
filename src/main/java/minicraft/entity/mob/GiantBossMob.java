@@ -90,7 +90,7 @@ public class GiantBossMob extends MobAi {
     public void tick() {
         super.tick();
 
-        if (Settings.get("diff").equals("Peaceful") == false && !Game.isMode("Creative")) {
+        if (!Game.isMode("Creative")) {
             Player player = getClosestPlayer();
             
             // checks if player is on zombies level and if there is no time left on randonimity timer
@@ -123,11 +123,6 @@ public class GiantBossMob extends MobAi {
 
     @Override
     protected void touchedBy(Entity entity) { // if an entity (like the player) touches the enemy mob
-
-        if (Settings.get("diff").equals("Peaceful")) {
-            return;
-        }
-
         super.touchedBy(entity); // hurts the player, damage is based on lvl.
         if (entity instanceof Player) {
             ((Player) entity).hurt(this, lvl * (Settings.get("diff").equals("Hard") ? 3 : 1));

@@ -20,6 +20,7 @@ import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Entity;
+import minicraft.entity.Fireball;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.Spark;
 import minicraft.entity.furniture.Chest;
@@ -122,6 +123,7 @@ public class Level {
 	private final Object entityLock = new Object(); // I will be using this lock to avoid concurrency exceptions in entities and sparks set
 	private final Set<Entity> entities = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the entities in the world
 	private final Set<Spark> sparks = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the sparks in the world
+	private final Set<Fireball> fireballs = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the sparks in the world
 	private final Set<Player> players = java.util.Collections.synchronizedSet(new HashSet<>()); // A list of all the players in the world
 	private final List<Entity> entitiesToAdd = new ArrayList<>(); /// entities that will be added to the level on next tick are stored here. This is for the sake of multithreading optimization. (hopefully)
 	private final List<Entity> entitiesToRemove = new ArrayList<>(); /// entities that will be removed from the level on next tick are stored here. This is for the sake of multithreading optimization. (hopefully)
@@ -137,7 +139,7 @@ public class Level {
 	});
 
 	public Entity[] getEntitiesToSave() {
-		Entity[] allEntities = new Entity[entities.size() + sparks.size() + entitiesToAdd.size()];
+		Entity[] allEntities = new Entity[entities.size() + sparks.size() + fireballs.size() + entitiesToAdd.size()];
 		Entity[] toAdd = entitiesToAdd.toArray(new Entity[entitiesToAdd.size()]);
 		Entity[] current = getEntityArray();
 		System.arraycopy(current, 0, allEntities, 0, current.length);
@@ -414,6 +416,8 @@ public class Level {
 				synchronized (entityLock) {
 					if (entity instanceof Spark) {
 						sparks.add((Spark) entity);
+					} else if (entity instanceof Fireball) {
+						fireballs.add((Fireball) entity);
 					} else {
 						entities.add(entity);
 						if (entity instanceof Player) {
@@ -469,6 +473,7 @@ public class Level {
 			}
 
 			sparks.forEach(this::tickEntity);
+			fireballs.forEach(this::tickEntity);
 		}
 
 		while (count > maxMobCount) {
@@ -493,6 +498,8 @@ public class Level {
 
 			if (entity instanceof Spark) {
 				sparks.remove(entity);
+			} else if (entity instanceof Fireball) {
+				fireballs.remove(entity);
 			} else {
 				entities.remove(entity);
 			}
@@ -902,6 +909,7 @@ public class Level {
 	    ArrayList<Entity> entitiesList = new ArrayList<Entity>();
 	    entitiesList.addAll(entities);
 	    entitiesList.addAll(sparks);
+	    entitiesList.addAll(fireballs);
 	    return entitiesList.toArray(new Entity[entitiesList.size()]);
 	}
 

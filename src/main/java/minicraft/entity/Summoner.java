@@ -5,6 +5,8 @@ import java.util.List;
 import org.tinylog.Logger;
 
 import minicraft.core.Game;
+import minicraft.core.Updater;
+import minicraft.core.Updater.Time;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.MobAi;
 import minicraft.entity.mob.Player;
@@ -15,7 +17,7 @@ import minicraft.item.AmuletItem;
 
 public class Summoner extends Entity {
     public boolean comeback = false;
-    private boolean summonable = true;
+    private boolean summonable;
     private static final int comebackSpeed = 1;
 
     private Mob owner;
@@ -40,11 +42,14 @@ public class Summoner extends Entity {
         
         this.sprite = amulet.getSprite();
         this.owner = owner;
-        this.amuletItem = amulet.clone();
+        this.amuletItem = amulet;
+        
         xx = owner.x;
         yy = owner.y;
         this.xa = xa * 1.3;
         this.ya = ya * 1.3;
+        
+        this.summonable = true;
     }
 
     /**
@@ -58,7 +63,7 @@ public class Summoner extends Entity {
         
 
         if (owner == null) {
-            remove();
+            this.remove();
             return;
         }
 
@@ -91,9 +96,9 @@ public class Summoner extends Entity {
         }
 
         if (!comeback) {
-            if (time >= (120 - random.nextInt(8))) {
+            if (time >= (120 + random.nextInt(16))) {
                 comeback = true;
-                summonable = false;
+                this.summonable = false;
                 time = 0;
             }
 
@@ -120,30 +125,33 @@ public class Summoner extends Entity {
                 }
             }
 
-            /*if (!level.getTile(x >> 4, y >> 4).mayPass(level, x >> 4, y >> 4, this)) {
-	            comeback = true;
-	            summonable = false;
-            }*/
         }
         
-	    if (!(level.getTile(x >> 4, y >> 4).id == 6) && summonable) {
-	        if (random.nextInt(20) == 4 && time / 2 % 8 == 0) {
-	        	
-	        	MobAi newmob;
-	        	
-	        	try {
-	    	         newmob = amuletItem.getSummonMob().getClass().getConstructor(int.class).newInstance(1);
-	    	    } catch (Exception exception) {
-	    	        Logger.error("Could not spawn mob, error initializing mob instance:");
-	    	        exception.printStackTrace();
-	    	        return;
-	    	    }
-	        	
-	    	    level.add(newmob, x, y);
-	            summonable = false;
-	            super.die();
-	        }
-	    }
+
+        if (Updater.getTime() != Time.Day && Updater.getTime() != Time.Morning) {
+    	    if (!(level.getTile(x >> 4, y >> 4).id == 6)) {
+    	        if (this.summonable && time > (125 - random.nextInt(5))) {
+    	        	time = 0;
+    	        	this.summonable = false;
+    	        	
+    	        	MobAi newmob;
+    	        	
+    	        	try {
+    	    	         newmob = amuletItem.getSummonMob().getClass().getConstructor(int.class).newInstance(1);
+    	    	    } catch (Exception exception) {
+    	    	        Logger.error("Could not spawn mob, error initializing mob instance:");
+    	    	        exception.printStackTrace();
+    	    	        return;
+    	    	    }
+
+    	    	    level.add(newmob, x, y);
+    	            super.die();
+    	        }
+    	    }
+        } else {
+        	if (time % 120 == 0) Updater.notifyAll("This doesn't work during the day", 200);
+        }
+
     }
 
     /**

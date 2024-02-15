@@ -2,82 +2,141 @@ package minicraft.entity;
 
 import java.util.List;
 
+import minicraft.entity.mob.EyeQueen;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
+import minicraft.entity.particle.FireParticle;
 import minicraft.graphic.Rectangle;
 import minicraft.graphic.Screen;
 
-public class Fireball extends Entity implements ClientTickable {
-	private Direction dir;
+public class Fireball extends Entity {
+	private Mob owner; // The mob that created this spark
+	private final int lifeTime; // how much time until the spark disappears
+	private double xa, ya; // the x and y acceleration
+	private double xx, yy; // the x and y positions
+	private int durTime = 15 * 13 + random.nextInt(30);
+	private int time; // the amount of time that has passed
+	private int type;
 	private int damage;
-	public Mob owner;
-	private int speed;
 
-	public Fireball(Mob owner, Direction dir, int damage) {
-		this(owner, owner.x, owner.y, dir, damage);
-	}
+	public Fireball(Mob owner, double xa, double ya, int type, int damage) {
+		super(0, 0);
 
-	public Fireball(Mob owner, int x, int y, Direction dir, int damage) {
-		super(Math.abs(dir.getX()) + 1, Math.abs(dir.getY()) + 1);
 		this.owner = owner;
-		this.x = x;
-		this.y = y;
-		this.dir = dir;
+		xx = owner.x;
+		yy = owner.y;
+		this.xa = xa;
+		this.ya = ya;
+		this.type = type;
 		this.damage = damage;
-		this.speed = damage > 3 ? 3 : (damage >= 0 ? 2 : 1);
+
+		lifeTime = durTime;
 	}
 
-	public String getData() {
-		return owner.eid + ":" + dir.ordinal() + ":"+damage;
+	private void SparkCloud(int damage) {
+	    durTime = 15 * 13 + random.nextInt(30);
+
+	    // Move the spark:
+	    xx += xa; x = (int) xx;
+	    yy += ya; y = (int) yy;
+	    
+	    Player player = getClosestPlayer();
+
+	    if (player != null) {
+	        int xd = owner.x - x;
+	        int yd = owner.y - y;
+
+	        int sig = 2; 
+	        xa = 0; ya = 0;
+
+	        if (xd < sig) xa -= random.nextInt(2);
+	        if (xd > sig) xa += random.nextInt(2);
+	        if (yd < sig) ya -= random.nextInt(2);
+	        if (yd > sig) ya += random.nextInt(2);
+	        
+	        if (random.nextBoolean()) {
+	        	xa -= random.nextInt(5);
+	        	ya -= random.nextInt(5);
+	        } else {
+	        	xa += random.nextInt(5);
+	        	ya += random.nextInt(5);
+	        }
+
+	        if (player.isWithin(0, this)) {
+	            player.hurt(owner, damage);
+	        }
+	    }
+	}
+
+	private void SparkRain(int damage) {
+		durTime = 25 * 12 + random.nextInt(20);
+
+		// move the spark to the player positon:
+		xx += xa; x = (int) xx;
+		yy += ya; y = (int) yy;
+		
+		
+		level.add(new FireParticle(x - 4, y - 4, 3));
+		
+		Player player = getClosestPlayer();
+		if (player != null) { // avoid NullPointer if player dies
+			// If the entity is a mob, but not a Air Wizard, then hurt it.
+			List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof EyeQueen), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS)); // Gets the entities in the current position to hit.
+			toHit.forEach(entity -> ((Mob) entity).hurt(owner, damage));
+		}
+	}
+
+	private void SparkSpiralRain(int damage) {
+		durTime = 30 * 10 + random.nextInt(34);
+
+		// move the spark:
+		xx += xa; x = (int) xx;
+		yy += ya; y = (int) yy;
+		
+		level.add(new FireParticle(x - 4, y, 3));
+		
+		Player player = getClosestPlayer();
+		if (player != null) { // avoid NullPointer if player dies
+			if (player.isWithin(0, this)) {
+				player.hurt(owner, damage);
+			}
+		}
 	}
 
 	@Override
 	public void tick() {
-		if (x < 0 || x >> 4 > level.w || y < 0 || y >> 4 > level.h) {
-			remove(); // Remove when out of bounds
+		time++;
+
+		if (type == 1) SparkCloud(this.damage);
+		if (type == 2) SparkRain(this.damage);
+		if (type == 3) SparkSpiralRain(this.damage);
+
+		if (time >= lifeTime) {
+			remove(); // Remove this from the world
 			return;
 		}
-
-		x += dir.getX() * speed;
-		y += dir.getY() * speed;
-
-		// TODO I think I can just use the xr yr vars, and the normal system with touchedBy(entity) to detect collisions instead.
-
-		List<Entity> entitylist = level.getEntitiesInRect(new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS));
-		boolean criticalHit = random.nextInt(11) < 9;
-		for (Entity hit : entitylist) {
-			if (hit instanceof Mob && hit != owner) {
-				Mob mob = (Mob) hit;
-				int extradamage = (hit instanceof Player ? 0 : 3) + (criticalHit ? 0 : 1);
-				mob.hurt(owner, damage + extradamage, dir);
-				//mob.ignite(50);
-			}
-
-			if (!level.getTile(x >> 4, y >> 4).mayPass(level, x >> 4, y >> 4, this) && level.getTile(x >> 4, y >> 4).id != 16) {
-				this.remove();
-			}
-		}
 	}
 
-	@Override
+
+	@Override /** Can this entity block you? Nope. */
 	public boolean isSolid() {
 		return false;
-	}
-	
-	@Override
-	public boolean canSwim() {
-		return true;
 	}
 
 	@Override
 	public void render(Screen screen) {
-		int xt = 4;
-		int yt = 2;
-
-		if (dir == Direction.LEFT) xt = 5;
-		if (dir == Direction.UP) xt = 6;
-		if (dir == Direction.DOWN) xt = 7;
-
-		screen.render(x - 4, y - 4, xt + yt * 32, 0);
 	}
+
+	/**
+	 * Returns the owners id as a string.
+	 * 
+	 * @return the owners id as a string.
+	 */
+	public String getData() {
+		return owner.eid + "";
+	}
+	
+    public int getLightRadius() {
+        return 1;
+    }
 }

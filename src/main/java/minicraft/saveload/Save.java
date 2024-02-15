@@ -407,7 +407,7 @@ public class Save {
 		// If (e instanceof Particle) return "";
 
 		// wirte these only when sending a world, not writing
-		if (isLocalSave && (entity instanceof ItemEntity || entity instanceof Arrow || entity instanceof Spark || entity instanceof Particle)) {
+		if (isLocalSave && (entity instanceof ItemEntity || entity instanceof Arrow || entity instanceof Spark || entity instanceof Fireball || entity instanceof Particle)) {
 			return "";
 		}
 

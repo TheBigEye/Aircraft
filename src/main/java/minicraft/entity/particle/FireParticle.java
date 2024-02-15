@@ -8,6 +8,17 @@ public class FireParticle extends Particle {
     private int frame = 0;
 
     /**
+     * Creates a new particle at the given position. It has a custom lifetime of ticks
+     * and a fire looking sprite.
+     * 
+     * @param x X map position
+     * @param y Y map position
+     */
+    public FireParticle(int x, int y, int time) {
+        super(x, y, time, Sprites);
+    }
+    
+    /**
      * Creates a new particle at the given position. It has a lifetime of 40 ticks
      * and a fire looking sprite.
      * 
@@ -15,8 +26,10 @@ public class FireParticle extends Particle {
      * @param y Y map position
      */
     public FireParticle(int x, int y) {
-        super(x, y, 40, Sprites);
+        this(x, y, 40);
     }
+    
+
 
     @Override
     public void tick() {

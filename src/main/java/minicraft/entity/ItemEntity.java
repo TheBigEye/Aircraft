@@ -3,6 +3,7 @@ package minicraft.entity;
 import java.util.List;
 
 import minicraft.core.io.Settings;
+import minicraft.entity.mob.EyeQueen;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.FireParticle;
 import minicraft.graphic.Color;
@@ -162,6 +163,16 @@ public class ItemEntity extends Entity implements ClientTickable {
 
 	@Override
 	protected void touchedBy(Entity entity) {
+		
+		if (entity instanceof EyeQueen || entity instanceof Fireball) {
+			for (int i = 0; i < 1 + random.nextInt(2); i++) {
+				int randX = random.nextInt(16);
+				int randY = random.nextInt(12);
+				level.add(new FireParticle(x - 8 + randX, y - 6 + randY));
+			}
+			remove();
+		}
+		
 		if (!(entity instanceof Player)) {
 			return; // for the time being, we only care when a player touches an item.
 		}
