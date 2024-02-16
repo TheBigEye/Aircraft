@@ -23,7 +23,7 @@ public class Pig extends PassiveMob {
 		followOnHold(Items.get("Carrot"), 5);
         
 		// Pig sounds
-		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
+		if ((tickTime % (random.nextInt(100) + 120) == 0) && random.nextInt(8) == 0) {
 			if (random.nextBoolean()) {
 				if (!random.nextBoolean()) {
 					Sound.pigSay1.playOnLevel(this.x, this.y);

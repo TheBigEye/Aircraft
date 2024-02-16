@@ -155,8 +155,13 @@ public class AirWizard extends EnemyMob {
             attackTime = (int) (attackTime * 0.92); // attackTime will decrease by 7% every time.
             double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1); // assigns a local direction variable from the attack time.
             double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2; // speed is dependent on the attackType. (higher attackType, faster speeds)
-            level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 1)); // adds a spark entity with the cosine and sine of dir times speed.
-
+            
+            if (random.nextBoolean() && health <= (secondform ? 15000 : 8750)) {
+            	level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 2)); // adds a spark entity with the cosine and sine of dir times speed.
+            } else {
+            	level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 1)); // adds a spark entity with the cosine and sine of dir times speed.
+            }
+            
             Sound.airWizardSpawnSpark.playOnLevel(this.x, this.y);
             
             return; // skips the rest of the code (attackTime was > 0; ie we're attacking.)
@@ -193,7 +198,7 @@ public class AirWizard extends EnemyMob {
             int xd = player.x - x; // the horizontal distance between the player and the air wizard.
             int yd = player.y - y; // the vertical distance between the player and the air wizard.
             
-            if (xd * xd + yd * yd < 16*16 * 2*2) {
+            if (xd*xd + yd*yd < 16*16 * 2*2) {
                 /// Move away from the player if less than 2 blocks away
                 xa = 0; // accelerations
                 ya = 0;
@@ -229,8 +234,7 @@ public class AirWizard extends EnemyMob {
             	}
             }
         }
-        
-       
+         
     }
 
     @Override
@@ -305,14 +309,13 @@ public class AirWizard extends EnemyMob {
         if (!secondform) {  
 			// Kill first Air wizard achievement
 			AchievementsDisplay.setAchievement("minicraft.achievement.airwizard", true);
-			
+	
             if (!beaten) {
+            	Updater.notifyAll("The Air Wizard was beaten?", 200);
             	Updater.notifyAll("Unlocked Dungeons!", 200);
-            } else {
-            	Updater.notifyAll("Well played!", 200);
+            	beaten = true;
             }
-            
-            beaten = true;
+
             active = false;
             entity = null;
 
@@ -321,9 +324,8 @@ public class AirWizard extends EnemyMob {
 			AchievementsDisplay.setAchievement("minicraft.achievement.second_airwizard", true);
 			
             if (!Settings.getBoolean("unlockedskin")) {
+            	Updater.notifyAll("The Air Wizard was beaten!", 200);
                 Updater.notifyAll("A costume lies on the ground...", -200);
-            } else {
-            	Updater.notifyAll("Well played!", 200);
             }
             
             active = false;
@@ -340,4 +342,9 @@ public class AirWizard extends EnemyMob {
     public int getMaxLevel() {
         return 2;
     }
+    
+	@Override
+	public int getLightRadius() {
+		return secondform ? 3: 2;
+	}
 }

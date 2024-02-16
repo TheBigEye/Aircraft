@@ -49,26 +49,15 @@ public class Spark extends Entity {
 	    yy += ya; y = (int) yy;
 
 	    Player player = getClosestPlayer();
-
 	    if (player != null) {
-	        int xd = owner.x - x;
-	        int yd = owner.y - y;
-
-	        int sig = 2; 
-	        xa = 0; ya = 0;
-
-	        if (xd < sig) xa -= random.nextInt(2);
-	        if (xd > sig) xa += random.nextInt(2);
-	        if (yd < sig) ya -= random.nextInt(2);
-	        if (yd > sig) ya += random.nextInt(2);
-	        
-	        if (random.nextBoolean()) {
-	        	xa -= random.nextInt(5);
-	        	ya -= random.nextInt(5);
-	        } else {
-	        	xa += random.nextInt(5);
-	        	ya += random.nextInt(5);
-	        }
+	    	
+	    	if (random.nextBoolean()) {
+	        	xa -= random.nextInt(2);
+	        	ya -= random.nextInt(2);
+	    	} else {
+	        	xa += random.nextInt(2);
+	        	ya += random.nextInt(2);
+	    	}
 
 	        if (player.isWithin(0, this)) {
 	            player.hurt(owner, damage);
@@ -85,9 +74,9 @@ public class Spark extends Entity {
 		
 		Player player = getClosestPlayer();
 		if (player != null) { // avoid NullPointer if player dies
-			// If the entity is a mob, but not a Air Wizard, then hurt it.
-			List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizard), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS)); // Gets the entities in the current position to hit.
-			toHit.forEach(entity -> ((Mob) entity).hurt(owner, damage));
+			if (player.isWithin(0, this)) {
+				player.hurt(owner, damage);
+			}
 		}
 	}
 
@@ -100,9 +89,9 @@ public class Spark extends Entity {
 
 		Player player = getClosestPlayer();
 		if (player != null) { // avoid NullPointer if player dies
-			if (player.isWithin(0, this)) {
-				player.hurt(owner, damage);
-			}
+			// If the entity is a mob, but not a Air Wizard, then hurt it.
+			List<Entity> toHit = level.getEntitiesInRect(entity -> entity instanceof Mob && !(entity instanceof AirWizard), new Rectangle(x, y, 0, 0, Rectangle.CENTER_DIMS)); // Gets the entities in the current position to hit.
+			toHit.forEach(entity -> ((Mob) entity).hurt(owner, damage));
 		}
 	}
 

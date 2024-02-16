@@ -21,7 +21,7 @@ public class EyeQueen extends GiantBossMob {
 
     static {
     	spritesMain = new MobSprite[2][4][2];
-        for (int i = 0; i < 1; i++) { // Normal wizard
+        for (int i = 0; i < 1; i++) {
             MobSprite[][] list = MobSprite.compileMobSpriteAnimations(60, 0, 4, 4);
             spritesMain[i] = list;
         }
@@ -30,6 +30,8 @@ public class EyeQueen extends GiantBossMob {
     public static boolean beaten = false;
     public static boolean active = true;
     public static EyeQueen entity = null;
+    
+    private boolean deathing = false;
     
     private int attackDelay = 0;
     private int attackTime = 0;
@@ -49,6 +51,8 @@ public class EyeQueen extends GiantBossMob {
         walkTime = 2;
         
         currentPhase = 1;
+        
+        deathing = false;
         
         this.setHitboxSize(6, 6);
     }
@@ -75,48 +79,51 @@ public class EyeQueen extends GiantBossMob {
     public void tick() {
         super.tick();
         
+        // Update the length for the bossbar
         length = health / (maxHealth / 100);
         
+        // The the nearest player
         Player player = getClosestPlayer();
         
         // Change phases by health
         if (health <= 12000 && currentPhase == 1) {
-            int randX = random.nextInt(16);
-            int randY = random.nextInt(16);
-            level.add(new FireParticle(x - 0 + randX, y - 0 + randY));
-            level.add(new FireParticle(x - 32 + randX, y - 24 + randY));
-            level.add(new FireParticle(x - 26 + randX, y - 14 + randY));
-        	// change to phase 2
+			for (int i = 0; i < 8; i++) {
+				level.add(new FireParticle(x - 8 + random.nextInt(16), y - 6 + random.nextInt(12)));
+			}
+            
+        	// Change to phase 2
         	Sound.eyeQueenChangePhase.playOnLevel(this.x, this.y);
         	currentPhase = 2;
         }
         
         if (health <= 6000 && currentPhase == 2) {
-            int randX = random.nextInt(16);
-            int randY = random.nextInt(16);
-            level.add(new FireParticle(x - 0 + randX, y - 0 + randY));
-            level.add(new FireParticle(x - 32 + randX, y - 24 + randY));
-            level.add(new FireParticle(x - 26 + randX, y - 14 + randY));
-        	// change to phase 3
+			for (int i = 0; i < 8; i++) {
+				level.add(new FireParticle(x - 8 + random.nextInt(16), y - 6 + random.nextInt(12)));
+			}
+            
+        	// Change to phase 3
         	Sound.eyeQueenChangePhase.playOnLevel(this.x, this.y);
         	currentPhase = 3;
         }
 
+        // If a tile obstructs the path, we hit it
         if ((tickTime / 2 % 16 == 0)) {
 			Direction attackDir = dir; // Make the attack direction equal the current direction
-			
-			// Attempts to hurt the tile in the appropriate direction.
-			Point interactionTile = getInteractionTile();
+			Point interactionTile = getInteractionTile(); // Attempts to hurt the tile in the appropriate direction.
 			
 			// Check if tile is in bounds of the map.
-			if (interactionTile.x >= 0 && interactionTile.y >= 0 && interactionTile.x < level.w && interactionTile.y < level.h) {
+			if ((interactionTile.x >= 0 && interactionTile.y >= 0) && (interactionTile.x < level.w && interactionTile.y < level.h)) {
 				Tile targetTile = level.getTile(interactionTile.x, interactionTile.y);
+				
+				// Any solid tiles (except some) will be damaged
 				if ((targetTile != Tiles.get("Hard Rock") || targetTile != Tiles.get("Summon Altar")) && !targetTile.mayPass(level, interactionTile.x, interactionTile.y, this)) { 
+					
+					// Hit the tile
 					targetTile.hurt(level, interactionTile.x, interactionTile.y, this, random.nextInt(10) + 16, attackDir);
-					for (int i = 0; i < 1 + random.nextInt(8); i++) {
-						int randX = random.nextInt(16);
-						int randY = random.nextInt(12);
-						level.add(new FireParticle(interactionTile.x - 8 + randX, interactionTile.y - 6 + randY));
+					
+					// Add fire particles :)
+					for (int i = 0; i < random.nextInt(8) + 1; i++) {
+						level.add(new FireParticle(interactionTile.x - 8 + random.nextInt(16), interactionTile.y - 6 + random.nextInt(12)));
 					}
 				}
 			}
@@ -127,9 +134,18 @@ public class EyeQueen extends GiantBossMob {
             xa = ya = 0;
             int dir = ((attackDelay - 45) / 4) % 4; // the direction of attack.
             dir = ((dir * 2) % 4) + (dir / 2); // direction attack changes
-            if (attackDelay < 45) dir = 0; // direction is reset, if attackDelay is less than 45; prepping for attack.
+            
+            if (attackDelay < 45) {
+            	dir = 0; // direction is reset, if attackDelay is less than 45; prepping for attack.
+            }
 
             this.dir = Direction.getDirection(dir);
+            
+            if (this.deathing) {
+    			for (int i = 0; i < 16; i++) {
+    				level.add(new FireParticle(x - 16 + random.nextInt(32), y - 12 + random.nextInt(24), 3));
+    			}
+            }
 
             attackDelay--;
             if (attackDelay == 0) {
@@ -148,39 +164,60 @@ public class EyeQueen extends GiantBossMob {
             }
             return; // skips the rest of the code (attackDelay must have been > 0)
             
-        } else if (attackTime > 0 && currentPhase == 1) { // First phase sparks attack
+        } else if (attackTime > 0 && currentPhase == 1 && !this.deathing) {
             xa = ya = 0;
             attackTime = (int) (attackTime * 0.92); // attackTime will decrease by 7% every time.
             double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1); // assigns a local direction variable from the attack time.
             double speed = (0.7) + attackType * 0.2; // speed is dependent on the attackType. (higher attackType, faster speeds)
-            level.add(new Fireball(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 2, random.nextInt(2) + 1)); // adds a spark entity with the cosine and sine of dir times speed.
+            level.add(new Fireball(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 2, random.nextInt(2) + 1)); // adds a fireball entity with the cosine and sine of dir times speed.
 
             Sound.airWizardSpawnSpark.playOnLevel(this.x, this.y);
             
             return; // skips the rest of the code (attackTime was > 0; ie we're attacking.)
             
-        } else if (attackTime > 0 && currentPhase >= 2) { // First phase sparks attack
+        } else if (attackTime > 0 && currentPhase >= 2 && !this.deathing) {
             xa = ya = 0;
-            attackTime = (int) (attackTime * 0.92); // attackTime will decrease by 7% every time.
-            double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1); // assigns a local direction variable from the attack time.
-            double speed = (0.7) + attackType * 0.2; // speed is dependent on the attackType. (higher attackType, faster speeds)
-            level.add(new Fireball(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 3, random.nextInt(3) + 1)); // adds a spark entity with the cosine and sine of dir times speed.
+            attackTime = (int) (attackTime * 0.92);
+            double dir = attackTime * 0.25 * (attackTime % 2 * 2 - 1);
+            double speed = (0.7) + attackType * 0.2;
+            level.add(new Fireball(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 3, random.nextInt(3) + 1));
 
             Sound.airWizardSpawnSpark.playOnLevel(this.x, this.y);
             
-            return; // skips the rest of the code (attackTime was > 0; ie we're attacking.)
+            return;
         }
         
-        if (player != null && randomWalkTime == 0 && (tickTime / 2 % 16 == 0)) {
-            int xd = player.x - x; // x dist to player
-            int yd = player.y - y; // y dist to player
-            if (random.nextInt(32) == 0 && xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) {
+        if (player != null && randomWalkTime == 0 && (tickTime % (200 + random.nextInt(200)) == 0)) {
+            int xd = player.x - x; // x distance to player
+            int yd = player.y - y; // y distance to player
+            if (xd * xd + yd * yd < 50 * 50 && attackDelay == 0 && attackTime == 0) {
             	if (currentPhase == 1) {
-            		attackDelay = 60 * 6; // ...then set attackDelay to 240 (4 seconds at default 60 ticks/sec)
+            		attackDelay = 60 * 6; // ...then set attackDelay to 360 (6 seconds at default 60 ticks/sec)
             	} else {
-            		attackDelay = 60 * 3; // ...then set attackDelay to 120 (2 seconds at default 60 ticks/sec)
+            		attackDelay = 60 * 3; // ...then set attackDelay to 180 (3 seconds at default 60 ticks/sec)
             	}
             }
+        }
+        
+        
+        // Death animation
+        if (this.health <= 100 && !this.deathing) {
+        	this.health = 200;
+        	this.deathing = true;
+        	Sound.eyeQueenDeath.playOnLevel(this.x, this.y);
+        	tickTime = 0;
+        }
+        
+        if (this.deathing) {
+        	if (this.health <= 200) this.health = 200;
+        	
+        	attackDelay = 60 * 6;
+        	attackTime = 60 * 6;
+        	
+        	if (tickTime >= 50) {
+        		this.deathing = false;
+        		this.die();
+        	}
         }
         
     }
@@ -223,20 +260,20 @@ public class EyeQueen extends GiantBossMob {
     @Override
     protected void touchedBy(Entity entity) {
         if (entity instanceof Player) {
-            // if the entity is the Player, then deal them 1 or 2 damage points.
             ((Player) entity).hurt(this, random.nextInt(2) + 2);
         }
     }
 
 
     public void die() {
-        Sound.eyeQueenDeath.playOnLevel(this.x, this.y);
         
-        beaten = true;
         active = false;
         entity = null;
         
-        Updater.notifyAll("The Eye Queen was beaten!", 200);
+        if (!beaten) {
+        	Updater.notifyAll("The Eye Queen was beaten!", 200);
+        	beaten = true;
+        }
         
         dropItem(25, 50, Items.get("emerald"));
         dropItem(1, 1, Items.get("AlAzif"));

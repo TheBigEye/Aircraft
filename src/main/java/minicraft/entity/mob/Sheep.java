@@ -64,7 +64,7 @@ public class Sheep extends PassiveMob {
 		// follows to the player if holds wheat
 		followOnHold(Items.get("Wheat"), 3);
 		
-		if (tickTime /16 %24 == 0) {
+		if ((tickTime % (random.nextInt(100) + 120) == 0)) {
 			Tile tile = level.getTile(x >> 4, y >> 4);
 			if (tile == Tiles.get("Snow")) {
 				remove();

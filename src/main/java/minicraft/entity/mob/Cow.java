@@ -23,7 +23,7 @@ public class Cow extends PassiveMob {
 		followOnHold(Items.get("Wheat"), 3);
         
 		// Cow sounds
-		if (tickTime /16 %24 == 0 && random.nextInt(8) == 4) {
+		if ((this.tickTime % (random.nextInt(100) + 120) == 0) && random.nextInt(8) == 0) {
 			if (random.nextBoolean()) {
 				if (!random.nextBoolean()) {
 					Sound.cowSay1.playOnLevel(this.x, this.y);
