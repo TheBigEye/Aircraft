@@ -187,12 +187,12 @@ public class TitleDisplay extends Display {
 	    if (shouldRender) {
 	        int hh = 39; // Height of squares (on the spritesheet)
 	        int ww = 416; // Width of squares (on the spritesheet)
-	        int xxo = (Screen.w - ww * 8) / 2; // X location of the title
+	        int xxo = (Screen.w - (ww << 3)) / 2; // X location of the title
 	        int yyo = 0; // Y location of the title
 
 	        for (int y = 0; y < hh; y++) {
 	            for (int x = 0; x < ww; x++) {
-	                screen.render(xxo + x * 8, yyo + y * 8, new Sprite.Px(x - 8, y, 0, 5));
+	                screen.render(xxo + (x << 3), yyo + (y << 3), new Sprite.Px(x - 8, y, 0, 5));
 	            }
 	        }
 	    }
@@ -205,12 +205,12 @@ public class TitleDisplay extends Display {
 	    if (shouldRender) {
 	        int h = 6; // Height of squares (on the spritesheet)
 	        int w = 26; // Width of squares (on the spritesheet)
-	        int xo = (Screen.w - w * 8) / 2; // X location of the title
+	        int xo = (Screen.w - (w << 3)) / 2; // X location of the title
 	        int yo = 55; // Y location of the title
 
 	        for (int y = 0; y < h; y++) {
 	            for (int x = 0; x < w; x++) {
-	                screen.render(xo + x * 8, yo + y * 8, x + (y + 7) * 32, 0, 3);
+	                screen.render(xo + (x << 3), yo + (y << 3), x + ((y + 7) << 5), 0, 3);
 	            }
 	        }
 	    }
@@ -256,7 +256,7 @@ public class TitleDisplay extends Display {
 	        for (int y = 0; y < 150; y++) {
 	            int dd = (y + x % 2 * 2 + x / 2) - time * 2;
 	            if (dd < 0 && dd > transitionStart) {
-	                screen.render(x * 8, Screen.h - y * 8 - 8, 12 + 24 * 32, 0, 3);
+	                screen.render(x << 3, Screen.h - y * 8 - 8, 12 + (24 << 5), 0, 3);
 	            }
 	        }
 	    }

@@ -194,10 +194,10 @@ public class Renderer extends Game {
 		if (yScroll > ((level.h << 4) - Screen.h)) yScroll = ((level.h << 4) - Screen.h); // ...bottom border.
 
 		if (currentLevel > 3) { // If the current level is higher than 3 (which only the sky level (and dungeon) is)
-			for (int y = 0; y < 56; y++) {
-				for (int x = 0; x < 96; x++) {
+			for (int y = 0; y < 37; y++) {
+				for (int x = 0; x < 55; x++) {
 					// Creates the background for the sky (and dungeon) level:
-					screen.render(x * 8 - ((xScroll >> 2) & 7), y * 8 - ((yScroll >> 2) & 7), 3 + 23 * 32, 0, 1); // for rain
+					screen.render((x << 3) - ((xScroll >> 2) & 7), (y << 3) - ((yScroll >> 2) & 7), 3 + (23 << 5), 0, 1);
 				}
 			}
 		}
@@ -257,11 +257,11 @@ public class Renderer extends Game {
 				if (isMode("Creative") || arrowsCount >= 10000) {
 					Font.draw(" x" + "∞", screen, 184 - tool.arrowOffset, Screen.h - 24);
 				} else {
-					Font.draw(" x" + arrowsCount, screen, 184 - tool.arrowOffset, Screen.h - 24);
+					Font.draw(" x" + arrowsCount, screen, 180 - tool.arrowOffset, Screen.h - 24);
 				}
 
 				// Displays the arrow icon
-				screen.render(20 * 8 + 20 - player.activeItem.arrowOffset, Screen.h - 24, 5 + 3 * 32, 0, 3);
+				screen.render((20 << 3) + 20 - player.activeItem.arrowOffset, Screen.h - 24, 5 + (3 << 5), 0, 3);
 			}
 			
 			// TOOL DURABILITY STATUS
@@ -369,7 +369,7 @@ public class Renderer extends Game {
 				
 				// Title background
 				for (int j = 0; j < title.length(); j++) {
-					screen.render(311 + (j * 8) - 1, 9, 3 + 21 * 32, 0, 3);
+					screen.render(311 + (j << 3) - 1, 9, 3 + (21 << 5), 0, 3);
 				}
 				Font.draw(title, screen, 310, 9, Color.YELLOW);
 				
@@ -395,16 +395,16 @@ public class Renderer extends Game {
 						// wobbling hearts if the player health is less than 5
 						if (player.health < 5) {
 							int blinking = (random.nextInt(2) - random.nextInt(2));
-							screen.render(2 + i * 8, Screen.h - (18 + blinking), 0 + 2 * 32, 0, 3);
+							screen.render(2 + (i << 3), Screen.h - (18 + blinking), 0 + (2 << 5), 0, 3);
 						} else { // normal hearts if more than 4
-							screen.render(2 + i * 8, Screen.h - 18, 0 + 2 * 32, 0, 3);
+							screen.render(2 + (i << 3), Screen.h - 18, 0 + (2 << 5), 0, 3);
 						}
 					} else { // hearts cotainer
 						if (player.health < 5) {
 							int blinking = (random.nextInt(2) - random.nextInt(2));
-							screen.render(2 + i * 8, Screen.h - (18 + blinking), 0 + 3 * 32, 0, 3); // wobbling hearts cotainer
+							screen.render(2 + (i << 3), Screen.h - (18 + blinking), 0 + (3 << 5), 0, 3); // wobbling hearts cotainer
 						} else {
-							screen.render(2 + i * 8, Screen.h - 18 , 0 + 3 * 32, 0, 3); // nomral hearts container
+							screen.render(2 + (i << 3), Screen.h - 18 , 0 + (3 << 5), 0, 3); // nomral hearts container
 						}
 					}
 				
@@ -414,17 +414,17 @@ public class Renderer extends Game {
 					if (i < player.health) {
 						if (player.health < 6) {
 							int blinking = (random.nextInt(2) - random.nextInt(2));
-							screen.render(2 + i * 8, Screen.h - (18 + blinking), 7 + 2 * 32, 0, 3);
+							screen.render(2 + (i << 3), Screen.h - (18 + blinking), 7 + (2 << 5), 0, 3);
 						} else {
-							screen.render(2 + i * 8, Screen.h - 18, 7 + 2 * 32, 0, 3);
+							screen.render(2 + (i << 3), Screen.h - 18, 7 + (2 << 5), 0, 3);
 						}
 					
 				} else { // hearts cotainer
 						if (player.health < 5) {
 							int blinking = (random.nextInt(2) - random.nextInt(2));
-							screen.render(2 + i * 8, Screen.h - (18 + blinking), 7 + 3 * 32, 0, 3); // wobbling hearts cotainer
+							screen.render(2 + (i << 3), Screen.h - (18 + blinking), 7 + (3 << 5), 0, 3); // wobbling hearts cotainer
 						} else {
-							screen.render(2 + i * 8, Screen.h - 18 , 7 + 3 * 32, 7, 3); // nomral hearts container
+							screen.render(2 + (i << 3), Screen.h - 18 , 7 + (3 << 5), 7, 3); // nomral hearts container
 						}
 					}
 				}
@@ -432,32 +432,32 @@ public class Renderer extends Game {
 				if (player.staminaRechargeDelay > 0) {
 					// Creates the white/gray blinking effect when you run out of stamina.
 					if (player.staminaRechargeDelay / 4 % 2 == 0) {
-						screen.render(2 + i * 8, Screen.h - 9, 1 + 4 * 32, 0, 3);
+						screen.render(2 + (i << 3), Screen.h - 9, 1 + (4 << 5), 0, 3);
 					} else {
-						screen.render(2 + i * 8, Screen.h - 9, 1 + 3 * 32, 0, 3);
+						screen.render(2 + (i << 3), Screen.h - 9, 1 + (3 << 5), 0, 3);
 					}
 				} else {
 					// Renders your current stamina, and uncharged gray stamina.
 					if (i < player.stamina) {
-						screen.render(2 + i * 8, Screen.h - 9, 1 + 2 * 32, 0, 3);
+						screen.render(2 + (i << 3), Screen.h - 9, 1 + (2 << 5), 0, 3);
 					} else {
-						screen.render(2 + i * 8, Screen.h - 9, 1 + 3 * 32, 0, 3);
+						screen.render(2 + (i << 3), Screen.h - 9, 1 + (3 << 5), 0, 3);
 					}
 				}
 							
 				// Renders hunger icons
 				if (i < player.hunger) {
-					screen.render(i * 8 + (Screen.w - 82), Screen.h - 18, 2 + 2 * 32, 0, 3);
+					screen.render((i << 3) + (Screen.w - 82), Screen.h - 18, 2 + (2 << 5), 0, 3);
 				} else {
-					screen.render(i * 8 + (Screen.w - 82), Screen.h - 18, 2 + 3 * 32, 0, 3);
+					screen.render((i << 3) + (Screen.w - 82), Screen.h - 18, 2 + (3 << 5), 0, 3);
 				}
 				
 				// Renders armor icons
 				int armor = player.armor * Player.maxStat / Player.maxArmor;
 				if (i <= armor && player.currentArmor != null) {
-					screen.render(i * 8 + (Screen.w - 82), Screen.h - 9, (player.currentArmor.level - 1) + 9 * 32, 0, 0);
+					screen.render((i << 3) + (Screen.w - 82), Screen.h - 9, (player.currentArmor.level - 1) + (9 << 5), 0, 0);
 				} else {
-					screen.render(i * 8 + (Screen.w - 82), Screen.h - 9, 8 + 2 * 32, 0, 3);
+					screen.render((i << 3) + (Screen.w - 82), Screen.h - 9, 8 + (2 << 5), 0, 3);
 				}
 				
 			}
@@ -512,17 +512,17 @@ public class Renderer extends Game {
 			int maxBarLength = 100;
 	
 			if (bossHealth > 1) {
-				screen.render(x + (maxBarLength * 2) , y , 0 + 24 * 32, 1, 3); // left corner
+				screen.render(x + (maxBarLength * 2) , y , 0 + (24 << 5), 1, 3); // left corner
 		
 				// The middle
 				for (int bx = 0; bx < maxBarLength; bx++) {
-					screen.render(x + (bx * 2), y, 1 + 24 * 32, 0, 3);
+					screen.render(x + (bx * 2), y, 1 + (24 << 5), 0, 3);
 				}  
 		
-				screen.render(x - 5 , y , 0 + 25 * 32, 0, 3); // right corner
+				screen.render(x - 5 , y , 0 + (25 << 5), 0, 3); // right corner
 		
 				for (int bx = 0; bx < barLength; bx++) {
-					screen.render(x + (bx * 2), y, 1 + 25 * 32, 0, 3);
+					screen.render(x + (bx * 2), y, 1 + (25 << 5), 0, 3);
 				}
 				
 				FontStyle style = new FontStyle(Color.WHITE).setShadowType(Color.BLACK, true).setYPos(2);

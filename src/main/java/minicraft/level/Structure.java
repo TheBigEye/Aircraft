@@ -241,7 +241,7 @@ public class Structure {
             "WFFFW**OO*ZZXCC\n" + 
             "WWWWW**O*OZZXCC\n"
         );
-        villageCrops.addFurniture(0 * 16, 0 * 16, new Statue(Statue.Type.Zombie));
+        villageCrops.addFurniture(0, 0, new Statue(Statue.Type.Zombie));
 
         villageNormal = new Structure();
         villageNormal.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass,O:Path",
@@ -261,7 +261,7 @@ public class Structure {
             "WFFFW**OO*WFFFW\n" + 
             "WWWWW**O*OWWWWW\n"
         );
-        villageNormal.addFurniture(0 * 16, 0 * 16, new Statue(Statue.Type.Skeleton));
+        villageNormal.addFurniture(0, 0, new Statue(Statue.Type.Skeleton));
 
         villageHouseTwoDoor = new Structure();
         villageHouseTwoDoor.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass",

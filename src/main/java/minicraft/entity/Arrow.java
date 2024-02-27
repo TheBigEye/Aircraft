@@ -137,11 +137,11 @@ public class Arrow extends Entity implements ClientTickable {
         if (dir == Direction.UP) xt = 2;
         if (dir == Direction.DOWN) xt = 3;
 
-        if (Settings.get("shadows").equals(true)) { // Shadow
-            screen.render(x - 4, y + 2, xt + yt * 32, 0, 0, -1, false, Color.BLACK);
+        if (Settings.get("shadows").equals(true)) {
+            screen.render(x - 4, y + 2, xt + (yt << 5), 0, 0, -1, false, Color.BLACK);
         }
 
         // Sprite
-        screen.render(x - 4, y - 4, xt + yt * 32, 0, 0);
+        screen.render(x - 4, y - 4, xt + (yt << 5), 0, 0);
     }
 }

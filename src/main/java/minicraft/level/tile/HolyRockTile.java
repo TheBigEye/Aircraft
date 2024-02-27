@@ -5,6 +5,7 @@ import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
+import minicraft.entity.mob.AirWizard;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.SmashParticle;
@@ -40,7 +41,7 @@ public class HolyRockTile extends Tile {
 
     @Override
     public boolean mayPass(Level level, int x, int y, Entity entity) {
-        return false;
+        return entity instanceof AirWizard;
     }
 
     @Override

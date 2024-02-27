@@ -36,8 +36,6 @@ public class LoadingDisplay extends Display {
 		}, "World Loader Thread").start());
 		timer.setRepeats(false);
 	}
-	
-	
 
 	public void tick(InputHandler input) {
 		super.tick(input);

@@ -37,7 +37,7 @@ public class WaterTile extends Tile {
 	public boolean tick(Level level, int xt, int yt) {
 	    int xn = xt;
 	    int yn = yt;
-
+	    
 	    switch (random.nextInt(2)) {
 	        case 0: xn += random.nextInt(2) * 2 - 1; break;
 	        case 1: yn += random.nextInt(2) * 2 - 1; break;

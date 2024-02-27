@@ -106,12 +106,6 @@ public abstract class Mob extends Entity {
             return false; // stopped because there's no level to move in!
         }
         
-        @SuppressWarnings("unused")
-        int oldxt = x >> 4;
-        
-        @SuppressWarnings("unused")
-        int oldyt = y >> 4;
-
 		// These should return true because the mob is still technically moving; these are just to make it move *slower*.
 		if (tickTime % 2 == 0 && (isSwimming() || (!(this instanceof Player) && isWooling()))) {
 			return true;

@@ -74,7 +74,6 @@ public class TorchTile extends Tile {
 			level.setData(x, y, data + 1);
 		}  
 
-
 		spawnX = (x << 4) + 4;
 		spawnY = (y << 4) + random.nextInt(2) - random.nextInt(1);
 		

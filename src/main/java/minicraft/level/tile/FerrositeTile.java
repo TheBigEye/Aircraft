@@ -1,13 +1,10 @@
 package minicraft.level.tile;
 
 import minicraft.core.Game;
-import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
-import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.entity.particle.FerrositeParticle;
 import minicraft.graphic.ConnectorSprite;
 import minicraft.graphic.Sprite;
 import minicraft.item.Item;
@@ -37,32 +34,30 @@ public class FerrositeTile extends Tile {
     }
      
 	public void steppedOn(Level level, int x, int y, Entity entity) {
-		if (tickCount / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
+		/*if (tickCount / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
 			// Spawn ferrosite particles under the mobs
-			if (entity instanceof Mob) {
-				if (random.nextBoolean()) {
-					int spawnX  = (entity.x - 4) + random.nextInt(8) - random.nextInt(8);
-					int spawnY = (entity.y - 4) + random.nextInt(8) - random.nextInt(8);
-					
-					for (Direction dir : Direction.values()) {
-						Tile neighbour = level.getTile(x + dir.getX(), y + dir.getY());
-						if (neighbour != null) {
-							
-							// Particles only spawn on ferrosite cloud tiles.
-							if (!(neighbour instanceof FerrositeTile)) { 
-								// Offsets
-								if (dir.getX() < 0) if ((entity.x % 16) < 8) spawnX += 8 - entity.x % 16;
-								if (dir.getX() > 0) if ((entity.x % 16) > 7) spawnX -= entity.x % 16 - 8;
-								if (dir.getY() < 0) if ((entity.y % 16) < 8) spawnY += 8 - entity.y % 16;
-								if (dir.getY() > 0) if ((entity.y % 16) > 7) spawnY -= entity.y % 16 - 8;
-							}
+			if (entity instanceof Mob && random.nextBoolean()) {
+				int spawnX  = (entity.x - 4) + random.nextInt(8) - random.nextInt(8);
+				int spawnY = (entity.y - 4) + random.nextInt(8) - random.nextInt(8);
+				
+				for (Direction dir : Direction.values()) {
+					Tile neighbour = level.getTile(x + dir.getX(), y + dir.getY());
+					if (neighbour != null) {
+						
+						// Particles only spawn on ferrosite cloud tiles.
+						if (!(neighbour instanceof FerrositeTile)) { 
+							// Offsets
+							if (dir.getX() < 0) if ((entity.x % 16) < 8) spawnX += 8 - entity.x % 16;
+							if (dir.getX() > 0) if ((entity.x % 16) > 7) spawnX -= entity.x % 16 - 8;
+							if (dir.getY() < 0) if ((entity.y % 16) < 8) spawnY += 8 - entity.y % 16;
+							if (dir.getY() > 0) if ((entity.y % 16) > 7) spawnY -= entity.y % 16 - 8;
 						}
 					}
-	
-					level.add(new FerrositeParticle(spawnX, spawnY));
 				}
+
+				level.add(new FerrositeParticle(spawnX, spawnY));
 			}
-		}
+		}*/
 	}
 
     @Override

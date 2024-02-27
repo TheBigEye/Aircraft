@@ -41,7 +41,7 @@ public class TreeTile extends Tile {
 		 		
 			}, "Grass", 
 			new String[] {
-				"Oak Wood", "Oak Wood", "Acorn"
+				"Oak Wood", "Acorn", "Apple"
 			}, 32
 		),
 
@@ -106,7 +106,7 @@ public class TreeTile extends Tile {
 			
 			}, "Sky grass", 
 			new String[] {
-				"Oak Wood", "Gold Apple", "Acorn"
+				"Oak Wood", "Acorn", "Gold Apple"
 			}, 34
 		),		
 		Brown_mushroom(
@@ -199,7 +199,7 @@ public class TreeTile extends Tile {
         level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
         if (damage >= treeHealth) {
         	
-        	level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 2, Items.get(tree.loot[0]));
+        	level.dropItem((x << 4) + 8, (y << 4) + 8, 2, 2, Items.get(tree.loot[0]));
             level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 2, Items.get(tree.loot[1]));
             level.dropItem((x << 4) + 8, (y << 4) + 8, 0, 1, Items.get(tree.loot[2]));
             

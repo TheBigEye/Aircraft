@@ -74,11 +74,6 @@ public class CactusTile extends Tile {
             return true;
         }
 
-        /*if (Game.IS_April_fools == true) { // April fools texture :)
-            sprite = new Sprite(0, 44, 2, 2, 1);
-            return true;
-        }*/
-
         return false;
     }
 }

@@ -158,12 +158,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     // NICE NIGHT STUFF
     public boolean isNiceNight = false; // Spawn mobs or spaw fireflyes?
     public int nightCount = 0; // NIGHT PROBABILITY
-    
     public int nightTick = 0;
-    
-    private int nightTickCount = 0; // Used to get the Currrent time value
-	@SuppressWarnings("unused")
-	private int nightTime = 0; // Delay
 	
 	public List<String> chatMessages = new ArrayList<String>();
 
@@ -299,63 +294,25 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		chatMessages.add(message);
     }
 	
-	private void tileTickEvents() {
-		if (isSwimming()) {
-			// Renders water or lava particles if the player is in movement and have particles activated
-			if (tickTime / 8 % 2 == 0 && (Settings.get("Particles").equals(true))) {
-
-				// Add water particles and fire particles when the player swim
-				if (level.getTile(x >> 4, y >> 4) == Tiles.get("Water") ) { 
-					level.add(new SplashParticle(x - 4 , y - 4));    
-					
-				} else if (level.getTile(x >> 4, y >> 4) == Tiles.get("Lava") && inMovement()) { 
-					level.add(new FireParticle(x - 8 + random.nextInt(10), y - 8 + random.nextInt(9))); 
-				}
-			}
-		}
-		
-		if (inMovement()) {
-			// If the player is steppeing Ferrosite, incsrease move speed to 2
-			if (level.getTile(x >> 4, y >> 4) == Tiles.get("Ferrosite")) {
-				moveSpeed = 2;
-			} else { // If stepping other tile...
-				// If have a speed potion effect, restore the move speed
-				if (potionEffects.containsKey(PotionType.Speed) || potionEffects.containsKey(PotionType.xSpeed)) {
-					moveSpeed = 1.5D;
-				} else {
-					moveSpeed = 1;
-				}
-			}
-		}
-	}
-
+	
 	@Override
 	public void tick() {
-
-		// Don't tick player when is death or removed
-		if (level == null || isRemoved()) return;
-
-		// Don't tick player when menu is open
-		if (Game.getDisplay() != null) return; 
+		// Don't tick player when is death or removed, or when menu is open
+		if (level == null || isRemoved() || Game.getDisplay() != null) return;
 
 		// Ticks Mob.java
-		super.tick(); 
-
-        nightTime++;
+		super.tick();
 
 		Level level = Game.levels[Game.currentLevel];
-        nightTickCount = Updater.tickCount;
-
-		if (nightTickCount == 16000) { 
-			nightCount +=1;
-		}
-        
-        if (nightCount == 4) isNiceNight = true;
-		if (nightCount < 4) isNiceNight = false;
-		if (nightCount > 4) nightCount = 0;
+		Tile onTile = level.getTile(x >> 4, y >> 4); // Gets the current tile the player is on.
+		
+        if (Updater.tickCount == 16000) { 
+            nightCount = (nightCount + 1) % 5;
+        }
+        isNiceNight = (nightCount == 4);
 
 		// PLAYER BURNING
-		if (playerBurning == true) {
+		if (playerBurning) {
 			if (tickTime / 16 % 4 == 0 && burnTime != 120) {
                 if (Settings.get("particles").equals(true)) {
                     level.add(new FireParticle(x - 4 + random.nextInt(10), y - 4 + random.nextInt(9)));
@@ -370,7 +327,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		}
 
 		// if touch water extinguish the fire
-		if (level.getTile(x >> 4, y >> 4) == Tiles.get("Water")) {
+		if (onTile == Tiles.get("Water")) {
 			burnTime = 0;
 			playerBurning = false;
 		}
@@ -392,8 +349,36 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				}
 			}
 		}
+		
+		// If player is swimming on a fluid
+		if (isSwimming()) {
+			// Renders water or lava particles if the player is in movement and have particles activated
+			if (tickTime / 8 % 2 == 0 && (Settings.get("Particles").equals(true))) {
 
-		tileTickEvents();
+				// Add water particles and fire particles when the player swim
+				if (onTile == Tiles.get("Water")) { 
+					level.add(new SplashParticle(x - 4 , y - 4));    
+					
+				} else if (onTile == Tiles.get("Lava")) { 
+					level.add(new FireParticle(x - 8 + random.nextInt(10), y - 8 + random.nextInt(9))); 
+				}
+			}
+		}
+		
+		// If player is walking ...
+		if (inMovement()) {
+			// If the player is steppeing Ferrosite, incsrease move speed to 2
+			if (onTile == Tiles.get("Ferrosite")) {
+				moveSpeed = 2;
+			} else { // If stepping other tile...
+				// If have a speed potion effect, restore the move speed
+				if (potionEffects.containsKey(PotionType.Speed) || potionEffects.containsKey(PotionType.xSpeed)) {
+					moveSpeed = 1.5D;
+				} else {
+					moveSpeed = 1;
+				}
+			}
+		}
 
 		if (isFishing) {
 			if (!Bed.inBed(this) && !isSwimming()) {
@@ -416,7 +401,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			showPotionEffects = !showPotionEffects;
 		}
 
-		Tile onTile = level.getTile(x >> 4, y >> 4); // Gets the current tile the player is on.
+		
 		if (onTile == Tiles.get("Stairs Down") || onTile == Tiles.get("Stairs Up")) {
 			if (onStairDelay <= 0) { // When the delay time has passed...
 				World.scheduleLevelChange((onTile == Tiles.get("Stairs Up")) ? 1 : -1); // Decide whether to go up or down.
@@ -903,7 +888,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
     					// Go Fish achievement
     					if (Items.get(itemData).equals(Items.get("Raw Fish")) && !Game.isMode("Creative")) {
-    						AchievementsDisplay.setAchievement("minicraft.achievement.fish",true);
+    						AchievementsDisplay.setAchievement("minicraft.achievement.fish", true);
     					}
 
     					level.dropItem(x, y, Items.get(itemData));
@@ -1032,30 +1017,32 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
         if (isSwimming() && onFallDelay <= 0) {
         	yo += 4; // y offset is moved up by 4
+        	
+        	Tile onTile = level.getTile(x >> 4, y >> 4);
  
-        	if (level.getTile(x >> 4, y >> 4) == Tiles.get("Water")) {
+        	if (onTile == Tiles.get("Water")) {
         		
         		// Animation effect
         		if (tickTime / 8 % 2 == 0) {           		
-        			screen.render(xo + 0, yo + 3, 5 + 2 * 32, 0, 3); // Render the water graphic
-        			screen.render(xo + 8, yo + 3, 5 + 2 * 32, 1, 3); // Render the mirrored water graphic to the right.
+        			screen.render(xo + 0, yo + 3, 5 + (2 << 5), 0, 3); // Render the water graphic
+        			screen.render(xo + 8, yo + 3, 5 + (2 << 5), 1, 3); // Render the mirrored water graphic to the right.
         		} else {
-        			screen.render(xo + 0, yo + 3, 5 + 4 * 32, 0, 3);
-        			screen.render(xo + 8, yo + 3, 5 + 4 * 32, 1, 3);
+        			screen.render(xo + 0, yo + 3, 5 + (4 << 5), 0, 3);
+        			screen.render(xo + 8, yo + 3, 5 + (4 << 5), 1, 3);
         		}
 
-        	} else if (level.getTile(x >> 4, y >> 4) == Tiles.get("Lava")) {
+        	} else if (onTile == Tiles.get("Lava")) {
 
         		// BURN THE PLAYER
         		playerBurning = true;
 
         		// Animation effect
         		if (tickTime / 8 % 2 == 0) {
-        			screen.render(xo + 0, yo + 3, 6 + 2 * 32, 1, 3); // Render the water graphic
-        			screen.render(xo + 8, yo + 3, 6 + 2 * 32, 0, 3); // Render the mirrored lava graphic to the right.
+        			screen.render(xo + 0, yo + 3, 6 + (2 << 5), 1, 3); // Render the lava graphic
+        			screen.render(xo + 8, yo + 3, 6 + (2 << 5), 0, 3); // Render the mirrored lava graphic to the right.
         		} else {
-        			screen.render(xo + 0, yo + 3, 6 + 4 * 32, 1, 3);
-        			screen.render(xo + 8, yo + 3, 6 + 4 * 32, 0, 3);
+        			screen.render(xo + 0, yo + 3, 6 + (4 << 5), 1, 3);
+        			screen.render(xo + 8, yo + 3, 6 + (4 << 5), 0, 3);
         		}           
         	}
         }
@@ -1064,15 +1051,15 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         // Renders indicator for what tile the item will be placed on
         if (activeItem instanceof TileItem && !isSwimming()) {
             Point interactionTile = getInteractionTile();
-            screen.render(interactionTile.x << 4, interactionTile.y << 4, 3 + 4 * 32, 0, 3);
-            screen.render((interactionTile.x << 4) + 8, interactionTile.y << 4, 3 + 4 * 32, 1, 3);
-            screen.render(interactionTile.x << 4, (interactionTile.y << 4) + 8, 3 + 4 * 32, 2, 3);
-            screen.render((interactionTile.x << 4) + 8, (interactionTile.y << 4) + 8, 3 + 4 * 32, 3, 3);
+            screen.render(interactionTile.x << 4, interactionTile.y << 4, 3 + (4 << 5), 0, 3);
+            screen.render((interactionTile.x << 4) + 8, interactionTile.y << 4, 3 + (4 << 5), 1, 3);
+            screen.render(interactionTile.x << 4, (interactionTile.y << 4) + 8, 3 + (4 << 5), 2, 3);
+            screen.render((interactionTile.x << 4) + 8, (interactionTile.y << 4) + 8, 3 + (4 << 5), 3, 3);
         }
 
         if (attackTime > 0 && attackDir == Direction.UP) { // If currently attacking upwards...
-            screen.render(xo + 0, yo - 4, 3 + 2 * 32, 0, 3); // Render left half-slash
-            screen.render(xo + 8, yo - 4, 3 + 2 * 32, 1, 3); // Render right half-slash (mirror of left).
+            screen.render(xo + 0, yo - 4, 3 + (2 << 5), 0, 3); // Render left half-slash
+            screen.render(xo + 8, yo - 4, 3 + (2 << 5), 1, 3); // Render right half-slash (mirror of left).
             if (attackItem != null) { // If the player had an item when they last attacked...
                 attackItem.sprite.render(screen, xo + 4, yo - 4, 1); // Then render the icon of the item, mirrored
             }
@@ -1107,32 +1094,32 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             switch (attackDir) {
 
             case UP: // if currently attacking upwards...
-                screen.render(xo + 0, yo - 4, 3 + 2 * 32, 0, 3); // render left half-slash
-                screen.render(xo + 8, yo - 4, 3 + 2 * 32, 1, 3); // render right half-slash (mirror of left).
+                screen.render(xo + 0, yo - 4, 3 + (2 << 5), 0, 3); // render left half-slash
+                screen.render(xo + 8, yo - 4, 3 + (2 << 5), 1, 3); // render right half-slash (mirror of left).
                 if (attackItem != null) { // if the player had an item when they last attacked...
                     attackItem.sprite.render(screen, xo + 4, yo - 4, 1); // then render the icon of the item, mirrored
                 }
                 break;
 
             case LEFT: // Attacking to the left... (Same as above)
-                screen.render(xo - 4, yo, 4 + 2 * 32, 1, 3);
-                screen.render(xo - 4, yo + 8, 4 + 2 * 32, 3, 3);
+                screen.render(xo - 4, yo, 4 + (2 << 5), 1, 3);
+                screen.render(xo - 4, yo + 8, 4 + (2 << 5), 3, 3);
                 if (attackItem != null) {
                     attackItem.sprite.render(screen, xo - 4, yo + 4, 1);
                 }
                 break;
 
             case RIGHT: // Attacking to the right (Same as above)
-                screen.render(xo + 8 + 4, yo, 4 + 2 * 32, 0, 3);
-                screen.render(xo + 8 + 4, yo + 8, 4 + 2 * 32, 2, 3);
+                screen.render(xo + 8 + 4, yo, 4 + (2 << 5), 0, 3);
+                screen.render(xo + 8 + 4, yo + 8, 4 + (2 << 5), 2, 3);
                 if (attackItem != null) {
                     attackItem.sprite.render(screen, xo + 8 + 4, yo + 4);
                 }
                 break;
 
             case DOWN: // Attacking downwards (Same as above)
-                screen.render(xo + 0, yo + 8 + 4, 3 + 2 * 32, 2, 3);
-                screen.render(xo + 8, yo + 8 + 4, 3 + 2 * 32, 3, 3);
+                screen.render(xo + 0, yo + 8 + 4, 3 + (2 << 5), 2, 3);
+                screen.render(xo + 8, yo + 8 + 4, 3 + (2 << 5), 3, 3);
                 if (attackItem != null) {
                     attackItem.sprite.render(screen, xo + 4, yo + 8 + 4);
                 }

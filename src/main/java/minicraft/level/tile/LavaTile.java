@@ -48,6 +48,7 @@ public class LavaTile extends Tile {
 			yn += random.nextInt(2) * 2 - 1;
 		}
 
+
 		if (level.getTile(xn, yn) == holeTile) {
 			level.setTile(xn, yn, this);
 		}

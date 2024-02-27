@@ -271,7 +271,7 @@ public class AirWizard extends EnemyMob {
         
         // Bossbar on the the Air wizard
         if (Settings.get("bossbar").equals("On entity")) {
-            Font.drawBar(screen, (x - Screen.w / 12 + 26), y - 24, length, "testificate");
+            Font.drawBar(screen, (x - Screen.w / 12 + 26), y - 24, length);
         }
 
         // Bossbar percent

@@ -123,6 +123,7 @@ public class TileItem extends StackableItem {
 	}
 
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
+		
 		for (String tilename : validTiles) {
 			if (tile.matches(level.getData(xt, yt), tilename)) {
 				
@@ -146,7 +147,7 @@ public class TileItem extends StackableItem {
 							for (int i = 0; i < 3; i++) {
 								int randX = (int) Math.ceil(Math.random() * 12) - 4;
 								int randY = (int) Math.ceil(Math.random() * 12) - 4;
-								level.add(new BrightParticle(xt * 16 + randX, yt * 16 + randY));
+								level.add(new BrightParticle((xt << 4) + randX, (yt << 4) + randY));
 							}
 						}
 					}

@@ -96,7 +96,7 @@ public class Keeper extends GiantBossMob {
         
         // Bossbar on the the Air wizard
         if (Settings.get("bossbar").equals("On entity")) {
-            Font.drawBar(screen, (x - Screen.w / 12 + 16), y - 24, length, "testificate");
+            Font.drawBar(screen, (x - Screen.w / 12 + 16), y - 24, length);
         }
 
         // Bossbar percent

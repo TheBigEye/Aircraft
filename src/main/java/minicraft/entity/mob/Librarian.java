@@ -15,12 +15,6 @@ public class Librarian extends VillagerMob {
     static {
         librarianTrades.add(new Recipe("Book_1", new String[] { "Apple_5" }));
         librarianTrades.add(new Recipe("Paper_3", new String[] { "Leaf_5" }));
-        librarianTrades.add(new Recipe("Protection I_1", new String[] { "iron_20", "Book_1" }));
-        librarianTrades.add(new Recipe("Protection II_1", new String[] { "iron_30", "Book_2" }));
-        librarianTrades.add(new Recipe("Protection III_1", new String[] { "gold_20", "Book_3" }));
-        librarianTrades.add(new Recipe("Sharp I_1", new String[] { "iron_20", "Book_1" }));
-        librarianTrades.add(new Recipe("Sharp II_1", new String[] { "iron_30", "Book_2" }));
-        librarianTrades.add(new Recipe("Sharp III_1", new String[] { "gold_30", "Book_3" }));
     }
 
     public Librarian() {

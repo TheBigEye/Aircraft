@@ -371,7 +371,7 @@ public class Menu {
             } else {
                 if (hasFrame) {
                     for (int i = 0; i < title.length(); i++) {
-                        screen.render(titleLoc.x + i * 7, titleLoc.y, 3 + bgSpritePos * 32, 0, 3);
+                        screen.render(titleLoc.x + i * 7, titleLoc.y, 3 + (bgSpritePos << 5), 0, 3);
                     }
                 }
                 Font.draw(title, screen, titleLoc.x, titleLoc.y, titleColor);
@@ -458,7 +458,7 @@ public class Menu {
                 int spriteoffset = (xend && yend ? 0 : (yend ? 1 : (xend ? 2 : 3))); // determines which sprite to use
                 int mirrors = (x == right ? 1 : 0) + (y == bottom ? 2 : 0); // gets mirroring
 
-                screen.render(x, y, spriteoffset + bgSpritePos * 32, mirrors, 3);
+                screen.render(x, y, spriteoffset + (bgSpritePos << 5), mirrors, 3);
 
                 if (x < right && x + SpriteSheet.boxWidth > right) {
                     x = right - SpriteSheet.boxWidth;

@@ -1,13 +1,10 @@
 package minicraft.level.tile;
 
 import minicraft.core.Game;
-import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
-import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.entity.particle.CloudParticle;
 import minicraft.graphic.Color;
 import minicraft.graphic.ConnectorSprite;
 import minicraft.graphic.Screen;
@@ -47,7 +44,7 @@ public class CloudTile extends Tile {
 
 	@Override
 	public void steppedOn(Level level, int x, int y, Entity entity) {
-	    if (tickCount / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
+	    /*if (tickCount / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
 	        if (entity instanceof Mob && random.nextBoolean()) {
 	            int spawnX  = (entity.x - 4) + random.nextInt(8) - random.nextInt(8);
 	            int spawnY = (entity.y - 4) + random.nextInt(8) - random.nextInt(8);
@@ -64,7 +61,7 @@ public class CloudTile extends Tile {
 	            }
 	            level.add(new CloudParticle(spawnX, spawnY));
 	        }
-	    }
+	    }*/
 	}
 	
 	@Override

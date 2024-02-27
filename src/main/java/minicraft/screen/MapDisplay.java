@@ -27,7 +27,6 @@ public class MapDisplay extends Display {
 	
 	private static final int UNEXPLORED_COLOR = Color.get(-1, 8, 8, 8);
 
-    
     private int mapRadius = 9;
     private int worldSize = Game.levels[Game.currentLevel].w;   // Adjust this to match the world size
 	
@@ -161,10 +160,5 @@ public class MapDisplay extends Display {
                 }
             }
         }
-
-
-
-
-
     }
 }

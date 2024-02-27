@@ -37,7 +37,7 @@ public class ChatDisplay extends Display {
     		Game.exitDisplay();
     	}
         
-    	if (input.getKey("select").clicked) {
+    	if (input.getKey("select").clicked && command.getUserInput().length() > 0) {
     		String commandString = command.getUserInput();
     		String[] commandArguments = commandString.split(" ");
     		boolean recognizedCommand = true; // Assume the command is recognized unless proven otherwise
@@ -81,7 +81,7 @@ public class ChatDisplay extends Display {
         Font.draw("[Amy]", screen, 8, Screen.h - 16, Color.GREEN);
         
 		for (int j = 0; j < 4; j++) {
-			screen.render(200 + j * 8, Screen.h - 90, 3 + 21 * 32, 0, 3);
+			screen.render(200 + (j << 3), Screen.h - 90, 3 + (21 << 5), 0, 3);
 		}
         Font.drawCentered("Chat", screen, Screen.h - 90, Color.YELLOW);
         
@@ -98,8 +98,8 @@ public class ChatDisplay extends Display {
         
         int lineNumber = 0;
         for (int j = Math.max(0, messages.size() - 7); j < messages.size(); j++) {
-        	Font.draw("<Amy>", screen, 8, (lineNumber * 8) + Screen.h - 80, Color.DARK_GREEN);
-            Font.draw(messages.get(j), screen, 6 * 8 + 4, (lineNumber * 8) + Screen.h - 80, Color.GRAY);
+        	Font.draw("<Amy>", screen, 8, (lineNumber << 3) + Screen.h - 80, Color.DARK_GREEN);
+            Font.draw(messages.get(j), screen, 6 * 8 + 4, (lineNumber << 3) + Screen.h - 80, Color.GRAY);
             lineNumber++;
         }
         

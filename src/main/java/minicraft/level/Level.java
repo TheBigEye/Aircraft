@@ -92,16 +92,17 @@ public class Level {
 	private static final int MOB_SPAWN_FACTOR = 100;
 
 	public int w, h;
+	public int size;
 	private final long seed; // The used seed that was used to generate the world
 
 	public short[] tiles; // An array of all the tiles in the world.
 	public short[] data; // An array of the data of the tiles in the world
 
-	public int randomMusic; // used for the Random music system in the current level
-
 	// Depth level of the level
 	public final int depth;
-	public boolean[][] explored;
+	
+	// Used for Maps Book
+	public boolean[][] explored; 
 	
 	public static String getLevelName(int depth) {
 		return levelNames[-1 * depth + 2];
@@ -113,9 +114,10 @@ public class Level {
 
 	// Affects the number of monsters that are on the level, bigger the number the less monsters spawn.
 	public int monsterDensity = 8;
+	public int mobCount = 0;
 	public int maxMobCount;
 	public int chestCount;
-	public int mobCount = 0;
+	
 
 	/**
 	 * I will be using this lock to avoid concurrency exceptions in entities and sparks set
@@ -190,6 +192,7 @@ public class Level {
 
 	public Level(int w, int h, long seed, int level, Level parentLevel, boolean makeWorld) {
 		depth = level;
+		size = w * h;
 		this.w = w;
 		this.h = h;
 		this.seed = seed;
@@ -203,9 +206,8 @@ public class Level {
 		updateMobCap();
 
 		if (!makeWorld) {
-			int arrsize = w * h;
-			tiles = new short[arrsize];
-			data = new short[arrsize];
+			tiles = new short[size];
+			data = new short[size];
 			return;
 		}
 
@@ -268,7 +270,7 @@ public class Level {
 			printTileLocs(Tiles.get("Stairs Down"));
 		}
 		
-        // Initialize the explored array for all sectors to all false
+        // Initialize the explored array for all map pixels to false
         explored = new boolean[this.w][this.h];
         for (int y = 0; y < this.h; y++) {
             for (int x = 0; x < this.w; x++) {
@@ -352,8 +354,8 @@ public class Level {
 			while (!addedchest) { // Keep running until we successfully add a DungeonChest
 
 				// Pick a random tile:
-				int x2 = random.nextInt(16 * w) / 16;
-				int y2 = random.nextInt(16 * h) / 16;
+				int x2 = random.nextInt(16 * w) >> 4;
+				int y2 = random.nextInt(16 * h) >> 4;
 
 				if (getTile(x2, y2) == Tiles.get("Obsidian")) {
 					boolean xaxis = random.nextBoolean();
@@ -438,28 +440,17 @@ public class Level {
 		} else {
 			Sound.Sky_enviroment.stop();
 		}
-
-		// this play random music in game
-		if (Settings.get("ambient").equals("Nice")) {
-		    randomMusic++;
-		    if (randomMusic >= 16000) {
-		        randomMusic = 0;
-		        playRandomMusic(depth);
-		    }
-		} else if (Settings.get("ambient").equals("Scary")) {
-		    randomMusic++;
-		    if (randomMusic >= 16000) {
-		        randomMusic = 0;
-		        playRandomMusic(depth);
-		    }
+		
+		if (Updater.tickCount % 32401 == 0) {
+			playRandomMusic(depth);
 		}
 
 		if (fullTick) {
 			// this prevents any entity (or tile) tick action from happening on a server level with no players.
 
-			for (int i = 0; i < (w * h) / 50; i++) {
+			for (int i = 0; i < size / 50; i++) {
 				int xt = random.nextInt(w);
-				int yt = random.nextInt(w);
+				int yt = random.nextInt(h);
 				getTile(xt, yt).tick(this, xt, yt);
 			}
 
@@ -857,7 +848,7 @@ public class Level {
 			} else if (depth == 0 && Updater.getTime() == Updater.Time.Night) {
 				// Spawns a firefly
 				if (Game.player.isNiceNight && FlyMob.checkStartPos(this, nx, ny)) {
-					if (spawnChance != 75) {
+					if (spawnChance >= 50 && spawnChance <= 75) {
 						add(new Firefly(), nx, ny);
 					}
 					spawned = true;
@@ -1191,30 +1182,30 @@ public class Level {
 			}
 
 			Spawner spawner = new Spawner(mob);
-			int x3 = random.nextInt(16 * w) / 16;
-			int y3 = random.nextInt(16 * h) / 16;
+			int x3 = random.nextInt(16 * w) >> 4;
+			int y3 = random.nextInt(16 * h) >> 4;
 			if (getTile(x3, y3) == Tiles.get("Dirt")) {
 				boolean xaxis2 = random.nextBoolean();
 
 				if (xaxis2) {
 					for (int s2 = x3; s2 < w - s2; s2++) {
 						if (getTile(s2, y3) == Tiles.get("Rock")) {
-							spawner.x = s2 * 16 - 24;
-							spawner.y = y3 * 16 - 24;
+							spawner.x = (s2 << 4) - 24;
+							spawner.y = (y3 << 4) - 24;
 						}
 					}
 				} else {
 					for (int s2 = y3; s2 < y3 - s2; s2++) {
 						if (getTile(x3, s2) == Tiles.get("Rock")) {
-							spawner.x = x3 * 16 - 24;
-							spawner.y = s2 * 16 - 24;
+							spawner.x = (x3 << 4) - 24;
+							spawner.y = (s2 << 4) - 24;
 						}
 					}
 				}
 
 				if (spawner.x == 0 && spawner.y == 0) {
-					spawner.x = x3 * 16 - 8;
-					spawner.y = y3 * 16 - 8;
+					spawner.x = (x3 << 4) - 8;
+					spawner.y = (y3 << 4) - 8;
 				}
 
 				if (getTile(spawner.x >> 4, spawner.y >> 4) == Tiles.get("Rock")) {
@@ -1319,7 +1310,7 @@ public class Level {
 		        
 		    	Chest firstChest = new Chest();
 		    	Chest secondChest = new Chest();
-		    	firstChest.fillInventoryRandom("villagehouse", 1);
+		    	firstChest.fillInventoryRandom("villagehouse", random.nextInt(10));
 		    	secondChest.fillInventoryRandom("villagehouse", random.nextInt(10));
 		    	add(firstChest, (x + xo + 5) << 4, (y + yo - 6) << 4); // up
 		    	add(secondChest, (x + xo - 5) << 4, (y + yo + 4) << 4); // down

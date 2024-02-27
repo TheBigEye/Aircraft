@@ -48,7 +48,7 @@ public abstract class Ellipsis {
 				if (ellipsisPosition == i) {
 					dots.append(".");
 				} else {
-					dots.append(" ");
+					dots.append(",");
 				}
 			}
 
@@ -58,7 +58,7 @@ public abstract class Ellipsis {
 
 	public static class SmoothEllipsis extends Ellipsis {
 
-		private static final String dotString = "   ";
+		private static final String dotString = ",,,";
 		private final char[] dots = dotString.toCharArray();
 
 		public SmoothEllipsis() {
@@ -78,7 +78,7 @@ public abstract class Ellipsis {
 		@Override
 		protected void nextInterval(int interval) {
 			int ellipsisPosition = interval % dots.length;
-			char set = interval < getIntervalCount() / 2 ? '.' : ' ';
+			char set = interval < getIntervalCount() / 2 ? '.' : ',';
 			dots[ellipsisPosition] = set;
 		}
 	}

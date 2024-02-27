@@ -194,7 +194,7 @@ public class Screen {
 	    // Gets the offset of the sprite into the spritesheet
 	    // pixel array, the 8's represent the size of the box.
 	    // (8 by 8 pixel sprite boxes)
-	    int toffs = xTile * 8 + yTile * 8 * currentSheet.width; 
+	    int toffs = (xTile << 3) + (yTile << 3) * currentSheet.width; 
 
 	    // Precompute values outside of loop
 	    int yLimit = yp + 8;
@@ -204,14 +204,11 @@ public class Screen {
 
 	    for (int y = yp; y < yLimit; y++) {
 	        // If the pixel is out of bounds, then skip the rest of the loop.
-	        if (y < 0 || y >= h) {
-	            continue;
-	        }
+	        if (y < 0 || y >= h) continue;
+	        
 	        for (int x = xp; x < xLimit; x++) {
 	            // If the pixel is out of bounds, then skip the rest of the loop.
-	            if (x < 0 || x >= w) {
-	                continue;
-	            }
+	            if (x < 0 || x >= w) continue;
 
 	            int xs = x - xp;
 	            int ys = y - yp;

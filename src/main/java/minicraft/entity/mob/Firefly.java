@@ -4,6 +4,7 @@ import minicraft.core.Updater;
 import minicraft.core.Updater.Time;
 import minicraft.entity.Entity;
 import minicraft.graphic.MobSprite;
+import minicraft.graphic.Screen;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
@@ -24,7 +25,7 @@ public class Firefly extends FlyMob {
 		Tile tile = level.getTile(x >> 4, y >> 4);
 
 		if (Updater.getTime() == Time.Night) {
-			if (random.nextInt(1000) == 0 && (tile.id == Tiles.get("Oak tree").id || tile.id == Tiles.get("Birch tree").id)) {
+			if (tickTime % 100 == 0 && (tile.id == Tiles.get("Oak tree").id || tile.id == Tiles.get("Birch tree").id)) {
 				remove();
 				return;
 			}
@@ -60,13 +61,19 @@ public class Firefly extends FlyMob {
 
 	@Override
 	public int getLightRadius() {
-		if (random.nextInt(10) == 0) {
+		if (tickTime % 50 == 0) {
 			return 1; 
+		} else if (tickTime % 25 == 0) {
+			return 2; 
+		} else {
+			return 3;
 		}
-		if (random.nextInt(100) == 0) {
-			return 3; 
-		}
-		return 2;
+	}
+	
+	
+	@Override
+	public void render(Screen screen) {
+		super.render(screen);
 	}
 
 

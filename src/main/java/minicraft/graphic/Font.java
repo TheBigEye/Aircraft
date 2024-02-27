@@ -71,7 +71,7 @@ public class Font {
             int charIndex = chars.indexOf(msg.charAt(chr)); // The current character's index in the `chars` string
             if (charIndex >= 0) { // Renders the character if it's index is valid             
                 // Renders the character on the screen
-                screen.render(xx, y, (charIndex % 32 + CHAR_SHEET_Y) + (charIndex / 32 + CHAR_SHEET_Y) * 32, 0, 4, whiteTint);
+                screen.render(xx, y, (charIndex % 32 + CHAR_SHEET_Y) + ((charIndex / 32 + CHAR_SHEET_Y) << 5), 0, 4, whiteTint);
             }
             xx += msg.charAt(chr) == ' ' ? 8 : charIndex >= 0 ? Font.charsAdvance[charIndex] : 8;
         }
@@ -116,7 +116,7 @@ public class Font {
         
         for (int i = 0; i < msg.length(); i++) {
             // render the black background
-            screen.render(xx, y, 12 + 24 * 32, 0, 3);
+            screen.render(xx, y, 12 + (24 << 5), 0, 3);
 			int ix = chars.indexOf(msg.charAt(i));
 			xx += msg.charAt(i) == ' ' ? 8 : ix >= 0 ? Font.charsAdvance[ix] : 8;
             
@@ -270,7 +270,7 @@ public class Font {
         return line.length();
     }
     
-    public static void drawBar(Screen screen, int x, int y, int length, String title) {
+    public static void drawBar(Screen screen, int x, int y, int length) {
         final int maxBarLength = 8;
         final int barLength = length / 12;
         final int inactiveBossbar = 24;
@@ -292,26 +292,26 @@ public class Font {
     
     public static void drawBox(Screen screen, int x, int y, int w, int h) {
 		// Renders the four corners of the box	
-		screen.render(x - 8, y - 8, 0 + 21 * 32, 0, 3);
-		screen.render(x + w * 8, y - 8, 0 + 21 * 32, 1, 3);
-		screen.render(x - 8, y + 8 * h, 0 + 21 * 32, 2, 3);
-		screen.render(x + w * 8, y + 8 * h, 0 + 21 * 32, 3, 3);
+		screen.render(x - 8, y - 8, 0 + (21 << 5), 0, 3);
+		screen.render(x + (w << 3), y - 8, 0 + (21 << 5), 1, 3);
+		screen.render(x - 8, y + 8 * h, 0 + (21 << 5), 2, 3);
+		screen.render(x + (w << 3), y + 8 * h, 0 + (21 << 5), 3, 3);
 
 
 		// Renders each part of the box...
 		for (int xb = 0; xb < w; xb++) {
-			screen.render(x + xb * 8, y - 8, 1 + 21 * 32, 0, 3); // ...top part
-			screen.render(x + xb * 8, y + 8 * h, 1 + 21 * 32, 2, 3); // ...bottom part
+			screen.render(x + (xb << 3), y - 8, 1 + (21 << 5), 0, 3); // ...top part
+			screen.render(x + (xb << 3), y + 8 * h, 1 + (21 << 5), 2, 3); // ...bottom part
 		}
 		for (int yb = 0; yb < h; yb++) {
-			screen.render(x - 8, y + yb * 8, 2 + 21 * 32, 0, 3); // ...left part
-			screen.render(x + w * 8, y + yb * 8, 2 + 21 * 32, 1, 3); // ...right part
+			screen.render(x - 8, y + (yb << 3), 2 + (21 << 5), 0, 3); // ...left part
+			screen.render(x + (w << 3), y + (yb << 3), 2 + (21 << 5), 1, 3); // ...right part
 		}
 
 		// The middle
 		for (int xb = 0; xb < w; xb++) {
 			for (int yb = 0; yb < h; yb++) {
-				screen.render(x + xb * 8, y + yb * 8, 3 + 21 * 32, 0, 3);
+				screen.render(x + (xb << 3), y + (yb << 3), 3 + (21 << 5), 0, 3);
 			}
 		}
     }

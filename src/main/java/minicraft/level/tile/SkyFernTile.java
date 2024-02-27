@@ -59,7 +59,7 @@ public class SkyFernTile extends Tile {
         } else {
         	sprite = new Sprite(29, 22, 2, 2, 1);
         }
-        sprite.render(screen, x * 16, y * 16);
+        sprite.render(screen, x << 4, y << 4);
     }
 
     @Override

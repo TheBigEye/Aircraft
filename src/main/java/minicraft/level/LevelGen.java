@@ -159,7 +159,7 @@ public class LevelGen {
 	private static short[][] createAndValidateTopMap(int w, int h) {
 		random.setSeed(worldSeed);
 
-		LoadingDisplay.setMessage("Generating the Surface!");
+		LoadingDisplay.setMessage("Generating the Surface");
 
 		do {
 			short[][] result = createTopMap(w, h);
@@ -184,7 +184,7 @@ public class LevelGen {
 	private static short[][] createAndValidateUndergroundMap(int w, int h, int depth) {
 		random.setSeed(worldSeed);
 
-		LoadingDisplay.setMessage("Generating the caves!");
+		LoadingDisplay.setMessage("Generating the Caves");
 
 		do {
 			short[][] result = createUndergroundMap(w, h, depth);
@@ -207,7 +207,7 @@ public class LevelGen {
 	private static short[][] createAndValidateDungeon(int w, int h) {
 		random.setSeed(worldSeed);
 
-		LoadingDisplay.setMessage("Generating the Dungeon!");
+		LoadingDisplay.setMessage("Generating the Dungeon");
 
 		do {
 			short[][] result = createDungeon(w, h);
@@ -231,7 +231,7 @@ public class LevelGen {
 	private static short[][] createAndValidateSkyMap(int w, int h) {
 		random.setSeed(worldSeed);
 
-		LoadingDisplay.setMessage("Generating the Heaven!");
+		LoadingDisplay.setMessage("Generating the Heaven");
 
 		do {
 			short[][] result = createSkyMap(w, h);
@@ -254,7 +254,7 @@ public class LevelGen {
 	public static short[][] createAndValidateVoidMap(int w, int h) {
 		random.setSeed(worldSeed);
 
-		LoadingDisplay.setMessage("Generating the Void!");
+		LoadingDisplay.setMessage("Generating Something");
 
 		do {
 			short[][] result = createVoidMap(w, h);
@@ -679,6 +679,8 @@ public class LevelGen {
 
 		stairsLoop:
 		for (int i = 0; i < (fullSize / 100); i++) { // loops a certain number of times, more for bigger world
+			
+			LoadingDisplay.setMessage("Placing caves stairs");
 
 			// Sizes
 			int x = random.nextInt(w - 2) + 1;
@@ -723,8 +725,6 @@ public class LevelGen {
 		
 		short[] map = new short[w * h];
 		short[] data = new short[w * h];
-		
-		LoadingDisplay.setMessage("Checking for noise");
 
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
@@ -819,8 +819,6 @@ public class LevelGen {
 		short[] map = new short[w * h];
 		short[] data = new short[w * h];
 		
-		LoadingDisplay.setMessage("Checking for noise");
-		
 		int oresThreshold = 2;
 
 		for (int y = 0; y < h; y++) {
@@ -877,7 +875,7 @@ public class LevelGen {
 		}
 		
 		if (depth == 1) {
-			LoadingDisplay.setMessage("Generating mushrooms");
+			LoadingDisplay.setMessage("Adding some mushrooms");
 			for (int i = 0; i < (size / 100); i++) {
 				int x = random.nextInt(w);
 				int y = random.nextInt(h);
@@ -916,7 +914,7 @@ public class LevelGen {
 		}
 		
 		/// Generate ores
-		LoadingDisplay.setMessage("Generating Ores");
+		LoadingDisplay.setMessage("Adding some ores");
 		
 		// Iron ore
 		for (int i = 0; i < (size / 400); i++) {
@@ -954,7 +952,7 @@ public class LevelGen {
 				for (int j = 0; j < 10; j++) {
 					if (xx < w - stairsRadius && yy < h - stairsRadius) {
 						
-						LoadingDisplay.setMessage("Placing Dungeon Lock");
+						LoadingDisplay.setMessage("Placing dungeon stairs");
 						Structure.dungeonLock.draw(map, xx, yy, w);
 
 						/// The "& 0xffff" is a common way to convert a short to an unsigned int, which basically prevents negative values... except... this doesn't do anything if you flip it back to a short again...
@@ -1013,8 +1011,6 @@ public class LevelGen {
 
 		short[] map = new short[fullsize];
 		short[] data = new short[fullsize];
-
-		LoadingDisplay.setMessage("Checking for noise");
 		
 		int heavenThreshold = fullsize / 2800;
 		int edgesThickness = 2;
@@ -1046,7 +1042,7 @@ public class LevelGen {
 		}
 
 		// Generate skygrass in cloud tile
-		LoadingDisplay.setMessage("Generating Heaven Island");
+		LoadingDisplay.setMessage("Generating highlands");
 		for (int i = 0; i < heavenThreshold; i++) {
 			int xs = halfWidth - 22; // divide the 60 (down) by 2 -> 30 to center
 			int ys = halfHeight - 22;
@@ -1101,7 +1097,7 @@ public class LevelGen {
 		}
 
 		// Generate the ferrosite edge for the central island
-		LoadingDisplay.setMessage("Generating ferrosite");
+		LoadingDisplay.setMessage("Generating midlands");
 		for (int i = 0; i < heavenThreshold; i++) {
 			int xs = halfWidth - 38; // center position
 			int ys = halfHeight - 40;
@@ -1210,7 +1206,7 @@ public class LevelGen {
 		}
 
 		// Avoid the connection between the Sky grass and Infinite Fall tiles
-		LoadingDisplay.setMessage("Generating Heaven Edges");
+		LoadingDisplay.setMessage("Generating island edge");
 
 		for (int j = 0; j < h; j++) {
 		    for (int x = 0; x < w; x++) {
@@ -1239,7 +1235,7 @@ public class LevelGen {
 		}
 		
 
-		LoadingDisplay.setMessage("Generating Sky Stairs");
+		LoadingDisplay.setMessage("Placing heaven stairs");
 
 		int stairsCount = 0;
 		int stairsRadius = 15;
@@ -1296,8 +1292,6 @@ public class LevelGen {
 		short[] map = new short[w * h];
 		short[] data = new short[w * h];
 
-		LoadingDisplay.setMessage("Checking level");
-		
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
 				int i = x + y * w;

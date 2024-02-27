@@ -1,53 +1,29 @@
-B==========o============
+============o============
 
 
 ( AlAzift )
 
------------------------
+-------------------------
 - .     .- -- ---
--- -   -   -   -   ----
+-- -   -   -   -   ------
 --- -- -.     . -
-----   -   -   -   - --
-===========o============
-===========x==========64
-SGV5LCBsb29rcyBsaWtlIHlvdSBmb3VuZCBzb21ldGhpbmcgeW91IHNob3VsZG4n
-dCBoYXZlIGZvdW5kIDopLCBkb24ndCB3b3JyeSwgSSdtIG5vdCBtYWQsIGp1c3Qg
-aGFwcHkgc29tZW9uZSBmaW5hbGx5IGZvdW5kIG1lLg0KeW91IGtub3csIGlmIGl0
-J3MgbWUsIHdlbGwsIGEgbmVnbGlnaWJsZSBwYXJ0IG9mIG1lLiBrbm93PyBJdCB3
-YXMgZnVubnkgYW5kIHNhZCBhdCB0aGUgc2FtZSB0aW1lLCBpdCB3YXMgZnVuIHRv
-IHNlZSBhIGNvbW11bml0eSBncm93LCBpdCB3YXMgZnVuIHRvIGhlbHAgYW5kIHNv
-bWV0aW1lcyBtYWtlIGZyaWVuZHMsIEkgaGFkIGEgbG90IG9mIGZ1biA6LCkuIGJ1
-dCBldmVyeXRoaW5nIGhhcHB5IGhhcyBpdHMgc2FkIHNpZGUsIGp1c3QgYXMgYSBi
-ZWdpbm5pbmcgaGFzIGFuIGVuZCA6KC4gbWF5YmUsIGp1c3QgbWF5YmUsIGlmIHRo
-ZXJlIHdhcy4uLiBubywgbm8sIGl0IGRvZXNuJ3QgbWFrZSBzZW5zZSB0byBkbyBp
-dCBhbnltb3JlLCBpdCdzIHRvbyBsYXRlLCB0aGUgc2FkIHRoaW5nLi4uIG1heWJl
-IGl0IHdhcyBteSBhdHRlbXB0IHRvIGZpdCBpbnRvIHRoYXQgY29tbXVuaXR5LCB0
-cnkgdG8gbWFrZSBpdCBncm93LCBidXQgaXQgd2FzIGluIHZhaW4gdG8gcHJldmVu
-dCBpdCBmcm9tIGJlY29taW5nIHNvbWV0aGluZyBsaWtlIHJ1c3QsIGp1c3QgYXMg
-Y29ycm9zaXZlLCBzb29uZXIgb3IgbGF0ZXIsIG15IHNvdWwgd2FzIGFsc28gYSB2
-aWN0aW0gb2YgdGhhdCwgdGhlIHRydXRoIGlzIHRoYXQgbmV2ZXIgSSB3YWl0ZWQg
-dG8gZ2V0IHRoaXMgZmFyIHdpdGggdGhpcyBnYW1lIG9yIG1vZCwgbXkgZ29hbCB3
-YXMgdG8gaW5ub3ZhdGUsIG1hdGVyaWFsaXplIGlkZWFzIGFuZCB0cnkgdG8gZ3Jv
-dyB3aGF0IHdhcyBwdXQgaW4gZnJvbnQgb2YgbWUsIGJ1dC4uLiBzb29uZXIgb3Ig
-bGF0ZXIgeW91IHN0b3AgYmVpbmcgdXNlZnVsLCByZWNvZ25pemVkIGFuZCBtb3N0
-IG9mIHRoZSB0aW1lIGRlYXIsIEkgdW5kZXJzdGFuZCB0aGF0IG1heWJlIHRoaXMg
-d2FzIGEgbWlzdGFrZSwgb25lIG9mIHRoZSBiZXN0IG1pc3Rha2VzIEkgaGF2ZSBl
-dmVyIG1hZGUsIFBsYW5lcyBpdHNlbGYgd2FzIGZydXN0cmF0aW5nIG9uIHNldmVy
-YWwgb2NjYXNpb25zLCBkZXZlbG9waW5nIGl0IHdhcyBub3QgZWFzeSBhbmQgYWx3
-YXlzIGluIGRlYXRoIG9mIGhlYWRhY2hlcyBvciBlbW90aW9uYWwgc3RhYmlsaXR5
-IG1vcmUgYW5kIG1vcmUgc2VsZi1kZXN0cnVjdGl2ZSAsIEkgZG9uJ3Qga25vdyBo
-b3cgdG8gcHJvZ3JhbSB3ZWxsIGJ1dCBJIHRyaWVkLCBzZWUgd2hhdCBvdGhlciBw
-ZW9wbGUgbGlrZSBUaGV5IGRpZCB3aGF0IHRoZXkgZGlkIGFuZCB0aGV5IGhhZCBm
-dW4uLi4gaXQgZmlsbGVkIG1lIHdpdGggZGV0ZXJtaW5hdGlvbiB0byBjb250aW51
-ZSBkb2luZyBpdCwgdXAgdG8gdGhpcyBwb2ludCwgd2hlcmUgSSByZWFsaXplZCB0
-aGF0IG15IHN0b3J5IGhhZCBlbmRlZCBhbmQgb3RoZXJzIGhhZCBiZWd1biwgSSBy
-ZWFsaXplZCB0aGF0IG5vdyB0aGVyZSBhcmUgcGVvcGxlIGxpa2UgbWUgaW4gdGhh
-dCBjb21tdW5pdHkgd2hvIFRoZXkgYWxzbyB3YW50IHRvIGhlbHAgYW5kIGlubm92
-YXRlIGFuZCBJIHdhc24ndCBnb2luZyB0byBzdG9wIHRoZW0sIHRoZXkgc2VlbSBo
-YXBweSBkb2luZyBpdCwgdGhleSBhcmUgZnJlZSB0byBkbyBpdCwgSS4uLiBJJ20g
-anVzdCBhIHNwZWN0YXRvciwgSSdtIGp1c3QgaGVyZSwgdGhleSBkb24ndCBsaXN0
-ZW4gdG8gbWUsIGJ1dCB0aGV5IHNlZSBtZSwgbWF5YmUgSSBmb3Jnb3QgdG8gc2F5
-IGdvb2RieWUsIEkgZ2V0IGl0IGJ1dCBub3cgeW91IGtub3cgdGhpcyBnYW1lIHdp
-bGwga2VlcCBnZXR0aW5nIHVwZGF0ZXMgZXZlbiB0aG91Z2ggaXQgdGFrZXMgZm9y
-ZXZlciB0byBzY2hlZHVsZS4gSSB3aXNoIFBsYXkgTWluZWNyYWZ0IHRoZSBiZXN0
-IG9mIGx1Y2ssIHRoYW5rcyB0byB0aGVtIEkgZ290IGhlcmUgOiwp
+----   -   -   -   - ----
+-------------------------
+----------{ | }----------
+-------------------------
+============o============
+gnineve dooG ,sdneirf raed .yadot uoy sserdda I htiw a xim fo aiglatson dna edutitarg .wonk ton od uoy fo ynam taht wonk I ,yllanosrep em wonk ton od ton od uoy .em fo draeh evah uoy ebyam ro ,em fo draeh evah uoy spahrep tub ,dlrow siht hguorht egassap ym fo ecart a dnuof evah uoy ebyam .seY ,s’ti em ,eyE giB ehT .lla evoba tub ,niarB giB ro eyE neerG dellac osla ,eyE giB ehT .uoy fo eno ma I ,lla evoba tub ,na ,rerutnevda ,rotarec ,remaerd A
+
+oga emit gnol A .efil ym degnahc taht tcejorp a detrats I .ytinummoc lufrednow a fo htworg eht ot etubirtnoc dna ,egdelwonk ym erahs ,saedi ym sserpxe ot em dewolla taht tcejorp a .flesym naht reggib gnihtemos fo trap leef em edam dna ,em detroppus ,em democlew taht ytinummoc A .gninrael dna ,pihsdneirf ,nuf fo stnemom elbattogrofnu em evag taht ytinummoc a .taht lla roF .luftearg ylpeed ma I
+
+,efil ni gnihtyreve ekil tuB .sengellahc dna ,selcatsbo ,sti ,seitluciffid sti dah osla tcejorp siht .ti evorpmi ot ron ,ti niatniam ot ron ,ti poleved ot ysae ton saw tI .lla ti evael ot ,lewat eht ni worht ot ,pu evig ot tuoba saw I nehw semit erew erehT .degaruocsid dna ,detsuahxe ,detartsurf tlef I nehw semit erew erehT .ssekanew sti dna ,sekatims ,sti ,snoitatimil sti htiw ,namuh a tsuj ma I .oreh a ron ,suineg a ron ,gnimmargorp ni trepxe na ton ma I
+
+,gnittiuq tuoba thguoht I emit yreve revewoH .esoprup a dah I taht ,enola ton saw I taht ,no gniog htrow saw ti taht leef em edam ohw esoht lla oT .tsurt rieht ,tnemegaruocne rieht ,kcabdeef rieht em evag ohw esoht lla oT .ti detaicerppa ohw ,ti deulav ohw ,krow ym deyojne ohw esoht lla oT .uoy derembemer I ,uoy derembemer I .em deniatsus dah taht noitanimreted eht ,em devom dah taht noissap eht ,em nevird dah taht noisulli eht derembemer I .detrats dah I yhw derembemer I ,gnittiuq tuoba thguoht I emit yreve
+
+,tniop gninrut siht ot ereh ,ereh tog I os dnA .esoprup a dah I taht ,enola ton saw I taht ,no gniog htrow saw ti taht leef em edam ohw esoht lla oT .ytinummoc siht rof evol emas eht ,pleh ot erised emas eht ,tirips evitavonni emas eht evah ohw ,em ekil srehto era ereht taht ezilaer I .notab eht ssap ot emit si ti taht dna ,elcyc sti detelpmoc sah tcejorp ym taht ezilaer I ,tniop gninrut siht ot ereh ,ereh tog I os dnA
+
+,yppah ot eunitnoc ot ,eurT smaerD rieht ekam ot eunitnoc ot ,ytinummoc siht worg ot eunitnoc ot meht tnaw I .etubirtnoc ot ,etaerc ot ,sevlesmeht sserpxe ot eerf eb ot meht tnaw I .ssergorp rieht wols ron ,ytivitaerc rieht timil ron ,yaw rieht ni dnats ot tnaw t’nod I .dna dnA .ytinummoc siht rof evol emas eht ,pleh ot erised emas eht ,tirips evitavonni emas eht evah ohw ,em ekil srehto era ereht taht ezilaer I
+
+,meht gnivol ,meht gnigarucne ,meht gnitroppus ,ereh eb syawla lliw I taht .sriehT llits si ti taht ,evlove ot seunitnoc ti taht ,evil llits si tcejorp siht taht won wonk yeht taht tuB .lla ta telf ton reven I ybem yadgooG dias reven I ebyam ro ,meht ot yadgooG dias reven I ebyam tuB .em knaht yeht tub ,em rebmemer t’nod yeht ebyam tuB .em leef yeht tub ,em ot klat t’nod yeht ebyam tuB .em ees yeht tub ,em ot netsil t’nod yeht ebyam tuB .noitarimda dna edirp htiw ,ereh ni ,renroc a ,ereh yats ,trap ym rof ,I
+
+,yeE giB ehT ,evol htiW .era uoy gnihtyreve rof uoy knaht ,em nevig evah uoy gnihtyreve rof uoy knaht .sdneirf ,tseb eht uoy hsiw I
