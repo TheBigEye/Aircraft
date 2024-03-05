@@ -26,9 +26,10 @@
     * Penguins, Chickens and Goats.
     * Iron golems and Rust Iron Golems.
     * NPCs, like villagers, that you can trade with.
-* Added the Keeper, the guardian of the underground. (**UNFINISHED**)
-* Added the Eye queen, the final boss. (**UNFINISHED**)
-* Improved the Air Wizard with three phases. (**UNFINISHED**)
+* Added Maps, and more items.
+* Added the Keeper, the guardian of the underground.
+* Added the Eye queen, the final boss.
+* Improved the Air Wizard with three phases.
 
 ### Level Generation 🗺️
 - Added villages, replacing the wooden ruins in the forests.
