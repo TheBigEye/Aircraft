@@ -133,7 +133,6 @@ public class Game {
 
 	// Main functions
 	public static void main(String[] args) {
-		
 		// Crash report log
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
 			throwable.printStackTrace();

@@ -104,7 +104,7 @@ public class Initializer extends Game {
 	
 	        // Refresh the screen
 	        now = System.nanoTime();
-			if (now >= lastRender + 1E9D / maxFPS / 1.05) {
+			if (now >= lastRender + 1E9D / maxFPS / 1.01) {
 				frames++;
 				lastRender = System.nanoTime();
 				Renderer.render();
@@ -197,12 +197,19 @@ public class Initializer extends Game {
 
 	@SuppressWarnings("serial") 
 	private static class LogoSplashCanvas extends JPanel {
-		private final Image logo;
-		{
+		private static final Image LOGO;
+		static {
 			try {
-				logo = ImageIO.read(Objects.requireNonNull(Initializer.class.getResourceAsStream("/resources/title.png")));
+				LOGO = ImageIO.read(Objects.requireNonNull(Initializer.class.getResourceAsStream("/resources/title.png")));
 			} catch (IOException exception) {
 				throw new RuntimeException(exception);
+			}
+		}
+
+		private static final Color[] COLORS = new Color[256];
+		static {
+			for (int i = 0; i < COLORS.length; i++) {
+				COLORS[i] = new Color(0, 0, 0, i);
 			}
 		}
 
@@ -210,10 +217,10 @@ public class Initializer extends Game {
 		private boolean display = false;
 		private boolean inAnimation = false;
 		private boolean interruptWhenAnimated = false;
-		
-	    public LogoSplashCanvas() {
-	        setBackground(Color.BLACK);
-	    }
+
+		public LogoSplashCanvas() {
+			setBackground(Color.BLACK);
+		}
 
 		public final Thread renderer = new Thread(() -> {
 			do {
@@ -225,18 +232,18 @@ public class Initializer extends Game {
 		@Override
 		public void paintComponent(Graphics graphics) {
 			super.paintComponent(graphics);
-			
-			int lx = (getWidth() / 2) - logo.getWidth(frame);
-			int ly = (getHeight() / 2) - (logo.getHeight(frame) + 12);
-			int lw = logo.getWidth(frame) * 2;
-			int lh = logo.getHeight(frame) * 2;
+
+			int lx = (getWidth() / 2) - LOGO.getWidth(frame);
+			int ly = (getHeight() / 2) - (LOGO.getHeight(frame) + 12);
+			int lw = LOGO.getWidth(frame) * 2;
+			int lh = LOGO.getHeight(frame) * 2;
 
 			if (transparency < 255) {
-				graphics.drawImage(logo, lx, ly, lw, lh, frame);
+				graphics.drawImage(LOGO, lx, ly, lw, lh, frame);
 			}
-			
+
 			if (transparency > 0) {
-				graphics.setColor(new Color(0, 0, 0, transparency));
+				graphics.setColor(COLORS[transparency]);
 				graphics.fillRect(0, 0, graphics.getClipBounds().width, graphics.getClipBounds().height);
 			}
 

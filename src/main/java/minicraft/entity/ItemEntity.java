@@ -157,20 +157,28 @@ public class ItemEntity extends Entity implements ClientTickable {
 
 	@Override
 	public void render(Screen screen) {
+		int xo = 0;
+		int yo = 0; 
+		
+		if (this.getLightRadius() > 0) {
+			xo = 5;
+			yo = 8;
+		}
+		
 		/* This first part is for the blinking effect */
 		if (time >= lifeTime - 6 * 20 && !item.equals(Items.get("AlAzif"))) {
 			if (time / 6 % 2 == 0) return;
 		}
+		
 
 		if (Settings.getBoolean("shadows")) {
-			item.sprite.render(screen, x - 5, y - 8, 4, -1, Color.BLACK); // item shadow uses black color
+			item.sprite.render(screen, x - xo, y - yo, 4, -1, Color.BLACK); // item shadow uses black color
 		}
-		item.sprite.render(screen, x - 5, y - 8 - (int)(zz));
+		item.sprite.render(screen, x - xo, y - yo - (int)(zz));
 	}
 
 	@Override
 	protected void touchedBy(Entity entity) {
-		
 		if (entity instanceof EyeQueen || entity instanceof Fireball) {
 			for (int i = 0; i < 1 + random.nextInt(2); i++) {
 				int randX = random.nextInt(16);

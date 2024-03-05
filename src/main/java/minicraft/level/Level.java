@@ -607,8 +607,11 @@ public class Level {
 
 		screen.setOffset(xScroll, yScroll);
 		int r = 8;
+		
+		int xBound = w + xo + r;
+		int yBound = h + yo + r;
 
-		List <Entity> entities = getEntitiesInTiles(xo - r, yo - r, w + xo + r, h + yo + r);
+		List <Entity> entities = getEntitiesInTiles(xo - r, yo - r, xBound, yBound);
 		for (Entity entity: entities) {
 			int lightRadius = entity.getLightRadius();
 			if (lightRadius > 0) {
@@ -616,50 +619,14 @@ public class Level {
 			}
 		}
 
-		for (int y = yo - r; y <= h + yo + r; y++) {
-			for (int x = xo - r; x <= w + xo + r; x++) {
+		for (int y = yo - r; y <= yBound; y++) {
+			for (int x = xo - r; x <= xBound; x++) {
 				if (x < 0 || y < 0 || x >= this.w || y >= this.h) {
 					continue;
 				}
 
 				int lightRadius = getTile(x, y).getLightRadius(this, x, y);
 				if (lightRadius > 0) screen.renderLight((x << 4) + 8, (y << 4) + 8, lightRadius * brightness);
-			}
-		}
-		screen.setOffset(0, 0);
-	}
-	
-	public void renderLight(Screen screen, int xScroll, int yScroll, int brightness, int additionalRadius) {
-		int xo = xScroll >> 4;
-		int yo = yScroll >> 4;
-				
-		int w = (Screen.w + 15) >> 4;
-		int h = (Screen.h + 15) >> 4;
-		
-		screen.setOffset(xScroll, yScroll);
-		
-		int r = 8;
-
-		List <Entity> entities = getEntitiesInTiles(xo - r, yo - r, w + xo + r, h + yo + r);
-		for (Entity entity: entities) {
-			int lightRadius = entity.getLightRadius();
-			if (lightRadius > 0) {
-				lightRadius += additionalRadius;
-				screen.renderLight(entity.x - 1, entity.y - 4, lightRadius * brightness, 51);
-			}
-		}
-
-		for (int y = yo - r; y <= h + yo + r; y++) {
-			for (int x = xo - r; x <= w + xo + r; x++) {
-				if (x < 0 || y < 0 || x >= this.w || y >= this.h) {
-					continue;
-				}
-
-				int lightRadius = getTile(x, y).getLightRadius(this, x, y);
-				if (lightRadius > 0) {
-					lightRadius += additionalRadius;
-					screen.renderLight((x << 4) + 8, (y << 4) + 8, lightRadius * brightness, 0);
-				}
 			}
 		}
 		screen.setOffset(0, 0);
@@ -763,17 +730,22 @@ public class Level {
 		if (spawnSkipChance > 0 && random.nextInt(spawnSkipChance) != 0) {
 			return; // hopefully will make mobs spawn a lot slower.
 		}
+		
+		boolean peaceful = Settings.get("diff").equals("Peaceful");
 
 		boolean spawned = false;
 		for (int i = 0; i < 15 && !spawned; i++) {
 
 			int minLevel = 1;
 			int maxLevel = 1;
+			int lvl = 0;
 
 			if (depth < 0) maxLevel = (-depth) + ((Math.random() > 0.75 && -depth != 4) ? 1 : 0);
 			if (depth > 0) minLevel = maxLevel = 4;
-
-			int lvl = random.nextInt(maxLevel - minLevel + 1) + minLevel;
+			
+			if (!peaceful) {
+				lvl = random.nextInt(maxLevel - minLevel + 1) + minLevel;
+			}
 			int spawnChance = random.nextInt(100);
 			int nx = (random.nextInt(w) << 4) + 8;
 			int ny = (random.nextInt(h) << 4) + 8;
@@ -781,7 +753,7 @@ public class Level {
 			// System.out.println("trySpawn on level " + depth + " of lvl " + lvl + " mob w/rand " + random + " at tile " + nx + "," + ny);
 
 			// spawns the enemy mobs; first part prevents enemy mob spawn on surface and the sky on first day, more or less.
-			if (!Settings.get("diff").equals("Peaceful")) {
+			if (!peaceful) {
 			    if ((depth != 1 && depth != 2) && EnemyMob.checkStartPos(this, nx, ny)) {
 			        if (depth == 0 && Updater.getTime() == Updater.Time.Night && !Game.player.isNiceNight) {
 			            EnemyMob[] mobs = {new Zombie(lvl), new Skeleton(lvl), new Creeper(lvl)};
@@ -863,16 +835,18 @@ public class Level {
 					add((new Phyg()), nx, ny);
 					add((new Sheepuff()), nx, ny);
 				} else { // Spawns hostile sky mobs.
-					if (spawnChance <= 40) {
-						add((new Slime(lvl)), nx, ny);
-					} else if (spawnChance <= 75) {
-						add((new Zombie(lvl)), nx, ny);
-					} else if (spawnChance >= 85) {
-						add((new OldGolem(lvl)), nx, ny);
-					} else if (spawnChance >= 82) {
-						add((new Skeleton(lvl)), nx, ny);
-					} else {
-						add((new Creeper(lvl)), nx, ny);
+					if (!peaceful) {
+						if (spawnChance <= 40) {
+							add((new Slime(lvl)), nx, ny);
+						} else if (spawnChance <= 75) {
+							add((new Zombie(lvl)), nx, ny);
+						} else if (spawnChance >= 85) {
+							add((new OldGolem(lvl)), nx, ny);
+						} else if (spawnChance >= 82) {
+							add((new Skeleton(lvl)), nx, ny);
+						} else {
+							add((new Creeper(lvl)), nx, ny);
+						}
 					}
 				}
 				spawned = true;

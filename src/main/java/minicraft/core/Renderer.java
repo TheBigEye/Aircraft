@@ -1,7 +1,9 @@
 package minicraft.core;
 
 import java.awt.Canvas;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -164,17 +166,21 @@ public class Renderer extends Game {
 		Graphics graphics = bufferStrategy.getDrawGraphics(); // Gets the graphics in which java draws the picture
 		graphics.fillRect(0, 0, canvas.getWidth(), canvas.getHeight()); // draws a rect to fill the whole window (to cover last?)
 
-		// Scale the pixels.
-		int windowWidth = getWindowSize().width;
-		int windowHeight = getWindowSize().height;
+		Dimension windowSize = getWindowSize();
 
-		// Gets the image offset.
-		int xo = (canvas.getWidth() - windowWidth) / 2 + canvas.getParent().getInsets().left;
-		int yo = (canvas.getHeight() - windowHeight) / 2 + canvas.getParent().getInsets().top;
-		graphics.drawImage(image, xo, yo, windowWidth, windowHeight, null); // Draws the image on the window
-		graphics.dispose(); // Releases any system items that are using this method. (so we don't have crappy framerates)
+	    // Calculate image offset
+	    Insets insets = canvas.getParent().getInsets();
+	    int xo = (canvas.getWidth() - windowSize.width) / 2 + insets.left;
+	    int yo = (canvas.getHeight() - windowSize.height) / 2 + insets.top;
 
-		bufferStrategy.show(); // Makes the picture visible. (probably)
+	    // Draw the image on the window
+	    graphics.drawImage(image, xo, yo, windowSize.width, windowSize.height, null);
+
+	    // Dispose graphics to free up system resources
+	    graphics.dispose();
+
+	    // Show the buffered image
+	    bufferStrategy.show();
 	}
 
 	private static void renderLevel() {
@@ -194,10 +200,12 @@ public class Renderer extends Game {
 		if (yScroll > ((level.h << 4) - Screen.h)) yScroll = ((level.h << 4) - Screen.h); // ...bottom border.
 
 		if (currentLevel > 3) { // If the current level is higher than 3 (which only the sky level (and dungeon) is)
+	        int xShifted = (xScroll >> 2) & 7;
+	        int yShifted = (yScroll >> 2) & 7;
 			for (int y = 0; y < 37; y++) {
 				for (int x = 0; x < 55; x++) {
 					// Creates the background for the sky (and dungeon) level:
-					screen.render((x << 3) - ((xScroll >> 2) & 7), (y << 3) - ((yScroll >> 2) & 7), 3 + (23 << 5), 0, 1);
+					screen.render((x << 3) - xShifted, (y << 3) - yShifted, 3 + (23 << 5), 0, 1);
 				}
 			}
 		}
@@ -254,7 +262,7 @@ public class Renderer extends Game {
 				// Renders the box
 				Font.drawBox(screen, (Screen.w) / 2 - 32 - tool.arrowOffset, (Screen.h - 8) - 13, 3, 1);
 
-				if (isMode("Creative") || arrowsCount >= 10000) {
+				if (isMode("Creative") || arrowsCount >= 999) {
 					Font.draw(" x" + "∞", screen, 184 - tool.arrowOffset, Screen.h - 24);
 				} else {
 					Font.draw(" x" + arrowsCount, screen, 180 - tool.arrowOffset, Screen.h - 24);
@@ -342,41 +350,38 @@ public class Renderer extends Game {
 
 		/// This renders the potions overlay
 		if (player.showPotionEffects && !player.potionEffects.isEmpty()) {
-			Map.Entry <PotionType, Integer> [] effects = player.potionEffects.entrySet().toArray(new Map.Entry[0]);
-				
-			String title = "(" + input.getMapping("potionEffects") + " to hide)";
-			
-			PotionType potionType;
-			Sprite potionIcon = new Sprite(0, 7, 0);
-			
-			for (int i = 0; i < effects.length; i++) {
-				int x = (Screen.w - 118) / 2 + (Screen.w - 8) / 3 - 8; // the width of the box
-				int y = (HEIGHT - 8) / 2 + (Screen.h - 8) / 36 - 130; // the height of the box
-				potionType = effects[i].getKey();
-				
-				// Renders the GUI box
-				Font.drawBox(screen, x, y, 16, effects.length);
-			}
+		    Map.Entry<PotionType, Integer>[] effects = player.potionEffects.entrySet().toArray(new Map.Entry[0]);
+		    String title = "(" + input.getMapping("potionEffects") + " to hide)";
+		    
+		    Sprite potionIcon = new Sprite(0, 7, 0);
+		    
+		    int x = (Screen.w - 118) / 2 + (Screen.w - 8) / 3 - 8; // the width of the box
+		    int y = (HEIGHT - 8) / 2 + (Screen.h - 8) / 36 - 130; // the height of the box
+		    
+		    int titleLen = title.length();
 
-			for (int effectIndex = 0; effectIndex < effects.length; effectIndex++) {
-				potionType = effects[effectIndex].getKey();
-				int potionTime = effects[effectIndex].getValue() / Updater.normalSpeed;
-				
-				potionIcon.color = potionType.displayColor;
-                
-				int minutes = potionTime / 60;
-				int seconds = potionTime % 60;
-				
-				// Title background
-				for (int j = 0; j < title.length(); j++) {
-					screen.render(311 + (j << 3) - 1, 9, 3 + (21 << 5), 0, 3);
-				}
-				Font.draw(title, screen, 310, 9, Color.YELLOW);
-				
-				Font.draw(potionType + " ", screen, 300 , 17 + effectIndex * Font.textHeight(), potionType.displayColor);
-				Font.draw("(" + minutes + ":" + (seconds < 10? "0" + seconds:seconds) + ")", screen, 373 , 17 + effectIndex * Font.textHeight(), potionType.displayColor);
-				potionIcon.render(screen, 290, 17 + effectIndex * Font.textHeight());
-			}
+		    // Renders the GUI box
+		    Font.drawBox(screen, x, y, 16, effects.length);
+
+		    for (int effectIndex = 0; effectIndex < effects.length; effectIndex++) {
+		        PotionType potionType = effects[effectIndex].getKey();
+		        int potionTime = effects[effectIndex].getValue() / Updater.normalSpeed;
+
+		        potionIcon.color = potionType.displayColor;
+
+		        int minutes = potionTime / 60;
+		        int seconds = potionTime % 60;
+
+		        Font.draw(potionType + " ", screen, 300 , 17 + effectIndex * Font.textHeight(), Color.GRAY);
+		        Font.draw("(" + minutes + ":" + (seconds < 10? "0" + seconds:seconds) + ")", screen, 373 , 17 + effectIndex * Font.textHeight(), Color.YELLOW);
+		        potionIcon.render(screen, 290, 17 + effectIndex * Font.textHeight());
+		    }
+		    
+		    // Title background
+		    for (int j = 0; j < titleLen; j++) {
+		        screen.render(311 + (j << 3) - 1, 9, 3 + (21 << 5), 0, 3);
+		    }
+		    Font.draw(title, screen, 310, 9, Color.YELLOW);
 		}
 
 		// This is the status icons, like health hearts, stamina bolts, hunger "burger", and armor points.

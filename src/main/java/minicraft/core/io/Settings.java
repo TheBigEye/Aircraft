@@ -33,7 +33,7 @@ public class Settings {
 
 		options.put("cheats", new BooleanEntry("Cheats", true));
 		
-		options.put("size", new ArrayEntry<>("World Size", 256, 512, 1024));
+		options.put("size", new ArrayEntry<>("World Size", 256, 512));
 		options.get("size").setSelection(0);
 		
 		options.put("theme", new ArrayEntry<>("World Theme", "Normal", "Forest", "Desert", "Plain", "Hell", "Snow"));
@@ -61,7 +61,7 @@ public class Settings {
 		options.get("textures").setSelection(0);
         
         // Video options
-        options.put("fps", new RangeEntry("Max FPS", 16, 300, getRefreshRate()));
+        options.put("fps", new RangeEntry("Max FPS", 30, 300, getRefreshRate()));
         options.put("vsync", new BooleanEntry("V.Sync", false));
        
         options.put("bossbar", new ArrayEntry<>("Bossbar type", "On screen", "On entity", "Percent"));

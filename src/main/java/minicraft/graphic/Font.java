@@ -113,13 +113,14 @@ public class Font {
 
     public static void drawBackground(String msg, Screen screen, int x, int y, int whiteTint) {
     	int xx = x;
+    	
+    	int len = msg.length();
         
-        for (int i = 0; i < msg.length(); i++) {
+        for (int i = 0; i < len; i++) {
             // render the black background
             screen.render(xx, y, 12 + (24 << 5), 0, 3);
 			int ix = chars.indexOf(msg.charAt(i));
 			xx += msg.charAt(i) == ' ' ? 8 : ix >= 0 ? Font.charsAdvance[ix] : 8;
-            
         }
         draw(msg, screen, x, y, whiteTint);
     }
@@ -128,8 +129,9 @@ public class Font {
 		if (text == null) return 0;
 
 		int width = 0;
+		int len = text.length();
 
-		for (int i = 0; i < text.length(); ++i) {
+		for (int i = 0; i < len; ++i) {
 			char chr = text.charAt(i);
 
 			if (chr == Color.COLOR_CHAR) {

@@ -79,12 +79,6 @@ public class StackableItem extends Item {
 		items.add(new StackableItem("Gear", new Sprite(15, 4, 0)));
 		items.add(new StackableItem("Spring", new Sprite(16, 3, 0)));
 		items.add(new StackableItem("Flint", new Sprite(8, 3, 0)));
-		items.add(new StackableItem("Protection I", new Sprite(2, 8, 0)));
-		items.add(new StackableItem("Protection II", new Sprite(2, 8, 0)));
-		items.add(new StackableItem("Protection III", new Sprite(2, 8, 0)));
-		items.add(new StackableItem("Sharp I", new Sprite(2, 8, 0)));
-		items.add(new StackableItem("Sharp II", new Sprite(2, 8, 0)));
-		items.add(new StackableItem("Sharp III", new Sprite(2, 8, 0)));
 
 		// Essences
 		// items.add(new StackableItem("Cordyceps essence", new Sprite(1, 7, 0)));
