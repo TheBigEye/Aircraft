@@ -124,6 +124,7 @@ public class TileItem extends StackableItem {
 
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 		
+		// TODO: optimize this ...
 		for (String tilename : validTiles) {
 			if (tile.matches(level.getData(xt, yt), tilename)) {
 				

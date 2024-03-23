@@ -51,7 +51,7 @@ public class FloorTile extends Tile {
 			if (tool.type == type.getRequiredTool()) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					
-					Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+					Sound.playAt("genericHurt", xt << 4, yt << 4);
 
 					if (level.depth == 1) {
 						level.setTile(xt, yt, Tiles.get("Cloud hole"));

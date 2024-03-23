@@ -407,7 +407,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 				World.scheduleLevelChange((onTile == Tiles.get("Stairs Up")) ? 1 : -1); // Decide whether to go up or down.
 				onStairDelay = 10; // Resets delay, since the level has now been changed.
 
-				Sound.playerChangeLevel.playOnDisplay();
+				Sound.play("playerChangeLevel");
 
 				return; // SKIPS the rest of the tick() method.
 			}
@@ -1152,7 +1152,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     /** What happens when the player interacts with a itemEntity */
     public void pickupItem(ItemEntity itemEntity) {
     	// pickup sound
-    	Sound.playerPickup.playOnLevel(itemEntity.x, itemEntity.y);
+    	Sound.playAt("playerPickup", itemEntity.x, itemEntity.y);
     	
     	// remove the picked-up item
     	itemEntity.remove();
@@ -1308,7 +1308,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     	if (activeItem != null) deathChest.getInventory().add(activeItem);
     	if (currentArmor != null) deathChest.getInventory().add(currentArmor);
 
-    	Sound.playerDeath.playOnLevel(this.x, this.y);
+    	Sound.playAt("playerDeath", this.x, this.y);
         
         // Add the death chest to the world.
     	World.levels[Game.currentLevel].add(deathChest);
@@ -1368,7 +1368,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     		if (this == Game.player) super.doHurt(healthDamage, attackDir); // Sets knockback, and takes away health.
     	}
 
-    	Sound.playerHurt.playOnLevel(this.x, this.y);
+    	Sound.playAt("playerHurt", this.x, this.y);
     	hurtTime = playerHurtTime;
     }
 
@@ -1392,7 +1392,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     		if (this == Game.player) super.doHurt(healthDamage, attackDir); // Sets knockback, and takes away health.
     	}
 
-    	Sound.playerHurt.playOnLevel(this.x, this.y);
+    	Sound.playAt("playerHurt", this.x, this.y);
     	hurtTime = playerHurtTime;
     }
 

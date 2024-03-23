@@ -1,5 +1,6 @@
 package minicraft.level.tile.farming;
 
+import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
@@ -83,6 +84,8 @@ public class SkyPlant extends SkyFarmTile {
         } else if (age >= maxAge - maxAge / 5) {
             count = random.nextInt(2) + 1;
         }
+        
+        Sound.playAt("genericHurt", x, y);
 
         level.dropItem((x << 4) + 8, (y << 4) + 8, count, Items.get(name));
 

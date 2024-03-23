@@ -1,12 +1,12 @@
 package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
-import minicraft.core.io.Sound;
 import minicraft.graphic.MobSprite;
 import minicraft.item.Items;
 
 public class Pig extends PassiveMob {
     private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 38);
+    private static final String[] sounds = new String[] {"pigSay1", "pigSay2", "pigSay3"};
 
     /**
      * Creates a pig.
@@ -23,16 +23,8 @@ public class Pig extends PassiveMob {
 		followOnHold(Items.get("Carrot"), 5);
         
 		// Pig sounds
-		if ((tickTime % (random.nextInt(100) + 120) == 0) && random.nextInt(8) == 0) {
-			if (random.nextBoolean()) {
-				if (!random.nextBoolean()) {
-					Sound.pigSay1.playOnLevel(this.x, this.y);
-				} else {
-					Sound.pigSay2.playOnLevel(this.x, this.y);
-				}
-			} else {
-				Sound.pigSay3.playOnLevel(this.x, this.y);
-			}
+		if ((this.tickTime % (random.nextInt(100) + 120) == 0)) {
+			doPlaySound(sounds, 7);
 		}
     }
 

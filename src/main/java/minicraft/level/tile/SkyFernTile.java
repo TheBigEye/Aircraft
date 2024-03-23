@@ -79,7 +79,7 @@ public class SkyFernTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(2 - tool.level) && tool.payDurability()) {
-                	Sound.genericHurt.playOnLevel(x, y);
+                	Sound.playAt("genericHurt", x, y);
                 	
                     level.setTile(x, y, Tiles.get("Sky Grass"));
 

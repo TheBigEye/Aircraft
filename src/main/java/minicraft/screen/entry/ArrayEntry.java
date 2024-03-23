@@ -119,7 +119,7 @@ public class ArrayEntry<T> extends ListEntry {
 		if (input.getKey("cursor-right").clicked) selection++;
 
 		if (previousSelection != selection) {
-			Sound.Menu_select.playOnDisplay();
+			Sound.play("Menu_select");
 			moveSelection(selection - previousSelection);
 		}
 	}

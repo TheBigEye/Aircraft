@@ -63,7 +63,7 @@ public class DoorTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == type.getRequiredTool()) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+                	Sound.playAt("genericHurt", xt << 4, yt << 4);
                     level.setTile(xt, yt, Tiles.get(id + 6)); // will get the corresponding floor tile.
                     level.dropItem((xt << 4) + 8, (yt << 4) + 8, Items.get(type.name() + " Door"));
                     return true;

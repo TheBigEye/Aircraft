@@ -42,7 +42,7 @@ public class MyceliumTile extends Tile {
 		if (toolType == ToolType.Shovel) {
 			if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 				level.setTile(xt, yt, Tiles.get("Dirt"));
-				Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+				Sound.playAt("genericHurt", xt << 4, yt << 4);
 				
 				if (random.nextInt(5) == 0) { // 20% chance to drop seeds
 					level.dropItem((xt << 4) + 8, (yt << 4) + 8, 2, Items.get("Seeds"));
@@ -54,7 +54,7 @@ public class MyceliumTile extends Tile {
 		if (toolType == ToolType.Hoe) {
 			if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 				level.setTile(xt, yt, Tiles.get("Dirt"));
-				Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+				Sound.playAt("genericHurt", xt << 4, yt << 4);
 				
 				if (random.nextInt(15) == 0) { // 80% chance to drop seeds
 					level.dropItem((xt << 4) + 8, (yt << 4) + 8, Items.get("Seeds"));
@@ -69,7 +69,7 @@ public class MyceliumTile extends Tile {
 		if (toolType == ToolType.Pickaxe) {
 			if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 				level.setTile(xt, yt, Tiles.get("path"));
-				Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+				Sound.playAt("genericHurt", xt << 4, yt << 4);
 				
 				if (random.nextInt(5) == 0) { // 20% chance to drop seeds
 					level.dropItem((xt << 4) + 8, (yt << 4) + 8, 2, Items.get("Seeds"));

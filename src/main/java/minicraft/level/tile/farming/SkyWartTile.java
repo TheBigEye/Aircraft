@@ -1,5 +1,6 @@
 package minicraft.level.tile.farming;
 
+import minicraft.core.io.Sound;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.mob.Player;
@@ -46,14 +47,14 @@ public class SkyWartTile extends SkyPlant {
             return;
         int age = level.getData(x, y);
 
-        // level.dropItem(x*16+8, y*16+8, 1, 2, Items.get("seeds"));
-
         int count = 0;
         if (age >= maxAge) {
             count = random.nextInt(3) + 2;
         } else if (age >= maxAge - maxAge / 5) {
             count = random.nextInt(2);
         }
+        
+        Sound.playAt("genericHurt", x, y);
 
         level.dropItem((x << 4) + 8, (y << 4) + 8, count, Items.get("Sky wart"));
 

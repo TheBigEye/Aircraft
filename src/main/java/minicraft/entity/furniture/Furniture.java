@@ -118,7 +118,7 @@ public class Furniture extends Entity {
     @Override
     public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
         if (item instanceof PowerGloveItem) {
-            Sound.genericHurt.playOnLevel(this.x, this.y);
+            Sound.playAt("genericHurt", this.x, this.y);
             remove();
             
             if (!Game.isMode("Creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem)) {

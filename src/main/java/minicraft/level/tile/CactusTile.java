@@ -40,7 +40,7 @@ public class CactusTile extends Tile {
         level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
 
         if (damage >= cactusHealth) {
-        	Sound.genericHurt.playOnLevel(x << 4, y << 4);
+        	Sound.playAt("genericHurt", x << 4, y << 4);
             level.setTile(x, y, Tiles.get("Sand"));
             level.dropItem((x << 4) + 8, (y << 4) + 8, 2, 4, Items.get("Cactus"));
         } else {

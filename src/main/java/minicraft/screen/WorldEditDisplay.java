@@ -144,7 +144,7 @@ public class WorldEditDisplay extends Display {
 
 				confirm = false;
 		
-				Sound.Menu_select.playOnDisplay();
+				Sound.play("Menu_select");
 				
 				if (!WorldSelectDisplay.getWorldNames().isEmpty()) {
 					Game.setDisplay(new WorldSelectDisplay());

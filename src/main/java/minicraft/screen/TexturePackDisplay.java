@@ -76,7 +76,7 @@ public class TexturePackDisplay extends Display {
 
 	private static void update() {
 		shouldUpdate = true;
-		Sound.Menu_loaded.playOnDisplay();
+		Sound.play("Menu_loaded");
 	}
 
 	private void updateSheets(Screen screen) throws IOException {

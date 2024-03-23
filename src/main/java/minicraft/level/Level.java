@@ -103,6 +103,7 @@ public class Level {
 	
 	// Used for Maps Book
 	public boolean[][] explored; 
+	private boolean skyAmbience = false;
 	
 	public static String getLevelName(int depth) {
 		return levelNames[-1 * depth + 2];
@@ -349,7 +350,7 @@ public class Level {
 
 		/// Make DungeonChests!
 		for (int i = numChests; i < 10 * (w / 128); i++) {
-			DungeonChest d = new DungeonChest(true);
+			DungeonChest dungeonChest = new DungeonChest(true);
 			boolean addedchest = false;
 			while (!addedchest) { // Keep running until we successfully add a DungeonChest
 
@@ -362,23 +363,23 @@ public class Level {
 					if (xaxis) {
 						for (int s = x2; s < w - s; s++) {
 							if (getTile(s, y2) == Tiles.get("Obsidian Wall")) {
-								d.x = s * 16 - 24;
-								d.y = y2 * 16 - 24;
+								dungeonChest.x = s * 16 - 24;
+								dungeonChest.y = y2 * 16 - 24;
 							}
 						}
 					} else { // y axis
 						for (int s = y2; s < y2 - s; s++) {
 							if (getTile(x2, s) == Tiles.get("Obsidian Wall")) {
-								d.x = x2 * 16 - 24;
-								d.y = s * 16 - 24;
+								dungeonChest.x = x2 * 16 - 24;
+								dungeonChest.y = s * 16 - 24;
 							}
 						}
 					}
-					if (d.x == 0 && d.y == 0) {
-						d.x = x2 * 16 - 8;
-						d.y = y2 * 16 - 8;
+					if (dungeonChest.x == 0 && dungeonChest.y == 0) {
+						dungeonChest.x = x2 * 16 - 8;
+						dungeonChest.y = y2 * 16 - 8;
 					}
-					add(d);
+					add(dungeonChest);
 					chestCount++;
 					addedchest = true;
 				}
@@ -436,9 +437,13 @@ public class Level {
 
 		// in the sky
 		if (depth == 1 && Game.getDisplay() == null) {
-			Sound.Sky_enviroment.loop(true);
+			if (!skyAmbience) {
+				Sound.loop("Sky_enviroment", true);
+				skyAmbience = true;
+			}
 		} else {
-			Sound.Sky_enviroment.stop();
+			Sound.stop("Sky_enviroment");
+			skyAmbience = false;
 		}
 		
 		if (Updater.tickCount % 32401 == 0) {
@@ -1294,16 +1299,16 @@ public class Level {
 	
 
 	private void playRandomMusic(int depth) {
-	    Map<Integer, Sound[]> soundMap = new HashMap<>();
-	    soundMap.put(0, new Sound[]{Sound.Theme_Surface, Sound.Theme_Cave, Sound.Theme_Peaceful, Sound.Theme_Peaceful});
-	    soundMap.put(-1, new Sound[]{Sound.Ambience1, Sound.Ambience2, Sound.Ambience3, Sound.Ambience4});
-	    soundMap.put(-2, new Sound[]{Sound.Theme_Cavern, Sound.Theme_Cavern_drip});
-	    soundMap.put(1, new Sound[]{Sound.Theme_Surface, Sound.Theme_Fall});
+	    Map<Integer, String[]> soundMap = new HashMap<>();
+	    soundMap.put(0, new String[]{"musicTheme2", "musicTheme5", "musicTheme4"});
+	    soundMap.put(-1, new String[]{"Ambience1", "Ambience2", "Ambience3", "Ambience4"});
+	    soundMap.put(-2, new String[]{"musicTheme6", "musicTheme7"});
+	    soundMap.put(1, new String[]{"musicTheme2", "musicTheme1"});
 
 	    if (soundMap.containsKey(depth)) {
-	        Sound[] sounds = soundMap.get(depth);
+	        String[] sounds = soundMap.get(depth);
 	        int randomNum = random.nextInt(sounds.length);
-	        sounds[randomNum].playOnDisplay();
+	        Sound.play(sounds[randomNum]);
 	    }
 	}
 

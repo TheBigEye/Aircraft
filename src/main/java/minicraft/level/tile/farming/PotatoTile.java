@@ -62,7 +62,7 @@ public class PotatoTile extends Plant {
         }
         
         // Play sound
-        Sound.genericHurt.playOnLevel(x, y);
+        Sound.playAt("genericHurt", x, y);
 
         if (random.nextBoolean()) {
         	level.setTile(x, y, Tiles.get("Dirt"));

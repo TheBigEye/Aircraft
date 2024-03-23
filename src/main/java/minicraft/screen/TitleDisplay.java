@@ -109,12 +109,13 @@ public class TitleDisplay extends Display {
 		Renderer.readyToRenderGameplay = false;
 
 		if (TimeData.month() != Month.OCTOBER) {
-			switch (random.nextInt(4)) {
-				case 0: Sound.Theme_Cave.playOnDisplay(); break; 
-				case 1: Sound.Theme_Surface.playOnDisplay(); break;
-				case 2: Sound.Theme_Fall.playOnDisplay(); break;
-				case 3: Sound.Theme_Peaceful.playOnDisplay(); break;
-				default: Sound.Theme_Fall.playOnDisplay(); break;
+			switch (random.nextInt(5)) {
+				case 0: Sound.play("musicTheme5"); break; 
+				case 1: Sound.play("musicTheme2"); break;
+				case 2: Sound.play("musicTheme1"); break;
+				case 3: Sound.play("musicTheme4"); break;
+				case 4: Sound.play("musicTheme8"); break;
+				default: Sound.play("musicTheme3"); break;
 			}
 		}
 
@@ -146,8 +147,8 @@ public class TitleDisplay extends Display {
 		}
 
 		if (TimeData.month() == Month.OCTOBER) {
-			if (TimeData.day() == 8) Sound.Theme_Cavern.playOnDisplay();
-			if (TimeData.day() == 16) Sound.Theme_Cavern_drip.playOnDisplay();
+			if (TimeData.day() == 8) Sound.play("musicTheme6");
+			if (TimeData.day() == 16) Sound.play("musicTheme7");
 		}
 
 		if (TimeData.month() == Month.AUGUST) {

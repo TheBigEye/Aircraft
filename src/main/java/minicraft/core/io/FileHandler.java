@@ -167,6 +167,8 @@ public class FileHandler extends Game {
 	 * Remove all the natives files downloaded
 	 */
 	public static void cleanNativesFiles() {
+		Logger.info("Looking for old natives & assets to clean up ...");
+
 	    // Remove these native libraries
 	    String[] folderNames = {
 	    	"java-discord"

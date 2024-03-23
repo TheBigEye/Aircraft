@@ -87,7 +87,7 @@ public class FlowerTile extends Tile {
 	    
 		if (toolType == ToolType.Shears) {
 			if (player.payStamina(2 - tool.level) && tool.payDurability()) {
-				Sound.genericHurt.playOnLevel(x << 4, y << 4);
+				Sound.playAt("genericHurt", x << 4, y << 4);
 
 				level.setTile(x, y, Tiles.get("Grass"));
 				

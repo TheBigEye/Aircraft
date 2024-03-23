@@ -523,7 +523,7 @@ public class Load {
 						if (Tiles.oldids.get(tileID) != null) {
 							tilename = Tiles.oldids.get(tileID);
 						} else {
-							Logger.warn("Tile list doesn't contain tile " + tileID);
+							Logger.warn("Tile list doesn't contain tile {}", tileID);
 							tilename = "grass";
 						}
 					}
@@ -948,7 +948,7 @@ public class Load {
 			}
 
 			if (mobLvl == 0) {
-				if (Game.debug) Logger.info("Level 0 mob: " + entityName);
+				if (Game.debug) Logger.info("Level 0 mob: {}", entityName);
 				mobLvl = 1;
 			}
 

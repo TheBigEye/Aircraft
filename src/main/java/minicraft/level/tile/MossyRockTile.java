@@ -47,7 +47,7 @@ public class MossyRockTile extends Tile {
 			dropCoal = true;
 		}
 
-		Sound.genericHurt.playOnLevel(x << 4, y << 4);
+		Sound.playAt("genericHurt", x << 4, y << 4);
 
 		level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
 		if (damage >= maxHealth) {

@@ -31,7 +31,7 @@ public class StairsTile extends Tile {
 
 		// Makes it so you can remove the stairs if you are in creative and debug mode.
 		if (item instanceof PowerGloveItem && Game.isMode("Creative") && Game.debug) {
-			Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+			Sound.playAt("genericHurt", xt << 4, yt << 4);
 			level.setTile(xt, yt, Tiles.get("Grass"));
 			return true;
 		} else {

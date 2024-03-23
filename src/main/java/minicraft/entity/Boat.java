@@ -157,7 +157,7 @@ public class Boat extends Entity {
     @Override
     public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
     	if (item instanceof PowerGloveItem) {
-    		Sound.genericHurt.playOnLevel(this.x, this.y);
+    		Sound.playAt("genericHurt", this.x, this.y);
     		remove();
 
     		// put whatever item the player is holding into their inventory

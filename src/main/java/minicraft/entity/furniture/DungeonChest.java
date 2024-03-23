@@ -58,12 +58,12 @@ public class DungeonChest extends Chest {
 		if (isLocked && tickTime / 2 % 16 == 0) {
 			if (random.nextBoolean()) {
 				if (!random.nextBoolean()) {
-					Sound.dungeonChest1.playOnLevel(this.x, this.y);
+					Sound.playAt("dungeonChest1", this.x, this.y);
 				} else {
-					Sound.dungeonChest2.playOnLevel(this.x, this.y);
+					Sound.playAt("dungeonChest2",this.x, this.y);
 				}
 			} else {
-				Sound.dungeonChest3.playOnLevel(this.x, this.y);
+				Sound.playAt("dungeonChest3",this.x, this.y);
 			}
 		}
 	}
@@ -90,7 +90,7 @@ public class DungeonChest extends Chest {
                 level.add(new TextParticle("-1 key", x, y, Color.RED));
                 level.chestCount--;
                 if (level.chestCount == 0) { // if this was the last chest...
-                	Sound.rainThunder2.playOnDisplay();
+                	Sound.play("rainThunder2");
                 	
                     level.dropItem(x, y, 5, Items.get("Gold Apple"));
 

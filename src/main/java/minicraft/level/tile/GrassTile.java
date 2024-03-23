@@ -1,5 +1,7 @@
 package minicraft.level.tile;
 
+import minicraft.core.Updater;
+import minicraft.core.Updater.Time;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
@@ -13,15 +15,20 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class GrassTile extends Tile {
-	private static final ConnectorSprite sprite = new ConnectorSprite(GrassTile.class, new Sprite(0, 11, 3, 3, 1), new Sprite(3, 11, 2, 2, 1)) {
-		@Override
-		public boolean connectsTo(Tile tile, boolean isSide) {
-			if (!isSide) {
-				return true;
+	
+	private static final ConnectorSprite sprite;
+	
+	static {
+        sprite = new ConnectorSprite(GrassTile.class, new Sprite(0, 11, 3, 3, 1), new Sprite(3, 11, 2, 2, 1)) {
+			@Override
+			public boolean connectsTo(Tile tile, boolean isSide) {
+				if (!isSide) {
+					return true;
+				}
+				return tile.connectsToGrass;
 			}
-			return tile.connectsToGrass;
-		}
-	};
+        };
+	}
 
 	protected GrassTile(String name) {
 		super(name, sprite);
@@ -42,9 +49,9 @@ public class GrassTile extends Tile {
 
 	    if (toolType == ToolType.Shovel) {
 	        if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-	        	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
-	            if (random.nextInt(5) == 0) { // 20% chance to drop seeds
-	                level.dropItem((xt << 4) + 8, (yt << 4) + 8, 2, Items.get("Seeds"));
+	        	Sound.playAt("genericHurt", xt << 4, yt << 4);
+	            if (random.nextInt(10) == 0) { // 20% chance to drop seeds
+	                level.dropItem((xt << 4) + 8, (yt << 4) + 8, 1, Items.get("Seeds"));
 	            }
 	            
 	            level.setTile(xt, yt, Tiles.get("Dirt"));
@@ -53,7 +60,7 @@ public class GrassTile extends Tile {
 	        }
 	    } else if (toolType == ToolType.Hoe) {
 	        if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-	            Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+	        	Sound.playAt("genericHurt", xt << 4, yt << 4);
 	            
 	            level.setTile(xt, yt, Tiles.get("Dirt"));
 	            
@@ -67,12 +74,12 @@ public class GrassTile extends Tile {
 	        }
 	    } else if (toolType == ToolType.Pickaxe) {
 	        if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-	        	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+	        	Sound.playAt("genericHurt", xt << 4, yt << 4);
 	        	
 	            level.setTile(xt, yt, Tiles.get("path"));
 
-	            if (random.nextInt(5) == 0) { // 20% chance to drop seeds
-	                level.dropItem((xt << 4) + 8, (yt << 4) + 8, 2, Items.get("Seeds"));
+	            if (random.nextInt(10) == 0) { // 20% chance to drop seeds
+	                level.dropItem((xt << 4) + 8, (yt << 4) + 8, 1, Items.get("Seeds"));
 	            }
 	            return true;
 	        }
@@ -99,9 +106,14 @@ public class GrassTile extends Tile {
 	        case 1: yn += random.nextInt(2) * 2 - 1; break;
 	    }
 
-	    if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
-	        level.setTile(xn, yn, this);
+	    if (Updater.getTime() != Time.Night) {
+		    if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
+		        level.setTile(xn, yn, this);
+		    } else if (tickCount % 8192 == 0) {
+		    	level.setTile(xt, yt, Tiles.get("Lawn"), (short) random.nextInt(2));
+		    }
 	    }
+	    
 	    return false;
 	}
 }

@@ -66,7 +66,7 @@ public class HardRockTile extends Tile {
         	hurtDamage = damage = hardrockHealth;
         }
         
-        Sound.genericHurt.playOnLevel(x << 4, y << 4);
+        Sound.playAt("genericHurt", x << 4, y << 4);
         level.add(new SmashParticle(x << 4, y << 4));
         
         if (damage <= 30) {

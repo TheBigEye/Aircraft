@@ -142,7 +142,7 @@ public abstract class MobAi extends Mob {
             int xd = player.x - x;
             int yd = player.y - y;
             if (xd * xd + yd * yd < 80 * 80) {
-                Sound.genericHurt.playOnLevel(this.x, this.y);
+                Sound.playAt("genericHurt", this.x, this.y);
             }
         }
         // Make a text particle at this position in this level, bright red and displaying the damage inflicted
@@ -230,6 +230,24 @@ public abstract class MobAi extends Mob {
 
     protected void die(int points) {
         die(points, 0);
+    }
+    
+    
+    protected void doPlaySound(String[] sounds, int heardRadius) {
+		Player player = getClosestPlayer();
+		
+		if (player != null && player.isWithin(heardRadius, this))  {
+	        int randomNum = random.nextInt(sounds.length);
+	        Sound.playAt(sounds[randomNum], x, y);
+		}
+    }
+    
+    protected void doPlaySound(String sound, int heardRadius) {
+		Player player = getClosestPlayer();
+		
+		if (player != null && player.isWithin(heardRadius, this))  {
+	        Sound.playAt(sound, x, y);
+		}
     }
 
     protected void die(int points, int scoreMultiplier) {

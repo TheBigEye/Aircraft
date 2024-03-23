@@ -38,7 +38,7 @@ public class FarmTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                	Sound.genericHurt.playOnDisplay();
+                	Sound.playAt("genericHurt", xt << 4, yt << 4);
                     level.setTile(xt, yt, Tiles.get("Dirt"));
                     return true;
                 }
@@ -74,11 +74,11 @@ public class FarmTile extends Tile {
 
         
         switch (random.nextInt(3)) {
-            case 0: Sound.Tile_farmland.playOnDisplay(); break;
-            case 1: Sound.Tile_farmland_2.playOnDisplay(); break;
-            case 2: Sound.Tile_farmland_3.playOnDisplay(); break;
+            case 0: Sound.play("Tile_farmland"); break;
+            case 1: Sound.play("Tile_farmland_2"); break;
+            case 2: Sound.play("Tile_farmland_3"); break;
             default:
-            	Sound.Tile_farmland.playOnDisplay(); break;
+            	Sound.play("Tile_farmland"); break;
         }
     }
 }

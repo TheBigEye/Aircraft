@@ -61,13 +61,13 @@ public class ChatDisplay extends Display {
     			
         		// Play the sound effect if the command was recognized
         		if (recognizedCommand) {
-        			Sound.Menu_loaded.playOnDisplay();
+        			Sound.play("Menu_loaded");
         		}
  
 			} else {
 				String messageString = command.getUserInput();
 				Game.player.sendMessage(messageString);
-				Sound.Menu_back.playOnDisplay();
+				Sound.play("Menu_back");
 			}
     		
     		command.clearUserInput();

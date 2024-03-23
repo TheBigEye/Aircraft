@@ -135,7 +135,7 @@ public class Keeper extends GiantBossMob {
             max = 2;
         }
 
-        Sound.keeperDeath.playOnLevel(this.x, this.y);
+        Sound.playAt("keeperDeath", this.x, this.y);
         
         beaten = true;
         active = false;

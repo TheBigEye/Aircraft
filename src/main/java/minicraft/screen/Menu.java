@@ -294,7 +294,7 @@ public class Menu {
             entries.get(selection).tick(input); // only ticks the entry on a frame where the selection cursor has not moved.
             return;
         } else {
-            Sound.Menu_select.playOnDisplay();
+            Sound.play("Menu_select");
         }
 
         do {

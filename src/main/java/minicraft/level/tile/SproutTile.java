@@ -51,7 +51,7 @@ public class SproutTile extends Tile {
 
 	@Override
 	public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
-		Sound.genericHurt.playOnLevel(x, y);
+		Sound.playAt("genericHurt", x, y);
 		level.setTile(x, y, onType);
 		return true;
 	}

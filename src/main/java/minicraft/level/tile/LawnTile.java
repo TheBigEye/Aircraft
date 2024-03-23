@@ -67,8 +67,8 @@ public class LawnTile extends Tile {
                 level.setTile(x, y, Tiles.get("Grass"));
                 //Sound.genericHurt.playOnDisplay();
 
-                if (random.nextInt(3) == 1) { // 28% chance to drop Seeds
-                    level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Seeds"));
+                if (random.nextInt(3) == 0) { // 28% chance to drop Seeds
+                    level.dropItem((x << 4) + 8, (y << 4) + 8, 2, Items.get("Seeds"));
                 }
 
                 return true;
@@ -78,8 +78,8 @@ public class LawnTile extends Tile {
     }
 
     public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
-        if (random.nextInt(6) == 1) { // 20% chance to drop sky seeds
-            level.dropItem((x << 4) + 8, (y << 4) + 8, 0, 1, Items.get("Seeds"));
+        if (random.nextInt(3) == 0) { // 20% chance to drop sky seeds
+            level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 2, Items.get("Seeds"));
         }
 
         level.setTile(x, y, Tiles.get("Grass"));

@@ -10,6 +10,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.UnknownHostException;
+import java.time.Instant;
 import java.util.Objects;
 
 import javax.imageio.ImageIO;
@@ -20,6 +22,9 @@ import javax.swing.WindowConstants;
 import org.tinylog.Logger;
 
 import de.jcm.discordgamesdk.Core;
+import de.jcm.discordgamesdk.CreateParams;
+import de.jcm.discordgamesdk.GameSDKException;
+import de.jcm.discordgamesdk.activity.Activity;
 import minicraft.core.io.FileHandler;
 
 /*
@@ -53,7 +58,6 @@ public class Initializer extends Game {
 				i++;
 				saveDir = args[i];
 			} else if (args[i].equals("--fullscreen")) {
-				// Initializes fullscreen
 				Updater.FULLSCREEN = true;
 			}
 		}
@@ -70,7 +74,47 @@ public class Initializer extends Game {
 	 * - fires the command to render out the screen.
 	 * - update the discord rpc
 	 */
-	static void run(Core discordCore) {
+	static void run() {
+		
+        // Discord rich presence
+        Core discordCore = null;
+
+		try {
+			if (debug) Logger.debug("Initializing discord RPC ...");
+
+			final long CLIENT_ID = 981764521616093214L;
+			final String LARGE_TEXT = "Aircraft " + BUILD + ", Nice!";
+			final String SMALL_TEXT = "Minicraft+ mod";
+			
+			Core.initDownload();
+			CreateParams params = new CreateParams();
+			params.setClientID(CLIENT_ID);
+			params.setFlags(CreateParams.getDefaultFlags());
+            params.setFlags(CreateParams.Flags.NO_REQUIRE_DISCORD);
+			discordCore = new Core(params);
+
+			Activity activity = new Activity();
+			activity.assets().setLargeImage("logo");
+            activity.assets().setLargeText(LARGE_TEXT);
+            activity.assets().setSmallImage("small-logo");
+            activity.assets().setSmallText(SMALL_TEXT);
+			activity.timestamps().setStart(Instant.now());
+
+			discordCore.activityManager().updateActivity(activity);
+
+		} catch (GameSDKException exception) {
+			Logger.warn("Failed to initialize Discord SDK, no discord running!");
+			exception.printStackTrace();
+			
+		} catch (UnknownHostException exception) {
+			Logger.warn("Failed to download Discord SDK, no internet connection!");
+			exception.printStackTrace();
+			
+		} catch (Exception exception) {
+			Logger.error("Unknown error");
+			exception.printStackTrace();
+		}
+		
 	    long lastTick = System.nanoTime();
 	    long lastRender = System.nanoTime();
 	    double unprocessed = 0; // delta?
@@ -129,9 +173,12 @@ public class Initializer extends Game {
 				fra = (int) Math.round(frames * 1000D / interval); // saves total frames in last second
 				tik = (int) Math.round(ticks * 1000D / interval); // saves total ticks in last second
 				frames = 0; // resets frames
-				ticks = 0; // resets ticks; ie, frames and ticks only are per second
+				ticks = 0; // resets ticks; ie, frames and ticks only are per second			
 			}
 	    }
+	    
+	    // Finalize discord rich presence
+	    discordCore.activityManager().clearActivity(Core.DEFAULT_CALLBACK);
 	}
 
 

@@ -2,7 +2,6 @@ package minicraft.entity.mob;
 
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
-import minicraft.core.io.Sound;
 import minicraft.graphic.MobSprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
@@ -10,8 +9,8 @@ import minicraft.item.Items;
 public class Chicken extends PassiveMob {
     private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(10, 40);
     
-    private boolean eggDropped = false;
-
+    private static final String[] sounds = new String[] {"chickenSay1", "chickenSay2", "chickenSay3"};
+ 
     /**
      * Creates a Chicken.
      */
@@ -25,7 +24,7 @@ public class Chicken extends PassiveMob {
         
         if (tickTime % 2000 == 0) {
             if (Game.isMode("Survival")) { // drop eggs each 15 secs
-                dropItem(0, 1, Items.get("egg"));
+                level.dropItem(x, y, Items.get("egg"));
             }
         }
         
@@ -33,16 +32,8 @@ public class Chicken extends PassiveMob {
         followOnHold(Items.get("Seeds"), 2);
         
 		// Chicken sounds
-		if (tickTime / 8 % 16 == 0 && random.nextInt(8) == 4) {
-			if (random.nextBoolean()) {
-				if (!random.nextBoolean()) {
-					Sound.chickenSay1.playOnLevel(this.x, this.y);
-				} else {
-					Sound.chickenSay2.playOnLevel(this.x, this.y);
-				}
-			} else {
-				Sound.chickenSay3.playOnLevel(this.x, this.y);
-			}
+		if ((this.tickTime % (random.nextInt(100) + 120) == 0)) {
+			doPlaySound(sounds, 6);
 		}
     }
 
@@ -53,15 +44,11 @@ public class Chicken extends PassiveMob {
 		
 		String difficulty = (String) Settings.get("diff");
 
-        if (difficulty == "Peaceful" || difficulty == "Easy") { 
+        if (difficulty.equals("Peaceful") || difficulty.equals("Easy")) { 
         	min = 1; max = 2; 
-        }
-        
-        if (difficulty == "Normal") {
+        } else if (difficulty.equals("Normal")) {
         	min = 1; max = 1; 
-        }
-        
-        if (difficulty == "Hard") {
+        } else if (difficulty.equals("Hard")) {
         	min = 0; max = 1; 
         }
         
@@ -69,7 +56,6 @@ public class Chicken extends PassiveMob {
         	Items.get("raw chicken"), Items.get("feather") 
         });
 
-        
         super.die();
     }
 }

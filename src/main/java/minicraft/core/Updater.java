@@ -171,6 +171,7 @@ public class Updater extends Game {
 		if (!Renderer.canvas.hasFocus()) {
 			input.releaseAll();
 		}
+
 		if (Renderer.canvas.hasFocus()) {
 			gameTime++;
 
@@ -302,7 +303,7 @@ public class Updater extends Game {
 		if (timeOfDay > 0 && timeOfDay < times.length) {
 			changeTimeOfDay(times[timeOfDay]); // it just references the other one.
 		} else {
-			Logger.warn("Time " + timeOfDay + " does not exist.");
+			Logger.warn("Time {} does not exist", timeOfDay);
 		}
 	}
 

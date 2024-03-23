@@ -103,7 +103,7 @@ public class Arrow extends Entity implements ClientTickable {
                     level.dropItem(x - (dir.getX() * 4), y - (dir.getY() * 4), Items.get("Arrow"));
                 }
 
-                Sound.genericHurt.playOnLevel(x, y);
+                Sound.playAt("genericHurt", x, y);
                 remove();
             }
         }

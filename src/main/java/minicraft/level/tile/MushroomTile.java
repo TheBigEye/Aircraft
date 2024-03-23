@@ -47,7 +47,7 @@ public class MushroomTile extends Tile {
 
 		if (toolType == ToolType.Shovel) {
 			if (player.payStamina(2 - tool.level) && tool.payDurability()) {
-				Sound.genericHurt.playOnLevel(x, y);
+				Sound.playAt("genericHurt", x << 4, y << 4);
 				level.setTile(x, y, Tiles.get("Mycelium"));
 				level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get(type.loot));
 				return true;

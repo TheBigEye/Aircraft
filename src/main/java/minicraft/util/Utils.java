@@ -56,8 +56,7 @@ public final class Utils {
     public static int percentage(int current, int total) {
         return (current * 100) / total;
     }
-
-    
+ 
 
     /** Get the free JVM memory in Mbs **/
     public static long freeMemory() {
@@ -101,7 +100,7 @@ public final class Utils {
     }
 
     public static String getMemoryAllocationRate() {
-        long heapAllocationRate = heapMemory() / 1024; // Convert to MiB
+        long heapAllocationRate = heapMemory() / 1024;
         return String.format("R: %03dMB /s", heapAllocationRate);
     }
 

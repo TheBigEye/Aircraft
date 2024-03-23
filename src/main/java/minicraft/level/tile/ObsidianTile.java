@@ -53,10 +53,10 @@ public class ObsidianTile extends Tile {
         ToolType toolType = tool.type;
         
         if (toolType == ToolType.Pickaxe && tool.level != 4) {
-        	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+        	Sound.playAt("genericHurt", xt << 4, yt << 4);
         } else {
             if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-            	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+            	Sound.playAt("genericHurt", xt << 4, yt << 4);
                 level.setTile(xt, yt, Tiles.get("Hole"));
                 level.dropItem((xt << 4) + 8, (yt << 4) + 8, 1, 3, Items.get("Obsidian"));
                 return true;

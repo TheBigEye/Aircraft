@@ -1,12 +1,12 @@
 package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
-import minicraft.core.io.Sound;
 import minicraft.graphic.MobSprite;
 import minicraft.item.Items;
 
 public class Sheepuff extends SkyMob {
 	private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(20, 42);
+	private static final String[] sounds = new String[] {"sheepSay1", "sheepSay2", "sheepSay3"};
 
 	/**
 	 * Creates a Sheepuff (Floating sheep).
@@ -18,20 +18,11 @@ public class Sheepuff extends SkyMob {
 	@Override
 	public void tick() {
 		super.tick();
-
-		followOnHold(3, "Sky Wart", false);
 		
-		// Sheep sounds
-		if (tickTime / 8 % 24 == 0 && random.nextInt(8) == 4) {
-			if (random.nextBoolean()) {
-				if (!random.nextBoolean()) {
-					Sound.sheepSay1.playOnLevel(this.x, this.y);
-				} else {
-					Sound.sheepSay2.playOnLevel(this.x, this.y);
-				}
-			} else {
-				Sound.sheepSay3.playOnLevel(this.x, this.y);
-			}
+		followOnHold(Items.get("Sky Wart"), 3);
+		
+		if ((tickTime % (random.nextInt(100) + 120) == 0)) {
+			doPlaySound(sounds, 8);
 		}
 	}
 

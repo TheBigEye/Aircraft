@@ -49,7 +49,7 @@ public class DirtTile extends Tile {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+                	Sound.playAt("genericHurt", xt << 4, yt << 4);
                     level.setTile(xt, yt, Tiles.get("Hole"));
                     level.dropItem((xt << 4) + 8, (yt << 4) + 8, Items.get("Dirt"));
 
@@ -62,7 +62,7 @@ public class DirtTile extends Tile {
             }
             if (tool.type == ToolType.Hoe) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-                	Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+                	Sound.playAt("genericHurt", xt << 4, yt << 4);
                     level.setTile(xt, yt, Tiles.get("Farmland"));
                     return true;
                 }

@@ -85,7 +85,7 @@ public class Tnt extends Furniture implements ActionListener {
 						Tnt tnt = (Tnt) entity;
 						if (!tnt.fuseLit) {
 							tnt.fuseLit = true;
-							Sound.genericFuse.playOnLevel(this.x, this.y);
+							Sound.playAt("genericFuse", this.x, this.y);
 							tnt.fuseTick = FUSE_TIME * 2 / 3;
 						}
 
@@ -107,7 +107,7 @@ public class Tnt extends Furniture implements ActionListener {
 				}
 
 				// Play explosion sound
-				Sound.genericExplode.playOnLevel(this.x, this.y);
+				Sound.playAt("genericExplode", this.x, this.y);
 
 				level.setAreaTiles(xt, yt, 1, Tiles.get("Explode"), 0, explosionBlacklist);
 
@@ -159,7 +159,7 @@ public class Tnt extends Furniture implements ActionListener {
     	} else {
 			if (!fuseLit) {
 				fuseLit = true;
-				Sound.genericFuse.playOnLevel(this.x, this.y);
+				Sound.playAt("genericFuse", this.x, this.y);
 				return true;
 			}
     	}

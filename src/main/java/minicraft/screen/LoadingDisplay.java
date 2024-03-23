@@ -44,6 +44,13 @@ public class LoadingDisplay extends Display {
 	@Override
 	public void init(Display parent) {
 		super.init(parent);
+		
+		Sound.stop("musicTheme5");
+		Sound.stop("musicTheme6");
+		Sound.stop("musicTheme1");
+		Sound.stop("musicTheme4");
+		Sound.stop("musicTheme2");
+		
 		percentage = 0;
 		progressType = "World";
 		if (WorldSelectDisplay.hasLoadedWorld()) {
@@ -99,11 +106,5 @@ public class LoadingDisplay extends Display {
 		}
 
 		Font.drawCentered(((progressType.length() > 0) ? (" " + Localization.getLocalized(progressType)) : ""), screen, Screen.h - 30, Color.get(1, 51));
-
-		Sound.Theme_Cave.stop();
-		Sound.Theme_Cavern.stop();
-		Sound.Theme_Fall.stop();
-		Sound.Theme_Peaceful.stop();
-		Sound.Theme_Surface.stop();
 	}
 }

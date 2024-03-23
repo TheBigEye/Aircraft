@@ -91,7 +91,7 @@ public class Creeper extends EnemyMob {
 			// It will only blow up if there are any players nearby.
 			if (playerInRange) {
             	// Play explosion sound
-				Sound.genericExplode.playOnLevel(this.x, this.y);
+				Sound.playAt("genericExplode", this.x, this.y);
 				
 				// figure out which tile the mob died on
 				int xt = x >> 4;
@@ -186,7 +186,7 @@ public class Creeper extends EnemyMob {
 
 		if (entity instanceof Player) {
 			if (fuseTime == 0 && !fuseLit) {
-				Sound.genericFuse.playOnLevel(this.x, this.y);
+				Sound.playAt("genericFuse", this.x, this.y);
 				fuseTime = MAX_FUSE_TIME;
 				fuseLit = true;
 			}
@@ -212,7 +212,7 @@ public class Creeper extends EnemyMob {
             if (tool.type == ToolType.Igniter) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
         			if (fuseTime == 0 && !fuseLit) {
-        				Sound.genericFuse.playOnLevel(this.x, this.y);
+        				Sound.playAt("genericFuse", this.x, this.y);
         				fuseTime = MAX_FUSE_TIME;
         				fuseLit = true;
         				return true;

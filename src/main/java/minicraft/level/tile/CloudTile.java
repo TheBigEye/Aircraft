@@ -71,7 +71,7 @@ public class CloudTile extends Tile {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Shovel && player.payStamina(5)) {
 				
-				Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+				Sound.playAt("genericHurt", xt << 4, yt << 4);
 
 				/* 
                  If the current level is the sky then when breaking the

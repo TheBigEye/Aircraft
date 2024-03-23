@@ -37,7 +37,7 @@ public class LavaBrickTile extends Tile {
 	    
 		if (toolType == ToolType.Pickaxe) {
 			if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-				Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
+				Sound.playAt("genericHurt", xt << 4, yt << 4);
 				level.setTile(xt, yt, Tiles.get("Lava"));
 				return true;
 			}

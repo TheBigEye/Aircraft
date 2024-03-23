@@ -7,12 +7,16 @@ import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 
 public class WaterTile extends Tile {
-	private ConnectorSprite sprite = new ConnectorSprite(WaterTile.class, new Sprite(18, 21, 3, 3, 1), Sprite.dots(0)) {
-		@Override
-		public boolean connectsTo(Tile tile, boolean isSide) {
-			return tile.connectsToFluid;
-		}
-	};
+    private static final ConnectorSprite sprite;
+
+    static {
+        sprite = new ConnectorSprite(WaterTile.class, new Sprite(18, 21, 3, 3, 1), Sprite.dots(0)) {
+            @Override
+            public boolean connectsTo(Tile tile, boolean isSide) {
+                return tile.connectsToFluid;
+            }
+        };
+    }
 	
 	protected WaterTile(String name) {
 		super(name, (ConnectorSprite) null);

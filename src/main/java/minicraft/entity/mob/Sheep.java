@@ -2,9 +2,7 @@ package minicraft.entity.mob;
 
 import org.jetbrains.annotations.Nullable;
 
-import minicraft.core.Updater;
 import minicraft.core.io.Settings;
-import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.graphic.MobSprite;
 import minicraft.graphic.Screen;
@@ -19,8 +17,9 @@ import minicraft.level.tile.Tiles;
 public class Sheep extends PassiveMob {
 	private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 42);
 	private static final MobSprite[][] cutSprites = MobSprite.compileMobSpriteAnimations(0, 44);
+	
+	private static final String[] sounds = new String[] {"sheepSay1", "sheepSay2", "sheepSay3"};
 
-	private static final int WOOL_GROW_TIME = (3 * 60) * Updater.normalSpeed; // Three minutes
 
 	// Cut
 	public boolean sheared = false;
@@ -71,18 +70,7 @@ public class Sheep extends PassiveMob {
 				level.add(new Goat(), x, y);
 			}
 			
-			// Sheep sounds
-			if (random.nextInt(8) == 4) {
-				if (random.nextBoolean()) {
-					if (!random.nextBoolean()) {
-						Sound.sheepSay1.playOnLevel(this.x, this.y);
-					} else {
-						Sound.sheepSay2.playOnLevel(this.x, this.y);
-					}
-				} else {
-					Sound.sheepSay3.playOnLevel(this.x, this.y);
-				}
-			}
+			doPlaySound(sounds, 8);
 		}
 		
 	}

@@ -89,7 +89,7 @@ public class Display {
 			if (input.getKey(shift + "right").clicked) selection++;
 
 			if (previousSelection != selection) {
-				Sound.Menu_select.playOnDisplay();
+				Sound.play("Menu_select");
 
 				int delta = selection - previousSelection;
 				selection = previousSelection;

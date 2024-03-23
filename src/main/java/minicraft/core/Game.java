@@ -3,9 +3,7 @@ package minicraft.core;
 import java.awt.GraphicsEnvironment;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,10 +12,6 @@ import java.util.Random;
 import org.jetbrains.annotations.Nullable;
 import org.tinylog.Logger;
 
-import de.jcm.discordgamesdk.Core;
-import de.jcm.discordgamesdk.CreateParams;
-import de.jcm.discordgamesdk.GameSDKException;
-import de.jcm.discordgamesdk.activity.Activity;
 import minicraft.core.io.FileHandler;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Settings;
@@ -45,7 +39,7 @@ public class Game {
 	public static boolean debug = false; // --debug arg
 
 	public static final String NAME = "Aircraft"; // This is the name on the application window
-	public static final String BUILD = "0.5"; // Aircraft version
+	public static final String BUILD = "1.0"; // Aircraft version
 	
 	// TODO: not use anymore Minicraft plus versioning
 	public static final Version VERSION = new Version("2.2.0-dev2"); // Minicraft plus mod base version
@@ -71,7 +65,7 @@ public class Game {
 			Logger.warn("Game tried to exit display, but no menu is open.");
 			return;
 		}
-		Sound.Menu_back.playOnDisplay();
+		Sound.play("Menu_back");
 		newDisplay = display.getParent();
 	}
 
@@ -163,9 +157,6 @@ public class Game {
 			        "        Java Version: " + Utils.JAVA_VERSION + ", " + Utils.JAVA_VENDOR 								+ "\n" +
 			        "        Java VM Version: " + Utils.JVM_NAME + " (" + Utils.JVM_INFO + "), " + Utils.JVM_VENDOR 		+ "\n" +
 			        "        Memory: " + Utils.memoryInfo() 																+ "\n\n" +
-			        
-					"Flags: " 	                                                                                            + "\n" +
-					"        isAudioOutputAvailible: " + Sound.isAudioOutputAvailable()         							+ "\n\n" +
 			
 			        "~~ ERROR ~~ " 																							+ "\n" +
 			
@@ -187,50 +178,12 @@ public class Game {
 			Initializer.frame.pack();
 			Initializer.frame.setVisible(true);
 		});
-
 		
 		// START EVENTS
 
 		// Clean previously downloaded native files
 		FileHandler.cleanNativesFiles();
-		
-        // Discord rich presence
-        Core discordCore = null;
-		try {
-			final long CLIENT_ID = 981764521616093214L;
-			final String LARGE_TEXT = "Aircraft " + BUILD + ", Nice!";
-			final String SMALL_TEXT = "Minicraft+ mod";
-			
-			Core.initDownload(); // download java-discord SDK
-			CreateParams params = new CreateParams();
-			params.setClientID(CLIENT_ID); // Discord APP ID
-			params.setFlags(CreateParams.getDefaultFlags());
-            params.setFlags(CreateParams.Flags.NO_REQUIRE_DISCORD);
-			discordCore = new Core(params);
 
-			Activity activity = new Activity();
-			activity.assets().setLargeImage("logo"); // Big image
-            activity.assets().setLargeText(LARGE_TEXT); // Big image text
-            activity.assets().setSmallImage("small-logo"); // Small image
-            activity.assets().setSmallText(SMALL_TEXT); // Small image text
-			activity.timestamps().setStart(Instant.now()); // Start timer
-
-			discordCore.activityManager().updateActivity(activity);
-			if (debug) Logger.debug("Initializing discord RPC ...");
-			
-		} catch (GameSDKException exception) {
-			Logger.error("Failed to initialize Discord SDK, no discord detected!");
-			exception.printStackTrace();
-			
-		} catch (UnknownHostException exception) {
-			Logger.error("Failed to download Discord SDK, no internet connection!");
-			exception.printStackTrace();
-			
-		} catch (Exception exception) {
-			Logger.error("Unknown error");
-			exception.printStackTrace();
-		}
-		
 		// Parses the command line arguments
 		Initializer.parseArgs(args); 
 
@@ -265,12 +218,12 @@ public class Game {
 		setDisplay(new TitleDisplay());
 
 		// Start tick() count and start the game
-		Initializer.run(discordCore);
-
+		Initializer.run();
 		
-		// EXIT EVENTS
+		Sound.shutdown();
 
-		Logger.debug("Main game loop ended; Terminating application...");
+		// EXIT EVENTS
+		Logger.debug("Game main loop ended, terminating application ...");
 		
 		System.exit(0);
 	}

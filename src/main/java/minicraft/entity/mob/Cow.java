@@ -1,13 +1,13 @@
 package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
-import minicraft.core.io.Sound;
 import minicraft.graphic.MobSprite;
 import minicraft.item.Item;
 import minicraft.item.Items;
 
 public class Cow extends PassiveMob {
     private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 40);
+    private static final String[] sounds = new String[] {"cowSay1", "cowSay2", "cowSay3"};
 
     /**
      * Creates the cow with the right sprites and color.
@@ -23,17 +23,8 @@ public class Cow extends PassiveMob {
 		followOnHold(Items.get("Wheat"), 3);
         
 		// Cow sounds
-		if ((this.tickTime % (random.nextInt(100) + 120) == 0) && random.nextInt(8) == 0) {
-			if (random.nextBoolean()) {
-				if (!random.nextBoolean()) {
-					Sound.cowSay1.playOnLevel(this.x, this.y);
-				} else {
-					Sound.cowSay2.playOnLevel(this.x, this.y);
-				}
-			} else {
-				Sound.cowSay3.playOnLevel(this.x, this.y);
-			}
-			
+		if ((tickTime % (random.nextInt(100) + 120) == 0)) {
+			doPlaySound(sounds, 8);
 		}
     }
 

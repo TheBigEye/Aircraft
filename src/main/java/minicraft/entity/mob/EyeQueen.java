@@ -92,7 +92,7 @@ public class EyeQueen extends GiantBossMob {
 			}
             
         	// Change to phase 2
-        	Sound.eyeQueenChangePhase.playOnLevel(this.x, this.y);
+        	Sound.playAt("eyeQueenChangePhase", this.x, this.y);
         	currentPhase = 2;
         }
         
@@ -102,7 +102,7 @@ public class EyeQueen extends GiantBossMob {
 			}
             
         	// Change to phase 3
-        	Sound.eyeQueenChangePhase.playOnLevel(this.x, this.y);
+			Sound.playAt("eyeQueenChangePhase", this.x, this.y);
         	currentPhase = 3;
         }
 
@@ -171,7 +171,7 @@ public class EyeQueen extends GiantBossMob {
             double speed = (0.7) + attackType * 0.2; // speed is dependent on the attackType. (higher attackType, faster speeds)
             level.add(new Fireball(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 2, random.nextInt(2) + 1)); // adds a fireball entity with the cosine and sine of dir times speed.
 
-            Sound.airWizardSpawnSpark.playOnLevel(this.x, this.y);
+            Sound.playAt("wizardSpawnSpark", this.x, this.y);
             
             return; // skips the rest of the code (attackTime was > 0; ie we're attacking.)
             
@@ -182,7 +182,7 @@ public class EyeQueen extends GiantBossMob {
             double speed = (0.7) + attackType * 0.2;
             level.add(new Fireball(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 3, random.nextInt(3) + 1));
 
-            Sound.airWizardSpawnSpark.playOnLevel(this.x, this.y);
+            Sound.playAt("wizardSpawnSpark", this.x, this.y);
             
             return;
         }
@@ -204,7 +204,7 @@ public class EyeQueen extends GiantBossMob {
         if (this.health <= 100 && !this.deathing) {
         	this.health = 200;
         	this.deathing = true;
-        	Sound.eyeQueenDeath.playOnLevel(this.x, this.y);
+        	Sound.playAt("eyeQueenDeath", this.x, this.y);
         	tickTime = 0;
         }
         

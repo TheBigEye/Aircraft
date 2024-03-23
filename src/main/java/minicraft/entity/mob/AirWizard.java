@@ -113,14 +113,14 @@ public class AirWizard extends EnemyMob {
         // Change phases by health
         if (health <= (secondform ? 12000 : 7000) && currentPhase == 1) {
         	// change to phase 2
-        	Sound.airWizardChangePhase.playOnLevel(this.x, this.y);
+        	Sound.playAt("wizardChangePhase", this.x, this.y);
         	spritesMain = spritesSecondPhase;
         	currentPhase = 2;
         }
         
         if (health <= (secondform ? 6000 : 3500) && currentPhase == 2) {
         	// change to phase 3
-        	Sound.airWizardChangePhase.playOnLevel(this.x, this.y);
+        	Sound.playAt("wizardChangePhase", this.x, this.y);
         	spritesMain = spritesThirdPhase;
         	currentPhase = 3;
         }
@@ -162,7 +162,7 @@ public class AirWizard extends EnemyMob {
             	level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 1)); // adds a spark entity with the cosine and sine of dir times speed.
             }
             
-            Sound.airWizardSpawnSpark.playOnLevel(this.x, this.y);
+            Sound.playAt("wizardSpawnSpark", this.x, this.y);
             
             return; // skips the rest of the code (attackTime was > 0; ie we're attacking.)
         }
@@ -175,7 +175,7 @@ public class AirWizard extends EnemyMob {
             double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2;
             level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 2));
             
-            Sound.airWizardSpawnSpark.playOnLevel(this.x, this.y);
+            Sound.playAt("wizardSpawnSpark", this.x, this.y);
             
             return;
         }
@@ -188,7 +188,7 @@ public class AirWizard extends EnemyMob {
             double speed = (secondform ? 1.2 : 0.7) + attackType * 0.2;
             level.add(new Spark(this, Math.cos(dir) * speed, Math.sin(dir) * speed, 3));
             
-            Sound.airWizardSpawnSpark.playOnLevel(this.x, this.y);
+            Sound.playAt("wizardSpawnSpark", this.x, this.y);
             
             return;
         }
@@ -302,7 +302,7 @@ public class AirWizard extends EnemyMob {
             }
         }
 
-        Sound.airWizardDeath.playOnLevel(this.x, this.y);
+        Sound.playAt("wizardDeath", this.x, this.y);
         
         level.dropItem(x, y, Items.get("AlAzif"));
 

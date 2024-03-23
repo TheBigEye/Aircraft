@@ -7,13 +7,16 @@ import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 
 public class LavaTile extends Tile {
-	private ConnectorSprite sprite = new ConnectorSprite(LavaTile.class, new Sprite(27, 21, 3, 3, 1), Sprite.dots(0)) {
-		public boolean connectsTo(Tile tile, boolean isSide) {
-			return tile.connectsToFluid;
-		}
-	};
 	
-	private Tile holeTile = Tiles.get("Hole");
+	private static final ConnectorSprite sprite;
+	
+	static {
+		sprite = new ConnectorSprite(LavaTile.class, new Sprite(27, 21, 3, 3, 1), Sprite.dots(0)) {
+			public boolean connectsTo(Tile tile, boolean isSide) {
+				return tile.connectsToFluid;
+			}
+		};
+	}
 
 	protected LavaTile(String name) {
 		super(name, (ConnectorSprite) null);
@@ -49,7 +52,7 @@ public class LavaTile extends Tile {
 		}
 
 
-		if (level.getTile(xn, yn) == holeTile) {
+		if (level.getTile(xn, yn) == Tiles.get("Hole")) {
 			level.setTile(xn, yn, this);
 		}
 		return false;
