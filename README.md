@@ -2,15 +2,15 @@
 <img 
      align="right"
      width="32%"
-     src="https://user-images.githubusercontent.com/63316583/164436759-d1cc8e05-e414-40e7-b77c-fbad0c46a6df.png"
+     src="https://github.com/TheBigEye/Aircraft/assets/63316583/67eda91f-fbec-4595-bd11-ab3090ed6e5f"
      title="Aircraft"
 />
 
-<!-- ![PREVIEW](https://user-images.githubusercontent.com/63316583/162649419-e732f796-34d6-40cd-8924-4d8cda851503.png) -->
+**Aircraft** is a modified version of [**Minicraft Plus**](https://github.com/chrisj42/minicraft-plus-revived), a mod based on the original [**Minicraft**](https://minicraft.fandom.com/wiki/Minicraft) game made by Markus persson "Notch" for the Lodum dare 22 competition. 
 
-**Aircraft** is a modified version of [**Minicraft Plus**](https://github.com/chrisj42/minicraft-plus-revived), a mod based on the original [**Minicraft**](https://minicraft.fandom.com/wiki/Minicraft) game made by Markus persson "Notch" for the Lodum dare 22 competition
+The development of the mod is originally based on version 2.0.6 and 2.0.7 of Minicraft Plus, with the aim of adding more content and features to the game and at the same time improving and expanding the entire look and design.
 
-> **Note**: It is currently not recommended to load old worlds version after version, as the save system is not ready or adapted
+> **Note**: It is currently not recommended to load version after version of old worlds, as the save system is not ready or adapted and a rewrite is planned.
 
 ## Main Features
 ### Graphics 🖌️
@@ -69,6 +69,7 @@ Currently the project is built with Gradle, a tool that makes it easy to build o
 - Extract the contents of the downloaded ZIP folder.
 - Open your command prompt and use the `cd` command to navigate to the extracted folder, bringing it up in the command prompt.
 - To build the project, enter the following command:
+> **Note**: in CMD the `./` is not necessary.
    ```sh
     ./gradlew build
    ```
@@ -76,6 +77,7 @@ Currently the project is built with Gradle, a tool that makes it easy to build o
    ```sh
     ./gradlew run
    ```
+
 - If you built the project, find the generated .jar file in the `build/libs` directory.
 - In case you encounter an error related to missing Java, ensure that your JAVA_HOME environment variable is correctly set up, or download the [**JDK**](https://www.oracle.com/java/technologies/downloads/) if you haven't already.
 
