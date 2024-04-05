@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import minicraft.core.CrashReport;
 import minicraft.core.Game;
 import minicraft.core.Renderer;
 import minicraft.core.World;
@@ -25,7 +26,6 @@ import minicraft.level.Level;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.LinkEntry;
 import minicraft.screen.entry.SelectEntry;
-import minicraft.screen.tutorial.TutorialDisplay;
 import minicraft.util.BookData;
 import minicraft.util.TimeData;
 
@@ -81,14 +81,14 @@ public class TitleDisplay extends Display {
 			}),
 
 			new SelectEntry("Options", () -> Game.setDisplay(new OptionsDisplay())),
-			new SelectEntry("Credits", () -> Game.setDisplay(new EndGameCreditsDisplay())),
 			new SelectEntry("Help", () -> Game.setDisplay(new Display(true, new Menu.Builder(true, 2, RelPos.CENTER,
 					new BlankEntry(),
 					new LinkEntry(Color.CYAN, "Minicraft discord", "https://discord.me/minicraft"),
 					new BlankEntry(),
 					new SelectEntry("Instructions", () -> Game.setDisplay(new BookDisplay(BookData.instructions))),
 					new SelectEntry("Story guide", () -> Game.setDisplay(new BookDisplay(BookData.storylineGuide))),
-					new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
+					//new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
+					new SelectEntry("Credits", () -> Game.setDisplay(new EndGameCreditsDisplay())),
 					new SelectEntry("About", () -> Game.setDisplay(new BookDisplay(BookData.about))),
 					new BlankEntry()
 				)
@@ -171,6 +171,7 @@ public class TitleDisplay extends Display {
 	public void tick(InputHandler input) {
 		if (input.getKey("r").clicked) rand = random.nextInt(splashes.size() - 3) + 3;
         if (input.getKey("shift-c").clicked) Game.setDisplay(new CharsTestDisplay());
+        if (input.getKey("shift-x").clicked) CrashReport.crashMePlease();
       
 		super.tick(input);
 
@@ -207,7 +208,7 @@ public class TitleDisplay extends Display {
 	        int h = 6; // Height of squares (on the spritesheet)
 	        int w = 26; // Width of squares (on the spritesheet)
 	        int xo = (Screen.w - (w << 3)) / 2; // X location of the title
-	        int yo = 55; // Y location of the title
+	        int yo = 75; // Y location of the title
 
 	        for (int y = 0; y < h; y++) {
 	            for (int x = 0; x < w; x++) {
@@ -242,14 +243,14 @@ public class TitleDisplay extends Display {
 				isYellow ? Color.YELLOW :
 			Color.get(1, textColor * 51, textColor * 51, textColor * 25);
 	    	
-	        Font.drawCentered(splashes.get(rand), screen, 101, splashColor & 2);
-	        Font.drawCentered(splashes.get(rand), screen, 100, splashColor);
+	        Font.drawCentered(splashes.get(rand), screen, 121, splashColor & 2);
+	        Font.drawCentered(splashes.get(rand), screen, 120, splashColor);
 	        
-	        Font.draw("Mod by TheBigEye", screen, 4, Screen.h - 9, Color.get(-1, 240, 240, 240) % 2);
-	        Font.draw("Mod by TheBigEye", screen, 4, Screen.h - 10, Color.get(-1, 240, 240, 240));
+	        Font.draw("Version " + Game.BUILD, screen, 4, Screen.h - 9, Color.get(-1, 240, 240, 240) % 2);
+	        Font.draw("Version " + Game.BUILD, screen, 4, Screen.h - 10, Color.get(-1, 240, 240, 240));
 	        
-	        Font.draw("Version " + Game.BUILD, screen, Screen.w - (10 * 8) - 2, Screen.h - 9, Color.get(-1, 240, 240, 240) % 2);
-	        Font.draw("Version " + Game.BUILD, screen, Screen.w - (10 * 8) - 2, Screen.h - 10, Color.get(-1, 240, 240, 240));
+	        Font.draw("Mod by TheBigEye", screen, Screen.w - (15 * 8) - 2, Screen.h - 9, Color.get(-1, 240, 240, 240) % 2);
+	        Font.draw("Mod by TheBigEye", screen, Screen.w - (15 * 8) - 2, Screen.h - 10, Color.get(-1, 240, 240, 240));
 	    }
 
 	    int transitionStart = Math.max(-140, -(time * 2));

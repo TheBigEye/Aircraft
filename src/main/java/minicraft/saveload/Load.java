@@ -317,7 +317,7 @@ public class Load {
 		// Check if the AirWizard was beaten in versions prior to 2.1.0
 		if (worldVersion.compareTo(new Version("2.1.0-dev2")) < 0) {
 			if (AirWizard.beaten) {
-				Logger.debug("AirWizard was beaten in an old version, giving achievement...");
+				Logger.debug("AirWizard was beaten in an old version, giving achievement ...");
 				AchievementsDisplay.setAchievement("minicraft.achievement.airwizard", true);
 			}
 		}

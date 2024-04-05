@@ -15,7 +15,7 @@ import minicraft.graphic.Sprite;
 import minicraft.item.FurnitureItem;
 import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
-import minicraft.level.tile.Tiles;
+import minicraft.level.tile.LavaTile;
 
 /**
  * Many furniture classes are very similar; they might not even need to be there at all...
@@ -80,7 +80,7 @@ public class Furniture extends Entity {
             pushTime--; // update pushTime by subtracting 1.
         }
         
-        if (level.getTile(x >> 4,y >> 4) == Tiles.get("Lava") && !(this instanceof Spawner) && !(this instanceof DeathChest) && !(this instanceof Tnt)) {
+        if (level.getTile(x >> 4, y >> 4) instanceof LavaTile && !(this instanceof Spawner) && !(this instanceof DeathChest) && !(this instanceof Tnt)) {
 			for (int i = 0; i < 1 + random.nextInt(3); i++) {
 				level.add(new FireParticle(x - 8 + random.nextInt(16), y - 6 + random.nextInt(12)));
 			}
@@ -118,7 +118,7 @@ public class Furniture extends Entity {
     @Override
     public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
         if (item instanceof PowerGloveItem) {
-            Sound.playAt("genericHurt", this.x, this.y);
+            Sound.playAt("genericHurt", x, y);
             remove();
             
             if (!Game.isMode("Creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem)) {

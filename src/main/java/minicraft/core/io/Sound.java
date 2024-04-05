@@ -1,7 +1,6 @@
 package minicraft.core.io;
 
 import java.io.BufferedInputStream;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
@@ -9,6 +8,8 @@ import org.jetbrains.annotations.Nullable;
 import org.tinylog.Logger;
 
 import com.jogamp.openal.AL;
+import com.jogamp.openal.ALC;
+import com.jogamp.openal.ALException;
 import com.jogamp.openal.ALFactory;
 import com.jogamp.openal.util.ALut;
 
@@ -19,16 +20,22 @@ import minicraft.entity.mob.Player;
 public class Sound { 
     private static final HashMap<String, Sound> sounds = new HashMap<>();
 
-	private static final AL al = ALFactory.getAL();
+	static AL al = ALFactory.getAL();
+	static ALC alc = ALFactory.getALC();
+	
 	private final int source;
-
-	static {
-		ALut.alutInit();
-		al.alGetError();
-	}
 
     public static void initialize() {
     	Logger.debug("Initializing sound engine ...");
+    	
+        while (true) {
+            try {
+                ALut.alutInit();
+                al.alGetError();
+                break; // Salir del bucle si la inicialización tiene éxito
+            } catch (ALException e) {
+            }
+        }
     	
     	// This sucks, but is better thant statics variables for each one :)
     	
@@ -55,7 +62,7 @@ public class Sound {
             {"chickenSay1", 		"/resources/sounds/mob/chicken/say1.wav"},
             {"chickenSay2", 		"/resources/sounds/mob/chicken/say2.wav"},
             {"chickenSay3", 		"/resources/sounds/mob/chicken/say3.wav"},
-            
+                     
             {"wizardDeath", 		"/resources/sounds/mob/airwizard/bossdeath.wav"},
             {"wizardAttack", 		"/resources/sounds/mob/airwizard/wizardattack.wav"},
             {"wizardChangePhase", 	"/resources/sounds/mob/airwizard/changephase.wav"},
@@ -90,30 +97,30 @@ public class Sound {
             
             {"Sky_enviroment", 		"/resources/sounds/ambient/sky environment.wav"},
             
-            {"Tile_snow", "/resources/sounds/tiles/Snow/snow.wav"},
-            {"Tile_snow_2", "/resources/sounds/tiles/Snow/snow 2.wav"},
-            {"Tile_snow_3", "/resources/sounds/tiles/Snow/snow 3.wav"},
-            {"Tile_snow_4", "/resources/sounds/tiles/Snow/snow 4.wav"},
-            {"Tile_farmland", "/resources/sounds/tiles/Farmland/farmland.wav"},
-            {"Tile_farmland_2", "/resources/sounds/tiles/Farmland/farmland 2.wav"},
-            {"Tile_farmland_3", "/resources/sounds/tiles/Farmland/farmland 3.wav"},
+            {"Tile_snow", 			"/resources/sounds/tiles/Snow/snow.wav"},
+            {"Tile_snow_2", 		"/resources/sounds/tiles/Snow/snow 2.wav"},
+            {"Tile_snow_3", 		"/resources/sounds/tiles/Snow/snow 3.wav"},
+            {"Tile_snow_4", 		"/resources/sounds/tiles/Snow/snow 4.wav"},
+            {"Tile_farmland", 		"/resources/sounds/tiles/Farmland/farmland.wav"},
+            {"Tile_farmland_2", 	"/resources/sounds/tiles/Farmland/farmland 2.wav"},
+            {"Tile_farmland_3", 	"/resources/sounds/tiles/Farmland/farmland 3.wav"},
             
-            {"musicTheme1", "/resources/sounds/music/fall.wav"},
-            {"musicTheme2", "/resources/sounds/music/surface.wav"},
-            {"musicTheme3", "/resources/sounds/music/paradise.wav"},
-            {"musicTheme4", "/resources/sounds/music/peaceful.wav"},
-            {"musicTheme5", "/resources/sounds/music/cave.wav"},
-            {"musicTheme6", "/resources/sounds/music/cavern.wav"},
-            {"musicTheme7", "/resources/sounds/music/dripping.wav"},
-            {"musicTheme8", "/resources/sounds/music/deeper.wav"},
+            {"musicTheme1", 		"/resources/sounds/music/fall.wav"},
+            {"musicTheme2", 		"/resources/sounds/music/surface.wav"},
+            {"musicTheme3", 		"/resources/sounds/music/paradise.wav"},
+            {"musicTheme4", 		"/resources/sounds/music/peaceful.wav"},
+            {"musicTheme5", 		"/resources/sounds/music/cave.wav"},
+            {"musicTheme6", 		"/resources/sounds/music/cavern.wav"},
+            {"musicTheme7", 		"/resources/sounds/music/dripping.wav"},
+            {"musicTheme8", 		"/resources/sounds/music/deeper.wav"},
             
-            {"rainThunder1", "/resources/sounds/ambient/weather/thunder1.wav"},
-            {"rainThunder2", "/resources/sounds/ambient/weather/thunder2.wav"},
-            {"rainThunder3", "/resources/sounds/ambient/weather/thunder3.wav"},
+            {"rainThunder1", 		"/resources/sounds/ambient/weather/thunder1.wav"},
+            {"rainThunder2", 		"/resources/sounds/ambient/weather/thunder2.wav"},
+            {"rainThunder3", 		"/resources/sounds/ambient/weather/thunder3.wav"},
             
-            {"genericExplode", "/resources/sounds/genericExplode.wav"},
-            {"genericFuse", "/resources/sounds/genericFuse.wav"},
-            {"genericHurt", "/resources/sounds/genericHurt.wav"}
+            {"genericExplode", 		"/resources/sounds/genericExplode.wav"},
+            {"genericFuse", 		"/resources/sounds/genericFuse.wav"},
+            {"genericHurt", 		"/resources/sounds/genericHurt.wav"}
         };
 
         for (String[] sound : sounds) {
@@ -137,7 +144,7 @@ public class Sound {
 		sounds.clear();
 	}
 	
-	public static void loadSound(String key, InputStream in) {
+	public static void loadSound(String key, BufferedInputStream in) {
 
 		if (Game.debug) Logger.debug("Loading sound clip '{}' ...", key);
 
@@ -152,6 +159,7 @@ public class Sound {
 		int[] freq = new int[1];
 		int[] loop = new int[1];
 		al.alGenBuffers(1, buffer, 0);
+		
 		ALut.alutLoadWAVFile(in, format, data, size, freq, loop);
 		al.alBufferData(buffer[0], format[0], data[0], size[0], freq[0]);
 
@@ -167,18 +175,19 @@ public class Sound {
 	
 	public static void play(String key) {
 		Sound sound = sounds.get(key);
-		Logger.debug("Playing sound clip '{}' ...", key);
+		// Logger.debug("Playing sound clip '{}' ...", key);
 		if (sound != null) sound.play();
 	}
 	
 	public static void playAt(String key, int x, int y) {
 		Sound sound = sounds.get(key);
-		Logger.debug("Playing sound clip '{}', at ({}, {}) ...", key, x, y);
+		// Logger.debug("Playing sound clip '{}', at ({}, {}) ...", key, x, y);
 		if (sound != null) sound.playAt(x, y);
 	}
 	
 	public static void loop(String key, boolean start) {
 		Sound sound = sounds.get(key);
+		// Logger.debug("Playing as loop sound clip '{}' ...", key);
 		if (sound != null) sound.loop(start);
 	}
 	
@@ -187,7 +196,7 @@ public class Sound {
 		if (sound != null) al.alSourceStop(sound.source);
 	}
     
-	public void playAt(int x, int y) {
+	private void playAt(int x, int y) {
 	    if (!Settings.getBoolean("sound")) {
 	        return;
 	    }
@@ -207,7 +216,7 @@ public class Sound {
         // TODO: improve this using an thread to dynamically change the 'Sound Gain' while the player moves
         	
         // Set the volume based on the distance from the player
-        float volume = 1.0f - (float) distance / 160.0f;
+        float volume = 1.0f - (float) distance / 180.0f;
         if (volume < 0.0f) {
             return;
         }
@@ -216,7 +225,7 @@ public class Sound {
         al.alSourcef(source, AL.AL_GAIN, volume);
 	}
 
-    public void play() {
+    private void play() {
         if (!Settings.getBoolean("sound")) {
             return;
         }
@@ -225,7 +234,7 @@ public class Sound {
     }
 
 
-    public void loop(boolean start) {
+    private void loop(boolean start) {
         if (!Settings.getBoolean("sound")) {
             return;
         }

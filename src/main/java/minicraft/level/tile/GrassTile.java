@@ -102,12 +102,12 @@ public class GrassTile extends Tile {
 	    int yn = yt;
 
 	    switch (random.nextInt(2)) {
-	        case 0: xn += random.nextInt(2) * 2 - 1; break;
-	        case 1: yn += random.nextInt(2) * 2 - 1; break;
+	        case 0: xn += (random.nextInt(2) << 1) - 1; break;
+	        case 1: yn += (random.nextInt(2) << 1) - 1; break;
 	    }
 
 	    if (Updater.getTime() != Time.Night) {
-		    if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
+		    if (level.getTile(xn, yn) instanceof DirtTile) {
 		        level.setTile(xn, yn, this);
 		    } else if (tickCount % 8192 == 0) {
 		    	level.setTile(xt, yt, Tiles.get("Lawn"), (short) random.nextInt(2));

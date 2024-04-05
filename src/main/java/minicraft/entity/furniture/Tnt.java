@@ -6,20 +6,19 @@ import java.util.List;
 
 import javax.swing.Timer;
 
-import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.FireParticle;
-import minicraft.graphic.Color;
 import minicraft.graphic.Rectangle;
 import minicraft.graphic.Screen;
 import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
 import minicraft.level.Level;
+import minicraft.level.tile.LavaTile;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 import minicraft.screen.AchievementsDisplay;
@@ -53,82 +52,70 @@ public class Tnt extends Furniture implements ActionListener {
 
 	@Override
 	public void tick() {
-		super.tick();
+	    super.tick();
 
-		// Ignite the TNT when touch lava :)
-		if (level.getTile(x >> 4,y >> 4) == Tiles.get("Lava") && fuseLit == false) {
-			fuseLit = true;
-			for (int i = 0; i < (1 + random.nextInt(3)); i++) {
-				level.add(new FireParticle(x - 8 + random.nextInt(16), y - 6 + random.nextInt(12)));
-			}
-		}
+	    if (!fuseLit) {
+	        if (level.getTile(x >> 4, y >> 4) instanceof LavaTile) {
+	            fuseLit = true;
+	            Sound.playAt("genericFuse", this.x, this.y);
+	            for (int i = 0; i < (1 + random.nextInt(3)); i++) {
+	                level.add(new FireParticle(x - 8 + random.nextInt(16), y - 6 + random.nextInt(12)));
+	            }
+	        }
+	    } else {
+	        fuseTick++;
+	        light = 2;
+	        
+	        if (fuseTick >= FUSE_TIME) {
+	            int xt = x >> 4;
+	            int yt = (y - 2) >> 4;
+	            Rectangle explosionArea = new Rectangle(x, y, BLAST_RADIUS << 1, BLAST_RADIUS << 1, Rectangle.CENTER_DIMS);
+	            List<Entity> entitiesInRange = level.getEntitiesInRect(explosionArea);
 
-		if (fuseLit) {
-			fuseTick++;
+	            for (Entity entity : entitiesInRange) {
+	                float dist = (float) Math.hypot(entity.x - x, entity.y - y);
+	                damage = (int) (BLAST_DAMAGE * (1 - (dist / BLAST_RADIUS))) + 1;
 
-			light = 2;
-			
-			if (fuseTick >= FUSE_TIME) {
-				// blow up
-				List<Entity> entitiesInRange = level.getEntitiesInRect(new Rectangle(x, y, BLAST_RADIUS * 2, BLAST_RADIUS * 2, Rectangle.CENTER_DIMS));
+	                if (entity instanceof Mob && damage > 0) {
+	                    ((Mob) entity).onExploded(this, damage);
+	                }
 
-				for (Entity entity : entitiesInRange) {
-					float dist = (float) Math.hypot(entity.x - x, entity.y - y);
-					damage = (int) (BLAST_DAMAGE * (1 - (dist / BLAST_RADIUS))) + 1;
+	                if (entity instanceof Tnt) {
+	                    Tnt tnt = (Tnt) entity;
+	                    if (!tnt.fuseLit) {
+	                        tnt.fuseLit = true;
+	                        Sound.playAt("genericFuse", x, y);
+	                        tnt.fuseTick = FUSE_TIME * 2 / 3;
+	                    }
+	                }
+	            }
 
-					if (entity instanceof Mob && damage > 0) {
-						((Mob) entity).onExploded(this, damage);
-					}
+	            Tile[] affectedTiles = level.getAreaTiles(xt, yt, 1);
 
-					// Ignite other bombs in range.
-					if (entity instanceof Tnt) {
-						Tnt tnt = (Tnt) entity;
-						if (!tnt.fuseLit) {
-							tnt.fuseLit = true;
-							Sound.playAt("genericFuse", this.x, this.y);
-							tnt.fuseTick = FUSE_TIME * 2 / 3;
-						}
+	            for (int i = 0; i < affectedTiles.length; i++) {
+	                affectedTiles[i].hurt(level, xt, yt, damage);
+	                affectedTiles[i].onExplode(level, xt + i % 3 - 1, yt + i / 3 - 1);
+	            }
 
-					}
-				}
+	            Sound.playAt("genericExplode", this.x, this.y);
+	            level.setAreaTiles(xt, yt, 1, Tiles.get("Explode"), 0, explosionBlacklist);
 
-				int xt = x >> 4;
-				int yt = (y - 2) >> 4;
+	            levelSave = level;
+	            explodeTimer.start();
+	            super.remove();
 
-				// Get the tiles that have been exploded.
-				Tile[] affectedTiles = level.getAreaTiles(xt, yt, 1);
-
-				// Call the onExplode() event.
-				for (int i = 0; i < affectedTiles.length; i++) {
-					// This assumes that range is 1.
-					affectedTiles[i].hurt(level, xt, yt, damage);
-					affectedTiles[i].onExplode(level, xt + i % 3 - 1, yt + i / 3 - 1);
-
-				}
-
-				// Play explosion sound
-				Sound.playAt("genericExplode", this.x, this.y);
-
-				level.setAreaTiles(xt, yt, 1, Tiles.get("Explode"), 0, explosionBlacklist);
-
-				levelSave = level;
-				explodeTimer.start();
-				super.remove();
-
-				if (!Game.isMode("Creative")) {
-					AchievementsDisplay.setAchievement("minicraft.achievement.demolition", true);
-				}
-
-			}
-		}
+	            AchievementsDisplay.setAchievement("minicraft.achievement.demolition", true);
+	        }
+	    }
 	}
+
 
 	@Override
 	public void render(Screen screen) {
-		if (fuseLit) {
+		/*if (fuseLit) {
 			int colorFactor = 100 * ((fuseTick % 15) / 5) + 200;
 			color = Color.get(-1, colorFactor, colorFactor + 100, 555);
-		}
+		}*/
 		super.render(screen);
 	}
 

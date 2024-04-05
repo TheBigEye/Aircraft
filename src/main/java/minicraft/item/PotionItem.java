@@ -2,7 +2,6 @@ package minicraft.item;
 
 import java.util.ArrayList;
 
-import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
 import minicraft.graphic.Sprite;
@@ -38,7 +37,7 @@ public class PotionItem extends StackableItem {
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 
 		// Hot affairs achievement
-		if ((type.equals(PotionType.Lava) || type.equals(PotionType.xLava)) && !Game.isMode("Creative")) {
+		if ((type.equals(PotionType.Lava) || type.equals(PotionType.xLava))) {
 			AchievementsDisplay.setAchievement("minicraft.achievement.lava",true);
 		}
 

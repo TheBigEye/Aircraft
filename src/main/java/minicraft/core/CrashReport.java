@@ -35,7 +35,7 @@ public class CrashReport extends JPanel {
 		try (
 			InputStream is = Game.class.getResourceAsStream("/resources/title.png")) {
 			BufferedImage titleIcon = ImageIO.read(is);
-			icon = titleIcon.getScaledInstance(258, 60, Image.SCALE_REPLICATE);
+			icon = titleIcon.getScaledInstance(258 + 16, 60 + 8, Image.SCALE_REPLICATE);
 			crashIconLabel.setIcon(new ImageIcon(icon));
 		} catch (IOException exception) {
 			exception.printStackTrace();
@@ -69,9 +69,16 @@ public class CrashReport extends JPanel {
         add(crashIconLabel);
           
         // Set component bounds (only needed by absolute positioning)
-        crashScrollPane.setBounds(79, 100, 708, 380);
-        crashIconLabel.setBounds((Renderer.getWindowSize().width / 2) - (icon.getWidth(Initializer.frame) / 2), 25, 258, 60);
+        crashScrollPane.setBounds(69, 100, 732, 380);
+        crashIconLabel.setBounds((Renderer.getWindowSize().width / 2) - (icon.getWidth(Initializer.frame) / 2), 25, 258 + 16, 60 + 8);
         setBackground(new Color(46, 53, 69));
+    }
+    
+    /**
+     * Manually launched crash!
+     */
+    public static void crashMePlease() {
+    	throw new NullPointerException();
     }
 	
 }

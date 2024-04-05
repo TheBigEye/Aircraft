@@ -83,7 +83,7 @@ public class InputEntry extends ListEntry {
 		return userInput.matches(regex);
 	}
 
-	public void setChangeListener(ChangeListener l) {
-		listener = l;
+	public void setChangeListener(ChangeListener newListener) {
+		listener = newListener;
 	}
 }

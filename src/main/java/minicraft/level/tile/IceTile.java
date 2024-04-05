@@ -65,18 +65,18 @@ public class IceTile extends Tile {
 			yn += random.nextInt(2) * 2 - 1;
 		}
 
-		if (level.getTile(xn, yn) == Tiles.get("Hole")) {
+		if (level.getTile(xn, yn) instanceof HoleTile) {
 			level.setTile(xn, yn, "Water");
 		}
 
 		for (int x = -1; x < 2; x++) {
-			if (level.getTile(xt + x, yt) == Tiles.get("Lava")) {
+			if (level.getTile(xt + x, yt) instanceof LavaTile) {
 				level.setTile(xt + x, yt, Tiles.get("Raw Obsidian"));
 			}
 		}
 
 		for (int y = -1; y < 2; y++) {
-			if (level.getTile(xt, yt + y) == Tiles.get("Lava")) {
+			if (level.getTile(xt, yt + y) instanceof LavaTile) {
 				level.setTile(xt, yt + y, Tiles.get("Raw Obsidian"));
 			}
 		}
@@ -93,7 +93,7 @@ public class IceTile extends Tile {
 			
 			// Break the ice if the player walks on and the tile its close to water
 			for (Tile tile : areaTiles) {
-				if (tile == Tiles.get("Water") && random.nextBoolean()) {
+				if (tile instanceof WaterTile && random.nextBoolean()) {
 					level.setTile(x, y, Tiles.get("Water"));
 				}
 			}

@@ -13,7 +13,7 @@ import minicraft.level.Level;
 
 public class WoolTile extends Tile {
 
-	public enum WoolType {
+	public enum Wool {
 		NORMAL(new Sprite(10, 2, 2, 2, 1)),
 		LIGHT_GRAY(new Sprite(0, 0, 2, 2, 1)),
 		GRAY(new Sprite(8, 0, 2, 2, 1)),
@@ -38,12 +38,12 @@ public class WoolTile extends Tile {
 		 *
 		 * @param sprite The sprite for the type of wool.
 		 */
-		WoolType(Sprite sprite) {
+		Wool(Sprite sprite) {
 			this.sprite = sprite;
 		}
 	}
 
-	public WoolTile(String name, WoolType woolType) {
+	public WoolTile(String name, Wool woolType) {
 		super(name, woolType.sprite);
 	}
 

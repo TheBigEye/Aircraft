@@ -15,7 +15,7 @@ import minicraft.level.Level;
 
 public class FlowerTile extends Tile {
 	
-	public enum Flower {
+	protected enum Flower {
 		DAISY("Daisy", new Sprite(5, 11, 1)),
 		ROSE("Rose", new Sprite(6, 11, 1)),
 		DANDELION("Dandelion", new Sprite(5, 12, 1)),
@@ -50,12 +50,12 @@ public class FlowerTile extends Tile {
 		int yn = yt;
 
 		if (random.nextBoolean()) {
-			xn += (random.nextInt(2) * 2) - 1;
+			xn += (random.nextInt(2) << 1) - 1;
 		} else {
-			yn += (random.nextInt(2) * 2) - 1;
+			yn += (random.nextInt(2) << 1) - 1;
 		}
 
-		if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
+		if (level.getTile(xn, yn) instanceof DirtTile) {
 			level.setTile(xn, yn, Tiles.get("Grass"));
 		}
 		return false;

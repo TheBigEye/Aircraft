@@ -30,12 +30,12 @@ public class LawnTile extends Tile {
         int yn = yt;
 
         if (random.nextBoolean()) {
-            xn += (random.nextInt(2) * 2) - 1;
+            xn += (random.nextInt(2) << 1) - 1;
         } else {
-            yn += (random.nextInt(2) * 2) - 1;
+            yn += (random.nextInt(2) << 1) - 1;
         }
 
-        if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
+        if (level.getTile(xn, yn) instanceof DirtTile) {
             level.setTile(xn, yn, Tiles.get("Grass"));
         }
         return false;

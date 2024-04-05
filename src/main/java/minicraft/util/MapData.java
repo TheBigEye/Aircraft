@@ -27,6 +27,7 @@ public enum MapData {
     ROCK(Tiles.get("Rock").id, Color.get(1, 122, 122, 122)),
     UP_ROCK(Tiles.get("Up Rock").id, Color.get(1, 147, 147, 147)),
     HARD_ROCK(Tiles.get("Hard Rock").id, Color.get(1, 127, 126, 107)),
+    SAND_ROCK(Tiles.get("Sand Rock").id, Color.get(1, 117, 114, 79)),
 
     CACTUS(Tiles.get("Cactus").id, Color.get(1, 183, 183, 91)),
 
@@ -88,8 +89,6 @@ public enum MapData {
     BLUROOT_TREE(Tiles.get("Bluroot Tree").id, Color.get(1, 0, 118, 158)),
     HOLY_ROCK(Tiles.get("Holy Rock").id, Color.get(1, 97, 147, 126)),
     SKY_LAWN(Tiles.get("Sky Lawn").id, Color.get(1, 86, 163, 131)),
-    SKY_HIGH_GRASS(Tiles.get("Sky High Grass").id, Color.get(1, 79, 150, 120)),
-    SKY_DIRT(Tiles.get("Sky Dirt").id, Color.get(1, 73, 108, 114)),
     SKY_GRASS(Tiles.get("Sky Grass").id, Color.get(1, 90, 171, 138)),
     SKY_FERN(Tiles.get("Sky Fern").id, Color.get(1, 92, 137, 109));
 

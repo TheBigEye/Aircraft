@@ -28,7 +28,7 @@ public class SkyFarmTile extends Tile {
         connectsToSkyGrass = true;
         connectsToSkyDirt = true;
     }
-
+    
     @Override
     public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
         if (item instanceof ToolItem) {
@@ -36,7 +36,7 @@ public class SkyFarmTile extends Tile {
             if (tool.type == ToolType.Shovel) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
                 	Sound.playAt("genericHurt", xt << 4, yt << 4);
-                    level.setTile(xt, yt, Tiles.get("Sky dirt"));
+                    level.setTile(xt, yt, Tiles.get("Sky grass"));
                     return true;
                 }
             }
@@ -47,8 +47,9 @@ public class SkyFarmTile extends Tile {
     @Override
     public boolean tick(Level level, int xt, int yt) {
         int age = level.getData(xt, yt);
-        if (age < 5)
+        if (age < 5) {
             level.setData(xt, yt, age + 1);
+        }
         return true;
     }
 
@@ -58,6 +59,6 @@ public class SkyFarmTile extends Tile {
         if (random.nextInt(60) != 0) return;
         if (level.getData(xt, yt) < 5) return;
 
-        level.setTile(xt, yt, Tiles.get("Sky dirt"));
+        level.setTile(xt, yt, Tiles.get("Sky grass"));
     }
 }

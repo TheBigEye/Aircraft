@@ -15,25 +15,27 @@ import minicraft.level.Level;
 
 public class MushroomTile extends Tile {
 	
-	public enum MushroomType {
-		Brown(new Sprite(33, 16, 1), "Brown Mushroom"),
-		Red(new Sprite(32, 16, 1), "Red Mushroom");
+	protected enum Mushroom {
+		BROWN("Brown Mushroom", new Sprite(33, 16, 1)),
+		RED("Red Mushroom", new Sprite(32, 16, 1));
 		
-    	private Sprite sprite;
-    	private String loot;
+		private final String name;
+    	private final Sprite sprite;
 
-    	MushroomType(Sprite sprite, String loot) {
+    	Mushroom(String name, Sprite sprite) {
+			this.name = name;
 			this.sprite = sprite;
-            this.loot = loot;
 		}
 	}
 
-	private MushroomType type;
+	private Mushroom mushroom;
 
-    protected MushroomTile(MushroomType type) {
-        super(type.name() + " Mushroom", (ConnectorSprite) null);
-    	this.type = type;
+    protected MushroomTile(Mushroom mushroom) {
+        super(mushroom.name, (ConnectorSprite) null);
+    	this.mushroom = mushroom;
+    	
     	connectsToMycelium = true;
+    	maySpawn = true;
     }
   
 	@Override
@@ -49,7 +51,7 @@ public class MushroomTile extends Tile {
 			if (player.payStamina(2 - tool.level) && tool.payDurability()) {
 				Sound.playAt("genericHurt", x << 4, y << 4);
 				level.setTile(x, y, Tiles.get("Mycelium"));
-				level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get(type.loot));
+				level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get(mushroom.name));
 				return true;
 			}
 		}
@@ -58,7 +60,7 @@ public class MushroomTile extends Tile {
     
     @Override
     public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
-    	level.dropItem((x << 4) + 8, (y << 4) + 8, 0, 1, Items.get(type.loot));
+    	level.dropItem((x << 4) + 8, (y << 4) + 8, 0, 1, Items.get(mushroom.name));
         level.setTile(x, y, Tiles.get("Mycelium"));
         return true;
     }
@@ -73,8 +75,8 @@ public class MushroomTile extends Tile {
 		x <<= 4;
 		y <<= 4;
 
-		type.sprite.render(screen, x + 8 * shape, y);
-		type.sprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
+		mushroom.sprite.render(screen, x + 8 * shape, y);
+		mushroom.sprite.render(screen, x + 8 * (shape == 0 ? 1 : 0), y + 8);
 	}
 
     @Override

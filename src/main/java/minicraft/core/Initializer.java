@@ -282,8 +282,8 @@ public class Initializer extends Game {
 
 			int lx = (getWidth() / 2) - LOGO.getWidth(frame);
 			int ly = (getHeight() / 2) - (LOGO.getHeight(frame) + 12);
-			int lw = LOGO.getWidth(frame) * 2;
-			int lh = LOGO.getHeight(frame) * 2;
+			int lw = LOGO.getWidth(frame) << 1;
+			int lh = LOGO.getHeight(frame) << 1;
 
 			if (transparency < 255) {
 				graphics.drawImage(LOGO, lx, ly, lw, lh, frame);

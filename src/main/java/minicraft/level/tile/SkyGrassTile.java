@@ -47,7 +47,7 @@ public class SkyGrassTile extends Tile {
             yn += random.nextInt(2) * 2 - 1;
         }
 
-        if (level.getTile(xn, yn) == Tiles.get("Cloud")) {
+        if (level.getTile(xn, yn) instanceof CloudTile) {
             level.setTile(xn, yn, this);
         }
 

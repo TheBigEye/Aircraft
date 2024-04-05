@@ -49,8 +49,10 @@ import minicraft.item.TileItem;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
+import minicraft.level.tile.LavaTile;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
+import minicraft.level.tile.WaterTile;
 import minicraft.saveload.Save;
 import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.ChatDisplay;
@@ -327,7 +329,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		}
 
 		// if touch water extinguish the fire
-		if (onTile == Tiles.get("Water")) {
+		if (onTile instanceof WaterTile) {
 			burnTime = 0;
 			playerBurning = false;
 		}
@@ -356,10 +358,10 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			if (tickTime / 8 % 2 == 0 && (Settings.get("Particles").equals(true))) {
 
 				// Add water particles and fire particles when the player swim
-				if (onTile == Tiles.get("Water")) { 
+				if (onTile instanceof WaterTile) { 
 					level.add(new SplashParticle(x - 4 , y - 4));    
 					
-				} else if (onTile == Tiles.get("Lava")) { 
+				} else if (onTile instanceof LavaTile) { 
 					level.add(new FireParticle(x - 8 + random.nextInt(10), y - 8 + random.nextInt(9))); 
 				}
 			}
@@ -763,10 +765,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
     				if (!Game.isMode("Creative")) tool.durability--;
 
-    				// Bow down to me, achievement
-    				if (!Game.isMode("Creative")) {
-    					AchievementsDisplay.setAchievement("minicraft.achievement.bow",true);
-    				}
+    				AchievementsDisplay.setAchievement("minicraft.achievement.bow",true);
+    				
     				return;
     			}
     		}
@@ -887,7 +887,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     				} else {
 
     					// Go Fish achievement
-    					if (Items.get(itemData).equals(Items.get("Raw Fish")) && !Game.isMode("Creative")) {
+    					if (Items.get(itemData).equals(Items.get("Raw Fish"))) {
     						AchievementsDisplay.setAchievement("minicraft.achievement.fish", true);
     					}
 
@@ -1020,7 +1020,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         	
         	Tile onTile = level.getTile(x >> 4, y >> 4);
  
-        	if (onTile == Tiles.get("Water")) {
+        	if (onTile instanceof WaterTile) {
         		
         		// Animation effect
         		if (tickTime / 8 % 2 == 0) {           		
@@ -1031,7 +1031,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         			screen.render(xo + 8, yo + 3, 5 + (4 << 5), 1, 3);
         		}
 
-        	} else if (onTile == Tiles.get("Lava")) {
+        	} else if (onTile instanceof LavaTile) {
 
         		// BURN THE PLAYER
         		playerBurning = true;

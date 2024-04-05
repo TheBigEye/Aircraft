@@ -27,8 +27,10 @@ public class MapDisplay extends Display {
 	
 	private static final int UNEXPLORED_COLOR = Color.get(-1, 8, 8, 8);
 
-    private int mapRadius = 9;
+    private int mapRadius = 10;
     private int worldSize = Game.levels[Game.currentLevel].w;   // Adjust this to match the world size
+    
+    private int tickTime = 0;
 	
 	public MapDisplay() {
 
@@ -119,46 +121,49 @@ public class MapDisplay extends Display {
         		}
 			}
 		}
-		
-		// TODO: rewrite maps to the player can discover step by step the world adding war fog ...
 	}
 
     @Override
     public void tick(InputHandler input) {
+    	tickTime++;
+    	
         if (input.getKey("menu").clicked || input.getKey("attack").clicked || input.getKey("exit").clicked) {
             Game.exitDisplay();
         }
         
-     // Update the explored array based on the player's position
-        int ptx = Game.player.x >> 4;
-        int pty = Game.player.y >> 4;
-        int visibleRadiusSquared = (mapRadius - 1) * (mapRadius - 1); // Square of the inner radius (visible area)
-        int ditherRadiusSquared = mapRadius * mapRadius; // Square of the outer radius (dithered area)
-
-        for (int y = -mapRadius; y <= mapRadius; y++) {
-            for (int x = -mapRadius; x <= mapRadius; x++) {
-                int worldX = (ptx + x) % worldSize;
-                int worldY = (pty + y) % worldSize;
-
-                if (worldX < 0) worldX += worldSize;
-                if (worldY < 0) worldY += worldSize;
-
-                // Calculate the squared distance from the player's position to the current tile
-                int dx = ptx - worldX;
-                int dy = pty - worldY;
-                int distanceSquared = dx * dx + dy * dy;
-
-                // Check if the tile is within the circular exploration area (visible area)
-                if (distanceSquared <= visibleRadiusSquared) {
-                    Game.levels[Game.currentLevel].explored[worldY][worldX] = true;
-                } else if (distanceSquared <= ditherRadiusSquared) {
-                    // Apply a dither pattern for the dithered area
-                    int ditherValue = (distanceSquared - visibleRadiusSquared) * 255 / (ditherRadiusSquared - visibleRadiusSquared - 1);
-                    if (Math.random() * 255 < ditherValue) {
-                        Game.levels[Game.currentLevel].explored[worldY][worldX] = true;
-                    }
-                }
-            }
-        }
+    	if (tickTime % 5 == 0) {
+    	
+	        // Update the explored array based on the player's position
+	        int ptx = Game.player.x >> 4;
+	        int pty = Game.player.y >> 4;
+	        int visibleRadiusSquared = (mapRadius - 1) * (mapRadius - 1); // Square of the inner radius (visible area)
+	        int ditherRadiusSquared = mapRadius * mapRadius; // Square of the outer radius (dithered area)
+	
+	        for (int y = -mapRadius; y <= mapRadius; y++) {
+	            for (int x = -mapRadius; x <= mapRadius; x++) {
+	                int worldX = (ptx + x) % worldSize;
+	                int worldY = (pty + y) % worldSize;
+	
+	                if (worldX < 0) worldX += worldSize;
+	                if (worldY < 0) worldY += worldSize;
+	
+	                // Calculate the squared distance from the player's position to the current tile
+	                int dx = ptx - worldX;
+	                int dy = pty - worldY;
+	                int distanceSquared = dx * dx + dy * dy;
+	
+	                // Check if the tile is within the circular exploration area (visible area)
+	                if (distanceSquared <= visibleRadiusSquared) {
+	                    Game.levels[Game.currentLevel].explored[worldY][worldX] = true;
+	                } else if (distanceSquared <= ditherRadiusSquared) {
+	                    // Apply a dither pattern for the dithered area
+	                    int ditherValue = (distanceSquared - visibleRadiusSquared) * 255 / (ditherRadiusSquared - visibleRadiusSquared - 1);
+	                    if (Math.random() * 255 < ditherValue) {
+	                        Game.levels[Game.currentLevel].explored[worldY][worldX] = true;
+	                    }
+	                }
+	            }
+	        }
+    	}
     }
 }

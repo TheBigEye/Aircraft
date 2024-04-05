@@ -43,7 +43,7 @@ public class SkyFernTile extends Tile {
             yn += (random.nextInt(2) * 2) - 1;
         }
 
-        if (level.getTile(xn, yn) == Tiles.get("Dirt")) {
+        if (level.getTile(xn, yn) instanceof DirtTile) {
             level.setTile(xn, yn, Tiles.get("Sky Grass"));
         }
         return false;

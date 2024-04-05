@@ -52,7 +52,7 @@ public class LavaTile extends Tile {
 		}
 
 
-		if (level.getTile(xn, yn) == Tiles.get("Hole")) {
+		if (level.getTile(xn, yn) instanceof HoleTile) {
 			level.setTile(xn, yn, this);
 		}
 		return false;

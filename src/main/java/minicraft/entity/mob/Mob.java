@@ -10,8 +10,11 @@ import minicraft.entity.particle.TextParticle;
 import minicraft.graphic.Color;
 import minicraft.graphic.MobSprite;
 import minicraft.item.PotionType;
+import minicraft.level.tile.LavaTile;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
+import minicraft.level.tile.WaterTile;
+import minicraft.level.tile.WoolTile;
 
 public abstract class Mob extends Entity {
 	
@@ -70,7 +73,7 @@ public abstract class Mob extends Entity {
             return;
         }
         
-        if (level != null && level.getTile(x >> 4, y >> 4) == Tiles.get("Lava")) { // If we are trying to swim in lava
+        if (level != null && level.getTile(x >> 4, y >> 4) instanceof LavaTile) { // If we are trying to swim in lava
             hurt(Tiles.get("Lava"), x, y, 4); // Inflict 4 damage to ourselves, sourced from the lava Tile, with the direction as the opposite of ours.
         }
 
@@ -143,8 +146,7 @@ public abstract class Mob extends Entity {
         if (level == null)  {
         	return false;
         }
-        Tile tile = level.getTile(x >> 4, y >> 4);
-        return tile == Tiles.get("wool");
+        return (level.getTile(x >> 4, y >> 4) instanceof WoolTile);
     }
 
     /**
@@ -168,7 +170,7 @@ public abstract class Mob extends Entity {
     public boolean isSwimming() {
         if (level == null) return false;
         Tile tile = level.getTile(x >> 4, y >> 4); // Get the tile the mob is standing on (at x/16, y/16)
-        return tile == Tiles.get("Water") || tile == Tiles.get("Lava"); // Check if the tile is liquid, and return true if so
+        return (tile instanceof WaterTile || tile instanceof LavaTile); // Check if the tile is liquid, and return true if so
     }
    
 

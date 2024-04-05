@@ -20,20 +20,19 @@ import minicraft.screen.AchievementsDisplay;
 
 /// this is all the spikey stuff (except "cloud cactus")
 public class OreTile extends Tile {
-	public enum OreType {
-		Iron(Items.get("Iron Ore"), 42, 0),
-		Lapis(Items.get("Lapis"), 42, 2),
-		Gold(Items.get("Gold Ore"), 44, 0),
-		Gem(Items.get("Gem"), 44, 2);
+	
+	protected enum Ore {
+		Iron(Items.get("Iron Ore"), new Sprite(42, 0, 2, 2, 1)),
+		Lapis(Items.get("Lapis"), new Sprite(42, 2, 2, 2, 1)),
+		Gold(Items.get("Gold Ore"), new Sprite(44, 0, 2, 2, 1)),
+		Gem(Items.get("Gem"), new Sprite(44, 2, 2, 2, 1));
     	
 		private Item drop;
-		private final int sx;
-		private final int sy;
+		private final Sprite sprite;
 
-		OreType(Item drop, int sx, int sy) {
+		Ore(Item drop, Sprite sprite) {
 			this.drop = drop;
-			this.sx = sx;
-			this.sy = sy;
+			this.sprite = sprite;
 		}
 		
 		protected Item getOre() {
@@ -41,11 +40,11 @@ public class OreTile extends Tile {
 		}
 	}
 
-	private OreType type;
+	private Ore ore;
 
-	protected OreTile(OreType oreType) {
-		super((oreType == OreTile.OreType.Lapis ? "Lapis" : oreType.name() + " Ore"), new Sprite(oreType.sx, oreType.sy, 2, 2, 1));
-		this.type = oreType;
+	protected OreTile(Ore ore) {
+		super((ore == Ore.Lapis ? "Lapis" : ore.name() + " Ore"), ore.sprite);
+		this.ore = ore;
 	}
 
 	public void bumpedInto(Level level, int x, int y, Entity entity) {
@@ -54,14 +53,15 @@ public class OreTile extends Tile {
 	}
 
 	public Item getOre() {
-		return type.getOre();
+		return ore.getOre();
 	}
 
 	public void hurt(Level level, int x, int y, int hurtDamage) {
-		int damage = level.getData(x, y) + 1;
-		int oreHealth = (random.nextInt(4) * 4) + 20;
+		int damage = level.getData(x, y) + hurtDamage;
+		int health = random.nextInt(10) * 4 + 20;
+		
 		if (Game.isMode("Creative")) {
-			hurtDamage = damage = oreHealth;
+			hurtDamage = damage = health;
 		}
 
 		Sound.playAt("genericHurt", x << 4, y << 4);
@@ -69,24 +69,24 @@ public class OreTile extends Tile {
 
 		level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
 		if (damage > 0) {
-			int count = random.nextInt(2) + 0;
-			if (damage >= oreHealth) {
+			int count = random.nextInt(2);
+			if (damage >= health) {
 				level.setTile(x, y, Tiles.get("Dirt"));
 				count += 2;
 			} else {
 				level.setData(x, y, damage);
 			}			
 
-			if (type.drop.equals(Items.get("Gem")) && !Game.isMode("Creative")){
+			if (ore.drop.equals(Items.get("Gem"))){
 				AchievementsDisplay.setAchievement("minicraft.achievement.find_gem", true);
 			}
 
-			level.dropItem((x << 4) + 8, (y << 4) + 8, count, type.getOre());
+			level.dropItem((x << 4) + 8, (y << 4) + 8, count, ore.getOre());
 		}
 	}
 
 	public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
-		hurt(level, x, y, 0);
+		hurt(level, x, y, hurtDamage);
 		return true;
 	}
 

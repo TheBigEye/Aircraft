@@ -172,9 +172,10 @@ public class LevelGen {
 
 			if (count[Tiles.get("Rock").id & 0xffff] < 100) continue;
 			if (count[Tiles.get("Sand").id & 0xffff] < 100) continue;
+			if (count[Tiles.get("Sand Rock").id & 0xffff] < 100) continue;
 			if (count[Tiles.get("Grass").id & 0xffff] < 100) continue;
+			if (count[Tiles.get("Snow").id & 0xffff] < 100) continue;
 			if (count[Tiles.get("Oak Tree").id & 0xffff] < 100) continue;
-			if (count[Tiles.get("Daisy").id & 0xffff] < 100) continue;
 			if (count[Tiles.get("Stairs Down").id & 0xffff] == 0) continue;
 
 			return result;
@@ -295,16 +296,12 @@ public class LevelGen {
 		short[] map = new short[fullSize];
 		short[] data = new short[fullSize];
 				
-		LoadingDisplay.setMessage("Checking for theme");
-		
 		String terrainType = (String) Settings.get("Type");
 		String terrainTheme = (String) Settings.get("Theme");
 		
 		// Decoration
 		int treeThreshold = fullSize / 200;
 		int flowerThreshold = fullSize / 400;
-		
-		int beachThickness = 1;
 
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
@@ -314,7 +311,7 @@ public class LevelGen {
 				double mval = Math.abs(mnoise1.values[i] - mnoise2.values[i]);
 				mval = Math.abs(mval - mnoise3.values[i]) * 3 - 2;
 				
-				// Temperature and humidity noise values
+				// temperature and humidity noise values
 				double tval = Math.abs(noise2.values[i] - noise1.values[i]) * 3 - 2;
 				double hval = Math.abs(hnoise1.values[i] - hnoise2.values[i]) * 3 - 2;
 
@@ -333,25 +330,35 @@ public class LevelGen {
 				tval += 1 - dist * 16;
 				hval += 1 - dist * 16;
 				
+				// NOTES:
+				// val -> height value
+				// tval -> temperature value
+				// hval -> humidity value
+				// mval -> mountain value
+				
 				// World themes logic
 				if ("Island".equals(terrainType)) {
 				    if (val < -0.7) {
 				        if ("Hell".equals(terrainTheme)) {
 				            map[i] = Tiles.get("Lava").id;
 				        } else {
-				            if (tval > 0.20 && hval < 0.3) {
+				            if (tval > -0.20 && hval > 0.60) {
 				                map[i] = Tiles.get("Ice").id;
 				            } else {
 				                map[i] = Tiles.get("Water").id;
 				            }
 				        }
-				    } else if (val > 0.8 && mval > -1.8) {
-				        map[i] = Tiles.get("Up Rock").id;
+				    } else if (val > 1.2 && mval > -1.8) {
+				    	if (tval > 0.30 && hval < 0.16 && val > 0.41) {
+				    		map[i] = Tiles.get("Sand Rock").id;
+				    	} else {
+				    		map[i] = Tiles.get("Up Rock").id;
+				    	}
 				    } else {
-				        if (tval < -0.10 && hval > 0.6) {
+				        if (tval > 0.30 && hval < 0.16 && val > 0.41) {
 				            map[i] = Tiles.get("sand").id;
 				        } else {
-				            if (tval > 0.20 && hval < 0.3) {
+				            if (tval > -0.20 && hval > 0.60) {
 				                map[i] = Tiles.get("snow").id;
 				            } else {
 				                map[i] = Tiles.get("grass").id;
@@ -360,7 +367,7 @@ public class LevelGen {
 				    }
 				}
 				
-				if (terrainType == "Box") {
+				if ("Box".equals(terrainType)) {
 					if (val < -1.5) {
 						if (terrainTheme == "Hell") {
 							map[i] = Tiles.get("Lava").id;
@@ -573,8 +580,8 @@ public class LevelGen {
 					boolean replace = false;
 
 					// Check the tiles around the current position
-					for (int tx = x - beachThickness; tx <= x + beachThickness; tx++) {
-						for (int ty = j - beachThickness; ty <= j + beachThickness; ty++) {
+					for (int tx = x - 1; tx <= x + 1; tx++) {
+						for (int ty = j - 1; ty <= j + 1; ty++) {
 							if ((tx >= 0 && ty >= 0 && tx < w && ty < h) && (tx != x || ty != j)) {
 								if (map[tx + ty * w] == Tiles.get("Water").id) {
 									replace = true;
@@ -592,15 +599,15 @@ public class LevelGen {
 		}
 
 
-		LoadingDisplay.setMessage("Generating mountains");
+		LoadingDisplay.setMessage("Generating Mountains");
 		for (int j = 0; j < h; j++) {
 		    for (int x = 0; x < w; x++) {
 		        int currentTile = map[x + j * w];
 		        if (currentTile == Tiles.get("Up Rock").id) {
 		            boolean replace = false;
 		            check_mountains:
-		            for (int tx = x - (1 + random.nextInt(2)); tx <= x + (1 + random.nextInt(2)); tx++) {
-		                for (int ty = j - (1 + random.nextInt(2)); ty <= j + (1 + random.nextInt(2)); ty++) {
+		            for (int tx = x - (1 + random.nextInt(1)); tx <= x + (1 + random.nextInt(1)); tx++) {
+		                for (int ty = j - (1 + random.nextInt(1)); ty <= j + (1 + random.nextInt(1)); ty++) {
 		                    if ((tx >= 0 && ty >= 0 && tx <= w && ty <= h) && (tx != x || ty != j)) {
 		                        int tileToCheck = map[tx + ty * w];
 		                        if (tileToCheck == Tiles.get("Grass").id || tileToCheck == Tiles.get("Snow").id || tileToCheck == Tiles.get("Sand").id ||
@@ -619,6 +626,32 @@ public class LevelGen {
 		        }
 		    }
 		}
+		
+		for (int j = 0; j < h; j++) {
+			for (int x = 0; x < w; x++) { // if there are Grass tiles or Trees in front of the Sand tiles, if so, replace them with Grass
+				if (map[x + j * w] != Tiles.get("Sand").id && map[x + j * w] == Tiles.get("Grass").id || 
+					map[x + j * w] != Tiles.get("Sand").id && map[x + j * w] == Tiles.get("Birch Tree").id ||
+					map[x + j * w] != Tiles.get("Sand").id && map[x + j * w] == Tiles.get("Oak Tree").id) {
+					boolean replace = false;
+					
+					check_ocean:
+					for (int tx = x - 1; tx <= x + 1; tx++) {
+						for (int ty = j - 1; ty <= j + 1; ty++) {
+							if (tx >= 0 && ty >= 0 && tx <= w && ty <= h && (tx != x || ty != j)) {
+								if (map[tx + ty * w] == Tiles.get("Sand").id) {
+									replace = true;
+									break check_ocean;
+								}
+							}
+						}
+					}
+
+					if (replace) {
+						map[x + j * w] = Tiles.get("Grass").id;
+					}
+				}
+			}
+		}
 
 
 		for (int j = 0; j < h; j++) {
@@ -629,8 +662,8 @@ public class LevelGen {
 					boolean replace = false;
 					
 					check_ocean:
-					for (int tx = x - beachThickness; tx <= x + beachThickness; tx++) {
-						for (int ty = j - beachThickness; ty <= j + beachThickness; ty++) {
+					for (int tx = x - 1; tx <= x + 1; tx++) {
+						for (int ty = j - 1; ty <= j + 1; ty++) {
 							if (tx >= 0 && ty >= 0 && tx <= w && ty <= h && (tx != x || ty != j)) {
 								if (map[tx + ty * w] == Tiles.get("Ice").id) {
 									replace = true;
@@ -655,8 +688,8 @@ public class LevelGen {
 					boolean replace = false;
 					
 					check_ocean:
-					for (int tx = x - beachThickness - random.nextInt(2); tx <= x + beachThickness + random.nextInt(2); tx++) {
-						for (int ty = j - beachThickness - random.nextInt(1); ty <= j + beachThickness +  random.nextInt(1); ty++) {
+					for (int tx = x - 1 - random.nextInt(2); tx <= x + 1 + random.nextInt(2); tx++) {
+						for (int ty = j - 1 - random.nextInt(2); ty <= j + 1 + random.nextInt(2); ty++) {
 							if (tx >= 0 && ty >= 0 && tx <= w && ty <= h && (tx != x || ty != j) && map[tx + ty * w] == Tiles.get("Grass").id) {
 								replace = true;
 								break check_ocean;
@@ -1287,7 +1320,7 @@ public class LevelGen {
 
 		//LevelGen jnoise1 = new LevelGen(w, h, 8);
 		//LevelGen jnoise2 = new LevelGen(w, h, 4);
-		// LevelGen jnoise3 = new LevelGen(w, h, 8);
+		//LevelGen jnoise3 = new LevelGen(w, h, 8);
 
 		short[] map = new short[w * h];
 		short[] data = new short[w * h];
@@ -1397,7 +1430,7 @@ public class LevelGen {
 			int lvl = maplvls[idx++ % maplvls.length];
 			if (lvl > 2 || lvl < -4) continue;
 
-			short[][] fullmap = LevelGen.createAndValidateMap(w, h, -1, random.nextLong());
+			short[][] fullmap = LevelGen.createAndValidateMap(w, h, 0, random.nextLong());
 
 			if (fullmap == null) continue;
 			short[] map = fullmap[0];
@@ -1410,12 +1443,13 @@ public class LevelGen {
 				for (int x = 0; x < w; x++) { // (inner-loop)Loops through the entire width of the map
 					int i = x + y * w; // Current tile of the map.
 
-					/*The colors used in the pixels are hexadecimal (0xRRGGBB).
-                      0xff0000 would be fully red
-                      0x00ff00 would be fully blue
-                      0x0000ff would be fully green
-                      0x000000 would be black
-                      and 0xffffff would be white etc.
+					/**					 
+					 * The colors used in the pixels are hexadecimal (0xRRGGBB).
+                     * 0xff0000 would be fully red
+                     * 0x00ff00 would be fully blue
+                     * 0x0000ff would be fully green
+                     * 0x000000 would be black
+                     * and 0xffffff would be white etc.
 					 */
 
 					// Surface tiles
@@ -1430,6 +1464,7 @@ public class LevelGen {
 					else if (map[i] == Tiles.get("Lava").id) pixels[i] = 0xC82020;
 					else if (map[i] == Tiles.get("Rock").id) pixels[i] = 0x7a7a7a;
 					else if (map[i] == Tiles.get("Up Rock").id) pixels[i] = 0x939393;
+					else if (map[i] == Tiles.get("Sand Rock").id) pixels[i] = 0x777451;
 
 					else if (map[i] == Tiles.get("Iron Ore").id) pixels[i] = 0x452728;
 					else if (map[i] == Tiles.get("Gold Ore").id) pixels[i] = 0x948028;
@@ -1476,7 +1511,6 @@ public class LevelGen {
 					else if (map[i] == Tiles.get("Sky grass").id) pixels[i] = 0x5aab8a;
 					else if (map[i] == Tiles.get("Sky fern").id) pixels[i] = 0x5aab8a;
 					else if (map[i] == Tiles.get("Sky lawn").id) pixels[i] = 0x9EC7C6;
-					else if (map[i] == Tiles.get("Sky high grass").id) pixels[i] = 0x4f9678;
 					else if (map[i] == Tiles.get("Holy rock").id) pixels[i] = 0xB9B9CD;
 					else if (map[i] == Tiles.get("Ice").id) pixels[i] = 0x686EEC;
 					

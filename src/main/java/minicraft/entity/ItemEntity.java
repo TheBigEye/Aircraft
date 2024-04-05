@@ -10,7 +10,7 @@ import minicraft.graphic.Color;
 import minicraft.graphic.Screen;
 import minicraft.item.Item;
 import minicraft.item.Items;
-import minicraft.level.tile.Tiles;
+import minicraft.level.tile.LavaTile;
 
 public class ItemEntity extends Entity implements ClientTickable {
 	private int lifeTime; // the life time of this entity in the level
@@ -130,7 +130,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 		yy += goty - expectedy;
 
 		// If some item touch lava, is burned
-		if (level.getTile(x >> 4,y >> 4) == Tiles.get("Lava") && !item.equals(Items.get("AlAzif"))) {
+		if (level.getTile(x >> 4,y >> 4) instanceof LavaTile && !item.equals(Items.get("AlAzif"))) {
 			for (int i = 0; i < 1 + random.nextInt(2); i++) {
 				int randX = random.nextInt(16);
 				int randY = random.nextInt(12);

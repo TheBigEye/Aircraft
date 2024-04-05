@@ -11,6 +11,7 @@ import minicraft.item.Items;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.tile.GrassTile;
+import minicraft.level.tile.SnowTile;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
@@ -65,7 +66,7 @@ public class Sheep extends PassiveMob {
 		
 		if ((tickTime % (random.nextInt(100) + 120) == 0)) {
 			Tile tile = level.getTile(x >> 4, y >> 4);
-			if (tile == Tiles.get("Snow")) {
+			if (tile instanceof SnowTile) {
 				remove();
 				level.add(new Goat(), x, y);
 			}

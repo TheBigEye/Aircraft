@@ -11,6 +11,7 @@ import minicraft.item.Items;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
+import minicraft.level.tile.WaterTile;
 
 public class Plant extends FarmTile {
     protected static int maxAge = 100;
@@ -54,7 +55,7 @@ public class Plant extends FarmTile {
     protected boolean ifWater(Level level, int xs, int ys) {
         Tile[] areaTiles = level.getAreaTiles(xs, ys, 3);
         for (Tile tile : areaTiles) {
-            if (tile == Tiles.get("Water")) {
+            if (tile instanceof WaterTile) {
                 return true;
             }
         }

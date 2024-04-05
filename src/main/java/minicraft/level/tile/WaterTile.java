@@ -31,7 +31,7 @@ public class WaterTile extends Tile {
 
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
-	    long seed = ((tickCount + (x / 2 - y) * 4311) / 10) * 54687121L + x * 3271612L + y * 3412987161L;
+		long seed = ((tickCount + (x / 2 - y) * 4311) / 10);
 	    sprite.full = Sprite.randomDots(seed, 21, 21);
 	    sprite.sparse.color = DirtTile.dirtColor(level.depth);
 	    sprite.render(screen, level, x, y);
@@ -43,21 +43,21 @@ public class WaterTile extends Tile {
 	    int yn = yt;
 	    
 	    switch (random.nextInt(2)) {
-	        case 0: xn += random.nextInt(2) * 2 - 1; break;
-	        case 1: yn += random.nextInt(2) * 2 - 1; break;
+	        case 0: xn += (random.nextInt(2) << 1) - 1; break;
+	        case 1: yn += (random.nextInt(2) << 1) - 1; break;
 	    }
 
-	    if (level.getTile(xn, yn) == Tiles.get("Hole")) {
+	    if (level.getTile(xn, yn) instanceof HoleTile) {
 	        level.setTile(xn, yn, this);
 	    }
 
 	    for (int x = -1; x < 2; x++) {
-	        if (level.getTile(xt + x, yt) == Tiles.get("Lava")) {
+	        if (level.getTile(xt + x, yt) instanceof LavaTile) {
 	            level.setTile(xt + x, yt, Tiles.get("Raw Obsidian"));
 	        }
 	    }
 	    for (int y = -1; y < 2; y++) {
-	        if (level.getTile(xt, yt + y) == Tiles.get("Lava")) {
+	        if (level.getTile(xt, yt + y) instanceof LavaTile) {
 	            level.setTile(xt, yt + y, Tiles.get("Raw Obsidian"));
 	        }
 	    }

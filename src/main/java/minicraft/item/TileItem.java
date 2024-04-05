@@ -12,6 +12,7 @@ import minicraft.entity.mob.Player;
 import minicraft.entity.particle.BrightParticle;
 import minicraft.graphic.Sprite;
 import minicraft.level.Level;
+import minicraft.level.tile.GrassTile;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
@@ -129,7 +130,7 @@ public class TileItem extends StackableItem {
 			if (tile.matches(level.getData(xt, yt), tilename)) {
 				
 				if (getName() == "Bone Powder") {
-					if (level.getTile(xt, yt) == Tiles.get("Grass")) {
+					if (level.getTile(xt, yt) instanceof GrassTile) {
 						for (int y = yt - 1; y <= yt + 1; y++) {
 							for (int x = xt - 1; x <= xt + 1; x++) {
 								if (level.getTile(x, y).name.contains("GRASS") && Math.random() < 0.4) {

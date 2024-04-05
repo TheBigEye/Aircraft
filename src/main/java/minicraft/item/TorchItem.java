@@ -25,7 +25,7 @@ public class TorchItem extends TileItem {
         super("Torch", (new Sprite(5, 3, 0)), count, "", "Dirt", "Oak Planks", "Stone Bricks", "Obsidian", "Wool",
                 "Red Wool", "Blue Wool", "Lime Wool", "Yellow Wool", "Purple Wool", "Pink Wool", "Green Wool",
                 "Gray Wool", "Brown Wool", "Magenta Wool", "Light Blue Wool", "Cyan Wool", "Orange Wool", "Black Wool",
-                "Grass", "Sand", "Spruce Planks", "Birch Planks", "Sky grass", "Sky high grass", "Sky dirt",
+                "Grass", "Sand", "Spruce Planks", "Birch Planks", "Sky grass",
                 "Ferrosite");
     }
 

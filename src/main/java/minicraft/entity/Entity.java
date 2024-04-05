@@ -94,7 +94,7 @@ public abstract class Entity implements Tickable {
 
     /** @return a Rectangle instance using the defined bounds of the entity. */
     protected Rectangle getBounds() {
-        return new Rectangle(x, y, xr * 2, yr * 2, Rectangle.CENTER_DIMS);
+        return new Rectangle(x, y, xr << 1, yr << 1, Rectangle.CENTER_DIMS);
     }
 
     /**
@@ -217,7 +217,7 @@ public abstract class Entity implements Tickable {
         int xr = this.xr;
         int yr = this.yr;
 
-        List<Entity> isInside = level.getEntitiesInRect(new Rectangle(x + xd, y + yd, xr * 2, yr * 2, Rectangle.CENTER_DIMS)); // Gets the entities                                                                                        // moved.
+        List<Entity> isInside = level.getEntitiesInRect(new Rectangle(x + xd, y + yd, xr << 1, yr << 1, Rectangle.CENTER_DIMS)); // Gets the entities                                                                                        // moved.
         if (interact) {
             for (Entity entity : isInside) {
                 /// Cycles through entities about to be touched, and calls touchedBy(this) for each of them.

@@ -127,6 +127,9 @@ public class AchievementsDisplay extends Display {
 	}
 
 	private static boolean setAchievement(String id, boolean unlocked, boolean save) {
+		
+		if (Game.isMode("Creative")) return false;
+		
 		Achievement achievement = achievements.get(id);
 
 		// Return if we didn't find any achievements.

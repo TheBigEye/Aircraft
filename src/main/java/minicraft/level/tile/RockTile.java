@@ -32,7 +32,7 @@ public class RockTile extends Tile {
 		}
 	};
 	
-	private ConnectorSprite mossySprite = new ConnectorSprite(MossyRockTile.class, new Sprite(36, 6, 3, 3, 1), new Sprite(41, 6, 2, 2, 1), new Sprite(39, 6, 2, 2, 1)) {
+	private ConnectorSprite mossySprite = new ConnectorSprite(RockTile.class, new Sprite(36, 6, 3, 3, 1), new Sprite(41, 6, 2, 2, 1), new Sprite(39, 6, 2, 2, 1)) {
 
 		@Override
 		public boolean connectsTo(Tile tile, boolean isSide) {

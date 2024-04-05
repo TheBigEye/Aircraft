@@ -140,10 +140,10 @@ public class Game {
 					"         Aircraft has crashed! " 																		+ "\n" +
 					"         --------------------- " 																		+ "\n\n" +
 					
+					"// " + getWittyComment() 																				+ "\n\n" +
+					
 					"The game was stopped running because it encountered a problem.	" 										+ "\n\n" +
-					
-					"" + getWittyComment() 																					+ "\n\n" +
-					
+
 					"If you wish to report this, please copy this entire text and send to the developer. " 					+ "\n" +
 					"Please include a description of what you did, to replicate the error. " 								+ "\n\n" +
 					
