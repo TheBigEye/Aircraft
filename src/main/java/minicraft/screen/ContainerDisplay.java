@@ -12,24 +12,32 @@ import minicraft.item.StackableItem;
 
 public class ContainerDisplay extends Display {
 
-	private static final int padding = 10;
-
 	private Player player;
 	private Chest chest;
 
 	public ContainerDisplay(Player player, Chest chest) {
 		super(
-			new InventoryMenu(player, player.getInventory(), "Inventory"), 
-			new InventoryMenu(chest, chest.getInventory(), chest.name)
+			// We use an fixed size for avoid UI issues
+			new InventoryMenu(player, player.getInventory(), "Inventory", 32 * 8, 14 * 8), 
+			new InventoryMenu(chest, chest.getInventory(), chest.name, 32 * 8, 14 * 8)
 		);
 
 		this.player = player;
 		this.chest = chest;
 
-		menus[1].translate(menus[0].getBounds().getRight(), 0);
+		menus[0].setBackground(21);
+		menus[1].setBackground(23);
+	
+		update();
+	}
 
-		if (menus[1].getNumOptions() == 0) {
-			onSelectionChange(1, 0);
+	private int getOtherIndex() {
+		return (selection + 1) % 2;
+	}
+
+	public void onInvUpdate(ItemHolder holder) {
+		if (holder == player || holder == chest) {
+			update();
 		}
 	}
 
@@ -40,24 +48,16 @@ public class ContainerDisplay extends Display {
 		if (oldSel == newSel) {
 			return; // this also serves as a protection against access to menus[0] when such may not exist.
 		}
-
-		int shift = 0;
 		
 		if (newSel == 0) { // Inventory
-			shift = padding - menus[0].getBounds().getLeft();
+			menus[0].setBackground(21);
+			menus[1].setBackground(23);
 		}
 
 		if (newSel == 1) { // Chest
-			shift = (Screen.w - padding) - menus[1].getBounds().getRight();
+			menus[0].setBackground(23);
+			menus[1].setBackground(21);
 		}
-
-		for (Menu menu : menus) {
-			menu.translate(shift, 0);
-		}
-	}
-
-	private int getOtherIdx() {
-		return (selection + 1) % 2;
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class ContainerDisplay extends Display {
 		}
 
 		Menu currentMenu = menus[selection];
-		int otherIdx = getOtherIdx();
+		int otherIndex = getOtherIndex();
 
 		if (currentMenu.getNumOptions() > 0 && (input.getKey("attack").clicked || input.getKey("drop-one").clicked)) {
 			// switch inventories
@@ -84,7 +84,7 @@ public class ContainerDisplay extends Display {
 				to = player.getInventory();
 			}
 
-			int toSel = menus[otherIdx].getSelection();
+			int toSel = menus[otherIndex].getSelection();
 			int fromSel = currentMenu.getSelection();
 
 			Item fromItem = from.get(fromSel);
@@ -108,18 +108,17 @@ public class ContainerDisplay extends Display {
 		}
 	}
 
-	public void onInvUpdate(ItemHolder holder) {
-		if (holder == player || holder == chest) {
-			update();
-		}
-	}
-
 	private void update() {
-		menus[0] = new InventoryMenu((InventoryMenu) menus[0]);
-		menus[1] = new InventoryMenu((InventoryMenu) menus[1]);
-		menus[1].translate(menus[0].getBounds().getRight(), 0);
+		menus[0] = new InventoryMenu((InventoryMenu) menus[0], menus[0].getBounds().getWidth(), menus[0].getBounds().getHeight());
+		menus[1] = new InventoryMenu((InventoryMenu) menus[1], menus[0].getBounds().getWidth(), menus[0].getBounds().getHeight());
+
+		menus[0].translate((Screen.w / 2) - menus[0].getBounds().getCenter().x, (19 * 8) - 6);
+		menus[1].translate((Screen.w / 2) - menus[1].getBounds().getCenter().x, 0);
+		
 		onSelectionChange(0, selection);
+		
 		if (menus[1].getNumOptions() == 0) {
+			menus[0].setBackground(23);
 			onSelectionChange(1, 0);
 		}
 	}

@@ -8,6 +8,17 @@ public class BrightParticle extends Particle {
     private int spriteFrame = 0;
 
     /**
+     * Creates a new particle at the given position. It has a custom lifetime of ticks
+     * and a bright looking sprite.
+     * 
+     * @param x X map positiona
+     * @param y Y map position
+     */
+    public BrightParticle(int x, int y, int time) {
+        super(x, y, time, sprite);
+    }
+    
+    /**
      * Creates a new particle at the given position. It has a lifetime of 16 ticks
      * and a bright looking sprite.
      * 
@@ -15,8 +26,9 @@ public class BrightParticle extends Particle {
      * @param y Y map position
      */
     public BrightParticle(int x, int y) {
-        super(x, y, 16, sprite);
+        this(x, y, 16);
     }
+
 
     @Override
     public void tick() {

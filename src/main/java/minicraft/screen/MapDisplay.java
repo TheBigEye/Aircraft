@@ -90,6 +90,12 @@ public class MapDisplay extends Display {
                     // Render fog of war for unexplored areas
                     screen.setPixel((x + menuBounds.getLeft()) + 8, (y + menuBounds.getTop()) + 8, UNEXPLORED_COLOR);
                 }
+                
+                if (Game.isMode("Creative")) {
+                    MapData mapData = MapData.getById(Game.levels[Game.currentLevel].getTile(worldX, worldY).id);
+                    int color = mapData != null ? mapData.color : 0;
+                    screen.setPixel((x + menuBounds.getLeft()) + 8, (y + menuBounds.getTop()) + 8, color);
+                }
             }
         }
 		

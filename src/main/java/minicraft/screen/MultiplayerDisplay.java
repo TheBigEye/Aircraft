@@ -217,9 +217,9 @@ public class MultiplayerDisplay extends Display {
 				Font.drawCentered("Loading " + loadingMessage + " from server" + ellipsis.updateAndGet(), screen, Screen.h / 2, Color.WHITE);
 				//Font.drawCentered(transferPercent + "%", screen, Screen.h / 2 + 6, Color.WHITE);
 				break;
-			
+				
 			case ERROR:
-				//if(Updater.tickCount % 10 == 0) System.out.println("error message: " + errorMessage);
+				//if (Updater.tickCount % 10 == 0) System.out.println("error message: " + errorMessage);
 				Font.drawCentered("Could not connect to server:", screen, Screen.h/2-6, Color.RED);
 				FontStyle style = new FontStyle(Color.get(1, 255, 51, 51)).setYPos(Screen.h/2+6);
 				Font.drawParagraph(errorMessage, screen, style, 1);
@@ -228,7 +228,7 @@ public class MultiplayerDisplay extends Display {
 		}
 		
 		if (curState == State.ENTERIP || curState == State.ERROR) {
-			Font.drawCentered("Press "+Game.input.getMapping("exit")+" to return", screen, Screen.h-Font.textHeight()*2, Color.GRAY);
+			Font.drawCentered("Press " + Game.input.getMapping("exit") + " to return", screen, Screen.h-Font.textHeight()*2, Color.GRAY);
 		}
 	}
 }

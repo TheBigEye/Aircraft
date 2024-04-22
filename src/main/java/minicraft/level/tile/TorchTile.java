@@ -68,10 +68,10 @@ public class TorchTile extends Tile {
     
     @Override
 	public boolean tick(Level level, int x, int y) {
-
     	int data = level.getData(x, y);
 		if (data != 5) {
 			level.setData(x, y, data + 1);
+			return true;
 		}  
 
 		spawnX = (x << 4) + 4;
@@ -82,11 +82,13 @@ public class TorchTile extends Tile {
 
     @Override
     public int getLightRadius(Level level, int x, int y) {
-    	if (level.getData(x, y) == 0) {
-    		return 1;
+    	int data = level.getData(x, y);
+    	
+    	if (data < 2) {
+    		return 2;
     	}
     
-	    return level.getData(x, y);
+	    return data;
     }
 
     @Override

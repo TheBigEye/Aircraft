@@ -166,6 +166,7 @@ public class InputHandler implements KeyListener {
 		// keymap.put("FPSDISP", "F3"); // toggle fps display
 		keymap.put("INFO", "SHIFT-I"); // toggle player stats display
 
+		keymap.put("SCREENSHOT", "F2");
 		keymap.put("FULLSCREEN", "F11");
 
 	}
@@ -343,7 +344,7 @@ public class InputHandler implements KeyListener {
 				key = new Key(); // make new key
 				keyboard.put(keytext, key); // add it to keyboard
 
-				// if(Game.debug) System.out.println("Added new key: \'" + keytext + "\'");
+				// if (Game.debug) System.out.println("Added new key: \'" + keytext + "\'");
 				// //log to console that a new key was added to the keyboard
 			}
 		} // "key" has been set to the appropriate key Object.

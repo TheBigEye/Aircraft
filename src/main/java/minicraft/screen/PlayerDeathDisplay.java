@@ -20,8 +20,8 @@ public class PlayerDeathDisplay extends Display {
 	private static final String[] deadSpashes = {
 			"You died! Aww!", "Its humiliating!", "Luck for the next!",
 			"That had to hurt!", "What a pity!", "In the end?!",
-			"Don't mistake my silence!", "There are things we forget ...", "great, you died!",
-			"unforeseen consequences", 
+			"Don't mistake my silence!", "There are things we forget ...", "Great, you died!",
+			"Unforeseen consequences", 
 	};
 
 	public PlayerDeathDisplay() {

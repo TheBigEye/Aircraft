@@ -33,7 +33,7 @@ public class Chicken extends PassiveMob {
         
 		// Chicken sounds
 		if ((this.tickTime % (random.nextInt(100) + 120) == 0)) {
-			doPlaySound(sounds, 6);
+			playSound(sounds, 6);
 		}
     }
 

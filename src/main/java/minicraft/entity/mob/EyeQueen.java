@@ -87,9 +87,11 @@ public class EyeQueen extends GiantBossMob {
         
         // Change phases by health
         if (health <= 12000 && currentPhase == 1) {
-			for (int i = 0; i < 8; i++) {
-				level.add(new FireParticle(x - 8 + random.nextInt(16), y - 6 + random.nextInt(12)));
-			}
+			level.add(new FireParticle(x - random.nextInt(24), y + random.nextInt(24), 9));
+			level.add(new FireParticle(x + random.nextInt(24), y - random.nextInt(24), 9));
+		
+			level.add(new FireParticle(x - random.nextInt(24), y - random.nextInt(24), 9));
+			level.add(new FireParticle(x + random.nextInt(24), y + random.nextInt(24), 9));
             
         	// Change to phase 2
         	Sound.playAt("eyeQueenChangePhase", this.x, this.y);
@@ -97,9 +99,11 @@ public class EyeQueen extends GiantBossMob {
         }
         
         if (health <= 6000 && currentPhase == 2) {
-			for (int i = 0; i < 8; i++) {
-				level.add(new FireParticle(x - 8 + random.nextInt(16), y - 6 + random.nextInt(12)));
-			}
+			level.add(new FireParticle(x - random.nextInt(24), y + random.nextInt(24), 9));
+			level.add(new FireParticle(x + random.nextInt(24), y - random.nextInt(24), 9));
+		
+			level.add(new FireParticle(x - random.nextInt(24), y - random.nextInt(24), 9));
+			level.add(new FireParticle(x + random.nextInt(24), y + random.nextInt(24), 9));
             
         	// Change to phase 3
 			Sound.playAt("eyeQueenChangePhase", this.x, this.y);
@@ -141,10 +145,12 @@ public class EyeQueen extends GiantBossMob {
 
             this.dir = Direction.getDirection(dir);
             
-            if (this.deathing) {
-    			for (int i = 0; i < 16; i++) {
-    				level.add(new FireParticle(x - 16 + random.nextInt(32), y - 12 + random.nextInt(24), 3));
-    			}
+            if (this.deathing && tickTime % 2 == 0) {
+				level.add(new FireParticle(x - random.nextInt(24), y + random.nextInt(24), random.nextInt(9)));
+				level.add(new FireParticle(x + random.nextInt(24), y - random.nextInt(24), random.nextInt(9)));
+			
+				level.add(new FireParticle(x - random.nextInt(24), y - random.nextInt(24), random.nextInt(9)));
+				level.add(new FireParticle(x + random.nextInt(24), y + random.nextInt(24), random.nextInt(9)));
             }
 
             attackDelay--;
@@ -224,7 +230,20 @@ public class EyeQueen extends GiantBossMob {
 
     @Override
     public void render(Screen screen) {
-    	super.render(screen);
+		
+		if (deathing || attackDelay > 0) {
+			if (tickTime / 4 % 2 == 0) {
+				if (deathing) {
+					super.render(screen, Color.RED, true);
+				} else {
+					super.render(screen, Color.RED, false);
+				}
+			} else { 
+				super.render(screen);
+			}
+		} else {
+			super.render(screen);
+		}
 
         int textColor = Color.get(1, 0, 204, 0);
         int textColor2 = Color.get(1, 0, 51, 0);
@@ -264,7 +283,6 @@ public class EyeQueen extends GiantBossMob {
         }
     }
 
-
     public void die() {
         
         active = false;
@@ -283,7 +301,7 @@ public class EyeQueen extends GiantBossMob {
     
 	@Override
 	public int getLightRadius() {
-		return currentPhase == 3 ? 4: 3;
+		return currentPhase == 3 ? 5: 4;
 	}
 
 }

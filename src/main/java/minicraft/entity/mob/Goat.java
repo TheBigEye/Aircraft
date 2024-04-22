@@ -32,7 +32,6 @@ public class Goat extends FrostMob {
 	        	|| tile == Tiles.get("Poppy")) {
 	            remove();
 	            level.add(new Sheep(), x, y);
-	
 	        }
 			
 			// Sheep sounds

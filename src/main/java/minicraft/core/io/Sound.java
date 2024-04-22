@@ -32,7 +32,7 @@ public class Sound {
             try {
                 ALut.alutInit();
                 al.alGetError();
-                break; // Salir del bucle si la inicialización tiene éxito
+                break;
             } catch (ALException e) {
             }
         }
@@ -77,33 +77,23 @@ public class Sound {
             {"dungeonChest2", 		"/resources/sounds/furniture/dungeonchest/dungeonchest2.wav"},
             {"dungeonChest3", 		"/resources/sounds/furniture/dungeonchest/dungeonchest3.wav"},
             
-            {"spawnerSpawn", 		"/resources/sounds/furniture/spawner/spawn.wav"},
-            {"spawnerHurt", 		"/resources/sounds/furniture/spawner/hurt.wav"},
             {"spawnerDestroy1", 	"/resources/sounds/furniture/spawner/destroy1.wav"},
             {"spawnerDestroy2", 	"/resources/sounds/furniture/spawner/destroy2.wav"},
             {"spawnerDestroy3", 	"/resources/sounds/furniture/spawner/destroy3.wav"},
             
-            {"Menu_back", 			"/resources/sounds/gui/back.wav"},
-            {"Menu_select", 		"/resources/sounds/gui/select.wav"},
-            {"Menu_confirm", 		"/resources/sounds/gui/confirm.wav"},
-            {"Menu_loaded", 		"/resources/sounds/gui/loaded.wav"},
-            {"Menu_page_up", 		"/resources/sounds/gui/page up.wav"},
-                       
-            {"Ambience1", 			"/resources/sounds/ambient/Ambience1.wav"},
-            {"Ambience2", 			"/resources/sounds/ambient/Ambience2.wav"},
-            {"Ambience3", 			"/resources/sounds/ambient/Ambience3.wav"},
-            {"Ambience4", 			"/resources/sounds/ambient/Ambience4.wav"},
-            {"Ambience5", 			"/resources/sounds/ambient/Ambience5.wav"},
+            {"menuBack", 			"/resources/sounds/gui/back.wav"},
+            {"menuSelect", 		    "/resources/sounds/gui/select.wav"},
+            {"menuConfirm", 		"/resources/sounds/gui/confirm.wav"},
+            {"menuLoaded", 		    "/resources/sounds/gui/loaded.wav"},
+                                 
+            {"caveMood", 		    "/resources/sounds/ambient/cavemood.wav"},
+            {"caveBreath", 		    "/resources/sounds/ambient/cavebreath.wav"},
+            {"caveScream", 		    "/resources/sounds/ambient/cavescream.wav"},
+            {"heavenWind", 		    "/resources/sounds/ambient/heavenwind.wav"},
             
-            {"Sky_enviroment", 		"/resources/sounds/ambient/sky environment.wav"},
-            
-            {"Tile_snow", 			"/resources/sounds/tiles/Snow/snow.wav"},
-            {"Tile_snow_2", 		"/resources/sounds/tiles/Snow/snow 2.wav"},
-            {"Tile_snow_3", 		"/resources/sounds/tiles/Snow/snow 3.wav"},
-            {"Tile_snow_4", 		"/resources/sounds/tiles/Snow/snow 4.wav"},
-            {"Tile_farmland", 		"/resources/sounds/tiles/Farmland/farmland.wav"},
-            {"Tile_farmland_2", 	"/resources/sounds/tiles/Farmland/farmland 2.wav"},
-            {"Tile_farmland_3", 	"/resources/sounds/tiles/Farmland/farmland 3.wav"},
+            {"rainThunder1", 		"/resources/sounds/ambient/thunder1.wav"},
+            {"rainThunder2", 		"/resources/sounds/ambient/thunder2.wav"},
+            {"rainThunder3", 		"/resources/sounds/ambient/thunder3.wav"},
             
             {"musicTheme1", 		"/resources/sounds/music/fall.wav"},
             {"musicTheme2", 		"/resources/sounds/music/surface.wav"},
@@ -111,12 +101,7 @@ public class Sound {
             {"musicTheme4", 		"/resources/sounds/music/peaceful.wav"},
             {"musicTheme5", 		"/resources/sounds/music/cave.wav"},
             {"musicTheme6", 		"/resources/sounds/music/cavern.wav"},
-            {"musicTheme7", 		"/resources/sounds/music/dripping.wav"},
             {"musicTheme8", 		"/resources/sounds/music/deeper.wav"},
-            
-            {"rainThunder1", 		"/resources/sounds/ambient/weather/thunder1.wav"},
-            {"rainThunder2", 		"/resources/sounds/ambient/weather/thunder2.wav"},
-            {"rainThunder3", 		"/resources/sounds/ambient/weather/thunder3.wav"},
             
             {"genericExplode", 		"/resources/sounds/genericExplode.wav"},
             {"genericFuse", 		"/resources/sounds/genericFuse.wav"},
@@ -129,10 +114,8 @@ public class Sound {
     }
     
 	public static void shutdown() {
-		Logger.debug("Shutting down sound engine ...");
-		
+		Logger.info("Shutting down sound engine ...");
 		ALut.alutExit();
-		
 		sounds.clear();
 	}
 

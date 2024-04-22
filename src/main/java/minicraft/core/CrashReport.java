@@ -78,7 +78,7 @@ public class CrashReport extends JPanel {
      * Manually launched crash!
      */
     public static void crashMePlease() {
-    	throw new NullPointerException();
+    	throw new NullPointerException("Manually initiated crash! :D");
     }
 	
 }

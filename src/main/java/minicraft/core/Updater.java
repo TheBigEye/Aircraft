@@ -6,13 +6,11 @@ import java.awt.GraphicsEnvironment;
 import org.tinylog.Logger;
 
 import minicraft.core.io.Localization;
+import minicraft.core.io.Screenshot;
 import minicraft.core.io.Settings;
 import minicraft.entity.furniture.Bed;
-import minicraft.entity.mob.Player;
-import minicraft.item.Items;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
-import minicraft.level.tile.Tiles;
 import minicraft.saveload.Save;
 import minicraft.screen.EndGameDisplay;
 import minicraft.screen.LevelTransitionDisplay;
@@ -97,9 +95,8 @@ public class Updater extends Game {
 	// In the end, calls menu.tick() if there's a menu, or level.tick() if no menu.
 	public static void tick() {
 
-		// move the player -1 level for testing...
-		if (isMode("Creative") && input.getKey("SHIFT-S").clicked ) Game.setDisplay(new LevelTransitionDisplay(-1));
 		if (isMode("Creative") && input.getKey("SHIFT-W").clicked ) Game.setDisplay(new LevelTransitionDisplay(1));
+		if (isMode("Creative") && input.getKey("SHIFT-S").clicked ) Game.setDisplay(new LevelTransitionDisplay(-1));
 
 		if (input.getKey("FULLSCREEN").clicked) {
 			Updater.FULLSCREEN = !Updater.FULLSCREEN;
@@ -197,12 +194,12 @@ public class Updater extends Game {
 					World.playerDeadTime++;
 					if (World.playerDeadTime > 60) {
 						setDisplay(new PlayerDeathDisplay());
+						World.playerDeadTime = 0;
 					}
 
 				} else if (World.pendingLevelChange != 0) {
 					setDisplay(new LevelTransitionDisplay(World.pendingLevelChange));
 					World.pendingLevelChange = 0;
-
 				}
 
 				player.tick(); // Ticks the player when there's no menu.
@@ -212,12 +209,16 @@ public class Updater extends Game {
 					Tile.tickCount++;
 				}
 
-				if (display == null && input.getKey("F3").clicked) { // shows debug info in upper-left
+				if (input.getKey("F3").clicked) { // shows debug info in upper-left
 					Renderer.showDebugInfo = !Renderer.showDebugInfo;
+				}
+				
+				if (input.getKey("screenshot").clicked) { // takes an screenshot
+					Screenshot.take(Renderer.image);
 				}
 
 				// for debugging only
-				if (debug) {
+				/*if (debug) {
 					if (input.getKey("ctrl-p").clicked) {
 						// print all players on all levels, and their coordinates.
 						Logger.debug("Printing players on all levels ...");
@@ -254,7 +255,6 @@ public class Updater extends Game {
 						else if (normalSpeed * gameSpeed > 5) gameSpeed /= 2;
 					}
 
-
 					// Client-only cheats, since they are player-specific.
 					if (input.getKey("shift-g").clicked) // This should not be needed, since the inventory should not be altered.
 						Items.fillCreativeInventory(player.getInventory());
@@ -272,7 +272,10 @@ public class Updater extends Game {
 					if (input.getKey("shift-d").clicked) {
 						levels[currentLevel].setTile(player.x >> 4, player.y >> 4, Tiles.get("Stairs Down"));
 					}
+					
 				} // end debug only cond.
+				*/
+				
 			} // end "menu-null" conditional
 		} // end hasfocus conditional
 	} // end tick()

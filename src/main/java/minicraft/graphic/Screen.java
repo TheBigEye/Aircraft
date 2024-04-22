@@ -331,52 +331,46 @@ public class Screen {
 	}
 	
 	public void darkness(Screen screen, int currentLevel, int xa, int ya) {
-		double tintFactor = 0;
-		if (currentLevel >= 3  && currentLevel < 5) {
-			int transTime = Updater.dayLength / 4;
-			double relTime = (Updater.tickCount % transTime) * 1.0 / transTime;
+	    double tintFactor = 0;
+	    if (currentLevel >= 3 && currentLevel < 5) {
+	        int transTime = Updater.dayLength / 4;
+	        double relTime = (Updater.tickCount % transTime) / (double) transTime;
 
-			switch (Updater.getTime()) {
-	            case Morning: tintFactor =  (MAXDARK - 10) - (Updater.tickCount / 30); break;
-				case Day: tintFactor = 0; break;
-				case Evening: tintFactor = relTime * MAXDARK; break;
-				case Night: tintFactor = MAXDARK; break;
-			}
+	        switch (Updater.getTime()) {
+	            case Morning:  tintFactor = (MAXDARK - 10) - (Updater.tickCount / 30); break;
+	            case Day: tintFactor = 0; break;
+	            case Evening: tintFactor = relTime * MAXDARK; break;
+	            case Night: tintFactor = MAXDARK; break;
+	        }
 
-			if (currentLevel > 3) {
-				tintFactor -= (tintFactor < 10 ? tintFactor : 10);
-			}
+	        if (currentLevel > 3 && tintFactor > 10) {
+	            tintFactor -= 10;
+	        }
 
-			tintFactor *= -1; // all previous operations were assuming this was a darkening factor.
+	        tintFactor *= -1; // all previous operations were assuming this was a darkening factor.
+	    }
 
-		} else if (currentLevel >= 5) {
-			//tintFactor = -MAXDARK;
-		}
+	    int[] overlayPixels = screen.pixels;
+	    for (int y = 0; y < h; y++) {
+	        for (int x = 0; x < w; x++) {
+	            int currentPixel = y * w + x;
+	            if (overlayPixels[currentPixel] / 256 <= dither[((x + xa) & 3) + ((y + ya) & 3) * 4]) {
+	                int intense = (128 + overlayPixels[currentPixel]) / 128;
 
-		int[] oPixels = screen.pixels;
-		int i = 0;
-		for (int y = 0; y < h; y++) {
-			for (int x = 0; x < w; x++) {
-				if (oPixels[i] / 256 <= dither[((x + xa) & 3) + ((y + ya) & 3) * 4]) {
-					int intense = (128 + oPixels[i]) / 128;
+	                if (currentLevel > 3) {
+	                    pixels[currentPixel] = Color.tintColor(pixels[currentPixel], (int) tintFactor);
+	                }
 
-					if (currentLevel > 3) {
-						/// outside the caves, not being lit simply means being darker.
-						pixels[i] = Color.tintColor(pixels[i], (int) tintFactor); // darkens the color one shade.
-					}
+	                if (intense == 5) {
+	                    pixels[currentPixel] = Color.createShadowCol(Color.tintColor(pixels[currentPixel], (int) tintFactor), 1, 6, 1);
+	                }
+	            }
 
-					if (intense == 5) {
-                         pixels[i] = Color.createShadowCol(Color.tintColor(pixels[i], (int) tintFactor), (int)Math.min(intense, 1), 6, Math.min(intense, 1));
-					}
-				}
-
-				// increase the tinting of all colors by 20.
-				pixels[i] = Color.tintColor(pixels[i], 20);
-				i++; // moves to the next pixel
-
-			}
-		}
+	            pixels[currentPixel] = Color.tintColor(pixels[currentPixel], 20);
+	        }
+	    }
 	}
+
 
 	public void renderLight(int x, int y, int lightRadius) {
 		// Apply the x and y offsets to the light's position (by screen scrolling)

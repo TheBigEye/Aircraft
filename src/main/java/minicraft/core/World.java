@@ -31,6 +31,8 @@ public class World extends Game {
 	static int playerDeadTime; // The time after you die before the dead menu shows up.
 	static int pendingLevelChange; // Used to determine if the player should change levels or not.
 	
+	public static String currentMusicTheme;
+	
 	private static long lastWorldExitTime = 0; // When the world exited.
 	private static long lastWorldEnterTime = 0; // When the world entered.
 

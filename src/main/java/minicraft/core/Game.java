@@ -22,6 +22,7 @@ import minicraft.level.tile.Tiles;
 import minicraft.saveload.Load;
 import minicraft.saveload.Version;
 import minicraft.screen.Display;
+import minicraft.screen.TexturePackDisplay;
 import minicraft.screen.TitleDisplay;
 import minicraft.util.Utils;
 
@@ -42,7 +43,7 @@ public class Game {
 	public static final String BUILD = "1.0"; // Aircraft version
 	
 	// TODO: not use anymore Minicraft plus versioning
-	public static final Version VERSION = new Version("2.2.0-dev2"); // Minicraft plus mod base version
+	public static final Version VERSION = new Version("2.2.0"); // Minicraft plus mod base version
 
 	public static InputHandler input; // Input used in Game, Player, and just about all the *Menu classes*.
 	public static Player player;
@@ -65,7 +66,7 @@ public class Game {
 			Logger.warn("Game tried to exit display, but no menu is open.");
 			return;
 		}
-		Sound.play("Menu_back");
+		Sound.play("menuBack");
 		newDisplay = display.getParent();
 	}
 
@@ -127,6 +128,14 @@ public class Game {
 
 	// Main functions
 	public static void main(String[] args) {
+		
+		if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+			Logger.info("Initializing hardware acceleration ...");
+			System.setProperty("sun.java2d.translaccel","true"); // Put translucent images in VRAM and using Direct3D to render them to the screen
+			System.setProperty("sun.java2d.accthreshold", "0"); // All images, regardless of size, will be sped up
+			System.setProperty("sun.java2d.ddforcevram", "true"); // Keeps images in video memory
+		}
+		
 		// Crash report log
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
 			throwable.printStackTrace();
@@ -208,6 +217,8 @@ public class Game {
 		
 		// Display objects in the screen
 		Renderer.initScreen();
+		
+		new TexturePackDisplay().initialize();
 
 		// Update fullscreen frame if Updater.FULLSCREEN was updated previously
 		if (Updater.FULLSCREEN) {

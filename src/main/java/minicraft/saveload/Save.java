@@ -48,6 +48,7 @@ import minicraft.level.Level;
 import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
+import minicraft.screen.TexturePackDisplay;
 import minicraft.screen.WorldSelectDisplay;
 
 public class Save {
@@ -221,6 +222,7 @@ public class Save {
 
         
 		json.put("keymap", new JSONArray(Game.input.getKeyPrefs()));
+		json.put("texturePack", TexturePackDisplay.getLoadedPack());
 
 		// Save preferences to json file
 		try {

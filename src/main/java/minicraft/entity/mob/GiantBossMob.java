@@ -120,6 +120,15 @@ public class GiantBossMob extends MobAi {
     public void render(Screen screen) {
         super.render(screen, 15, 18);
     }
+    
+
+    public void render(Screen screen, int color, boolean shake) {
+    	if (shake) {
+    		super.render(screen, 15 - random.nextInt(4), 18 - random.nextInt(2), color);
+    	} else {
+    		super.render(screen, 15, 18, color);
+    	}
+    }
 
     @Override
     protected void touchedBy(Entity entity) { // if an entity (like the player) touches the enemy mob

@@ -185,7 +185,7 @@ public class Spawner extends Furniture {
 	    if (Game.debug) level.printLevelLoc("Spawning new " + mob, (newmob.x >> 4), (newmob.y >> 4), "...");
 
 	    level.add(newmob);
-	    Sound.playAt("spawnerSpawn", this.x, this.y);
+	    Sound.playAt("genericHurt", this.x, this.y);
 
 	    // Fire particles when spawn a mob
 	    if (Settings.get("particles").equals(true)) {
@@ -225,11 +225,11 @@ public class Spawner extends Furniture {
                 
                 // Random spawner sound 
 				switch (random.nextInt(3)) {
-					case 0: Sound.playAt("spawnerHurt", this.x, this.y); break;
+					case 0: Sound.playAt("genericHurt", this.x, this.y); break;
 					case 1: Sound.playAt("spawnerDestroy1", this.x, this.y); break;
 					case 2: Sound.playAt("spawnerDestroy2", this.x, this.y); break;
 				    case 3: Sound.playAt("spawnerDestroy3", this.x, this.y); break;
-				    default: Sound.playAt("spawnerHurt", this.x, this.y); break;
+				    default: Sound.playAt("genericHurt", this.x, this.y); break;
 				}
 
 				// Sound.playerDeath.playOnDisplay();

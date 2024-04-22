@@ -159,7 +159,7 @@ public class LevelGen {
 	private static short[][] createAndValidateTopMap(int w, int h) {
 		random.setSeed(worldSeed);
 
-		LoadingDisplay.setMessage("Generating the Surface");
+		LoadingDisplay.setMessage("Generating surface!");
 
 		do {
 			short[][] result = createTopMap(w, h);
@@ -185,7 +185,7 @@ public class LevelGen {
 	private static short[][] createAndValidateUndergroundMap(int w, int h, int depth) {
 		random.setSeed(worldSeed);
 
-		LoadingDisplay.setMessage("Generating the Caves");
+		LoadingDisplay.setMessage("Generating caves!");
 
 		do {
 			short[][] result = createUndergroundMap(w, h, depth);
@@ -208,7 +208,7 @@ public class LevelGen {
 	private static short[][] createAndValidateDungeon(int w, int h) {
 		random.setSeed(worldSeed);
 
-		LoadingDisplay.setMessage("Generating the Dungeon");
+		LoadingDisplay.setMessage("Generating the dungeon!");
 
 		do {
 			short[][] result = createDungeon(w, h);
@@ -232,7 +232,7 @@ public class LevelGen {
 	private static short[][] createAndValidateSkyMap(int w, int h) {
 		random.setSeed(worldSeed);
 
-		LoadingDisplay.setMessage("Generating the Heaven");
+		LoadingDisplay.setMessage("Generating the heaven!");
 
 		do {
 			short[][] result = createSkyMap(w, h);
@@ -254,8 +254,6 @@ public class LevelGen {
 	@Nullable
 	public static short[][] createAndValidateVoidMap(int w, int h) {
 		random.setSeed(worldSeed);
-
-		LoadingDisplay.setMessage("Generating Something");
 
 		do {
 			short[][] result = createVoidMap(w, h);
@@ -420,7 +418,7 @@ public class LevelGen {
 
 	    
 		/// FOREST GENERATION STEP
-		LoadingDisplay.setMessage("Adding some trees");
+		LoadingDisplay.setMessage("Generating forests");
 		for (int i = 0; i < treeThreshold; i++) {
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
@@ -454,7 +452,7 @@ public class LevelGen {
 
 	
 		// VEGETATION GENERATION STEP
-		LoadingDisplay.setMessage("Adding some flowers");
+		LoadingDisplay.setMessage("Generating meadow");
 		for (int i = 0; i < flowerThreshold; i++) {
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
@@ -487,8 +485,6 @@ public class LevelGen {
 				}
 			}
 		}
-
-		LoadingDisplay.setMessage("Adding some plants");
 		for (int i = 0; i < flowerThreshold; i++) {
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
@@ -599,7 +595,7 @@ public class LevelGen {
 		}
 
 
-		LoadingDisplay.setMessage("Generating Mountains");
+		LoadingDisplay.setMessage("Generating mountains");
 		for (int j = 0; j < h; j++) {
 		    for (int x = 0; x < w; x++) {
 		        int currentTile = map[x + j * w];
@@ -712,8 +708,6 @@ public class LevelGen {
 
 		stairsLoop:
 		for (int i = 0; i < (fullSize / 100); i++) { // loops a certain number of times, more for bigger world
-			
-			LoadingDisplay.setMessage("Placing caves stairs");
 
 			// Sizes
 			int x = random.nextInt(w - 2) + 1;
@@ -884,19 +878,28 @@ public class LevelGen {
 				
 				double dist = Math.max(xd, yd);
 				dist = Math.pow(dist, 8);
-				val += 1 - dist * 20;
+				val += 1 - dist * 16;
+				
+				tval += 1 - dist * 16;
+				hval += 1 - dist * 16;
 				
 				if (val > -1 && wval < -1.4 + (depth) / 2 * 3 && depth == 1) {
 					map[i] = Tiles.get("Dirt").id;
 					
 				// Make level 2 and 3 caves
-				} else if (val > -1 && wval < -4 + (depth) / 2.0 * 3 && depth != 1) {
-					switch (depth) {
-						case 3: map[i] = Tiles.get("Lava").id; break;
-						default: map[i] = Tiles.get("Water").id; break;
+				} else if (val > -0.7 && wval < -4 + (depth) / 2.0 * 3 && depth != 1) {
+					
+					if (depth == 3) {
+						if (tval < -0.10 && hval < 0.60) {
+							map[i] = Tiles.get("Magma").id;
+						} else {
+							map[i] = Tiles.get("Lava").id;
+						}
+					} else {
+						map[i] = Tiles.get("Water").id;
 					}
 				} else if (val > -1.5 && (mval < -1.7 || nval < -1.4)) {
-		            if (tval < -0.10 && hval > 0.6) {
+		            if (tval < -0.10 && hval > 0.6 && depth == 1) {
 		                map[i] = Tiles.get("Mycelium").id;
 		            } else {
 		                map[i] = Tiles.get("Dirt").id;
@@ -908,7 +911,7 @@ public class LevelGen {
 		}
 		
 		if (depth == 1) {
-			LoadingDisplay.setMessage("Adding some mushrooms");
+			LoadingDisplay.setMessage("Generating mushrooms");
 			for (int i = 0; i < (size / 100); i++) {
 				int x = random.nextInt(w);
 				int y = random.nextInt(h);
@@ -947,7 +950,7 @@ public class LevelGen {
 		}
 		
 		/// Generate ores
-		LoadingDisplay.setMessage("Adding some ores");
+		LoadingDisplay.setMessage("Generating ores");
 		
 		// Iron ore
 		for (int i = 0; i < (size / 400); i++) {
@@ -985,7 +988,6 @@ public class LevelGen {
 				for (int j = 0; j < 10; j++) {
 					if (xx < w - stairsRadius && yy < h - stairsRadius) {
 						
-						LoadingDisplay.setMessage("Placing dungeon stairs");
 						Structure.dungeonLock.draw(map, xx, yy, w);
 
 						/// The "& 0xffff" is a common way to convert a short to an unsigned int, which basically prevents negative values... except... this doesn't do anything if you flip it back to a short again...
@@ -1075,7 +1077,7 @@ public class LevelGen {
 		}
 
 		// Generate skygrass in cloud tile
-		LoadingDisplay.setMessage("Generating highlands");
+		LoadingDisplay.setMessage("Generating sky highlands");
 		for (int i = 0; i < heavenThreshold; i++) {
 			int xs = halfWidth - 22; // divide the 60 (down) by 2 -> 30 to center
 			int ys = halfHeight - 22;
@@ -1103,7 +1105,7 @@ public class LevelGen {
 
 		// Make the central island
 		// Logger.debug("Generating central island ...");
-		LoadingDisplay.setMessage("Generating mountains");
+		LoadingDisplay.setMessage("Generating sky mountains");
 		for (int i = 0; i < heavenThreshold; i++) {
 			int xs = halfWidth - 22;
 			int ys = halfHeight - 22;
@@ -1130,7 +1132,7 @@ public class LevelGen {
 		}
 
 		// Generate the ferrosite edge for the central island
-		LoadingDisplay.setMessage("Generating midlands");
+		LoadingDisplay.setMessage("Generating sky midlands");
 		for (int i = 0; i < heavenThreshold; i++) {
 			int xs = halfWidth - 38; // center position
 			int ys = halfHeight - 40;
@@ -1157,8 +1159,6 @@ public class LevelGen {
 			}
 		}
 
-		// Generate sky lawn in Sky grass
-		LoadingDisplay.setMessage("Adding some flowers");
 		for (int i = 0; i < (fullsize / 800); i++) {
 			int x = (halfWidth - random.nextInt(32)) + random.nextInt(32);
 			int y = (halfWidth - random.nextInt(32)) + random.nextInt(32);
@@ -1176,8 +1176,7 @@ public class LevelGen {
 				}
 			}
 		}
-
-		LoadingDisplay.setMessage("Adding some trees");
+		
 		for (int i = 0; i < (fullsize / 400); i++) {
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
@@ -1239,8 +1238,6 @@ public class LevelGen {
 		}
 
 		// Avoid the connection between the Sky grass and Infinite Fall tiles
-		LoadingDisplay.setMessage("Generating island edge");
-
 		for (int j = 0; j < h; j++) {
 		    for (int x = 0; x < w; x++) {
 		        // Check if the current tile is a "sky" tile
@@ -1266,9 +1263,6 @@ public class LevelGen {
 		        }
 		    }
 		}
-		
-
-		LoadingDisplay.setMessage("Placing heaven stairs");
 
 		int stairsCount = 0;
 		int stairsRadius = 15;
@@ -1418,7 +1412,7 @@ public class LevelGen {
 		while (!hasquit) { // stop the loop and close the program
 
 			long startNanoTime = System.nanoTime();
-			int w = 256, h = 256;
+			int w = 256, h = w;
 			int mapScale = 0;
 
 			if ((w == 256) && (h == 256)) {
@@ -1430,7 +1424,7 @@ public class LevelGen {
 			int lvl = maplvls[idx++ % maplvls.length];
 			if (lvl > 2 || lvl < -4) continue;
 
-			short[][] fullmap = LevelGen.createAndValidateMap(w, h, 0, random.nextLong());
+			short[][] fullmap = LevelGen.createAndValidateMap(w, h, -3, random.nextLong());
 
 			if (fullmap == null) continue;
 			short[] map = fullmap[0];
@@ -1462,6 +1456,7 @@ public class LevelGen {
 					else if (map[i] == Tiles.get("Daisy").id) pixels[i] = 0x60a560;
 					else if (map[i] == Tiles.get("Water").id) pixels[i] = 0x1A2C89;
 					else if (map[i] == Tiles.get("Lava").id) pixels[i] = 0xC82020;
+					else if (map[i] == Tiles.get("Magma").id) pixels[i] = 0xC83C20;
 					else if (map[i] == Tiles.get("Rock").id) pixels[i] = 0x7a7a7a;
 					else if (map[i] == Tiles.get("Up Rock").id) pixels[i] = 0x939393;
 					else if (map[i] == Tiles.get("Sand Rock").id) pixels[i] = 0x777451;

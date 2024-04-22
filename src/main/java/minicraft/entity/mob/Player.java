@@ -196,7 +196,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			}
 		};
 
-		// if(previousInstance == null)
+		// if (previousInstance == null)
 		// inventory.add(Items.arrowItem, acs);
 
 		potionEffects = new HashMap<>();
@@ -643,7 +643,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
                 }
             }
 
-            if (input.getKey("menu").clicked && activeItem != null) {
+            if ((input.getKey("menu").clicked || input.getKey("craft").clicked) && activeItem != null) {
                 playerInventory.add(0, activeItem);
                 activeItem = null;
             }
@@ -653,22 +653,24 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             	// !use() = no furniture in front of the player; this prevents player inventory from opening (will open furniture inventory instead)
                 if (input.getKey("menu").clicked && !use()) {
                     Game.setDisplay(new PlayerInvDisplay(this));
-                }
-                if (input.getKey("pause").clicked) {
+                    
+                } else if (input.getKey("pause").clicked) {
                     Game.setDisplay(new PauseDisplay());
-                }
-				if (input.getKey("commands").clicked && (boolean)Settings.get("cheats") == true) {
-					Game.setDisplay(new ChatDisplay());
-				} else if (input.getKey("commands").clicked && (boolean)Settings.get("cheats") == false) {
-					Game.notifications.add("Cheats are disabled!");
-				}
-				
-                if (input.getKey("craft").clicked && !use()) {
+                    
+                } else if (input.getKey("commands").clicked) {
+					if ((boolean) Settings.get("cheats")) {
+						Game.setDisplay(new ChatDisplay());
+					} else {
+						Game.notifications.add("Cheats are disabled!");
+					}
+					
+				} else if (input.getKey("craft").clicked && !use()) {
                     Game.setDisplay(new CraftingDisplay(Recipes.craftRecipes, "Crafting", this, true));
-                }
-                if (input.getKey("info").clicked) {
+                    
+                } else if (input.getKey("info").clicked) {
                     Game.setDisplay(new InfoDisplay());
                 }
+                
                 if (input.getKey("quicksave").clicked && !Updater.saving) {
                     Updater.saving = true;
                     LoadingDisplay.setPercentage(0);
@@ -765,7 +767,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
     				if (!Game.isMode("Creative")) tool.durability--;
 
-    				AchievementsDisplay.setAchievement("minicraft.achievement.bow",true);
+    				AchievementsDisplay.setAchievement("minicraft.achievement.bow", true);
     				
     				return;
     			}
@@ -812,11 +814,28 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 		
 		if (activeItem == null || activeItem.canAttack()) { // If there is no active item, OR if the item can be used to attack...
 			attackTime = 5;
+			
 			// Attacks the enemy in the appropriate direction.
-			boolean usedToolItem = hurt(getInteractionBox(playerAttackDistance));
+			boolean usedToolItem;
 			
 			// Attempts to hurt the tile in the appropriate direction.
-			Point interactionTile = getInteractionTile();
+			Point interactionTile;
+			
+			if (activeItem instanceof ToolItem) {
+			    ToolItem tool = (ToolItem) activeItem;
+			    ToolType toolType = tool.type;
+				
+			    if (toolType == ToolType.Spear) {
+					usedToolItem = hurt(getInteractionBox((playerAttackDistance + ((tool.level + 1) * 2) - 1)));
+					interactionTile = getInteractionTile(((tool.level + 1) * 2) - 2);
+			    } else {
+			    	usedToolItem = hurt(getInteractionBox(playerAttackDistance));
+			    	interactionTile = getInteractionTile();
+			    }
+			} else {
+				usedToolItem = hurt(getInteractionBox(playerAttackDistance));
+				interactionTile = getInteractionTile();
+			}
 			
 			// Check if tile is in bounds of the map.
 			if (interactionTile.x >= 0 && interactionTile.y >= 0 && interactionTile.x < level.w && interactionTile.y < level.h) {
@@ -825,7 +844,12 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 			}
 			
 			if (usedToolItem && activeItem instanceof ToolItem) {
-				((ToolItem)activeItem).payDurability();
+				ToolItem tool = (ToolItem) activeItem;
+				tool.payDurability();
+
+			    if (tool.type == ToolType.Spear) {
+			    	payStamina(tool.level + 3);
+			    }
 			}
 		}
     }
@@ -851,6 +875,16 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
         x += dir.getX() * playerInteractDistance;
         y += dir.getY() * playerInteractDistance;
+
+        return new Point(x >> 4, y >> 4);
+    }
+    
+    private Point getInteractionTile(int r) {
+        int x = this.x;
+        int y = this.y - 2;
+
+        x += dir.getX() * (playerInteractDistance + r);
+        y += dir.getY() * (playerInteractDistance + r);
 
         return new Point(x >> 4, y >> 4);
     }
@@ -933,24 +967,23 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         else return false;
     }
 
-    /** Same, but for interaction. */
-    private boolean interact(Rectangle area) {
-    	List<Entity> entities = level.getEntitiesInRect(area);
-    	for (int i = 0; i < entities.size(); i++) {
-    		Entity entity = entities.get(i);
-    		if (entity != this && entity.interact(this, activeItem, attackDir)) {
-    			return true; // This is the ONLY place that the Entity.interact method is actually called.
-    		}
-    	}
-    	return false;
-    }
+    /** Same, but for interaction. */ 
+	private boolean interact(Rectangle area) {
+	    List<Entity> entities = level.getEntitiesInRect(area);
+	    for (Entity entity : entities) {
+	        if (entity != this && entity.interact(this, activeItem, attackDir)) {
+	            return true; // This is the ONLY place that the Entity.interact method is actually called.
+	        }
+	    }
+	    return false;
+	}
 
     /** Same, but for attacking. */
     private boolean hurt(Rectangle area) {
-    	List<Entity> entities = level.getEntitiesInRect(area);
     	int maxHurtDamage = 0;
-    	for (int i = 0; i < entities.size(); i++) {
-    		Entity entity = entities.get(i);
+
+    	List<Entity> entities = level.getEntitiesInRect(area);
+    	for (Entity entity : entities) {
     		if (entity != this && entity instanceof Mob) {
     			int hurtDamage = getAttackDamage(entity);
     			maxHurtDamage = Math.max(hurtDamage, maxHurtDamage);

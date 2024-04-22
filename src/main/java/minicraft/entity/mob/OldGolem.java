@@ -1,6 +1,5 @@
 package minicraft.entity.mob;
 
-import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.graphic.MobSprite;
 import minicraft.item.Items;
@@ -27,10 +26,6 @@ public class OldGolem extends EnemyMob {
     @Override
     public void tick() {
         super.tick();
-        
-        if (Game.isMode("Creative")) {
-        	return;
-        }
     }
 
     public void die() {

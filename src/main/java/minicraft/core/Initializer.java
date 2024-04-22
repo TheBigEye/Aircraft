@@ -41,7 +41,7 @@ public class Initializer extends Game {
 	
 	// These store the number of frames and ticks in the previous second, used for fps, at least.
 	static int fra;
-	static int tik; 
+	static int tik;
 
 	public static int getCurrentFPS() {
 		return fra;
@@ -178,7 +178,7 @@ public class Initializer extends Game {
 	    }
 	    
 	    // Finalize discord rich presence
-	    discordCore.activityManager().clearActivity(Core.DEFAULT_CALLBACK);
+	    //discordCore.activityManager().clearActivity(Core.DEFAULT_CALLBACK);
 	}
 
 

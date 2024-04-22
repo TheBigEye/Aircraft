@@ -54,6 +54,7 @@ public abstract class Tile {
 	protected boolean connectsToSand = false;
 	protected boolean connectsToFluid = false;
 	protected boolean connectsToLava = false;
+	protected boolean connectsToMagma = false;
 	protected boolean connectsToRock = false;
 	
 	protected boolean connectsToSnow = false;

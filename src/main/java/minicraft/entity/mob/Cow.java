@@ -24,7 +24,7 @@ public class Cow extends PassiveMob {
         
 		// Cow sounds
 		if ((tickTime % (random.nextInt(100) + 120) == 0)) {
-			doPlaySound(sounds, 8);
+			playSound(sounds, 8);
 		}
     }
 

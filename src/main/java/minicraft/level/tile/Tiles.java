@@ -129,6 +129,7 @@ public final class Tiles {
 		// heaven tiles
 		Tiles.add(76, new SkyGrassTile("Sky Grass"));
 		Tiles.add(77, new SandRockTile("Sand Rock"));
+		Tiles.add(78, new MagmaTile("Magma"));
 		Tiles.add(79, new SkyLawnTile("Sky Lawn"));
 		Tiles.add(80, new FerrositeTile("Ferrosite"));
 		Tiles.add(81, new SkyFarmTile("Sky Farmland"));

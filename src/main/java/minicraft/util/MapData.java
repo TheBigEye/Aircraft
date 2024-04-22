@@ -22,7 +22,7 @@ public enum MapData {
     HOLE(Tiles.get("Hole").id, Color.get(1, 61, 47, 8)),
 
     WATER(Tiles.get("Water").id, Color.get(1, 26, 44, 137)),
-    LAVA(Tiles.get("Lava").id, Color.get(1, 200, 32, 32)),
+    LAVA(Tiles.get("Lava").id, Color.get(1, 200, 60, 32)),
 
     ROCK(Tiles.get("Rock").id, Color.get(1, 122, 122, 122)),
     UP_ROCK(Tiles.get("Up Rock").id, Color.get(1, 147, 147, 147)),
@@ -38,6 +38,7 @@ public enum MapData {
 
     SAND(Tiles.get("Sand").id, Color.get(1, 226, 226, 111)),
     SNOW(Tiles.get("Snow").id, Color.get(1, 240, 240, 240)),
+    MAGMA(Tiles.get("Magma").id, Color.get(1, 200, 32, 32)), 
     ICE(Tiles.get("Ice").id, Color.get(1, 104, 110, 236)),
 
     ICE_SPIKE(Tiles.get("Ice Spike").id, Color.get(1, 240, 240, 240)),

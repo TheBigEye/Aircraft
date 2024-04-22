@@ -77,12 +77,29 @@ public class MobSprite extends Sprite {
 		}
 	}
 
+	public void render(Screen screen, int x, int y, int color) {
+		int pixelsLength = spritePixels.length;
+		for (int row = 0; row < pixelsLength; row++) { // loop down through each row
+			// row << 3 is equivalent to row * 8
+			renderRow(row, screen, x, y + (row << 3), false, color);
+		}
+	}
+	
 	public void renderRow(int r, Screen screen, int x, int y, boolean fullbright) {
 		Pixel[] row = spritePixels[r];
 		int rowLength = row.length;
 		for (int column = 0; column < rowLength; column++) { // loop across through each column
 			// column << 3 is equivalent to column * 8
 			screen.render(x + (column << 3), y, row[column], -1, fullbright); // render the sprite pixel.
+		}
+	}
+	
+	public void renderRow(int r, Screen screen, int x, int y, boolean fullbright, int color) {
+		Pixel[] row = spritePixels[r];
+		int rowLength = row.length;
+		for (int column = 0; column < rowLength; column++) { // loop across through each column
+			// column << 3 is equivalent to column * 8
+			screen.render(x + (column << 3), y, row[column], -1, fullbright, color); // render the sprite pixel.
 		}
 	}
 }

@@ -11,6 +11,7 @@ import java.util.zip.ZipFile;
 
 import javax.imageio.ImageIO;
 
+import org.jetbrains.annotations.Nullable;
 import org.tinylog.Logger;
 
 import minicraft.core.Game;
@@ -29,6 +30,8 @@ public class TexturePackDisplay extends Display {
 
 	private static final String DEFAULT_TEXTURE_PACK = "Default"; // Default texture :)
 	private static final String LEGACY_TEXTURE_PACK = "Legacy"; // Legacy texture :)
+	
+	private static String loadedPack = DEFAULT_TEXTURE_PACK;
 
 	private static final String[] ENTRY_NAMES = new String[] {
 		"items.png", // Items sheet (0)
@@ -74,14 +77,47 @@ public class TexturePackDisplay extends Display {
 		.createMenu());
 	}
 
+	public void initialize() {
+		
+		Logger.info("Initializing texture packs ...");
+		
+	    if (loadedPack.equals(DEFAULT_TEXTURE_PACK)) {
+	    	SpriteSheet[] sheets = new SpriteSheet[ENTRY_NAMES.length];
+	    	
+	        // Load default sprite sheet.
+	    	sheets = Renderer.loadDefaultTextures();
+	        
+			Renderer.screen.setSheet(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
+			Font.updateCharAdvances(sheets[4]);
+	    } else if (loadedPack.equals(LEGACY_TEXTURE_PACK)) {
+	    	
+	    	SpriteSheet[] sheets = new SpriteSheet[ENTRY_NAMES.length];
+	    	
+	        // Load legacy sprite sheet.
+	    	sheets = Renderer.loadLegacyTextures();
+	        
+			Renderer.screen.setSheet(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
+			Font.updateCharAdvances(sheets[4]);
+	    } else {
+	        // Load texture pack from .zip file.
+	        try {
+	            ZipFile zipFile = new ZipFile(new File(location, loadedPack));
+	            updateSheets(zipFile);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            Logger.error("Could not load resource pack zip at {}.", location + "/" + loadedPack);
+	        }
+	    }
+	}
+
 	private static void update() {
 		shouldUpdate = true;
-		Sound.play("Menu_loaded");
+		Sound.play("menuLoaded");
 	}
 
 	private void updateSheets(Screen screen) throws IOException {
 		try {
-			SpriteSheet[] sheets = new SpriteSheet[TexturePackDisplay.ENTRY_NAMES.length];
+			SpriteSheet[] sheets = new SpriteSheet[ENTRY_NAMES.length];
 
 			if (menus[0].getSelection() == 0) {
 				// Load default sprite sheet.
@@ -93,8 +129,8 @@ public class TexturePackDisplay extends Display {
 
 			} else {
 				try (ZipFile zipFile = new ZipFile(new File(location, Objects.requireNonNull(menus[0].getCurEntry()).toString()))) {
-					for (int i = 0; i < TexturePackDisplay.ENTRY_NAMES.length; i++) {
-						ZipEntry entry = zipFile.getEntry(TexturePackDisplay.ENTRY_NAMES[i]);
+					for (int i = 0; i < ENTRY_NAMES.length; i++) {
+						ZipEntry entry = zipFile.getEntry(ENTRY_NAMES[i]);
 
 						if (entry != null) {
 							try (InputStream inputEntry = zipFile.getInputStream(entry)) {
@@ -102,18 +138,18 @@ public class TexturePackDisplay extends Display {
 
 							} catch (IOException exception) {
 								exception.printStackTrace();
-								Logger.error("Sprites failure, '{}' has unable to be loaded, aborting ...", TexturePackDisplay.ENTRY_NAMES[i]);
+								Logger.error("Sprites failure, '{}' has unable to be loaded, aborting ...", ENTRY_NAMES[i]);
 								return;
 							}
 
 						} else {
-							Logger.debug("Couldn't load sheet {}, ignoring.", TexturePackDisplay.ENTRY_NAMES[i]);
+							Logger.debug("Couldn't load sheet '{}', ignoring.", ENTRY_NAMES[i]);
 						}
 					}
 
 				} catch (IllegalStateException | IOException exception) {
 					exception.printStackTrace();
-					Logger.error("Could not load texture pack with name {} at {}.", Objects.requireNonNull(menus[0].getCurEntry()).toString(), location);
+					Logger.error("Could not load texture pack '{}' at '{}' ...", Objects.requireNonNull(menus[0].getCurEntry()).toString(), location);
 					return;
 
 				} catch (NullPointerException exception) {
@@ -124,16 +160,64 @@ public class TexturePackDisplay extends Display {
 
 			Renderer.screen.setSheet(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
 			Font.updateCharAdvances(sheets[4]);
+			
+			loadedPack = Objects.requireNonNull(menus[0].getCurEntry()).toString();
+			
 		} catch(NullPointerException exception) {
 			exception.printStackTrace();
-			Logger.error("Changing texture pack failed.");
+			Logger.error("Changing texture pack failed ...");
 			return;
 		}
 
-		Logger.debug("Changed sprites and texture pack to {}.", () -> Objects.requireNonNull(menus[0].getCurEntry()).toString());
+		Logger.debug("Changed sprites and texture pack to '{}' ...", () -> Objects.requireNonNull(menus[0].getCurEntry()).toString());
 
 	}
+	
+	@Nullable
+	private void updateSheets(ZipFile zipFile) throws IOException {
+		try {
+			SpriteSheet[] sheets = new SpriteSheet[ENTRY_NAMES.length];
 
+			if (zipFile == null) {
+				// Load default sprite sheet.
+				sheets = Renderer.loadDefaultTextures();
+
+			} else {
+				try {
+					for (int i = 0; i < ENTRY_NAMES.length; i++) {
+						ZipEntry entry = zipFile.getEntry(ENTRY_NAMES[i]);
+
+						if (entry != null) {
+							try (InputStream inputEntry = zipFile.getInputStream(entry)) {
+								sheets[i] = new SpriteSheet(ImageIO.read(inputEntry));
+
+							} catch (IOException exception) {
+								exception.printStackTrace();
+								Logger.error("Sprites failure, '{}' has unable to be loaded, aborting ...", ENTRY_NAMES[i]);
+								return;
+							}
+
+						} else {
+							Logger.debug("Couldn't load sheet '{}', ignoring ...", ENTRY_NAMES[i]);
+						}
+					}
+				} catch (NullPointerException exception) {
+					exception.printStackTrace();
+					return;
+				}
+			}
+
+			Renderer.screen.setSheet(sheets[0], sheets[1], sheets[2], sheets[3], sheets[4], sheets[5]);
+			Font.updateCharAdvances(sheets[4]);
+			
+		} catch(NullPointerException exception) {
+			exception.printStackTrace();
+			Logger.error("Changing texture pack failed ...");
+			return;
+		}
+
+		Logger.debug("Loaded texture pack from '{}' ...", () -> Objects.requireNonNull(zipFile.getName().substring(zipFile.getName().lastIndexOf('/') + 1)).toString());
+	}
 
 	@Override
 	public void render(Screen screen) {
@@ -155,16 +239,30 @@ public class TexturePackDisplay extends Display {
 		// Movement instructions
 		Font.drawCentered("Use " + Game.input.getMapping("MOVE-DOWN") + ", " + Game.input.getMapping("MOVE-UP") + ", " + Game.input.getMapping("SELECT"), screen, Screen.h - 11, Color.GRAY);
 
-		int h = 2;
-		int w = 15;
+		// Texture pack logo
+		int w = 15, h = 2;
 		int xo = (Screen.w - (w << 3)) / 2;
 		int yo = 28;
 
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
-				screen.render(xo + (x << 3), yo + (y << 3), x + (y << 5), 0, 3); // Texture pack logo
+				screen.render(xo + (x << 3), yo + (y << 3), x + (y << 5), 0, 3);
 			}
 		}
 
+	}
+	
+	public void setLoadedPack(String name) {
+		ListEntry[] entries = menus[0].getEntries();
+		for (ListEntry entry : entries) {
+			// If provided pack exists in list, set it.
+			if (entry.toString().equals(name)) {
+				loadedPack = name;
+			}
+		}
+	}
+	
+	public static String getLoadedPack() {
+		return loadedPack;
 	}
 }

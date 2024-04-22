@@ -112,12 +112,32 @@ public abstract class MobAi extends Mob {
         }
     }
     
+    public void render(Screen screen, int xpos, int ypos, int color) {
+        int xo = x - xpos;
+        int yo = y - ypos;
+
+        MobSprite currentSprite = sprites[dir.getDir()][(walkDist >> 3) % sprites[dir.getDir()].length];
+        if (hurtTime > 0) {
+            currentSprite.render(screen, xo, yo, true);
+        } else {
+            currentSprite.render(screen, xo, yo, color);
+        }
+    }
+    
     public void render(Screen screen, boolean fullbright) {
         int xo = x - 8;
         int yo = y - 11;
 
         MobSprite currentSprite = sprites[dir.getDir()][(walkDist >> 3) % sprites[dir.getDir()].length];
         currentSprite.render(screen, xo, yo, fullbright);
+    }
+    
+    public void render(Screen screen, int color) {
+        int xo = x - 8;
+        int yo = y - 11;
+
+        MobSprite currentSprite = sprites[dir.getDir()][(walkDist >> 3) % sprites[dir.getDir()].length];
+        currentSprite.render(screen, xo, yo, color);
     }
 
     @Override
@@ -233,7 +253,7 @@ public abstract class MobAi extends Mob {
     }
     
     
-    protected void doPlaySound(String[] sounds, int heardRadius) {
+    protected void playSound(String[] sounds, int heardRadius) {
 		Player player = getClosestPlayer();
 		
 		if (player != null && player.isWithin(heardRadius, this))  {
@@ -242,7 +262,7 @@ public abstract class MobAi extends Mob {
 		}
     }
     
-    protected void doPlaySound(String sound, int heardRadius) {
+    protected void playSound(String sound, int heardRadius) {
 		Player player = getClosestPlayer();
 		
 		if (player != null && player.isWithin(heardRadius, this))  {

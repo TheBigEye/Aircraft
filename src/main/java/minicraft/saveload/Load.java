@@ -88,6 +88,7 @@ import minicraft.network.Network;
 import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.LoadingDisplay;
 import minicraft.screen.MultiplayerDisplay;
+import minicraft.screen.TexturePackDisplay;
 
 public class Load {
 
@@ -449,6 +450,8 @@ public class Load {
 			String[] map = str.split(";");
 			Game.input.setKey(map[0], map[1]);
 		}
+		
+		new TexturePackDisplay().setLoadedPack(json.getString("texturePack"));
 	}
 
 	private void loadUnlocksOld(String filename) {

@@ -21,8 +21,8 @@ public class Sheepuff extends SkyMob {
 		
 		followOnHold(Items.get("Sky Wart"), 3);
 		
-		if ((tickTime % (random.nextInt(100) + 120) == 0)) {
-			doPlaySound(sounds, 8);
+		if ((tickTime % (random.nextInt(150) + 120) == 0)) {
+			playSound(sounds, 8);
 		}
 	}
 

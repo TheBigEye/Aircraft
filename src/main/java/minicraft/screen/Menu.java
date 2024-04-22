@@ -294,7 +294,7 @@ public class Menu {
             entries.get(selection).tick(input); // only ticks the entry on a frame where the selection cursor has not moved.
             return;
         } else {
-            Sound.play("Menu_select");
+            Sound.play("menuSelect");
         }
 
         do {
@@ -345,14 +345,14 @@ public class Menu {
 
     		
     	    int leading = Font.textWidth(typingSearcher) * Font.textWidth(" ") / 15;
-    	    int xSearcherBar = titleLoc.x + title.length() * 8 / 2 - 16;
+    	    int xSearcherBar = (titleLoc.x + title.length() * 4) - 16;
 
     	    if (xSearcherBar - leading < 0) {
     	        leading += xSearcherBar - leading;
     	    }
 
-    	    Font.drawBox(screen, (entryBounds.getCenter().x - entryBounds.getWidth() / 2) - 16, titleLoc.y + 90, 4 + entryBounds.getWidth() / 8, 1);
-    	    Font.draw("< " + typingSearcher + " >", screen, xSearcherBar - leading, titleLoc.y + 90, typingSearcher.length() < ((entryBounds.getWidth() / 8)) ? Color.YELLOW : Color.RED);
+    	    Font.drawBox(screen, (entryBounds.getCenter().x - entryBounds.getWidth() / 2) - 16, titleLoc.y + 115, 4 + entryBounds.getWidth() / 8, 1);
+    	    Font.draw("> " + typingSearcher + " <", screen, xSearcherBar - leading, titleLoc.y + 115, typingSearcher.length() < ((entryBounds.getWidth() / 8)) ? Color.YELLOW : Color.RED);
     	}
         
         // Render the menu GUI
@@ -387,6 +387,7 @@ public class Menu {
             int extra = diff * (ListEntry.getHeight() + spacing) / 2;
             y += extra;
         }
+        
         for (int i = offset; i < (wrap ? offset + displayLength : Math.min(offset + displayLength, entries.size())); i++) {
             if (special && i - offset >= entries.size()) {
                 break;

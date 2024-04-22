@@ -26,6 +26,7 @@ import minicraft.level.Level;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.LinkEntry;
 import minicraft.screen.entry.SelectEntry;
+import minicraft.screen.tutorial.TutorialDisplay;
 import minicraft.util.BookData;
 import minicraft.util.TimeData;
 
@@ -41,9 +42,13 @@ public class TitleDisplay extends Display {
 	private boolean shouldRender = false;
 
 	private static List<String> splashes = new ArrayList<>();
+	
+	private static final String[] musicThemes = {
+		"musicTheme5", "musicTheme2", "musicTheme1", "musicTheme4", "musicTheme8", "musicTheme3"
+	};
 
 	static {
-		try (InputStream stream = Game.class.getResourceAsStream("/resources/texts/splashes.json")) {
+		try (InputStream stream = Game.class.getResourceAsStream("/resources/splashes.json")) {
 			if (stream != null) {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 
@@ -86,9 +91,9 @@ public class TitleDisplay extends Display {
 					new LinkEntry(Color.CYAN, "Minicraft discord", "https://discord.me/minicraft"),
 					new BlankEntry(),
 					new SelectEntry("Instructions", () -> Game.setDisplay(new BookDisplay(BookData.instructions))),
-					new SelectEntry("Story guide", () -> Game.setDisplay(new BookDisplay(BookData.storylineGuide))),
-					//new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
-					new SelectEntry("Credits", () -> Game.setDisplay(new EndGameCreditsDisplay())),
+					//new SelectEntry("Story guide", () -> Game.setDisplay(new BookDisplay(BookData.storylineGuide))),
+					new SelectEntry("Tutorial", () -> Game.setDisplay(new TutorialDisplay())),
+					new SelectEntry("Credits", () -> Game.setDisplay(new CreditsDisplay())),
 					new SelectEntry("About", () -> Game.setDisplay(new BookDisplay(BookData.about))),
 					new BlankEntry()
 				)
@@ -105,79 +110,61 @@ public class TitleDisplay extends Display {
 
 	@Override
 	public void init(Display parent) {
-		super.init(null); // The TitleScreen never has a parent.
-		Renderer.readyToRenderGameplay = false;
+	    super.init(null); // The TitleScreen never has a parent.
+	    Renderer.readyToRenderGameplay = false;
 
-		if (TimeData.month() != Month.OCTOBER) {
-			switch (random.nextInt(5)) {
-				case 0: Sound.play("musicTheme5"); break; 
-				case 1: Sound.play("musicTheme2"); break;
-				case 2: Sound.play("musicTheme1"); break;
-				case 3: Sound.play("musicTheme4"); break;
-				case 4: Sound.play("musicTheme8"); break;
-				default: Sound.play("musicTheme3"); break;
-			}
-		}
+	    int day = TimeData.day();
+	    Month month = TimeData.month();
+	    
+	    if (TimeData.month() != Month.OCTOBER) {
+	        Sound.play(musicThemes[random.nextInt(musicThemes.length)]);
+	    } else {
+	        Sound.play("musicTheme6");
+	    }
+	    
+	    if (month == Month.DECEMBER && (day == 19 || day == 25)) {
+	        rand = day == 19 ? 1 : 2;
+	    } else if (month == Month.FEBRUARY && (day >= 14 && day <= 16)) {
+	        rand = 0;
+	    } else if (month == Month.JULY && day == 6) {
+	        rand = 3;
+	    } else if (month == Month.SEPTEMBER && day == 18) {
+	        rand = 4;
+	    } else if (month == Month.AUGUST && (day == 29 || day == 10)) {
+	        rand = day == 29 ? 5 : 6;
+	    } else {
+	        rand = random.nextInt(splashes.size() - 3) + 3;
+	    }
 
-		if (TimeData.month() == Month.DECEMBER) {
-			if (TimeData.day() == 19) rand = 1;
-			if (TimeData.day() == 25) rand = 2;
-		} else {
-			rand = random.nextInt(splashes.size() - 3) + 3;
-		}
+	    World.levels = new Level[World.levels.length];
 
-		if (TimeData.month() == Month.FEBRUARY) {
-			if (TimeData.day() == 14) rand = 0;
-			if (TimeData.day() == 15) rand = 0;
-			if (TimeData.day() == 16) rand = 0;
-		} else {
-			rand = random.nextInt(splashes.size() - 3) + 3;
-		}
-
-		if (TimeData.month() == Month.JULY) {
-			if (TimeData.day() == 6) rand = 3;
-		} else {
-			rand = random.nextInt(splashes.size() - 3) + 3;
-		}
-
-		if (TimeData.month() == Month.SEPTEMBER) {
-			if (TimeData.day() == 18) rand = 4;
-		} else {
-			rand = random.nextInt(splashes.size() - 3) + 3;
-		}
-
-		if (TimeData.month() == Month.OCTOBER) {
-			if (TimeData.day() == 8) Sound.play("musicTheme6");
-			if (TimeData.day() == 16) Sound.play("musicTheme7");
-		}
-
-		if (TimeData.month() == Month.AUGUST) {
-			if (TimeData.day() == 29) rand = 5;
-			if (TimeData.day() == 10) rand = 6;
-		} else {
-			rand = random.nextInt(splashes.size() - 3) + 3;
-		}
-
-		World.levels = new Level[World.levels.length];
-
-		//  TODO: remove multiplayer references
-		if (Game.player == null) {
-			// Was online, need to reset player
-			World.resetGame(false);
-		}
+	    if (Game.player == null) {
+	        // Stops the level background music if playing
+	        if (World.currentMusicTheme != null) {
+	            Sound.stop(World.currentMusicTheme);
+	        }
+	        Sound.stop("heavenWind");
+	        // Was online, need to reset player
+	        World.resetGame(false);
+	    }
 	}
+
 
 	@Override
 	public void tick(InputHandler input) {
 		if (input.getKey("r").clicked) rand = random.nextInt(splashes.size() - 3) + 3;
         if (input.getKey("shift-c").clicked) Game.setDisplay(new CharsTestDisplay());
         if (input.getKey("shift-x").clicked) CrashReport.crashMePlease();
-      
-		super.tick(input);
 
+		super.tick(input);
+		
 		if (shouldRender) menus[0].shouldRender = true;
 		if (time > 72) shouldRender = true;
 		if (tickTime /1 %2 == 0) time++;
+		
+		if (tickTime % 9000 == 8999) {
+			Sound.play(musicThemes[random.nextInt(musicThemes.length)]);
+		}
 
 		tickTime++;
 	}
@@ -187,24 +174,23 @@ public class TitleDisplay extends Display {
 	    screen.clear(0);
 
 	    if (shouldRender) {
+	    	
+	    	/// Render the background image
 	        int hh = 39; // Height of squares (on the spritesheet)
 	        int ww = 416; // Width of squares (on the spritesheet)
-	        int xxo = (Screen.w - (ww << 3)) / 2; // X location of the title
-	        int yyo = 0; // Y location of the title
+	        int xxo = (Screen.w - (ww << 3)) / 2;
+	        int yyo = 0;
 
 	        for (int y = 0; y < hh; y++) {
 	            for (int x = 0; x < ww; x++) {
 	                screen.render(xxo + (x << 3), yyo + (y << 3), new Sprite.Px(x - 8, y, 0, 5));
 	            }
 	        }
-	    }
-
-	    if (shouldRender) {
+	        
 	        super.render(screen);
 	        menus[0].render(screen);
-	    }
 
-	    if (shouldRender) {
+	        /// Render the title sprite
 	        int h = 6; // Height of squares (on the spritesheet)
 	        int w = 26; // Width of squares (on the spritesheet)
 	        int xo = (Screen.w - (w << 3)) / 2; // X location of the title
@@ -215,10 +201,7 @@ public class TitleDisplay extends Display {
 	                screen.render(xo + (x << 3), yo + (y << 3), x + ((y + 7) << 5), 0, 3);
 	            }
 	        }
-	    }
-
-	    if (shouldRender) {
-	    	
+	        
 	    	boolean isblue = splashes.get(rand).contains("blue");
 			boolean isGreen = splashes.get(rand).contains("Green");
 			boolean isRed = splashes.get(rand).contains("Red");
@@ -253,6 +236,7 @@ public class TitleDisplay extends Display {
 	        Font.draw("Mod by TheBigEye", screen, Screen.w - (15 * 8) - 2, Screen.h - 10, Color.get(-1, 240, 240, 240));
 	    }
 
+	    // Render the transition
 	    int transitionStart = Math.max(-140, -(time * 2));
 	    for (int x = 0; x < 200; x++) {
 	        for (int y = 0; y < 150; y++) {

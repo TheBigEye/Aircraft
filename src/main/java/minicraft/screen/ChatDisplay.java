@@ -47,6 +47,8 @@ public class ChatDisplay extends Display {
     				case "/gamemode": Command.gamemodeCommand(commandArguments); break;
     				case "/time": Command.timeCommand(commandArguments); break;
     				case "/kill": Command.killCommand(commandArguments); break;
+    				case "/playsound": Command.playSoundCommand(commandArguments); break;
+    				case "/settile": Command.setTileCommand(commandArguments); break;
     			
     				case "/say":       
     					String messageString = command.getUserInput().replace("/say ", "");
@@ -61,13 +63,13 @@ public class ChatDisplay extends Display {
     			
         		// Play the sound effect if the command was recognized
         		if (recognizedCommand) {
-        			Sound.play("Menu_loaded");
+        			Sound.play("menuLoaded");
         		}
  
 			} else {
 				String messageString = command.getUserInput();
 				Game.player.sendMessage(messageString);
-				Sound.play("Menu_back");
+				Sound.play("menuBack");
 			}
     		
     		command.clearUserInput();
@@ -97,7 +99,8 @@ public class ChatDisplay extends Display {
         }
         
         int lineNumber = 0;
-        for (int j = Math.max(0, messages.size() - 7); j < messages.size(); j++) {
+        int messagesSize = messages.size();
+        for (int j = Math.max(0, messagesSize - 7); j < messagesSize; j++) {
         	Font.draw("<Amy>", screen, 8, (lineNumber << 3) + Screen.h - 80, Color.DARK_GREEN);
             Font.draw(messages.get(j), screen, 6 * 8 + 4, (lineNumber << 3) + Screen.h - 80, Color.GRAY);
             lineNumber++;

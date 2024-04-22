@@ -192,7 +192,7 @@ public class AchievementsDisplay extends Display {
 	@Override
 	public void onExit() {
 		// Play confirm sound.
-		Sound.play("Menu_confirm");
+		Sound.play("menuConfirm");
 		new Save();
 	}
 

@@ -3,9 +3,11 @@ package minicraft.util;
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
+import minicraft.core.io.Sound;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Player;
 import minicraft.level.Level;
+import minicraft.level.tile.Tiles;
 
 public class Command {
 	
@@ -54,7 +56,7 @@ public class Command {
 	public static void timeCommand(String[] arguments) {
 		
 	    if (arguments.length < 2) {
-	    	Game.player.sendMessage("{?} - Missing time action [add, set, get]");
+	    	Game.player.sendMessage("{?} - Missing time action [set, add]");
 	        return;
 	    }
 		
@@ -107,12 +109,52 @@ public class Command {
 	            	Game.player.sendMessage("{?} - Time value must be a numeric value");
 	            }
 	            
-				Updater.tickCount += timeIndex; break;
+				Updater.tickCount += timeIndex; 
+				
+				break;
 				
 			default:
 				Game.player.sendMessage("{?} - Unknown time action '" + timeAction + "'");
 				break;
 		}
+	}
+	
+	
+	public static void playSoundCommand(String[] arguments) {
+		
+	    if (arguments.length < 2) {
+	    	Game.player.sendMessage("{?} - Missing sound name");
+	        return;
+	    }
+		
+		String soundName = arguments[1];
+		Sound.play(soundName);
+	}
+	
+	public static void setTileCommand(String[] arguments) {
+		
+	    if (arguments.length < 2) {
+	    	Game.player.sendMessage("{?} - Missing tile name or ID [Hard_Rock, 22]");
+	        return;
+	    }
+	    
+	    Level currentLevel = Game.levels[Game.currentLevel]; // The command only works on the current level
+	    Player currentPlayer = Game.player; // Current player instance
+		
+		String tileString = arguments[1];
+        int tileValue = 0;
+        
+        if (tileString.matches("\\d+")) {
+            try {
+                tileValue = Integer.parseInt(tileString);
+            } catch (NumberFormatException exception) {
+                Game.player.sendMessage("{?} - Tile id must be a numeric value");
+                return;
+            }
+            currentLevel.setTile(currentPlayer.x >> 4, currentPlayer.y >> 4, Tiles.get(tileValue));
+        } else {
+        	currentLevel.setTile(currentPlayer.x >> 4, currentPlayer.y >> 4, Tiles.get(tileString.replace("_", " ")));
+        }
 	}
 	
 	public static void killCommand(String[] arguments) {

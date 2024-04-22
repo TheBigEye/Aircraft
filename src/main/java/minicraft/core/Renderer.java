@@ -61,29 +61,30 @@ public class Renderer extends Game {
 
 	protected static final Canvas canvas = new Canvas();
 
-	private static BufferedImage image; // Creates an image to be displayed on the screen.
+	protected static BufferedImage image; // Creates an image to be displayed on the screen.
 	public static Screen lightScreen; // Creates a front screen to render the darkness in caves (Fog of war).
 	public static boolean readyToRenderGameplay = false;
 	public static boolean showDebugInfo = false;
+	public static boolean takeScreenshot = false;
 	public static boolean renderRain = false;
 
 	private static final Ellipsis ellipsis = (Ellipsis) new SmoothEllipsis(new TickUpdater());
 
 	public static SpriteSheet[] loadDefaultTextures() {
 	    final String[] SHEETS_PATHS = {
-	        "/resources/textures/items.png",
-	        "/resources/textures/tiles.png",
-	        "/resources/textures/entities.png",
-	        "/resources/textures/gui.png",
-	        "/resources/textures/font.png",
-	        "/resources/textures/background.png"
+	        "/resources/textures/default/items.png",
+	        "/resources/textures/default/tiles.png",
+	        "/resources/textures/default/entities.png",
+	        "/resources/textures/default/gui.png",
+	        "/resources/textures/default/font.png",
+	        "/resources/textures/default/background.png"
 	    };
 	    
 	    ArrayList<SpriteSheet> sheets = new ArrayList<>();
 	    
 	    for (String path : SHEETS_PATHS) {
 	        try {
-	            if (debug) Logger.debug("Loading sprite '{}', for default textures ...", path);
+	            if (debug) Logger.debug("Loading spritesheet '{}', for default textures ...", path);
 	            sheets.add(new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(path)))));
 	        } catch (NullPointerException | IllegalArgumentException | IOException exception) {
 	            Logger.error("Sprites failure, default textures are unable to load an sprite sheet!");
@@ -111,7 +112,7 @@ public class Renderer extends Game {
 
 	    for (String path : SHEETS_PATHS) {
 	        try {
-	            if (debug) Logger.debug("Loading sprite '{}', for legacy textures ...", path);
+	            if (debug) Logger.debug("Loading spritesheet '{}', for legacy textures ...", path);
 	            sheets.add(new SpriteSheet(ImageIO.read(Objects.requireNonNull(Game.class.getResourceAsStream(path)))));
 	        } catch (NullPointerException | IllegalArgumentException | IOException exception) {
 	            Logger.error("Sprites failure, legacy textures are unable to load an sprite sheet!");
@@ -123,8 +124,7 @@ public class Renderer extends Game {
 	    
 	    return sheets.toArray(new SpriteSheet[0]);
 	}
-
-
+	
 	static void initScreen() {
 		Logger.debug("Initializing game display ...");
 
@@ -215,7 +215,7 @@ public class Renderer extends Game {
 		level.renderSprites(screen, xScroll, yScroll); // Renders level sprites on screen
 
 		// this creates the darkness in the caves
-		if (currentLevel != 3 || Updater.tickCount < Updater.dayLength / 4 || Updater.tickCount > Updater.dayLength / 2) {
+		if (currentLevel != 3 && currentLevel != 4 || Updater.tickCount < Updater.dayLength / 4 || Updater.tickCount > Updater.dayLength / 2) {
 
 			// This doesn't mean that the pixel will be black; it means that the pixel will
 			// be DARK, by default; lightScreen is about light vs. dark, not necessarily a
@@ -232,15 +232,15 @@ public class Renderer extends Game {
 			screen.overlay(lightScreen, currentLevel, xScroll, yScroll); // Overlays the light screen over the main screen.
 		}
 		
-		if (player != null) {
-			if (!player.isNiceNight && (currentLevel == 3 || currentLevel == 4)) {
-				lightScreen.clear(0); 
-	
-				// Brightens all
-				int brightnessMultiplier = player.potionEffects.containsKey(PotionType.Light) ? 12 : 8; 
-				level.renderLight(lightScreen, xScroll, yScroll, brightnessMultiplier); // Finds (and renders) all the light from objects (like the player, lanterns, and lava).
-				screen.darkness(lightScreen, currentLevel, xScroll, yScroll);
-			}
+
+		if (player != null && !player.isNiceNight && currentLevel == 3) {
+			lightScreen.clear(0); 
+
+			// Brightens all
+			int brightnessMultiplier = player.potionEffects.containsKey(PotionType.Light) ? 12 : 8; 
+			level.renderLight(lightScreen, xScroll, yScroll, brightnessMultiplier); // Finds (and renders) all the light from objects (like the player, lanterns, and lava).
+			screen.darkness(lightScreen, currentLevel, xScroll, yScroll);
+			
 		}
 		
 	}
@@ -544,7 +544,7 @@ public class Renderer extends Game {
 			ArrayList <String> subinfo = new ArrayList <> ();
 
 			info.add("Version: " + Game.BUILD + " (" + Game.VERSION + ")");                 subinfo.add("Played: " + InfoDisplay.getTimeString());
-			info.add("Base: " + "Minicraft Plus Legacy");                                   subinfo.add("Java: " + Utils.JAVA_VERSION + " x" + Utils.JAVA_ARCH);
+			info.add("Base: " + "Minicraft Plus Legacy");                                   subinfo.add("J: " + Utils.JAVA_VERSION + " x" + Utils.JAVA_ARCH);
 			info.add("" + TimeData.date());                                                 subinfo.add(Utils.getGeneralMemoryUsage());
 			info.add(Initializer.fra + " fps" );                                            subinfo.add(Utils.getMemoryAllocation());
 			info.add("Day tiks: " + Updater.tickCount + " (" + Updater.getTime() + ")");

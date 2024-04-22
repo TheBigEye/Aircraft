@@ -19,7 +19,7 @@ public class Recipes {
 		craftRecipes.add(new Recipe("Workbench_1", "Oak Wood_4"));
 		craftRecipes.add(new Recipe("Stick_4", "Oak Wood_2"));
 		craftRecipes.add(new Recipe("Torch_4", "Stick_2", "coal_1"));
-		craftRecipes.add(new Recipe("Grass Seeds_1", "seeds_1", "Flower_2"));
+		craftRecipes.add(new Recipe("Grass Seeds_2", "seeds_1", "Daisy_2"));
 		craftRecipes.add(new Recipe("Bone powder_3", "bone_1"));
 		craftRecipes.add(new Recipe("Oak plank_2", "Oak Wood_1"));
 		craftRecipes.add(new Recipe("Oak Wall_1", "Oak plank_3"));
@@ -45,9 +45,10 @@ public class Recipes {
 		workbenchRecipes.add(new Recipe("Enchanter_1", "Oak Wood_5", "String_2", "Lapis_10"));
 		workbenchRecipes.add(new Recipe("Chest_1", "Oak Wood_20"));
 		workbenchRecipes.add(new Recipe("Anvil_1", "iron_5"));
-		workbenchRecipes.add(new Recipe("Tnt_1", "Gunpowder_10", "Sand_8"));
+		workbenchRecipes.add(new Recipe("Tnt_1", "Gunpowder_8", "Sand_4"));
 		workbenchRecipes.add(new Recipe("Loom_1", "Oak Wood_10", "Wool_5"));
-		workbenchRecipes.add(new Recipe("Assembler_1", "iron_5", "Stone_10"));
+		workbenchRecipes.add(new Recipe("Stonecutter_1", "Gear_3", "Stone_10", "iron_1"));
+		workbenchRecipes.add(new Recipe("Brewery_1", "glass_10", "Stone_10", "iron_3"));
 		workbenchRecipes.add(new Recipe("Wood Fishing Rod_1", "Oak Wood_10", "String_3"));
 		workbenchRecipes.add(new Recipe("Iron Fishing Rod_1", "Iron_10", "String_3"));
 		workbenchRecipes.add(new Recipe("Gold Fishing Rod_1", "Gold_10", "String_3"));
@@ -185,9 +186,6 @@ public class Recipes {
 		enchantRecipes.add(new Recipe("Health Potion_1", "potion_1", "GunPowder_2", "Leather Armor_1"));
 		enchantRecipes.add(new Recipe("Escape Potion_1", "potion_1", "GunPowder_3", "Lapis_7"));
 
-		assemblerRecipes.add(new Recipe("Stonecutter_1", "Gear_3", "Stone_10", "iron_1"));
-		assemblerRecipes.add(new Recipe("Brewery_1", "glass_10", "Stone_10", "iron_3"));
-
 		stonecutterRecipes.add(new Recipe("Stone Brick_2", "Stone_2"));
 		stonecutterRecipes.add(new Recipe("Stone Wall_1", "Stone Brick_3"));
 		stonecutterRecipes.add(new Recipe("Stone Door_1", "Stone Brick_5"));
@@ -203,7 +201,7 @@ public class Recipes {
 		stonecutterRecipes.add(new Recipe("Silicon_3", "Stone_3", "coal_1"));
 		stonecutterRecipes.add(new Recipe("Basalt_3", "Stone_3", "coal_1"));
 		stonecutterRecipes.add(new Recipe("Quartzite_3", "Stone_3", "coal_1"));
-		stonecutterRecipes.add(new Recipe("Flint_3", "Stone_3", "coal_1"));
+		stonecutterRecipes.add(new Recipe("Flint_2", "Stone_5", "coal_1"));
 
 		breweryRecipes.add(new Recipe("xSpeed Potion_1", "Speed potion_2", "Sky wart_5"));
 		breweryRecipes.add(new Recipe("xLight Potion_1", "Light potion_2", "Sky wart_4"));
@@ -212,6 +210,5 @@ public class Recipes {
 		breweryRecipes.add(new Recipe("xEnergy Potion_1", "Energy potion_2", "Sky wart_6"));
 		breweryRecipes.add(new Recipe("xRegen Potion_1", "Regen potion_2", "Sky wart_5"));
 		breweryRecipes.add(new Recipe("xHealth Potion_1", "Health potion_2", "Sky wart_5"));
-
 	}
 }

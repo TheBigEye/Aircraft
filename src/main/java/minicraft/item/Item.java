@@ -66,11 +66,12 @@ public abstract class Item {
     public void renderHUD(Screen screen, int x, int y, int fontColor) {
 
     	String displayName = getDisplayName();
-    	durabilityOffset = (displayName.length() - 6) << 2;
-    	arrowOffset = (displayName.length() - 9) << 1;
+    	int displayLength = displayName.length();
+    	durabilityOffset = (displayLength - 6) << 2;
+    	arrowOffset = (displayLength - 9) << 1;
 
     	// Renders the box, item name and item sprite
-    	Font.drawBox(screen, x, y, displayName.length() + 1, 1);
+    	Font.drawBox(screen, x, y, displayLength + 1, 1);
     	Font.draw(displayName, screen, x + 8, y, fontColor);
     	sprite.render(screen, x, y);
     }

@@ -6,7 +6,7 @@ import minicraft.saveload.Load;
 
 public class BookData {
 
-    public static final String about = "Modded by TheBigEye My goal is to expand Minicraft Plus with this Mod so that you can enjoy another adventure ... have fun and improve both the gameplay and the diversity of objects, mobs, Bosses and biomes.\nMinicraft was originally made by Markus Persson for ludum dare 22 competition.";
+    public static final String about = "Modded by TheBigEye\n\rMy goal is to expand Minicraft Plus with this Mod so that you can enjoy another adventure, improving the gameplay and the Mobs, Bosses, Biomes diversity.\n\r\nMinicraft was originally made by Markus Persson (Notch), for Ludum dare 22 competition.";
 
     public static final String instructions = "With the default controls...\n\nMove your character with arrow keys or WSAD. Press C to attack and X to open the inventory, and to use items. Pickup furniture and torches with V. Select an item in the inventory to equip it.\n\nThe Goal: Defeat the Eye queen!";
 

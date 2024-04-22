@@ -35,7 +35,7 @@ public class ItemEntry extends ListEntry {
     @Override
     public void render(Screen screen, int x, int y, boolean isSelected) {
         super.render(screen, x, y, true);
-        item.sprite.render(screen, x - 4, y);
+        item.sprite.render(screen, x - 2, y);
     }
 
     // if you add to the length of the string, and therefore the width of the entry,

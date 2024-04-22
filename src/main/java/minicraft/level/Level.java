@@ -17,6 +17,7 @@ import org.tinylog.Logger;
 
 import minicraft.core.Game;
 import minicraft.core.Updater;
+import minicraft.core.World;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Entity;
@@ -84,7 +85,7 @@ public class Level {
 	private static final String[] levelNames = {
 		"The Void", "Heaven", "Surface", "Iron", "Gold", "Lava", "Dungeon"
 	};
-
+	
 	// the chance of a mob actually trying to spawn when trySpawn is
 	// called equals: mobCount / maxMobCount * MOB_SPAWN_FACTOR. so, it
 	// basically equals the chance, 1/number, of a mob spawning when
@@ -102,7 +103,8 @@ public class Level {
 	public final int depth;
 	
 	// Used for Maps Book
-	public boolean[][] explored; 
+	public boolean[][] explored;
+	
 	private boolean skyAmbience = false;
 	
 	public static String getLevelName(int depth) {
@@ -191,13 +193,16 @@ public class Level {
 		if (depth == 0 || depth == -4) maxMobCount = maxMobCount * 2 / 3;
 	}
 
+	/** Level which the world is contained in */
 	public Level(int w, int h, long seed, int level, Level parentLevel, boolean makeWorld) {
-		depth = level;
-		size = w * h;
-		this.w = w;
-		this.h = h;
+		depth = level; // assigns the depth variable
+		size = w * h; 
+		this.w = w; // Assigns the width
+		this.h = h; // Assigns the height
 		this.seed = seed;
+		
         random = new Random(seed);
+        
 		short[][] maps; // Multidimensional array (an array within a array), used for the map
 
 		if (level != -4 && level != 0) {
@@ -436,13 +441,13 @@ public class Level {
 		// LEVEL AMBIENT LOOPS!
 
 		// in the sky
-		if (depth == 1 && Game.getDisplay() == null) {
+		if (depth == 1) {
 			if (!skyAmbience) {
-				Sound.loop("Sky_enviroment", true);
+				Sound.loop("heavenWind", true);
 				skyAmbience = true;
 			}
 		} else {
-			Sound.stop("Sky_enviroment");
+			Sound.stop("heavenWind");
 			skyAmbience = false;
 		}
 		
@@ -573,86 +578,110 @@ public class Level {
 		return itemEntity;
 	}
 
+	/** This method renders all the tiles in the game */
 	public void renderBackground(Screen screen, int xScroll, int yScroll) {
-		int xo = xScroll >> 4; // latches to the nearest tile coordinate
-		int yo = yScroll >> 4;
+		int xo = xScroll >> 4; // The game's horizontal scroll offset
+		int yo = yScroll >> 4; // The game's vertical scroll offset
 		
-		int w = (Screen.w) >> 4; // there used to be a "+ 15" as in below method
-		int h = (Screen.h) >> 4;
+		int w = (Screen.w) >> 4; // Width of the screen being rendered
+		int h = (Screen.h) >> 4; // Height of the screen being rendered
 		
+		// Sets the scroll offsets
 		screen.setOffset(xScroll, yScroll);
 		
-		for (int y = yo; y <= h + yo; y++) {
-			for (int x = xo; x <= w + xo; x++) {
-				getTile(x, y).render(screen, this, x, y);
+		for (int y = yo; y <= h + yo; y++) { // Loops through the vertical positions
+			for (int x = xo; x <= w + xo; x++) { // Loops through the horizontal positions
+				getTile(x, y).render(screen, this, x, y); // Renders the tile on the screen
 			}
 		}
+		
+		// Resets the offset
 		screen.setOffset(0, 0);
 	}
 
+	/** Renders all the entity sprites on the screen */
 	public void renderSprites(Screen screen, int xScroll, int yScroll) {
-		int xo = xScroll >> 4; // latches to the nearest tile coordinate
-		int yo = yScroll >> 4;
+		int xo = xScroll >> 4; // The game's horizontal scroll offset
+		int yo = yScroll >> 4; // The game's vertical scroll offset
 		
-		int w = (Screen.w + 15) >> 4;
-		int h = (Screen.h + 15) >> 4;
+		int w = (Screen.w + 15) >> 4; // Width of the screen being rendered
+		int h = (Screen.h + 15) >> 4; // Height of the screen being rendered
 
-		screen.setOffset(xScroll, yScroll);
+		screen.setOffset(xScroll, yScroll); // Sets the scroll offsets.
+		
+		// Sorts and renders the sprites on the screen
 		sortAndRender(screen, getEntitiesInTiles(xo - 1, yo - 1, (xo + w) + 1, (yo + h) + 1));
 
+		// Resets the offset
 		screen.setOffset(0, 0);
 	}
-
+	
+	/** Renders the light off tiles and entities in the underground */
 	public void renderLight(Screen screen, int xScroll, int yScroll, int brightness) {
-		int xo = xScroll >> 4;
-		int yo = yScroll >> 4;
+		int xo = xScroll >> 4; // The game's horizontal scroll offset
+		int yo = yScroll >> 4; // The game's vertical scroll offset
 		
-		int w = (Screen.w + 15) >> 4;
-		int h = (Screen.h + 15) >> 4;
+		int w = (Screen.w + 15) >> 4; // Width of the screen being rendered
+		int h = (Screen.h + 15) >> 4; // Height of the screen being rendered
 
-		screen.setOffset(xScroll, yScroll);
-		int r = 8;
+		screen.setOffset(xScroll, yScroll); // Sets the scroll offsets
 		
-		int xBound = w + xo + r;
-		int yBound = h + yo + r;
+		int radius = 8; // Radius that plays a part of how far away you can be before light stops rendering
+		
+		int xBound = w + xo + radius; 
+		int yBound = h + yo + radius;  
 
-		List <Entity> entities = getEntitiesInTiles(xo - r, yo - r, xBound, yBound);
-		for (Entity entity: entities) {
-			int lightRadius = entity.getLightRadius();
+		// gets all the entities in the level
+		List <Entity> entities = getEntitiesInTiles(xo - radius, yo - radius, xBound, yBound); 
+		
+		for (Entity entity: entities) { // Loops through the list of entities
+			int lightRadius = entity.getLightRadius(); // Gets the light radius from the entity
+			// If the light radius is above 0, then render the light
 			if (lightRadius > 0) {
 				screen.renderLight(entity.x - 1, entity.y - 4, lightRadius * brightness);
 			}
 		}
 
-		for (int y = yo - r; y <= yBound; y++) {
-			for (int x = xo - r; x <= xBound; x++) {
-				if (x < 0 || y < 0 || x >= this.w || y >= this.h) {
-					continue;
+		for (int y = yo - radius; y <= yBound; y++) { // Loops through the vertical positions + rBound
+			for (int x = xo - radius; x <= xBound; x++) { // Loops through the horizontal positions + rBound
+				// If the x & y positions of the sprites are within the map's boundaries
+				if (x < 0 || y < 0 || x >= this.w || y >= this.h) continue;
+				
+				// Gets the light radius from local tiles (like lava)
+				int lightRadius = getTile(x, y).getLightRadius(this, x, y); 
+				
+				// If the light radius is above 0, then render the light
+				if (lightRadius > 0) {
+					screen.renderLight((x << 4) + 8, (y << 4) + 8, lightRadius * brightness);
 				}
-
-				int lightRadius = getTile(x, y).getLightRadius(this, x, y);
-				if (lightRadius > 0) screen.renderLight((x << 4) + 8, (y << 4) + 8, lightRadius * brightness);
 			}
 		}
+		
+		// Resets the offset
 		screen.setOffset(0, 0);
 	}
 	
+	/** Sorts and renders sprites from an entity list */
 	private void sortAndRender(Screen screen, List <Entity> list) {
-		list.sort(spriteSorter);
-	    for (Entity entity : list) {
+		list.sort(spriteSorter); // Sorts the list by the spriteSorter
+		
+	    for (Entity entity : list) { // Loops through the entity list
 	        if (entity.getLevel() == this && !entity.isRemoved()) {
-	            entity.render(screen);
+	            entity.render(screen); // Renders the sprite on the screen
 	        } else {
 	            remove(entity);
 	        }
 	    }
 	}
 
+	/** Gets a tile from the world. */
 	public Tile getTile(int x, int y) {
+		// If the tile request is outside the world's boundaries, then returns the connector tile
 		if (x < 0 || y < 0 || x >= w || y >= h) {
 			return Tiles.get("Connector Tile");
 		}
 		
+		// Returns the tile that is at the position
 		int id = tiles[x + y * w];
 		if (id < 0) id += 256;
 		
@@ -669,31 +698,39 @@ public class Level {
 		setTile(x, y, Tiles.get(name), data);
 	}
 
+	/** Sets a tile to the world */
 	public void setTile(int x, int y, Tile tile) {
 		setTile(x, y, tile, tile.getDefaultData());
 	}
-
+	
+	/** Sets a tile to the world with a specified data value */
 	public void setTile(int x, int y, Tile tile, int dataValue) {
+		// If the tile request position is outside the world boundaries, then stop the method
 		if (x < 0 || y < 0 || x >= w || y >= h) return;
 
-		tiles[x + y * w] = tile.id;
-		data[x + y * w] = (short) dataValue;
+		tiles[x + y * w] = tile.id; // Places the tile at the x & y location
+		data[x + y * w] = (short) dataValue; // Sets the data value of the tile
 	}
 
+	/** Gets the data from the x & y position */
 	public int getData(int x, int y) {
-		if (x < 0 || y < 0 || x >= w || y >= h) {
-			return 0;
-		}
+		// If the data request position is outside the world boundaries, then stop the method
+		if (x < 0 || y < 0 || x >= w || y >= h) return 0;
+		
+		// Returns the last 16 bits (& 0xffff) of the data from that position
 		return data[x + y * w] & 0xff;
 	}
 
+	/** Sets a data to the x & y positioned tile */
 	public void setData(int x, int y, int value) {
-		if (x < 0 || y < 0 || x >= w || y >= h) {
-			return;
-		}
+		// If the data request position is outside the world boundaries, then stop the method
+		if (x < 0 || y < 0 || x >= w || y >= h) return;
+		
+		// sets the data as a short (16-bits) for the data
 		data[x + y * w] = (short) value;
 	}
 
+	/** Adds a entity to the level */
 	public void add(Entity entity) {
 		if (entity == null) {
 			return;
@@ -711,18 +748,19 @@ public class Level {
 		}
 		
 		if (tileCoords) {
-			x <<= 4 + 8;
-			y <<= 4 + 8;
+			x = x * 16 + 8;
+			y = y * 16 + 8;
 		}
 
 		entity.setLevel(this, x, y);
 
-		entitiesToRemove.remove(entity); // to make sure the most recent request is satisfied.
+		entitiesToRemove.remove(entity); // to make sure the most recent request is satisfied
 		if (!entitiesToAdd.contains(entity)) {
 			entitiesToAdd.add(entity);
 		}
 	}
 
+	/** Removes a entity */
 	public void remove(Entity entity) {
 		entitiesToAdd.remove(entity);
 		if (!entitiesToRemove.contains(entity)) {
@@ -1300,15 +1338,29 @@ public class Level {
 
 	private void playRandomMusic(int depth) {
 	    Map<Integer, String[]> soundMap = new HashMap<>();
-	    soundMap.put(0, new String[]{"musicTheme2", "musicTheme5", "musicTheme4"});
-	    soundMap.put(-1, new String[]{"Ambience1", "Ambience2", "Ambience3", "Ambience4"});
-	    soundMap.put(-2, new String[]{"musicTheme6", "musicTheme7"});
-	    soundMap.put(1, new String[]{"musicTheme2", "musicTheme1"});
+	    
+	    soundMap.put(1, new String[] {"musicTheme1", "musicTheme2", "musicTheme3"}); // Sky {fall, surface, paradise}
+	    soundMap.put(0, new String[] {"musicTheme2", "musicTheme4"}); // Surface {surface, peaceful}
+	    soundMap.put(-1, new String[] {"musicTheme5", "musicTheme8", "caveMood", "caveBreath", "caveScream"}); // Caves {cave, deeper, ...}
+	    soundMap.put(-2, new String[] {"musicTheme5", "musicTheme6", "musicTheme8"}); // Caverns {cave, cavern, dripping, deeper}
+	    
 
 	    if (soundMap.containsKey(depth)) {
 	        String[] sounds = soundMap.get(depth);
+	        
 	        int randomNum = random.nextInt(sounds.length);
+	        
+	        if (World.currentMusicTheme != null) {
+	        	Sound.stop(World.currentMusicTheme );
+	        	
+	        	// if the played theme is equals to the new theme, we try again
+		        while (sounds[randomNum] == World.currentMusicTheme ) {
+		        	randomNum = random.nextInt(sounds.length);
+		        }
+	        }
+	        
 	        Sound.play(sounds[randomNum]);
+	        World.currentMusicTheme  = sounds[randomNum];
 	    }
 	}
 

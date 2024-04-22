@@ -8,7 +8,7 @@ class ItemListMenu extends Menu {
 	static Builder getBuilder() {
 		return (new Builder(true, 0, RelPos.LEFT)
 			.setPositioning(new Point(9, 9), RelPos.BOTTOM_RIGHT)
-			.setDisplayLength(9)
+			.setDisplayLength(12)
 			.setSelectable(true)
 			.setScrollPolicies(1, false)
 		);
@@ -18,6 +18,15 @@ class ItemListMenu extends Menu {
 		super(builder
 			.setEntries(entries)
 			.setTitle(title)
+			.createMenu()
+		);
+	}
+	
+	protected ItemListMenu(Builder builder, ItemEntry[] entries, String title, int w, int h) {
+		super(builder
+			.setEntries(entries)
+			.setTitle(title)
+			.setSize(w, h)
 			.createMenu()
 		);
 	}

@@ -12,6 +12,7 @@ import minicraft.entity.mob.Player;
 import minicraft.entity.particle.BrightParticle;
 import minicraft.graphic.Sprite;
 import minicraft.level.Level;
+import minicraft.level.tile.AltarTile;
 import minicraft.level.tile.GrassTile;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
@@ -125,71 +126,77 @@ public class TileItem extends StackableItem {
 
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 		
-		// TODO: optimize this ...
 		for (String tilename : validTiles) {
 			if (tile.matches(level.getData(xt, yt), tilename)) {
 				
-				if (getName() == "Bone Powder") {
-					if (level.getTile(xt, yt) instanceof GrassTile) {
-						for (int y = yt - 1; y <= yt + 1; y++) {
-							for (int x = xt - 1; x <= xt + 1; x++) {
-								if (level.getTile(x, y).name.contains("GRASS") && Math.random() < 0.4) {
-									if (Math.random() < 0.1) {
-										if (random.nextBoolean()) {
-											level.setTile(x, y, Tiles.get("Poppy"));
-										} else {
-											level.setTile(x, y, Tiles.get("Dandelion"));
-										}
-									} else {
-										level.setTile(x, y, Tiles.get("Lawn"));
-									}
-								}
-							}
+				// When we use bone powder
+				if (getName() == "Bone Powder" && (level.getTile(xt, yt) instanceof GrassTile)) { // On grass tiles
+					
+					for (int y = yt - 1; y <= yt + 1; y++) {
+						for (int x = xt - 1; x <= xt + 1; x++) {
 							
-							for (int i = 0; i < 3; i++) {
-								int randX = (int) Math.ceil(Math.random() * 12) - 4;
-								int randY = (int) Math.ceil(Math.random() * 12) - 4;
-								level.add(new BrightParticle((xt << 4) + randX, (yt << 4) + randY));
+							if (level.getTile(x, y).name.contains("GRASS") && Math.random() < 0.4) { // randomly ..
+								if (Math.random() < 0.1) { // Generate flowers on the grass
+									if (random.nextBoolean()) {
+										level.setTile(x, y, Tiles.get("Poppy"));
+									} else {
+										level.setTile(x, y, Tiles.get("Dandelion"));
+									}
+								} else { // Or lawn
+									level.setTile(x, y, Tiles.get("Lawn"));
+								}
+								
+								for (int i = 0; i < 3; i++) {
+									// Add particles
+									int randX = (int) Math.ceil(Math.random() * 12) - 4;
+									int randY = (int) Math.ceil(Math.random() * 12) - 4;
+									level.add(new BrightParticle((x << 4) + randX, (y << 4) + randY, random.nextInt(16) + 16));
+								}
 							}
 						}
 					}
-
+				
+				// Else if, we use an Summon altar item, place a summon altar tile
 				} else if (getName() == "Summon Altar") {
 				    for (int y = yt - 1; y <= yt + 1; y++) {
 				        for (int x = xt - 1; x <= xt + 1; x++) {
-				            if (level.getTile(x, y) != Tiles.get("Summon Altar")) {
+				            if (!(level.getTile(x, y) instanceof AltarTile)) {
 				                level.setTile(x, y, Tiles.get("Summon Altar"));
 				            }
 				        }
 				    }
-				    
+				
+				// Else, we put the default 
 				} else {
-					level.setTile(xt, yt, model); // TODO maybe data should be part of the saved tile..?
-					//Sound.playerPlace.playOnDisplay();
+					level.setTile(xt, yt, model);
 				}
 				
+				// the interaction has true
 				return super.interactOn(true);
 			}
 		}
 
-		if (Game.debug) Logger.info("{} cannot be placed on {}", model, tile.name);
+		if (Game.debug) Logger.debug("{} cannot be placed on {}", model, tile.name);
 
-		String note = "";
-		if (model.contains("WALL")) {
-			note = "Can only be placed on " + Tiles.getName(validTiles.get(0)) + "!";
-
-		} else if (model.contains("DOOR")) {
-			note = "Can only be placed on " + Tiles.getName(validTiles.get(0)) + "!";
-
-		} else if ((model.contains("BRICK") || model.contains("PLANK"))) {
-			note = "Dig a hole first!";
+		if (random.nextBoolean()) {
+			String note = "";
+		
+			if (model.contains("WALL")) {
+				note = "Can only be placed on " + Tiles.getName(validTiles.get(0)) + "!";
 	
-		} else if((model.contains("BONE POWDER"))) {
-			note = "Only on grass!";
-		}
-
-		if (note.length() > 0) {
-			Game.notifications.add(note);
+			} else if (model.contains("DOOR")) {
+				note = "Can only be placed on " + Tiles.getName(validTiles.get(0)) + "!";
+	
+			} else if ((model.contains("BRICK") || model.contains("PLANK"))) {
+				note = "Dig a hole first!";
+		
+			} else if (model.contains("BONE POWDER")) {
+				note = "Only on grass!";
+			}
+	
+			if (note.length() > 0) {
+				Game.notifications.add(note);
+			}
 		}
 
 		return super.interactOn(false);

@@ -45,11 +45,13 @@ public class LoadingDisplay extends Display {
 	public void init(Display parent) {
 		super.init(parent);
 		
+		Sound.stop("musicTheme1");
+		Sound.stop("musicTheme2");
+		Sound.stop("musicTheme3");
+		Sound.stop("musicTheme4");
 		Sound.stop("musicTheme5");
 		Sound.stop("musicTheme6");
-		Sound.stop("musicTheme1");
-		Sound.stop("musicTheme4");
-		Sound.stop("musicTheme2");
+		Sound.stop("musicTheme8");
 		
 		percentage = 0;
 		progressType = "World";

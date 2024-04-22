@@ -56,7 +56,6 @@ public class SnowTile extends Tile {
         if (toolType == ToolType.Shovel) {
             if (player.payStamina(4 - tool.level) && tool.payDurability()) {
                 level.setTile(xt, yt, Tiles.get("Dirt"));
-                //Sound.Tile_snow_3.playOnLevel(xt << 4, yt << 4);
                 level.dropItem((xt << 4) + 8, (yt << 4) + 8, 1, 2, Items.get("Snow Ball"));
                 return true;
             }
@@ -87,18 +86,6 @@ public class SnowTile extends Tile {
         
         if (entity instanceof Player) {
             level.setData(x, y, 10);
-            
-            /*if (random.nextInt(2) == 1) {
-            	// Random snow walking sound
-            	switch (random.nextInt(4)) {
-            		case 0: Sound.Tile_snow.playOnDisplay(); break;
-            		case 1: Sound.Tile_snow.playOnDisplay(); break;
-            		case 2: Sound.Tile_snow_2.playOnDisplay(); break;
-            		case 3: Sound.Tile_snow_3.playOnDisplay(); break;
-            		case 4: Sound.Tile_snow_4.playOnDisplay(); break;
-            		default: Sound.Tile_snow_4.playOnDisplay(); break;
-            	}    
-            }*/
         }
     }
 

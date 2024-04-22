@@ -77,8 +77,7 @@ public class Structure {
     }
 
     static class TilePoint {
-        int x;
-        int y;
+        int x, y;
 
         Tile t;
 
@@ -196,30 +195,30 @@ public class Structure {
         );
 
         skyDungeon = new Structure();
-        skyDungeon.setData("F:Holy Bricks,W:Holy Wall,D:Holy Door,S:Sky Wart,T:Red Wool",
-            "***********************\n" + 
-            "******WWWWWWWWWWW******\n" + 
-            "******WFFFFFFFFFW******\n" + 
-            "******WWWWFFFWWWW******\n" + 
-            "*********WWDWW*********\n" + 
-            "**********WFW**********\n" + 
-            "*WWW******WFW******WWW*\n" + 
-            "*WFW******WFW******WFW*\n" + 
-            "*WFW****WWWTWWW****WFW*\n" + 
-            "*WFWW***WSSTSSW***WWFW*\n" + 
-            "*WFFWWWWWSTTTSWWWWWFFW*\n" + 
-            "*WFFDFFFTTTTTTTFFFDFFW*\n" + 
-            "*WFFWWWWWSTTTSWWWWWFFW*\n" + 
-            "*WFWW***WSSTSSW***WWFW*\n" + 
-            "*WFW****WWWTWWW****WFW*\n" + 
-            "*WFW******WFW******WFW*\n" + 
-            "*WWW******WFW******WWW*\n" + 
-            "**********WFW**********\n" + 
-            "*********WWDWW*********\n" + 
+        skyDungeon.setData("F:Holy Bricks,W:Holy Wall,D:Holy Door,S:Sky Wart,T:Red Wool,G:Sky Grass",
+        	"*********WWWWW*********\n" +
             "******WWWWFFFWWWW******\n" + 
             "******WFFFFFFFFFW******\n" + 
-            "******WWWWWWWWWWW******\n" + 
-            "***********************"
+            "******WWWFFFFFWWW******\n" + 
+            "********WWWDWWW********\n" + 
+            "**********GGG**********\n" + 
+            "*WWW******GGG******WWW*\n" + 
+            "*WFW***GGGGGGGGG***WFW*\n" + 
+            "*WFWW**GWWWTWWWG**WWFW*\n" + 
+            "WWFFW**GWSSTSSWG**WFFWW\n" + 
+            "WFFFWGGGWSTTTSWGGGWFFFW\n" + 
+            "WFFFDGGGTTTTTTTGGGDFFFW\n" + 
+            "WFFFWGGGWSTTTSWGGGWFFFW\n" + 
+            "WWFvW**GWSSTSSWG**WFFWW\n" + 
+            "*WFWW**GWWWTWWWG**WWFW*\n" + 
+            "*WFW***GGGGGGGGG***WFW*\n" + 
+            "*WWW******GGG******WWW*\n" + 
+            "**********GGG**********\n" + 
+            "********WWWDWWW********\n" + 
+            "******WWWFFFFFWWW******\n" + 
+            "******WFFFFFFFFFW******\n" + 
+            "******WWWWFFFWWWW******\n" + 
+            "*********WWWWW*********"
         );
         skyDungeon.addFurniture(0, 0, new Crafter(Crafter.Type.Enchanter));
 

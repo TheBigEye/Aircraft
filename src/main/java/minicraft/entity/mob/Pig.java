@@ -24,7 +24,7 @@ public class Pig extends PassiveMob {
         
 		// Pig sounds
 		if ((this.tickTime % (random.nextInt(100) + 120) == 0)) {
-			doPlaySound(sounds, 7);
+			playSound(sounds, 7);
 		}
     }
 

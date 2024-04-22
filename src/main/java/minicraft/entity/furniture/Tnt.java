@@ -17,6 +17,8 @@ import minicraft.graphic.Screen;
 import minicraft.graphic.Sprite;
 import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
+import minicraft.item.ToolItem;
+import minicraft.item.ToolType;
 import minicraft.level.Level;
 import minicraft.level.tile.LavaTile;
 import minicraft.level.tile.Tile;
@@ -112,11 +114,17 @@ public class Tnt extends Furniture implements ActionListener {
 
 	@Override
 	public void render(Screen screen) {
-		/*if (fuseLit) {
-			int colorFactor = 100 * ((fuseTick % 15) / 5) + 200;
-			color = Color.get(-1, colorFactor, colorFactor + 100, 555);
-		}*/
-		super.render(screen);
+		if (!fuseLit) {
+			super.render(screen);
+		}
+		
+		if (fuseLit) {
+			if (fuseTick / 8 % 2 == 0) {
+				super.renderFullbright(screen);
+			} else { 
+				super.render(screen);
+			}
+		}
 	}
 
 	/**
@@ -143,13 +151,20 @@ public class Tnt extends Furniture implements ActionListener {
 				return super.interact(player, heldItem, attackDir);
 			}
     		return true;
-    	} else {
-			if (!fuseLit) {
-				fuseLit = true;
-				Sound.playAt("genericFuse", this.x, this.y);
-				return true;
+    	}
+    	
+    	if (heldItem instanceof ToolItem) {
+    		ToolItem tool = (ToolItem) heldItem;
+    		
+			if (!fuseLit && tool.type == ToolType.Igniter) {
+				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+					Sound.playAt("genericFuse", this.x, this.y);
+					fuseLit = true;
+					return true;
+				}
 			}
     	}
+    	
 		return false;
 	}
 

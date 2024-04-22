@@ -19,9 +19,22 @@ class InventoryMenu extends ItemListMenu {
 		this.inv = inv;
 		this.holder = holder;
 	}
+	
+	InventoryMenu(Entity holder, Inventory inv, String title, int w, int h) {
+		super(InventoryMenu.getBuilder(), ItemEntry.useItems(inv.getItems()), title, w, h);
+		this.inv = inv;
+		this.holder = holder;
+	}
 
 	InventoryMenu(InventoryMenu model) {
 		super(InventoryMenu.getBuilder(), ItemEntry.useItems(model.inv.getItems()), model.getTitle());
+		this.inv = model.inv;
+		this.holder = model.holder;
+		setSelection(model.getSelection());
+	}
+	
+	InventoryMenu(InventoryMenu model, int w, int h) {
+		super(InventoryMenu.getBuilder(), ItemEntry.useItems(model.inv.getItems()), model.getTitle(), w, h);
 		this.inv = model.inv;
 		this.holder = model.holder;
 		setSelection(model.getSelection());

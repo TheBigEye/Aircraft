@@ -10,6 +10,7 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.FireParticle;
+import minicraft.graphic.Color;
 import minicraft.graphic.Screen;
 import minicraft.graphic.Sprite;
 import minicraft.item.FurnitureItem;
@@ -91,6 +92,11 @@ public class Furniture extends Entity {
     /** Draws the furniture on the screen. */
     public void render(Screen screen) {
         sprite.render(screen, x - 8, y - 8);
+    }
+    
+    /** Draws the furniture on the screen. */
+    public void renderFullbright(Screen screen) {
+        sprite.render(screen, x - 8, y - 8, 0, -1, Color.WHITE);
     }
 
     /** Called when the player presses the MENU key in front of this. */

@@ -12,7 +12,6 @@ import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.tile.GrassTile;
 import minicraft.level.tile.SnowTile;
-import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 
 public class Sheep extends PassiveMob {
@@ -20,8 +19,7 @@ public class Sheep extends PassiveMob {
 	private static final MobSprite[][] cutSprites = MobSprite.compileMobSpriteAnimations(0, 44);
 	
 	private static final String[] sounds = new String[] {"sheepSay1", "sheepSay2", "sheepSay3"};
-
-
+	
 	// Cut
 	public boolean sheared = false;
 	private int ageWhenCut = 0;
@@ -53,9 +51,8 @@ public class Sheep extends PassiveMob {
 		super.tick();
 
 		if (random.nextInt(1000) == 0 && sheared) { // Grazing
-			Tile tile = level.getTile(x >> 4, y >> 4);
 			// If tall grasses are present, these are consumed and then turn into grass tiles.
-			if (tile instanceof GrassTile) {
+			if (level.getTile(x >> 4, y >> 4) instanceof GrassTile) {
 				level.setTile(x >> 4, y >> 4, Tiles.get("dirt"));
 				sheared = false;
 			}
@@ -65,15 +62,13 @@ public class Sheep extends PassiveMob {
 		followOnHold(Items.get("Wheat"), 3);
 		
 		if ((tickTime % (random.nextInt(100) + 120) == 0)) {
-			Tile tile = level.getTile(x >> 4, y >> 4);
-			if (tile instanceof SnowTile) {
+			if (level.getTile(x >> 4, y >> 4) instanceof SnowTile) {
 				remove();
 				level.add(new Goat(), x, y);
+			} else if (random.nextBoolean()) {
+				playSound(sounds, 8);
 			}
-			
-			doPlaySound(sounds, 8);
 		}
-		
 	}
 
 	@Override
@@ -82,9 +77,9 @@ public class Sheep extends PassiveMob {
 
 		if (item instanceof ToolItem) {
 			if (((ToolItem) item).type == ToolType.Shears) {
-				sheared = true;
 				dropItem(1, 3, Items.get("Wool"));
 				((ToolItem) item).payDurability();
+				sheared = true;
 				ageWhenCut = age;
 				return true;
 			}
