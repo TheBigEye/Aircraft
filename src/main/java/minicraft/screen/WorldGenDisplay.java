@@ -84,7 +84,7 @@ public class WorldGenDisplay extends Display {
 			}
 		};
 
-		nameHelp.setVisible(true);
+		nameHelp.setVisible(false);
 
 		HashSet<String> controls = new HashSet<>();
 		controls.addAll(Arrays.asList(Game.input.getMapping("cursor-up").split("/")));

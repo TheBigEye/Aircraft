@@ -67,12 +67,6 @@ import minicraft.entity.mob.Skeleton;
 import minicraft.entity.mob.Slime;
 import minicraft.entity.mob.Snake;
 import minicraft.entity.mob.Zombie;
-import minicraft.entity.particle.BrightParticle;
-import minicraft.entity.particle.CloudParticle;
-import minicraft.entity.particle.FireParticle;
-import minicraft.entity.particle.HeartParticle;
-import minicraft.entity.particle.SmashParticle;
-import minicraft.entity.particle.SplashParticle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.graphic.Color;
 import minicraft.item.ArmorItem;
@@ -425,9 +419,8 @@ public class Load {
 		Settings.set("sound", json.getBoolean("sound"));
 		Settings.set("autosave", json.getBoolean("autosave"));
 		Settings.set("diff", json.has("diff") ? json.getString("diff") : "Normal");
+		
 		Settings.set("fps", json.getInt("fps"));
-        Settings.set("vsync", json.getBoolean("vsync"));
-        Settings.set("bossbar", json.has("diff") ? json.getString("diff") : "On screen");
         Settings.set("particles", json.getBoolean("particles"));
         Settings.set("shadows", json.getBoolean("shadows"));
 
@@ -1090,7 +1083,6 @@ public class Load {
 	        case "Knight": return new Knight(moblvl);
 	        case "OldGolem": return new OldGolem(moblvl);
 	        case "Snake": return new Snake(moblvl);
-	        case "Cthulhu": return new EyeQueen(moblvl); // Check...
 	        case "EyeQueen": return new EyeQueen(moblvl);
 	        case "DeepGuardian": return new Keeper(moblvl);
 	        case "Keeper": return new Keeper(moblvl);
@@ -1107,7 +1099,6 @@ public class Load {
 	        case "Anvil": return new Crafter(Crafter.Type.Anvil);
 	        case "Enchanter": return new Crafter(Crafter.Type.Enchanter);
 	        case "Stonecutter": return new Crafter(Crafter.Type.Stonecutter);
-	        case "Assembler": return new Crafter(Crafter.Type.Assembler);
 	        case "Brewery": return new Crafter(Crafter.Type.Brewery);
 	        case "Loom": return new Crafter(Crafter.Type.Loom);
 	        case "Furnace": return new Crafter(Crafter.Type.Furnace);
@@ -1120,15 +1111,6 @@ public class Load {
 	        case "Lantern": return new Lantern(Lantern.Type.NORM);
 	        case "Arrow": return new Arrow(new Skeleton(0), 0, 0, Direction.NONE, 0);
 	        case "ItemEntity": return new ItemEntity(Items.get("unknown"), 0, 0);
-	
-	        // Load Particles
-	        case "FireParticle": return new FireParticle(0, 0);
-	        case "SplashParticle": return new SplashParticle(0, 0);
-	        case "HeartParticle": return new HeartParticle(0, 0);
-	        case "BrightParticle": return new BrightParticle(0, 0);
-	        case "SmashParticle": return new SmashParticle(0, 0);
-	        case "CloudParticle": return new CloudParticle(0, 0);
-	        case "TextParticle": return new TextParticle("", 0, 0, 0);
 	
 	        default:
 	            System.err.println("LOAD ERROR: unknown or outdated entity requested: " + string);

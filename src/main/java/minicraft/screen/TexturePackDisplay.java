@@ -234,7 +234,7 @@ public class TexturePackDisplay extends Display {
 		}
 
 		// Title
-		Font.drawCentered(Localization.getLocalized("Texture Packs"), screen, Screen.h - 280, Color.YELLOW);
+		Font.drawCentered(Localization.getLocalized("Texture packs"), screen, Screen.h - 280, Color.YELLOW);
 
 		// Movement instructions
 		Font.drawCentered("Use " + Game.input.getMapping("MOVE-DOWN") + ", " + Game.input.getMapping("MOVE-UP") + ", " + Game.input.getMapping("SELECT"), screen, Screen.h - 11, Color.GRAY);

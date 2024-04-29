@@ -65,7 +65,6 @@ public class LawnTile extends Tile {
         if (toolType == ToolType.Shovel) {
             if (player.payStamina(2 - tool.level) && tool.payDurability()) {
                 level.setTile(x, y, Tiles.get("Grass"));
-                //Sound.genericHurt.playOnDisplay();
 
                 if (random.nextInt(3) == 0) { // 28% chance to drop Seeds
                     level.dropItem((x << 4) + 8, (y << 4) + 8, 2, Items.get("Seeds"));

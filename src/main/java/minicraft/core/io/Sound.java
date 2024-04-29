@@ -165,7 +165,13 @@ public class Sound {
 	public static void playAt(String key, int x, int y) {
 		Sound sound = sounds.get(key);
 		// Logger.debug("Playing sound clip '{}', at ({}, {}) ...", key, x, y);
-		if (sound != null) sound.playAt(x, y);
+		if (sound != null) sound.playAt(x, y, true);
+	}
+	
+	public static void playAt(String key, int x, int y, boolean async) {
+		Sound sound = sounds.get(key);
+		// Logger.debug("Playing sound clip '{}', at ({}, {}) ...", key, x, y);
+		if (sound != null) sound.playAt(x, y, async);
 	}
 	
 	public static void loop(String key, boolean start) {
@@ -179,7 +185,7 @@ public class Sound {
 		if (sound != null) al.alSourceStop(sound.source);
 	}
     
-	private void playAt(int x, int y) {
+	private void playAt(int x, int y, boolean async) {
 	    if (!Settings.getBoolean("sound")) {
 	        return;
 	    }
@@ -189,22 +195,26 @@ public class Sound {
 	    if (player == null) {
 	        return;
 	    }
+	    
+	    if (!async) {
+	    	int[] state = new int[1];
+	    	al.alGetSourcei(source, AL.AL_SOURCE_STATE, state, 0);
+	    	if (state[0] != AL.AL_PLAYING) {
+	    		al.alSourcePlay(source);
+	    	}
+	    } else {
+	    	al.alSourcePlay(source);
+	    }
 
-	    // Play the source without setting the volume
-	    al.alSourcePlay(source);
-
-        // Calculate the distance between the sound source and the player
         double distance = Math.sqrt(Math.pow(x - player.x, 2) + Math.pow(y - player.y, 2));
 
-        // TODO: improve this using an thread to dynamically change the 'Sound Gain' while the player moves
-        	
         // Set the volume based on the distance from the player
-        float volume = 1.0f - (float) distance / 180.0f;
-        if (volume < 0.0f) {
-            return;
+        float volume = 1.0f - ((float) distance / 175.0f);
+        
+        if (volume <= 0.0f) {
+        	return;
         }
-
-        // Set the source volume
+        
         al.alSourcef(source, AL.AL_GAIN, volume);
 	}
 
@@ -215,7 +225,6 @@ public class Sound {
         
         al.alSourcePlay(source);
     }
-
 
     private void loop(boolean start) {
         if (!Settings.getBoolean("sound")) {

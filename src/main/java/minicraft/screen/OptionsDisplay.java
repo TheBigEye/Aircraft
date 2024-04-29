@@ -20,7 +20,7 @@ import minicraft.screen.entry.StringEntry;
 public class OptionsDisplay extends Display {
 	
     boolean originalSound = Settings.getBoolean("sound");
-
+    
 	public OptionsDisplay() {
         super(true);
 
@@ -28,10 +28,10 @@ public class OptionsDisplay extends Display {
             new BlankEntry(),
             Settings.getEntry("diff"),
             Settings.getEntry("sound"),
-            Settings.getEntry("ambient"),
             Settings.getEntry("autosave"),
             Settings.getEntry("skinon"),
             Settings.getEntry("language"),
+            
             new SelectEntry("Video options", () -> Game.setDisplay(new VideoOptionsDisplay())),
             new SelectEntry("Change Key Bindings", () -> Game.setDisplay(new KeyInputDisplay())),
             new SelectEntry("Texture packs", () -> Game.setDisplay(new TexturePackDisplay())),
@@ -51,7 +51,13 @@ public class OptionsDisplay extends Display {
         Menu popupMenu = new Menu.Builder(true, 4, RelPos.CENTER)
             .setShouldRender(false)
             .setSelectable(false)
-            .setEntries(StringEntry.useLines(Color.RED, "A restart will be required, you can continue playing anyway", "enter to confirm", "escape to cancel"))
+            
+            .setEntries(StringEntry.useLines(Color.RED, 
+            	"A restart is needed, you can continue playing anyway", 
+            	"enter to confirm", 
+            	"escape to cancel")
+            )
+            
             .setTitle("Confirm Action")
             .createMenu();
 

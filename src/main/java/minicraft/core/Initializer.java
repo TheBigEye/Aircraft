@@ -36,7 +36,7 @@ public class Initializer extends Game {
 	/**
 	 * Reference to actual frame, also it may be null.
 	 */
-	static JFrame frame;
+	public static JFrame frame;
 	static LogoSplashCanvas logoSplash = new LogoSplashCanvas();
 	
 	// These store the number of frames and ticks in the previous second, used for fps, at least.

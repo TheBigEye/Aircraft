@@ -20,11 +20,11 @@ public class Cow extends PassiveMob {
         super.tick();
 
 		// follows to the player if holds wheat
-		followOnHold(Items.get("Wheat"), 3);
+		followOnHold(Items.get("Wheat"), 4);
         
 		// Cow sounds
-		if ((tickTime % (random.nextInt(100) + 120) == 0)) {
-			playSound(sounds, 8);
+		if ((tickTime % 150 == 0) && random.nextInt(4) == 0) {
+			playSound(sounds, 7);
 		}
     }
 

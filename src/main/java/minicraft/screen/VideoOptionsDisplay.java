@@ -12,19 +12,16 @@ import minicraft.screen.entry.StringEntry;
 public class VideoOptionsDisplay extends Display {
 	
     int originalFPS = (int) Settings.get("fps");
-    boolean originalVsync = Settings.getBoolean("vsync");
 
 	public VideoOptionsDisplay() {
         super(true);
 
         Menu optionsMenu = new Menu.Builder(true, 6, RelPos.LEFT,
-            new BlankEntry(),
+        	new BlankEntry(),
             Settings.getEntry("fps"),
-            Settings.getEntry("vsync"),
             Settings.getEntry("particles"),
             Settings.getEntry("shadows"),
-            new BlankEntry(),
-            Settings.getEntry("bossbar")
+            new BlankEntry()
         )
         .setTitle("Video options")
         .createMenu();
@@ -32,10 +29,13 @@ public class VideoOptionsDisplay extends Display {
         Menu popupMenu = new Menu.Builder(true, 4, RelPos.CENTER)
             .setShouldRender(false)
             .setSelectable(false)
+            
             .setEntries(StringEntry.useLines(Color.RED,
-            		"A restart will be required, you can continue playing anyway",
-            		"enter to confirm", "escape to cancel"
+            	"A restart is needed, you can continue playing anyway",
+            	"enter to confirm", 
+            	"escape to cancel"
             ))
+            
             .setTitle("Confirm Action")
             .createMenu();
 
@@ -67,14 +67,8 @@ public class VideoOptionsDisplay extends Display {
             return;
         }
         
-        if (originalVsync == true) {
-            Settings.set("fps", Settings.getRefreshRate());
-        } else if (originalFPS != (int) Settings.get("fps")) {
-            Settings.set("vsync", false);
-        }
-
         // If exit key is pressed, then display the popup menu if changes requiring a restart have been made
-        if (input.getKey("exit").clicked && originalFPS != (int) Settings.get("fps") || input.getKey("exit").clicked && originalVsync != Settings.getBoolean("vsync")) {
+        if (input.getKey("exit").clicked && originalFPS != (int) Settings.get("fps")) {
             menus[1].shouldRender = true;
             return;
         }

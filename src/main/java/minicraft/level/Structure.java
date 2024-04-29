@@ -209,7 +209,7 @@ public class Structure {
             "WFFFWGGGWSTTTSWGGGWFFFW\n" + 
             "WFFFDGGGTTTTTTTGGGDFFFW\n" + 
             "WFFFWGGGWSTTTSWGGGWFFFW\n" + 
-            "WWFvW**GWSSTSSWG**WFFWW\n" + 
+            "WWFFW**GWSSTSSWG**WFFWW\n" + 
             "*WFWW**GWWWTWWWG**WWFW*\n" + 
             "*WFW***GGGGGGGGG***WFW*\n" + 
             "*WWW******GGG******WWW*\n" + 
@@ -226,9 +226,9 @@ public class Structure {
         villageCrops.setData("F:Oak Planks,W:Oak Wall,D:Oak Door,G:Grass,O:Path,C:potato,Z:wheat,X:Water",
             "WWWWWO*O**WWWWW\n" + 
             "WFFFW*OO**WFFFW\n" + 
-            "WFFFDOO*OODFFFW\n" + 
+            "WFFFDOO*OOWFFFW\n" + 
             "WFFFW*OO**WFFFW\n" + 
-            "WWWWW**OO*WWWWW\n" + 
+            "WWWWW**OO*WWDWW\n" + 
             "**OO**OO*OO*OO*\n" + 
             "*OO*O*OOO**OO**\n" + 
             "OO*OOOOGOOOO*OO\n" +   

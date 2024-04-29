@@ -66,8 +66,7 @@ public class WheatTile extends Plant {
             ((Player) entity).addScore(random.nextInt(4) + 1);
         }
         
-        // Play sound.
-        Sound.playAt("genericHurt", x, y);
+        Sound.playAt("genericHurt", x << 4, y << 4);
 
         if (random.nextBoolean()) {
         	level.setTile(x, y, Tiles.get("Dirt"));

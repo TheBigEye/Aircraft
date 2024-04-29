@@ -10,11 +10,11 @@ import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
-import minicraft.core.Action;
 import minicraft.core.Game;
 import minicraft.core.VersionInfo;
 import minicraft.entity.Entity;
 import minicraft.level.Level;
+import minicraft.util.Action;
 
 public class Network extends Game {
 	private Network() {}

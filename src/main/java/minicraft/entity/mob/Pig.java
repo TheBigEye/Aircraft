@@ -20,11 +20,11 @@ public class Pig extends PassiveMob {
         super.tick();
 
 		// follows to the player if holds a carrot
-		followOnHold(Items.get("Carrot"), 5);
+		followOnHold(Items.get("Carrot"), 3);
         
 		// Pig sounds
-		if ((this.tickTime % (random.nextInt(100) + 120) == 0)) {
-			playSound(sounds, 7);
+		if ((tickTime % 180 == 0) && random.nextInt(4) == 0) {
+			playSound(sounds, 6);
 		}
     }
 

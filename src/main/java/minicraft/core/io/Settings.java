@@ -29,14 +29,12 @@ public class Settings {
 		options.put("sound", new BooleanEntry("Sound", true));
 		options.put("autosave", new BooleanEntry("Autosave", true));
 
-		options.put("ambient", new ArrayEntry<>("Ambient", "Nice", "Normal", "Scary"));
-
 		options.put("cheats", new BooleanEntry("Cheats", true));
 		
 		options.put("size", new ArrayEntry<>("World Size", 256, 512));
 		options.get("size").setSelection(0);
 		
-		options.put("theme", new ArrayEntry<>("World Theme", "Normal", "Forest", "Desert", "Plain", "Hell", "Snow"));
+		options.put("theme", new ArrayEntry<>("World Theme", "Normal", "Forest", "Desert", "Plain", "Tundra", "Hell"));
 		options.put("type", new ArrayEntry<>("Terrain Type", "Island", "Box", "Mountain", "Irregular"));
 
 		options.put("unlockedskin", new BooleanEntry("Wear Suit", false));
@@ -56,20 +54,11 @@ public class Settings {
 				Game.player.suitOn = (boolean) value;
 			}
 		});
-		
-		options.put("textures", new ArrayEntry<>("Textures", "Original", "Custom"));
-		options.get("textures").setSelection(0);
         
         // Video options
         options.put("fps", new RangeEntry("Max FPS", 30, 300, getRefreshRate()));
-        options.put("vsync", new BooleanEntry("V.Sync", false));
-       
-        options.put("bossbar", new ArrayEntry<>("Bossbar type", "On screen", "On entity", "Percent"));
-        options.get("bossbar").setSelection(0);
-        
         options.put("particles", new BooleanEntry("Particles", true));
         options.put("shadows", new BooleanEntry("Shadows", true));
-        
 	}
 
 	public static void initialize() {

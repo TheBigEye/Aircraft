@@ -11,7 +11,6 @@ public class Recipes {
 	public static final ArrayList<Recipe> enchantRecipes = new ArrayList<>();
 	public static final ArrayList<Recipe> craftRecipes = new ArrayList<>();
 	public static final ArrayList<Recipe> loomRecipes = new ArrayList<>();
-	public static final ArrayList<Recipe> assemblerRecipes = new ArrayList<>();
 	public static final ArrayList<Recipe> stonecutterRecipes = new ArrayList<>();
 	public static final ArrayList<Recipe> breweryRecipes = new ArrayList<>();
 
@@ -172,7 +171,7 @@ public class Recipes {
 		ovenRecipes.add(new Recipe("Carrot Soup_3", "Bowl_3", "Carrot_3"));
 
 		enchantRecipes.add(new Recipe("Slimy Amulet_1", "gold_8", "green clothes_2"));
-		enchantRecipes.add(new Recipe("Eye Amulet_1", "gold_8", "AlAzif_1", "Sticky essence_2"));
+		enchantRecipes.add(new Recipe("Eye Amulet_1", "gold_8", "Grimoire_1", "Sticky essence_2"));
 		enchantRecipes.add(new Recipe("Gold Apple_1", "apple_1", "gold_8"));
 		enchantRecipes.add(new Recipe("Gold Carrot_1", "carrot_1", "gold_8"));
 		enchantRecipes.add(new Recipe("potion_1", "glass_1", "Lapis_3"));

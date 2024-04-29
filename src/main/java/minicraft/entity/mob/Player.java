@@ -153,9 +153,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public int fishingTicks = maxFishingTicks;
 	public int fishingLevel;
 
-	public boolean playerBurning = false;
 	public boolean fallWarn = false;
-	private int burnTime = 0;
     
     // NICE NIGHT STUFF
     public boolean isNiceNight = false; // Spawn mobs or spaw fireflyes?
@@ -167,6 +165,8 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 	public Player(@Nullable Player previousInstance, InputHandler input) {
 		super(sprites, Player.maxHealth);
 		x = 24; y = 24;
+		
+		updatePlayerSkin();
 
 		this.input = input;
 		playerInventory = new Inventory() {
@@ -312,33 +312,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             nightCount = (nightCount + 1) % 5;
         }
         isNiceNight = (nightCount == 4);
-
-		// PLAYER BURNING
-		if (playerBurning) {
-			if (tickTime / 16 % 4 == 0 && burnTime != 120) {
-                if (Settings.get("particles").equals(true)) {
-                    level.add(new FireParticle(x - 4 + random.nextInt(10), y - 4 + random.nextInt(9)));
-                }
-                if (!(potionEffects.containsKey(PotionType.Lava) || potionEffects.containsKey(PotionType.xLava))) {
-                    this.hurt(this, 1);
-                }
-				burnTime++;
-			}
-		} else {
-			burnTime = 0;
-		}
-
-		// if touch water extinguish the fire
-		if (onTile instanceof WaterTile) {
-			burnTime = 0;
-			playerBurning = false;
-		}
-
-		// if burntime is equals to 120 stop
-		if (burnTime == 120) {
-			burnTime = 0;
-			playerBurning  = false;
-		}
 
 		tickMultiplier();
 
@@ -1034,8 +1007,6 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
     @Override
     public void render(Screen screen) {
-    	updatePlayerSkin();
-
         MobSprite[][] spriteSet; // The default, walking sprites.
 
         if (activeItem instanceof FurnitureItem) {
@@ -1065,12 +1036,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
         		}
 
         	} else if (onTile instanceof LavaTile) {
-
-        		// BURN THE PLAYER
-        		playerBurning = true;
-
+        		
         		// Animation effect
-        		if (tickTime / 8 % 2 == 0) {
+        		if (tickTime / 16 % 4 == 0) {
         			screen.render(xo + 0, yo + 3, 6 + (2 << 5), 1, 3); // Render the lava graphic
         			screen.render(xo + 8, yo + 3, 6 + (2 << 5), 0, 3); // Render the mirrored lava graphic to the right.
         		} else {
@@ -1237,7 +1205,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     public void findStartPos(Level level, boolean setSpawn) {
         Point spawnPos;
 
-        List<Point> spawnTilePositions = level.getMatchingTiles(Tiles.get("Grass"));
+        List<Point> spawnTilePositions = level.getMatchingTiles(Tiles.get("Grass"), Tiles.get("Sand"), Tiles.get("Snow"));
 
         if (spawnTilePositions.isEmpty()) {
             spawnTilePositions.addAll(level.getMatchingTiles((t, x, y) -> t.maySpawn()));
@@ -1260,6 +1228,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
             spawnx = spawnPos.x;
             spawny = spawnPos.y;
         }
+        
         // Set (entity) coordinates of player to the center of the tile.
         this.x = (spawnPos.x * 16) + 8; // conversion from tile coords to entity coords.
         this.y = (spawnPos.y * 16) + 8;
@@ -1275,6 +1244,7 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
     	if (!level.getTile(spawnx, spawny).maySpawn()) {
     		findStartPos(level); 
     	}
+    	
     	// Move the player to the spawnpoint
     	this.x = (spawnx * 16) + 8;
     	this.y = (spawny * 16) + 8;
@@ -1398,7 +1368,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
     	if (healthDamage > 0 || this != Game.player) {
     		level.add(new TextParticle("" + damage, x, y, Color.get(-1, 504)));
-    		if (this == Game.player) super.doHurt(healthDamage, attackDir); // Sets knockback, and takes away health.
+    		if (this == Game.player) {
+    			super.doHurt(healthDamage, attackDir); // Sets knockback, and takes away health.
+    		}
     	}
 
     	Sound.playAt("playerHurt", this.x, this.y);
@@ -1422,7 +1394,9 @@ public class Player extends Mob implements ItemHolder, ClientTickable {
 
     	if (healthDamage > 0 || this != Game.player) {
     		level.add(new TextParticle("" + damage, x, y, Color.get(-1, 504)));
-    		if (this == Game.player) super.doHurt(healthDamage, attackDir); // Sets knockback, and takes away health.
+    		if (this == Game.player) {
+    			super.doHurt(healthDamage, attackDir); // Sets knockback, and takes away health.
+    		} 
     	}
 
     	Sound.playAt("playerHurt", this.x, this.y);

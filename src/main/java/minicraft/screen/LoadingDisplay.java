@@ -87,7 +87,7 @@ public class LoadingDisplay extends Display {
 	}
 	
 	public static void setMessage(String message) {
-		LoadingDisplay.message = message;
+		LoadingDisplay.message = Localization.getLocalized(message);
 	}
 
 	public static void progress(float amt) {

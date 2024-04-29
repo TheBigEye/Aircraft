@@ -1,26 +1,180 @@
 ### Translation created by IsNoLe - ported to Aircraft by TheBigEye
 
+### Achievement
+
+# achievement
+
+minicraft.achievement.woodcutter
+Дровосек
+
+minicraft.achievement.woodcutter.desc
+Возьмите немного дерева.
+
+minicraft.achievement.benchmarking
+Время крафта
+
+minicraft.achievement.benchmarking.desc
+Создайте верстак.
+
+minicraft.achievement.mine_stone
+Каменный век!
+
+minicraft.achievement.mine_stone.desc
+Добудьте камень своей новой киркой.
+
+minicraft.achievement.smelt_iron
+Железный век!!
+
+minicraft.achievement.smelt_iron.desc
+Добудьте железо и расплавьте его.
+
+minicraft.achievement.upgrade
+Обновление!
+
+minicraft.achievement.upgrade.desc
+Сделайте инструмент из материала, который прочнее дерева.
+
+minicraft.achievement.iron_tools
+Это тяжело!
+
+minicraft.achievement.iron_tools.desc
+Сделайте инструмент из материала, который прочнее камня.
+
+minicraft.achievement.monsters
+Что это такое?!
+
+minicraft.achievement.monsters.desc
+Убейте враждебного монстра.
+
+minicraft.achievement.fish
+Время ловить рыбу!
+
+minicraft.achievement.fish.desc
+Get a fish.
+
+minicraft.achievement.doors
+Демасиадас пуэртас!
+
+minicraft.achievement.doors.desc
+Разместите все типы дверей.
+
+minicraft.achievement.planks
+Идите по доскам!
+
+minicraft.achievement.planks.desc
+Размещайте все виды досок.
+
+minicraft.achievement.clothes
+Красочного дня!
+
+minicraft.achievement.clothes.desc
+Craft all the colorful clothes.
+
+minicraft.achievement.demolition
+Бум!
+
+minicraft.achievement.demolition.desc
+Используйте динамит.
+
+minicraft.achievement.explosive_ending
+Взрывной финал
+
+minicraft.achievement.explosive_ending.desc
+«Случайно» взорвать себя.
+
+minicraft.achievement.survive_darkness
+Боязнь темноты?
+
+minicraft.achievement.survive_darkness.desc
+Выжить 5 минут в полной темноте.
+
+minicraft.achievement.lava
+Горячие дела
+
+minicraft.achievement.lava.desc
+Используйте зелье лавы, чтобы плавать в лаве.
+
+minicraft.achievement.find_gem
+Посмотрите, как оно блестит!
+
+minicraft.achievement.find_gem.desc
+Находите драгоценные камни и добывайте их.
+
+minicraft.achievement.lowest_caves
+Тьма за светом
+
+minicraft.achievement.lowest_caves.desc
+Доберитесь до нижних пещер.
+
+minicraft.achievement.obsidian_dungeon
+Здесь жарко!
+
+minicraft.achievement.obsidian_dungeon.desc
+Доберитесь до Обсидианового подземелья.
+
+minicraft.achievement.airwizard
+Это только начало?
+
+minicraft.achievement.airwizard.desc
+Убейте первого Волшебника Воздуха!
+
+minicraft.achievement.second_airwizard
+Загробная жизнь!
+
+minicraft.achievement.second_airwizard.desc
+Убейте второго Волшебника Воздуха.
+
+minicraft.achievement.eye_queen
+Я тебя вижу!
+
+minicraft.achievement.eye_queen.desc
+Призвать и убить Королеву Глаз.
+
+minicraft.achievement.eat_all_food
+На диете
+
+minicraft.achievement.eat_all_food.desc
+Ешьте все, что можно есть.
+
+
+# AchievementDisplay.java
+Earned!
+Заработано!
+
+Not Earned
+Не заработано
+
+Achievements Score:
+Оценка достижений:
+
 ### entity
 
+## entity.particle
+## entity.particle end
+
+# Entity.java
+Entities
+Сущности
+
 # AirWizard.java
-Air Wizard: Defeated!
-Маг Воздуха: Повержен!
+The Air Wizard was beaten!
+Волшебник Воздуха побежден!
 
 The Dungeon is now open!
 Подземелье теперь открыто!
+
+A book lies on the ground...
+Книга лежит на земле...
 
 A costume lies on the ground...
 Костюм лежит на земле...
 
 # Bed.java
-Can't sleep!
-Нельзя спать!
+Спать
+Спать
 
-Min 
-Мин 
-
- Sec left!
- Сек. сталось!
+You can only sleep at night!
+Ночью можно только спать!
 
 # DungeonChest.java
 You hear a noise from the surface!
@@ -46,9 +200,6 @@ Can't set home here!
 
 Home Sweet Home!
 Дом милый дом!
-
-Mode penalty: -2 health
-Режим штрафа: -2 здоровья
 
 You don't have a home!
 У тебя нет дома!

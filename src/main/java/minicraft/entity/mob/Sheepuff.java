@@ -19,10 +19,10 @@ public class Sheepuff extends SkyMob {
 	public void tick() {
 		super.tick();
 		
-		followOnHold(Items.get("Sky Wart"), 3);
+		followOnHold(Items.get("Sky Wart"), 4);
 		
 		if ((tickTime % (random.nextInt(150) + 120) == 0)) {
-			playSound(sounds, 8);
+			playSound(sounds, 7);
 		}
 	}
 

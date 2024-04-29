@@ -1,6 +1,5 @@
 package minicraft.level.tile.farming;
 
-import minicraft.core.io.Sound;
 import minicraft.entity.Entity;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.mob.Player;
@@ -55,8 +54,6 @@ public class ParsnipTile extends SkyPlant{
         } else if (age >= maxAge - maxAge / 5) {
             count = random.nextInt(2);
         }
-        
-        Sound.playAt("genericHurt", x, y);
 
         level.dropItem((x << 4) + 8, (y << 4) + 8, count, Items.get("Gold Carrot"));
 

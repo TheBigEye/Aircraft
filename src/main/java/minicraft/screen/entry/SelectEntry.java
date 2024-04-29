@@ -1,10 +1,10 @@
 package minicraft.screen.entry;
 
-import minicraft.core.Action;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
 import minicraft.graphic.Font;
+import minicraft.util.Action;
 
 public class SelectEntry extends ListEntry {
 

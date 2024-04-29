@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
 
 import org.tinylog.Logger;
 
-import minicraft.core.io.Settings;
+import minicraft.core.io.Localization;
 import minicraft.entity.Entity;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.AirWizard;
@@ -210,7 +210,6 @@ public class Renderer extends Game {
 			}
 		}
 		
-		// for earthquakes
 		level.renderBackground(screen, xScroll, yScroll); // Renders current level background
 		level.renderSprites(screen, xScroll, yScroll); // Renders level sprites on screen
 
@@ -239,10 +238,8 @@ public class Renderer extends Game {
 			// Brightens all
 			int brightnessMultiplier = player.potionEffects.containsKey(PotionType.Light) ? 12 : 8; 
 			level.renderLight(lightScreen, xScroll, yScroll, brightnessMultiplier); // Finds (and renders) all the light from objects (like the player, lanterns, and lava).
-			screen.darkness(lightScreen, currentLevel, xScroll, yScroll);
-			
+			screen.darkness(lightScreen, currentLevel, xScroll, yScroll);		
 		}
-		
 	}
 
 	/**
@@ -289,11 +286,11 @@ public class Renderer extends Game {
 		ArrayList<String> permStatus = new ArrayList<>();
 
 		if (Updater.saving) {
-			permStatus.add("Saving... " + Math.round(LoadingDisplay.getPercentage()) + "%");
+			permStatus.add(Localization.getLocalized("Saving") + " " + Math.round(LoadingDisplay.getPercentage()) + "%");
 		}
 
 		if (Bed.sleeping()) {
-			permStatus.add("Sleeping" + ellipsis.updateAndGet());
+			permStatus.add(Localization.getLocalized("Sleeping") + ellipsis.updateAndGet());
 		}
 
 		if (!permStatus.isEmpty()) {
@@ -469,7 +466,7 @@ public class Renderer extends Game {
 		}
 		
         // Render the bosses health bar on screen
-		if (!player.isRemoved() && Settings.get("bossbar").equals("On screen")) {
+		if (!player.isRemoved()) {
 			// Check if are a boss close to the player in the current level
 			List<Entity> entitiesInRange = Game.levels[Game.currentLevel].getEntitiesInRect(new Rectangle(player.x, player.y, 360 << 1, 360 << 1, Rectangle.CENTER_DIMS));
 			
@@ -547,23 +544,24 @@ public class Renderer extends Game {
 			info.add("Base: " + "Minicraft Plus Legacy");                                   subinfo.add("J: " + Utils.JAVA_VERSION + " x" + Utils.JAVA_ARCH);
 			info.add("" + TimeData.date());                                                 subinfo.add(Utils.getGeneralMemoryUsage());
 			info.add(Initializer.fra + " fps" );                                            subinfo.add(Utils.getMemoryAllocation());
-			info.add("Day tiks: " + Updater.tickCount + " (" + Updater.getTime() + ")");
+			info.add("Day tiks: " + Updater.tickCount + " (" + Updater.getTime() + ")");    subinfo.add("");
 			info.add((Updater.normalSpeed * Updater.gameSpeed) + " tps");
              
 			// player info
-			info.add("Walk spd: " + player.moveSpeed);
-			info.add("X: " + (player.x >> 4) + "." + (player.x % 16));
-			info.add("Y: " + (player.y >> 4) + "." + (player.y % 16));
-			info.add("");
-
+			info.add("Walk spd: " + player.moveSpeed);										subinfo.add("AW beaten: " + AirWizard.beaten);
+			info.add("X: " + (player.x >> 4) + "." + (player.x % 16));						subinfo.add("AW active: " + EyeQueen.active);
+			info.add("Y: " + (player.y >> 4) + "." + (player.y % 16));                      subinfo.add("");
+			info.add("");                                                                   subinfo.add("EQ beaten: " + AirWizard.beaten);
+			                                                                                subinfo.add("EQ active: " + AirWizard.active);
 			info.add("Tile: " + levels[currentLevel].getTile(player.x >> 4, player.y >> 4).name);
-			info.add("Id: " + levels[currentLevel].getTile(player.x >> 4, player.y >> 4).id);
+			info.add("ID: " + levels[currentLevel].getTile(player.x >> 4, player.y >> 4).id);
 			info.add("Data: " + levels[currentLevel].getData(player.x >> 4, player.y >> 4));
 			info.add("Depth: " + levels[currentLevel].depth + " (" + levels[currentLevel].w +"x" + levels[currentLevel].h +")");
 			info.add("");
 
 			if (isMode("score")) {
 				info.add("Score " + player.getScore());
+				info.add("");
 			}
 
 			if (levels[currentLevel] != null) {

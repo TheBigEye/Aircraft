@@ -44,8 +44,6 @@ public enum PotionType {
     xShield(Color.get(1, 65, 65, 157), 10400),
     Haste(Color.get(1, 106, 37, 106), 4800),
 
-    Blindness(Color.get(1, 48, 48, 64), 22000),
-
     Escape(Color.get(1, 85, 62, 62), 0) {
         public boolean toggleEffect(Player player, boolean addEffect) {
             if (addEffect) {
@@ -60,9 +58,9 @@ public enum PotionType {
                 int depthDiff = playerDepth > 0 ? -1 : 1;
 
                 World.scheduleLevelChange(depthDiff, () -> {
-                    Level plevel = World.levels[World.levelIndex(playerDepth + depthDiff)];
-                    if (plevel != null && !plevel.getTile(player.x >> 4, player.y >> 4).mayPass(plevel, player.x >> 4, player.y >> 4, player)) {
-                        player.findStartPos(plevel, false);
+                    Level playerLevel = World.levels[World.levelIndex(playerDepth + depthDiff)];
+                    if (playerLevel != null && !playerLevel.getTile(player.x >> 4, player.y >> 4).mayPass(playerLevel, player.x >> 4, player.y >> 4, player)) {
+                        player.findStartPos(playerLevel, false);
                     }
                 });
             }

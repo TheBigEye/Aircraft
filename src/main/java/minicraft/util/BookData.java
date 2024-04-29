@@ -13,7 +13,7 @@ public class BookData {
     public static final String credits = loadBook("credits");
     public static final String antVenomBook = loadBook("antidous");
     public static final String storylineGuide = loadBook("story_guide");
-    public static final String AlAzif = loadBook("alazif");
+    public static final String Grimoire = loadBook("grimoire");
 
     private static String loadBook(String bookTitle) {
         String book;

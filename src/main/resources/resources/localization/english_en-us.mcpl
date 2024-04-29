@@ -33,7 +33,7 @@ minicraft.achievement.upgrade.desc
 Get a tool made of a material that is stronger than wood.
 
 minicraft.achievement.iron_tools
-How heavy!
+Its heavy!
 
 minicraft.achievement.iron_tools.desc
 Get a tool made of a material that is stronger than stone.
@@ -45,7 +45,7 @@ minicraft.achievement.monsters.desc
 Kill a hostile mob.
 
 minicraft.achievement.fish
-To fish!
+Time to fish!
 
 minicraft.achievement.fish.desc
 Get a fish.
@@ -75,7 +75,7 @@ minicraft.achievement.demolition.desc
 Use TNT.
 
 minicraft.achievement.explosive_ending
-An explosive eding
+An explosive ending
 
 minicraft.achievement.explosive_ending.desc
 "Accidentally" blow yourself up.
@@ -155,24 +155,24 @@ Entities
 Entities
 
 # AirWizard.java
-Air Wizard: Defeated!
-Air Wizard: Defeated!
+The Air Wizard was beaten!
+The Air Wizard was beaten!
 
 The Dungeon is now open!
 The Dungeon is now open!
+
+A book lies on the ground...
+A book lies on the ground...
 
 A costume lies on the ground...
 A costume lies on the ground...
 
 # Bed.java
-Can't sleep!
-Can't sleep!
+Sleeping
+Sleeping
 
-Min 
-Min 
-
- Sec left!
- Sec left!
+You can only sleep at night!
+You can only sleep at night!
 
 # DungeonChest.java
 You hear a noise from the surface!
@@ -198,9 +198,6 @@ Can't set home here!
 
 Home Sweet Home!
 Home Sweet Home!
-
-Mode penalty: -2 health
-Mode penalty: -2 health
 
 You don't have a home!
 You don't have a home!
@@ -247,8 +244,8 @@ Book
 Antidious
 Antidious
 
-AlAzif
-AlAzif
+Grimoire
+Grimoire
 
 # BucketItem.java
 
@@ -345,9 +342,6 @@ Gold Carrot
 
 # FurnitureItem.java
 
-KingZombie Spawner
-Kings Zombie Spawner
-
 Cow Spawner
 Cows Spawner
 
@@ -384,9 +378,6 @@ Slimes Spawner
 Zombie Spawner
 Zombies Spawner
 
-Mooshroom Spawner
-Mooshrooms Spawner
-
 Creeper Spawner
 Creepers Spawner
 
@@ -400,7 +391,7 @@ Knight Spawner
 Knights Spawner
 
 OldGolem Spawner
-Rust golems Spawner
+Rust Golems Spawner
 
 AirWizard Spawner
 Air Wizards Spawner
@@ -408,12 +399,12 @@ Air Wizards Spawner
 EyeQueen Spawner
 Eye Queens Spawner
 
-Cthulhu Spawner
-Cthulhus Spawner
-
 Keeper Spawner
 Keepers Spawner
 
+Firefly Spawner
+Fireflies Spawner
+
 Workbench
 Workbench
 
@@ -428,9 +419,6 @@ Anvil
 
 Enchanter
 Enchanter
-
-Assembler
-Assembler
 
 Stonecutter
 Stonecutter
@@ -480,6 +468,9 @@ Map book
 
 Eye Amulet
 Eye Amulet
+
+Slimy Amulet
+Slimy Amulet
 
 # PotionType.java
 
@@ -542,9 +533,6 @@ Haste Potion
 
 Escape Potion
 Escape Potion
-
-Blindness Potion
-Blindness Potion
 
 Potion
 Potion
@@ -732,30 +720,6 @@ Spring
 Flint
 Flint
 
-Flint and Steel
-Flint and Steel
-
-Protection I
-Protection I
-
-Protection II
-Protection II
-
-Protection III
-Protection III
-
-Sharp I
-Sharp I
-
-Sharp II
-Sharp II
-
-Sharp III
-Sharp III
-
-Cordyceps essence
-Cordyceps essence
-
 Sticky essence
 Sticky essence
 
@@ -767,17 +731,17 @@ Master essence
 
 # TileItem.java
 
-Flower
-Flower
+Daisy
+Daisy
 
-Orange Tulip
-Orange Tulip
+Rose
+Rose
 
-Red Mushroom
-Red Mushroom
+Dandelion
+Dandelion
 
-Brown Mushroom
-Brown Mushroom
+Poppy
+Poppy
 
 Acorn
 Acorn
@@ -794,8 +758,17 @@ Pine Cone
 Dirt
 Dirt
 
-Sky dirt
-Sky dirt
+Sky Grass
+Sky Grass
+
+Ice
+Ice
+
+Red Mushroom
+Red Mushroom
+
+Brown Mushroom
+Brown Mushroom
 
 Natural Rock
 Natural Rock
@@ -1171,6 +1144,9 @@ unable to get localhost address
 
 # Save.java
 
+Saving
+Saving
+
 World Saved!
 World Saved!
 
@@ -1296,35 +1272,44 @@ ESCAPE to Return to menu
 Loading
 Loading
 
+Starting
+Starting
+
 Generating
 Generating
 
-Separating
-Separating
+Generating surface!
+Generating surface!
 
-Planting
-Planting
+Generating caves!
+Generating caves!
 
-Eroding
-Eroding
+Generating the dungeon!
+Generating the dungeon!
 
-Digging
-Digging
+Generating the heaven!
+Generating the heaven!
 
-Raising
-Raising
+Generating forests
+Generating forests
 
-Leveling
-Leveling
+Generating meadow
+Generating meadow
 
-Flattening
-Flattening
+Generating beaches
+Generating beaches
 
-Molding
-Molding
+Generating mountains
+Generating mountains
 
-Building
-Building
+Generating mushrooms
+Generating mushrooms
+
+Generating ores
+Generating ores
+
+Generating clouds
+Generating clouds
 
 Rendering
 Rendering
@@ -1452,6 +1437,9 @@ Texture packs
 Open Game Folder
 Open Game Folder
 
+Open World Folder
+Open World Folder
+
 # PauseDisplay.java
 
 Return to Game
@@ -1507,8 +1495,8 @@ Quit without saving
 Inventory
 Inventory
 
-to search.
-to search.
+to search
+to search
 
 # TitleDisplay.java
 
@@ -1520,9 +1508,6 @@ Load World
 
 New World
 New World
-
-Multiplayer
-Multiplayer
 
 Options
 Options
@@ -1587,12 +1572,6 @@ World Seed
 
 Enter World Name
 Enter World Name
-
-Trouble with world name?
-Trouble with world name?
-
-by default, w and s move the cursor up and down. This can be changed in the key binding menu. To type the letter instead of moving the cursor, hold the shift key while typing the world name.
-by default, w and s move the cursor up and down. This can be changed in the key binding menu. To type the letter instead of moving the cursor, hold the shift key while typing the world name.
 
 Create World
 Create World
@@ -1700,26 +1679,11 @@ Sound
 Autosave
 Autosave
 
-Ambient
-Ambient
-
 Particles
 Particles
 
 Shadows
 Shadows
-
-Bossbar type
-Bossbar type
-
-On screen
-On screen
-
-On entity
-On entity
-
-Percent
-Percent
 
 World Size
 World Size

@@ -87,7 +87,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 	@Override
 	public void tick() {
 		time++;
-		if (time >= lifeTime && !item.equals(Items.get("AlAzif"))) { // if the time is larger or equal to lifeTime then...
+		if (time >= lifeTime && !item.equals(Items.get("Grimoire"))) { // if the time is larger or equal to lifeTime then...
 			remove(); // remove from the world
 			return; // skip the rest of the code
 		}
@@ -130,7 +130,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 		yy += goty - expectedy;
 
 		// If some item touch lava, is burned
-		if (level.getTile(x >> 4,y >> 4) instanceof LavaTile && !item.equals(Items.get("AlAzif"))) {
+		if (level.getTile(x >> 4,y >> 4) instanceof LavaTile && !item.equals(Items.get("Grimoire"))) {
 			for (int i = 0; i < 1 + random.nextInt(2); i++) {
 				int randX = random.nextInt(16);
 				int randY = random.nextInt(12);
@@ -143,7 +143,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 			}
 		}
 		
-		if (item.equals(Items.get("AlAzif")) && time % 20 == 0) {
+		if (item.equals(Items.get("Grimoire")) && time % 20 == 0) {
 			for (int i = 0; i < 1 + random.nextInt(2); i++) {
 				level.add(new FireParticle(x - 8 + random.nextInt(8), y - 12 + random.nextInt(12)));
 			}
@@ -166,7 +166,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 		}
 		
 		/* This first part is for the blinking effect */
-		if (time >= lifeTime - 6 * 20 && !item.equals(Items.get("AlAzif"))) {
+		if (time >= lifeTime - 6 * 20 && !item.equals(Items.get("Grimoire"))) {
 			if (time / 6 % 2 == 0) return;
 		}
 		
@@ -218,7 +218,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 	    	this.item.equals(Items.get("Gold Lantern")) ||
 	    	this.item.equals(Items.get("Summon Altar"))
 	    ) ? 1: 
-	    	this.item.equals(Items.get("AlAzif")) ? 2 : 0;
+	    	this.item.equals(Items.get("Grimoire")) ? 2 : 0;
 	}
 
 }

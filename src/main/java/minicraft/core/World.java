@@ -15,6 +15,7 @@ import minicraft.screen.LoadingDisplay;
 import minicraft.screen.PlayerDeathDisplay;
 import minicraft.screen.WorldGenDisplay;
 import minicraft.screen.WorldSelectDisplay;
+import minicraft.util.Action;
 
 public class World extends Game {
 	private World() {}

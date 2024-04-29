@@ -155,24 +155,24 @@ Entities
 Entidades
 
 # AirWizard.java
-Air Wizard: Defeated!
-Mago de Aire: Derrotado!
+The Air Wizard was beaten!
+El Mago de Aire fue derrotado!
 
 The Dungeon is now open!
 El calabozo esta abierto ahora!
+
+A book lies on the ground...
+Un libro descansa en el suelo...
 
 A costume lies on the ground...
 Un disfraz descansa en el suelo...
 
 # Bed.java
-Can't sleep!
-No puedes dormir!
+Sleeping
+Durmiendo
 
-Min 
-Min 
-
- Sec left!
- Seg restante!
+You can only sleep at night!
+Solo puedes dormir de noche!
 
 # DungeonChest.java
 You hear a noise from the surface!
@@ -199,9 +199,6 @@ No puedes establecer la casa aqui!
 Home Sweet Home!
 Hogar Dulce Hogar!
 
-Mode penalty: -2 health
-Modo de penalización: -2 de salud
-
 You don't have a home!
 No tienes una casa!
 
@@ -217,22 +214,22 @@ No puedes ir a casa desde aqui!
 
 # ArmorItem.java
 Leather Armor
-Armadura De Cuero
+Armadura de Cuero
 
 Snake Armor
-Armadura De Serpiente
+Armadura de Serpiente
 
 ChainMail Armor
-Armadura Cota De Malla
+Armadura Cota de Malla
 
 Iron Armor
-Armadura De Hierro
+Armadura de Hierro
 
 Gold Armor
-Armadura De Oro
+Armadura de Oro
 
 Gem Armor
-Armadura De Gema
+Armadura de Gema
 
 # BoatItem.java
 
@@ -247,8 +244,8 @@ Libro
 Antidious
 Antidoto
 
-AlAzif
-Libro Del Aire
+Grimoire
+Grimorio
 
 # BucketItem.java
 
@@ -256,10 +253,10 @@ Empty Bucket
 Cubeta Vacia
 
 Water Bucket
-Cubeta De Agua
+Cubeta de Agua
 
 Lava Bucket
-Cubeta De Lava
+Cubeta de Lava
 
  Bucket
  Cubeta
@@ -282,7 +279,7 @@ Black Clothes
 Traje Negro
 
 Orange Clothes
-Traje Anaranjada
+Traje Anaranjado
 
 Purple Clothes
 Traje Morado
@@ -305,10 +302,10 @@ Frozen palette
 Paleta Congelada
 
 Mushroom Soup
-Sopa De hongos
+Sopa de hongos
 
 Carrot Soup
-Sopa De Zanahoria
+Sopa de Zanahoria
 
 Raw Chicken
 Pollo Crudo
@@ -326,7 +323,7 @@ Cooked Chicken
 Pollo Cocinado
 
 Pork Chop
-Chuleta De Cerdo
+Chuleta de Cerdo
 
 Cooked Fish
 Pescado Cocido
@@ -345,77 +342,71 @@ Zanahoria Dorada
 
 # FurnitureItem.java
 
-KingZombie Spawner
-Generador De Reyes Zombies
-
 Cow Spawner
-Generador De Vacas
+Generador de Vacas
 
 Pig Spawner
-Generador De Cerdos
+Generador de Cerdos
 
 Sheep Spawner
-Generador De Ovejas
+Generador de Ovejas
 
 Goat Spawner
-Generador De Cabras
+Generador de Cabras
 
 Chicken Spawner
-Generador De Pollos
+Generador de Pollos
 
 Cleric Spawner
-Generador De Clerigos
+Generador de Clerigos
 
 Librarian Spawner
-Generador De Bibliotecarios
+Generador de Bibliotecarios
 
 GuiMan Spawner
-Generador De Pinguinos
+Generador de Pinguinos
 
 Cat Spawner
-Generador De Gatos
+Generador de Gatos
 
 Golem Spawner
-Generador De Golems
+Generador de Golems
 
 Slime Spawner
-Generador De Slimes
+Generador de Slimes
 
 Zombie Spawner
-Generador De Zombies
-
-Mooshroom Spawner
-Generador De Vacahongos
+Generador de Zombies
 
 Creeper Spawner
-Generador De Creepers
+Generador de Creepers
 
 Skeleton Spawner
-Generador De Esqueletos
+Generador de Esqueletos
 
 Snake Spawner
-Generador De Serpientes
+Generador de Serpientes
 
 Knight Spawner
-Generador De Caballeros
+Generador de Caballeros
 
 OldGolem Spawner
-Generador De Golems viejos
+Generador de Golems viejos
 
 AirWizard Spawner
-Generador De Magos de Aire
+Generador de Magos de Aire
 
 EyeQueen Spawner
-Generador De Reinas Ojo
-
-Cthulhu Spawner
-Generador De Cthulhu
+Generador de Reinas Ojo
 
 Keeper Spawner
-Generador De Guardian
+Generador de Guardian
+
+Firefly Spawner
+Generador de Luciernagas
 
 Workbench
-Mesa De Trabajo
+Mesa de Trabajo
 
 Oven
 Horno
@@ -428,9 +419,6 @@ Yunque
 
 Enchanter
 Encantador
-
-Assembler
-Ensamblador
 
 Stonecutter
 Cortapiedra
@@ -445,10 +433,10 @@ Lantern
 Linterna
 
 Iron Lantern
-Linterna De Hierro
+Linterna de Hierro
 
 Gold Lantern
-Linterna De Oro
+Linterna de Oro
 
 Tnt
 Dinamita
@@ -457,29 +445,32 @@ Bed
 Cama
 
 Slime Statue
-Estatua De Slime
+Estatua de Slime
 
 Zombie Statue
-Estatua De Zombie
+Estatua de Zombie
 
 Skeleton Statue
-Estatua De Esqueleto
+Estatua de Esqueleto
 
 Chest
 Cofre
 
 Dungeon Chest
-Cofre De mazmorra
+Cofre de Calabozo
 
 # MapItem.java
 
 Map book
-Libro De mapas
+Libro de Mapas
 
 # AmuletItem.java
 
 Eye Amulet
-Amuleto Del ojo
+Amuleto del Ojo
+
+Slimy Amulet
+Amuleto del Guardian
 
 # PotionType.java
 
@@ -487,64 +478,61 @@ None Potion
 Ninguna Pocion
 
 Speed Potion
-Pocion De Velocidad
+Pocion de Velocidad
 
 xSpeed Potion
-Pocion De Velocidad II
+Pocion de Velocidad II
 
 Light Potion
-Pocion De Luz
+Pocion de Luz
 
 xLight Potion
-Pocion De Luz II
+Pocion de Luz II
 
 Swim Potion
-Pocion De Nadar
+Pocion de Nadar
 
 xSwim Potion
-Pocion De Nadar II
+Pocion de Nadar II
 
 Energy Potion
-Pocion De Energia
+Pocion de Energia
 
 xEnergy Potion
-Pocion De Energia II
+Pocion de Energia II
 
 Regen Potion
-Pocion De Curacion
+Pocion de Curacion
 
 xRegen Potion
-Pocion De Curacion II
+Pocion de Curacion II
 
 Health Potion
-Pocion De Vida
+Pocion de Vida
 
 xHealth Potion
-Pocion De Vida II
+Pocion de Vida II
 
 Time Potion
-Pocion De Tiempo
+Pocion de Tiempo
 
 Lava Potion
-Pocion De Lava
+Pocion de Lava
 
 xLava Potion
-Pocion De Lava II
+Pocion de Lava II
 
 Shield Potion
-Pocion De Escudo
+Pocion de Escudo
 
 xShield Potion
-Pocion De Escudo II
+Pocion de Escudo II
 
 Haste Potion
-Pocion De Prisa
+Pocion de Prisa
 
 Escape Potion
-Pocion De Escape
-
-Blindness Potion
-Pocion De Ceguera
+Pocion de Escape
 
 Potion
 Pocion
@@ -562,13 +550,13 @@ Tijeras
 # StackableItem.java
 
 Oak Wood
-Madera De Roble
+Madera de Roble
 
 Spruce Wood
-Madera De Abeto
+Madera de Abeto
 
 Birch Wood
-Madera De Abedul
+Madera de Abedul
 
 Leaf
 Hoja
@@ -637,7 +625,7 @@ Gray dye
 Tinte Gris
 
 Ink sac
-Saco De Tinta
+Saco de Tinta
 
 Lime dye
 Tinte Lima
@@ -682,13 +670,13 @@ Coal
 Carbon
 
 Iron Ore
-Mena De Hierro
+Mena de Hierro
 
 Lapis
 Lapis
 
 Gold Ore
-Mena De Oro
+Mena de Oro
 
 Iron
 Hierro
@@ -721,7 +709,7 @@ Scale
 Escama
 
 Shard
-elitro
+Fragmento
 
 Gear
 Engranaje
@@ -731,30 +719,6 @@ Resorte
 
 Flint
 Pedernal
-
-Flint and Steel
-Mechero
-
-Protection I
-Proteccion I
-
-Protection II
-Proteccion II
-
-Protection III
-Proteccion III
-
-Sharp I
-Filo I
-
-Sharp II
-Filo II
-
-Sharp III
-Filo III
-
-Cordyceps essence
-Esencia De Cordyceps
 
 Sticky essence
 Esencia Pegajosa
@@ -774,29 +738,28 @@ Rose
 Rosa
 
 Dandelion
-Diente De Leon
+Diente de Leon
 
 Poppy
 Amapola
-
 
 Acorn
 Bellota
 
 Birch Cone
-Piña De Abedul
+Piña de Abedul
 
 Fir Cone
-Piña De Abeto
+Piña de Abeto
 
 Pine Cone
-Piña De Pino
+Piña de Pino
 
 Dirt
 Tierra
 
 Sky Grass
-Cesped Del Cielo
+Cesped del Cielo
 
 Ice
 Hielo
@@ -814,40 +777,40 @@ Natural Hard Rock
 Piedra Natural Dura
 
 Oak Plank
-Tablon De Roble
+Tablon de Roble
 
 Spruce Plank
-Tablon De Abeto
+Tablon de Abeto
 
 Birch Plank
-Tablon De Abedul
+Tablon de Abedul
 
 Oak Wall
-Muro De Roble
+Muro de Roble
 
 Spruce Wall
-Muro De Abeto
+Muro de Abeto
 
 Birch Wall
-Muro De Abedul
+Muro de Abedul
 
 Oak Door
-Puerta De Roble
+Puerta de Roble
 
 Spruce Door
-Puerta De Abeto
+Puerta de Abeto
 
 Birch Door
-Puerta De Abedul
+Puerta de Abedul
 
 Stone Brick
-Ladrillo De Piedra
+Ladrillo de Piedra
 
 Stone Wall
-Muro De Piedra
+Muro de Piedra
 
 Stone Door
-Puerta De Piedra
+Puerta de Piedra
 
 Holy Brick
 Ladrillo Sagrado
@@ -859,13 +822,13 @@ Holy Door
 Puerta Sagrada
 
 Obsidian Brick
-Ladrillo De Obsidiana
+Ladrillo de Obsidiana
 
 Obsidian Wall
-Muro De Obsidiana
+Muro de Obsidiana
 
 Obsidian Door
-Puerta De Obsidiana
+Puerta de Obsidiana
 
 Wool
 Lana
@@ -937,19 +900,19 @@ Potato
 Patata
 
 Sky wart
-Verruga Del Cielo
+Verruga del Cielo
 
 Sky Seeds
-Semillas Del Cielo
+Semillas del Cielo
 
 Grass Seeds
-Semillas De Cesped
+Semillas de Cesped
 
 Bone
 Hueso
 
 Bone Powder
-Polvo De Hueso
+Polvo de Hueso
 
 Ferrosite
 Nube Rapida
@@ -986,16 +949,16 @@ Caña de Pescar
 # FishingRodItem.java
 
 Wood Fishing rod
-Caña De Pescar De Madera
+Caña de Pescar de Madera
 
 Iron Fishing rod
-Caña De Pescar De Hierro
+Caña de Pescar de Hierro
 
 Gold Fishing rod
-Caña De Pescar De Oro
+Caña de Pescar de Oro
 
 Gem Fishing rod
-Caña De Pescar De Gema
+Caña de Pescar de Gema
 
 # ToolType.java
 
@@ -1021,7 +984,7 @@ Bow
 Arco
 
 FishingRod
-Caña De Pescar
+Caña de Pescar
 
 Claymore
 Claymore
@@ -1049,16 +1012,16 @@ Gem Ore
 Mena de Gema
 
 Oak Planks
-Tablon De roble
+Tablon de roble
 
 Spruce Planks
-Tablon De abeto
+Tablon de abeto
 
 Birch Planks
-Tablon De abedul
+Tablon de abedul
 
 Stone Bricks
-Ladrillo De piedra
+Ladrillo de piedra
 
 Obsidian
 Obsidiana
@@ -1067,10 +1030,10 @@ Oak Wall
 Muro de roble
 
 Spruce Wall
-Muro De abeto
+Muro de abeto
 
 Birch Wall
-Muro De abedul
+Muro de abedul
 
 Grass
 Cesped
@@ -1103,7 +1066,7 @@ Tree
 Arbol
 
 Tree Sapling
-Brote De Arbol
+Brote de Arbol
 
 Sand
 Arena
@@ -1112,19 +1075,19 @@ Cactus
 Cactus
 
 Cactus Sapling
-Brote De Cactus
+Brote de Cactus
 
 Lava
 Lava
 
 Lava Brick
-Ladrillo De Lava
+Ladrillo de Lava
 
 Explode
 Explotar
 
 Farmland
-Tierras De Cultivo
+Tierras de Cultivo
 
 Wheat
 Trigo
@@ -1180,6 +1143,9 @@ incapaz de obtener la direccion localhost
 ### saveload
 
 # Save.java
+
+Saving
+Guardando
 
 World Saved!
 Mundo guardado!
@@ -1306,8 +1272,44 @@ ESC para Regresar al menú
 Loading
 Cargando
 
+Starting
+Iniciando
+
 Generating
 Generando
+
+Generating surface!
+Generando superficie!
+
+Generating caves!
+Generando cuevas!
+
+Generating the dungeon!
+Generando el calabozo!
+
+Generating the heaven!
+Generando el cielo!
+
+Generating forests
+Generando bosques
+
+Generating meadow
+Generando pradera
+
+Generating beaches
+Generando playas
+
+Generating mountains
+Generando montañas
+
+Generating mushrooms
+Generando hongos
+
+Generating ores
+Generando minerales
+
+Generating clouds
+Generando nubes
 
 Rendering
 Renderizando
@@ -1435,6 +1437,9 @@ Paquetes de texturas
 Open Game Folder
 Abrir carpeta del juego
 
+Open World Folder
+Abrir carpeta del mundo
+
 # PauseDisplay.java
 
 Return to Game
@@ -1490,7 +1495,7 @@ Salir sin guardar
 Inventory
 Inventario
 
-to search.
+to search
 para buscar
 
 # TitleDisplay.java
@@ -1503,9 +1508,6 @@ Cargar Mundo
 
 New World
 Nuevo Mundo
-
-Multiplayer
-Multijugador
 
 Options
 Opciones
@@ -1523,7 +1525,7 @@ Storyline Guide (for the weak)
 Guia de historias (para los debiles)
 
 About
-Acerca de
+Acerca
 
 Minicraft discord
 Discord de Minicraft
@@ -1570,12 +1572,6 @@ Semilla
 
 Enter World Name
 Nombre del Mundo
-
-Trouble with world name?
-¿Problema con el nombre?
-
-by default, w and s move the cursor up and down. This can be changed in the key binding menu. To type the letter instead of moving the cursor, hold the shift key while typing the world name.
-de forma predeterminada, w y s mueven el cursor hacia arriba y hacia abajo. Esto se puede cambiar en el menú de enlace de teclas. Para escribir la letra en lugar de mover el cursor, mantenga presionada la tecla Mayús mientras escribe el nombre del mundo.
 
 Create World
 Crear Mundo
@@ -1683,26 +1679,11 @@ Sonido
 Autosave
 Autoguardado
 
-Ambient
-Ambiente
-
 Particles
 Particulas
 
 Shadows
 Sombras
-
-Bossbar type
-Barra de vida
-
-On screen
-En pantalla
-
-On entity
-En entidad
-
-Percent
-Porcentaje
 
 World Size
 Tamaño del Mundo

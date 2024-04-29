@@ -42,12 +42,7 @@ public class Bed extends Furniture {
 		if (inBed(player)) return false;
 
 		if (!(Updater.tickCount >= Updater.sleepStartTime || Updater.tickCount < Updater.sleepEndTime && Updater.pastFirstDay)) {
-			// it is too early to sleep; display how much time is remaining.
-			// gets the seconds until sleeping allowed. normalSpeed is in tiks/sec.
-			int seconds = (int) Math.ceil((Updater.sleepStartTime - Updater.tickCount) * 1.0 / Updater.normalSpeed); 
-
-			String note = "Can't sleep! " + (seconds / 60) + "Mins " + (seconds % 60) + " Secs left!";
-			Game.notifications.add(note); // Add the notification displaying the time remaining in minutes and seconds.
+			Game.notifications.add("You can only sleep at night!");
 			return false;
 		}
 		return true;

@@ -209,8 +209,6 @@ public class Save {
 		json.put("autosave", String.valueOf(Settings.get("autosave")));
 		
 		json.put("fps", String.valueOf(Settings.get("fps")));
-        json.put("vsync", String.valueOf(Settings.get("vsync")));
-        json.put("bossbar", Settings.get("bossbar"));
         json.put("particles", String.valueOf(Settings.get("particles")));
         json.put("shadows", String.valueOf(Settings.get("shadows")));
         
@@ -220,7 +218,6 @@ public class Save {
 		json.put("savedUUID", MultiplayerDisplay.savedUUID);
 		json.put("savedUsername", MultiplayerDisplay.savedUsername);
 
-        
 		json.put("keymap", new JSONArray(Game.input.getKeyPrefs()));
 		json.put("texturePack", TexturePackDisplay.getLoadedPack());
 

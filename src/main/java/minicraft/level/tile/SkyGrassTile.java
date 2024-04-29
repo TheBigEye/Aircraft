@@ -76,11 +76,14 @@ public class SkyGrassTile extends Tile {
 
         if (toolType == ToolType.Shovel) {
             if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+            	
             	Sound.playAt("genericHurt", xt << 4, yt << 4);
                 level.setTile(xt, yt, Tiles.get("Ferrosite")); // would allow you to shovel cloud, I think.
+                
                 if (random.nextInt(20) == 0) { // 20% chance to drop sky seeds
                     level.dropItem((xt << 4) + 8, (yt << 4) + 8, 2, Items.get("Sky Seeds"));
                 }
+                
                 level.dropItem((xt << 4) + 8, (yt << 4) + 8, 1, 2, Items.get("Cloud"));
                 return true;
             }

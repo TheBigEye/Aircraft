@@ -120,6 +120,12 @@ public class EnemyMob extends MobAi {
         sprites = lvlSprites[lvl - 1];
         super.render(screen);
     }
+    
+    @Override
+    public void render(Screen screen, int color) {
+    	sprites = lvlSprites[lvl - 1];
+    	super.render(screen, color);
+    }
 
     @Override
     protected void touchedBy(Entity entity) { // if an entity (like the player) touches the enemy mob

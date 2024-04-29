@@ -39,7 +39,6 @@ public class SkyLawnTile extends Tile {
 			if (tool.type == ToolType.Shovel) {
 				if (player.payStamina(2 - tool.level) && tool.payDurability()) {
 					level.setTile(x, y, Tiles.get("Sky grass"));
-					//Sound.genericHurt.playOnDisplay();
 
 					if (random.nextInt(20) == 1) { // 20% chance to drop sky seeds
 						level.dropItem((x << 4) + 8, (y << 4) + 8, Items.get("Sky Seeds"));

@@ -17,7 +17,7 @@ public class BookItem extends Item {
         ArrayList<Item> items = new ArrayList<Item>();
         items.add(new BookItem("Book", new Sprite(0, 8, 0), null));
         items.add(new BookItem("Antidious", new Sprite(1, 8, 0), BookData.antVenomBook, true));
-        items.add(new BookItem("AlAzif", new Sprite(0, 28, 0), BookData.AlAzif, true));
+        items.add(new BookItem("Grimoire", new Sprite(2, 8, 0), BookData.Grimoire, true));
         return items;
     }
 

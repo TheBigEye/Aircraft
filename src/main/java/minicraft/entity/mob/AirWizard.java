@@ -8,7 +8,6 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.Spark;
 import minicraft.graphic.Color;
-import minicraft.graphic.Font;
 import minicraft.graphic.MobSprite;
 import minicraft.graphic.Screen;
 import minicraft.item.Items;
@@ -17,15 +16,11 @@ import minicraft.screen.AchievementsDisplay;
 
 public class AirWizard extends EnemyMob {
 
-	private static MobSprite[][][] spritesMain;
-
     private static MobSprite[][][] spritesFirstPahse;
     private static MobSprite[][][] spritesSecondPhase;
     private static MobSprite[][][] spritesThirdPhase;
     
     static {
-    	// FIXME: The Air Wizard skin sprites should change beetween phases
-    	spritesMain = new MobSprite[2][4][2];
         spritesFirstPahse = new MobSprite[2][4][2];
         spritesSecondPhase = new MobSprite[2][4][2];
         spritesThirdPhase = new MobSprite[2][4][2];
@@ -40,12 +35,10 @@ public class AirWizard extends EnemyMob {
             spritesSecondPhase[i] = list;
         }
         
-        for (int i = 0; i < 2; i++) { // Furius wizard
+        for (int i = 0; i < 2; i++) { // Utimate wizard
             MobSprite[][] list = MobSprite.compileMobSpriteAnimations(30, 10 + (i * 2));
             spritesThirdPhase[i] = list;
         }
-        
-        spritesMain = spritesFirstPahse; // Start on first phase
     }
 
     public static boolean beaten = false;
@@ -74,7 +67,7 @@ public class AirWizard extends EnemyMob {
      * @param secondform determines if the wizard should be level 2 or 1.
      */
     public AirWizard(boolean secondform) {
-        super(secondform ? 2 : 1, spritesMain, secondform ? 18000 : 10500, false, 16 * 8, -1, 10, 50);
+        super(secondform ? 2 : 1, spritesFirstPahse, secondform ? 18000 : 10500, false, 16 * 8, -1, 10, 50);
         
         active = true;
         entity = this;
@@ -83,7 +76,7 @@ public class AirWizard extends EnemyMob {
         this.secondform = secondform;
         if (secondform) speed = 3;
         if (!secondform) {
-        	beaten = false; // <- needed for new worlds :(
+        	beaten = false;
         	speed = 2;
         }
         
@@ -114,14 +107,14 @@ public class AirWizard extends EnemyMob {
         if (health <= (secondform ? 12000 : 7000) && currentPhase == 1) {
         	// change to phase 2
         	Sound.playAt("wizardChangePhase", this.x, this.y);
-        	spritesMain = spritesSecondPhase;
+        	this.lvlSprites = spritesSecondPhase;
         	currentPhase = 2;
         }
         
         if (health <= (secondform ? 6000 : 3500) && currentPhase == 2) {
         	// change to phase 3
         	Sound.playAt("wizardChangePhase", this.x, this.y);
-        	spritesMain = spritesThirdPhase;
+        	this.lvlSprites = spritesThirdPhase;
         	currentPhase = 3;
         }
 
@@ -248,37 +241,20 @@ public class AirWizard extends EnemyMob {
 
     @Override
     public void render(Screen screen) {
-        super.render(screen);
-
-        int textColor = Color.get(1, 0, 204, 0);
-        int textColor2 = Color.get(1, 0, 51, 0);
-        int percent = health / (maxHealth / 100);
-        String h = percent + "%";
-
-        if (percent < 1) {
-            h = "1%";
-        }
-
-        if (percent < 16) {
-            textColor = Color.get(1, 204, 0, 0);
-            textColor2 = Color.get(1, 51, 0, 0);
-        } else if (percent < 51) {
-            textColor = Color.get(1, 204, 204, 9);
-            textColor2 = Color.get(1, 51, 51, 0);
-        }
-        
-        int textwidth = Font.textWidth(h);
-        
-        // Bossbar on the the Air wizard
-        if (Settings.get("bossbar").equals("On entity")) {
-            Font.drawBar(screen, (x - Screen.w / 12 + 26), y - 24, length);
-        }
-
-        // Bossbar percent
-        if (Settings.get("bossbar").equals("Percent")) {
-            Font.draw(h, screen, (x - textwidth / 2) + 1, y - 17, textColor2);
-            Font.draw(h, screen, (x - textwidth / 2), y - 18, textColor);
-        }
+    	// When is charging a attack ...
+    	if (currentPhase == 1 && attackDelay > 0) {
+			if (tickTime / 5 % 4 == 0) {
+				super.render(screen, secondform ? Color.GREEN : Color.RED);
+				return;
+			} 
+    	} else if (currentPhase > 1) {
+    		if (tickTime / 3 % 2 == 0) {
+    			super.render(screen, secondform ? Color.GREEN : Color.RED);
+				return;
+    		}
+    	}
+			
+		super.render(screen);
     }
 
     @Override
@@ -302,19 +278,19 @@ public class AirWizard extends EnemyMob {
             }
         }
 
-        Sound.playAt("wizardDeath", this.x, this.y);
+        Sound.playAt("wizardDeath", x, y);
         
-        level.dropItem(x, y, Items.get("AlAzif"));
-
         if (!secondform) {  
 			// Kill first Air wizard achievement
 			AchievementsDisplay.setAchievement("minicraft.achievement.airwizard", true);
 	
             if (!beaten) {
-            	Updater.notifyAll("The Air Wizard was beaten?", 200);
-            	Updater.notifyAll("Unlocked Dungeons!", 200);
+            	Updater.notifyAll("The Dungeon is now open!", 200);
+            	Updater.notifyAll("A book lies on the ground...", 200);
             	beaten = true;
             }
+            
+            level.dropItem(x, y, Items.get("Grimoire"));
 
             active = false;
             entity = null;
@@ -334,7 +310,9 @@ public class AirWizard extends EnemyMob {
             // Unlock the Air wizard suit :D
             Settings.set("unlockedskin", true);
         }
+        
         new Save();
+
         super.die(); // Calls the die() method in EnemyMob.java
     }
 

@@ -1,6 +1,5 @@
 package minicraft.level.tile;
 
-import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Mob;
 import minicraft.graphic.Screen;
@@ -38,7 +37,6 @@ public class SaplingTile extends Tile {
 		// Don't grow if there is an entity on this tile.
 		if (age > 100 && !level.isEntityOnTile(x, y)) {
 			level.setTile(x, y, growsTo); // TODO: add grow sound
-			Sound.playAt("genericHurt", x, y);
 		} else {
 			level.setData(x, y, age);
 		}
@@ -47,7 +45,6 @@ public class SaplingTile extends Tile {
 
 	@Override
 	public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
-		Sound.playAt("genericHurt", x, y);
 		level.setTile(x, y, onType);
 		return true;
 	}

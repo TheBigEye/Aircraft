@@ -20,6 +20,8 @@ public class LevelGen {
 	private static long worldSeed = 0;
 
 	private static final Random random = new Random(worldSeed); // Initializes the random class
+	private static int stairsRadius = 15;
+	
 	private double[] values; // An array of doubles, used to help making noise for the map
 	
 	private final int w, h;
@@ -171,10 +173,7 @@ public class LevelGen {
 			}
 
 			if (count[Tiles.get("Rock").id & 0xffff] < 100) continue;
-			if (count[Tiles.get("Sand").id & 0xffff] < 100) continue;
-			if (count[Tiles.get("Sand Rock").id & 0xffff] < 100) continue;
 			if (count[Tiles.get("Grass").id & 0xffff] < 100) continue;
-			if (count[Tiles.get("Snow").id & 0xffff] < 100) continue;
 			if (count[Tiles.get("Oak Tree").id & 0xffff] < 100) continue;
 			if (count[Tiles.get("Stairs Down").id & 0xffff] == 0) continue;
 
@@ -336,30 +335,63 @@ public class LevelGen {
 				
 				// World themes logic
 				if ("Island".equals(terrainType)) {
-				    if (val < -0.7) {
-				        if ("Hell".equals(terrainTheme)) {
+					// Oceans generation
+				    if (val < -0.8) {
+				        if (terrainTheme == "Hell") {
 				            map[i] = Tiles.get("Lava").id;
 				        } else {
-				            if (tval > -0.20 && hval > 0.60) {
+				        	if (tval > -0.20 && hval > 0.60) {
 				                map[i] = Tiles.get("Ice").id;
 				            } else {
 				                map[i] = Tiles.get("Water").id;
 				            }
 				        }
-				    } else if (val > 1.2 && mval > -1.8) {
-				    	if (tval > 0.30 && hval < 0.16 && val > 0.41) {
+				    
+				    // Mountains generation
+				    } else if (val > 1.2 && mval > -1.5) {
+				    	// Terrain themes
+				    	if (terrainTheme == "Desert") {
+				    		if (tval > 0.30 && hval < 0.16 && val > 0.41) {
+				    			map[i] = Tiles.get("Sand Rock").id;
+				    		} else {
+				    			map[i] = Tiles.get("Up Rock").id;
+				    		}
+				    	} else if (terrainTheme == "Tundra") {
+				    		map[i] = Tiles.get("Up Rock").id;
+				    	}
+				    	
+				    	// Normal generation
+				    	else if (tval > 0.30 && hval < 0.16 && val > 0.41) {
 				    		map[i] = Tiles.get("Sand Rock").id;
 				    	} else {
 				    		map[i] = Tiles.get("Up Rock").id;
 				    	}
+				    
+				    // Terrain generation
 				    } else {
-				        if (tval > 0.30 && hval < 0.16 && val > 0.41) {
-				            map[i] = Tiles.get("sand").id;
+				    	// Terrain themes
+				    	if (terrainTheme == "Desert") {
+				    		if (tval > -0.45 && hval > -0.95 && val > -0.16) {
+				    			map[i] = Tiles.get("Sand").id;
+				    		} else {
+				    			map[i] = Tiles.get("Grass").id;
+				    		}
+				    	} else if (terrainTheme == "Tundra") {
+				    		if (tval > -0.45 && hval > -0.95) {
+				    			map[i] = Tiles.get("Snow").id;
+				    		} else {
+				    			map[i] = Tiles.get("Grass").id;
+				    		}
+				    	}
+				    	
+					    // Normal generation
+				    	else if (tval > 0.30 && hval < 0.16 && val > 0.41) {
+				            map[i] = Tiles.get("Sand").id;
 				        } else {
 				            if (tval > -0.20 && hval > 0.60) {
-				                map[i] = Tiles.get("snow").id;
+				                map[i] = Tiles.get("Snow").id;
 				            } else {
-				                map[i] = Tiles.get("grass").id;
+				                map[i] = Tiles.get("Grass").id;
 				            }
 				        }
 				    }
@@ -436,9 +468,8 @@ public class LevelGen {
 						} else {
 							map[index] = Tiles.get("Pine Tree").id;
 						}
-					}
-					
-					if (map[index] == Tiles.get("Grass").id) {
+						
+					} else if (map[index] == Tiles.get("Grass").id) {
 						if (random.nextBoolean()) {
 							map[index] = Tiles.get("Oak Tree").id;
 						} else {
@@ -449,8 +480,6 @@ public class LevelGen {
 			}
 		}
 		
-
-	
 		// VEGETATION GENERATION STEP
 		LoadingDisplay.setMessage("Generating meadow");
 		for (int i = 0; i < flowerThreshold; i++) {
@@ -485,6 +514,7 @@ public class LevelGen {
 				}
 			}
 		}
+		
 		for (int i = 0; i < flowerThreshold; i++) {
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
@@ -495,52 +525,11 @@ public class LevelGen {
 				int yy = y + random.nextInt(5) - random.nextInt(5);
 
 				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-					if (map[xx + yy * w] == Tiles.get("Grass").id) {
-						map[xx + yy * w] = Tiles.get("Lawn").id;
-						data[xx + yy * w] = (short) (pos + random.nextInt(4) * 16);
-					}
-				}
-			}
-		}
-
-		// add cactus to sand
-		for (int i = 0; i < (fullSize / 100); i++) {
-			int x = random.nextInt(w);
-			int y = random.nextInt(h);
-			
-			for (int j = 0; j < 5; j++) {
-				int xx = x + random.nextInt(15) + random.nextInt(10) + random.nextInt(5);
-				int yy = y + random.nextInt(15) + random.nextInt(10) + random.nextInt(5);
-
-				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-					if (map[xx + yy * w] == Tiles.get("Sand").id && random.nextInt(6) == 3) {
-						map[xx + yy * w] = Tiles.get("Cactus").id;
-					}
-				}
-			}
-		}
-
-		// add ice spikes to snow
-		for (int i = 0; i < (fullSize / 100); i++) {
-			int xx = random.nextInt(w);
-			int yy = random.nextInt(h);
-			if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-				if (map[xx + yy * w] == Tiles.get("Snow").id) {
-					map[xx + yy * w] = Tiles.get("Ice Spike").id;
-				}
-			}
-		}
-
-		// same...
-		for (int i = 0; i < (fullSize / 100); i++) {
-			int x = random.nextInt(w);
-			int y = random.nextInt(h);
-			for (int j = 0; j < 20; j++) {
-				int xx = x + random.nextInt(2) - random.nextInt(2);
-				int yy = y + random.nextInt(2) - random.nextInt(2);
-				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-					if (map[xx + yy * w] == Tiles.get("Snow").id) {
-						map[xx + yy * w] = Tiles.get("Ice Spike").id;
+					int index = xx + yy * w;
+					
+					if (map[index] == Tiles.get("Grass").id) {
+						map[index] = Tiles.get("Lawn").id;
+						data[index] = (short) (pos + random.nextInt(4) * 16);
 					}
 				}
 			}
@@ -549,12 +538,64 @@ public class LevelGen {
 		for (int i = 0; i < (fullSize / 100); i++) {
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
+			
+			for (int j = 0; j < 8; j++) {
+				int xx = x + random.nextInt(15) + random.nextInt(10) + random.nextInt(5);
+				int yy = y + random.nextInt(15) + random.nextInt(10) + random.nextInt(5);
+
+				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+					int index = xx + yy * w;
+					if (map[index] == Tiles.get("Sand").id && random.nextInt(6) == 3) {
+						map[index] = Tiles.get("Cactus").id;
+					}
+				}
+			}
+		}
+		
+
+		// add ice spikes to snow
+		for (int i = 0; i < (fullSize / 100); i++) {
+			int xx = random.nextInt(w);
+			int yy = random.nextInt(h);
+
+			if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+				int index = xx + yy * w;
+				if (map[index] == Tiles.get("Snow").id) {
+					map[index] = Tiles.get("Ice Spike").id;
+				}
+			}
+		}
+
+		// same...
+		for (int i = 0; i < (fullSize / 100); i++) {
+			int x = random.nextInt(w);
+			int y = random.nextInt(h);
+			
 			for (int j = 0; j < 20; j++) {
 				int xx = x + random.nextInt(2) - random.nextInt(2);
 				int yy = y + random.nextInt(2) - random.nextInt(2);
+				
 				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-					if (map[xx + yy * w] == Tiles.get("Snow").id) {
-						map[xx + yy * w] = Tiles.get("Ice").id;
+					int index = xx + yy * w;
+					if (map[index] == Tiles.get("Snow").id) {
+						map[index] = Tiles.get("Ice Spike").id;
+					}
+				}
+			}
+		}
+		
+		for (int i = 0; i < (fullSize / 100); i++) {
+			int x = random.nextInt(w);
+			int y = random.nextInt(h);
+			
+			for (int j = 0; j < 20; j++) {
+				int xx = x + random.nextInt(2) - random.nextInt(2);
+				int yy = y + random.nextInt(2) - random.nextInt(2);
+				
+				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+					int index = xx + yy * w;
+					if (map[index] == Tiles.get("Snow").id) {
+						map[index] = Tiles.get("Ice").id;
 					}
 				}
 			}
@@ -564,7 +605,7 @@ public class LevelGen {
 		for (int j = 0; j < h; j++) {
 			for (int x = 0; x < w; x++) {
 				int index = x + j * w;
-				if (map[index] != Tiles.get("Water").id && (
+				if ((map[index] != Tiles.get("Water").id || map[index] != Tiles.get("Lava").id) && (
 					map[index] == Tiles.get("Grass").id || 
 					map[index] == Tiles.get("Oak Tree").id || 
 					map[index] == Tiles.get("Daisy").id ||
@@ -579,7 +620,13 @@ public class LevelGen {
 					for (int tx = x - 1; tx <= x + 1; tx++) {
 						for (int ty = j - 1; ty <= j + 1; ty++) {
 							if ((tx >= 0 && ty >= 0 && tx < w && ty < h) && (tx != x || ty != j)) {
+								// Normal theme
 								if (map[tx + ty * w] == Tiles.get("Water").id) {
+									replace = true;
+									break;
+								
+								// Hell theme
+								} else if (map[tx + ty * w] == Tiles.get("Lava").id) {
 									replace = true;
 									break;
 								}
@@ -593,6 +640,33 @@ public class LevelGen {
 				}
 			}
 		}
+		
+		for (int j = 0; j < h; j++) {
+			for (int x = 0; x < w; x++) {
+				int index = x + j * w;
+				if (map[index] != Tiles.get("Up Rock").id && (
+					map[index] == Tiles.get("Sand Rock").id)) {
+					boolean replace = false;
+
+					// Check the tiles around the current position
+		            for (int tx = x - (2 + random.nextInt(1)); tx <= x + (2 + random.nextInt(1)); tx++) {
+		                for (int ty = j - (2 + random.nextInt(1)); ty <= j + (2 + random.nextInt(1)); ty++) {
+							if ((tx >= 0 && ty >= 0 && tx < w && ty < h) && (tx != x || ty != j)) {
+								if (map[tx + ty * w] == Tiles.get("Up Rock").id) {
+									replace = true;
+									break;
+								}
+							}
+						}
+					}
+
+					if (replace) {
+						map[index] = Tiles.get("Sand").id;
+					}
+				}
+			}
+		}
+		
 
 
 		LoadingDisplay.setMessage("Generating mountains");
@@ -622,7 +696,7 @@ public class LevelGen {
 		        }
 		    }
 		}
-		
+	
 		for (int j = 0; j < h; j++) {
 			for (int x = 0; x < w; x++) { // if there are Grass tiles or Trees in front of the Sand tiles, if so, replace them with Grass
 				if (map[x + j * w] != Tiles.get("Sand").id && map[x + j * w] == Tiles.get("Grass").id || 
@@ -648,8 +722,7 @@ public class LevelGen {
 				}
 			}
 		}
-
-
+	
 		for (int j = 0; j < h; j++) {
 			for (int x = 0; x < w; x++) { //  if there are Snow tiles or Trees in front of the Ice tiles, if so, replace them with snow
 				if (map[x + j * w] != Tiles.get("Ice").id && map[x + j * w] == Tiles.get("Snow").id || 
@@ -675,9 +748,9 @@ public class LevelGen {
 				}
 			}
 		}
-
+			
 		for (int j = 0; j < h; j++) {
-			for (int x = 0; x < w; x++) { //  if there are Snow tiles or Trees in front of the Grass tiles, if so, replace them with Snow
+			for (int x = 0; x < w; x++) { // if there are Snow tiles or Trees in front of the Grass tiles, if so, replace them with Snow
 				if (map[x + j * w] != Tiles.get("Grass").id && map[x + j * w] == Tiles.get("Snow").id ||
 					map[x + j * w] != Tiles.get("Grass").id && map[x + j * w] == Tiles.get("Fir Tree").id ||
 					map[x + j * w] != Tiles.get("Grass").id && map[x + j * w] == Tiles.get("Pine Tree").id) {
@@ -702,10 +775,9 @@ public class LevelGen {
 
 		// Generate the stairs inside the rock
 		int stairsCount = 0;
-		int stairsRadius = 15;
 		
 		// Logger.debug("Generating stairs for surface level...");
-
+		
 		stairsLoop:
 		for (int i = 0; i < (fullSize / 100); i++) { // loops a certain number of times, more for bigger world
 
@@ -1077,7 +1149,7 @@ public class LevelGen {
 		}
 
 		// Generate skygrass in cloud tile
-		LoadingDisplay.setMessage("Generating sky highlands");
+		LoadingDisplay.setMessage("Generating clouds");
 		for (int i = 0; i < heavenThreshold; i++) {
 			int xs = halfWidth - 22; // divide the 60 (down) by 2 -> 30 to center
 			int ys = halfHeight - 22;
@@ -1105,7 +1177,7 @@ public class LevelGen {
 
 		// Make the central island
 		// Logger.debug("Generating central island ...");
-		LoadingDisplay.setMessage("Generating sky mountains");
+		LoadingDisplay.setMessage("Generating mountains");
 		for (int i = 0; i < heavenThreshold; i++) {
 			int xs = halfWidth - 22;
 			int ys = halfHeight - 22;
@@ -1131,8 +1203,6 @@ public class LevelGen {
 			}
 		}
 
-		// Generate the ferrosite edge for the central island
-		LoadingDisplay.setMessage("Generating sky midlands");
 		for (int i = 0; i < heavenThreshold; i++) {
 			int xs = halfWidth - 38; // center position
 			int ys = halfHeight - 40;
@@ -1410,8 +1480,6 @@ public class LevelGen {
 
 		boolean hasquit = false;
 		while (!hasquit) { // stop the loop and close the program
-
-			long startNanoTime = System.nanoTime();
 			int w = 256, h = w;
 			int mapScale = 0;
 
@@ -1423,9 +1491,13 @@ public class LevelGen {
 
 			int lvl = maplvls[idx++ % maplvls.length];
 			if (lvl > 2 || lvl < -4) continue;
-
-			short[][] fullmap = LevelGen.createAndValidateMap(w, h, -3, random.nextLong());
-
+			
+			long startNanoTime = System.nanoTime();
+			
+			short[][] fullmap = LevelGen.createAndValidateMap(w, h, 0, random.nextLong());
+			
+			long endSecondsTime = (System.nanoTime() - startNanoTime) >> 30;
+			
 			if (fullmap == null) continue;
 			short[] map = fullmap[0];
 
@@ -1459,7 +1531,7 @@ public class LevelGen {
 					else if (map[i] == Tiles.get("Magma").id) pixels[i] = 0xC83C20;
 					else if (map[i] == Tiles.get("Rock").id) pixels[i] = 0x7a7a7a;
 					else if (map[i] == Tiles.get("Up Rock").id) pixels[i] = 0x939393;
-					else if (map[i] == Tiles.get("Sand Rock").id) pixels[i] = 0x777451;
+					else if (map[i] == Tiles.get("Sand Rock").id) pixels[i] = 0x7a7a7a;
 
 					else if (map[i] == Tiles.get("Iron Ore").id) pixels[i] = 0x452728;
 					else if (map[i] == Tiles.get("Gold Ore").id) pixels[i] = 0x948028;
@@ -1515,12 +1587,9 @@ public class LevelGen {
 					else pixels[i] = 0x000000;
 				}
 			}
-
-			long endSecondsTime = (System.nanoTime() - startNanoTime) >> 30;
-			String finalGenTime = "took " + endSecondsTime + "s";
-
+			
 			// Print the seed and the elapsed time
-			Logger.debug("Generated level {}, with seed {}, {}", lvl, worldSeed, finalGenTime);
+			Logger.debug("Generated level {}, with seed {}, took {}s", lvl, worldSeed, endSecondsTime);
 
 			img.setRGB(0, 0, w, h, pixels, 0, w); // Sets the pixels into the image
 

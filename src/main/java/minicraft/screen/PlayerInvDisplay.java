@@ -38,7 +38,7 @@ public class PlayerInvDisplay extends Display {
 		super.render(screen);
 		
 		if (!menus[0].searcherBarActive) {
-			String text = "(" + Game.input.getMapping("SEARCHER-BAR") + ") " + Localization.getLocalized("to search.");
+			String text = "(" + Game.input.getMapping("SEARCHER-BAR") + ") " + Localization.getLocalized("to search");
 			FontStyle style = new FontStyle(Color.WHITE).setShadowType(Color.BLACK, true).setXPos(menus[0].getBounds().getLeft() + 2).setYPos(menus[0].getBounds().getHeight() + 10);
 			Font.drawParagraph(text, screen, style, 1);
 		}

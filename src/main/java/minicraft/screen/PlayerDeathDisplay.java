@@ -17,13 +17,6 @@ public class PlayerDeathDisplay extends Display {
 	// This is an IMPORTANT bool, determines if the user should respawn or not. :)
 	public static boolean shouldRespawn = true;
 
-	private static final String[] deadSpashes = {
-			"You died! Aww!", "Its humiliating!", "Luck for the next!",
-			"That had to hurt!", "What a pity!", "In the end?!",
-			"Don't mistake my silence!", "There are things we forget ...", "Great, you died!",
-			"Unforeseen consequences", 
-	};
-
 	public PlayerDeathDisplay() {
 		super(false, false);
 
@@ -52,7 +45,7 @@ public class PlayerDeathDisplay extends Display {
 		menus = new Menu[] {
 			new Menu.Builder(true, 0, RelPos.LEFT, entries)
 			.setPositioning(new Point(SpriteSheet.boxWidth, SpriteSheet.boxWidth * 3), RelPos.BOTTOM_RIGHT)
-			.setTitle(deadSpashes[random.nextInt(9)]).setTitlePos(RelPos.TOP_LEFT).createMenu() 
+			.setTitle("You died! Aww!").setTitlePos(RelPos.TOP_LEFT).createMenu() 
 		};
 	}
 }

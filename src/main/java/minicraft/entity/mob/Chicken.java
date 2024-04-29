@@ -32,8 +32,8 @@ public class Chicken extends PassiveMob {
         followOnHold(Items.get("Seeds"), 2);
         
 		// Chicken sounds
-		if ((this.tickTime % (random.nextInt(100) + 120) == 0)) {
-			playSound(sounds, 6);
+		if ((tickTime % 100 == 0) && random.nextInt(4) == 0) {
+			playSound(sounds, 4);
 		}
     }
 

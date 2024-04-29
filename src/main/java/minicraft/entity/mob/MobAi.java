@@ -258,7 +258,7 @@ public abstract class MobAi extends Mob {
 		
 		if (player != null && player.isWithin(heardRadius, this))  {
 	        int randomNum = random.nextInt(sounds.length);
-	        Sound.playAt(sounds[randomNum], x, y);
+	        Sound.playAt(sounds[randomNum], x, y, false);
 		}
     }
     
@@ -266,7 +266,7 @@ public abstract class MobAi extends Mob {
 		Player player = getClosestPlayer();
 		
 		if (player != null && player.isWithin(heardRadius, this))  {
-	        Sound.playAt(sound, x, y);
+	        Sound.playAt(sound, x, y, false);
 		}
     }
 

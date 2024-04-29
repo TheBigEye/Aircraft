@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import minicraft.core.CrashReport;
 import minicraft.core.Game;
 import minicraft.core.Renderer;
 import minicraft.core.World;
+import minicraft.core.io.CrashHandler;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Sound;
 import minicraft.graphic.Color;
@@ -154,7 +154,7 @@ public class TitleDisplay extends Display {
 	public void tick(InputHandler input) {
 		if (input.getKey("r").clicked) rand = random.nextInt(splashes.size() - 3) + 3;
         if (input.getKey("shift-c").clicked) Game.setDisplay(new CharsTestDisplay());
-        if (input.getKey("shift-x").clicked) CrashReport.crashMePlease();
+        if (input.getKey("shift-x").clicked) CrashHandler.crashMePlease();
 
 		super.tick(input);
 		

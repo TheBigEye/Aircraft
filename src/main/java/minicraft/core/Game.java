@@ -12,6 +12,7 @@ import java.util.Random;
 import org.jetbrains.annotations.Nullable;
 import org.tinylog.Logger;
 
+import minicraft.core.io.CrashHandler;
 import minicraft.core.io.FileHandler;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Settings;
@@ -183,7 +184,7 @@ public class Game {
 			}
 		
 			Renderer.canvas.setVisible(false);
-			Initializer.frame.add(new CrashReport(crashString));
+			Initializer.frame.add(new CrashHandler(crashString));
 			Initializer.frame.pack();
 			Initializer.frame.setVisible(true);
 		});

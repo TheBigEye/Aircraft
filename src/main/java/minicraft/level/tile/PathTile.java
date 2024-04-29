@@ -1,5 +1,6 @@
 package minicraft.level.tile;
 
+import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
 import minicraft.graphic.Screen;
@@ -30,8 +31,8 @@ public class PathTile extends Tile {
 		
 		if (toolType == ToolType.Shovel) {
 			if (player.payStamina(4 - tool.level) && tool.payDurability()) {
+				Sound.playAt("genericHurt", xt << 4, yt << 4);
 				level.setTile(xt, yt, Tiles.get("Hole"));
-				//Sound.genericHurt.playOnLevel(xt << 4, yt << 4);
 				level.dropItem((xt << 4) + 8, (yt << 4) + 8, Items.get("Dirt"));
 				return true;
 			}

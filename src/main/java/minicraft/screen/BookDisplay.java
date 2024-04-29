@@ -11,6 +11,7 @@ import minicraft.graphic.Point;
 import minicraft.graphic.Screen;
 import minicraft.graphic.SpriteSheet;
 import minicraft.screen.entry.StringEntry;
+import minicraft.util.BookData;
 
 public class BookDisplay extends Display {
 
@@ -61,20 +62,38 @@ public class BookDisplay extends Display {
 
         Menu.Builder builder = new Menu.Builder(true, spacing, RelPos.CENTER);
 
-        Menu pageCount = builder
-    		.setPositioning(new Point(Screen.w / 2, 48 + spacing), RelPos.BOTTOM)
-            .setSize(maxX - minX + SpriteSheet.boxWidth * 2, maxY - minY + SpriteSheet.boxWidth * 2)
-            .setShouldRender(false)
-            .setBackground(19)
-            .createMenu();
+        Menu pageCount = builder.createMenu();
+        
+        if (book == BookData.Grimoire) {
+            pageCount = builder
+        		.setPositioning(new Point(Screen.w / 2, 48 + spacing), RelPos.BOTTOM)
+                .setSize(maxX - minX + SpriteSheet.boxWidth * 2, maxY - minY + SpriteSheet.boxWidth * 2)
+                .setShouldRender(false)
+                .setBackground(18)
+                .createMenu();
+        } else {
+            pageCount = builder
+        		.setPositioning(new Point(Screen.w / 2, 48 + spacing), RelPos.BOTTOM)
+                .setSize(maxX - minX + SpriteSheet.boxWidth * 2, maxY - minY + SpriteSheet.boxWidth * 2)
+                .setShouldRender(false)
+                .setBackground(19)
+                .createMenu();
+        }
 
         
         menus = new Menu[lines.length + pageOffset];
         if (showPageCount) {
             menus[0] = pageCount;
         }
-        for (int i = 0; i < lines.length; i++) {
-            menus[i + pageOffset] = builder.setEntries(StringEntry.useLines(Color.WHITE, lines[i])).createMenu();
+        
+        if (book == BookData.Grimoire) {
+	        for (int i = 0; i < lines.length; i++) {
+	            menus[i + pageOffset] = builder.setEntries(StringEntry.useLines(Color.GREEN, lines[i])).createMenu();
+	        }
+        } else {
+	        for (int i = 0; i < lines.length; i++) {
+	            menus[i + pageOffset] = builder.setEntries(StringEntry.useLines(Color.WHITE, lines[i])).createMenu();
+	        }
         }
 
         menus[page + pageOffset].shouldRender = true;

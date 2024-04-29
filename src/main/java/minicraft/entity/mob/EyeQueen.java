@@ -1,14 +1,12 @@
 package minicraft.entity.mob;
 
 import minicraft.core.Updater;
-import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.Fireball;
 import minicraft.entity.particle.FireParticle;
 import minicraft.graphic.Color;
-import minicraft.graphic.Font;
 import minicraft.graphic.MobSprite;
 import minicraft.graphic.Point;
 import minicraft.graphic.Screen;
@@ -230,50 +228,14 @@ public class EyeQueen extends GiantBossMob {
 
     @Override
     public void render(Screen screen) {
-		
-		if (deathing || attackDelay > 0) {
-			if (tickTime / 4 % 2 == 0) {
-				if (deathing) {
-					super.render(screen, Color.RED, true);
-				} else {
-					super.render(screen, Color.RED, false);
-				}
-			} else { 
-				super.render(screen);
-			}
-		} else {
-			super.render(screen);
+    	if (attackDelay > 0) {
+    		if (tickTime / 4 % 2 == 0) {
+				super.render(screen, Color.RED, deathing);
+				return;
+    		}
 		}
-
-        int textColor = Color.get(1, 0, 204, 0);
-        int textColor2 = Color.get(1, 0, 51, 0);
-        int percent = health / (maxHealth / 100);
-        String h = percent + "%";
-
-        if (percent < 1) {
-            h = "1%";
-        }
-
-        if (percent < 16) {
-            textColor = Color.get(1, 204, 0, 0);
-            textColor2 = Color.get(1, 51, 0, 0);
-        } else if (percent < 51) {
-            textColor = Color.get(1, 204, 204, 9);
-            textColor2 = Color.get(1, 51, 51, 0);
-        }
-        
-        int textwidth = Font.textWidth(h);
-        
-        // Bossbar on the the Air wizard
-        if (Settings.get("bossbar").equals("On entity")) {
-            Font.drawBar(screen, (x - Screen.w / 12 + 16), y - 24, length);
-        }
-
-        // Bossbar percent
-        if (Settings.get("bossbar").equals("Percent")) {
-            Font.draw(h, screen, (x - textwidth / 2) + 1, y - 17, textColor2);
-            Font.draw(h, screen, (x - textwidth / 2), y - 18, textColor);
-        }
+			
+		super.render(screen);
     }
     
     @Override
@@ -294,7 +256,7 @@ public class EyeQueen extends GiantBossMob {
         }
         
         dropItem(25, 50, Items.get("emerald"));
-        dropItem(1, 1, Items.get("AlAzif"));
+        dropItem(1, 1, Items.get("Grimoire"));
         
         super.die();
     }

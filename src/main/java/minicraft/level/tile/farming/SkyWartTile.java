@@ -54,7 +54,7 @@ public class SkyWartTile extends SkyPlant {
             count = random.nextInt(2);
         }
         
-        Sound.playAt("genericHurt", x, y);
+        Sound.playAt("genericHurt", x << 4, y << 4);
 
         level.dropItem((x << 4) + 8, (y << 4) + 8, count, Items.get("Sky wart"));
 
