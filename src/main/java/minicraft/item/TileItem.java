@@ -1,11 +1,5 @@
 package minicraft.item;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
@@ -16,6 +10,12 @@ import minicraft.level.tile.AltarTile;
 import minicraft.level.tile.GrassTile;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
+import org.tinylog.Logger;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class TileItem extends StackableItem {
 
@@ -27,19 +27,19 @@ public class TileItem extends StackableItem {
 		items.add(new TileItem("Rose", (new Sprite(5, 0, 0)), "Rose Sprout", "Grass"));
 		items.add(new TileItem("Dandelion", (new Sprite(21, 0, 0)), "Dandelion Sprout", "Grass"));
 		items.add(new TileItem("Poppy", (new Sprite(22, 0, 0)), "Poppy Sprout", "Grass"));
-		
+
 		items.add(new TileItem("Acorn", (new Sprite(1, 3, 0)), "Oak Sapling", "Grass"));
 		items.add(new TileItem("Birch Cone", (new Sprite(18, 3, 0)), "Birch Sapling", "Grass"));
 		items.add(new TileItem("Fir Cone", (new Sprite(18, 3, 0)), "Fir Sapling", "Snow"));
 		items.add(new TileItem("Pine Cone", (new Sprite(19, 3, 0)), "Pine Sapling", "Snow"));
 		items.add(new TileItem("Dirt", (new Sprite(0, 0, 0)), "Dirt", "Hole", "Water", "Lava"));
 		items.add(new TileItem("Sky Grass", (new Sprite(0, 44, 0)), "Sky Grass", "Cloud"));
-		
+
 		items.add(new TileItem("Ice", (new Sprite(15, 21, 0)), "Ice", "Hole", "Water"));
 		items.add(new TileItem("Brown Mushroom", (new Sprite(25, 0, 0)), "Brown Mushroom", "Mycelium"));
 		items.add(new TileItem("Red Mushroom", (new Sprite(24, 0, 0)), "Red Mushroom", "Mycelium"));
-		
-		items.add(new TileItem("Summon Altar", (new Sprite(32, 0, 0)), "Summon Altar", "Grass", "Dirt", "Sand"));
+
+		items.add(new TileItem("Summon Altar", (new Sprite(32, 0, 0)), "Summon Altar", "Grass", "Dirt", "Sand", "Stone Bricks", "Holy Bricks", "Obsidian"));
 
 		// Creative mode available tiles:
 		items.add(new TileItem("Natural Rock", (new Sprite(2, 0, 0)), "Rock", "Hole", "Dirt", "Sand", "Path", "Grass", "Snow"));
@@ -125,16 +125,16 @@ public class TileItem extends StackableItem {
 	}
 
 	public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
-		
+
 		for (String tilename : validTiles) {
 			if (tile.matches(level.getData(xt, yt), tilename)) {
-				
+
 				// When we use bone powder
-				if (getName() == "Bone Powder" && (level.getTile(xt, yt) instanceof GrassTile)) { // On grass tiles
-					
+				if (Objects.equals(getName(), "Bone Powder") && (level.getTile(xt, yt) instanceof GrassTile)) { // On grass tiles
+
 					for (int y = yt - 1; y <= yt + 1; y++) {
 						for (int x = xt - 1; x <= xt + 1; x++) {
-							
+
 							if (level.getTile(x, y).name.contains("GRASS") && Math.random() < 0.4) { // randomly ..
 								if (Math.random() < 0.1) { // Generate flowers on the grass
 									if (random.nextBoolean()) {
@@ -145,7 +145,7 @@ public class TileItem extends StackableItem {
 								} else { // Or lawn
 									level.setTile(x, y, Tiles.get("Lawn"));
 								}
-								
+
 								for (int i = 0; i < 3; i++) {
 									// Add particles
 									int randX = (int) Math.ceil(Math.random() * 12) - 4;
@@ -155,9 +155,9 @@ public class TileItem extends StackableItem {
 							}
 						}
 					}
-				
+
 				// Else if, we use an Summon altar item, place a summon altar tile
-				} else if (getName() == "Summon Altar") {
+				} else if (Objects.equals(getName(), "Summon Altar")) {
 				    for (int y = yt - 1; y <= yt + 1; y++) {
 				        for (int x = xt - 1; x <= xt + 1; x++) {
 				            if (!(level.getTile(x, y) instanceof AltarTile)) {
@@ -165,12 +165,12 @@ public class TileItem extends StackableItem {
 				            }
 				        }
 				    }
-				
-				// Else, we put the default 
+
+				// Else, we put the default
 				} else {
 					level.setTile(xt, yt, model);
 				}
-				
+
 				// the interaction has true
 				return super.interactOn(true);
 			}
@@ -180,21 +180,21 @@ public class TileItem extends StackableItem {
 
 		if (random.nextBoolean()) {
 			String note = "";
-		
+
 			if (model.contains("WALL")) {
 				note = "Can only be placed on " + Tiles.getName(validTiles.get(0)) + "!";
-	
+
 			} else if (model.contains("DOOR")) {
 				note = "Can only be placed on " + Tiles.getName(validTiles.get(0)) + "!";
-	
+
 			} else if ((model.contains("BRICK") || model.contains("PLANK"))) {
 				note = "Dig a hole first!";
-		
+
 			} else if (model.contains("BONE POWDER")) {
 				note = "Only on grass!";
 			}
-	
-			if (note.length() > 0) {
+
+			if (!note.isEmpty()) {
 				Game.notifications.add(note);
 			}
 		}

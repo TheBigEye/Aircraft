@@ -1,7 +1,5 @@
 package minicraft.entity.mob;
 
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.io.Settings;
 import minicraft.entity.Direction;
 import minicraft.graphic.MobSprite;
@@ -13,13 +11,14 @@ import minicraft.item.ToolType;
 import minicraft.level.tile.GrassTile;
 import minicraft.level.tile.SnowTile;
 import minicraft.level.tile.Tiles;
+import org.jetbrains.annotations.Nullable;
 
 public class Sheep extends PassiveMob {
 	private static final MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 42);
 	private static final MobSprite[][] cutSprites = MobSprite.compileMobSpriteAnimations(0, 44);
-	
+
 	private static final String[] sounds = new String[] {"sheepSay1", "sheepSay2", "sheepSay3"};
-	
+
 	// Cut
 	public boolean sheared = false;
 	private int ageWhenCut = 0;
@@ -60,7 +59,7 @@ public class Sheep extends PassiveMob {
 
 		// follows to the player if holds wheat
 		followOnHold(Items.get("Wheat"), 4);
-		
+
 		if ((tickTime % 200 == 0)) {
 			if (level.getTile(x >> 4, y >> 4) instanceof SnowTile) {
 				level.add(new Goat(), x, y);
@@ -99,7 +98,7 @@ public class Sheep extends PassiveMob {
 	    if (!sheared) {
 	        dropItem(min, max, Items.get("Wool"));
 	    }
-	    
+
 	    dropItem(min, max, Items.get("Raw beef"));
 
 		super.die();

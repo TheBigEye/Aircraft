@@ -1,18 +1,14 @@
 package minicraft.screen;
 
-import javax.swing.Timer;
-
 import minicraft.core.Game;
 import minicraft.core.World;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
-import minicraft.graphic.Color;
-import minicraft.graphic.Ellipsis;
-import minicraft.graphic.Font;
-import minicraft.graphic.FontStyle;
-import minicraft.graphic.Screen;
+import minicraft.graphic.*;
 import minicraft.saveload.Save;
+
+import javax.swing.*;
 
 public class LoadingDisplay extends Display {
 
@@ -23,7 +19,7 @@ public class LoadingDisplay extends Display {
 	private final Timer timer;
 
 	private Ellipsis ellipsis = (Ellipsis) new Ellipsis.SmoothEllipsis((Ellipsis.DotUpdater) new Ellipsis.DotUpdater.TimeUpdater());
-	
+
 	public LoadingDisplay() {
 		super(true, false);
 		timer = new Timer(500, event -> new Thread(() -> {
@@ -44,7 +40,7 @@ public class LoadingDisplay extends Display {
 	@Override
 	public void init(Display parent) {
 		super.init(parent);
-		
+
 		Sound.stop("musicTheme1");
 		Sound.stop("musicTheme2");
 		Sound.stop("musicTheme3");
@@ -52,7 +48,7 @@ public class LoadingDisplay extends Display {
 		Sound.stop("musicTheme5");
 		Sound.stop("musicTheme6");
 		Sound.stop("musicTheme8");
-		
+
 		percentage = 0;
 		progressType = "World";
 		if (WorldSelectDisplay.hasLoadedWorld()) {
@@ -85,7 +81,7 @@ public class LoadingDisplay extends Display {
 	public static void setProgressType(String progressType) {
 		LoadingDisplay.progressType = progressType;
 	}
-	
+
 	public static void setMessage(String message) {
 		LoadingDisplay.message = Localization.getLocalized(message);
 	}
@@ -107,6 +103,6 @@ public class LoadingDisplay extends Display {
 			Font.drawParagraph(screen, new FontStyle(Color.YELLOW), 0, Localization.getLocalized("Loading") + ellipsis.updateAndGet(), percent + "%");
 		}
 
-		Font.drawCentered(((progressType.length() > 0) ? (" " + Localization.getLocalized(progressType)) : ""), screen, Screen.h - 30, Color.get(1, 51));
+		Font.drawCentered(((!progressType.isEmpty()) ? (" " + Localization.getLocalized(progressType)) : ""), screen, Screen.h - 30, Color.get(1, 51));
 	}
 }

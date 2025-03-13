@@ -15,14 +15,9 @@ public class MapItem extends Item {
 		super("Map book", new Sprite(4, 8, 0));
 	}
 
-	@Override
-	public boolean canAttack() {
-		return false;
-	}
-
-	@Override
+    @Override
 	public Item clone() {
-		return new MapItem();
+        return new MapItem();
 	}
 
 	@Override
@@ -38,6 +33,6 @@ public class MapItem extends Item {
 
 	@Override
 	public boolean interactsWithWorld() {
-		return false;
+        return false;
 	}
 }

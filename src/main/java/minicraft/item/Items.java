@@ -1,10 +1,10 @@
 package minicraft.item;
 
-import java.util.ArrayList;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tinylog.Logger;
+
+import java.util.ArrayList;
 
 public class Items {
 
@@ -14,13 +14,13 @@ public class Items {
 
     /**
      * Ok, so here's the actual big idea:
-     * 
+     * <p>
      * This class is meant to define all the different kinds of items in minicraft.
      * Item(Type).java might be what maps the different item sprites in the
      * spritesheet to a name, but it doesn't really define anything final. This
      * class has all the items you could possibly have, and every form of them, more
      * or less.
-     * 
+     * <p>
      * If you want to access one of those items, you do it through this class, by
      * calling get("item name"); casing does not matter.
      */
@@ -137,5 +137,5 @@ public class Items {
             }
         }
     }
-    
+
 }

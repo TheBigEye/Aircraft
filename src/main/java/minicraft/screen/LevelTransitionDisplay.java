@@ -26,12 +26,12 @@ public class LevelTransitionDisplay extends Display {
 
 	public void tick(InputHandler input) {
 		time++; // Ticks up 2 times per tick
-		if (time == DURATION / 2 && changelevel == true) {
+		if (time == DURATION / 2 && changelevel) {
 			World.changeLevel(dir); // When time equals 30, it will change the level
 		}
 		if (time == DURATION) {
 			Game.setDisplay(null); // When time equals 60, it will get out of this menu
-		}     
+		}
 	}
 
 	public void render(Screen screen) {

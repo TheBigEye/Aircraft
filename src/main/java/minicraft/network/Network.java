@@ -1,11 +1,5 @@
 package minicraft.network;
 
-import java.util.Random;
-
-import org.jetbrains.annotations.Nullable;
-import org.json.JSONObject;
-import org.tinylog.Logger;
-
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
@@ -15,6 +9,11 @@ import minicraft.core.VersionInfo;
 import minicraft.entity.Entity;
 import minicraft.level.Level;
 import minicraft.util.Action;
+import org.jetbrains.annotations.Nullable;
+import org.json.JSONObject;
+import org.tinylog.Logger;
+
+import java.util.Random;
 
 public class Network extends Game {
 	private Network() {}

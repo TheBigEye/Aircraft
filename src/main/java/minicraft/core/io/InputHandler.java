@@ -1,63 +1,55 @@
 package minicraft.core.io;
 
-import java.awt.Component;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
+import minicraft.core.Game;
 import org.jetbrains.annotations.Nullable;
 import org.tinylog.Logger;
 
-import minicraft.core.Game;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class InputHandler implements KeyListener {
 	/**
 	 * This class handles key presses; this also implements MouseListener... but I
 	 * have no idea why. It's not used in any way. Ever. As far as I know. Anyway,
 	 * here are a few tips about this class:
-	 * 
+	 * <p>
 	 * -This class must instantiated to be used; and it's pretty much always called
 	 * "input" in the code.
-	 * 
+	 * <p>
 	 * -The keys are stored in two arrays, one for physical keyboard keys(called
 	 * "keyboard"), and one for "keys" you make-up (called "keymap") to represent
 	 * different actions ("virtual keys", you could say).
-	 * 
+	 * <p>
 	 * -All the Keys in the keyboard array are generated automatically as you ask
 	 * for them in the code (if they don't already exist), so there's no need to
 	 * define anything in the keyboard array here. --Note: this shouldn't matter,
 	 * but keys that are not asked for or defined as values here in keymap will be
 	 * ignored when it comes to key presses.
-	 * 
+	 * <p>
 	 * -All the "virtual keys" in keymap "map" to a Key object in the keyboard
 	 * array; that is to say, keymap contains a HashMap of string keys, to string
 	 * values. The keys are the names of the actions, and the values are the names
 	 * of the keyboard keys you physically press to do them.
-	 * 
+	 * <p>
 	 * -To get whether a key is pressed or not, use input.getKey("key"), where "key"
 	 * is the name of the key, either physical or virtual. If virtual, all it does
 	 * is then fetch the corrosponding key from keyboard anyway; but it allows one
 	 * to change the controls while still making the same key requests in the code.
-	 * 
+	 * <p>
 	 * -If you want to have multiple possibilities at once when it comes to which
 	 * key to press to do something, you can! just put a "|" between the mappings.
 	 * For example, say you wanted both "wasd" and arrow key controls to work, at
 	 * the same time. How you do this is in the construstor below, where it says
 	 * "keymap.put(" UP, DOWN, LEFT, and RIGHT.
-	 * 
+	 * <p>
 	 * -This class supports modifier keys as inputs. To specify a "compound" key
 	 * (one using modifiders), write "MOD1-MOD2-KEY", that is, "SHIFT-ALT-D" or
 	 * "ALT-F", with a "-" between the keys. ALWAYS put the actual trigger key last,
 	 * after all modifiers (the modifiers are: shift, ctrl, and alt).
-	 * 
+	 * <p>
 	 * --All the magic happens in the getKey() method: If the String keyname input
 	 * has hyphens("-"), then it's a compound key, and it splits it up between the
 	 * hyphens. Then, it compares which modifiers are currently being pressed, and
@@ -65,7 +57,7 @@ public class InputHandler implements KeyListener {
 	 * modifiers match, reflects the non-modifier key's "down" and "clicked" values;
 	 * otherwise they're both false. --If a key with no hyph is requested, it skips
 	 * most of that and just gives you the Key, generating it if needed.
-	 * 
+	 *
 	 */
 	public String keyToChange = null; // this is used when listening to change key bindings.
 	private String keyChanged = null; // this is used when listening to change key bindings.
@@ -76,11 +68,11 @@ public class InputHandler implements KeyListener {
 		keyChanged = null;
 		return key;
 	}
-	
+
 	private static final HashMap<Integer, String> keyNames = new HashMap<>();
 	private final HashMap<String, String> keymap; // The symbolic map of actions to physical key names.
 	private final HashMap<String, Key> keyboard; // The actual map of key names to Key objects.
-	
+
 	static {
 	    HashMap<String, Field> keyConstants = new HashMap<>();
 	    Field[] keyEventFields = KeyEvent.class.getFields();
@@ -150,7 +142,7 @@ public class InputHandler implements KeyListener {
 
 		// toggle inventory searcher bar
 		keymap.put("SEARCHER-BAR", "SHIFT-F");
-		
+
 		keymap.put("COMMANDS", "T"); // Command input chat
 
 		// seek for next/previous match in inventory searcher bar
@@ -188,7 +180,7 @@ public class InputHandler implements KeyListener {
 	}
 
 	// The Key class.
-	public class Key {
+	public static class Key {
 
 		private int presses; // presses = how many times the Key has been pressed.
 		private int absorbs; // absorbs = how many key presses have been processed.
@@ -200,11 +192,11 @@ public class InputHandler implements KeyListener {
 		final boolean stayDown;
 
 		public Key() {
-			this(false);
+            this(false);
 		}
 
 		public Key(boolean stayDown) {
-			this.stayDown = stayDown;
+            this.stayDown = stayDown;
 		}
 
 		/** toggles the key down or not down. */
@@ -230,7 +222,7 @@ public class InputHandler implements KeyListener {
 					sticky = down;
 				}
 				// set clicked to false, since we're done processing; UNLESS the key has been held down for a bit, and hasn't yet been released.
-				clicked = sticky; 
+				clicked = sticky;
 
 				// reset the presses and absorbs, to ensure they don't get too high, or something:
 				presses = 0;
@@ -248,7 +240,7 @@ public class InputHandler implements KeyListener {
 
 		// custom toString() method, I used it for debugging.
 		public String toString() {
-			return "down:" + down + "; clicked:" + clicked + "; presses=" + presses + "; absorbs=" + absorbs;
+            return "down:" + down + "; clicked:" + clicked + "; presses=" + presses + "; absorbs=" + absorbs;
 		}
 	}
 
@@ -272,7 +264,7 @@ public class InputHandler implements KeyListener {
 	public String getMapping(String actionKey) {
 		actionKey = actionKey.toUpperCase();
 		if (keymap.containsKey(actionKey)) {
-			return ((String) keymap.get(actionKey)).replace("|", "/");
+			return keymap.get(actionKey).replace("|", "/");
 		}
 		return "NO_KEY";
 	}
@@ -282,10 +274,10 @@ public class InputHandler implements KeyListener {
 	public Key getKey(String keytext) {
 		return getKey(keytext, true);
 	}
-	
+
 	private Key getKey(String keytext, boolean getFromMap) {
 		Key key; // Make a new key to return at the end
-		
+
 		// if the passed-in key is blank, or null, then return null.
 		if (keytext == null || keytext.isEmpty()) {
 			return new Key();
@@ -298,7 +290,7 @@ public class InputHandler implements KeyListener {
 				if (!Game.debug) {
 					return new Key();
 				}
-				
+
 				keytext += "=debug";
 			}
 
@@ -321,7 +313,7 @@ public class InputHandler implements KeyListener {
 			// so it must be escaped; but the backslash must be passed in,
 			// so it needs
 			// escaping.
-			for (String keyposs : keytext.split("\\|")) { 
+			for (String keyposs : keytext.split("\\|")) {
 				Key aKey = getKey(keyposs, false); // This time, do NOT attempt to fetch from keymap.
 
 				// It really does combine using "or":
@@ -364,7 +356,7 @@ public class InputHandler implements KeyListener {
 				if (keyname.equals("ALT")) foundA = true;
 			}
 		}
-		
+
 		boolean modMatch = ((getKey("shift")).down == foundS && (getKey("ctrl")).down == foundC && (getKey("alt")).down == foundA);
 
 		if (keytext.contains("-")) { // we want to return a compound key, but still care about the trigger key.
@@ -423,7 +415,7 @@ public class InputHandler implements KeyListener {
 
 		// System.out.println("Toggling " + keytext + " key (keycode " + keycode + ") to  "+pressed+".");
 		if (pressed && keyToChange != null && !isMod(keytext)) {
-			keymap.put(keyToChange, (overwrite ? "" : ((String)keymap.get(keyToChange) + "|")) + getCurModifiers() + keytext);
+			keymap.put(keyToChange, (overwrite ? "" : (keymap.get(keyToChange) + "|")) + getCurModifiers() + keytext);
 			keyChanged = keyToChange;
 			keyToChange = null;
 			return;
@@ -498,7 +490,7 @@ public class InputHandler implements KeyListener {
 	}
 
 	public String addKeyTyped(String typing, @Nullable String pattern) {
-		if (lastKeyTyped.length() > 0) {
+		if (!lastKeyTyped.isEmpty()) {
 			String letter = lastKeyTyped;
 			lastKeyTyped = "";
 			if (letter.matches(control) && (pattern == null || letter.matches(pattern))) {
@@ -506,7 +498,7 @@ public class InputHandler implements KeyListener {
 			}
 		}
 
-		if ((getKey("backspace")).clicked && typing.length() > 0) {
+		if ((getKey("backspace")).clicked && !typing.isEmpty()) {
 			// Backspace counts as a letter itself, but we don't have to worry about it if it's part of the regex.
 			typing = typing.substring(0, typing.length() - 1);
 		}

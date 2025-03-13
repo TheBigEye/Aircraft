@@ -1,7 +1,5 @@
 package minicraft.level.tile;
 
-import java.util.Random;
-
 import minicraft.core.World;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
@@ -14,15 +12,17 @@ import minicraft.item.Item;
 import minicraft.item.ToolType;
 import minicraft.level.Level;
 
+import java.util.Random;
+
 public abstract class Tile {
 	public static int tickCount = 0; // A global tickCount used in the Lava & water tiles.
-	
+
 	/** Random values used for all the tiles instances **/
 	protected static final Random random = new Random();
 
 	public final String name;
 	public short id;
-	
+
 	/**
 	 * This is used by wall tiles to get what material they're made of.
 	 */
@@ -56,13 +56,12 @@ public abstract class Tile {
 	protected boolean connectsToLava = false;
 	protected boolean connectsToMagma = false;
 	protected boolean connectsToRock = false;
-	
+
 	protected boolean connectsToSnow = false;
 	protected boolean connectsToIce = false;
 	protected boolean connectsToObsidian = false;
 	protected boolean connectsToSkyGrass = false;
 	protected boolean connectsToSkyDirt = false;
-	protected boolean connectsToSkyHighGrass = false;
 	protected boolean connectsToFerrosite = false;
 	protected boolean connectsToDirt = false;
 	protected boolean connectsToJungleGrass = false;
@@ -122,13 +121,13 @@ public abstract class Tile {
 
 	/**
 	 * Hurt the tile with a specified amount of damage.
-	 * 
-	 * @param level     The level this happened on.
-	 * @param x         X pos of the tile.
-	 * @param y         Y pos of the tile.
-	 * @param source    The mob that damaged the tile.
-	 * @param dmg       Damage to taken.
-	 * @param attackDir The direction of the player hitting.
+	 *
+	 * @param level         The level this happened on.
+	 * @param x             X pos of the tile.
+	 * @param y             Y pos of the tile.
+	 * @param source        The mob that damaged the tile.
+	 * @param hurtDamage    Damage to taken.
+	 * @param attackDir     The direction of the player hitting.
 	 * @return If the damage was applied.
 	 */
 	public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
@@ -137,11 +136,11 @@ public abstract class Tile {
 
 	/**
 	 * Hurt the tile with a specified amount of damage.
-	 * 
-	 * @param level The level this happened on.
-	 * @param x     X position of the tile.
-	 * @param y     Y position of the tile.
-	 * @param dmg   The damage taken.
+	 *
+	 * @param level         The level this happened on.
+	 * @param x             X position of the tile.
+	 * @param y             Y position of the tile.
+	 * @param hurtDamage    The damage taken.
 	 */
 	public void hurt(Level level, int x, int y, int hurtDamage) {
 	}
@@ -217,7 +216,7 @@ public abstract class Tile {
 		if (!(other instanceof Tile)) {
 			return false;
 		}
-		
+
 		Tile otherTile = (Tile) other;
 		return name.equals(otherTile.name);
 	}

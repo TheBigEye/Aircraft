@@ -2,6 +2,7 @@ package minicraft.screen;
 
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
+import minicraft.core.io.Sound;
 import minicraft.graphic.Color;
 import minicraft.graphic.Font;
 import minicraft.graphic.Screen;
@@ -18,6 +19,16 @@ public class CreditsDisplay extends Display {
 
     public CreditsDisplay() {
         super(true);
+        
+		Sound.stop("musicTheme1");
+		Sound.stop("musicTheme2");
+		Sound.stop("musicTheme3");
+		Sound.stop("musicTheme4");
+		Sound.stop("musicTheme5");
+		Sound.stop("musicTheme6");
+		Sound.stop("musicTheme8");
+        
+        Sound.play("musicTheme3");
     }
     
     @Override
@@ -28,11 +39,16 @@ public class CreditsDisplay extends Display {
     		line++;
     	}
     	
-    	if (line >= 820) {
+    	if (line >= 830) {
+    		Sound.stop("musicTheme3");
     		Game.exitDisplay();
     	}
     	
     	super.tick(input);
+    	
+    	if (input.getKey("exit").clicked) {
+    		Sound.stop("musicTheme3");
+    	}
     }
 
     @Override
@@ -55,7 +71,7 @@ public class CreditsDisplay extends Display {
 			}
 		}
 		
-		Font.draw("--------[ Aircraft ]--------", 			screen, sh - 41, 190 - line, titleColor);
+		Font.draw("────────┤ Aircraft ├────────", 			screen, sh - 41, 190 - line, titleColor);
 		
 		Font.draw(" Aircraft by:", 							screen, sh - 41, 210 - line, categoryColor);
 		Font.draw("  - TheBigEye", 							screen, sh - 41, 220 - line, nameColor);
@@ -67,7 +83,7 @@ public class CreditsDisplay extends Display {
 		Font.draw(" Minicraft by:", 						screen, sh - 41, 270 - line, categoryColor);
 		Font.draw("  - Markus persson", 					screen, sh - 41, 280 - line, nameColor);
 		
-		Font.draw("       -[ Desing ]-        ", 			screen, sh - 41, 300 - line, sectionColor);
+		Font.draw("        ▐▀ Desing ▄▌        ", 			screen, sh - 41, 300 - line, sectionColor);
 		
 		Font.draw(" Textures artists:", 					screen, sh - 41, 320 - line, categoryColor);
 		Font.draw("  - TheBigEye", 							screen, sh - 41, 330 - line, nameColor);
@@ -86,7 +102,7 @@ public class CreditsDisplay extends Display {
 		Font.draw(" GUI desing:", 							screen, sh - 41, 445 - line, categoryColor);
 		Font.draw("  - TheBigEye", 							screen, sh - 41, 455 - line, nameColor);
 		
-		Font.draw("    >{ Programming };      ", 			screen, sh - 41, 475 - line, sectionColor);
+		Font.draw("        ▐▀ Coding ▄▌        ", 			screen, sh - 41, 475 - line, sectionColor);
 		
 		Font.draw(" Main developer:", 						screen, sh - 41, 495 - line, categoryColor);
 		Font.draw("  - TheBigEye", 							screen, sh - 41, 505 - line, nameColor);
@@ -96,26 +112,29 @@ public class CreditsDisplay extends Display {
 		Font.draw("  - UdhavKumar", 						screen, sh - 41, 540 - line, nameColor);
 		Font.draw("  - pelletsstarPL", 						screen, sh - 41, 550 - line, nameColor);
 		
-		Font.draw(" Thanks to...", 							screen, sh - 41, 570 - line, sectionColor);
-		Font.draw("  - pelletsstarPL", 						screen, sh - 41, 580 - line, nameColor);
-		Font.draw("  - terrarianmisha", 					screen, sh - 41, 590 - line, nameColor);
-		Font.draw("  - Litorom1", 							screen, sh - 41, 600 - line, nameColor);
-		Font.draw("  - Felix pants", 						screen, sh - 41, 610 - line, nameColor);
-		Font.draw("  - benichi (why not, xd)", 				screen, sh - 41, 620 - line, nameColor);
-		Font.draw("  - Fusyon", 							screen, sh - 41, 630 - line, nameColor);
-		Font.draw("  - ChrisJ", 							screen, sh - 41, 640 - line, nameColor);
-		Font.draw("  - dafist", 							screen, sh - 41, 650 - line, nameColor);
-		Font.draw("  - EduardoPlayer13", 					screen, sh - 41, 660 - line, nameColor);
-		Font.draw("  - Makkkkus", 							screen, sh - 41, 670 - line, nameColor);
-		Font.draw("  - BoxDude", 							screen, sh - 41, 680 - line, nameColor);
-		Font.draw("  - MrToad", 							screen, sh - 41, 690 - line, nameColor);
-		Font.draw("  - itayfeder", 							screen, sh - 41, 700 - line, nameColor);
-		Font.draw("for giving me ideas and", 				screen, sh - 41, 720 - line, Color.YELLOW);
-		Font.draw("   participate in the ", 			    screen, sh - 41, 730 - line, Color.YELLOW);
-		Font.draw("development of this nice mod ", 			screen, sh - 51, 740 - line, Color.YELLOW);
+		Font.draw("        ▐▀ Thanks ▄▌        ", 			screen, sh - 41, 570 - line, sectionColor);
+
+		Font.draw("  - pelletsstarPL", 						screen, sh - 41, 590 - line, nameColor);
+		Font.draw("  - terrarianmisha", 					screen, sh - 41, 600 - line, nameColor);
+		Font.draw("  - Litorom1", 							screen, sh - 41, 610 - line, nameColor);
+		Font.draw("  - Felix pants", 						screen, sh - 41, 620 - line, nameColor);
+		Font.draw("  - benichi (why not, xd)", 				screen, sh - 41, 630 - line, nameColor);
+		Font.draw("  - Fusyon", 							screen, sh - 41, 640 - line, nameColor);
+		Font.draw("  - ChrisJ", 							screen, sh - 41, 650 - line, nameColor);
+		Font.draw("  - dafist", 							screen, sh - 41, 660 - line, nameColor);
+		Font.draw("  - EduardoPlayer13", 					screen, sh - 41, 670 - line, nameColor);
+		Font.draw("  - Makkkkus", 							screen, sh - 41, 680 - line, nameColor);
+		Font.draw("  - Christoffer", 						screen, sh - 41, 690 - line, nameColor);
+		Font.draw("  - BoxDude", 							screen, sh - 41, 700 - line, nameColor);
+		Font.draw("  - MrToad", 							screen, sh - 41, 710 - line, nameColor);
+		Font.draw("  - itayfeder", 							screen, sh - 41, 720 - line, nameColor);
 		
-		Font.draw("And thanks to the Minicraft Plus", 		screen, sh - 59, 780 - line, Color.YELLOW);
-		Font.draw("maintainers that thanks to their", 		screen, sh - 59, 790 - line, Color.YELLOW);
+		Font.draw("  For giving me ideas and", 				screen, sh - 41, 740 - line, Color.YELLOW);
+		Font.draw("    participate in the ", 			    screen, sh - 41, 750 - line, Color.YELLOW);
+		Font.draw(" development of this nice mod ",         screen, sh - 51, 760 - line, Color.YELLOW);
+		
+		Font.draw(" And thanks to the Minicraft Plus", 		screen, sh - 59, 780 - line, Color.YELLOW);
+		Font.draw(" maintainers that thanks to their", 		screen, sh - 59, 790 - line, Color.YELLOW);
 		Font.draw(" work, this mod is possible :)", 		screen, sh - 41, 800 - line, Color.YELLOW);
 	}
 }

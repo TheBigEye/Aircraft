@@ -1,9 +1,5 @@
 package minicraft.screen;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-
 import minicraft.core.Game;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Settings;
@@ -13,6 +9,10 @@ import minicraft.graphic.Screen;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class WorldInfoDisplay extends Display {
 

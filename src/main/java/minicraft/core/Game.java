@@ -1,22 +1,6 @@
 package minicraft.core;
 
-import java.awt.GraphicsEnvironment;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-
-import org.jetbrains.annotations.Nullable;
-import org.tinylog.Logger;
-
-import minicraft.core.io.CrashHandler;
-import minicraft.core.io.FileHandler;
-import minicraft.core.io.InputHandler;
-import minicraft.core.io.Settings;
-import minicraft.core.io.Sound;
+import minicraft.core.io.*;
 import minicraft.entity.mob.Player;
 import minicraft.level.Level;
 import minicraft.level.tile.Tiles;
@@ -26,6 +10,17 @@ import minicraft.screen.Display;
 import minicraft.screen.TexturePackDisplay;
 import minicraft.screen.TitleDisplay;
 import minicraft.util.Utils;
+import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
+
+import java.awt.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 /*
  *This is the main class, where is all the important variables and
@@ -36,13 +31,13 @@ public class Game {
 	protected Game() {} // Can't instantiate the Game class.
 
 	/** Random values used for some Game class logic **/
-	protected static final Random random = new Random(); // Create a Random object to generate random numbers  
-	
+	protected static final Random random = new Random(); // Create a Random object to generate random numbers
+
 	public static boolean debug = false; // --debug arg
 
 	public static final String NAME = "Aircraft"; // This is the name on the application window
 	public static final String BUILD = "1.0"; // Aircraft version
-	
+
 	// TODO: not use anymore Minicraft plus versioning
 	public static final Version VERSION = new Version("2.2.0"); // Minicraft plus mod base version
 
@@ -57,9 +52,9 @@ public class Game {
 	// DISPLAY
 	static Display display = null;
 	static Display newDisplay = null;
-	
+
 	public static void setDisplay(@Nullable Display display) {
-		newDisplay = display;
+        newDisplay = display;
 	}
 
 	public static void exitDisplay() {
@@ -72,17 +67,17 @@ public class Game {
 	}
 
 	public static void toTitle() {
-		setDisplay(new TitleDisplay());
+        setDisplay(new TitleDisplay());
 	}
 
 	@Nullable
 	public static Display getDisplay() {
-		return newDisplay;
+        return newDisplay;
 	}
 
 	// GAMEMODE
 	public static boolean isMode(String mode) {
-		return ((String) Settings.get("mode")).equalsIgnoreCase(mode);
+        return ((String) Settings.get("mode")).equalsIgnoreCase(mode);
 	}
 
 	// LEVEL
@@ -97,14 +92,14 @@ public class Game {
 
 	// Quit function.
 	public static void quit() {
-		running = false;
+        running = false;
 	}
-	
+
     /**
      * Gets a random witty comment for a possible crash report
      */
     private static String getWittyComment() {
-        String[] comment = new String[] { 
+        String[] comment = new String[] {
     		"Terra SUS",
     		"Looks like the game just couldn't handle the awesomeness you were dishing out.",
     		"Don't worry, it's not you, it's definitely the game's fault.",
@@ -117,7 +112,7 @@ public class Game {
     		"Looks like the game has hit a roadblock... in the code",
     		"The game has crashed, we don't need a blue screen to say it"
         };
-        
+
         // TODO: put this "The game has gone offline... just like your internet connection." when the user haven't internet :)
 
         try {
@@ -129,37 +124,37 @@ public class Game {
 
 	// Main functions
 	public static void main(String[] args) {
-		
+        // Only Windows for now
 		if (System.getProperty("os.name").toLowerCase().contains("windows")) {
 			Logger.info("Initializing hardware acceleration ...");
 			System.setProperty("sun.java2d.translaccel","true"); // Put translucent images in VRAM and using Direct3D to render them to the screen
 			System.setProperty("sun.java2d.accthreshold", "0"); // All images, regardless of size, will be sped up
 			System.setProperty("sun.java2d.ddforcevram", "true"); // Keeps images in video memory
 		}
-		
+
 		// Crash report log
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
 			throwable.printStackTrace();
-		
+
 			StringWriter crash = new StringWriter(8192);
 			PrintWriter printer = new PrintWriter(crash);
 			throwable.printStackTrace(printer);
-			
+
 			String crashString = (
-					"" 																										+ "\n\n" +
+					" " 																									+ "\n\n" +
 					"         Aircraft has crashed! " 																		+ "\n" +
 					"         --------------------- " 																		+ "\n\n" +
-					
+
 					"// " + getWittyComment() 																				+ "\n\n" +
-					
+
 					"The game was stopped running because it encountered a problem.	" 										+ "\n\n" +
 
 					"If you wish to report this, please copy this entire text and send to the developer. " 					+ "\n" +
 					"Please include a description of what you did, to replicate the error. " 								+ "\n\n" +
-					
+
 			        "--------- BEGIN ERROR REPORT ---------	" 																+ "\n" +
 			        "Generated " + (new SimpleDateFormat()).format(new Date()) 												+ "\n\n" +
-			
+
 			        "-- System Details -- " 																				+ "\n" +
 			        "Details: " 																							+ "\n" +
 			        "        Aircraft version: " + Game.BUILD + " (" + Game.VERSION + ")" 									+ "\n" +
@@ -167,14 +162,14 @@ public class Game {
 			        "        Java Version: " + Utils.JAVA_VERSION + ", " + Utils.JAVA_VENDOR 								+ "\n" +
 			        "        Java VM Version: " + Utils.JVM_NAME + " (" + Utils.JVM_INFO + "), " + Utils.JVM_VENDOR 		+ "\n" +
 			        "        Memory: " + Utils.memoryInfo() 																+ "\n\n" +
-			
+
 			        "~~ ERROR ~~ " 																							+ "\n" +
-			
+
 			        crash.toString() 																						+ "\n" +
-			
+
 			        "--------- END ERROR REPORT --------- "
 			);
-		
+
 			// If the OS not have a desktop or graphic interface
 			if (GraphicsEnvironment.isHeadless()) {
 				System.out.println(crashString);
@@ -182,20 +177,20 @@ public class Game {
 			} else {
 				Logger.error(crash.toString());
 			}
-		
+
 			Renderer.canvas.setVisible(false);
 			Initializer.frame.add(new CrashHandler(crashString));
 			Initializer.frame.pack();
 			Initializer.frame.setVisible(true);
 		});
-		
+
 		// START EVENTS
 
 		// Clean previously downloaded native files
 		FileHandler.cleanNativesFiles();
 
 		// Parses the command line arguments
-		Initializer.parseArgs(args); 
+		Initializer.parseArgs(args);
 
 		// Initialize input handler
 		input = new InputHandler(Renderer.canvas);
@@ -206,37 +201,37 @@ public class Game {
 		player.eid = 0;
 		new Load(true); // This loads any saved preferences.
 		maxFPS = (int) Settings.get("fps"); // DO NOT put this above.
-		
+
 		// WINDOW EVENTS
 
 		// Create a game window
 		Initializer.createAndDisplayFrame();
-		
+
 		// Initialize the game modules
 		Sound.initialize();
 		Tiles.initialize();
-		
+
 		// Display objects in the screen
 		Renderer.initScreen();
-		
+
 		new TexturePackDisplay().initialize();
 
 		// Update fullscreen frame if Updater.FULLSCREEN was updated previously
 		if (Updater.FULLSCREEN) {
 			Updater.updateFullscreen();
 		}
-		
+
 		// Sets menu to the title screen.
 		setDisplay(new TitleDisplay());
 
 		// Start tick() count and start the game
 		Initializer.run();
-		
+
 		Sound.shutdown();
 
 		// EXIT EVENTS
 		Logger.debug("Game main loop ended, terminating application ...");
-		
+
 		System.exit(0);
 	}
 }

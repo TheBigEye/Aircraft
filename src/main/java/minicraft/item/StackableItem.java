@@ -1,10 +1,10 @@
 package minicraft.item;
 
-import java.util.ArrayList;
-
 import minicraft.core.Game;
 import minicraft.core.io.Localization;
 import minicraft.graphic.Sprite;
+
+import java.util.ArrayList;
 
 // some items are direct instances of this class; those instances are the true "items",
 // like stone, wood, wheat, or coal; you can't do anything with them besides use them to make something else.
@@ -138,7 +138,7 @@ public class StackableItem extends Item {
 
 	@Override
 	public String getDisplayName() {
-		String amount = (count > 999 ? 999 : count) + " ";
+		String amount = (Math.min(count, 999)) + " ";
 		return " " + amount + Localization.getLocalized(getName());
 	}
 }

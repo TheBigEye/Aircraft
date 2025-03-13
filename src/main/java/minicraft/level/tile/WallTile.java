@@ -30,7 +30,6 @@ public class WallTile extends Tile {
         super(type.name() + " Wall", (ConnectorSprite) null);
 
         connectsToSkyGrass = true;
-        connectsToSkyHighGrass = true;
         connectsToSkyDirt = true;
 
         this.type = type;

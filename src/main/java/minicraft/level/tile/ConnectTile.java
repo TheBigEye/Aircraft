@@ -6,7 +6,7 @@ import minicraft.level.Level;
 
 // IMPORTANT: This tile should never be used for anything, it only exists to allow tiles right next to the edge of the world to connect to it
 public class ConnectTile extends Tile {
-	private static Sprite sprite = Sprite.missingTexture(1, 1);
+	private static final Sprite sprite = Sprite.missingTexture(1, 1);
 
 	public ConnectTile() {
 		super("connector tile", sprite);

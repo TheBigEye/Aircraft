@@ -1,44 +1,14 @@
 package minicraft.item;
 
-import java.util.ArrayList;
-
 import minicraft.core.Game;
 import minicraft.entity.Direction;
-import minicraft.entity.furniture.Bed;
-import minicraft.entity.furniture.Chest;
-import minicraft.entity.furniture.Crafter;
-import minicraft.entity.furniture.DungeonChest;
-import minicraft.entity.furniture.Furniture;
-import minicraft.entity.furniture.Lantern;
-import minicraft.entity.furniture.Spawner;
-import minicraft.entity.furniture.Statue;
-import minicraft.entity.furniture.Tnt;
-import minicraft.entity.mob.AirWizard;
-import minicraft.entity.mob.Cat;
-import minicraft.entity.mob.Chicken;
-import minicraft.entity.mob.Cleric;
-import minicraft.entity.mob.Cow;
-import minicraft.entity.mob.Creeper;
-import minicraft.entity.mob.EyeQueen;
-import minicraft.entity.mob.Firefly;
-import minicraft.entity.mob.Goat;
-import minicraft.entity.mob.Golem;
-import minicraft.entity.mob.GuiMan;
-import minicraft.entity.mob.Keeper;
-import minicraft.entity.mob.Knight;
-import minicraft.entity.mob.Librarian;
-import minicraft.entity.mob.MobAi;
-import minicraft.entity.mob.OldGolem;
-import minicraft.entity.mob.Pig;
-import minicraft.entity.mob.Player;
-import minicraft.entity.mob.Sheep;
-import minicraft.entity.mob.Skeleton;
-import minicraft.entity.mob.Slime;
-import minicraft.entity.mob.Snake;
-import minicraft.entity.mob.Zombie;
+import minicraft.entity.furniture.*;
+import minicraft.entity.mob.*;
 import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
+
+import java.util.ArrayList;
 
 public class FurnitureItem extends Item {
 	protected static ArrayList<Item> getAllInstances() {
@@ -90,10 +60,7 @@ public class FurnitureItem extends Item {
 
 		items.add(new FurnitureItem(new Tnt()));
 		items.add(new FurnitureItem(new Bed()));
-
-		for (Statue.Type type : Statue.Type.values()) {
-			items.add(new FurnitureItem(new Statue(type)));
-		}
+		items.add(new FurnitureItem(new Statue()));
 
 		return items;
 	}
@@ -166,9 +133,9 @@ public class FurnitureItem extends Item {
 			// Placed furniture's X and Y positions
 			furniture.x = (xt << 4) + 8;
 			furniture.y = (yt << 4) + 8;
-			
+
 			//Sound.playerPlace.playOnLevel(furniture.x, furniture.y);
-			
+
 			level.add(furniture); // adds the furniture to the world
 			if (Game.isMode("Creative")) {
 				furniture = furniture.clone();

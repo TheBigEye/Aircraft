@@ -1,19 +1,14 @@
 package minicraft.core.io;
 
+import minicraft.core.Game;
+import minicraft.saveload.Save;
+import org.tinylog.Logger;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-
-import org.tinylog.Logger;
-
-import minicraft.core.Game;
-import minicraft.saveload.Save;
 
 public class FileHandler extends Game {
 	private FileHandler() {}
@@ -161,8 +156,8 @@ public class FileHandler extends Game {
 			deleteFolder(origFolder.toFile());
 		}
 	}
-	
-	
+
+
 	/**
 	 * Remove all the natives files downloaded
 	 */
@@ -173,7 +168,7 @@ public class FileHandler extends Game {
 	    String[] folderNames = {
 	    	"java-discord"
 	    };
-	    
+
 	    File tempDirFile = new File(systemTempDir);
 	    File[] nativeFolders = tempDirFile.listFiles(new FilenameFilter() {
 	        @Override

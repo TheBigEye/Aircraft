@@ -1,9 +1,5 @@
 package minicraft.entity.furniture;
 
-import java.util.ArrayList;
-
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
@@ -17,13 +13,11 @@ import minicraft.entity.particle.TextParticle;
 import minicraft.graphic.Color;
 import minicraft.graphic.Point;
 import minicraft.graphic.Sprite;
-import minicraft.item.FurnitureItem;
-import minicraft.item.Item;
-import minicraft.item.PotionType;
-import minicraft.item.PowerGloveItem;
-import minicraft.item.ToolItem;
-import minicraft.item.ToolType;
+import minicraft.item.*;
 import minicraft.level.tile.Tile;
+import org.tinylog.Logger;
+
+import java.util.ArrayList;
 
 public class Spawner extends Furniture {
 
@@ -43,7 +37,7 @@ public class Spawner extends Furniture {
 
 	/**
 	 * Initializes the spawners variables to the corresponding values from the mob.
-	 * 
+	 *
 	 * @param m The mob which this spawner will spawn.
 	 */
 	private void initMob(MobAi m) {
@@ -65,7 +59,7 @@ public class Spawner extends Furniture {
 
 	/**
 	 * Creates a new spawner for the mob m.
-	 * 
+	 *
 	 * @param m Mob which will be spawned.
 	 */
 	public Spawner(MobAi m) {
@@ -77,7 +71,7 @@ public class Spawner extends Furniture {
 
 	/**
 	 * Returns the classname of a class.
-	 * 
+	 *
 	 * @param c The class.
 	 * @return String representation of the classname.
 	 */
@@ -222,11 +216,10 @@ public class Spawner extends Furniture {
 			level.add(new TextParticle("" + toolDamage, x, y, Color.get(-1, 200, 300, 400)));
 			if (health <= 0) {
 				level.remove(this);
-                
-                // Random spawner sound 
-				switch (random.nextInt(3)) {
-					case 0: Sound.playAt("genericHurt", this.x, this.y); break;
-					case 1: Sound.playAt("spawnerDestroy1", this.x, this.y); break;
+
+                // Random spawner sound
+				switch (random.nextInt(4)) {
+                    case 1: Sound.playAt("spawnerDestroy1", this.x, this.y); break;
 					case 2: Sound.playAt("spawnerDestroy2", this.x, this.y); break;
 				    case 3: Sound.playAt("spawnerDestroy3", this.x, this.y); break;
 				    default: Sound.playAt("genericHurt", this.x, this.y); break;

@@ -1,12 +1,12 @@
 package minicraft.entity.furniture;
 
-import java.util.HashMap;
-
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.entity.mob.Player;
 import minicraft.graphic.Sprite;
 import minicraft.level.Level;
+
+import java.util.HashMap;
 
 public class Bed extends Furniture {
 

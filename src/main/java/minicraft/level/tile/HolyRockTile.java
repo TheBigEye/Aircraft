@@ -30,7 +30,6 @@ public class HolyRockTile extends Tile {
     protected HolyRockTile(String name) {
         super(name, (ConnectorSprite) null);
         connectorSprite = sprite;
-        connectsToSkyHighGrass = true;
         connectsToSkyGrass = true;
     }
 

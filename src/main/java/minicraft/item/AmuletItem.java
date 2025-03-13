@@ -1,7 +1,5 @@
 package minicraft.item;
 
-import java.util.ArrayList;
-
 import minicraft.entity.Direction;
 import minicraft.entity.Summoner;
 import minicraft.entity.mob.EyeQueen;
@@ -12,8 +10,10 @@ import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 
+import java.util.ArrayList;
+
 public class AmuletItem extends Item {
-	
+
 	private boolean removed = false;
 
     protected static ArrayList<Item> getAllInstances() {
@@ -31,22 +31,22 @@ public class AmuletItem extends Item {
     }
 
     @Override
-    public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {	
+    public boolean interactOn(Tile tile, Level level, int xt, int yt, Player player, Direction attackDir) {
 		level.add(new Summoner(player, this, attackDir.getX(), attackDir.getY()));
 		removed = true;
 		return true;
-    }
+	}
 
     @Override
     public boolean interactsWithWorld() {
         return false;
     }
-    
+
     @Override
     public boolean isDepleted() {
         return removed;
     }
-    
+
     public MobAi getSummonMob() {
     	return mob;
     }

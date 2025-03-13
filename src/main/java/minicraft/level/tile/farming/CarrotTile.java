@@ -30,7 +30,7 @@ public class CarrotTile extends Plant {
 		if (age >= 50) {
 			count = random.nextInt(3) + 1;
 		} else if (age >= 40) {
-			count = random.nextInt(2) + 0;
+			count = random.nextInt(2);
 		}
 
 		level.dropItem((x << 4) + 8, (y << 4) + 8, count, Items.get("Carrot"));
@@ -38,7 +38,7 @@ public class CarrotTile extends Plant {
 		if (age >= 50 && entity instanceof Player) {
 			((Player) entity).addScore(random.nextInt(5) + 1);
 		}
-		
+
 		Sound.playAt("genericHurt", x << 4, y << 4);
 
         if (random.nextBoolean()) {
@@ -88,10 +88,13 @@ public class CarrotTile extends Plant {
 
 		Tiles.get("Farmland").render(screen, level, x, y);
 
-		screen.render((x << 4) + 0, (y << 4) + 0, 0 + 39 * 32 + icon, 0, 1);
-		screen.render((x << 4) + 8, (y << 4) + 0, 0 + 39 * 32 + icon, 0, 1);
-		screen.render((x << 4) + 0, (y << 4) + 8, 0 + 39 * 32 + icon, 1, 1);
-		screen.render((x << 4) + 8, (y << 4) + 8, 0 + 39 * 32 + icon, 1, 1);
+		x <<= 4;
+		y <<= 4;
+
+		screen.render(x + 0, y + 0, 0 + 39 * 32 + icon, 0, 1);
+		screen.render(x + 8, y + 0, 0 + 39 * 32 + icon, 0, 1);
+		screen.render(x + 0, y + 8, 0 + 39 * 32 + icon, 1, 1);
+		screen.render(x + 8, y + 8, 0 + 39 * 32 + icon, 1, 1);
 	}
 
 	@Override
@@ -99,11 +102,11 @@ public class CarrotTile extends Plant {
 		if (random.nextInt(60) != 0 || entity instanceof VillagerMob || entity instanceof ItemEntity) {
 			return;
 		}
-		
+
 		if (level.getData(xt, yt) < 2) {
 			return;
 		}
-		
+
         if (!ifWater(level, xt, yt)) {
         	harvest(level, xt, yt, entity);
         }

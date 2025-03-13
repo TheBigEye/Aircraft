@@ -13,13 +13,13 @@ import minicraft.item.PowerGloveItem;
 import minicraft.level.Level;
 
 public class StairsTile extends Tile {
-	
+
 	// Normal stairs
 	private static Sprite up_sprite = new Sprite(48, 0, 2, 2, 1, 0);
 	private static Sprite down_sprite = new Sprite(48, 2, 2, 2, 1, 0);
-	
 
-	protected StairsTile(String name, boolean leadsUp) {	
+
+	protected StairsTile(String name, boolean leadsUp) {
 		super(name, leadsUp ? up_sprite : down_sprite);
 
 		maySpawn = false;
@@ -50,10 +50,11 @@ public class StairsTile extends Tile {
 		// Get the tiles from a 3x3 area from the tile center
 		Tile[] areaTiles = level.getAreaTiles(x, y, 1);
 
-		switch (level.depth) {
-			case 1: Tiles.get("Cloud").render(screen, level, x, y); break; // Sky.
-			default: Tiles.get("Dirt").render(screen, level, x, y); break; // caves, surface and dungeon
-		}
+        if (level.depth == 1) {
+            Tiles.get("Cloud").render(screen, level, x, y); // Sky.
+        } else {
+            Tiles.get("Dirt").render(screen, level, x, y); // caves, surface and dungeon
+        }
 
 		for (Tile tile : areaTiles) {
 			if (tile == Tiles.get("Obsidian")) Tiles.get("Obsidian").render(screen, level, x, y);

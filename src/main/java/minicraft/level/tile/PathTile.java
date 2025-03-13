@@ -12,7 +12,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class PathTile extends Tile {
-	private static Sprite sprite = new Sprite(59, 2, 2, 2, 1);
+	private static final Sprite sprite = new Sprite(59, 2, 2, 2, 1);
 
 	public PathTile(String name) {
 		super(name, sprite);
@@ -28,7 +28,7 @@ public class PathTile extends Tile {
 	    // This avoids repeating tools checks
 	    ToolItem tool = (ToolItem) item;
 	    ToolType toolType = tool.type;
-		
+
 		if (toolType == ToolType.Shovel) {
 			if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 				Sound.playAt("genericHurt", xt << 4, yt << 4);
@@ -42,6 +42,6 @@ public class PathTile extends Tile {
 
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
-		sprite.render(screen, x << 4, y << 4, 0, DirtTile.dirtColor(level.depth));
+        sprite.render(screen, x << 4, y << 4, 0, DirtTile.dirtColor(level.depth));
 	}
 }

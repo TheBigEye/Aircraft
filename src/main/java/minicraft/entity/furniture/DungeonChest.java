@@ -1,7 +1,5 @@
 package minicraft.entity.furniture;
 
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.World;
@@ -18,6 +16,7 @@ import minicraft.item.Inventory;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.StackableItem;
+import org.jetbrains.annotations.Nullable;
 
 public class DungeonChest extends Chest {
     private static final Sprite OPEN_SPRITE = new Sprite(4, 30, 2, 2, 2);
@@ -28,8 +27,6 @@ public class DungeonChest extends Chest {
 
     /**
      * Creates a custom chest with the name Dungeon Chest.
-     * 
-     * @param fillInventory
      */
     public DungeonChest(boolean fillInventory) {
         this(fillInventory, false);
@@ -48,12 +45,12 @@ public class DungeonChest extends Chest {
     public Furniture clone() {
         return new DungeonChest(false, !this.isLocked);
     }
-    
+
 	@Override
 	public void tick() {
 		super.tick();
 		tickTime++;
-		
+
 		// Dungeon chest proximity sound
 		if (isLocked && tickTime / 2 % 16 == 0) {
 			if (random.nextBoolean()) {
@@ -91,7 +88,7 @@ public class DungeonChest extends Chest {
                 level.chestCount--;
                 if (level.chestCount == 0) { // if this was the last chest...
                 	Sound.play("rainThunder2");
-                	
+
                     level.dropItem(x, y, 5, Items.get("Gold Apple"));
 
                     Updater.notifyAll("You hear a noise from the surface!", -100); // notify the player of the developments
@@ -134,7 +131,7 @@ public class DungeonChest extends Chest {
     /** what happens if the player tries to push a Dungeon Chest. */
     @Override
     protected void touchedBy(Entity entity) {
-        if (!isLocked) { // can only be pushed if unlocked. 
+        if (!isLocked) { // can only be pushed if unlocked.
             super.touchedBy(entity);
         }
     }

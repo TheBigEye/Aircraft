@@ -1,13 +1,13 @@
 package minicraft.item;
 
-import java.util.ArrayList;
-
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
 import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.screen.AchievementsDisplay;
+
+import java.util.ArrayList;
 
 public class PotionItem extends StackableItem {
 
@@ -57,7 +57,7 @@ public class PotionItem extends StackableItem {
 	public static boolean applyPotion(Player player, PotionType type, boolean addEffect) {
 
 		// if hasEffect, and is disabling, or doesn't have effect, and is enabling...
-		if (player.getPotionEffects().containsKey(type) != addEffect) { 
+		if (player.getPotionEffects().containsKey(type) != addEffect) {
 			if (!type.toggleEffect(player, addEffect)) {
 				return false; // usage failed
 			}
@@ -87,7 +87,7 @@ public class PotionItem extends StackableItem {
 	public boolean interactsWithWorld() {
 		return false;
 	}
-    
+
     public Sprite getIcon(PotionType type) {
         return new PotionItem(type).sprite;
     }

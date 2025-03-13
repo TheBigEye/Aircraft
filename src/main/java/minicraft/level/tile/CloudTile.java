@@ -16,33 +16,29 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class CloudTile extends Tile {
-	private static ConnectorSprite sprite = new ConnectorSprite(CloudTile.class, new Sprite(0, 21, 3, 3, 1), new Sprite(5, 21, 2, 2, 1), new Sprite(3, 21, 2, 2, 1)) {
-		
+	private static final ConnectorSprite sprite = new ConnectorSprite(CloudTile.class, new Sprite(0, 21, 3, 3, 1), new Sprite(5, 21, 2, 2, 1), new Sprite(3, 21, 2, 2, 1)) {
+
 		@Override
 		public boolean connectsTo(Tile tile, boolean isSide) { // Cloud tile cannot connect with these tiles
 			return tile != Tiles.get("Infinite fall") && tile != Tiles.get("Ferrosite") && tile != Tiles.get("Cloud cactus") && tile != Tiles.get("Goldroot Tree");
 		}
 	};
-	
+
 	public static int cloudColor(int depth) {
-		return Color.get(1, 201, 201, 201);
+        return Color.get(1, 201, 201, 201);
 	}
 
 	protected CloudTile(String name) {
-		super(name, sprite);
+        super(name, sprite);
 	}
-	
+
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
 		Tiles.get("Ferrosite").render(screen, level, x, y);
 		sprite.render(screen, level, x, y);
 	}
-	
-	public boolean tick(Level level, int x, int y) {
-		return false;
-	}
 
-	@Override
+    @Override
 	public void steppedOn(Level level, int x, int y, Entity entity) {
 	    /*if (tickCount / 8 % 2 == 0 && Settings.get("particles").equals(true)) {
 	        if (entity instanceof Mob && random.nextBoolean()) {
@@ -63,17 +59,17 @@ public class CloudTile extends Tile {
 	        }
 	    }*/
 	}
-	
+
 	@Override
 	public boolean interact(Level level, int xt, int yt, Player player, Item item, Direction attackDir) {
 		// we don't want the tile to break when attacked with just anything, even in creative mode
 		if (item instanceof ToolItem) {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == ToolType.Shovel && player.payStamina(5)) {
-				
+
 				Sound.playAt("genericHurt", xt << 4, yt << 4);
 
-				/* 
+				/*
                  If the current level is the sky then when breaking the
                  cloud tile ferrosite appears, if not, hole will appear
 				 */
@@ -82,7 +78,7 @@ public class CloudTile extends Tile {
 				} else {
 					level.setTile(xt, yt, Tiles.get("Hole"));
 				}
-				
+
 				level.dropItem((xt << 4) + 8, (yt << 4) + 8, 1, 2, Items.get("Cloud"));
 				return true;
 			}

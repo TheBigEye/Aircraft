@@ -1,11 +1,11 @@
 package minicraft.screen.entry;
 
-import java.util.Arrays;
-
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Sound;
 import minicraft.graphic.Font;
+
+import java.util.Arrays;
 
 public class ArrayEntry<T> extends ListEntry {
 
@@ -146,7 +146,7 @@ public class ArrayEntry<T> extends ListEntry {
 	}
 
 	@Override
-	public int getWidth() {	
+	public int getWidth() {
 		String option = options[selection].toString();
 		return Font.textWidth(Localization.getLocalized(label) + ": ") + Font.textWidth(localize ? Localization.getLocalized(option) : option);
 	}

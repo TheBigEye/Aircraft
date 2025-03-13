@@ -1,7 +1,5 @@
 package minicraft.screen;
 
-import java.util.ArrayList;
-
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.InputHandler;
@@ -16,6 +14,8 @@ import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
+
+import java.util.ArrayList;
 
 public class EndMessageDisplay extends Display {
 	private static final String[] titles = { "Game Over?", "You Win!", "Well played, boy!", "You Win, Awww Man", "Well played!" };
@@ -41,7 +41,7 @@ public class EndMessageDisplay extends Display {
 			new Menu.Builder(true, 1, RelPos.LEFT, entries)
 			.setPositioning(new Point(SpriteSheet.boxWidth, SpriteSheet.boxWidth * 4), RelPos.BOTTOM_RIGHT)
 			.setTitle(titles[random.nextInt(titles.length)])
-			.createMenu() 
+			.createMenu()
 		};
 	}
 

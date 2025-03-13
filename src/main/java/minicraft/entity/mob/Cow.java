@@ -2,7 +2,6 @@ package minicraft.entity.mob;
 
 import minicraft.core.io.Settings;
 import minicraft.graphic.MobSprite;
-import minicraft.item.Item;
 import minicraft.item.Items;
 
 public class Cow extends PassiveMob {
@@ -21,7 +20,7 @@ public class Cow extends PassiveMob {
 
 		// follows to the player if holds wheat
 		followOnHold(Items.get("Wheat"), 4);
-        
+
 		// Cow sounds
 		if ((tickTime % 150 == 0) && random.nextInt(4) == 0) {
 			playSound(sounds, 7);
@@ -30,16 +29,14 @@ public class Cow extends PassiveMob {
 
     @Override
     public void die() {
-        int min = 0, max = 0;      
+        int min = 0, max = 0;
 		String difficulty = (String) Settings.get("diff");
 
         if (difficulty == "Peaceful" || difficulty == "Easy") { min = 1; max = 3; }
         if (difficulty == "Normal") { min = 1; max = 2; }
         if (difficulty == "Hard") { min = 0; max = 1; }
 
-        dropItem(min, max, new Item[] {
-        	Items.get("leather"), Items.get("raw beef") 
-        });
+        dropItem(min, max, Items.get("leather"), Items.get("raw beef"));
 
         super.die();
     }

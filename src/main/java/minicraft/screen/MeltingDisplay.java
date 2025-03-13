@@ -1,9 +1,5 @@
 package minicraft.screen;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Sound;
@@ -17,6 +13,10 @@ import minicraft.item.Items;
 import minicraft.item.Recipe;
 import minicraft.item.StackableItem;
 import minicraft.screen.entry.ItemListing;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MeltingDisplay extends Display {
     private final Player player;
@@ -104,7 +104,7 @@ public class MeltingDisplay extends Display {
 
         int previousSelection = recipeMenu.getSelection();
         super.tick(input);
-        
+
         if (previousSelection != recipeMenu.getSelection()) {
             refreshData();
         }

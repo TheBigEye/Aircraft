@@ -1,9 +1,15 @@
 package minicraft.core;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
+import de.jcm.discordgamesdk.Core;
+import de.jcm.discordgamesdk.CreateParams;
+import de.jcm.discordgamesdk.GameSDKException;
+import de.jcm.discordgamesdk.activity.Activity;
+import minicraft.core.io.FileHandler;
+import org.tinylog.Logger;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
@@ -13,19 +19,6 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.time.Instant;
 import java.util.Objects;
-
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-
-import org.tinylog.Logger;
-
-import de.jcm.discordgamesdk.Core;
-import de.jcm.discordgamesdk.CreateParams;
-import de.jcm.discordgamesdk.GameSDKException;
-import de.jcm.discordgamesdk.activity.Activity;
-import minicraft.core.io.FileHandler;
 
 /*
  * Make the game window and ticks counter
@@ -38,7 +31,7 @@ public class Initializer extends Game {
 	 */
 	public static JFrame frame;
 	static LogoSplashCanvas logoSplash = new LogoSplashCanvas();
-	
+
 	// These store the number of frames and ticks in the previous second, used for fps, at least.
 	static int fra;
 	static int tik;
@@ -68,14 +61,14 @@ public class Initializer extends Game {
 	}
 
 	/**
-	 * This is the main loop that runs the game. It: 
-	 * - keeps track of the amount of time that has passed 
-	 * - fires the ticks needed to run the game 
+	 * This is the main loop that runs the game. It:
+	 * - keeps track of the amount of time that has passed
+	 * - fires the ticks needed to run the game
 	 * - fires the command to render out the screen.
 	 * - update the discord rpc
 	 */
 	static void run() {
-		
+
         // Discord rich presence
         Core discordCore = null;
 
@@ -85,7 +78,7 @@ public class Initializer extends Game {
 			final long CLIENT_ID = 981764521616093214L;
 			final String LARGE_TEXT = "Aircraft " + BUILD + ", Nice!";
 			final String SMALL_TEXT = "Minicraft+ mod";
-			
+
 			Core.initDownload();
 			CreateParams params = new CreateParams();
 			params.setClientID(CLIENT_ID);
@@ -105,16 +98,16 @@ public class Initializer extends Game {
 		} catch (GameSDKException exception) {
 			Logger.warn("Failed to initialize Discord SDK, no discord running!");
 			exception.printStackTrace();
-			
+
 		} catch (UnknownHostException exception) {
 			Logger.warn("Failed to download Discord SDK, no internet connection!");
 			exception.printStackTrace();
-			
+
 		} catch (Exception exception) {
 			Logger.error("Unknown error");
 			exception.printStackTrace();
 		}
-		
+
 	    long lastTick = System.nanoTime();
 	    long lastRender = System.nanoTime();
 	    double unprocessed = 0; // delta?
@@ -124,12 +117,8 @@ public class Initializer extends Game {
 
 	    // Game main loop
 	    while (running) {
-			if (discordCore != null) {
-				discordCore.runCallbacks();
-			}
+	    	long now = System.nanoTime();
 	    	
-	        long now = System.nanoTime();
-	        
 		    // Calculate nanoseconds per tick (updates)
 		    double nsPerTick = 1E9D / Updater.normalSpeed;
 		    if (display == null) {
@@ -143,17 +132,22 @@ public class Initializer extends Game {
 	        while (unprocessed >= 1) {
 	            ticks++;
 	            Updater.tick();
+	            
+				if (discordCore != null) {
+					discordCore.runCallbacks();
+				}
+				
 	            unprocessed--;
 	        }
-	
+
 	        // Refresh the screen
 	        now = System.nanoTime();
 			if (now >= lastRender + 1E9D / maxFPS / 1.01) {
 				frames++;
-				lastRender = System.nanoTime();
+				lastRender = now;
 				Renderer.render();
 			}
-			
+
 			try {
 				long curNano = System.nanoTime();
 				long untilNextTick = (long) (lastTick + nsPerTick - curNano);
@@ -165,18 +159,18 @@ public class Initializer extends Game {
 				}
 			} catch (InterruptedException ignored) {}
 
-	
+
 			if (System.currentTimeMillis() - lastTimer > 1000) { // updates every 1 second
 				long interval = System.currentTimeMillis() - lastTimer;
-				lastTimer += 1000; // adds a second to the timer
-	
+				lastTimer = System.currentTimeMillis(); // adds a second to the timer
+
 				fra = (int) Math.round(frames * 1000D / interval); // saves total frames in last second
 				tik = (int) Math.round(ticks * 1000D / interval); // saves total ticks in last second
 				frames = 0; // resets frames
-				ticks = 0; // resets ticks; ie, frames and ticks only are per second			
+				ticks = 0; // resets ticks; ie, frames and ticks only are per second
 			}
 	    }
-	    
+
 	    // Finalize discord rich presence
 	    //discordCore.activityManager().clearActivity(Core.DEFAULT_CALLBACK);
 	}
@@ -192,7 +186,7 @@ public class Initializer extends Game {
 	    logoSplash.setMinimumSize(new java.awt.Dimension(1, 1));
 	    logoSplash.setPreferredSize(dimension);
 	    logoSplash.setBackground(Color.BLACK);
-	
+
 	    JFrame frame = Initializer.frame = new JFrame(NAME);
 	    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	    frame.setLayout(new BorderLayout());
@@ -223,26 +217,25 @@ public class Initializer extends Game {
 	    logoSplash.setDisplay(true);
 	    logoSplash.renderer.start();
 	}
-	
-	
+
+
 	private static final WindowListener windowListener = new WindowListener() {
 	    public void windowActivated(WindowEvent e) {} // not used
 	    public void windowDeactivated(WindowEvent e) {} // not used
 	    public void windowIconified(WindowEvent e) {} // not used
 	    public void windowDeiconified(WindowEvent e) {} // not used
 	    public void windowOpened(WindowEvent e) {} // not used
-	    
-	    public void windowClosed(WindowEvent e) { 
+
+	    public void windowClosed(WindowEvent e) {
 	        Logger.debug("Game window closed!");
 	    }
-	    
+
 	    public void windowClosing(WindowEvent e) {
 	        quit();
 	    }
 	};
-	
 
-	@SuppressWarnings("serial") 
+
 	private static class LogoSplashCanvas extends JPanel {
 		private static final Image LOGO;
 		static {
@@ -326,7 +319,7 @@ public class Initializer extends Game {
 		logoSplash = null; // Discard the canvas.
 	}
 
-	
+
 	/**
 	 * Provides a String representation of the provided Throwable's stack trace
 	 * that is extracted via PrintStream.
@@ -340,7 +333,7 @@ public class Initializer extends Game {
 		throwable.printStackTrace(printStream);
 
 		String exceptionString;
-		
+
 		try {
 			exceptionString = byteStream.toString("UTF-8");
 		} catch(Exception exception) {

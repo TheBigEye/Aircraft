@@ -1,10 +1,10 @@
 package minicraft.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import minicraft.graphic.Color;
 import minicraft.level.tile.Tiles;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public enum MapData {
 
@@ -38,7 +38,7 @@ public enum MapData {
 
     SAND(Tiles.get("Sand").id, Color.get(1, 226, 226, 111)),
     SNOW(Tiles.get("Snow").id, Color.get(1, 240, 240, 240)),
-    MAGMA(Tiles.get("Magma").id, Color.get(1, 200, 32, 32)), 
+    MAGMA(Tiles.get("Magma").id, Color.get(1, 200, 32, 32)),
     ICE(Tiles.get("Ice").id, Color.get(1, 104, 110, 236)),
 
     ICE_SPIKE(Tiles.get("Ice Spike").id, Color.get(1, 240, 240, 240)),
@@ -107,7 +107,7 @@ public enum MapData {
     MapData(int id, int color) {
         tileID = id;
         this.color = color;
-    }   
+    }
 
     public static MapData getById(int id) {
         return MapData.BY_ID.get(id);

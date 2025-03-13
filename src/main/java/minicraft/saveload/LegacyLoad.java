@@ -1,5 +1,17 @@
 package minicraft.saveload;
 
+import minicraft.core.Game;
+import minicraft.core.Updater;
+import minicraft.core.World;
+import minicraft.core.io.Settings;
+import minicraft.entity.Entity;
+import minicraft.entity.furniture.*;
+import minicraft.entity.mob.*;
+import minicraft.item.*;
+import minicraft.level.Level;
+import minicraft.level.tile.Tiles;
+import minicraft.screen.LoadingDisplay;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -7,42 +19,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import minicraft.core.Game;
-import minicraft.core.Updater;
-import minicraft.core.World;
-import minicraft.core.io.Settings;
-import minicraft.entity.Entity;
-import minicraft.entity.furniture.Bed;
-import minicraft.entity.furniture.Chest;
-import minicraft.entity.furniture.Crafter;
-import minicraft.entity.furniture.DeathChest;
-import minicraft.entity.furniture.DungeonChest;
-import minicraft.entity.furniture.Lantern;
-import minicraft.entity.furniture.Spawner;
-import minicraft.entity.furniture.Tnt;
-import minicraft.entity.mob.AirWizard;
-import minicraft.entity.mob.Cow;
-import minicraft.entity.mob.Creeper;
-import minicraft.entity.mob.Knight;
-import minicraft.entity.mob.Mob;
-import minicraft.entity.mob.MobAi;
-import minicraft.entity.mob.Pig;
-import minicraft.entity.mob.Player;
-import minicraft.entity.mob.Sheep;
-import minicraft.entity.mob.Skeleton;
-import minicraft.entity.mob.Slime;
-import minicraft.entity.mob.Snake;
-import minicraft.entity.mob.Zombie;
-import minicraft.item.ArmorItem;
-import minicraft.item.Inventory;
-import minicraft.item.Item;
-import minicraft.item.Items;
-import minicraft.item.PotionItem;
-import minicraft.item.PotionType;
-import minicraft.level.Level;
-import minicraft.level.tile.Tiles;
-import minicraft.screen.LoadingDisplay;
 
 /// this class is simply a way to seperate all the old, compatibility complications into a seperate file.
 public class LegacyLoad {
@@ -117,7 +93,7 @@ public class LegacyLoad {
                 while ((curLine = br2.readLine()) != null) {
                     total.append(curLine);
                 }
-                
+
                 extradata.addAll(Arrays.asList(total.toString().split(",")));
             }
         } catch (IOException exception) {
@@ -183,29 +159,29 @@ public class LegacyLoad {
             if (worldVersion.compareTo(new Version("1.9.2")) < 0) {
                 Settings.set("autosave", Boolean.parseBoolean(data.get(3)));
                 Settings.set("sound", Boolean.parseBoolean(data.get(4)));
-                
+
                 if (worldVersion.compareTo(new Version("1.9.2-dev2")) >= 0) {
                     AirWizard.beaten = Boolean.parseBoolean(data.get(5));
                 }
-                
+
             } else { // this is 1.9.2 official or after
                 Settings.setIndex("diff", Integer.parseInt(data.get(3)));
                 AirWizard.beaten = Boolean.parseBoolean(data.get(4));
             }
-            
+
         } else {
             if (data.size() == 5) {
                 worldVersion = new Version("1.9");
                 Updater.setTime(Integer.parseInt(data.get(0)));
                 Settings.set("autosave", Boolean.parseBoolean(data.get(3)));
                 Settings.set("sound", Boolean.parseBoolean(data.get(4)));
-                
+
             } else { // version == 1.8?
                 if (!oldSave) {
                     System.out.println("UNEXPECTED WORLD VERSION");
                     worldVersion = new Version("1.8.1");
                 }
-                
+
                 // for backwards compatibility
                 Updater.tickCount = Integer.parseInt(data.get(0));
                 playerac = Integer.parseInt(data.get(3));
@@ -299,8 +275,9 @@ public class LegacyLoad {
             for (int i = 0; i < effects.length; i++) {
                 String[] effect = effects[i].split(";");
                 String pName = effect[0];
-                if (oldSave)
+                if (oldSave) {
                     pName = pName.replace("P.", "Potion");
+                }
                 PotionItem.applyPotion(player, Enum.valueOf(PotionType.class, pName), Integer.parseInt(effect[1]));
             }
         }
@@ -369,7 +346,7 @@ public class LegacyLoad {
 
         for (int i = 0; i < data.size(); i++) {
         	// this gets everything inside the "[...]" after the entity name.
-            List<String> info = Arrays.asList(data.get(i).substring(data.get(i).indexOf("[") + 1, data.get(i).indexOf("]")).split(":")); 
+            List<String> info = Arrays.asList(data.get(i).substring(data.get(i).indexOf("[") + 1, data.get(i).indexOf("]")).split(":"));
 
             String entityName = data.get(i).substring(0, data.get(i).indexOf("[")).replace("bed", "Bed").replace("II", ""); // this gets the text before "[", which is the entity name.
             int x = Integer.parseInt(info.get(0));
@@ -411,7 +388,7 @@ public class LegacyLoad {
 
                     if (isDeathChest) {
                     	// "tl;" is only for old save support
-                        ((DeathChest) chest).time = Integer.parseInt(chestInfo.get(chestInfo.size() - 1).replace("tl;", "")); 
+                        ((DeathChest) chest).time = Integer.parseInt(chestInfo.get(chestInfo.size() - 1).replace("tl;", ""));
                     } else if (isDungeonChest) {
                         ((DungeonChest) chest).setLocked(Boolean.parseBoolean(chestInfo.get(chestInfo.size() - 1)));
                     }

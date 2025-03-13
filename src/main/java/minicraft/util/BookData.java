@@ -1,8 +1,8 @@
 package minicraft.util;
 
-import java.io.IOException;
-
 import minicraft.saveload.Load;
+
+import java.io.IOException;
 
 public class BookData {
 
@@ -17,7 +17,7 @@ public class BookData {
 
     private static String loadBook(String bookTitle) {
         String book;
-      
+
         try {
             book = String.join("\n", Load.loadFile("/resources/books/" + bookTitle + ".txt"));
             book = book.replaceAll("\\\\0", "\0");
@@ -28,6 +28,8 @@ public class BookData {
 
         return book;
     }
-    
-    public static void saveBook(String bookTitle) {}
+
+    public static void saveBook(String bookTitle) {
+        // We do nothing here ...
+    }
 }

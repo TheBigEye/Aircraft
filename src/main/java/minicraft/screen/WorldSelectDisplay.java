@@ -1,10 +1,5 @@
 package minicraft.screen;
 
-import java.io.File;
-import java.util.ArrayList;
-
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
@@ -16,6 +11,10 @@ import minicraft.saveload.Save;
 import minicraft.saveload.Version;
 import minicraft.screen.WorldEditDisplay.Action;
 import minicraft.screen.entry.SelectEntry;
+import org.tinylog.Logger;
+
+import java.io.File;
+import java.util.ArrayList;
 
 public class WorldSelectDisplay extends Display {
 
@@ -34,7 +33,7 @@ public class WorldSelectDisplay extends Display {
 	public WorldSelectDisplay() {
 		super(true);
 	}
-	
+
 	@Override
 	public void init(Display parent) {
 	    // If the parent is a WorldEditDisplay and it has a parent itself, set the super class' parent to be the grandparent of the parent
@@ -51,10 +50,10 @@ public class WorldSelectDisplay extends Display {
 
 	    // Update the list of available worlds
 	    updateWorlds();
-	    
+
 	    // Create a new array of SelectEntry objects to be used in the menu
 	    SelectEntry[] entries = new SelectEntry[worldNames.size()];
-	    
+
 	    // Iterate through each world and create a SelectEntry object for it
 	    for (int i = 0; i < entries.length; i++) {
 	        final String name = worldNames.get(i);
@@ -78,7 +77,7 @@ public class WorldSelectDisplay extends Display {
 	        .createMenu()
 	    };
 	}
-	
+
 	@Override
 	public void tick(InputHandler input) {
 		super.tick(input);
@@ -90,13 +89,13 @@ public class WorldSelectDisplay extends Display {
 			}
 		}
 	}
-	
+
 	@Override
 	public void render(Screen screen) {
 		super.render(screen);
-		
+
 		Font.drawCentered(Localization.getLocalized("Select World"), screen, 0, Color.WHITE);
-		
+
 		int currentSelection = menus[0].getSelection();
 		if (currentSelection >= 0 && currentSelection < worldVersions.size()) {
 			Version version = worldVersions.get(currentSelection);
@@ -107,7 +106,7 @@ public class WorldSelectDisplay extends Display {
 			}
 			Font.drawCentered(Localization.getLocalized("World Version:") + " " + (version.compareTo(new Version("1.9.2")) <= 0 ? "~" : "") + version, screen, Font.textHeight() * 7 / 2,textColor);
 		}
-		
+
 		Font.drawCentered(Game.input.getMapping("select") + Localization.getLocalized(" to confirm"), screen, Screen.h - 60, Color.GRAY);
 		Font.drawCentered(Game.input.getMapping("exit") + Localization.getLocalized(" to return"), screen, Screen.h - 40, Color.GRAY);
 
@@ -163,19 +162,19 @@ public class WorldSelectDisplay extends Display {
 	}
 
 	public static String getWorldName() {
-		return worldName; 
+		return worldName;
 	}
-	
+
 	public static void setWorldName(String world, boolean loaded) {
 		worldName = world;
 		loadedWorld = loaded;
 	}
 
 	public static boolean hasLoadedWorld() {
-		return loadedWorld; 
+		return loadedWorld;
 	}
 
 	public static ArrayList<String> getWorldNames() {
-		return worldNames; 
+		return worldNames;
 	}
 }

@@ -16,8 +16,8 @@ import minicraft.level.Level;
 public class MushroomTile extends Tile {
 	
 	protected enum Mushroom {
-		BROWN("Brown Mushroom", new Sprite(33, 16, 1)),
-		RED("Red Mushroom", new Sprite(32, 16, 1));
+		BROWN("Brown Mushroom", new Sprite(15, 11, 1)),
+		RED("Red Mushroom", new Sprite(14, 11, 1));
 		
 		private final String name;
     	private final Sprite sprite;

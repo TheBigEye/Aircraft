@@ -1,11 +1,5 @@
 package minicraft.screen;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
@@ -16,11 +10,16 @@ import minicraft.saveload.Save;
 import minicraft.screen.entry.BlankEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
+import org.tinylog.Logger;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class OptionsDisplay extends Display {
-	
+
     boolean originalSound = Settings.getBoolean("sound");
-    
+
 	public OptionsDisplay() {
         super(true);
 
@@ -31,7 +30,7 @@ public class OptionsDisplay extends Display {
             Settings.getEntry("autosave"),
             Settings.getEntry("skinon"),
             Settings.getEntry("language"),
-            
+
             new SelectEntry("Video options", () -> Game.setDisplay(new VideoOptionsDisplay())),
             new SelectEntry("Change Key Bindings", () -> Game.setDisplay(new KeyInputDisplay())),
             new SelectEntry("Texture packs", () -> Game.setDisplay(new TexturePackDisplay())),
@@ -43,7 +42,8 @@ public class OptionsDisplay extends Display {
                     Logger.error(exception, "Could not find the program requested for this action");
                     exception.printStackTrace();
                 }
-            })
+            }),
+            new BlankEntry()
         )
         .setTitle("Options")
         .createMenu();
@@ -51,13 +51,13 @@ public class OptionsDisplay extends Display {
         Menu popupMenu = new Menu.Builder(true, 4, RelPos.CENTER)
             .setShouldRender(false)
             .setSelectable(false)
-            
-            .setEntries(StringEntry.useLines(Color.RED, 
-            	"A restart is needed, you can continue playing anyway", 
-            	"enter to confirm", 
+
+            .setEntries(StringEntry.useLines(Color.RED,
+            	"A restart is needed, you can continue playing anyway",
+            	"enter to confirm",
             	"escape to cancel")
             )
-            
+
             .setTitle("Confirm Action")
             .createMenu();
 

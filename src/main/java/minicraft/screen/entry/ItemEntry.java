@@ -1,17 +1,17 @@
 package minicraft.screen.entry;
 
-import java.util.List;
-
 import minicraft.core.io.InputHandler;
 import minicraft.graphic.Screen;
 import minicraft.item.Item;
+
+import java.util.List;
 
 public class ItemEntry extends ListEntry {
 
     public static ItemEntry[] useItems(List<Item> items) {
         ItemEntry[] entries = new ItemEntry[items.size()];
         int itemStackSize = items.size();
-        
+
         for (int i = 0; i < itemStackSize; i++) {
             entries[i] = new ItemEntry(items.get(i));
         }

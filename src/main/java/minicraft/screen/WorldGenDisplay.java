@@ -1,11 +1,5 @@
 package minicraft.screen;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.OptionalLong;
-import java.util.regex.Pattern;
-
 import minicraft.core.Game;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Settings;
@@ -15,13 +9,19 @@ import minicraft.graphic.Screen;
 import minicraft.screen.entry.InputEntry;
 import minicraft.screen.entry.SelectEntry;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.OptionalLong;
+import java.util.regex.Pattern;
+
 public class WorldGenDisplay extends Display {
 
 	private static final String worldNameRegex = "[a-zA-Z0-9 ]+";
 
 	private static InputEntry worldSeed = new InputEntry("World Seed", "[-!\"#%/()=+,a-zA-Z0-9]+", 20, true);
-	
-	private static final String worldNameHelp = 
+
+	private static final String worldNameHelp =
 			"it seems you've set letters as the controls to move the cursor up and down, which is probably annoying." +
 			"This can be changed in the key binding menu as the \"cursor-XXX\" keys. For now, to type the letter" +
 			"instead of moving the cursor, hold the shift key while typing.";
@@ -29,7 +29,7 @@ public class WorldGenDisplay extends Display {
 	public static OptionalLong getSeed() {
 		String seedString = worldSeed.getUserInput();
 
-		if (seedString.length() == 0) {
+		if (seedString.isEmpty()) {
 			return OptionalLong.empty();
 		}
 
@@ -74,9 +74,9 @@ public class WorldGenDisplay extends Display {
 
 	public WorldGenDisplay() {
 		super(true);
-		
+
 		InputEntry nameField = makeWorldNameInput("- ", WorldSelectDisplay.getWorldNames(), Localization.getLocalized("New World"));
-		
+
 		SelectEntry nameHelp = new SelectEntry("Trouble with world name?", () -> Game.setDisplay(new BookDisplay(worldNameHelp))) {
 			@Override
 			public int getColor(boolean isSelected) {
@@ -116,7 +116,7 @@ public class WorldGenDisplay extends Display {
                         WorldSelectDisplay.setWorldName(nameField.getUserInput(), false);
                         Game.setDisplay(new LoadingDisplay());
                     }) {
-            	
+
                 @Override
                 public void render(Screen screen, int x, int y, boolean isSelected) {
                     Font.draw(toString(), screen, x, y, Color.CYAN);

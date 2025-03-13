@@ -8,7 +8,7 @@ public class Sprite {
 	 * This class needs to store a list of similar segments that make up a sprite,
 	 * just once for everything. There's usually four groups, but the components
 	 * are: -spritesheet location (x, y) -mirror type
-	 * 
+	 * <p>
 	 * That's it! The screen's render method only draws one 8x8 pixel of the
 	 * spritesheet at a time, so the "sprite size" will be determined by how many
 	 * repetitions of the above group there are.
@@ -17,19 +17,19 @@ public class Sprite {
 	private static Random random = new Random();
 
 	public static Sprite missingTexture(int w, int h) {
-		return new Sprite(6, 44, w, h, 1);
+        return new Sprite(6, 44, w, h, 1);
 	}
 
 	public static Sprite blank(int w, int h, int col) {
-		return new Sprite(7, 2, w, h, Color.get(col, col));
+        return new Sprite(7, 2, w, h, Color.get(col, col));
 	}
 
 	public static Sprite repeat(int sx, int sy, int w, int h) {
-		return ConnectorSprite.makeSprite(w, h, 0, true, sx + sy * 32);
+        return ConnectorSprite.makeSprite(w, h, 0, true, sx + sy * 32);
 	}
 
 	public static Sprite dots(int col) {
-		return ConnectorSprite.makeSprite(2, 2, 0, false, 0, 1, 2, 3);
+        return ConnectorSprite.makeSprite(2, 2, 0, false, 0, 1, 2, 3);
 	}
 
 	public static Sprite randomDots(long seed, int x, int y) {

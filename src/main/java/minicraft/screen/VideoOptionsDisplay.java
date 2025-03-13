@@ -20,7 +20,6 @@ public class VideoOptionsDisplay extends Display {
         	new BlankEntry(),
             Settings.getEntry("fps"),
             Settings.getEntry("particles"),
-            Settings.getEntry("shadows"),
             new BlankEntry()
         )
         .setTitle("Video options")

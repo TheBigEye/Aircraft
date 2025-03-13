@@ -39,16 +39,16 @@ public class InputEntry extends ListEntry {
 	public void tick(InputHandler input) {
 		String prev = userInput;
 		userInput = input.addKeyTyped(userInput, regex);
-		
+
 		if (!prev.equals(userInput) && listener != null)
 			listener.onChange(userInput);
-	
+
 		if (maxLength > 0 && userInput.length() > maxLength)
 			userInput = userInput.substring(0, maxLength); // truncates extra
 		if (input.getKey("CTRL-V").clicked) {
 			userInput = userInput + clipboardHandler.getClipboardContents();
 		}
-		if (userInput.length() != 0) {
+		if (!userInput.isEmpty()) {
 			if (input.getKey("CTRL-C").clicked) {
 				clipboardHandler.setClipboardContents(userInput);
 			}
@@ -60,19 +60,19 @@ public class InputEntry extends ListEntry {
 	}
 
 	public String getUserInput() {
-		return userInput; 
+		return userInput;
 	}
-	
+
 	public void clearUserInput() {
 		userInput = "";
 	}
 
 	public String toString() {
-		return Localization.getLocalized(prompt) + (prompt.length() == 0 ? "" : ": ") + userInput;
+		return Localization.getLocalized(prompt) + (prompt.isEmpty() ? "" : ": ") + userInput;
 	}
 
 	public void render(Screen screen, int x, int y, boolean isSelected) {
-		if (colon == true) {
+		if (colon) {
 			Font.draw(toString(), screen, x, y, isValid() ? isSelected ? Color.DARK_GREEN : COLOR_UNSELECTED : Color.DARK_RED);
 		} else {
 			Font.draw(toString().replace(": ", " "), screen, x, y, isValid() ? isSelected ? Color.GREEN : COLOR_UNSELECTED : Color.DARK_RED);

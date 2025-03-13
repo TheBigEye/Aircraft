@@ -17,7 +17,7 @@ public class WaterTile extends Tile {
             }
         };
     }
-	
+
 	protected WaterTile(String name) {
 		super(name, (ConnectorSprite) null);
 		connectorSprite = sprite;
@@ -31,7 +31,7 @@ public class WaterTile extends Tile {
 
 	@Override
 	public void render(Screen screen, Level level, int x, int y) {
-		long seed = ((tickCount + (x / 2 - y) * 4311) / 10);
+		long seed = ((tickCount + (x / 2 - y) * 4311L) / 10);
 	    sprite.full = Sprite.randomDots(seed, 21, 21);
 	    sprite.sparse.color = DirtTile.dirtColor(level.depth);
 	    sprite.render(screen, level, x, y);
@@ -41,7 +41,7 @@ public class WaterTile extends Tile {
 	public boolean tick(Level level, int xt, int yt) {
 	    int xn = xt;
 	    int yn = yt;
-	    
+
 	    switch (random.nextInt(2)) {
 	        case 0: xn += (random.nextInt(2) << 1) - 1; break;
 	        case 1: yn += (random.nextInt(2) << 1) - 1; break;

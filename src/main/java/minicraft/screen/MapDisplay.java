@@ -1,7 +1,5 @@
 package minicraft.screen;
 
-import java.util.List;
-
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.entity.Entity;
@@ -12,26 +10,28 @@ import minicraft.graphic.Rectangle;
 import minicraft.graphic.Screen;
 import minicraft.util.MapData;
 
+import java.util.List;
+
 public class MapDisplay extends Display {
-	
+
 	private static final int ENTITIES_RADIUS = 360 * 2;
 
 	private static final int PLAYER_MARKER_SPRITE = 6 + 20 * 32;
 	private static final int PLAYER_MARKER_COLOR = Color.get(-1, 255, 0, 0);
-	
+
 	private static final int AIRWIZARD_MARKER_SPRITE = 6 + 21 * 32;
 	private static final int AIRWIZARD_MARKER_COLOR = Color.get(-1, 255, 0, 0);
-	
+
 	private static final int EYEQUEEN_MARKER_SPRITE = 6 + 22 * 32;
 	private static final int EYEQUEEN_MARKER_COLOR = Color.get(-1, 255, 0, 0);
-	
+
 	private static final int UNEXPLORED_COLOR = Color.get(-1, 8, 8, 8);
 
-    private int mapRadius = 10;
-    private int worldSize = Game.levels[Game.currentLevel].w;   // Adjust this to match the world size
-    
+    private static final int MAP_RENDER_RADIUS = 10;
+    private final int worldSize = Game.levels[Game.currentLevel].w;   // Adjust this to match the world size
+
     private int tickTime = 0;
-	
+
 	public MapDisplay() {
 
 
@@ -51,16 +51,16 @@ public class MapDisplay extends Display {
 	public void render(Screen screen) {
 		Menu menu = menus[0];
 		menu.render(screen);
-		
+
 		// Player Tile Coordinates
 		int ptx = Game.player.x >> 4;
 		int pty = Game.player.y >> 4;
-		
+
 		// Get a list of closest entities in player range
 		List<Entity> entitiesInRange = Game.levels[Game.currentLevel].getEntitiesInRect(
 			new Rectangle(Game.player.x, Game.player.y, ENTITIES_RADIUS, ENTITIES_RADIUS, Rectangle.CENTER_DIMS)
 	    );
-		
+
 		/*
 		 * This is for worlds large than 128x128 due that map can just display 128x128
 		 * pixels thus we can fix position to get tiles correctly
@@ -90,7 +90,7 @@ public class MapDisplay extends Display {
                     // Render fog of war for unexplored areas
                     screen.setPixel((x + menuBounds.getLeft()) + 8, (y + menuBounds.getTop()) + 8, UNEXPLORED_COLOR);
                 }
-                
+
                 if (Game.isMode("Creative")) {
                     MapData mapData = MapData.getById(Game.levels[Game.currentLevel].getTile(worldX, worldY).id);
                     int color = mapData != null ? mapData.color : 0;
@@ -98,16 +98,16 @@ public class MapDisplay extends Display {
                 }
             }
         }
-		
+
 		/// MAP MARKERS :D
 
 		// Render the marker for the player
 		screen.render((ptx % 128) + menuBounds.getLeft() + 4, (pty % 128) + menuBounds.getTop() + 4, MapDisplay.PLAYER_MARKER_SPRITE, MapDisplay.PLAYER_MARKER_COLOR, 3);
-		
+
 		// Render the marker for the air wizard
 		if (AirWizard.active) {
 			AirWizard aw = AirWizard.entity;
-			for (Entity entity: entitiesInRange) { 
+			for (Entity entity: entitiesInRange) {
         		if (entity instanceof AirWizard) {
 					int awtx = aw.x >> 4;
 					int awty = aw.y >> 4;
@@ -115,11 +115,11 @@ public class MapDisplay extends Display {
         		}
 			}
 		}
-		
+
 		// Render the marker for the eye queen
 		if (EyeQueen.active) {
 			EyeQueen eq = EyeQueen.entity;
-			for (Entity entity: entitiesInRange) { 
+			for (Entity entity: entitiesInRange) {
         		if (entity instanceof EyeQueen) {
 					int eqtx = eq.x >> 4;
 					int eqty = eq.y >> 4;
@@ -132,32 +132,32 @@ public class MapDisplay extends Display {
     @Override
     public void tick(InputHandler input) {
     	tickTime++;
-    	
+
         if (input.getKey("menu").clicked || input.getKey("attack").clicked || input.getKey("exit").clicked) {
             Game.exitDisplay();
         }
-        
+
     	if (tickTime % 5 == 0) {
-    	
+
 	        // Update the explored array based on the player's position
 	        int ptx = Game.player.x >> 4;
 	        int pty = Game.player.y >> 4;
-	        int visibleRadiusSquared = (mapRadius - 1) * (mapRadius - 1); // Square of the inner radius (visible area)
-	        int ditherRadiusSquared = mapRadius * mapRadius; // Square of the outer radius (dithered area)
-	
-	        for (int y = -mapRadius; y <= mapRadius; y++) {
-	            for (int x = -mapRadius; x <= mapRadius; x++) {
+	        int visibleRadiusSquared = (MAP_RENDER_RADIUS - 1) * (MAP_RENDER_RADIUS - 1); // Square of the inner radius (visible area)
+	        int ditherRadiusSquared = MAP_RENDER_RADIUS * MAP_RENDER_RADIUS; // Square of the outer radius (dithered area)
+
+	        for (int y = -MAP_RENDER_RADIUS; y <= MAP_RENDER_RADIUS; y++) {
+	            for (int x = -MAP_RENDER_RADIUS; x <= MAP_RENDER_RADIUS; x++) {
 	                int worldX = (ptx + x) % worldSize;
 	                int worldY = (pty + y) % worldSize;
-	
+
 	                if (worldX < 0) worldX += worldSize;
 	                if (worldY < 0) worldY += worldSize;
-	
+
 	                // Calculate the squared distance from the player's position to the current tile
 	                int dx = ptx - worldX;
 	                int dy = pty - worldY;
 	                int distanceSquared = dx * dx + dy * dy;
-	
+
 	                // Check if the tile is within the circular exploration area (visible area)
 	                if (distanceSquared <= visibleRadiusSquared) {
 	                    Game.levels[Game.currentLevel].explored[worldY][worldX] = true;

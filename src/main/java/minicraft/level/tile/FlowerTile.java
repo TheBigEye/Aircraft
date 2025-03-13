@@ -14,7 +14,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class FlowerTile extends Tile {
-	
+
 	protected enum Flower {
 		DAISY("Daisy", new Sprite(5, 11, 1)),
 		ROSE("Rose", new Sprite(6, 11, 1)),
@@ -29,8 +29,8 @@ public class FlowerTile extends Tile {
 			this.sprite = sprite;
 		}
 	}
-	
-	private Flower flower;
+
+	private final Flower flower;
 
 	protected FlowerTile(Flower flower) {
 		super(flower.name, (ConnectorSprite) null);
@@ -70,7 +70,7 @@ public class FlowerTile extends Tile {
 
 		x <<= 4;
 		y <<= 4;
-		
+
 		flower.sprite.render(screen, x + 8 * shape, y);
 		flower.sprite.render(screen, x + 8 * ((shape == 0) ? 1 : 0), y + 8);
 	}
@@ -84,13 +84,13 @@ public class FlowerTile extends Tile {
 	    // This avoids repeating tools checks
 	    ToolItem tool = (ToolItem) item;
 	    ToolType toolType = tool.type;
-	    
+
 		if (toolType == ToolType.Shears) {
 			if (player.payStamina(2 - tool.level) && tool.payDurability()) {
 				Sound.playAt("genericHurt", x << 4, y << 4);
 
 				level.setTile(x, y, Tiles.get("Grass"));
-				
+
 				level.dropItem((x << 4) + 8, (y << 4) + 8, 2, 2, Items.get(flower.name));
 				return true;
 			}

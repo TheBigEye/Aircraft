@@ -29,7 +29,6 @@ public class UpRockTile extends Tile {
     };
 
     private boolean dropCoal = false;
-    private final int maxHealth = 100;
 
     private int damage;
 
@@ -73,15 +72,17 @@ public class UpRockTile extends Tile {
 
     @Override
 	public void hurt(Level level, int x, int y, int hurtDamage) {
+        int maxHealth = 100;
     	damage = level.getData(x, y) + hurtDamage;
-		if (Game.isMode("Creative")) {
+
+        if (Game.isMode("Creative")) {
 			hurtDamage = damage = maxHealth;
 			dropCoal = true;
 		}
 
 		Sound.playAt("genericHurt", x << 4, y << 4);
 		level.add(new SmashParticle(x << 4, y << 4));
-		
+
 		level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.DARK_RED));
 		if (damage >= maxHealth) {
 

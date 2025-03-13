@@ -1,7 +1,5 @@
 package minicraft.level.tile;
 
-import org.tinylog.Logger;
-
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -14,18 +12,19 @@ import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.PowerGloveItem;
 import minicraft.level.Level;
+import org.tinylog.Logger;
 
 public class TorchTile extends Tile {
-    private static Sprite sprite = new Sprite(5, 3, 0);
-    
-    private Tile onType;
-    
+    private static final Sprite sprite = new Sprite(5, 3, 0);
+
+    private final Tile onType;
+
     int spawnX = 0;
     int spawnY = 0;
 
     public static TorchTile getTorchTile(Tile onTile) {
 		int id = onTile.id & 0xFFFF;
-		
+
         if (id < 16384) {
             id += 16384;
         } else {
@@ -47,7 +46,6 @@ public class TorchTile extends Tile {
         this.connectsToSand = onType.connectsToSand;
         this.connectsToGrass = onType.connectsToGrass;
         this.connectsToSkyGrass = onType.connectsToSkyGrass;
-        this.connectsToSkyHighGrass = onType.connectsToSkyHighGrass;
         this.connectsToSkyDirt = onType.connectsToSkyDirt;
         this.connectsToFerrosite = onType.connectsToFerrosite;
         this.connectsToSnow = onType.connectsToSnow;
@@ -58,37 +56,32 @@ public class TorchTile extends Tile {
     public void render(Screen screen, Level level, int x, int y) {
         onType.render(screen, level, x, y);
         sprite.render(screen, (x << 4) + 4, (y << 4) + 4);
-        
-		if (!Updater.paused && tickCount / 2 % 2 == 0 && Settings.getBoolean("particles")) {
+
+		if ((!Updater.paused && (tickCount / 2 % 2) == 0) && Settings.getBoolean("particles")) {
 			if (random.nextBoolean()) {
 				level.add(new FireParticle(spawnX, spawnY));
 			}
 		}
     }
-    
+
     @Override
 	public boolean tick(Level level, int x, int y) {
     	int data = level.getData(x, y);
 		if (data != 5) {
 			level.setData(x, y, data + 1);
 			return true;
-		}  
+		}
 
 		spawnX = (x << 4) + 4;
 		spawnY = (y << 4) + random.nextInt(2) - random.nextInt(1);
-		
+
 		return false;
 	}
 
     @Override
     public int getLightRadius(Level level, int x, int y) {
     	int data = level.getData(x, y);
-    	
-    	if (data < 2) {
-    		return 2;
-    	}
-    
-	    return data;
+        return Math.max(data, 2);
     }
 
     @Override

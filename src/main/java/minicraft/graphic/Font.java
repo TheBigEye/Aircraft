@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Font {
-    
+
     private static final int CHAR_SHEET_Y = 0;
-    
+
     // These are all the characters that will be translated to the screen. (The spaces and the UTF8 incoding are important)
     private static final String chars =
 		" !\"#$%&'()*+,-./0123456789:;<=>?" +
@@ -21,12 +21,12 @@ public class Font {
         "абвгдеёжзийклмнопрстуфхцчшщъыьэю" +
         "яÁÍíÓÚÀÂÈÊËÌÎÏÒÔŒœÙÛÝýŸÃãÕõ✪✫✬✭✮" +
         "✯✰✱✲✳✴✵✶✷✸✹✺✻✼✽✾✿❀❁❂❃";
-    
+
     /*
      * The order of the letters in the chars string is represented in the order that
      * they appear in the sprite-sheet.
      */
-    
+
 	private static final int[] charsAdvance = new int[Font.chars.length()];
 
 	public static void updateCharAdvances(SpriteSheet font) {
@@ -64,13 +64,13 @@ public class Font {
      */
     public static void draw(String msg, Screen screen, int x, int y, int whiteTint) {
         int len = msg.length(); // The length of the message
-        
+
         int xx = x;
-        
+
         // Loops through all the characters in the message
         for (int chr = 0; chr < len; chr++) {
             int charIndex = chars.indexOf(msg.charAt(chr)); // The current character's index in the `chars` string
-            if (charIndex >= 0) { // Renders the character if it's index is valid             
+            if (charIndex >= 0) { // Renders the character if it's index is valid
                 // Renders the character on the screen
                 screen.render(xx, y, (charIndex % 32 + CHAR_SHEET_Y) + ((charIndex / 32 + CHAR_SHEET_Y) << 5), 0, 4, whiteTint);
             }
@@ -78,7 +78,7 @@ public class Font {
         }
     }
 
-    
+
     public static void drawColor(String message, Screen screen, int x, int y) {
         // set default color message if it doesn't have initially
         if (message.charAt(0) != Color.COLOR_CHAR) {
@@ -114,9 +114,9 @@ public class Font {
 
     public static void drawBackground(String msg, Screen screen, int x, int y, int whiteTint) {
     	int xx = x;
-    	
+
     	int len = msg.length();
-        
+
         for (int i = 0; i < len; i++) {
             // render the black background
             screen.render(xx, y, 12 + (24 << 5), 0, 3);
@@ -206,7 +206,7 @@ public class Font {
         // empty string.
 
         int height = textHeight();
-        while (para.length() > 0) { // continues to loop as long as there are more characters to parse.
+        while (!para.isEmpty()) { // continues to loop as long as there are more characters to parse.
 
             int splitIndex = getLine(para, w); // determine how many letters can be fit on to this line.
             lines.add(para.substring(0, splitIndex)); // add the specified number of characters.
@@ -215,24 +215,24 @@ public class Font {
             // newline, skip it (because the getLine() method will always break before
             // newlines, and will usually otherwise break before spaces.
             if (splitIndex < para.length() && para.substring(splitIndex, splitIndex + 1).matches("[ \n]")) {
-                splitIndex++; 
+                splitIndex++;
             }
-                              
+
              // remove the characters that have now been added on to the line
-            para = para.substring(splitIndex); 
+            para = para.substring(splitIndex);
 
             // move y pos down a line
-            height += lineSpacing + textHeight(); 
-            
+            height += lineSpacing + textHeight();
+
             // If we've run out of space to draw lines, then there's no point
             // in parsing more characters, so we should break out of the loop.
             if (height > h) {
-                break; 
+                break;
             }
         }
         // add remainder, but don't add empty lines unintentionally.
-        if (para.length() > 0 || keepEmptyRemainder) {
-            lines.add(para); 
+        if (!para.isEmpty() || keepEmptyRemainder) {
+            lines.add(para);
         }
         return lines.toArray(new String[lines.size()]);
     }
@@ -272,7 +272,7 @@ public class Font {
         String line = String.join(" ", Arrays.copyOfRange(words, 0, i));
         return line.length();
     }
-    
+
     public static void drawBar(Screen screen, int x, int y, int length) {
         final int maxBarLength = 8;
         final int barLength = length / 12;
@@ -292,20 +292,20 @@ public class Font {
         }
     }
 
-    
+
     public static void drawBox(Screen screen, int x, int y, int w, int h) {
-		// Renders the four corners of the box	
+		// Renders the four corners of the box
 		screen.render(x - 8, y - 8, 0 + (21 << 5), 0, 3);
 		screen.render(x + (w << 3), y - 8, 0 + (21 << 5), 1, 3);
 		screen.render(x - 8, y + 8 * h, 0 + (21 << 5), 2, 3);
 		screen.render(x + (w << 3), y + 8 * h, 0 + (21 << 5), 3, 3);
-
 
 		// Renders each part of the box...
 		for (int xb = 0; xb < w; xb++) {
 			screen.render(x + (xb << 3), y - 8, 1 + (21 << 5), 0, 3); // ...top part
 			screen.render(x + (xb << 3), y + 8 * h, 1 + (21 << 5), 2, 3); // ...bottom part
 		}
+
 		for (int yb = 0; yb < h; yb++) {
 			screen.render(x - 8, y + (yb << 3), 2 + (21 << 5), 0, 3); // ...left part
 			screen.render(x + (w << 3), y + (yb << 3), 2 + (21 << 5), 1, 3); // ...right part
@@ -318,5 +318,5 @@ public class Font {
 			}
 		}
     }
-    
+
 }

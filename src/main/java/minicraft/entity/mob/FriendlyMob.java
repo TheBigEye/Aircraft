@@ -12,7 +12,6 @@ import minicraft.level.tile.MyceliumTile;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.WallTile;
 import minicraft.level.tile.farming.FarmTile;
-import minicraft.level.tile.farming.Plant;
 
 public class FriendlyMob extends MobAi {
     public int lvl;
@@ -75,7 +74,7 @@ public class FriendlyMob extends MobAi {
 
         // Check for depth to avoid unnecessary checks
         if (level.depth != -4) {
-            if (tile instanceof DoorTile || tile instanceof WallTile|| tile instanceof Plant || tile instanceof FarmTile || tile instanceof MyceliumTile) {
+            if (tile instanceof DoorTile || tile instanceof WallTile || tile instanceof FarmTile || tile instanceof MyceliumTile) {
                 return false;
             }
             return !level.isLight(x >> 4, x >> 4);

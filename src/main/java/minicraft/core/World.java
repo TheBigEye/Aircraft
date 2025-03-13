@@ -1,26 +1,21 @@
 package minicraft.core;
 
-import java.util.Random;
-
-import org.jetbrains.annotations.Nullable;
-import org.tinylog.Logger;
-
 import minicraft.core.io.Settings;
 import minicraft.entity.furniture.Bed;
 import minicraft.entity.mob.Player;
 import minicraft.level.Level;
 import minicraft.saveload.Load;
-import minicraft.screen.AchievementsDisplay;
-import minicraft.screen.LoadingDisplay;
-import minicraft.screen.PlayerDeathDisplay;
-import minicraft.screen.WorldGenDisplay;
-import minicraft.screen.WorldSelectDisplay;
+import minicraft.screen.*;
 import minicraft.util.Action;
+import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
+
+import java.util.Random;
 
 public class World extends Game {
 	private World() {}
 
-    // This is to map the level depths to each level's index in Game's levels array. 
+    // This is to map the level depths to each level's index in Game's levels array.
 	// This must ALWAYS be the same length as the levels array, of course.
 	public static final int[] indexToDepth = {-3, -2, -1, 0, 1, 2, -4};
 	public static final int minLevelDepth, maxLevelDepth;
@@ -31,9 +26,9 @@ public class World extends Game {
 
 	static int playerDeadTime; // The time after you die before the dead menu shows up.
 	static int pendingLevelChange; // Used to determine if the player should change levels or not.
-	
+
 	public static String currentMusicTheme;
-	
+
 	private static long lastWorldExitTime = 0; // When the world exited.
 	private static long lastWorldEnterTime = 0; // When the world entered.
 
@@ -109,7 +104,7 @@ public class World extends Game {
 		player = new Player(null, input);
 		Bed.removePlayers();
 		Updater.gameTime = 0;
-		Updater.gameSpeed = 1;
+		Updater.gameSpeed = 1.00f;
 
 		Updater.changeTimeOfDay(Updater.Time.Morning); // Resets tickCount; game starts in the day, so that it's nice and bright.
 		gameOver = false;
@@ -205,16 +200,16 @@ public class World extends Game {
 			AchievementsDisplay.setAchievement("minicraft.achievement.obsidian_dungeon", true);
 		}
 	}
-	
+
 	public static void onWorldExits() {
 		lastWorldExitTime = System.currentTimeMillis();
 	}
-	
+
 	public static long getLastWorldExitTime() {
-		return lastWorldExitTime; 
+		return lastWorldExitTime;
 	}
-	
+
 	public static long getLastWorldEnterTime() {
-		return lastWorldEnterTime; 
+		return lastWorldEnterTime;
 	}
 }

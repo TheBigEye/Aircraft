@@ -1,8 +1,5 @@
 package minicraft.entity;
 
-import java.util.List;
-
-import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
@@ -12,6 +9,8 @@ import minicraft.graphic.Screen;
 import minicraft.item.Items;
 import minicraft.level.tile.Tile;
 
+import java.util.List;
+
 public class Arrow extends Entity implements ClientTickable {
     private final Direction dir;
     private int damage;
@@ -20,7 +19,7 @@ public class Arrow extends Entity implements ClientTickable {
 
     /**
      * An Arrow projectile
-     * 
+     *
      * @param owner  the owner of the arrow
      * @param dir    the direction of the arrow
      * @param damage the damage of the arrow
@@ -31,7 +30,7 @@ public class Arrow extends Entity implements ClientTickable {
 
     /**
      * An Arrow projectile
-     * 
+     *
      * @param owner  the owner of the arrow
      * @param x      the x position of the arrow
      * @param y      the y position of the arrow
@@ -50,7 +49,7 @@ public class Arrow extends Entity implements ClientTickable {
 
     /**
      * Generates information about the arrow.
-     * 
+     *
      * @return string representation of owner, xdir, ydir and damage.
      */
     public String getData() {
@@ -65,7 +64,7 @@ public class Arrow extends Entity implements ClientTickable {
         // Check if the projectile is out of bounds
         int xTile = x >> 4;
         int yTile = y >> 4;
-        
+
         if (x < 0 || xTile > level.w || y < 0 || yTile > level.h) {
             remove();
             return;
@@ -103,7 +102,7 @@ public class Arrow extends Entity implements ClientTickable {
                     level.dropItem(x - (dir.getX() * 4), y - (dir.getY() * 4), Items.get("Arrow"));
                 }
 
-                Sound.playAt("genericHurt", x, y);
+                Sound.playAt("genericHurt", this.x , this.y);
                 remove();
             }
         }
@@ -137,11 +136,7 @@ public class Arrow extends Entity implements ClientTickable {
         if (dir == Direction.UP) xt = 2;
         if (dir == Direction.DOWN) xt = 3;
 
-        if (Settings.get("shadows").equals(true)) {
-            screen.render(x - 4, y + 2, xt + (yt << 5), 0, 0, -1, false, Color.BLACK);
-        }
-
-        // Sprite
+        screen.render(x - 4, y + 2, xt + (yt << 5), 0, 0, -1, false, Color.BLACK);
         screen.render(x - 4, y - 4, xt + (yt << 5), 0, 0);
     }
 }

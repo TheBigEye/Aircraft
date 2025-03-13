@@ -1,10 +1,10 @@
 package minicraft.util;
 
+import minicraft.saveload.Load;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import minicraft.saveload.Load;
 
 public class FishingData {
 

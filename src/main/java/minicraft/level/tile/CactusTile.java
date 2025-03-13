@@ -31,11 +31,11 @@ public class CactusTile extends Tile {
     public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
         int damage = level.getData(x, y) + hurtDamage;
         int cactusHealth = 10;
-        
+
         if (Game.isMode("Creative")) {
         	hurtDamage = damage = cactusHealth;
         }
-        
+
         level.add(new SmashParticle(x << 4, y << 4));
         level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
 
@@ -60,10 +60,8 @@ public class CactusTile extends Tile {
         if (!(entity instanceof Mob) || Settings.get("diff").equals("Peaceful")) {
             return; // Cannot do damage
         }
-        
-        if (entity instanceof Mob) {
-            ((Mob) entity).hurt(this, x, y, 1 + Settings.getIndex("diff"));
-        }
+
+        ((Mob) entity).hurt(this, x, y, 1 + Settings.getIndex("diff"));
     }
 
     @Override

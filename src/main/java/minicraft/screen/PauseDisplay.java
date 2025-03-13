@@ -1,8 +1,5 @@
 package minicraft.screen;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
@@ -13,12 +10,15 @@ import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class PauseDisplay extends Display {
 
 	public PauseDisplay() {
 		String upString = Game.input.getMapping("cursor-up") + Localization.getLocalized(" and ") + Game.input.getMapping("cursor-down") + Localization.getLocalized(" to Scroll");
 		String selectString = Game.input.getMapping("select") + Localization.getLocalized(": Choose");
-		
+
 		ArrayList<ListEntry> entries = new ArrayList<>(Arrays.asList(
 			new BlankEntry(),
 			new SelectEntry("Return to Game", () -> Game.setDisplay(null)),
@@ -36,7 +36,7 @@ public class PauseDisplay extends Display {
 		entries.addAll(Arrays.asList(
 			new SelectEntry("Main Menu", () -> {
 				ArrayList<ListEntry> items = new ArrayList<>(Arrays.asList(StringEntry.useLines(Localization.getLocalized("Are you sure you want to exit the game?"))));
-				
+
 				items.add(new BlankEntry());
 				items.addAll(Arrays.asList(StringEntry.useLines(Color.RED, Localization.getLocalized("All unsaved progress will be lost"))));
 				items.add(new BlankEntry());

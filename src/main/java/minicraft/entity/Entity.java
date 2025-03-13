@@ -1,13 +1,5 @@
 package minicraft.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
-import org.jetbrains.annotations.Nullable;
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.entity.mob.Player;
@@ -16,6 +8,13 @@ import minicraft.graphic.Screen;
 import minicraft.item.Item;
 import minicraft.level.Level;
 import minicraft.network.Network;
+import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Entity implements Tickable {
 
@@ -32,7 +31,7 @@ public abstract class Entity implements Tickable {
 	 */
 
 	// Entity coordinates are per pixel, not per tile; each tile is 16x16 entity pixels.
-	
+
 	/** Random value for all the entities instances **/
     protected static final Random random = new Random();
 
@@ -61,7 +60,7 @@ public abstract class Entity implements Tickable {
 	public Entity(int xr, int yr) { // Add color to this later, in color update
 		this.xr = xr;
 		this.yr = yr;
-		
+
 		level = null;
 		removed = true;
 		color = 0;
@@ -76,7 +75,7 @@ public abstract class Entity implements Tickable {
 
     /**
      * Returns true if the entity is removed from the level, otherwise false.
-     * 
+     *
      * @return removed
      */
     public boolean isRemoved() {
@@ -85,7 +84,7 @@ public abstract class Entity implements Tickable {
 
     /**
      * Returns the level which this entity belongs in.
-     * 
+     *
      * @return level
      */
     public Level getLevel() {
@@ -118,18 +117,23 @@ public abstract class Entity implements Tickable {
     /** Determines if the entity can swim (extended in sub-classes)*/
     public boolean canSwim() {
         return false;
-    } 
+    }
 
     // This, strangely enough, determines if the entity can walk on wool; among some other things..?
     public boolean canWool() {
         return false;
-    } 
+    }
 
-    // used for lanterns... and player? that might be about it, though, so idk if I want to put it here.
+    /** Determines if the entity can burn (extended in sub-classes)*/
+	public boolean canBurn() {
+		return true;
+	}
+
+    // Used for lanterns... and player? that might be about it, though, so idk if I want to put it here.
     public int getLightRadius() {
         return 0;
     }
-    
+
     protected void setHitboxSize(int w, int h) {
     	this.xr = w;
     	this.yr = h;
@@ -141,7 +145,7 @@ public abstract class Entity implements Tickable {
 
     /**
      * Interacts with the entity this method is called on
-     * 
+     *
      * @param player    The player attacking
      * @param item      The item the player attacked with
      * @param attackDir The direction to interact
@@ -169,7 +173,7 @@ public abstract class Entity implements Tickable {
     /**
      * Moves the entity a long only one direction. If xd != 0 then ya should be 0.
      * If xd = 0 then ya should be != 0. Will throw exception otherwise.
-     * 
+     *
      * @param xd Horizontal move.
      * @param yd Vertical move.
      * @return true if the move was successful, false if not.
@@ -199,12 +203,12 @@ public abstract class Entity implements Tickable {
                 if (xt >= xto0 && xt <= xto1 && yt >= yto0 && yt <= yto1) {
                     continue; // Skip this position if this entity's sprite is touching it
                 }
-                
+
                 // Tile positions that make it here are the ones that the entity will be in, but are not in now.
                 if (interact) {
                     level.getTile(xt, yt).bumpedInto(level, xt, yt, this); // Used in tiles like cactus
                 }
-                
+
                 if (!level.getTile(xt, yt).mayPass(level, xt, yt, this)) { // If the entity can't pass this tile...
                     // blocked = true; // Then the entity is blocked
                     return false;
@@ -231,7 +235,7 @@ public abstract class Entity implements Tickable {
                     }
                 } else {
                     entity.touchedBy(this);// Call the method. ("touch" the entity)
-                } 
+                }
             }
         }
 
@@ -277,8 +281,7 @@ public abstract class Entity implements Tickable {
     }
 
     /**
-     * This should ONLY be called by the Level class. To properly remove an entity
-     * from a level, use level.remove(entity)
+     * This should ONLY be called by the Level class. To properly remove an entity from a level, use level.remove(entity)
      */
     public void remove(Level level) {
         if (level != this.level) {
@@ -290,8 +293,7 @@ public abstract class Entity implements Tickable {
     }
 
     /**
-     * This should ONLY be called by the Level class. To properly add an entity to a
-     * level, use level.add(entity)
+     * This should ONLY be called by the Level class. To properly add an entity to a level, use level.add(entity)
      */
     public void setLevel(Level level, int x, int y) {
         if (level == null) {
@@ -316,17 +318,18 @@ public abstract class Entity implements Tickable {
         }
 
         // Calculate the distance between the two entities, in entity coordinates.
-        double distance = Math.abs(Math.hypot(x - other.x, y - other.y)); 
+        double distance = Math.abs(Math.hypot(x - other.x, y - other.y));
 
         // Compare the distance (converted to tile units) with the specified radius.
-        return Math.round(distance) >> 4 <= tileRadius; 
+        return Math.round(distance) >> 4 <= tileRadius;
     }
 
     /**
      * Returns the closest player to this entity.
-     * 
+     *
      * @return the closest player.
      */
+    @Nullable
     protected Player getClosestPlayer() {
         return getClosestPlayer(true);
     }
@@ -334,10 +337,11 @@ public abstract class Entity implements Tickable {
     /**
      * Returns the closes player to this entity. If this is called on a player it
      * can return itself.
-     * 
+     *
      * @param returnSelf determines if the method can return itself.
      * @return The closest player to this entity.
      */
+    @Nullable
     protected Player getClosestPlayer(boolean returnSelf) {
         if (this instanceof Player && returnSelf) {
             return (Player) this;

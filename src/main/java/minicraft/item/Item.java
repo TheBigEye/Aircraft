@@ -1,7 +1,5 @@
 package minicraft.item;
 
-import java.util.Random;
-
 import minicraft.core.io.Localization;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
@@ -13,19 +11,21 @@ import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 
+import java.util.Random;
+
 public abstract class Item {
 
     /*
      * Note: Most of the stuff in the class is expanded upon in
      * StackableItem/PowerGloveItem/FurnitureItem/etc
      */
-	
+
 	/** Random values used for all the items instances **/
 	protected static final Random random = new Random();
 
     public final String name;
     public Sprite sprite;
-    
+
     public int durabilityOffset;
     public int arrowOffset;
 
@@ -53,7 +53,7 @@ public abstract class Item {
     public void renderInventory(Screen screen, int x, int y, boolean inInventory) {
         String displayName = getDisplayName();
         sprite.render(screen, x, y);
-        
+
         if (inInventory) {
             String shortname = displayName.length() > 20 ? displayName.substring(0, 20) : displayName;
             Font.draw(shortname, screen, x + 8, y, Color.WHITE);
@@ -78,6 +78,7 @@ public abstract class Item {
 
     /** Determines what happens when the player interacts with an entity */
     // TODO I want to move this to the individual entity classes.
+    // FIXME (FIX FIX THIS SHIT), interact() always are called two times :(
     public boolean interact(Player player, Entity entity, Direction attackDir) {
         return false;
     }
@@ -130,7 +131,7 @@ public abstract class Item {
     public final String getName() {
         return name;
     }
-    
+
     public final Sprite getSprite() {
         return sprite;
     }

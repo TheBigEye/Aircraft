@@ -1,7 +1,5 @@
 package minicraft.entity;
 
-import java.util.List;
-
 import minicraft.core.Game;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
@@ -10,6 +8,8 @@ import minicraft.graphic.Screen;
 import minicraft.graphic.Sprite;
 import minicraft.item.AmuletItem;
 
+import java.util.List;
+
 public class Seeker extends Entity {
     public boolean comeback = false;
     private boolean summonable = true;
@@ -17,7 +17,7 @@ public class Seeker extends Entity {
 
     private Mob owner;
     private AmuletItem amuletItem;
-    
+
     private Sprite sprite;
 
     private int time = 0;
@@ -26,7 +26,7 @@ public class Seeker extends Entity {
 
     /**
      * Constructor for Summoner class.
-     * 
+     *
      * @param owner the owner of the summoner
      * @param amulet the amulet item
      * @param xa the x acceleration of the summoner
@@ -34,7 +34,7 @@ public class Seeker extends Entity {
      */
     public Seeker(Mob owner, AmuletItem amulet, double xa, double ya) {
         super(0, 0);
-        
+
         this.sprite = amulet.getSprite();
         this.owner = owner;
         this.amuletItem = amulet;
@@ -52,7 +52,7 @@ public class Seeker extends Entity {
 
         xx += (xa / time) * 16; x = (int) xx;
         yy += (ya / time) * 16; y = (int) yy;
-        
+
 
         if (owner == null) {
             remove();

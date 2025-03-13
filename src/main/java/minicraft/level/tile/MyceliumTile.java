@@ -38,7 +38,7 @@ public class MyceliumTile extends Tile {
 
         ToolItem tool = (ToolItem) item;
         ToolType toolType = tool.type;
-		
+
 		if (toolType == ToolType.Shovel) {
 			if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 				level.setTile(xt, yt, Tiles.get("Dirt"));
@@ -46,7 +46,7 @@ public class MyceliumTile extends Tile {
 				return true;
 			}
 		}
-		
+
 		if (toolType == ToolType.Hoe) {
 			if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 				level.setTile(xt, yt, Tiles.get("Dirt"));
@@ -57,7 +57,7 @@ public class MyceliumTile extends Tile {
 				return true;
 			}
 		}
-		
+
 		if (toolType == ToolType.Pickaxe) {
 			if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 				level.setTile(xt, yt, Tiles.get("path"));
@@ -76,6 +76,7 @@ public class MyceliumTile extends Tile {
 
 	@Override
 	public boolean tick(Level level, int xt, int yt) {
+        // TODO revise this method.
 		if (random.nextInt(40) != 0) {
 			return false;
 		}

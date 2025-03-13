@@ -1,11 +1,5 @@
 package minicraft.entity.furniture;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
-
-import javax.swing.Timer;
-
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
 import minicraft.entity.Entity;
@@ -24,6 +18,11 @@ import minicraft.level.tile.LavaTile;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 import minicraft.screen.AchievementsDisplay;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 public class Tnt extends Furniture implements ActionListener {
 	private static final int FUSE_TIME = 90;
@@ -67,7 +66,7 @@ public class Tnt extends Furniture implements ActionListener {
 	    } else {
 	        fuseTick++;
 	        light = 2;
-	        
+
 	        if (fuseTick >= FUSE_TIME) {
 	            int xt = x >> 4;
 	            int yt = (y - 2) >> 4;
@@ -117,11 +116,11 @@ public class Tnt extends Furniture implements ActionListener {
 		if (!fuseLit) {
 			super.render(screen);
 		}
-		
+
 		if (fuseLit) {
 			if (fuseTick / 8 % 2 == 0) {
 				super.renderFullbright(screen);
-			} else { 
+			} else {
 				super.render(screen);
 			}
 		}
@@ -152,10 +151,10 @@ public class Tnt extends Furniture implements ActionListener {
 			}
     		return true;
     	}
-    	
+
     	if (heldItem instanceof ToolItem) {
     		ToolItem tool = (ToolItem) heldItem;
-    		
+
 			if (!fuseLit && tool.type == ToolType.Igniter) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
 					Sound.playAt("genericFuse", this.x, this.y);
@@ -164,7 +163,7 @@ public class Tnt extends Furniture implements ActionListener {
 				}
 			}
     	}
-    	
+
 		return false;
 	}
 

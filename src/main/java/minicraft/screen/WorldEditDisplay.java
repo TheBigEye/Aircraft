@@ -1,14 +1,5 @@
 package minicraft.screen;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.jetbrains.annotations.Nullable;
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.core.io.FileHandler;
 import minicraft.core.io.InputHandler;
@@ -18,11 +9,15 @@ import minicraft.graphic.Color;
 import minicraft.graphic.Font;
 import minicraft.graphic.Screen;
 import minicraft.screen.Menu.Builder;
-import minicraft.screen.entry.BlankEntry;
-import minicraft.screen.entry.InputEntry;
-import minicraft.screen.entry.ListEntry;
-import minicraft.screen.entry.SelectEntry;
-import minicraft.screen.entry.StringEntry;
+import minicraft.screen.entry.*;
+import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Used to edit worlds. These actions include renaming, deleting, and copying worlds.
@@ -143,9 +138,9 @@ public class WorldEditDisplay extends Display {
 				}
 
 				confirm = false;
-		
+
 				Sound.play("menuSelect");
-				
+
 				if (!WorldSelectDisplay.getWorldNames().isEmpty()) {
 					Game.setDisplay(new WorldSelectDisplay());
 				} else {

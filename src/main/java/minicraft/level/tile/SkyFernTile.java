@@ -23,7 +23,6 @@ public class SkyFernTile extends Tile {
 
     protected SkyFernTile(String name) {
         super(name, (ConnectorSprite) null);
-        connectsToSkyHighGrass = true;
         connectsToSkyGrass = true;
         maySpawn = false;
     }

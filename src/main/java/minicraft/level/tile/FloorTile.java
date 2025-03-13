@@ -2,7 +2,6 @@ package minicraft.level.tile;
 
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
-import minicraft.entity.Entity;
 import minicraft.entity.mob.Player;
 import minicraft.graphic.Sprite;
 import minicraft.item.Item;
@@ -17,18 +16,17 @@ public class FloorTile extends Tile {
 
 	protected FloorTile(Material type) {
 		super((
-			type == Material.Oak ? "Oak Planks" : 
-			type == Material.Spruce ? "Spruce Planks" : 
-			type == Material.Birch ? "Birch Planks" : 
-			type == Material.Holy ? "Holy Bricks" : 
-			type == Material.Obsidian ? "Obsidian" : 
+			type == Material.Oak ? "Oak Planks" :
+			type == Material.Spruce ? "Spruce Planks" :
+			type == Material.Birch ? "Birch Planks" :
+			type == Material.Holy ? "Holy Bricks" :
+			type == Material.Obsidian ? "Obsidian" :
 			type.name() + " Bricks"),
 
 			(Sprite) null
 		);
 
 		connectsToSkyGrass = true;
-		connectsToSkyHighGrass = true;
 		connectsToSkyDirt = true;
 
 		this.type = type;
@@ -50,7 +48,7 @@ public class FloorTile extends Tile {
 			ToolItem tool = (ToolItem) item;
 			if (tool.type == type.getRequiredTool()) {
 				if (player.payStamina(4 - tool.level) && tool.payDurability()) {
-					
+
 					Sound.playAt("genericHurt", xt << 4, yt << 4);
 
 					if (level.depth == 1) {
@@ -66,17 +64,12 @@ public class FloorTile extends Tile {
 						case Birch: drop = Items.get("Birch Plank"); break;
 						default: drop = Items.get(type.name() + " Brick"); break;
 					}
-					
+
 					level.dropItem((xt << 4) + 8, (yt << 4) + 8, drop);
 					return true;
 				}
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public boolean mayPass(Level level, int x, int y, Entity entity) {
-		return true;
 	}
 }

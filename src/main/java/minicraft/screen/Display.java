@@ -1,20 +1,19 @@
 package minicraft.screen;
 
-import java.util.Random;
-
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Sound;
 import minicraft.graphic.Screen;
 import minicraft.screen.entry.ArrayEntry;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Random;
 
 public class Display {
-	
+
 	/** Random values used for all the display instances **/
 	protected static final Random random = new Random();
-	
+
 	private Display parent = null;
 
 	protected Menu[] menus;
@@ -62,7 +61,7 @@ public class Display {
 
 	public void onExit() {
 	}
-	
+
 	public Display getParent() {
 		return parent;
 	}
@@ -80,7 +79,7 @@ public class Display {
 		boolean changedSelection = false;
 
 		// if menu set is unselectable, it must have been intentional, so prevent the user from setting it back.
-		if (menus.length > 1 && menus[selection].isSelectable()) { 
+		if (menus.length > 1 && menus[selection].isSelectable()) {
 			int previousSelection = selection;
 
 			String shift = menus[selection].getCurEntry() instanceof ArrayEntry ? "shift-" : "";
@@ -113,11 +112,11 @@ public class Display {
 			menus[selection].tick(input);
 		}
 	}
-	
+
 	protected void onSelectionChange(int oldSel, int newSel) {
 		selection = newSel;
 	}
-	
+
 	// sub-classes can do extra rendering here; this renders each menu that should be rendered
 	// in the order of the array, such that the currently selected menu is rendered last, so it
 	// appears on top (if they even overlap in the first place).

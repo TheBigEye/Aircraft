@@ -1,20 +1,5 @@
 package minicraft.level;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
-
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.World;
@@ -24,38 +9,8 @@ import minicraft.entity.Entity;
 import minicraft.entity.Fireball;
 import minicraft.entity.ItemEntity;
 import minicraft.entity.Spark;
-import minicraft.entity.furniture.Chest;
-import minicraft.entity.furniture.DungeonChest;
-import minicraft.entity.furniture.Lantern;
-import minicraft.entity.furniture.Spawner;
-import minicraft.entity.mob.AirWizard;
-import minicraft.entity.mob.Chicken;
-import minicraft.entity.mob.Cleric;
-import minicraft.entity.mob.Cow;
-import minicraft.entity.mob.Creeper;
-import minicraft.entity.mob.EnemyMob;
-import minicraft.entity.mob.Firefly;
-import minicraft.entity.mob.FlyMob;
-import minicraft.entity.mob.FrostMob;
-import minicraft.entity.mob.Goat;
-import minicraft.entity.mob.GuiMan;
-import minicraft.entity.mob.Knight;
-import minicraft.entity.mob.Librarian;
-import minicraft.entity.mob.Mob;
-import minicraft.entity.mob.MobAi;
-import minicraft.entity.mob.OldGolem;
-import minicraft.entity.mob.PassiveMob;
-import minicraft.entity.mob.Phyg;
-import minicraft.entity.mob.Pig;
-import minicraft.entity.mob.Player;
-import minicraft.entity.mob.Sheep;
-import minicraft.entity.mob.Sheepuff;
-import minicraft.entity.mob.Skeleton;
-import minicraft.entity.mob.SkyMob;
-import minicraft.entity.mob.Slime;
-import minicraft.entity.mob.Snake;
-import minicraft.entity.mob.VillagerMob;
-import minicraft.entity.mob.Zombie;
+import minicraft.entity.furniture.*;
+import minicraft.entity.mob.*;
 import minicraft.graphic.Point;
 import minicraft.graphic.Rectangle;
 import minicraft.graphic.Screen;
@@ -63,6 +18,11 @@ import minicraft.item.Item;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
 import minicraft.level.tile.TorchTile;
+import org.tinylog.Logger;
+
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -85,7 +45,7 @@ public class Level {
 	private static final String[] levelNames = {
 		"The Void", "Heaven", "Surface", "Iron", "Gold", "Lava", "Dungeon"
 	};
-	
+
 	// the chance of a mob actually trying to spawn when trySpawn is
 	// called equals: mobCount / maxMobCount * MOB_SPAWN_FACTOR. so, it
 	// basically equals the chance, 1/number, of a mob spawning when
@@ -101,12 +61,12 @@ public class Level {
 
 	// Depth level of the level
 	public final int depth;
-	
+
 	// Used for Maps Book
 	public boolean[][] explored;
-	
+
 	private boolean skyAmbience = false;
-	
+
 	public static String getLevelName(int depth) {
 		return levelNames[-1 * depth + 2];
 	}
@@ -120,7 +80,7 @@ public class Level {
 	public int mobCount = 0;
 	public int maxMobCount;
 	public int chestCount;
-	
+
 
 	/**
 	 * I will be using this lock to avoid concurrency exceptions in entities and sparks set
@@ -139,7 +99,7 @@ public class Level {
 	private static Comparator<Entity> spriteSorter = Comparator.comparingInt(new ToIntFunction<Entity>() {
 		@Override
 		public int applyAsInt(Entity entity) {
-			return entity.y; 
+			return entity.y;
 		}
 	});
 
@@ -184,6 +144,7 @@ public class Level {
 				numfound++;
 			}
 		}
+
 		Logger.debug("Found {} entities in level of depth {}", numfound, depth);
 	}
 
@@ -196,13 +157,13 @@ public class Level {
 	/** Level which the world is contained in */
 	public Level(int w, int h, long seed, int level, Level parentLevel, boolean makeWorld) {
 		depth = level; // assigns the depth variable
-		size = w * h; 
+		size = w * h;
 		this.w = w; // Assigns the width
 		this.h = h; // Assigns the height
 		this.seed = seed;
-		
+
         random = new Random(seed);
-        
+
 		short[][] maps; // Multidimensional array (an array within a array), used for the map
 
 		if (level != -4 && level != 0) {
@@ -217,7 +178,7 @@ public class Level {
 			return;
 		}
 
-		Logger.debug("Generating level {} ...", level);
+		if (Game.debug) Logger.debug("Generating level {} ...", level);
 
 		maps = LevelGen.createAndValidateMap(w, h, level, seed);
 		if (maps == null) {
@@ -230,6 +191,10 @@ public class Level {
 
 		if (level < 0) {
 			generateSpawnerStructures();
+		}
+
+		if (level < 0) {
+			generateSummonStructures();
 		}
 
 		if (level == 0) {
@@ -275,7 +240,7 @@ public class Level {
 		if (Game.debug) {
 			printTileLocs(Tiles.get("Stairs Down"));
 		}
-		
+
         // Initialize the explored array for all map pixels to false
         explored = new boolean[this.w][this.h];
         for (int y = 0; y < this.h; y++) {
@@ -308,14 +273,16 @@ public class Level {
 			boolean found = false;
 			if (check) {
 				for (Entity entity: entitiesToAdd) {
-					if (entity instanceof AirWizard) {
-						found = true;
-					}
+                    if (entity instanceof AirWizard) {
+                        found = true;
+                        break;
+                    }
 				}
 				for (Entity entity: entities) {
-					if (entity instanceof AirWizard) {
-						found = true;
-					}
+                    if (entity instanceof AirWizard) {
+                        found = true;
+                        break;
+                    }
 				}
 			}
 
@@ -411,10 +378,10 @@ public class Level {
 
 	public void tick(boolean fullTick) {
 		int count = 0;
-		
+
 		updateMobCap();
 
-		while (entitiesToAdd.size() > 0) {
+		while (!entitiesToAdd.isEmpty()) {
 			Entity entity = entitiesToAdd.get(0);
 			boolean inLevel = entities.contains(entity);
 
@@ -450,7 +417,7 @@ public class Level {
 			Sound.stop("heavenWind");
 			skyAmbience = false;
 		}
-		
+
 		if (Updater.tickCount % 32401 == 0) {
 			playRandomMusic(depth);
 		}
@@ -490,7 +457,7 @@ public class Level {
 			}
 		}
 
-		while (entitiesToRemove.size() > 0) {
+		while (!entitiesToRemove.isEmpty()) {
 			Entity entity = entitiesToRemove.get(0);
 
 			if (Game.debug) printEntityStatus("Removing ", entity, "mob.Player");
@@ -520,7 +487,7 @@ public class Level {
 
 	/**
 	 * Determine if an entity is near any of the players.
-	 * 
+	 *
 	 * @param entity The entity to check.
 	 * @return True if the entity is within 128 units of the x coordinate and 76 units of the y coordinate of any player, false otherwise.
 	 */
@@ -532,7 +499,7 @@ public class Level {
 		}
 		return false;
 	}
-	
+
 	public void printEntityStatus(String entityMessage, Entity entity, String... searching) {
 		// "searching" can contain any number of class names I want to print when found.
 		String entityClass = entity.getClass().getCanonicalName();
@@ -582,19 +549,19 @@ public class Level {
 	public void renderBackground(Screen screen, int xScroll, int yScroll) {
 		int xo = xScroll >> 4; // The game's horizontal scroll offset
 		int yo = yScroll >> 4; // The game's vertical scroll offset
-		
+
 		int w = (Screen.w) >> 4; // Width of the screen being rendered
 		int h = (Screen.h) >> 4; // Height of the screen being rendered
-		
+
 		// Sets the scroll offsets
 		screen.setOffset(xScroll, yScroll);
-		
+
 		for (int y = yo; y <= h + yo; y++) { // Loops through the vertical positions
 			for (int x = xo; x <= w + xo; x++) { // Loops through the horizontal positions
 				getTile(x, y).render(screen, this, x, y); // Renders the tile on the screen
 			}
 		}
-		
+
 		// Resets the offset
 		screen.setOffset(0, 0);
 	}
@@ -603,37 +570,37 @@ public class Level {
 	public void renderSprites(Screen screen, int xScroll, int yScroll) {
 		int xo = xScroll >> 4; // The game's horizontal scroll offset
 		int yo = yScroll >> 4; // The game's vertical scroll offset
-		
+
 		int w = (Screen.w + 15) >> 4; // Width of the screen being rendered
 		int h = (Screen.h + 15) >> 4; // Height of the screen being rendered
 
 		screen.setOffset(xScroll, yScroll); // Sets the scroll offsets.
-		
+
 		// Sorts and renders the sprites on the screen
 		sortAndRender(screen, getEntitiesInTiles(xo - 1, yo - 1, (xo + w) + 1, (yo + h) + 1));
 
 		// Resets the offset
 		screen.setOffset(0, 0);
 	}
-	
+
 	/** Renders the light off tiles and entities in the underground */
 	public void renderLight(Screen screen, int xScroll, int yScroll, int brightness) {
 		int xo = xScroll >> 4; // The game's horizontal scroll offset
 		int yo = yScroll >> 4; // The game's vertical scroll offset
-		
+
 		int w = (Screen.w + 15) >> 4; // Width of the screen being rendered
 		int h = (Screen.h + 15) >> 4; // Height of the screen being rendered
 
 		screen.setOffset(xScroll, yScroll); // Sets the scroll offsets
-		
+
 		int radius = 8; // Radius that plays a part of how far away you can be before light stops rendering
-		
-		int xBound = w + xo + radius; 
-		int yBound = h + yo + radius;  
+
+		int xBound = w + xo + radius;
+		int yBound = h + yo + radius;
 
 		// gets all the entities in the level
-		List <Entity> entities = getEntitiesInTiles(xo - radius, yo - radius, xBound, yBound); 
-		
+		List <Entity> entities = getEntitiesInTiles(xo - radius, yo - radius, xBound, yBound);
+
 		for (Entity entity: entities) { // Loops through the list of entities
 			int lightRadius = entity.getLightRadius(); // Gets the light radius from the entity
 			// If the light radius is above 0, then render the light
@@ -646,25 +613,25 @@ public class Level {
 			for (int x = xo - radius; x <= xBound; x++) { // Loops through the horizontal positions + rBound
 				// If the x & y positions of the sprites are within the map's boundaries
 				if (x < 0 || y < 0 || x >= this.w || y >= this.h) continue;
-				
+
 				// Gets the light radius from local tiles (like lava)
-				int lightRadius = getTile(x, y).getLightRadius(this, x, y); 
-				
+				int lightRadius = getTile(x, y).getLightRadius(this, x, y);
+
 				// If the light radius is above 0, then render the light
 				if (lightRadius > 0) {
 					screen.renderLight((x << 4) + 8, (y << 4) + 8, lightRadius * brightness);
 				}
 			}
 		}
-		
+
 		// Resets the offset
 		screen.setOffset(0, 0);
 	}
-	
+
 	/** Sorts and renders sprites from an entity list */
 	private void sortAndRender(Screen screen, List <Entity> list) {
 		list.sort(spriteSorter); // Sorts the list by the spriteSorter
-		
+
 	    for (Entity entity : list) { // Loops through the entity list
 	        if (entity.getLevel() == this && !entity.isRemoved()) {
 	            entity.render(screen); // Renders the sprite on the screen
@@ -680,11 +647,11 @@ public class Level {
 		if (x < 0 || y < 0 || x >= w || y >= h) {
 			return Tiles.get("Connector Tile");
 		}
-		
+
 		// Returns the tile that is at the position
 		int id = tiles[x + y * w];
 		if (id < 0) id += 256;
-		
+
 		return Tiles.get(id);
 	}
 
@@ -702,7 +669,7 @@ public class Level {
 	public void setTile(int x, int y, Tile tile) {
 		setTile(x, y, tile, tile.getDefaultData());
 	}
-	
+
 	/** Sets a tile to the world with a specified data value */
 	public void setTile(int x, int y, Tile tile, int dataValue) {
 		// If the tile request position is outside the world boundaries, then stop the method
@@ -716,7 +683,7 @@ public class Level {
 	public int getData(int x, int y) {
 		// If the data request position is outside the world boundaries, then stop the method
 		if (x < 0 || y < 0 || x >= w || y >= h) return 0;
-		
+
 		// Returns the last 16 bits (& 0xffff) of the data from that position
 		return data[x + y * w] & 0xff;
 	}
@@ -725,7 +692,7 @@ public class Level {
 	public void setData(int x, int y, int value) {
 		// If the data request position is outside the world boundaries, then stop the method
 		if (x < 0 || y < 0 || x >= w || y >= h) return;
-		
+
 		// sets the data as a short (16-bits) for the data
 		data[x + y * w] = (short) value;
 	}
@@ -746,10 +713,10 @@ public class Level {
 		if (entity == null) {
 			return;
 		}
-		
+
 		if (tileCoords) {
-			x = x * 16 + 8;
-			y = y * 16 + 8;
+			x = (x << 4) + 8;
+			y = (y << 4) + 8;
 		}
 
 		entity.setLevel(this, x, y);
@@ -773,7 +740,7 @@ public class Level {
 		if (spawnSkipChance > 0 && random.nextInt(spawnSkipChance) != 0) {
 			return; // hopefully will make mobs spawn a lot slower.
 		}
-		
+
 		boolean peaceful = Settings.get("diff").equals("Peaceful");
 
 		boolean spawned = false;
@@ -785,7 +752,7 @@ public class Level {
 
 			if (depth < 0) maxLevel = (-depth) + ((Math.random() > 0.75 && -depth != 4) ? 1 : 0);
 			if (depth > 0) minLevel = maxLevel = 4;
-			
+
 			if (!peaceful) {
 				lvl = random.nextInt(maxLevel - minLevel + 1) + minLevel;
 			}
@@ -811,7 +778,7 @@ public class Level {
 			                add(mobs[mobIndex], nx, ny);
 			            }
 			        } else if (depth == -3 || depth != 0) {
-			            EnemyMob[] mobs = {new Slime(lvl), new Zombie(lvl), new OldGolem(lvl), new Skeleton(lvl), new Creeper(lvl)};
+			            EnemyMob[] mobs = { new Slime(lvl), new Zombie(lvl), new OldGolem(lvl), new Skeleton(lvl), new Creeper(lvl) };
 			            int mobIndex = spawnChance / 20;
 			            if (mobIndex >= 0 && mobIndex < mobs.length) {
 			                add(mobs[mobIndex], nx, ny);
@@ -819,8 +786,6 @@ public class Level {
 			        }
 			        spawned = true;
 			    }
-			} else {
-			    spawned = false;
 			}
 
 
@@ -832,7 +797,7 @@ public class Level {
 			// Spawn mobs on day light
 			if ((depth == 0) && (Updater.getTime() != Updater.Time.Night) && (Updater.getTime() != Updater.Time.Evening)) {
 				//int spawnChance = random.nextInt(100); // This is global only for peaceful mobs
-				
+
 				// Spawns passive mobs
 				if (PassiveMob.checkStartPos(this, nx, ny)) {
 					PassiveMob[] mobs = { new Cow(), new Chicken(), new Pig(), new Sheep() }; // Store all the passive mobs
@@ -847,7 +812,7 @@ public class Level {
 					}
 					spawned = true;
 				}
-				
+
 				// Spawn frost mobs
 				if (FrostMob.checkStartPos(this, nx, ny)) {
 					FrostMob[] mobs = { new GuiMan(), new Goat() };
@@ -858,7 +823,7 @@ public class Level {
 					}
 					spawned = true;
 				}
-				
+
 			// Spawn mobs on nigth moon light
 			} else if (depth == 0 && Updater.getTime() == Updater.Time.Night) {
 				// Spawns a firefly
@@ -997,9 +962,7 @@ public class Level {
 	    boolean found = false;
 	    HashMap<String, Entity> entitiesMap = new HashMap<String, Entity>();
 	    for (Entity entity: getEntityArray()) {
-	        int xt = entity.x >> 4;
-	        int yt = entity.y >> 4;
-	        entitiesMap.put(xt + "," + yt, entity);
+	        entitiesMap.put((entity.x >> 4) + "," + (entity.y >> 4), entity);
 	    }
 	    if (entitiesMap.containsKey(x + "," + y)){
 	        found = true;
@@ -1042,7 +1005,7 @@ public class Level {
 	public Player[] getPlayers() {
 		return players.toArray(new Player[players.size()]);
 	}
-	
+
 	public Entity[] getEntities() {
 		return entities.toArray(new Entity[entities.size()]);
 	}
@@ -1056,10 +1019,14 @@ public class Level {
 		Player closest = players[0];
 		int xd = closest.x - x;
 		int yd = closest.y - y;
+
+		int xx = xd * xd;
+		int yy = yd * yd;
+
 		for (int i = 1; i < players.length; i++) {
 			int curxd = players[i].x - x;
 			int curyd = players[i].y - y;
-			if (((xd * xd) + (yd * yd)) > ((curxd * curxd) + (curyd * curyd))) {
+			if ((xx + yy) > ((curxd * curxd) + (curyd * curyd))) {
 				closest = players[i];
 				xd = curxd;
 				yd = curyd;
@@ -1095,11 +1062,11 @@ public class Level {
 
 	public Tile[] getAreaTiles(int x, int y, int rx, int ry) {
 		ArrayList<Tile> local = new ArrayList<>();
-		
+
 		for (Point point: getAreaTilePositions(x, y, rx, ry)) {
 			local.add(getTile(point.x, point.y));
 		}
-		
+
 		return local.toArray(new Tile[local.size()]);
 	}
 
@@ -1166,20 +1133,62 @@ public class Level {
 				return true;
 			}
 		}
-		
+
 		for (Entity entity : getEntitiesInRect(entity -> entity instanceof Lantern, new Rectangle(x, y, 8, 8, Rectangle.CENTER_DIMS))) {
-			int xx = (entity.x >> 4) - x, yy = (entity.y >> 4) - y, rr = entity.getLightRadius() - 1;
-			if (xx * xx + yy * yy < rr * rr) {
+			int xx = (entity.x >> 4) - x;
+			int yy = (entity.y >> 4) - y;
+			int rr = entity.getLightRadius() - 1;
+			if (((xx * xx) + (yy * yy)) < (rr * rr)) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
 	@SuppressWarnings("unused")
 	private boolean noStairs(int x, int y) {
 		return getTile(x, y) != Tiles.get("Stairs Down");
+	}
+
+	private void generateSummonStructures() {
+		if (Game.debug) Logger.info("Generating summon dungeons ...");
+
+		Statue statue = new Statue();
+		int x3 = random.nextInt(16 * w) >> 4;
+		int y3 = random.nextInt(16 * h) >> 4;
+		if (getTile(x3, y3) == Tiles.get("Dirt")) {
+			boolean xaxis2 = random.nextBoolean();
+
+			if (xaxis2) {
+				for (int s2 = x3; s2 < w - s2; s2++) {
+					if (getTile(s2, y3) == Tiles.get("Rock")) {
+						statue.x = (s2 << 4) - 24;
+						statue.y = (y3 << 4) - 24;
+					}
+				}
+			} else {
+				for (int s2 = y3; s2 < y3 - s2; s2++) {
+					if (getTile(x3, s2) == Tiles.get("Rock")) {
+						statue.x = (x3 << 4) - 24;
+						statue.y = (s2 << 4) - 24;
+					}
+				}
+			}
+
+			if (statue.x == 0 && statue.y == 0) {
+				statue.x = (x3 << 4) - 8;
+				statue.y = (y3 << 4) - 8;
+			}
+
+			if (getTile(statue.x >> 4, statue.y >> 4) == Tiles.get("Rock")) {
+				setTile(statue.x >> 4, statue.y >> 4, Tiles.get("Dirt"));
+			}
+
+			Structure.summonAltar.draw(this, statue.x >> 4, statue.y >> 4);
+			add(statue);
+		}
+
 	}
 
 	private void generateSpawnerStructures() {
@@ -1293,7 +1302,7 @@ public class Level {
 
 	    // makes 2-3 villages based on world size
 	    int numberOfVillages = 2 + random.nextInt(2);
-	    
+
 	    for (int i = 0; i < numberOfVillages; i++) {
 	        int x, y;
 	        do {
@@ -1305,7 +1314,7 @@ public class Level {
 	        lastVillageY = y;
 
 	        boolean hasCrops = random.nextBoolean();
-	        
+
 	        // xOffset and yOffset
 	        int xo = random.nextInt(8) - 8;
 	        int yo = random.nextInt(8) - 8;
@@ -1315,17 +1324,15 @@ public class Level {
 		            Structure.villageCrops.draw(this, x + xo, y + yo);
 		            add(new Cleric(), (x + xo) << 4, (y + yo) << 4);
 		            add(new Librarian(), (x + xo) << 4, (y + yo) << 4);
-		            add(new Librarian(), (x + xo + 5) << 4, (y + yo - 5) << 4);
-		            add(new Cleric(), (x + xo - 5) << 4, (y + yo + 4) << 4);
-		        } else {
+                } else {
 		            Structure.villageNormal.draw(this, x + xo, y + yo);
 		            add(new Librarian(), (x + xo) << 4, (y + yo) << 4);
 		            add(new Cleric(), (x + xo) << 4, (y + yo) << 4);
-		            add(new Librarian(), (x + xo + 5) << 4, (y + yo - 5) << 4);
-		            add(new Cleric(), (x + xo - 5) << 4, (y + yo + 4) << 4);
-		        }
-		        
-		    	Chest firstChest = new Chest();
+                }
+                add(new Librarian(), (x + xo + 5) << 4, (y + yo - 5) << 4);
+                add(new Cleric(), (x + xo - 5) << 4, (y + yo + 4) << 4);
+
+                Chest firstChest = new Chest();
 		    	Chest secondChest = new Chest();
 		    	firstChest.fillInventoryRandom("villagehouse", random.nextInt(10));
 		    	secondChest.fillInventoryRandom("villagehouse", random.nextInt(10));
@@ -1334,31 +1341,31 @@ public class Level {
 		    }
 	    }
 	}
-	
+
 
 	private void playRandomMusic(int depth) {
 	    Map<Integer, String[]> soundMap = new HashMap<>();
-	    
+
 	    soundMap.put(1, new String[] {"musicTheme1", "musicTheme2", "musicTheme3"}); // Sky {fall, surface, paradise}
 	    soundMap.put(0, new String[] {"musicTheme2", "musicTheme4"}); // Surface {surface, peaceful}
 	    soundMap.put(-1, new String[] {"musicTheme5", "musicTheme8", "caveMood", "caveBreath", "caveScream"}); // Caves {cave, deeper, ...}
 	    soundMap.put(-2, new String[] {"musicTheme5", "musicTheme6", "musicTheme8"}); // Caverns {cave, cavern, dripping, deeper}
-	    
+
 
 	    if (soundMap.containsKey(depth)) {
 	        String[] sounds = soundMap.get(depth);
-	        
+
 	        int randomNum = random.nextInt(sounds.length);
-	        
+
 	        if (World.currentMusicTheme != null) {
 	        	Sound.stop(World.currentMusicTheme );
-	        	
+
 	        	// if the played theme is equals to the new theme, we try again
-		        while (sounds[randomNum] == World.currentMusicTheme ) {
+		        while (Objects.equals(sounds[randomNum], World.currentMusicTheme)) {
 		        	randomNum = random.nextInt(sounds.length);
 		        }
 	        }
-	        
+
 	        Sound.play(sounds[randomNum]);
 	        World.currentMusicTheme  = sounds[randomNum];
 	    }

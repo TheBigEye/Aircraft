@@ -1,9 +1,5 @@
 package minicraft.screen;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Sound;
@@ -14,6 +10,10 @@ import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.item.Recipe;
 import minicraft.screen.entry.ItemListing;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class CraftingDisplay extends Display {
 
@@ -51,7 +51,7 @@ public class CraftingDisplay extends Display {
         } else {
             itemCountMenu = new Menu.Builder(true, 0, RelPos.LEFT).setBackground(20).setTitle("Have:").setTitlePos(RelPos.TOP_LEFT).setPositioning(new Point(recipeMenu.getBounds().getRight() + SpriteSheet.boxWidth, recipeMenu.getBounds().getTop()), RelPos.BOTTOM_RIGHT);
         }
-        
+
         if (!isPersonal) {
             costsMenu = new Menu.Builder(true, 0, RelPos.LEFT).setTitle("Cost:").setTitlePos(RelPos.TOP_LEFT).setPositioning(new Point(itemCountMenu.createMenu().getBounds().getLeft(), recipeMenu.getBounds().getBottom()), RelPos.TOP_RIGHT);
         } else {
@@ -106,7 +106,7 @@ public class CraftingDisplay extends Display {
 			// check the selected recipe
 			Recipe selectedRecipe = recipes[recipeMenu.getSelection()];
 			if (selectedRecipe.getCanCraft()) {
-				
+
 				if (!Game.isMode("Creative"))  {
 					if (selectedRecipe.getProduct().equals(Items.get("Workbench"))){
 						AchievementsDisplay.setAchievement("minicraft.achievement.benchmarking",true);

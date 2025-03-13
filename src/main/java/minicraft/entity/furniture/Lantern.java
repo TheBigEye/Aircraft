@@ -14,7 +14,7 @@ public class Lantern extends Furniture {
 		protected String title;
 		protected int light;
 		protected int offset;
-		
+
 		Type(String title, int light, int offset) {
 			this.title = title;
 			this.offset = offset;
@@ -28,7 +28,7 @@ public class Lantern extends Furniture {
 
 	/**
 	 * Creates a lantern of a given type.
-	 * 
+	 *
 	 * @param type Type of lantern.
 	 */
 	public Lantern(Lantern.Type type) {
@@ -55,7 +55,7 @@ public class Lantern extends Furniture {
 		tickTime++;
 
 		// Add bright particles
-		if ((tickTime / 1 % 12 == 0) && Settings.get("particles").equals(true)) {
+		if ((tickTime % 12 == 0) && Settings.get("particles").equals(true)) {
 			level.add(new BrightParticle(x - 5 + random.nextInt(4), y - 4 + random.nextInt(4)));
 		}
 	}

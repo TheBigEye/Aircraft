@@ -1,13 +1,12 @@
 package minicraft.entity;
 
-import java.util.List;
-
 import minicraft.entity.mob.EyeQueen;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
-import minicraft.entity.particle.FireParticle;
 import minicraft.graphic.Rectangle;
 import minicraft.graphic.Screen;
+
+import java.util.List;
 
 public class Fireball extends Entity {
 	private Mob owner; // The mob that created this spark
@@ -39,21 +38,21 @@ public class Fireball extends Entity {
 	    // Move the spark:
 	    xx += xa; x = (int) xx;
 	    yy += ya; y = (int) yy;
-	    
+
 	    Player player = getClosestPlayer();
 
 	    if (player != null) {
 	        int xd = owner.x - x;
 	        int yd = owner.y - y;
 
-	        int sig = 2; 
+	        int sig = 2;
 	        xa = 0; ya = 0;
 
 	        if (xd < sig) xa -= random.nextInt(2);
 	        if (xd > sig) xa += random.nextInt(2);
 	        if (yd < sig) ya -= random.nextInt(2);
 	        if (yd > sig) ya += random.nextInt(2);
-	        
+
 	        if (random.nextBoolean()) {
 	        	xa -= random.nextInt(5);
 	        	ya -= random.nextInt(5);
@@ -74,10 +73,10 @@ public class Fireball extends Entity {
 		// move the spark to the player positon:
 		xx += xa; x = (int) xx;
 		yy += ya; y = (int) yy;
-		
-		
-		level.add(new FireParticle(x - 4, y - 4, 3));
-		
+
+
+		//level.add(new FireParticle(x - 4, y - 4, 3));
+
 		Player player = getClosestPlayer();
 		if (player != null) { // avoid NullPointer if player dies
 			// If the entity is a mob, but not a Air Wizard, then hurt it.
@@ -92,9 +91,9 @@ public class Fireball extends Entity {
 		// move the spark:
 		xx += xa; x = (int) xx;
 		yy += ya; y = (int) yy;
-		
-		level.add(new FireParticle(x - 4, y, 3));
-		
+
+		//level.add(new FireParticle(x - 4, y, 3));
+
 		Player player = getClosestPlayer();
 		if (player != null) { // avoid NullPointer if player dies
 			if (player.isWithin(0, this)) {
@@ -113,7 +112,6 @@ public class Fireball extends Entity {
 
 		if (time >= lifeTime) {
 			remove(); // Remove this from the world
-			return;
 		}
 	}
 
@@ -125,17 +123,18 @@ public class Fireball extends Entity {
 
 	@Override
 	public void render(Screen screen) {
+		screen.render(x - 4, y - 4, ((time % 4) + 4) + (2 << 5), 0, 0);
 	}
 
 	/**
 	 * Returns the owners id as a string.
-	 * 
+	 *
 	 * @return the owners id as a string.
 	 */
 	public String getData() {
 		return owner.eid + "";
 	}
-	
+
     public int getLightRadius() {
         return 1;
     }

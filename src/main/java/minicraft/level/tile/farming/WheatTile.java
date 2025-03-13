@@ -24,11 +24,14 @@ public class WheatTile extends Plant {
         int icon = age / (maxAge / 5);
 
         Tiles.get("Farmland").render(screen, level, x, y);
+        
+		x <<= 4;
+		y <<= 4;
 
-        screen.render((x << 4) + 0, (y << 4) + 0, 1 + 38 * 32 + icon, 0, 1);
-        screen.render((x << 4) + 8, (y << 4) + 0, 1 + 38 * 32 + icon, 0, 1);
-        screen.render((x << 4) + 0, (y << 4) + 8, 1 + 38 * 32 + icon, 1, 1);
-        screen.render((x << 4) + 8, (y << 4) + 8, 1 + 38 * 32 + icon, 1, 1);
+        screen.render(x + 0, y + 0, 1 + 38 * 32 + icon, 0, 1);
+        screen.render(x + 8, y + 0, 1 + 38 * 32 + icon, 0, 1);
+        screen.render(x + 0, y + 8, 1 + 38 * 32 + icon, 1, 1);
+        screen.render(x + 8, y + 8, 1 + 38 * 32 + icon, 1, 1);
     }
 
     @Override

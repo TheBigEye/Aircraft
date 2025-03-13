@@ -1,26 +1,18 @@
 package minicraft.screen;
 
+import minicraft.core.io.InputHandler;
+import minicraft.core.io.Localization;
+import minicraft.core.io.Sound;
+import minicraft.graphic.*;
+import minicraft.screen.entry.BlankEntry;
+import minicraft.screen.entry.ListEntry;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import minicraft.core.io.InputHandler;
-import minicraft.core.io.Localization;
-import minicraft.core.io.Sound;
-import minicraft.graphic.Color;
-import minicraft.graphic.Dimension;
-import minicraft.graphic.Font;
-import minicraft.graphic.Insets;
-import minicraft.graphic.Point;
-import minicraft.graphic.Rectangle;
-import minicraft.graphic.Screen;
-import minicraft.graphic.SpriteSheet;
-import minicraft.screen.entry.BlankEntry;
-import minicraft.screen.entry.ListEntry;
 
 public class Menu {
 
@@ -135,7 +127,7 @@ public class Menu {
 
         doScroll();
     }
-    
+
     void setBackground(int bgSpritePos) {
         this.bgSpritePos = bgSpritePos;
     }
@@ -149,14 +141,14 @@ public class Menu {
     }
 
 	ListEntry[] getEntries() {
-		return entries.toArray(new ListEntry[0]); 
+		return entries.toArray(new ListEntry[0]);
 	}
-	
+
 	protected void setEntries(ListEntry[] entries) {
 		this.entries.clear();
 		this.entries.addAll(0, Arrays.asList(entries));
 	}
-	
+
 	protected void setEntries(List<ListEntry> entries) {
 		this.entries.clear();
 		this.entries.addAll(entries);
@@ -229,8 +221,8 @@ public class Menu {
 
             if (searcherBarActive) {
                 String typingSearcher = input.addKeyTyped(this.typingSearcher, null);
-                
-                if (typingSearcher.length() > 0) {
+
+                if (!typingSearcher.isEmpty()) {
                     // Convert the first letter on uppercase
                     typingSearcher = typingSearcher.substring(0, 1).toUpperCase() + typingSearcher.substring(1);
 
@@ -243,7 +235,7 @@ public class Menu {
                 }
 
 
-    
+
                 for (String pressedKey : input.getAllPressedKeys()) {
                     if (pressedKey.equals("ENTER")) {
                         continue;
@@ -255,7 +247,7 @@ public class Menu {
                 // check if word was updated
                 if (typingSearcher.length() <= ((entryBounds.getWidth() / 8)) && typingSearcher.length() != this.typingSearcher.length()) {
                     this.typingSearcher = typingSearcher;
- 
+
                     listSearcher.clear();
                     listPositionSearcher = 0;
 
@@ -263,11 +255,9 @@ public class Menu {
                     boolean shouldSelect = true;
                     for (int i = 0; entryIt.hasNext(); i++) {
                         ListEntry entry = entryIt.next();
-                        
                         String stringEntry = entry.toString();
-                        String typingString = typingSearcher;
 
-                        if (stringEntry.contains(typingString)) {
+                        if (stringEntry.contains(typingSearcher)) {
                             if (shouldSelect) {
                                 int difference = i - selection;
                                 selectionSearcher = difference > i ? -difference : difference;
@@ -343,7 +333,7 @@ public class Menu {
         // render searcher bar
     	if (searcherBarActive && useSearcherBar) {
 
-    		
+
     	    int leading = Font.textWidth(typingSearcher) * Font.textWidth(" ") / 15;
     	    int xSearcherBar = (titleLoc.x + title.length() * 4) - 16;
 
@@ -354,9 +344,9 @@ public class Menu {
     	    Font.drawBox(screen, (entryBounds.getCenter().x - entryBounds.getWidth() / 2) - 16, titleLoc.y + 115, 4 + entryBounds.getWidth() / 8, 1);
     	    Font.draw("> " + typingSearcher + " <", screen, xSearcherBar - leading, titleLoc.y + 115, typingSearcher.length() < ((entryBounds.getWidth() / 8)) ? Color.YELLOW : Color.RED);
     	}
-        
+
         // Render the menu GUI
-        
+
         renderFrame(screen);
 
         // Render the title
@@ -387,7 +377,7 @@ public class Menu {
             int extra = diff * (ListEntry.getHeight() + spacing) / 2;
             y += extra;
         }
-        
+
         for (int i = offset; i < (wrap ? offset + displayLength : Math.min(offset + displayLength, entries.size())); i++) {
             if (special && i - offset >= entries.size()) {
                 break;
@@ -398,17 +388,17 @@ public class Menu {
 
             if (!(entry instanceof BlankEntry)) {
                 Point pos = entryPos.positionRect(
-            		new Dimension(entry.getWidth(), ListEntry.getHeight()), 
+            		new Dimension(entry.getWidth(), ListEntry.getHeight()),
             		new Rectangle(entryBounds.getLeft(), y, entryBounds.getWidth(), ListEntry.getHeight(), Rectangle.CORNER_DIMS)
                 );
-                
+
                 boolean selected = idx == selection;
                 if (searcherBarActive && useSearcherBar) {
                     entry.render(screen, pos.x, pos.y, selected, typingSearcher, Color.YELLOW);
                 } else {
                     entry.render(screen, pos.x, pos.y, selected);
                 }
-                
+
                 if (selected && entry.isSelectable()) {
                     // draw the arrows
                     Font.draw("> ", screen, pos.x - Font.textWidth("> "), y, ListEntry.COLOR_SELECTED);
@@ -492,7 +482,7 @@ public class Menu {
 
         @NotNull
         private Point anchor = center;
-        
+
         @NotNull
         private RelPos menuPos = RelPos.CENTER;
         private Dimension menuSize = null;
@@ -536,13 +526,13 @@ public class Menu {
         public Builder setMenuSize(Dimension d) {
             menuSize = d;
             return this;
-        } 
+        }
 
         public Builder setBounds(Rectangle rect) {
             menuSize = rect.getSize();
-            
+
             // because the anchor represents the center of the rectangle.
-            setPositioning(rect.getCenter(), RelPos.CENTER); 
+            setPositioning(rect.getCenter(), RelPos.CENTER);
             return this;
         }
 
@@ -570,10 +560,10 @@ public class Menu {
 
             fullTitleColor = fullColor;
             setTitleColor = true;
-            
+
             // This means that the color is the full 4 parts, abcd. Otherwise,
             // it is assumed it is only the main component, the one that matters.
-            if (fullColor) { 
+            if (fullColor) {
                 menu.titleColor = color;
             } else{
                 titleCol = color;
@@ -586,7 +576,7 @@ public class Menu {
             menu.hasFrame = hasFrame;
             return this;
         }
-        
+
         /**
          * Change the menu backgound and frame sprites
          * @param sy    the Y sprites axys in the GUI spritesheet
@@ -665,10 +655,10 @@ public class Menu {
              * arrows. - if the menu has a frame, then add one buffer space to all 4 sides -
              * if the menu has a title AND a frame, do nothing. - if the menu has a title
              * and NO frame, add two spaces to whatever side the title is on
-             * 
+             *
              * Remember to set the title pos one space inside the left/right bounds, so it
              * doesn't touch the frame corner.
-             * 
+             *
              * Starting with the entry size figured out, add the insets to get the total
              * size. Starting with the menu size set, subtract the insets to get the entry
              * size.
@@ -764,13 +754,13 @@ public class Menu {
             if (titlePos.xIndex == 0 && titlePos.yIndex != 1) {
                 menu.titleLoc.x += SpriteSheet.boxWidth;
             }
-            
+
             if (titlePos.xIndex == 2 && titlePos.yIndex != 1) {
                 menu.titleLoc.x -= SpriteSheet.boxWidth;
             }
 
             // set the menu title color
-            if (menu.title.length() > 0) {
+            if (!menu.title.isEmpty()) {
                 if (fullTitleColor) {
                     menu.titleColor = titleCol;
                 } else {

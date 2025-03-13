@@ -8,13 +8,8 @@ import minicraft.entity.furniture.Bed;
 import minicraft.graphic.MobSprite;
 import minicraft.graphic.Screen;
 import minicraft.level.Level;
-import minicraft.level.tile.DoorTile;
-import minicraft.level.tile.MyceliumTile;
-import minicraft.level.tile.ObsidianTile;
-import minicraft.level.tile.Tile;
-import minicraft.level.tile.WallTile;
+import minicraft.level.tile.*;
 import minicraft.level.tile.farming.FarmTile;
-import minicraft.level.tile.farming.Plant;
 
 public class GiantBossMob extends MobAi {
 
@@ -28,7 +23,7 @@ public class GiantBossMob extends MobAi {
      * is the different color the mob has depending on its level. isFactor
      * determines if the mob's health should be affected by the level and the
      * difficulty.
-     * 
+     *
      * @param lvl         The mob's level.
      * @param lvlSprites  The mob's sprites (ordered by level, then direction, then
      *                    animation frame).
@@ -53,7 +48,7 @@ public class GiantBossMob extends MobAi {
     /**
      * Constructor for a hostile (enemy) mob. Lifetime will be set to 60 *
      * Game.normalSpeed.
-     * 
+     *
      * @param lvl        The mob's level.
      * @param lvlSprites The mob's sprites (ordered by level, then direction, then
      *                   animation frame).
@@ -74,7 +69,7 @@ public class GiantBossMob extends MobAi {
     /**
      * Constructor for a hostile (enemy) mob. isFactor=true, rwTime=60,
      * rwChance=200.
-     * 
+     *
      * @param lvl        The mob's level.
      * @param lvlSprites The mob's sprites (ordered by level, then direction, then
      *                   animation frame).
@@ -92,9 +87,9 @@ public class GiantBossMob extends MobAi {
 
         if (!Game.isMode("Creative")) {
             Player player = getClosestPlayer();
-            
+
             // checks if player is on zombies level and if there is no time left on randonimity timer
-            if (player != null && !Bed.sleeping() && randomWalkTime <= 0) { 
+            if (player != null && !Bed.sleeping() && randomWalkTime <= 0) {
                 int xd = player.x - x;
                 int yd = player.y - y;
 
@@ -106,12 +101,12 @@ public class GiantBossMob extends MobAi {
                     if (xd > sig0) xa = +1;
                     if (yd < sig0) ya = -1;
                     if (yd > sig0) ya = +1;
-                    
+
                 } else { // if the enemy was following the player, but has now lost it, it stops moving.
                     // *that would be nice, but I'll just make it move randomly instead.
                     randomizeWalkDir(false);
                 }
-            }  
+            }
         }
 
     }
@@ -120,7 +115,7 @@ public class GiantBossMob extends MobAi {
     public void render(Screen screen) {
         super.render(screen, 15, 18);
     }
-    
+
 
     public void render(Screen screen, int color, boolean shake) {
     	if (shake) {
@@ -144,7 +139,7 @@ public class GiantBossMob extends MobAi {
 
     /**
      * Determines if the mob can spawn at the giving position in the given map.
-     * 
+     *
      * @param level The level which the mob wants to spawn in.
      * @param x     X map spawn coordinate.
      * @param y     Y map spawn coordinate.
@@ -166,7 +161,7 @@ public class GiantBossMob extends MobAi {
         }
         // Check for depth to avoid unnecessary checks
         if (level.depth != -4) {
-            if (tile instanceof DoorTile || tile instanceof WallTile|| tile instanceof Plant || tile instanceof FarmTile || tile instanceof MyceliumTile) {
+            if (tile instanceof DoorTile || tile instanceof WallTile || tile instanceof FarmTile || tile instanceof MyceliumTile) {
                 return false;
             }
             return !level.isLight(x >> 4, x >> 4);

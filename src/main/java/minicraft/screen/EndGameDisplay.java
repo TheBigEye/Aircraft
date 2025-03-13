@@ -1,8 +1,5 @@
 package minicraft.screen;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.InputHandler;
@@ -18,6 +15,9 @@ import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class EndGameDisplay extends Display {
 	private static final String[] scoredItems = { "Oak Wood", "Spruce Wood", "Birch Wood", "Cloth", "Slime", "Bone", "Arrow", "Gunpowder", "Antidious" };
 	private static final String[] titles = { "Game Over", "Win?", "Win!!", "Nice!", "The End!" };
@@ -25,7 +25,7 @@ public class EndGameDisplay extends Display {
 	private int inputDelay; // variable to delay the input of the player, so they won't skip the won menu by accident.
 	private int displayTimer;
 	private int finalScore;
-    
+
 	static {
 		int maxLength = 0;
 		for (String s : scoredItems) {
@@ -62,7 +62,7 @@ public class EndGameDisplay extends Display {
 			new Menu.Builder(true, 0, RelPos.LEFT, entries)
 			.setPositioning(new Point(SpriteSheet.boxWidth, SpriteSheet.boxWidth * 3), RelPos.BOTTOM_RIGHT)
 			.setTitle(titles[random.nextInt(titles.length)])
-			.createMenu() 
+			.createMenu()
 		};
 	}
 

@@ -1,5 +1,10 @@
 package minicraft.core.io;
 
+import minicraft.core.Game;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.tinylog.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,80 +23,74 @@ import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.tinylog.Logger;
-
-import minicraft.core.Game;
-
 public class Localization {
-	
+
 	private static final HashSet<String> knownUnlocalizedStrings = new HashSet<>();
-	
+
 	private static final HashMap<String, String> localization = new HashMap<>();
 	private static String selectedLanguage = "english";
-	
+
 	private static final HashMap<String, Locale> locales = new HashMap<>();
 	private static final HashMap<String, String> localizationFiles = new HashMap<>();
-	
+
 	private static String[] loadedLanguages = getLanguagesFromDirectory();
-	
+
 	static {
 		if (loadedLanguages == null) {
 			loadedLanguages = new String[] {selectedLanguage};
 		}
-		
+
 		loadSelectedLanguageFile();
 	}
-	
+
 	@NotNull
 	public static String getLocalized(String key) {
 		if (key.matches("^[ ]*$")) return key; // Blank, or just whitespace
-		
+
 		try {
 			Double.parseDouble(key);
 			return key; // This is a number; don't try to localize it
 		} catch(NumberFormatException ignored) {}
-		
+
 		String localString = localization.get(key);
-		
+
 		if (Game.debug && localString == null) {
 			if (!knownUnlocalizedStrings.contains(key)) {
 				Logger.tag("LOC").trace("'{}' is unlocalized.", key);
 			}
 			knownUnlocalizedStrings.add(key);
 		}
-		
+
 		return (localString == null ? key : localString);
 	}
-	
+
 	public static Locale getSelectedLocale() {
-		return locales.getOrDefault(selectedLanguage, Locale.getDefault()); 
+		return locales.getOrDefault(selectedLanguage, Locale.getDefault());
 	}
-	
+
 	@NotNull
 	public static String getSelectedLanguage() {
-		return selectedLanguage; 
+		return selectedLanguage;
 	}
-	
+
 	public static void changeLanguage(String newLanguage) {
 		selectedLanguage = newLanguage;
 		loadSelectedLanguageFile();
 	}
-	
+
 	public static void loadSelectedLanguageFile() {
 		String fileText = getFileAsString();
-		
+
 		// System.out.println("File:");
 		// System.out.println(fileText);
-		
+
 		String currentKey = "";
-		
+
 		for (String line : fileText.split("\r\n|\n|\r")) {
 			// # at the start of a line means the line is a comment.
 			if (line.startsWith("#")) continue;
 			if (line.matches("^[ ]*$")) continue;
-			
+
 			if (currentKey.equals("")) {
 				currentKey = line;
 			} else {
@@ -100,7 +99,7 @@ public class Localization {
 			}
 		}
 	}
-	
+
 	@NotNull
 	private static String getFileAsString() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(Game.class.getResourceAsStream(localizationFiles.getOrDefault(selectedLanguage, "/resources/localization/english_en-us.mcpl")), StandardCharsets.UTF_8));
@@ -108,20 +107,20 @@ public class Localization {
 		return String.join("\n", reader.lines().toArray(String[]::new));
 		// Using getResourceAsStream since we're publishing this as a jar file.
 	}
-	
+
 	@NotNull
 	public static String[] getLanguages() {
-		return loadedLanguages; 
+		return loadedLanguages;
 	}
-	
+
 	// Couldn't find a good way to find all the files in a directory when the program is
 	// exported as a jar file so I copied this. Thanks!
 	// https://stackoverflow.com/questions/1429172/how-do-i-list-the-files-inside-a-jar-file/1429275#1429275
-	
+
 	@Nullable
 	private static String[] getLanguagesFromDirectory() {
 		ArrayList<String> languages = new ArrayList<>();
-		
+
 		try {
 			CodeSource src = Game.class.getProtectionDomain().getCodeSource();
 			if (src != null) {
@@ -130,7 +129,7 @@ public class Localization {
 				int reads = 0;
 				while (true) {
 					ZipEntry e = zip.getNextEntry();
-					
+
 					// e is either null if there are no entries left, or if
 					// we're running this from an ide (at least for eclipse)
 					if (e == null) {
@@ -158,17 +157,17 @@ public class Localization {
 			exception.printStackTrace();
 			return null;
 		}
-		
+
 		return languages.toArray(new String[languages.size()]);
 	}
-	
+
 	// This is only here so we can run the game in our ide.
 	// This will not work if we're running the game from a jar file.
 	@java.lang.Deprecated
 	@Nullable
 	private static String[] getLanguagesFromDirectoryUsingIDE() {
 		ArrayList<String> languages = new ArrayList<>();
-		
+
 		try {
 			URL fUrl = Game.class.getResource("/resources/localization/");
 			Path folderPath = Paths.get(fUrl.toURI());
@@ -179,7 +178,7 @@ public class Localization {
 				String lang = data.substring(0, data.indexOf('_'));
 
 				languages.add(lang);
-				localizationFiles.put(lang, "/resources/localization/"+filename);
+				localizationFiles.put(lang, "/resources/localization/" + filename);
 				locales.put(lang, Locale.forLanguageTag(data.substring(data.indexOf('_')+1)));
 			}
 		} catch (IOException | URISyntaxException exception) {
@@ -188,7 +187,7 @@ public class Localization {
 			// just return to the title menu.
 			return null;
 		}
-		
+
 		return languages.toArray(new String[languages.size()]);
 	}
 }

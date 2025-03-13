@@ -14,8 +14,8 @@ import minicraft.level.Level;
 
 public class SkyLawnTile extends Tile {
 	private static final Sprite sprite = new Sprite(40, 23, 1);
-	
-	private Tile skyGrassTile = Tiles.get("Sky grass");
+
+	private final Tile skyGrassTile = Tiles.get("Sky grass");
 
 	protected SkyLawnTile(String name) {
 		super(name, (ConnectorSprite) null);

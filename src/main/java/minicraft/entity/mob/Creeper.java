@@ -1,10 +1,5 @@
 package minicraft.entity.mob;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
 import minicraft.core.io.Settings;
 import minicraft.core.io.Sound;
@@ -19,6 +14,10 @@ import minicraft.item.Items;
 import minicraft.item.ToolItem;
 import minicraft.item.ToolType;
 import minicraft.level.tile.Tiles;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Creeper extends EnemyMob {
 	private static MobSprite[][][] sprites;
@@ -61,7 +60,7 @@ public class Creeper extends EnemyMob {
 
 		// Creepers should not explode if player is in passive mode
 		if (Settings.get("diff").equals("Peaceful") || ( Game.isMode("Creative") && !fuseLit)) {
-			return; 
+			return;
 		}
 
 		if (fuseTime > 0) {
@@ -92,7 +91,7 @@ public class Creeper extends EnemyMob {
 			if (playerInRange) {
             	// Play explosion sound
 				Sound.playAt("genericExplode", this.x, this.y);
-				
+
 				// figure out which tile the mob died on
 				int xt = x >> 4;
 				int yt = (y - 2) >> 4;
@@ -167,11 +166,11 @@ public class Creeper extends EnemyMob {
 		if (!fuseLit) {
 			super.render(screen);
 		}
-		
+
 		if (fuseLit) {
 			if (fuseTime / 8 % 2 == 0) {
 				super.render(screen, fuseLit);
-			} else { 
+			} else {
 				super.render(screen);
 			}
 		}
@@ -198,17 +197,17 @@ public class Creeper extends EnemyMob {
 	public boolean canWool() {
 		return false;
 	}
-	
+
     /**
      * Used in PowerGloveItem.java to let the user pick up furniture.
-     * 
+     *
      * @param player The player picking up the furniture.
      */
     @Override
     public boolean interact(Player player, @Nullable Item item, Direction attackDir) {
         if (item instanceof ToolItem) {
         	ToolItem tool = (ToolItem) item;
-        	
+
             if (tool.type == ToolType.Igniter) {
                 if (player.payStamina(4 - tool.level) && tool.payDurability()) {
         			if (fuseTime == 0 && !fuseLit) {

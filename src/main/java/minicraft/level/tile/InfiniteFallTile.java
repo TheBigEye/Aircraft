@@ -10,7 +10,7 @@ import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 
 public class InfiniteFallTile extends Tile {
-	
+
     protected InfiniteFallTile(String name) {
         super(name, (Sprite) null);
     }
@@ -30,11 +30,11 @@ public class InfiniteFallTile extends Tile {
         }
         if (entity instanceof Player) {
             Player player = (Player) entity;
-            return player.suitOn || Game.isMode("Creative") || !Game.isMode("Creative") && player.fallWarn == true;
+            return player.suitOn || Game.isMode("Creative") || !Game.isMode("Creative") && player.fallWarn;
         }
         return false;
     }
-    
+
     @Override
     public void bumpedInto(Level level, int x, int y, Entity entity) {
         if (entity instanceof Player) {

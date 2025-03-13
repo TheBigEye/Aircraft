@@ -1,12 +1,12 @@
 package minicraft.item;
 
-import java.util.ArrayList;
-
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
 import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
+
+import java.util.ArrayList;
 
 public class ArmorItem extends StackableItem {
 
@@ -62,7 +62,7 @@ public class ArmorItem extends StackableItem {
 	public boolean interactsWithWorld() {
 		return false;
 	}
-	
+
 	@Override
 	public ArmorItem clone() {
 		return new ArmorItem(getName(), sprite, count, armor, level);

@@ -33,7 +33,9 @@ public class Keeper extends GiantBossMob {
         
         walkTime = 2;
         
-        this.setHitboxSize(6, 6);
+        fartick = true;
+        
+        setHitboxSize(6, 6);
     }
 
     public void tick() {

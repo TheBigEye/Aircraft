@@ -1,11 +1,11 @@
 package minicraft.entity.mob;
 
-import java.util.ArrayList;
-
 import minicraft.core.Game;
 import minicraft.graphic.MobSprite;
 import minicraft.item.Recipe;
 import minicraft.screen.CraftingDisplay;
+
+import java.util.ArrayList;
 
 public class Librarian extends VillagerMob {
     private static MobSprite[][] sprites = MobSprite.compileMobSpriteAnimations(0, 48);
@@ -13,8 +13,8 @@ public class Librarian extends VillagerMob {
     private static final ArrayList<Recipe> librarianTrades = new ArrayList<>();
 
     static {
-        librarianTrades.add(new Recipe("Book_1", new String[] { "Apple_5" }));
-        librarianTrades.add(new Recipe("Paper_3", new String[] { "Leaf_5" }));
+        librarianTrades.add(new Recipe("Book_1", "Apple_5"));
+        librarianTrades.add(new Recipe("Paper_3", "Leaf_5"));
     }
 
     public Librarian() {

@@ -1,8 +1,8 @@
 package minicraft.graphic;
 
-import java.util.Arrays;
-
 import minicraft.screen.RelPos;
+
+import java.util.Arrays;
 
 public class FontStyle {
 
@@ -117,7 +117,7 @@ public class FontStyle {
 		textArea.translate(0, line * textArea.getHeight());
 
         // for the relpos to put the rect in the correct pos, the anchor should be fetched using to opposite relpos.
-		anchor = textArea.getPosition(relTextPos.getOpposite()); 
+		anchor = textArea.getPosition(relTextPos.getOpposite());
 		padX = paraBounds.getWidth() - Font.textWidth(para[line]);
 		padY = spacing;
 	}

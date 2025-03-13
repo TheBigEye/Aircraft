@@ -6,9 +6,9 @@ public class Color {
 	 * To explain this class, you have to know how Bit-Shifting works. David made a
 	 * small post, so go here if you don't already know:
 	 * http://minicraftforums.com/viewtopic.php?f=9&t=2256
-	 * 
+	 *
 	 * Note: this class still confuses me a bit, lol. -David
-	 * 
+	 *
 	 * On bit shifting: the new bits will always be zero, UNLESS it is a negative
 	 * number aka the left-most bit is 1. Then, shifting right will fill with 1's,
 	 * it seems.
@@ -20,18 +20,23 @@ public class Color {
 	 * the given value to 24bit Java RGB rather than the normal, minicraft 13-bit
 	 * total RGB. Methods containing the word "get" deal with converting the
 	 * minicraft rgb to something else, and unGet for the other way.
-	 * 
+	 *
 	 * Another point:
-	 * 
-	 * rgbByte = int using 8 bits to store the r, g, and b. rgbInt = int using 24
-	 * bits to store r, g, and b, with 8 bits each; this is the classic 0-255 scale
-	 * for each color component, compacted into one integer variable. rgb4Sprite =
-	 * int using the 4 bytes in an int to store each of the 4 rgbBytes used for
-	 * coloring a sprite. rgbReadable = int representing rgb in a readable decimal
-	 * format, by having the values 0-5 in the 100s, 10s, and 1s place for r, g, and
-	 * b respectively. rgbMinicraft = int using 12 bits for r, g, and b, 4 bits
-	 * each, and one for transparency
-	 * 
+	 *
+	 * rgbByte = int using 8 bits to store the r, g, and b.
+	 *
+	 * rgbInt = int using 24 bits to store r, g, and b, with 8 bits each; this is the
+	 * classic 0-255 scale for each color component, compacted into one integer variable.
+	 *
+	 * rgb4Sprite = int using the 4 bytes in an int to store each of the 4 rgbBytes used
+	 * for coloring a sprite.
+	 *
+	 * rgbReadable = int representing rgb in a readable decimal format, by having the
+	 * values 0-5 in the 100s, 10s, and 1s place for r, g, and b respectively.
+	 *
+	 * rgbMinicraft = int using 12 bits for r, g, and b, 4 bits each, and one for
+	 * transparency
+	 *
 	 * So, the methods ending in "Color" deal with rgbInts, while their counterparts
 	 * deal with rgbBytes.
 	 */
@@ -51,7 +56,7 @@ public class Color {
 	public static final int CYAN = Color.get(1, 90, 204, 204);
 	public static final int ORANGE = Color.get(1, 255, 138, 28);
 
-	public static final char COLOR_CHAR = '\u00A7';
+	public static final char COLOR_CHAR = '§';
 
 	public static final String TRANSPARENT_CODE = Color.toStringCode(Color.TRANSPARENT);
 	public static final String WHITE_CODE = Color.toStringCode(Color.WHITE);
@@ -65,20 +70,19 @@ public class Color {
 	public static final String MAGENTA_CODE = Color.toStringCode(Color.MAGENTA);
 	public static final String CYAN_CODE = Color.toStringCode(Color.CYAN);
 
-	/**
-	 * This returns a minicraftrgb. alpha should be between 0-1, red, green, and blue should be 0-255
-	 */
+	/** This returns a rgbMinicraft. alpha should be between 0-1, red, green, and blue should be 0-255 */
 	public static int get(int alpha, int red, int green, int blue) {
 		return (alpha << 24) + (red << 16) + (green << 8) + (blue);
 	}
 
+	/** This returns a rgbMinicraft. alpha should be between 0-1, copy should be 0-255 */
 	public static int get(int alpha, int copy) {
 		return get(alpha, copy, copy, copy);
 	}
 
 	public static String toStringCode(int color) {
-		return new String(new char[] { 
-			Color.COLOR_CHAR, 
+		return new String(new char[] {
+			Color.COLOR_CHAR,
 			(char) ((color >> 24) & 0xFF), // Alpha
 			(char) ((color >> 16) & 0xFF), // Red
 			(char) ((color >> 8) & 0xFF), // Blue
@@ -117,7 +121,7 @@ public class Color {
 		if (isSpriteCol) {
 
 			// this just separates the four 8-bit sprite colors; they are still in base-6 added form.
-			int[] rgbBytes = separateEncodedSprite(color); 
+			int[] rgbBytes = separateEncodedSprite(color);
 			for (int i = 0; i < rgbBytes.length; i++) {
 				rgbBytes[i] = tint(rgbBytes[i], amount);
 			}
@@ -135,7 +139,7 @@ public class Color {
 		}
 
 		// this returns the rgb values as 0-5 numbers.
-		int[] rgb = decodeRGB(rgbByte); 
+		int[] rgb = decodeRGB(rgbByte);
 		for (int i = 0; i < rgb.length; i++) {
 			rgb[i] = limit(rgb[i] + amount, 0, 5);
 		}
@@ -220,17 +224,13 @@ public class Color {
 
 		System.out.println(rgb(r, g, b));
 	}
-	
+
 	/// for sprite colors
 	public static String toString(int col) {
 		return java.util.Arrays.toString(Color.separateEncodedSprite(col, true));
 	}
 
-	protected static int createShadowCol(int col, int intensity) {
-		return createShadowCol(col, intensity, intensity, intensity);
-	}
-
-	protected static int createShadowCol(int col, int intensity_r, int intensity_g, int intensity_b) {
+	protected static int getShadow(int col, int intensity_r, int intensity_g, int intensity_b) {
 		int r = (col & 0xFF_00_00) >> 16;
 		int g = (col & 0x00_FF_00) >> 8;
 		int b = (col & 0x00_00_FF);
@@ -244,6 +244,10 @@ public class Color {
 		b -= intensity_b;
 		if (b < 0) b = 0;
 
-		return r * 16 + g * 8 + b;
+		return (r << 16) + (g << 8) + b;
+	}
+
+	protected static int getShadow(int col, int intensity) {
+		return getShadow(col, intensity, intensity, intensity);
 	}
 }

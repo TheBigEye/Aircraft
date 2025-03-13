@@ -1,15 +1,14 @@
 package minicraft.entity;
 
-import java.util.List;
-
 import minicraft.core.Game;
-import minicraft.core.io.Settings;
 import minicraft.entity.mob.AirWizard;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
 import minicraft.graphic.Color;
 import minicraft.graphic.Rectangle;
 import minicraft.graphic.Screen;
+
+import java.util.List;
 
 public class Spark extends Entity {
 
@@ -23,7 +22,7 @@ public class Spark extends Entity {
 
 	/**
 	 * Creates a new spark. Owner is the AirWizard which is spawning this spark.
-	 * 
+	 *
 	 * @param owner The AirWizard spawning the spark.
 	 * @param xa	X velocity.
 	 * @param ya	Y velocity.
@@ -50,7 +49,7 @@ public class Spark extends Entity {
 
 	    Player player = getClosestPlayer();
 	    if (player != null) {
-	    	
+
 	    	if (random.nextBoolean()) {
 	        	xa -= random.nextInt(2);
 	        	ya -= random.nextInt(2);
@@ -71,7 +70,7 @@ public class Spark extends Entity {
 		// move the spark to the player positon:
 		xx += xa; x = (int) xx;
 		yy += ya; y = (int) yy;
-		
+
 		Player player = getClosestPlayer();
 		if (player != null) { // avoid NullPointer if player dies
 			if (player.isWithin(0, this)) {
@@ -105,7 +104,6 @@ public class Spark extends Entity {
 
 		if (time >= lifeTime) {
 			remove(); // Remove this from the world
-			return;
 		}
 	}
 
@@ -130,15 +128,14 @@ public class Spark extends Entity {
 			randmirror = random.nextInt(4);
 		}
 
-		if (Settings.getBoolean("shadows")) {
-			screen.render(x - 4, y - 4 + 2, 0 + (62 << 5), randmirror, 2, -1, false, Color.get(-1, 555)); // renders the shadow on the ground
-		}        
+		// renders the shadow on the ground
+		screen.render(x - 4, y - 4 + 2, 0 + (62 << 5), randmirror, 2, -1, false, Color.get(-1, 555));
 		screen.render(x - 4, y - 4 - 2, 0 + (62 << 5), randmirror, 2); // renders the spark
 	}
 
 	/**
 	 * Returns the owners id as a string.
-	 * 
+	 *
 	 * @return the owners id as a string.
 	 */
 	public String getData() {

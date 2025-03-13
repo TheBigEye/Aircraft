@@ -1,20 +1,5 @@
 package minicraft.screen;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.jetbrains.annotations.Nullable;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.core.io.InputHandler;
 import minicraft.core.io.Localization;
@@ -28,6 +13,20 @@ import minicraft.screen.entry.ListEntry;
 import minicraft.screen.entry.SelectEntry;
 import minicraft.screen.entry.StringEntry;
 import minicraft.util.Achievement;
+import org.jetbrains.annotations.Nullable;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.tinylog.Logger;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AchievementsDisplay extends Display {
 
@@ -77,7 +76,7 @@ public class AchievementsDisplay extends Display {
 			.setSize(220, 136)
 			.setPositioning(new Point((Screen.w / 2) - 1, Screen.h / 2 - 90), RelPos.BOTTOM)
 			.createMenu(),
-			
+
 			new Menu.Builder(true, 2, RelPos.BOTTOM, new StringEntry(""))
 			.setSize(220, 48)
 			.setPositioning(new Point((Screen.w / 2) - 1, Screen.h / 2 + 46), RelPos.BOTTOM)
@@ -94,7 +93,7 @@ public class AchievementsDisplay extends Display {
             Logger.error("Could not open achievements menu because no achievements could be found.");
             return;
         }
-        
+
         ListEntry curEntry = menus[0].getCurEntry();
         if (curEntry instanceof SelectEntry) {
             selectedAchievement = achievements.get(((SelectEntry) curEntry).getText());
@@ -127,9 +126,9 @@ public class AchievementsDisplay extends Display {
 	}
 
 	private static boolean setAchievement(String id, boolean unlocked, boolean save) {
-		
+
 		if (Game.isMode("Creative")) return false;
-		
+
 		Achievement achievement = achievements.get(id);
 
 		// Return if we didn't find any achievements.
@@ -166,20 +165,20 @@ public class AchievementsDisplay extends Display {
 		Font.drawCentered(Localization.getLocalized("Achievements Score:") + " " + achievementScore, screen, 32, Color.GRAY);
 
 		if (selectedAchievement != null) {
-			
+
 			// Render Achievement Info.
 			/*if (selectedAchievement.getUnlocked()){
 				Font.drawCentered(Localization.getLocalized("Earned!"), screen, 48, Color.GREEN);
 			} else {
 				Font.drawCentered(Localization.getLocalized("Not Earned"), screen, 48, Color.RED);
 			}*/
-	
+
 			// Achievement description.
 			menus[1].setEntries(StringEntry.useLines(Color.GRAY, Font.getLines(
-				Localization.getLocalized(selectedAchievement.description), 
+				Localization.getLocalized(selectedAchievement.description),
 				menus[1].getBounds()
 				.getSize().width,
-				
+
 				menus[1].getBounds()
 				.getSize().height, 4)
 			));
@@ -209,7 +208,7 @@ public class AchievementsDisplay extends Display {
         }
         return strings.toArray(new String[0]);
     }
-    
+
     public static List<ListEntry> getAchievementsAsEntries() {
         List<ListEntry> achievementsList = new ArrayList<>();
         for (String id : achievements.keySet()) {
@@ -239,11 +238,11 @@ public class AchievementsDisplay extends Display {
     public static void unlockAchievements(JSONArray unlockedAchievements) {
     	if (!Game.debug) Logger.debug("Updating achievements data ...");
         for (Object id : unlockedAchievements.toList()) {
-        	
+
     		if (Game.debug) {
     			Logger.debug("Checking and updating '{}', achievement data ...", id.toString());
     		}
-        	
+
             if (!setAchievement(id.toString(), true, false)) {
                 Logger.warn("Could not load unlocked achievement with name {}.", id.toString());
             }

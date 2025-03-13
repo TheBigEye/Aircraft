@@ -24,26 +24,24 @@ import minicraft.screen.AchievementsDisplay;
 // This is the normal stone you see underground and on the surface, that drops coal and stone.
 
 public class RockTile extends Tile {
-	private ConnectorSprite sprite = new ConnectorSprite(RockTile.class, new Sprite(0, 6, 3, 3, 1), new Sprite(5, 6, 2, 2, 1), new Sprite(3, 6, 2, 2, 1)) {
+	private final ConnectorSprite sprite = new ConnectorSprite(RockTile.class, new Sprite(0, 6, 3, 3, 1), new Sprite(5, 6, 2, 2, 1), new Sprite(3, 6, 2, 2, 1)) {
 
 		@Override
 		public boolean connectsTo(Tile tile, boolean isSide) {
 			return tile == Tiles.get("Rock") || tile == Tiles.get("Up Rock");
 		}
 	};
-	
-	private ConnectorSprite mossySprite = new ConnectorSprite(RockTile.class, new Sprite(36, 6, 3, 3, 1), new Sprite(41, 6, 2, 2, 1), new Sprite(39, 6, 2, 2, 1)) {
+
+	private final ConnectorSprite mossySprite = new ConnectorSprite(RockTile.class, new Sprite(36, 6, 3, 3, 1), new Sprite(41, 6, 2, 2, 1), new Sprite(39, 6, 2, 2, 1)) {
 
 		@Override
 		public boolean connectsTo(Tile tile, boolean isSide) {
-			return tile == Tiles.get("Rock") || tile == Tiles.get("Up Rock");
+            return tile == Tiles.get("Rock") || tile == Tiles.get("Up Rock");
 		}
 	};
 
 	private boolean dropCoal = false;
-	private final int maxHealth = 50;
-
-	private int damage;
+    private int damage;
 
 	protected RockTile(String name) {
 		super(name, (ConnectorSprite) null);
@@ -52,28 +50,33 @@ public class RockTile extends Tile {
 
 	@Override
 	public void hurt(Level level, int x, int y, int hurtDamage) {
+        int maxHealth = 50;
 		damage = level.getData(x, y) + (hurtDamage / 2);
-		if (Game.isMode("Creative")) {
+
+        if (Game.isMode("Creative")) {
 			hurtDamage = damage = maxHealth;
 			dropCoal = true;
 		}
 
-		Sound.playAt("genericHurt", x << 4, y << 4);
-		level.add(new SmashParticle(x << 4, y << 4));
+		int xt = x << 4;
+		int yt = y << 4;
 
-		level.add(new TextParticle("" + hurtDamage, (x << 4) + 8, (y << 4) + 8, Color.RED));
+		Sound.playAt("genericHurt", xt, yt);
+		level.add(new SmashParticle(xt, yt));
+
+		level.add(new TextParticle("" + hurtDamage, xt + 8, yt + 8, Color.RED));
 		if (damage >= maxHealth) {
 
 			if (dropCoal) {
-				level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 3, Items.get("Stone"));
+				level.dropItem(xt + 8, yt + 8, 1, 3, Items.get("Stone"));
 				int coal = 0;
 
 				if (!Settings.get("diff").equals("Hard")) {
 					coal++;
 				}
-				level.dropItem((x << 4) + 8, (y << 4) + 8, coal, coal + 1, Items.get("Coal"));
+				level.dropItem(xt + 8, yt + 8, coal, coal + 1, Items.get("Coal"));
 			} else {
-				level.dropItem((x << 4) + 8, (y << 4) + 8, 1, 2, Items.get("Stone"));
+				level.dropItem(xt + 8, yt + 8, 1, 2, Items.get("Stone"));
 			}
 			level.setTile(x, y, Tiles.get("Dirt"));
 		} else {

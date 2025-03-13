@@ -1,8 +1,5 @@
 package minicraft.entity;
 
-import java.util.List;
-
-import minicraft.core.io.Settings;
 import minicraft.entity.mob.EyeQueen;
 import minicraft.entity.mob.Player;
 import minicraft.entity.particle.FireParticle;
@@ -11,6 +8,8 @@ import minicraft.graphic.Screen;
 import minicraft.item.Item;
 import minicraft.item.Items;
 import minicraft.level.tile.LavaTile;
+
+import java.util.List;
 
 public class ItemEntity extends Entity implements ClientTickable {
 	private int lifeTime; // the life time of this entity in the level
@@ -27,7 +26,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 
 	/**
 	 * Creates an item entity of the item item at position (x,y) with size 2*2.
-	 * 
+	 *
 	 * @param item Item to add as item entity
 	 * @param x    position on map
 	 * @param y    position on map
@@ -49,12 +48,12 @@ public class ItemEntity extends Entity implements ClientTickable {
 
 		// the idea was to have it last 10-11 seconds, I think.
 		lifeTime = 70 * 10 + random.nextInt(70); // sets the lifetime of the item. min = 600 ticks, max = 669 ticks.
-		
+
 	}
 
 	/**
 	 * Creates an item entity of the item item at position (x,y) with size 2*2.
-	 * 
+	 *
 	 * @param item     Item to add as item entity.
 	 * @param x        position on map
 	 * @param y        position on map
@@ -77,7 +76,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 
 	/**
 	 * Returns a string representation of the itementity
-	 * 
+	 *
 	 * @return string representation of this entity
 	 */
 	public String getData() {
@@ -142,13 +141,13 @@ public class ItemEntity extends Entity implements ClientTickable {
 				remove();
 			}
 		}
-		
+
 		if (item.equals(Items.get("Grimoire")) && time % 20 == 0) {
 			for (int i = 0; i < 1 + random.nextInt(2); i++) {
 				level.add(new FireParticle(x - 8 + random.nextInt(8), y - 12 + random.nextInt(12)));
 			}
 		}
-		
+
 	}
 
 	public boolean isSolid() {
@@ -158,22 +157,20 @@ public class ItemEntity extends Entity implements ClientTickable {
 	@Override
 	public void render(Screen screen) {
 		int xo = 0;
-		int yo = 0; 
-		
+		int yo = 0;
+
 		if (this.getLightRadius() > 0) {
 			xo = 5;
 			yo = 8;
 		}
-		
+
 		/* This first part is for the blinking effect */
 		if (time >= lifeTime - 6 * 20 && !item.equals(Items.get("Grimoire"))) {
 			if (time / 6 % 2 == 0) return;
 		}
-		
 
-		if (Settings.getBoolean("shadows")) {
-			item.sprite.render(screen, x - xo, y - yo, 4, -1, Color.BLACK); // item shadow uses black color
-		}
+		// renders the shadow and item sprite on the ground
+		item.sprite.render(screen, x - xo, y - yo, 4, -1, Color.BLACK);
 		item.sprite.render(screen, x - xo, y - yo - (int)(zz));
 	}
 
@@ -187,7 +184,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 			}
 			remove();
 		}
-		
+
 		if (!(entity instanceof Player)) {
 			return; // for the time being, we only care when a player touches an item.
 		}
@@ -207,7 +204,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 		prints.add(0, item.toString());
 		return prints;
 	}
-	
+
 	@Override
 	public int getLightRadius() {
 	    return (
@@ -217,7 +214,7 @@ public class ItemEntity extends Entity implements ClientTickable {
 	    	this.item.equals(Items.get("Iron Lantern")) ||
 	    	this.item.equals(Items.get("Gold Lantern")) ||
 	    	this.item.equals(Items.get("Summon Altar"))
-	    ) ? 1: 
+	    ) ? 1:
 	    	this.item.equals(Items.get("Grimoire")) ? 2 : 0;
 	}
 

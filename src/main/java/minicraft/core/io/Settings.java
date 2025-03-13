@@ -1,16 +1,13 @@
 package minicraft.core.io;
 
-import java.awt.DisplayMode;
-import java.awt.GraphicsEnvironment;
-import java.awt.HeadlessException;
-import java.util.HashMap;
-
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.screen.entry.ArrayEntry;
 import minicraft.screen.entry.BooleanEntry;
 import minicraft.screen.entry.RangeEntry;
+import org.tinylog.Logger;
+
+import java.awt.*;
+import java.util.HashMap;
 
 public class Settings {
 
@@ -30,10 +27,10 @@ public class Settings {
 		options.put("autosave", new BooleanEntry("Autosave", true));
 
 		options.put("cheats", new BooleanEntry("Cheats", true));
-		
+
 		options.put("size", new ArrayEntry<>("World Size", 256, 512));
 		options.get("size").setSelection(0);
-		
+
 		options.put("theme", new ArrayEntry<>("World Theme", "Normal", "Forest", "Desert", "Plain", "Tundra", "Hell"));
 		options.put("type", new ArrayEntry<>("Terrain Type", "Island", "Box", "Mountain", "Irregular"));
 
@@ -45,7 +42,7 @@ public class Settings {
 
 		options.get("mode").setChangeAction(value -> options.get("scoretime").setVisible("Score".equals(value)));
 
-		options.get("unlockedskin").setChangeAction(value -> 
+		options.get("unlockedskin").setChangeAction(value ->
 			options.get("skinon").setVisible((boolean) value)
 		);
 
@@ -54,51 +51,50 @@ public class Settings {
 				Game.player.suitOn = (boolean) value;
 			}
 		});
-        
+
         // Video options
         options.put("fps", new RangeEntry("Max FPS", 30, 300, getRefreshRate()));
         options.put("particles", new BooleanEntry("Particles", true));
-        options.put("shadows", new BooleanEntry("Shadows", true));
 	}
 
 	public static void initialize() {
-		Logger.debug("Initializing game settings ...");
+        Logger.debug("Initializing game settings ...");
 	}
 
 	// Returns the value of the specified option
 	public static Object get(String option) {
-		return options.get(option.toLowerCase()).getValue();
+        return options.get(option.toLowerCase()).getValue();
 	}
 
 	// Returns the boolean value of the specified option
 	public static boolean getBoolean(String option) {
-		return ((boolean) (options.get(option.toLowerCase())).getValue());
+        return ((boolean) (options.get(option.toLowerCase())).getValue());
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static <T> T getUnsafe(String option) {
-		return (T)get(option);
+        return (T)get(option);
 	}
 
 	// Returns the index of the value in the list of values for the specified option
 	public static int getIndex(String option) {
-		return options.get(option.toLowerCase()).getSelection();
+        return options.get(option.toLowerCase()).getSelection();
 	}
 
 	@SuppressWarnings("rawtypes")
 	// Return the ArrayEntry object associated with the given option name.
 	public static ArrayEntry getEntry(String option) {
-		return options.get(option.toLowerCase());
+        return options.get(option.toLowerCase());
 	}
 
 	// Sets the value of the given option name, to the given value, provided it is a valid value for that option.
 	public static void set(String option, Object value) {
-		options.get(option.toLowerCase()).setValue(value);
+        options.get(option.toLowerCase()).setValue(value);
 	}
 
 	// Sets the index of the value of the given option, provided it is a valid index
 	public static void setIndex(String option, int idx) {
-		options.get(option.toLowerCase()).setSelection(idx);
+        options.get(option.toLowerCase()).setSelection(idx);
 	}
 
 	public static int getRefreshRate() {

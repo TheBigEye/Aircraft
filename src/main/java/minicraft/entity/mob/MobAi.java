@@ -23,17 +23,18 @@ public abstract class MobAi extends Mob {
     protected int age = 0; // Not private because it is used in Sheep.java.
 
     private boolean slowtick = false;
+    protected boolean fartick = false;
 
     /**
      * Constructor for a mob with an ai.
-     * 
-     * @param sprites   All of this mob's sprites.
-     * @param maxHealth Maximum health of the mob.
-     * @param lifetime  How many ticks this mob can live before its removed.
-     * @param rwTime    How long the mob will walk in a random direction. (random
-     *                  walk duration)
-     * @param rwChance  The chance of this mob will walk in a random direction
-     *                  (random walk chance)
+     *
+     * @param sprites           All of this mob's sprites.
+     * @param maxHealth         Maximum health of the mob.
+     * @param lifetime          How many ticks this mob can live before its removed.
+     * @param randomWalkTime    How long the mob will walk in a random direction. (random
+     *                          walk duration)
+     * @param randomWalkChance  The chance of this mob will walk in a random direction
+     *                          (random walk chance)
      */
     protected MobAi(MobSprite[][] sprites, int maxHealth, int lifetime, int randomWalkTime, int randomWalkChance) {
         super(sprites, maxHealth);
@@ -47,7 +48,7 @@ public abstract class MobAi extends Mob {
 
     /**
      * Checks if the mob should sleep this tick.
-     * 
+     *
      * @return true if mob should sleep, false if not.
      */
     protected boolean skipTick() {
@@ -58,6 +59,7 @@ public abstract class MobAi extends Mob {
     public void tick() {
         super.tick();
 
+         // Every so often, the entity should unspawn (even if the player is far away)
         if (lifetime > 0) {
             age++;
             if (age > lifetime) {
@@ -70,32 +72,39 @@ public abstract class MobAi extends Mob {
             }
         }
 
-        if (getLevel() != null) {
-            boolean foundPlayer = false;
-            for (Player player : level.getPlayers()) {
-                if (player.isWithin(8, this) && player.potionEffects.containsKey(PotionType.Time)) {
-                    foundPlayer = true;
-                    break;
-                }
-            }
+        Player p = getClosestPlayer();
 
-            slowtick = foundPlayer;
-        }
+        // If the entity is too far away from the player (12 tiles), we don't bother processing it.
+        if ((p != null && p.isWithin(13, this)) || fartick)  {
 
-        if (skipTick()) return;
+        	// The time potion precisely makes mobs slower ...
+	        if (getLevel() != null) {
+	            boolean foundPlayer = false;
+	            for (Player player : level.getPlayers()) {
+	                if (player.isWithin(8, this) && player.potionEffects.containsKey(PotionType.Time)) {
+	                    foundPlayer = true;
+	                    break;
+	                }
+	            }
 
-        if (!move(xa * speed, ya * speed)) {
-            xa = 0;
-            ya = 0;
-        }
+	            slowtick = foundPlayer;
+	        }
 
-        // if the mob could not or did not move, or a random small chance occurred...
-        if (random.nextInt(randomWalkChance) == 0) {
-            randomizeWalkDir(true); // set random walk direction.
-        }
+	        if (skipTick()) return;
 
-        if (randomWalkTime > 0) {
-            randomWalkTime--;
+	        if (!move(xa * speed, ya * speed)) {
+	            xa = 0;
+	            ya = 0;
+	        }
+
+	        // if the mob could not or did not move, or a random small chance occurred...
+	        if (random.nextInt(randomWalkChance) == 0) {
+	            randomizeWalkDir(true); // set random walk direction.
+	        }
+
+	        if (randomWalkTime > 0) {
+	            randomWalkTime--;
+	        }
         }
     }
 
@@ -111,7 +120,7 @@ public abstract class MobAi extends Mob {
             currentSprite.render(screen, xo, yo);
         }
     }
-    
+
     public void render(Screen screen, int xpos, int ypos, int color) {
         int xo = x - xpos;
         int yo = y - ypos;
@@ -123,7 +132,7 @@ public abstract class MobAi extends Mob {
             currentSprite.render(screen, xo, yo, color);
         }
     }
-    
+
     public void render(Screen screen, boolean fullbright) {
         int xo = x - 8;
         int yo = y - 11;
@@ -131,7 +140,7 @@ public abstract class MobAi extends Mob {
         MobSprite currentSprite = sprites[dir.getDir()][(walkDist >> 3) % sprites[dir.getDir()].length];
         currentSprite.render(screen, xo, yo, fullbright);
     }
-    
+
     public void render(Screen screen, int color) {
         int xo = x - 8;
         int yo = y - 11;
@@ -144,7 +153,7 @@ public abstract class MobAi extends Mob {
     public void render(Screen screen) {
     	render(screen, 8, 11);
     }
-    
+
     @Override
     public boolean move(int xa, int ya) {
         return super.move(xa, ya);
@@ -166,7 +175,7 @@ public abstract class MobAi extends Mob {
             }
         }
         // Make a text particle at this position in this level, bright red and displaying the damage inflicted
-        level.add(new TextParticle("" + damage, x, y, Color.RED)); 
+        level.add(new TextParticle("" + damage, x, y, Color.RED));
         super.doHurt(damage, attackDir);
     }
 
@@ -177,7 +186,7 @@ public abstract class MobAi extends Mob {
 
     /**
      * Sets the mob to walk in a random direction for a given amount of time.
-     * 
+     *
      * @param byChance true if the mob should always get a new direction to walk,
      *                 false if there should be a chance that the mob moves.
      */
@@ -188,7 +197,7 @@ public abstract class MobAi extends Mob {
         }
 
         // set the mob to walk about in a random direction for a time
-        randomWalkTime = randomWalkDuration; 
+        randomWalkTime = randomWalkDuration;
 
         // set the random direction; randir is from -1 to 1.
         xa = (random.nextInt(3) - 1);
@@ -197,7 +206,7 @@ public abstract class MobAi extends Mob {
 
     /**
      * Adds some items to the level.
-     * 
+     *
      * @param mincount Least amount of items to add.
      * @param maxcount Most amount of items to add.
      * @param items    Which items should be added.
@@ -211,7 +220,7 @@ public abstract class MobAi extends Mob {
 
     /**
      * Determines if a friendly mob can spawn here.
-     * 
+     *
      * @param level      The level the mob is trying to spawn in.
      * @param x          X map coordinate of spawn.
      * @param y          Y map coordinate of spawn.
@@ -234,7 +243,7 @@ public abstract class MobAi extends Mob {
         int r = level.monsterDensity * soloRadius; // get no-mob radius
 
         // noinspection SimplifiableIfStatement
-        if (level.getEntitiesInRect(new Rectangle(x, y, r * 2, r * 2, Rectangle.CENTER_DIMS)).size() > 0) {
+        if (!level.getEntitiesInRect(new Rectangle(x, y, r * 2, r * 2, Rectangle.CENTER_DIMS)).isEmpty()) {
             return false;
         }
 
@@ -243,7 +252,7 @@ public abstract class MobAi extends Mob {
 
     /**
      * Returns the maximum level of this mob.
-     * 
+     *
      * @return max level of the mob.
      */
     public abstract int getMaxLevel();
@@ -251,20 +260,20 @@ public abstract class MobAi extends Mob {
     protected void die(int points) {
         die(points, 0);
     }
-    
-    
+
+
     protected void playSound(String[] sounds, int heardRadius) {
 		Player player = getClosestPlayer();
-		
+
 		if (player != null && player.isWithin(heardRadius, this))  {
 	        int randomNum = random.nextInt(sounds.length);
 	        Sound.playAt(sounds[randomNum], x, y, false);
 		}
     }
-    
+
     protected void playSound(String sound, int heardRadius) {
 		Player player = getClosestPlayer();
-		
+
 		if (player != null && player.isWithin(heardRadius, this))  {
 	        Sound.playAt(sound, x, y, false);
 		}

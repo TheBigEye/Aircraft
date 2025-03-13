@@ -1,55 +1,30 @@
 package minicraft.saveload;
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.core.Renderer;
 import minicraft.core.Updater;
 import minicraft.core.World;
 import minicraft.core.io.Localization;
 import minicraft.core.io.Settings;
-import minicraft.entity.Arrow;
-import minicraft.entity.Entity;
-import minicraft.entity.Fireball;
-import minicraft.entity.ItemEntity;
-import minicraft.entity.Spark;
-import minicraft.entity.furniture.Chest;
-import minicraft.entity.furniture.Crafter;
-import minicraft.entity.furniture.DeathChest;
-import minicraft.entity.furniture.DungeonChest;
-import minicraft.entity.furniture.Lantern;
-import minicraft.entity.furniture.Spawner;
-import minicraft.entity.furniture.Statue;
-import minicraft.entity.mob.AirWizard;
-import minicraft.entity.mob.EnemyMob;
-import minicraft.entity.mob.EyeQueen;
-import minicraft.entity.mob.Mob;
-import minicraft.entity.mob.Player;
-import minicraft.entity.mob.Sheep;
+import minicraft.entity.*;
+import minicraft.entity.furniture.*;
+import minicraft.entity.mob.*;
 import minicraft.entity.particle.Particle;
 import minicraft.entity.particle.TextParticle;
 import minicraft.item.Inventory;
 import minicraft.item.Item;
 import minicraft.item.PotionType;
 import minicraft.level.Level;
-import minicraft.screen.AchievementsDisplay;
-import minicraft.screen.LoadingDisplay;
-import minicraft.screen.MultiplayerDisplay;
-import minicraft.screen.TexturePackDisplay;
-import minicraft.screen.WorldSelectDisplay;
+import minicraft.screen.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.tinylog.Logger;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Map;
 
 public class Save {
 
@@ -64,7 +39,7 @@ public class Save {
 	public static final String dataExtension = ".data";
 	public static final String saveExtension = ".dat";
 	public static final String mapExtension = ".map";
-	
+
 	public static final String oldExtension = ".miniplussave";
 
 	List<String> data;
@@ -207,13 +182,12 @@ public class Save {
 		json.put("diff", Settings.get("diff"));
 		json.put("sound", String.valueOf(Settings.get("sound")));
 		json.put("autosave", String.valueOf(Settings.get("autosave")));
-		
+
 		json.put("fps", String.valueOf(Settings.get("fps")));
         json.put("particles", String.valueOf(Settings.get("particles")));
-        json.put("shadows", String.valueOf(Settings.get("shadows")));
-        
+
 		json.put("lang", Localization.getSelectedLanguage());
-		
+
 		json.put("savedIP", MultiplayerDisplay.savedIP);
 		json.put("savedUUID", MultiplayerDisplay.savedUUID);
 		json.put("savedUsername", MultiplayerDisplay.savedUsername);
@@ -274,7 +248,7 @@ public class Save {
 	                data.add(String.valueOf(World.levels[currentLevel].getTile(x, y).name));
 	            }
 	        }
-	        
+
 	        // write the data array to file
 	        writeToFile(location + filename + currentLevel + worldExtension, data);
 	        // clear the data array for next level
@@ -294,7 +268,7 @@ public class Save {
 	        // clear the data array for next level
 	        data.clear();
 	    }
-	    
+
 	    for (int currentLevel = 0; currentLevel < World.levels.length; currentLevel++) {
 	        Level currentLevelObj = World.levels[currentLevel];
 
@@ -308,10 +282,10 @@ public class Save {
 
 	        // Convert the byte array to a base64-encoded string
 	        String exploredData = Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
-	        
+
 	        // Add the serialized and encoded explored data to the data array
 	        data.add(exploredData);
-	        
+
 	        // write the data array to file
 	        writeToFile(location + filename + currentLevel + mapExtension, data);
 	        // clear the data array for the next level
@@ -346,7 +320,7 @@ public class Save {
 		}
 
 		// Cuts off extra ":" and appends "]"
-		if (player.potionEffects.size() > 0) {
+		if (!player.potionEffects.isEmpty()) {
 			subdata = new StringBuilder(subdata.substring(0, subdata.length() - (1)) + "]");
 		} else {
 			subdata.append("]");
@@ -356,7 +330,7 @@ public class Save {
 
 		data.add(String.valueOf(player.shirtColor));
 		data.add(String.valueOf(player.suitOn));
-        
+
         data.add(String.valueOf(player.nightCount));
         data.add(String.valueOf(player.isNiceNight));
 	}
@@ -385,7 +359,7 @@ public class Save {
 		for (int currentLevel = 0; currentLevel < World.levels.length; currentLevel++) { // Iterate through each world level
 			for (Entity entity : World.levels[currentLevel].getEntitiesToSave()) { // Gets the entities of the current level to be saved
 				String savedEntity = writeEntity(entity, true);
-				if (savedEntity.length() > 0) {
+				if (!savedEntity.isEmpty()) {
 					data.add(savedEntity);
 				}
 			}
@@ -430,7 +404,7 @@ public class Save {
 
 		if (entity instanceof Chest) {
 			Chest chest = (Chest) entity;
-			
+
 			Inventory chestInventory = chest.getInventory();
 
 			for (int itemIndex = 0; itemIndex < chestInventory.size(); itemIndex++) {
@@ -444,10 +418,10 @@ public class Save {
 
 		if (entity instanceof Spawner) {
 			Spawner spawner = (Spawner) entity;
-			
+
 			String mobName = spawner.mob.getClass().getName();
 			mobName = mobName.substring(mobName.lastIndexOf(".") + 1);
-			
+
 			extradata.append(":").append(mobName).append(":").append(spawner.mob instanceof EnemyMob ? ((EnemyMob) spawner.mob).lvl : 1);
 		}
 
@@ -458,9 +432,9 @@ public class Save {
 		if (entity instanceof Crafter) {
 			entityName = ((Crafter) entity).type.name();
 		}
-		
+
 		if (entity instanceof Statue) {
-			entityName = ((Statue) entity).type.name() + "Statue";
+			entityName = "Statue";
 		}
 
 		if (!isLocalSave) {

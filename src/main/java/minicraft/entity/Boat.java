@@ -1,9 +1,5 @@
 package minicraft.entity;
 
-import java.util.List;
-
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
 import minicraft.core.Updater;
 import minicraft.core.io.Settings;
@@ -16,6 +12,9 @@ import minicraft.graphic.Sprite;
 import minicraft.item.BoatItem;
 import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class Boat extends Entity {
     private static Sprite boatSprite = new Sprite(4, 34, 2, 2, 2);
@@ -26,7 +25,7 @@ public class Boat extends Entity {
     private int boatHeight = 0;
     private boolean boatAnim = false;
     protected int pushTime = 0;
- 
+
     private int tickTime =  0;
 
     private Direction pushDir = Direction.NONE; // the direction to push the furniture
@@ -52,28 +51,28 @@ public class Boat extends Entity {
 	        		screen.render(xo + 4, yo + 8, 2 + 35 * 32, 1, 2);
 	        		screen.render(xo - 4, yo + 8, 3 + 35 * 32, 1, 2);
 	        		break;
-	
+
 	        	case LEFT: // Attacking to the left... (Same as above)
 	        		screen.render(xo + 4, yo, 6 + 34 * 32, 1, 2);
 	        		screen.render(xo - 4, yo, 7 + 34 * 32, 1, 2);
 	        		screen.render(xo + 4, yo + 8, 6 + 35 * 32, 1, 2);
 	        		screen.render(xo - 4, yo + 8, 7 + 35 * 32, 1, 2);
 	        		break;
-	
+
 	        	case RIGHT: // Attacking to the right (Same as above)
 	        		screen.render(xo + 4, yo, 0 + 34 * 32, 1, 2);
 	        		screen.render(xo - 4, yo, 1 + 34 * 32, 1, 2);
 	        		screen.render(xo + 4, yo + 8, 0 + 35 * 32, 1, 2);
 	        		screen.render(xo - 4, yo + 8, 1 + 35 * 32, 1, 2);
 	        		break;
-	
+
 	        	case DOWN: // Attacking downwards (Same as above)
 	        		screen.render(xo + 4, yo, 4 + 34 * 32, 1, 2);
 	        		screen.render(xo - 4, yo, 5 + 34 * 32, 1, 2);
 	        		screen.render(xo + 4, yo + 8, 4 + 35 * 32, 1, 2);
 	        		screen.render(xo - 4, yo + 8, 5 + 35 * 32, 1, 2);
 	        		break;
-	
+
 	        	case NONE:
 	        		break;
         	}
@@ -81,20 +80,20 @@ public class Boat extends Entity {
         	boatSprite.render(screen, x - 8, y - 8);
         }
     }
-    
+
 
     @Override
     public void tick() {
     	tickTime++;
-    	
+
     	if (tickTime /2 %8 == 0) {
     		if (!boatAnim && boatHeight <= 3) boatHeight++;
     		if (boatHeight == 3) boatAnim = true;
-    		
+
     		if (boatAnim && boatHeight >= 0) boatHeight--;
-    		if (boatHeight == 0) boatAnim = false;	
+    		if (boatHeight == 0) boatAnim = false;
     	}
-    	
+
         // moves the furniture in the correct direction.
         move(pushDir.getX(), pushDir.getY());
         pushDir = Direction.NONE;
@@ -102,17 +101,17 @@ public class Boat extends Entity {
         if (pushTime > 0) {
             pushTime--; // update pushTime by subtracting 1.
         }
-    	
+
         if (playerInBoat != null) {
             exitTimer--;
-            
+
             if (exitTimer <= 0 && Game.input.getKey("SHIFT").down) {
                 if (Game.player.equals(playerInBoat)) {
                     playerInBoat = null;
                     return;
                 }
             }
-            
+
             double ya = 0;
             double xa = 0;
 
@@ -120,7 +119,7 @@ public class Boat extends Entity {
             if (Game.input.getKey("move-down").down) ya += 1;
             if (Game.input.getKey("move-left").down) xa -= 1;
             if (Game.input.getKey("move-right").down) xa += 1;
-            
+
             // Water particles
             if (Settings.get("particles").equals(true)) {
                 int randX = random.nextInt(10);
@@ -162,11 +161,11 @@ public class Boat extends Entity {
 
     		// put whatever item the player is holding into their inventory
     		if (!Game.isMode("Creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem)) {
-    			player.getInventory().add(0, player.activeItem); 
+    			player.getInventory().add(0, player.activeItem);
     		}
 
     		// make this the player's current item.
-    		player.activeItem = new BoatItem("Boat"); 
+    		player.activeItem = new BoatItem("Boat");
     		return true;
     	}
     	return false;
@@ -178,7 +177,7 @@ public class Boat extends Entity {
         }
 
         // used to check if the entity has BEEN stopped, COMPLETELY; below checks for a lack of collision.
-        boolean stopped = true; 
+        boolean stopped = true;
 
         if (move2(xa, 0)) stopped = false; // becomes false if horizontal movement was successful.
         if (move2(0, ya)) stopped = false; // becomes false if vertical movement was successful.
@@ -186,9 +185,9 @@ public class Boat extends Entity {
         if (!stopped) {
             int xt = x >> 4; // the x tile coordinate that the entity is standing on.
             int yt = y >> 4; // the y tile coordinate that the entity is standing on.
-            
+
             // Calls the steppedOn() method in a tile's class. (used for tiles like sand (footprints) or lava (burning))
-            level.getTile(xt, yt).steppedOn(level, xt, yt, this); 
+            level.getTile(xt, yt).steppedOn(level, xt, yt, this);
         }
 
         return !stopped;
@@ -227,13 +226,13 @@ public class Boat extends Entity {
 
         // these lists are named as if the entity has already moved-- it hasn't, though.
         // gets all of the entities that are inside this entity (aka: colliding) before moving.
-        List<Entity> wasInside = level.getEntitiesInRect(getBounds()); 
+        List<Entity> wasInside = level.getEntitiesInRect(getBounds());
 
         int xr = 1;
         int yr = 1;
-        
+
         // gets the entities that this entity will touch once moved.
-        List<Entity> isInside = level.getEntitiesInRect(new Rectangle(x + (int) xa, y + (int) ya, xr * 2, yr * 2, Rectangle.CENTER_DIMS)); 
+        List<Entity> isInside = level.getEntitiesInRect(new Rectangle(x + (int) xa, y + (int) ya, xr * 2, yr * 2, Rectangle.CENTER_DIMS));
         for (int i = 0; interact && i < isInside.size(); i++) {
             /// cycles through entities about to be touched, and calls touchedBy(this) for each of them.
             Entity entity = isInside.get(i);
@@ -249,9 +248,7 @@ public class Boat extends Entity {
         }
 
         isInside.removeAll(wasInside); // remove all the entities that this one is already touching before moving.
-        for (int i = 0; i < isInside.size(); i++) {
-            Entity entity = isInside.get(i);
-
+        for (Entity entity : isInside) {
             if (entity == this) {
                 continue; // can't interact with yourself LOL
             }
@@ -267,7 +264,7 @@ public class Boat extends Entity {
 
         return true; // the move was successful.
     }
-    
+
     /* @Override
     protected void touchedBy(Entity entity) {
         if (level.getTile(this.x, this.y).id != 6) {
@@ -278,7 +275,7 @@ public class Boat extends Entity {
         }
     }
     */
-    
+
     /*
 
 	public void tryPush(Player player) {

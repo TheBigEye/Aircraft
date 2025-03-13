@@ -1,24 +1,17 @@
 package minicraft.level.tile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.level.tile.FlowerTile.Flower;
 import minicraft.level.tile.MushroomTile.Mushroom;
 import minicraft.level.tile.OreTile.Ore;
 import minicraft.level.tile.TreeTile.Tree;
 import minicraft.level.tile.WoolTile.Wool;
-import minicraft.level.tile.farming.CarrotTile;
-import minicraft.level.tile.farming.FarmTile;
-import minicraft.level.tile.farming.ParsnipTile;
-import minicraft.level.tile.farming.PotatoTile;
-import minicraft.level.tile.farming.SkyFarmTile;
-import minicraft.level.tile.farming.SkyWartTile;
-import minicraft.level.tile.farming.WheatTile;
+import minicraft.level.tile.farming.*;
 import minicraft.util.Utils;
+import org.tinylog.Logger;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public final class Tiles {
 	/// idea: to save tile names while saving space, I could encode the names in
@@ -39,7 +32,7 @@ public final class Tiles {
 		Tiles.add(4, new StairsTile("Stairs Up", true));
 		Tiles.add(5, new StairsTile("Stairs Down", false));
 		Tiles.add(6, new WaterTile("Water"));
-		
+
 		// this is out of order because of lava buckets
 		Tiles.add(17, new LavaTile("Lava"));
 
@@ -69,14 +62,14 @@ public final class Tiles {
 		Tiles.add(29, new DoorTile(Tile.Material.Stone));
 		Tiles.add(30, new DoorTile(Tile.Material.Obsidian));
 		Tiles.add(31, new DoorTile(Tile.Material.Holy));
-		
+
 		Tiles.add(32, new FloorTile(Tile.Material.Oak));
 		Tiles.add(33, new FloorTile(Tile.Material.Spruce));
 		Tiles.add(34, new FloorTile(Tile.Material.Birch));
 		Tiles.add(35, new FloorTile(Tile.Material.Stone));
 		Tiles.add(36, new FloorTile(Tile.Material.Obsidian));
 		Tiles.add(37, new FloorTile(Tile.Material.Holy));
-		
+
 		Tiles.add(38, new WallTile(Tile.Material.Oak));
 		Tiles.add(39, new WallTile(Tile.Material.Spruce));
 		Tiles.add(40, new WallTile(Tile.Material.Birch));
@@ -146,13 +139,13 @@ public final class Tiles {
 		Tiles.add(90, new MushroomTile(Mushroom.BROWN));
 		Tiles.add(91, new MushroomTile(Mushroom.RED));
 		Tiles.add(92, new ParsnipTile("Parsnip"));
-		
+
 		Tiles.add(93, new FlowerTile(Flower.ROSE));
 		Tiles.add(94, new SproutTile("Rose Sprout", Tiles.get("Grass"), Tiles.get("Rose")));
-		
+
 		Tiles.add(95, new FlowerTile(Flower.POPPY));
 		Tiles.add(96, new SproutTile("Poppy Sprout", Tiles.get("Grass"), Tiles.get("Poppy")));
-		
+
 		Tiles.add(97, new SproutTile("Daisy Sprout", Tiles.get("Grass"), Tiles.get("Daisy")));
 		Tiles.add(98, new SproutTile("Dandelion Sprout", Tiles.get("Grass"), Tiles.get("Dandelion")));
 		Tiles.add(99, new AltarTile("Summon Altar"));
@@ -162,7 +155,7 @@ public final class Tiles {
 
 		for (short tile = 0; tile < 256; tile++) {
 			if (tiles.get(tile) == null) continue;
-			tiles.get(tile).id = (short) tile;
+			tiles.get(tile).id = tile;
 		}
 	}
 
@@ -289,7 +282,7 @@ public final class Tiles {
 		}
 
 		Tile getting = null;
-		
+
 		for (Tile tile: tiles.values()) {
 			if (tile == null) continue;
 			if (tile.name.equals(name)) {
@@ -314,7 +307,7 @@ public final class Tiles {
 	public static Tile get(int id) {
 		//System.out.println("Requesting tile by id: " + id);
 		if (id < 0) id += 32768;
-		
+
 		Tile tile = tiles.get((short)id);
 
 		if (tile != null) {
@@ -337,13 +330,13 @@ public final class Tiles {
 		if (!descriptName.contains("_")) {
 			return descriptName;
 		}
-		
+
 		String[] parts = descriptName.split("_");
 		descriptName = parts[0];
-		
+
 		int data;
 		data = Integer.parseInt(parts[1]);
-		
+
 		return get(descriptName).getName(data);
 	}
 }

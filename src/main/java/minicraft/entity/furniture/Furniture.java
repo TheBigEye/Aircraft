@@ -1,9 +1,5 @@
 package minicraft.entity.furniture;
 
-import java.util.Random;
-
-import org.jetbrains.annotations.Nullable;
-
 import minicraft.core.Game;
 import minicraft.core.io.Sound;
 import minicraft.entity.Direction;
@@ -17,13 +13,16 @@ import minicraft.item.FurnitureItem;
 import minicraft.item.Item;
 import minicraft.item.PowerGloveItem;
 import minicraft.level.tile.LavaTile;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Random;
 
 /**
  * Many furniture classes are very similar; they might not even need to be there at all...
  */
 
 public class Furniture extends Entity {
-	
+
 	/** Random value for all the furniture instances **/
 	protected static final Random random = new Random();
 
@@ -36,7 +35,7 @@ public class Furniture extends Entity {
 
     /**
      * Constructor for the furniture entity. Size will be set to 3.
-     * 
+     *
      * @param name   Name of the furniture.
      * @param sprite Furniture sprite.
      */
@@ -47,7 +46,7 @@ public class Furniture extends Entity {
     /**
      * Constructor for the furniture entity. Radius is only used for collision
      * detection.
-     * 
+     *
      * @param name   Name of the furniture.
      * @param sprite Furniture sprite.
      * @param xr     Horizontal radius.
@@ -80,7 +79,7 @@ public class Furniture extends Entity {
         if (pushTime > 0) {
             pushTime--; // update pushTime by subtracting 1.
         }
-        
+
         if (level.getTile(x >> 4, y >> 4) instanceof LavaTile && !(this instanceof Spawner) && !(this instanceof DeathChest) && !(this instanceof Tnt)) {
 			for (int i = 0; i < 1 + random.nextInt(3); i++) {
 				level.add(new FireParticle(x - 8 + random.nextInt(16), y - 6 + random.nextInt(12)));
@@ -93,7 +92,7 @@ public class Furniture extends Entity {
     public void render(Screen screen) {
         sprite.render(screen, x - 8, y - 8);
     }
-    
+
     /** Draws the furniture on the screen. */
     public void renderFullbright(Screen screen) {
         sprite.render(screen, x - 8, y - 8, 0, -1, Color.WHITE);
@@ -118,7 +117,7 @@ public class Furniture extends Entity {
 
     /**
      * Used in PowerGloveItem.java to let the user pick up furniture.
-     * 
+     *
      * @param player The player picking up the furniture.
      */
     @Override
@@ -126,14 +125,14 @@ public class Furniture extends Entity {
         if (item instanceof PowerGloveItem) {
             Sound.playAt("genericHurt", x, y);
             remove();
-            
+
             if (!Game.isMode("Creative") && player.activeItem != null && !(player.activeItem instanceof PowerGloveItem)) {
             	// put whatever item the player is holding into their inventory
-            	player.getInventory().add(0, player.activeItem); 
+            	player.getInventory().add(0, player.activeItem);
             }
-            
+
             // make this the player's current item.
-            player.activeItem = new FurnitureItem(this); 
+            player.activeItem = new FurnitureItem(this);
             return true;
         }
         return false;

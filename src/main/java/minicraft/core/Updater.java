@@ -1,10 +1,5 @@
 package minicraft.core;
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-
-import org.tinylog.Logger;
-
 import minicraft.core.io.Localization;
 import minicraft.core.io.Screenshot;
 import minicraft.core.io.Settings;
@@ -12,10 +7,14 @@ import minicraft.entity.furniture.Bed;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.saveload.Save;
+import minicraft.screen.CreditsDisplay;
 import minicraft.screen.EndGameDisplay;
 import minicraft.screen.LevelTransitionDisplay;
 import minicraft.screen.PlayerDeathDisplay;
 import minicraft.screen.WorldSelectDisplay;
+import org.tinylog.Logger;
+
+import java.awt.*;
 
 /*
 * Game updater
@@ -25,7 +24,7 @@ public class Updater extends Game {
 
 	/// TIME AND TICKS
 	public static final int normalSpeed = 60; // Measured in ticks / second.
-	public static float gameSpeed = 1; // Measured in MULTIPLES OF NORMSPEED.
+	public static float gameSpeed = 1.00f; // Measured in MULTIPLES OF NORMSPEED.
 	public static boolean paused = true; // If the game is paused.
 
 	public static int tickCount = 0; // The number of ticks since the beginning of the game day.
@@ -73,7 +72,7 @@ public class Updater extends Game {
 		GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 
 		if (Updater.FULLSCREEN) {
-			Initializer.frame.setUndecorated(true);	
+			Initializer.frame.setUndecorated(true);
 			Initializer.frame.setResizable(true);
 			Initializer.frame.setVisible(true);
 			device.setFullScreenWindow(Initializer.frame);
@@ -120,16 +119,16 @@ public class Updater extends Game {
 			if (gameSpeed != 20) {
 				gameSpeed = 20;
 			}
-			
+
 			if (tickCount > sleepEndTime) {
 				Logger.trace("Passing midnight in bed.");
 				pastFirstDay = true;
 				tickCount = 0;
 			}
-			
-			if (tickCount <= sleepStartTime && tickCount >= sleepEndTime || input.getKey("exit").clicked) { // it has reached morning.
+
+			if ((tickCount <= sleepStartTime && tickCount > sleepEndTime) || input.getKey("exit").clicked) { // it has reached morning.
 				Logger.trace("Getting out of bed.");
-				gameSpeed = 1;
+				gameSpeed = 1.00f;
 				Bed.restorePlayers();
 			}
 		}
@@ -162,14 +161,13 @@ public class Updater extends Game {
 			scoreTime--;
 		}
 
-		Tile.tickCount++;
 
 		// This is the general action statement thing! Regulates menus, mostly.
 		if (!Renderer.canvas.hasFocus()) {
 			input.releaseAll();
 		}
 
-		if (Renderer.canvas.hasFocus()) {
+		if (Renderer.canvas.hasFocus() || display instanceof CreditsDisplay) {
 			gameTime++;
 
 			input.tick(); // INPUT TICK; no other class should call this, I think...especially the *Menu classes.
@@ -212,7 +210,7 @@ public class Updater extends Game {
 				if (input.getKey("F3").clicked) { // shows debug info in upper-left
 					Renderer.showDebugInfo = !Renderer.showDebugInfo;
 				}
-				
+
 				if (input.getKey("screenshot").clicked) { // takes an screenshot
 					Screenshot.take(Renderer.image);
 				}
@@ -272,10 +270,10 @@ public class Updater extends Game {
 					if (input.getKey("shift-d").clicked) {
 						levels[currentLevel].setTile(player.x >> 4, player.y >> 4, Tiles.get("Stairs Down"));
 					}
-					
+
 				} // end debug only cond.
 				*/
-				
+
 			} // end "menu-null" conditional
 		} // end hasfocus conditional
 	} // end tick()

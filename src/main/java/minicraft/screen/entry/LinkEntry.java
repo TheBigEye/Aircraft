@@ -1,18 +1,17 @@
 package minicraft.screen.entry;
 
-import java.awt.Desktop;
-import java.awt.Desktop.Action;
-import java.io.IOException;
-import java.net.URI;
-
-import org.tinylog.Logger;
-
 import minicraft.core.Game;
 import minicraft.core.io.Localization;
 import minicraft.screen.BookDisplay;
 import minicraft.screen.Menu;
 import minicraft.screen.RelPos;
 import minicraft.screen.TempDisplay;
+import org.tinylog.Logger;
+
+import java.awt.*;
+import java.awt.Desktop.Action;
+import java.io.IOException;
+import java.net.URI;
 
 public class LinkEntry extends SelectEntry {
 
@@ -53,7 +52,7 @@ public class LinkEntry extends SelectEntry {
                     canBrowse = desktop.isSupported(Action.BROWSE);
                 }
             }
-            
+
             if (canBrowse) {
                 // try to open the download link directly from the browser.
                 try {

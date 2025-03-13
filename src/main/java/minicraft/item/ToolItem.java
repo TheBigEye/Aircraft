@@ -1,13 +1,13 @@
 package minicraft.item;
 
-import java.util.ArrayList;
-
 import minicraft.core.Game;
 import minicraft.core.io.Localization;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.graphic.Sprite;
 import minicraft.screen.AchievementsDisplay;
+
+import java.util.ArrayList;
 
 public class ToolItem extends Item {
 

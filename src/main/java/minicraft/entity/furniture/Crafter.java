@@ -1,7 +1,5 @@
 package minicraft.entity.furniture;
 
-import java.util.ArrayList;
-
 import minicraft.core.Game;
 import minicraft.entity.mob.Player;
 import minicraft.graphic.Sprite;
@@ -9,6 +7,8 @@ import minicraft.item.Recipe;
 import minicraft.item.Recipes;
 import minicraft.screen.AchievementsDisplay;
 import minicraft.screen.CraftingDisplay;
+
+import java.util.ArrayList;
 
 public class Crafter extends Furniture {
 
@@ -44,7 +44,7 @@ public class Crafter extends Furniture {
 
 	/**
 	 * Creates a crafter of a given type.
-	 * 
+	 *
 	 * @param type What type of crafter this is.
 	 */
 	public Crafter(Crafter.Type type) {

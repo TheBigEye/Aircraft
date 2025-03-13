@@ -1,7 +1,5 @@
 package minicraft.item;
 
-import java.util.ArrayList;
-
 import minicraft.core.Game;
 import minicraft.entity.Direction;
 import minicraft.entity.mob.Player;
@@ -9,6 +7,8 @@ import minicraft.graphic.Sprite;
 import minicraft.level.Level;
 import minicraft.level.tile.Tile;
 import minicraft.level.tile.Tiles;
+
+import java.util.ArrayList;
 
 public class FishingRodItem extends Item {
 
@@ -31,7 +31,7 @@ public class FishingRodItem extends Item {
      * have to subtract 1 + the "tool" number from the number before it (for the
      * first number subtract from 100)
      */
-    private static final int[][] LEVEL_CHANCES = { 
+    private static final int[][] LEVEL_CHANCES = {
     		{ 44, 14, 9, 4 }, // they're in the order "fish", "junk", "tools", "rare"
             { 24, 14, 9, 4 }, // iron has very high chance of fish
             { 59, 49, 9, 4 }, // gold has very high chance of tools
@@ -70,7 +70,7 @@ public class FishingRodItem extends Item {
     @Override
     public boolean isDepleted() {
     	// breaking is random, the lower the level, and the more times you use it, the higher the chance
-        if (random.nextInt(100) > 120 - uses + level * 6) { 
+        if (random.nextInt(100) > 120 - uses + level * 6) {
             Game.notifications.add("Your Fishing rod broke.");
             return true;
         }

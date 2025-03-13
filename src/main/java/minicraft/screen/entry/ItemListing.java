@@ -6,8 +6,8 @@ public class ItemListing extends ItemEntry {
 
     private String info;
 
-    public ItemListing(Item i, String text) {
-        super(i);
+    public ItemListing(Item item, String text) {
+        super(item);
         setSelectable(false);
         this.info = text;
     }

@@ -8,6 +8,11 @@ public class FlatVector {
         this.x = x;
         this.y = y;
     }
+    
+	public FlatVector normalized() {
+		double max = Math.max(x, y);
+		return new FlatVector(x / max, y / max);
+	}
 
     // Takes a Vector2 object and returns a new Vector2 object that is the normalized version of the input.
     public static FlatVector normalize(FlatVector vec) {

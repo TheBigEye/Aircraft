@@ -1,9 +1,9 @@
 package minicraft.item;
 
-import java.util.HashMap;
-
 import minicraft.core.Game;
 import minicraft.entity.mob.Player;
+
+import java.util.HashMap;
 
 public class Recipe {
 	private HashMap<String, Integer> costs = new HashMap<String, Integer>(); // A list of costs for the recipe

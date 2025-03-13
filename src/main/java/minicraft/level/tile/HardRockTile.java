@@ -21,7 +21,7 @@ import minicraft.level.Level;
 
 public class HardRockTile extends Tile {
 
-    private static ConnectorSprite sprite = new ConnectorSprite(HardRockTile.class, new Sprite(9, 6, 3, 3, 1), new Sprite(14, 6, 2, 2, 1), new Sprite(12, 6, 2, 2, 1));
+    private static final ConnectorSprite sprite = new ConnectorSprite(HardRockTile.class, new Sprite(9, 6, 3, 3, 1), new Sprite(14, 6, 2, 2, 1), new Sprite(12, 6, 2, 2, 1));
 
     protected HardRockTile(String name) {
         super(name, sprite);
@@ -41,7 +41,7 @@ public class HardRockTile extends Tile {
         if (Game.isMode("Creative")) {
             return false; // go directly to hurt method
         }
-        
+
         if (item instanceof ToolItem) {
             ToolItem tool = (ToolItem) item;
             if (tool.type == ToolType.Pickaxe && tool.level == 4) {
@@ -61,14 +61,14 @@ public class HardRockTile extends Tile {
     public void hurt(Level level, int x, int y, int hurtDamage) {
         int damage = level.getData(x, y) + hurtDamage;
         int hardrockHealth = 200;
-        
+
         if (Game.isMode("Creative")) {
         	hurtDamage = damage = hardrockHealth;
         }
-        
+
         Sound.playAt("genericHurt", x << 4, y << 4);
         level.add(new SmashParticle(x << 4, y << 4));
-        
+
         if (damage <= 30) {
         	level.add(new TextParticle("X", (x << 4) + 8, (y << 4) + 8, Color.RED));
         } else {

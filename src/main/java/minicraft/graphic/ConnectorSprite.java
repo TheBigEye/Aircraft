@@ -8,14 +8,13 @@ public class ConnectorSprite {
 	/**
 	 * This class is meant for those tiles that look different when they are
 	 * touching other tiles of their type; aka, they "connect" to them.
-	 * 
+	 * <p>
 	 * Since I think connecting tile sprites tend to have three color categories,
 	 * maybe this should have two extra colors..?
-	 * 
+	 * <p>
 	 * This class will need to keep rack of the following sprites: -a sprite for
 	 * each kind of intersection; aka a 3x3 grid of sprite pixels, that show the
 	 * sprite for each position, totally surrounded, nothing of left, etc.
-	 * 
 	 */
 
 	public Sprite sparse, sides, full;

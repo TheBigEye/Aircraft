@@ -13,7 +13,7 @@ import minicraft.item.ToolType;
 import minicraft.level.Level;
 
 public class DirtTile extends Tile {
-    private static Sprite[] levelSprite = new Sprite[4];
+    private static final Sprite[] levelSprite = new Sprite[4];
     static {
         levelSprite[0] = new Sprite(57, 0, 2, 2, 1);
         levelSprite[1] = new Sprite(59, 0, 2, 2, 1);
