@@ -1,11 +1,15 @@
-apply plugin: 'java'
-apply plugin: 'application'
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
 
-project.version = '1.0'
+version = '1.0'
+sourceCompatibility = '1.8'
 
-sourceCompatibility = 8
-mainClassName = 'minicraft.core.Game'
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+application {
+    mainClass = 'minicraft.core.Game'
+}
 
 repositories {
     mavenCentral()
@@ -25,26 +29,28 @@ dependencies {
     implementation 'org.jogamp.joal:joal-main:2.3.2'
 }
 
-buildscript {
-    repositories {
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath 'gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0'
-    }
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
 
-apply plugin: 'com.github.johnrengelman.shadow'
-
 shadowJar {
-    archivesBaseName = 'aircraft'
-    archiveClassifier.set('')
-
+    archiveBaseName.set("aircraft")
+    archiveClassifier.set("")
     manifest {
         attributes(
-            'Main-Class': mainClassName,
+            'Main-Class': application.mainClass,
             'Implementation-Title': project.name,
             'Implementation-Version': project.version
         )
     }
+}
+
+tasks.named("distZip") {
+    dependsOn tasks.named("shadowJar")
+}
+tasks.named("distTar") {
+    dependsOn tasks.named("shadowJar")
+}
+tasks.named("startScripts") {
+    dependsOn tasks.named("shadowJar")
 }
