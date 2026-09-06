@@ -13,7 +13,7 @@ public class VillagerMob extends MobAi {
 
 	/**
 	 * Constructor for a non-hostile (Villager) mob. healthFactor = 3.
-	 * 
+	 *
 	 * @param sprites The mob's sprites.
 	 */
 	public VillagerMob(MobSprite[][] sprites) {
@@ -22,7 +22,7 @@ public class VillagerMob extends MobAi {
 
 	/**
 	 * Constructor for a non-hostile (Villager) mob.
-	 * 
+	 *
 	 * @param sprites      The mob's sprites.
 	 * @param healthFactor Determines the mobs health. Will be multiplied by the
 	 *                     difficulty and then added with 5.
@@ -58,7 +58,7 @@ public class VillagerMob extends MobAi {
 	/**
 	 * Checks a given position in a given level to see if the mob can spawn there.
 	 * Passive mobs can only spawn on grass or flower tiles.
-	 * 
+	 *
 	 * @param level The level which the mob wants to spawn in.
 	 * @param x     X map spawn coordinate.
 	 * @param y     Y map spawn coordinate.
@@ -79,7 +79,7 @@ public class VillagerMob extends MobAi {
 	public int getMaxLevel() {
 		return 1;
 	}
-	
+
 	@Override
 	public int getLightRadius() {
 		return 3;

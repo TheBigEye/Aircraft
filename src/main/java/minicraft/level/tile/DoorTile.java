@@ -5,6 +5,7 @@ import minicraft.entity.Direction;
 import minicraft.entity.Entity;
 import minicraft.entity.mob.Mob;
 import minicraft.entity.mob.Player;
+import minicraft.entity.mob.VillagerMob;
 import minicraft.graphic.Screen;
 import minicraft.graphic.Sprite;
 import minicraft.item.Item;
@@ -75,7 +76,7 @@ public class DoorTile extends Tile {
 
     @Override
     public boolean hurt(Level level, int x, int y, Mob source, int hurtDamage, Direction attackDir) {
-        if (source instanceof Player) {
+        if (source instanceof Player || source instanceof VillagerMob) {
             boolean closed = level.getData(x, y) == 0;
             level.setData(x, y, closed ? 1 : 0);
         }

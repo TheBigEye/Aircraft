@@ -1343,33 +1343,36 @@ public class Level {
 	}
 
 
-	private void playRandomMusic(int depth) {
-	    Map<Integer, String[]> soundMap = new HashMap<>();
+    private void playRandomMusic(int depth) {
+        // Define music themes for each level depth
+        Map<Integer, String[]> musicThemes = new HashMap<>();
+        musicThemes.put(1, new String[] {"musicTheme1", "musicTheme2", "musicTheme3"}); // Sky
+        musicThemes.put(0, new String[] {"musicTheme2", "musicTheme4"}); // Surface
+        musicThemes.put(-1, new String[] {"musicTheme5", "musicTheme8", "caveMood", "caveBreath", "caveScream"}); // Caves
+        musicThemes.put(-2, new String[] {"musicTheme5", "musicTheme6", "musicTheme8"}); // Caverns
 
-	    soundMap.put(1, new String[] {"musicTheme1", "musicTheme2", "musicTheme3"}); // Sky {fall, surface, paradise}
-	    soundMap.put(0, new String[] {"musicTheme2", "musicTheme4"}); // Surface {surface, peaceful}
-	    soundMap.put(-1, new String[] {"musicTheme5", "musicTheme8", "caveMood", "caveBreath", "caveScream"}); // Caves {cave, deeper, ...}
-	    soundMap.put(-2, new String[] {"musicTheme5", "musicTheme6", "musicTheme8"}); // Caverns {cave, cavern, dripping, deeper}
+        String[] themes = musicThemes.get(depth);
+        if (themes == null || themes.length == 0) {
+            return;
+        }
 
+        String currentTheme = World.currentMusicTheme;
+        String selectedTheme;
 
-	    if (soundMap.containsKey(depth)) {
-	        String[] sounds = soundMap.get(depth);
+        // Select a random theme, ensuring it's not the same as the current one
+        do {
+            selectedTheme = themes[random.nextInt(themes.length)];
+        } while (themes.length > 1 && Objects.equals(selectedTheme, currentTheme));
 
-	        int randomNum = random.nextInt(sounds.length);
+        // Stop the current theme if playing
+        if (currentTheme != null) {
+            Sound.stop(currentTheme);
+        }
 
-	        if (World.currentMusicTheme != null) {
-	        	Sound.stop(World.currentMusicTheme );
-
-	        	// if the played theme is equals to the new theme, we try again
-		        while (Objects.equals(sounds[randomNum], World.currentMusicTheme)) {
-		        	randomNum = random.nextInt(sounds.length);
-		        }
-	        }
-
-	        Sound.play(sounds[randomNum]);
-	        World.currentMusicTheme  = sounds[randomNum];
-	    }
-	}
+        // Play the new theme and update the current theme reference
+        Sound.play(selectedTheme);
+        World.currentMusicTheme = selectedTheme;
+    }
 
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------

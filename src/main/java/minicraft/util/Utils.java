@@ -1,24 +1,28 @@
 package minicraft.util;
 
-public final class Utils {   
-	
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public final class Utils {
+
 	public static final String OS_NAME = System.getProperty("os.name"); // The Operating system name (Windows, Linux, MacOS, etc)
 	public static final String OS_ARCH = System.getProperty("os.arch"); // The model type of the Operating system (ARM, x86, x64, AMD64,
 	public static final String OS_VERSION = System.getProperty("os.version"); // This is ovbious, stores the Operating system version
-	
+
 	public static final String JAVA_ARCH = System.getProperty("sun.arch.data.model"); // This store the JDK / JRE model
 	public static final String JAVA_VERSION = System.getProperty("java.version"); // This store the JDK / JRE version
 	public static final String JAVA_VENDOR = System.getProperty("java.vendor");  // This store the company responsible for maintaining java
-	
+
 	public static final String JVM_NAME = System.getProperty("java.vm.name"); // Details of the current Java virtual machine
 	public static final String JVM_INFO = System.getProperty("java.vm.info"); // Info of the current Java virtual machine
 	public static final String JVM_VENDOR = System.getProperty("java.vm.vendor"); // meh.. lot text
-	
+
 	private static final Runtime runtime = Runtime.getRuntime();
 
     public static int clamp(int val, int min, int max) {
         if (val > max) return max;
-        if (val < min)  return min; 
+        if (val < min)  return min;
         return val;
     }
 
@@ -34,7 +38,7 @@ public final class Utils {
         String p = (num == 1) ? "" : "s";
         return num + " " + word + p;
     }
-    
+
     public static String formatText(String word) {
         String[] words = word.toLowerCase().split(" ");
         StringBuilder sb = new StringBuilder();
@@ -56,7 +60,7 @@ public final class Utils {
     public static int percentage(int current, int total) {
         return (current * 100) / total;
     }
- 
+
 
     /** Get the free JVM memory in Mbs **/
     public static long freeMemory() {
@@ -114,10 +118,23 @@ public final class Utils {
 	    long totalMem = totalMemory();
 	    long freeMem = freeMemory();
 	    return String.format(
-	        "%d bytes (%d MB) / %d bytes (%d MB) up to %d bytes (%d MB)", 
-	        freeMem << 20, freeMem, 
-	        totalMem << 20, totalMem, 
+	        "%d bytes (%d MB) / %d bytes (%d MB) up to %d bytes (%d MB)",
+	        freeMem << 20, freeMem,
+	        totalMem << 20, totalMem,
 	        maxMem << 20, maxMem
 	    );
 	}
+
+    public static boolean isConnectedToInternet() {
+        try {
+            // Try to connect to a well-known website (Google) with a timeout of 2 seconds
+            URL url = new URL("http://www.google.com");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(2000);
+            connection.connect();
+            return true; // Connection successful
+        } catch (IOException e) {
+            return false; // Connection failed
+        }
+    }
 }

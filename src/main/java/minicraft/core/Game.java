@@ -113,7 +113,12 @@ public class Game {
     		"The game has crashed, we don't need a blue screen to say it"
         };
 
-        // TODO: put this "The game has gone offline... just like your internet connection." when the user haven't internet :)
+        if (debug) {
+            return "Debug mode is on, so this crash is probably your fault.";
+        }
+        else if (!Utils.isConnectedToInternet()) {
+            return "The game has gone offline... just like your internet connection.";
+        }
 
         try {
             return comment[(int)(System.nanoTime() % (long)comment.length)];
